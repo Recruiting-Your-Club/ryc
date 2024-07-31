@@ -5,14 +5,16 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@IdClass(ClubCategoryKey.class)
 public class ClubCategory {
-    @Id
+    @EmbeddedId
+    private ClubCategoryId id;
+
+    @MapsId("clubId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @Id
+    @MapsId("categoryId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
