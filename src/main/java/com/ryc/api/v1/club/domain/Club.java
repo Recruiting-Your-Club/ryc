@@ -3,6 +3,7 @@ package com.ryc.api.v1.club.domain;
 import com.ryc.api.v1.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @AllArgsConstructor
 public class Club extends BaseEntity {
     @Id
