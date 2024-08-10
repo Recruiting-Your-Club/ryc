@@ -55,6 +55,9 @@ public class SecurityConfiguration {
                                         .requestMatchers(
                                                 "/swagger-ui/*",
                                                 "/swagger-ui.html",
+                                                "/webjars/**",
+                                                "/v2/**",
+                                                "/v3/**",
                                                 "/swagger-resources/**").permitAll() // swagger 접근 허용
                                         .anyRequest().authenticated());
 
