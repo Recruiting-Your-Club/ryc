@@ -10,6 +10,7 @@ import com.ryc.api.v1.club.repository.CategoryRepository;
 import com.ryc.api.v1.club.repository.ClubCategoryRepository;
 import com.ryc.api.v1.club.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +24,15 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional
     public CreateClubResponseDto createClub(CreateClubRequestDto body) {
+
+        if(clubRepository.existsByClubName(body.name())){
+            throw new DuplicateKeyException("This club Already Exist");
+        }
+
         Club club = body.toClub();
         clubRepository.save(club);
 
-        //없을 때, Category 생성
+        //카테고리가 기존에 없을 때, Category 새로 생성
         if (!categoryRepository.existsByName(body.category())) {
             Category category = Category.builder()
                     .name(body.category())
