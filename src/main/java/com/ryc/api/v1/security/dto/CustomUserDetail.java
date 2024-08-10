@@ -1,0 +1,70 @@
+package com.ryc.api.v1.security.dto;
+
+import com.ryc.api.v1.member.domain.Member;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+
+@Getter
+@ToString
+@RequiredArgsConstructor
+public class CustomUserDetail implements UserDetails, Serializable {
+    private final String id;
+    private final String username;
+    private final String email;
+    private final String password;
+    private final Collection<? extends GrantedAuthority> authorities;
+
+    private static final String ROLE_PREFIX = "ROLE_";
+
+    public CustomUserDetail(Member member) {
+        this.id = member.getId();
+        this.username = member.getUsername();
+        this.email = member.getEmail();
+        this.password = member.getPassword();
+        this.authorities
+                = Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + member.getRole().name()));
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}
