@@ -9,10 +9,16 @@ import com.ryc.api.v1.club.dto.CreateClubResponseDto;
 import com.ryc.api.v1.club.repository.CategoryRepository;
 import com.ryc.api.v1.club.repository.ClubCategoryRepository;
 import com.ryc.api.v1.club.repository.ClubRepository;
+import com.ryc.api.v1.security.dto.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,30 +31,48 @@ public class ClubServiceImpl implements ClubService {
     @Transactional
     public CreateClubResponseDto createClub(CreateClubRequestDto body) {
 
-        if(clubRepository.existsByClubName(body.name())){
+        if (clubRepository.existsByClubName(body.name())) {
             throw new DuplicateKeyException("This club Already Exist");
         }
 
-        Club club = body.toClub();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
+
+        Club club = Club.builder()
+                .clubName(body.name())
+                .clubDescription(body.description())
+                .clubPresidentId(userDetails.getId())
+                .build();
+
         clubRepository.save(club);
 
         //카테고리가 기존에 없을 때, Category 새로 생성
-        if (!categoryRepository.existsByName(body.category())) {
-            Category category = Category.builder()
-                    .name(body.category())
+        List<String> categoriesFromRequest = body.categories();
+        List<Category> newCategories = new ArrayList<>();
+        for (String categoryFromRequest : categoriesFromRequest) {
+            if (!categoryRepository.existsByName(categoryFromRequest)) {
+                Category category = Category.builder()
+                        .name(categoryFromRequest)
+                        .build();
+                newCategories.add(category);
+            }
+        }
+        categoryRepository.saveAll(newCategories);
+
+        List<ClubCategory> clubCategories = new ArrayList<>();
+        List<Category> categories = categoryRepository.findByNameIn(body.categories());
+        for (Category category : categories) {
+            ClubCategoryId clubCategoryId = new ClubCategoryId(club.getId(), category.getId());
+            ClubCategory clubCategory = ClubCategory.builder()
+                    .id(clubCategoryId)
+                    .club(club)
+                    .category(category)
                     .build();
-            categoryRepository.save(category);
+            clubCategories.add(clubCategory);
         }
 
-        Category category = categoryRepository.findByName(body.category());
-        ClubCategoryId clubCategoryId = new ClubCategoryId(club.getId(), category.getId());
-        ClubCategory clubCategory = ClubCategory.builder()
-                .id(clubCategoryId)
-                .club(club)
-                .category(category)
-                .build();
+        clubCategoryRepository.saveAll(clubCategories);
 
-        clubCategoryRepository.save(clubCategory);
         return new CreateClubResponseDto(club.getCreatedAt());
     }
 }
