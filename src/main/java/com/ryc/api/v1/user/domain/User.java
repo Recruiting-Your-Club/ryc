@@ -1,17 +1,16 @@
-package com.ryc.api.v1.member.domain;
+package com.ryc.api.v1.user.domain;
 
 import com.ryc.api.v1.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
-public class Member extends BaseEntity {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -26,7 +25,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public Member(){
+    public User(){
         super();
     }
 }
