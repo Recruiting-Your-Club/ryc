@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/role")
@@ -21,7 +18,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createRole(@Valid @RequestBody ClubRoleRequest body) {
+    public ResponseEntity<?> createRoleRequest(@Valid @RequestBody ClubRoleRequest body) {
         try {
             ClubRoleResponse response = roleService.createClubRoleApplication(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
