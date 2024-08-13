@@ -2,9 +2,12 @@ package com.ryc.api.v1.role.service;
 
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.club.repository.ClubRepository;
+import com.ryc.api.v1.common.constant.RequestStatus;
+import com.ryc.api.v1.role.domain.ClubRole;
 import com.ryc.api.v1.role.domain.ClubRoleApplication;
 import com.ryc.api.v1.role.dto.ClubRoleRequest;
 import com.ryc.api.v1.role.dto.ClubRoleResponse;
+import com.ryc.api.v1.role.dto.GetClubRoleApplicationResponse;
 import com.ryc.api.v1.role.repository.ClubRoleApplicationRepository;
 import com.ryc.api.v1.security.dto.CustomUserDetail;
 import com.ryc.api.v1.user.domain.User;
@@ -16,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -49,6 +54,32 @@ public class RoleServiceImpl implements RoleService {
         }
 
         return new ClubRoleResponse(clubRoleApplication.getRequestAt());
+    }
+
+    @Override
+    public List<GetClubRoleApplicationResponse> findClubRoleApplications(String clubId, ClubRole clubRole, RequestStatus status) {
+        List<ClubRoleApplication> clubRoleApplications;
+
+        //1. 필터링 조건에 맞게 권한요청 리스트 찾기
+        if(clubRole != ClubRole.ALL && status != RequestStatus.ALL){
+            clubRoleApplications =clubRoleApplicationRepository.findByClubIdAndRequestedRoleAndRequestStatus(clubId, clubRole, status);
+        } else if (clubRole == ClubRole.ALL && status != RequestStatus.ALL) {
+            clubRoleApplications = clubRoleApplicationRepository.findByClubIdAndRequestStatus(clubId, status);
+        } else if (clubRole != ClubRole.ALL && status == RequestStatus.ALL) {
+            clubRoleApplications = clubRoleApplicationRepository.findByClubIdAndRequestedRole(clubId, clubRole);
+        } else{
+            clubRoleApplications = clubRoleApplicationRepository.findByClubId(clubId);
+        }
+
+        List<GetClubRoleApplicationResponse> responses = new ArrayList<>();
+        for(ClubRoleApplication clubRoleApplication : clubRoleApplications){
+            String requestUsername = clubRoleApplication.getUser().getUsername();
+            GetClubRoleApplicationResponse getClubRoleApplicationResponse =
+                    clubRoleApplication.toGetClubRoleApplicationResponse(requestUsername);
+
+            responses.add(getClubRoleApplicationResponse);
+        }
+        return responses;
     }
 
 }

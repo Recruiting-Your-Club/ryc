@@ -2,6 +2,7 @@ package com.ryc.api.v1.role.domain;
 
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.common.constant.RequestStatus;
+import com.ryc.api.v1.role.dto.GetClubRoleApplicationResponse;
 import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,4 +48,12 @@ public class ClubRoleApplication {
 
     @UpdateTimestamp
     private LocalDateTime reviewedAt = LocalDateTime.now();;
+
+    public GetClubRoleApplicationResponse toGetClubRoleApplicationResponse(String username) {
+        return GetClubRoleApplicationResponse.builder()
+                .clubRoleApplicationId(this.id)
+                .username(username)
+                .requestAt(this.requestAt)
+                .build();
+    }
 }
