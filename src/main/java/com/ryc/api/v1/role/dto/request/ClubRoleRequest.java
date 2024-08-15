@@ -1,4 +1,4 @@
-package com.ryc.api.v1.role.dto;
+package com.ryc.api.v1.role.dto.request;
 
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.common.constant.RequestStatus;
