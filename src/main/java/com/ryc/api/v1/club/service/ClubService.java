@@ -1,8 +1,8 @@
 package com.ryc.api.v1.club.service;
 
-import com.ryc.api.v1.club.dto.CreateClubRequestDto;
-import com.ryc.api.v1.club.dto.CreateClubResponseDto;
+import com.ryc.api.v1.club.dto.request.CreateClubRequest;
+import com.ryc.api.v1.club.dto.response.CreateClubResponse;
 
 public interface ClubService {
-    CreateClubResponseDto createClub(CreateClubRequestDto body);
+    CreateClubResponse createClub(CreateClubRequest body);
 }

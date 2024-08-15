@@ -4,8 +4,8 @@ import com.ryc.api.v1.club.domain.Category;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.club.domain.ClubCategory;
 import com.ryc.api.v1.club.domain.ClubCategoryId;
-import com.ryc.api.v1.club.dto.CreateClubRequestDto;
-import com.ryc.api.v1.club.dto.CreateClubResponseDto;
+import com.ryc.api.v1.club.dto.request.CreateClubRequest;
+import com.ryc.api.v1.club.dto.response.CreateClubResponse;
 import com.ryc.api.v1.club.repository.CategoryRepository;
 import com.ryc.api.v1.club.repository.ClubCategoryRepository;
 import com.ryc.api.v1.club.repository.ClubRepository;
@@ -29,7 +29,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public CreateClubResponseDto createClub(CreateClubRequestDto body) {
+    public CreateClubResponse createClub(CreateClubRequest body) {
 
         if (clubRepository.existsByClubName(body.name())) {
             throw new DuplicateKeyException("This club Already Exist");
@@ -73,6 +73,6 @@ public class ClubServiceImpl implements ClubService {
 
         clubCategoryRepository.saveAll(clubCategories);
 
-        return new CreateClubResponseDto(club.getCreatedAt());
+        return new CreateClubResponse(club.getCreatedAt());
     }
 }
