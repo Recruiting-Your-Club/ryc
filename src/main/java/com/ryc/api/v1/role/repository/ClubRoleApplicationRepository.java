@@ -19,4 +19,7 @@ public interface ClubRoleApplicationRepository extends JpaRepository<ClubRoleApp
 
     List<ClubRoleApplication> findByClubIdAndRequestedRoleAndRequestStatus(String clubId, ClubRole requestedRole, RequestStatus requestStatus);
 
+    ClubRoleApplication findClubRoleApplicationById(String clubRoleApplicationId);
+
+
 }

@@ -2,9 +2,11 @@ package com.ryc.api.v1.role.controller;
 
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.role.domain.ClubRole;
-import com.ryc.api.v1.role.dto.ClubRoleRequest;
-import com.ryc.api.v1.role.dto.ClubRoleResponse;
-import com.ryc.api.v1.role.dto.GetClubRoleApplicationResponse;
+import com.ryc.api.v1.role.dto.request.ClubRoleRequest;
+import com.ryc.api.v1.role.dto.request.UpdateStatusRequest;
+import com.ryc.api.v1.role.dto.response.ClubRoleResponse;
+import com.ryc.api.v1.role.dto.response.GetClubRoleApplicationResponse;
+import com.ryc.api.v1.role.dto.response.UpdateStatusResponse;
 import com.ryc.api.v1.role.service.RoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -43,6 +45,16 @@ public class RoleController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("application/status")
+    public ResponseEntity<?> updateClubRoleApplicationStatus(@Valid @RequestBody UpdateStatusRequest body) {
+        try {
+            UpdateStatusResponse response = roleService.updateClubRoleApplicationStatus(body);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

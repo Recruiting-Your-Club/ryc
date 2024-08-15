@@ -2,7 +2,8 @@ package com.ryc.api.v1.role.domain;
 
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.common.constant.RequestStatus;
-import com.ryc.api.v1.role.dto.GetClubRoleApplicationResponse;
+import com.ryc.api.v1.role.dto.internal.UpdateStatusInformation;
+import com.ryc.api.v1.role.dto.response.GetClubRoleApplicationResponse;
 import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,5 +56,11 @@ public class ClubRoleApplication {
                 .username(username)
                 .requestAt(this.requestAt)
                 .build();
+    }
+
+    public void updateRequestStatus(UpdateStatusInformation updateStatusInformation) {
+        this.requestStatus = updateStatusInformation.requestStatus();
+        this.reviewedBy = updateStatusInformation.reviewedBy();
+        this.reviewedAt = LocalDateTime.now(); //dto로 넘기지 않고, 해당 메소드가 실행될 때 주입
     }
 }
