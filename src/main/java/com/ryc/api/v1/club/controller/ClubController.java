@@ -1,6 +1,7 @@
 package com.ryc.api.v1.club.controller;
 
 import com.ryc.api.v1.club.dto.request.CreateClubRequest;
+import com.ryc.api.v1.club.dto.response.ClubResponse;
 import com.ryc.api.v1.club.dto.response.CreateClubResponse;
 import com.ryc.api.v1.club.dto.response.ClubOverviewResponse;
 import com.ryc.api.v1.club.service.ClubService;
@@ -34,6 +35,16 @@ public class ClubController {
     public ResponseEntity<?> getAllClubsOverview() {
         try {
             List<ClubOverviewResponse> response = clubService.findAllClubsOverview();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getClub(@RequestParam(required = true) String clubId) {
+        try {
+            ClubResponse response = clubService.findClubById(clubId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());

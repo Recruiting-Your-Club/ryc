@@ -5,6 +5,7 @@ import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.club.domain.ClubCategory;
 import com.ryc.api.v1.club.domain.ClubCategoryId;
 import com.ryc.api.v1.club.dto.request.CreateClubRequest;
+import com.ryc.api.v1.club.dto.response.ClubResponse;
 import com.ryc.api.v1.club.dto.response.CreateClubResponse;
 import com.ryc.api.v1.club.dto.response.ClubOverviewResponse;
 import com.ryc.api.v1.club.repository.CategoryRepository;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,17 +85,13 @@ public class ClubServiceImpl implements ClubService {
     @Transactional
     public List<ClubOverviewResponse> findAllClubsOverview() {
         List<Club> clubs = clubRepository.findAllWithCategories();
-    
+
         if (clubs.isEmpty())
             throw new EntityNotFoundException("Club not found");
 
         List<ClubOverviewResponse> responses = new ArrayList<>();
         for (Club club : clubs) {
-            List<ClubCategory> clubCategories = club.getClubCategories();
-            List<String> categoryNames = new ArrayList<>();
-            for (ClubCategory clubCategory : clubCategories) {
-                categoryNames.add(clubCategory.getCategory().getName());
-            }
+            List<String> categoryNames = findCategoryNames(club);
 
             ClubOverviewResponse clubOverview = ClubOverviewResponse.builder()
                     .clubId(club.getId())
@@ -104,5 +103,26 @@ public class ClubServiceImpl implements ClubService {
         }
 
         return responses;
+    }
+
+    @Override
+    @Transactional
+    public ClubResponse findClubById(String clubId) {
+        Club club = clubRepository.findByIdWithCategories(clubId)
+                .orElseThrow(() -> new NoSuchElementException("Club not found"));
+
+        List<String> categoryNames = findCategoryNames(club);
+
+        return club.toClubResponse(categoryNames);
+    }
+
+    private List<String> findCategoryNames(Club club) {
+        List<ClubCategory> clubCategories = club.getClubCategories();
+
+        List<String> categoryNames = new ArrayList<>();
+        for (ClubCategory clubCategory : clubCategories) {
+            categoryNames.add(clubCategory.getCategory().getName());
+        }
+        return categoryNames;
     }
 }
