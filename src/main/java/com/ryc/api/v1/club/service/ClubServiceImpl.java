@@ -6,10 +6,12 @@ import com.ryc.api.v1.club.domain.ClubCategory;
 import com.ryc.api.v1.club.domain.ClubCategoryId;
 import com.ryc.api.v1.club.dto.request.CreateClubRequest;
 import com.ryc.api.v1.club.dto.response.CreateClubResponse;
+import com.ryc.api.v1.club.dto.response.ClubOverviewResponse;
 import com.ryc.api.v1.club.repository.CategoryRepository;
 import com.ryc.api.v1.club.repository.ClubCategoryRepository;
 import com.ryc.api.v1.club.repository.ClubRepository;
 import com.ryc.api.v1.security.dto.CustomUserDetail;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
@@ -74,5 +76,33 @@ public class ClubServiceImpl implements ClubService {
         clubCategoryRepository.saveAll(clubCategories);
 
         return new CreateClubResponse(club.getCreatedAt());
+    }
+
+    @Override
+    @Transactional
+    public List<ClubOverviewResponse> findAllClubsOverview() {
+        List<Club> clubs = clubRepository.findAllWithCategories();
+    
+        if (clubs.isEmpty())
+            throw new EntityNotFoundException("Club not found");
+
+        List<ClubOverviewResponse> responses = new ArrayList<>();
+        for (Club club : clubs) {
+            List<ClubCategory> clubCategories = club.getClubCategories();
+            List<String> categoryNames = new ArrayList<>();
+            for (ClubCategory clubCategory : clubCategories) {
+                categoryNames.add(clubCategory.getCategory().getName());
+            }
+
+            ClubOverviewResponse clubOverview = ClubOverviewResponse.builder()
+                    .clubId(club.getId())
+                    .thumbnailUrl(club.getClubThumbnailImageUrl())
+                    .categories(categoryNames)
+                    .build();
+
+            responses.add(clubOverview);
+        }
+
+        return responses;
     }
 }

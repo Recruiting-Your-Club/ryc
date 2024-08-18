@@ -2,6 +2,7 @@ package com.ryc.api.v1.club.controller;
 
 import com.ryc.api.v1.club.dto.request.CreateClubRequest;
 import com.ryc.api.v1.club.dto.response.CreateClubResponse;
+import com.ryc.api.v1.club.dto.response.ClubOverviewResponse;
 import com.ryc.api.v1.club.service.ClubService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/club")
@@ -22,8 +25,18 @@ public class ClubController {
         try {
             CreateClubResponse responseDto = clubService.createClub(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllClubsOverview() {
+        try {
+            List<ClubOverviewResponse> response = clubService.findAllClubsOverview();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
         }
     }
 }
