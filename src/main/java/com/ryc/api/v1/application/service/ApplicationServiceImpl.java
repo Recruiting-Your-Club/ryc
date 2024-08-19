@@ -3,6 +3,8 @@ package com.ryc.api.v1.application.service;
 import com.ryc.api.v1.application.domain.MultipleChoiceOption;
 import com.ryc.api.v1.application.domain.Question;
 import com.ryc.api.v1.application.domain.QuestionType;
+import com.ryc.api.v1.application.dto.internal.OptionDto;
+import com.ryc.api.v1.application.dto.internal.QuestionDto;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
 import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
 import com.ryc.api.v1.application.repository.MultipleChoiceOptionRepository;
@@ -36,8 +38,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(step.getStepType() != StepType.APPLICATION)
             throw new IllegalArgumentException("This steptype is not APPLICATION");
 
-        List<CreateQuestionRequest.QuestionDto> questions = body.questions();
-        for (CreateQuestionRequest.QuestionDto questionDto : questions) {
+        List<QuestionDto> questions = body.questions();
+        for (QuestionDto questionDto : questions) {
             //질문 데이터 저장
             Question question = questionDto.toQuestion(step);
             questionRepository.save(question);
@@ -52,8 +54,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         return new CreateQuestionResponse(LocalDateTime.now());
     }
 
-    private void saveMultiChoiceQuestionOption(List<CreateQuestionRequest.OptionDto> options, Question question) {
-        for (CreateQuestionRequest.OptionDto optionDto : options) {
+    private void saveMultiChoiceQuestionOption(List<OptionDto> options, Question question) {
+        for (OptionDto optionDto : options) {
             MultipleChoiceOption multipleChoiceOption = optionDto.toMultipleChoiceOption(question);
             multipleChoiceOptionRepository.save(multipleChoiceOption);
         }
