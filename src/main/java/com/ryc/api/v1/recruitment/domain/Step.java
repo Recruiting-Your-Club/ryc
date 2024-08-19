@@ -1,6 +1,6 @@
 package com.ryc.api.v1.recruitment.domain;
 
-import com.ryc.api.v1.application.domain.Question;
+import com.ryc.api.v1.application.domain.question.Question;
 import com.ryc.api.v1.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

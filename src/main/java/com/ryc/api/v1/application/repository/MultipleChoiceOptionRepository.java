@@ -1,6 +1,6 @@
 package com.ryc.api.v1.application.repository;
 
-import com.ryc.api.v1.application.domain.MultipleChoiceOption;
+import com.ryc.api.v1.application.domain.question.MultipleChoiceOption;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

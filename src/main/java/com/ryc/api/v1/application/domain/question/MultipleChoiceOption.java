@@ -1,4 +1,4 @@
-package com.ryc.api.v1.application.domain;
+package com.ryc.api.v1.application.domain.question;
 
 import com.ryc.api.v1.application.dto.internal.OptionDto;
 import jakarta.persistence.*;
@@ -27,6 +27,7 @@ public class MultipleChoiceOption {
 
     public OptionDto toOptionDto(){
         return OptionDto.builder()
+                .optionId(this.id)
                 .optionOrder(this.optionOrder)
                 .optionText(this.optionText)
                 .build();

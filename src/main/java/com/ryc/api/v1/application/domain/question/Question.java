@@ -1,4 +1,4 @@
-package com.ryc.api.v1.application.domain;
+package com.ryc.api.v1.application.domain.question;
 
 import com.ryc.api.v1.application.dto.internal.OptionDto;
 import com.ryc.api.v1.application.dto.internal.QuestionDto;
@@ -45,6 +45,7 @@ public class Question {
 
     public QuestionDto toQuestionDto(List<OptionDto> options) {
         return QuestionDto.builder()
+                .questionId(this.id)
                 .questionText(this.questionText)
                 .questionType(this.questionType)
                 .questionOrder(this.questionOrder)
