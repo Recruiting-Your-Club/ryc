@@ -1,9 +1,12 @@
 package com.ryc.api.v1.application.domain;
 
+import com.ryc.api.v1.application.dto.internal.OptionDto;
+import com.ryc.api.v1.application.dto.internal.QuestionDto;
 import com.ryc.api.v1.recruitment.domain.Step;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Question {
@@ -38,4 +42,13 @@ public class Question {
     //객관식인 경우에만 선지 데이터 조인
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MultipleChoiceOption> multipleChoiceOptions = new ArrayList<>();
+
+    public QuestionDto toQuestionDto(List<OptionDto> options) {
+        return QuestionDto.builder()
+                .questionText(this.questionText)
+                .questionType(this.questionType)
+                .questionOrder(this.questionOrder)
+                .options(options)
+                .build();
+    }
 }

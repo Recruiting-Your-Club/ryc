@@ -1,5 +1,6 @@
 package com.ryc.api.v1.application.domain;
 
+import com.ryc.api.v1.application.dto.internal.OptionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +24,11 @@ public class MultipleChoiceOption {
 
     @Column(columnDefinition = "TEXT")
     private String optionText;
+
+    public OptionDto toOptionDto(){
+        return OptionDto.builder()
+                .optionOrder(this.optionOrder)
+                .optionText(this.optionText)
+                .build();
+    }
 }

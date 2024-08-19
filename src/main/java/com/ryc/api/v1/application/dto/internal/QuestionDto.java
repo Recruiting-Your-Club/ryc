@@ -5,9 +5,11 @@ import com.ryc.api.v1.application.domain.QuestionType;
 import com.ryc.api.v1.recruitment.domain.Step;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record QuestionDto(@NotEmpty(message = "questionText shouldn't be empty") String questionText,
                           @NotNull(message = "questionType shouldn't be null") QuestionType questionType,
                           @NotNull(message = "questionOrder shouldn't be null") Integer questionOrder,
