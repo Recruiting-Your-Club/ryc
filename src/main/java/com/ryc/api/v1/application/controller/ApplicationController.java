@@ -1,6 +1,8 @@
 package com.ryc.api.v1.application.controller;
 
+import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
+import com.ryc.api.v1.application.dto.response.CreateApplicationResponse;
 import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
 import com.ryc.api.v1.application.dto.response.GetQuestionResponse;
 import com.ryc.api.v1.application.service.ApplicationService;
@@ -37,4 +39,15 @@ public class ApplicationController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
         }
     }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplicationRequest body) {
+        try {
+            CreateApplicationResponse response = applicationService.createApplication(body);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
 }

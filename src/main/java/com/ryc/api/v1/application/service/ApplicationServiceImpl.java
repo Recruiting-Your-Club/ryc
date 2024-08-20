@@ -1,15 +1,24 @@
 package com.ryc.api.v1.application.service;
 
-import com.ryc.api.v1.application.domain.MultipleChoiceOption;
-import com.ryc.api.v1.application.domain.Question;
-import com.ryc.api.v1.application.domain.QuestionType;
+import com.ryc.api.v1.applicant.domain.Applicant;
+import com.ryc.api.v1.applicant.repository.ApplicantRepository;
+import com.ryc.api.v1.application.domain.answer.Answer;
+import com.ryc.api.v1.application.domain.answer.Application;
+import com.ryc.api.v1.application.domain.question.MultipleChoiceOption;
+import com.ryc.api.v1.application.domain.question.Question;
+import com.ryc.api.v1.application.domain.question.QuestionType;
 import com.ryc.api.v1.application.dto.internal.OptionDto;
 import com.ryc.api.v1.application.dto.internal.QuestionDto;
+import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
+import com.ryc.api.v1.application.dto.response.CreateApplicationResponse;
 import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
 import com.ryc.api.v1.application.dto.response.GetQuestionResponse;
+import com.ryc.api.v1.application.repository.AnswerRepository;
+import com.ryc.api.v1.application.repository.ApplicationRepository;
 import com.ryc.api.v1.application.repository.MultipleChoiceOptionRepository;
 import com.ryc.api.v1.application.repository.QuestionRepository;
+import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
 import com.ryc.api.v1.recruitment.repository.StepRepository;
@@ -28,6 +37,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final StepRepository stepRepository;
     private final QuestionRepository questionRepository;
     private final MultipleChoiceOptionRepository multipleChoiceOptionRepository;
+    private final ApplicantRepository applicantRepository;
+    private final AnswerRepository answerRepository;
+    private final ApplicationRepository applicationRepository;
+
 
     @Override
     @Transactional
@@ -74,6 +87,59 @@ public class ApplicationServiceImpl implements ApplicationService {
         SortUtils.sortList(questionDtos, Comparator.comparing(QuestionDto::questionOrder));
 
         return new GetQuestionResponse(stepName, questionDtos);
+    }
+
+    @Override
+    @Transactional
+    public CreateApplicationResponse createApplication(CreateApplicationRequest body) {
+        // 1. 전형에 맞는 동아리 찾기
+        Step step = stepRepository.findById(body.stepId())
+                .orElseThrow(() -> new NoSuchElementException("Step not found"));
+        Club club = step.getRecruitment().getClub();
+
+        //2. 지원자 생성
+        Applicant applicant = Applicant.builder()
+                .club(club)
+                .build(); //TODO: 지원자 생성시 clubID 어떻게 찾을지 설정
+        applicantRepository.save(applicant);
+
+        //3. 지원서 생성
+        Application application = Application.builder()
+                .applicant(applicant)
+                .step(step)
+                .build();
+        applicationRepository.save(application);
+
+        //4. 질문 응답 생성
+        List<CreateApplicationRequest.QuestionAnswerDto> answers = body.answers();
+        for (CreateApplicationRequest.QuestionAnswerDto answerDto : answers) {
+            Question question = questionRepository.findById(answerDto.questionId())
+                    .orElseThrow(() -> new NoSuchElementException("Question not found"));
+
+            if(answerDto.optionAnswerId() == null && answerDto.subjectiveAnswer() == null)
+                throw new IllegalArgumentException("answer should not be null");
+
+            if(question.getQuestionType() == QuestionType.MULTIPLE_CHOICE){
+                MultipleChoiceOption multipleChoiceOption = multipleChoiceOptionRepository.findById(answerDto.optionAnswerId())
+                        .orElseThrow(() -> new NoSuchElementException("option answer not found"));
+                Answer answer = Answer.builder()
+                        .application(application)
+                        .question(question)
+                        .answerByMultipleChoice(multipleChoiceOption)
+                        .build();
+                 answerRepository.save(answer);
+            }
+            else if(question.getQuestionType() == QuestionType.SUBJECTIVE){
+                Answer answer = Answer.builder()
+                        .application(application)
+                        .question(question)
+                        .answerBySubjective(answerDto.subjectiveAnswer())
+                        .build();
+                answerRepository.save(answer);
+            }
+        }
+
+        return new CreateApplicationResponse(application.getCreatedAt());
     }
 
     private void saveMultiChoiceQuestionOption(List<OptionDto> options, Question question) {
