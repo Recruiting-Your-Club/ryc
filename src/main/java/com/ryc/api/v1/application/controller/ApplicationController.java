@@ -4,6 +4,7 @@ import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
 import com.ryc.api.v1.application.dto.response.CreateApplicationResponse;
 import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
+import com.ryc.api.v1.application.dto.response.GetApplicationResponse;
 import com.ryc.api.v1.application.dto.response.GetQuestionResponse;
 import com.ryc.api.v1.application.service.ApplicationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,4 +51,14 @@ public class ApplicationController {
         }
     }
 
+    @GetMapping("/")
+    public ResponseEntity<?> getApplication(@RequestParam(required = true) String stepId,
+                                            @RequestParam(required = true) String applicantId) {
+        try {
+            GetApplicationResponse response = applicationService.findApplicationByApplicantId(stepId, applicantId);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+        }
+    }
 }

@@ -13,6 +13,7 @@ import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
 import com.ryc.api.v1.application.dto.response.CreateApplicationResponse;
 import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
+import com.ryc.api.v1.application.dto.response.GetApplicationResponse;
 import com.ryc.api.v1.application.dto.response.GetQuestionResponse;
 import com.ryc.api.v1.application.repository.AnswerRepository;
 import com.ryc.api.v1.application.repository.ApplicationRepository;
@@ -116,10 +117,10 @@ public class ApplicationServiceImpl implements ApplicationService {
             Question question = questionRepository.findById(answerDto.questionId())
                     .orElseThrow(() -> new NoSuchElementException("Question not found"));
 
-            if(answerDto.optionAnswerId() == null && answerDto.subjectiveAnswer() == null)
+            if (answerDto.optionAnswerId() == null && answerDto.subjectiveAnswer() == null)
                 throw new IllegalArgumentException("answer should not be null");
 
-            if(question.getQuestionType() == QuestionType.MULTIPLE_CHOICE){
+            if (question.getQuestionType() == QuestionType.MULTIPLE_CHOICE) {
                 MultipleChoiceOption multipleChoiceOption = multipleChoiceOptionRepository.findById(answerDto.optionAnswerId())
                         .orElseThrow(() -> new NoSuchElementException("option answer not found"));
                 Answer answer = Answer.builder()
@@ -127,9 +128,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .question(question)
                         .answerByMultipleChoice(multipleChoiceOption)
                         .build();
-                 answerRepository.save(answer);
-            }
-            else if(question.getQuestionType() == QuestionType.SUBJECTIVE){
+                answerRepository.save(answer);
+            } else if (question.getQuestionType() == QuestionType.SUBJECTIVE) {
                 Answer answer = Answer.builder()
                         .application(application)
                         .question(question)
@@ -140,6 +140,46 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         return new CreateApplicationResponse(application.getCreatedAt());
+    }
+
+    @Override
+    @Transactional
+    public GetApplicationResponse findApplicationByApplicantId(String stepId, String applicantId) {
+        //1. stepId(해당 전형 하위 step)와 applicantId(지원자id)로 지원서 찾기
+        Applicant applicant = applicantRepository.findById(applicantId)
+                .orElseThrow(() -> new NoSuchElementException("Applicant not found"));
+        Step step = stepRepository.findById(stepId)
+                .orElseThrow(() -> new NoSuchElementException("Step not found"));
+
+        Application application = applicationRepository.findByApplicantAndStep(applicant, step)
+                .orElseThrow(() -> new NoSuchElementException("Application not found"));
+
+        //2. 질문 및 답변값 DTO 생성
+        List<GetApplicationResponse.QuestionAnswerDto> questionAnswerDtos = new ArrayList<>();
+        List<Answer> answers = answerRepository.findAllByApplication(application);
+        for (Answer answer : answers) {
+            Question question = questionRepository.findById(answer.getQuestion().getId())
+                    .orElseThrow(() -> new NoSuchElementException("Question not found"));
+
+            String answerText = getAnswerText(question, answer);
+            GetApplicationResponse.QuestionAnswerDto questionAnswerDto = GetApplicationResponse.QuestionAnswerDto.builder()
+                    .questionId(question.getId())
+                    .questionOrder(question.getQuestionOrder())
+                    .questionText(question.getQuestionText())
+                    .questionType(question.getQuestionType())
+                    .answer(answerText)
+                    .build();
+
+            questionAnswerDtos.add(questionAnswerDto);
+        }
+        //2-1. 질문 순서에 맞게 정렬
+        SortUtils.sortList(questionAnswerDtos, Comparator.comparing(GetApplicationResponse.QuestionAnswerDto::questionOrder));
+
+        //3. 전체 지원서 반환값 생성
+        return GetApplicationResponse.builder()
+                .applicantId(applicant.getId())
+                .questionAnswerDtos(questionAnswerDtos)
+                .build();
     }
 
     private void saveMultiChoiceQuestionOption(List<OptionDto> options, Question question) {
@@ -161,4 +201,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         SortUtils.sortList(optionDtos, Comparator.comparing(OptionDto::optionOrder));
         return optionDtos;
     }
+
+    private String getAnswerText(Question question, Answer answer) {
+        if (question.getQuestionType() == QuestionType.MULTIPLE_CHOICE) {
+            return answer.getAnswerByMultipleChoice().getOptionText();
+        }
+        return answer.getAnswerBySubjective();
+    }
+
 }

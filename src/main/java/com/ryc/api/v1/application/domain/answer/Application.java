@@ -1,6 +1,7 @@
 package com.ryc.api.v1.application.domain.answer;
 
 import com.ryc.api.v1.applicant.domain.Applicant;
+import com.ryc.api.v1.application.dto.response.GetApplicationResponse;
 import com.ryc.api.v1.common.entity.BaseEntity;
 import com.ryc.api.v1.recruitment.domain.Step;
 import jakarta.persistence.*;
