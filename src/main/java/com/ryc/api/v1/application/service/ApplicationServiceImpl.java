@@ -113,6 +113,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         //4. 질문 응답 생성
         List<CreateApplicationRequest.QuestionAnswerDto> answers = body.answers();
+        if (answers.isEmpty())
+            throw new IllegalArgumentException("Answers cannot be empty");
+
         for (CreateApplicationRequest.QuestionAnswerDto answerDto : answers) {
             Question question = questionRepository.findById(answerDto.questionId())
                     .orElseThrow(() -> new NoSuchElementException("Question not found"));
@@ -157,6 +160,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         //2. 질문 및 답변값 DTO 생성
         List<GetApplicationResponse.QuestionAnswerDto> questionAnswerDtos = new ArrayList<>();
         List<Answer> answers = answerRepository.findAllByApplication(application);
+        if (answers.isEmpty())
+            throw new IllegalArgumentException("Answers cannot be empty");
+
         for (Answer answer : answers) {
             Question question = questionRepository.findById(answer.getQuestion().getId())
                     .orElseThrow(() -> new NoSuchElementException("Question not found"));
