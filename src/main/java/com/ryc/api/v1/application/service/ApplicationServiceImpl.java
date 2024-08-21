@@ -11,10 +11,8 @@ import com.ryc.api.v1.application.dto.internal.OptionDto;
 import com.ryc.api.v1.application.dto.internal.QuestionDto;
 import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
-import com.ryc.api.v1.application.dto.response.CreateApplicationResponse;
-import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
-import com.ryc.api.v1.application.dto.response.GetApplicationResponse;
-import com.ryc.api.v1.application.dto.response.GetQuestionResponse;
+import com.ryc.api.v1.application.dto.request.UpdateAnswerAccessibilityRequest;
+import com.ryc.api.v1.application.dto.response.*;
 import com.ryc.api.v1.application.repository.AnswerRepository;
 import com.ryc.api.v1.application.repository.ApplicationRepository;
 import com.ryc.api.v1.application.repository.MultipleChoiceOptionRepository;
@@ -186,6 +184,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .applicantId(applicant.getId())
                 .questionAnswerDtos(questionAnswerDtos)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public UpdateAnswerAccessibilityResponse updateAnswerAccessibility(String questionId, UpdateAnswerAccessibilityRequest body) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new NoSuchElementException("Question not found"));
+        question.updateQuestion(body);
+        questionRepository.flush();
+        return new UpdateAnswerAccessibilityResponse(question.getUpdatedAt());
     }
 
     private void saveMultiChoiceQuestionOption(List<OptionDto> options, Question question) {

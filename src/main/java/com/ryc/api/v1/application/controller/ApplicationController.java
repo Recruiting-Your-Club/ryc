@@ -2,10 +2,8 @@ package com.ryc.api.v1.application.controller;
 
 import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
 import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
-import com.ryc.api.v1.application.dto.response.CreateApplicationResponse;
-import com.ryc.api.v1.application.dto.response.CreateQuestionResponse;
-import com.ryc.api.v1.application.dto.response.GetApplicationResponse;
-import com.ryc.api.v1.application.dto.response.GetQuestionResponse;
+import com.ryc.api.v1.application.dto.request.UpdateAnswerAccessibilityRequest;
+import com.ryc.api.v1.application.dto.response.*;
 import com.ryc.api.v1.application.service.ApplicationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -59,6 +57,17 @@ public class ApplicationController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/questions/{questionId}")
+    public ResponseEntity<?> updateAnswerAccessibility(@PathVariable String questionId,
+                                                       @RequestBody @Valid UpdateAnswerAccessibilityRequest body) {
+        try {
+            UpdateAnswerAccessibilityResponse response = applicationService.updateAnswerAccessibility(questionId,body);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

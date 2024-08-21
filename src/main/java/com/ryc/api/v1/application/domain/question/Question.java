@@ -2,6 +2,8 @@ package com.ryc.api.v1.application.domain.question;
 
 import com.ryc.api.v1.application.dto.internal.OptionDto;
 import com.ryc.api.v1.application.dto.internal.QuestionDto;
+import com.ryc.api.v1.application.dto.request.UpdateAnswerAccessibilityRequest;
+import com.ryc.api.v1.common.entity.BaseEntity;
 import com.ryc.api.v1.recruitment.domain.Step;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Question {
+public class Question extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "question_id")
@@ -52,4 +54,9 @@ public class Question {
                 .options(options)
                 .build();
     }
+
+    public void updateQuestion(UpdateAnswerAccessibilityRequest request) {
+        this.isAccessible = request.isAccessible();
+    }
 }
+
