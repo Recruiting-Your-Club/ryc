@@ -21,8 +21,16 @@ import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
 import com.ryc.api.v1.recruitment.repository.StepRepository;
+import com.ryc.api.v1.role.domain.ClubRole;
+import com.ryc.api.v1.role.domain.UserClubRole;
+import com.ryc.api.v1.role.repository.UserClubRoleRepository;
+import com.ryc.api.v1.security.dto.CustomUserDetail;
+import com.ryc.api.v1.user.domain.User;
+import com.ryc.api.v1.user.repository.UserRepository;
 import com.ryc.api.v1.util.SortUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +47,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicantRepository applicantRepository;
     private final AnswerRepository answerRepository;
     private final ApplicationRepository applicationRepository;
+    private final UserClubRoleRepository userClubRoleRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -146,6 +156,21 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     @Transactional
     public GetApplicationResponse findApplicationByApplicantId(String stepId, String applicantId) {
+        //0. 해당 접근자가, 회장인지 동아리원인지 판단.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
+
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+
+        Club club = stepRepository.findById(stepId)
+                .orElseThrow(() -> new NoSuchElementException("Step not found"))
+                .getRecruitment().getClub();
+
+        UserClubRole userClubRole = userClubRoleRepository.findByClubAndUser(club, user)
+                .orElseThrow(() -> new NoSuchElementException("User is not in Club"));
+
+
         //1. stepId(해당 전형 하위 step)와 applicantId(지원자id)로 지원서 찾기
         Applicant applicant = applicantRepository.findById(applicantId)
                 .orElseThrow(() -> new NoSuchElementException("Applicant not found"));
@@ -164,6 +189,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         for (Answer answer : answers) {
             Question question = questionRepository.findById(answer.getQuestion().getId())
                     .orElseThrow(() -> new NoSuchElementException("Question not found"));
+
+            //동아리원 접근 제한 응답 확인
+            if(userClubRole.getClubRole() == ClubRole.MEMBER && !question.isAccessible())
+                continue;
 
             String answerText = getAnswerText(question, answer);
             GetApplicationResponse.QuestionAnswerDto questionAnswerDto = GetApplicationResponse.QuestionAnswerDto.builder()
@@ -222,5 +251,4 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return answer.getAnswerBySubjective();
     }
-
 }
