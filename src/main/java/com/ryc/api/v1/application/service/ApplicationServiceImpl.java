@@ -4,19 +4,19 @@ import com.ryc.api.v1.applicant.domain.Applicant;
 import com.ryc.api.v1.applicant.repository.ApplicantRepository;
 import com.ryc.api.v1.application.domain.answer.Answer;
 import com.ryc.api.v1.application.domain.answer.Application;
+import com.ryc.api.v1.application.domain.metadata.ApplicationDefaultField;
+import com.ryc.api.v1.application.domain.metadata.Field;
 import com.ryc.api.v1.application.domain.question.MultipleChoiceOption;
 import com.ryc.api.v1.application.domain.question.Question;
 import com.ryc.api.v1.application.domain.question.QuestionType;
 import com.ryc.api.v1.application.dto.internal.OptionDto;
 import com.ryc.api.v1.application.dto.internal.QuestionDto;
+import com.ryc.api.v1.application.dto.internal.RequiredFieldDto;
 import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
-import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
+import com.ryc.api.v1.application.dto.request.CreateApplicationFormRequest;
 import com.ryc.api.v1.application.dto.request.UpdateAnswerAccessibilityRequest;
 import com.ryc.api.v1.application.dto.response.*;
-import com.ryc.api.v1.application.repository.AnswerRepository;
-import com.ryc.api.v1.application.repository.ApplicationRepository;
-import com.ryc.api.v1.application.repository.MultipleChoiceOptionRepository;
-import com.ryc.api.v1.application.repository.QuestionRepository;
+import com.ryc.api.v1.application.repository.*;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
@@ -42,6 +42,7 @@ import java.util.*;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final StepRepository stepRepository;
+    private final ApplicationDefaultFieldRepository applicationDefaultFieldRepository;
     private final QuestionRepository questionRepository;
     private final MultipleChoiceOptionRepository multipleChoiceOptionRepository;
     private final ApplicantRepository applicantRepository;
@@ -50,17 +51,29 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final UserClubRoleRepository userClubRoleRepository;
     private final UserRepository userRepository;
 
-
     @Override
     @Transactional
-    public CreateQuestionResponse createQuestions(CreateQuestionRequest body) {
+    public CreateApplicationFormResponse createApplicationForm(CreateApplicationFormRequest body) {
+        //1. 해당 전형단계 칮기
         Step step = stepRepository.findById(body.stepId())
                 .orElseThrow(() -> new NoSuchElementException("Step not found"));
 
-        //해당 stepType이 APPLICATION 인지 확인
+        //2. 해당 stepType이 APPLICATION 인지 확인
         if (step.getStepType() != StepType.APPLICATION)
             throw new IllegalArgumentException("This steptype is not APPLICATION");
 
+        //3. 지원서 필수 필드 설정
+        List<Field> requiredFields = body.requiredFields();
+        for (Field field : requiredFields) {
+            ApplicationDefaultField applicationDefaultField = ApplicationDefaultField.builder()
+                    .step(step)
+                    .field(field)
+                    .isRequired(true)
+                    .build();
+            applicationDefaultFieldRepository.save(applicationDefaultField);
+        }
+
+        //4. 지원서 질문 생성
         List<QuestionDto> questions = body.questions();
         for (QuestionDto questionDto : questions) {
             //질문 데이터 저장
@@ -74,18 +87,25 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         // TODO: 생성시간 반영하여 응답 수정하기
-        return new CreateQuestionResponse(LocalDateTime.now());
+        return new CreateApplicationFormResponse(LocalDateTime.now());
     }
 
     @Override
     @Transactional
-    public GetQuestionResponse getQuestions(String stepId) {
+    public GetApplicationFormResponse getApplicationForm(String stepId) {
         // 1.지원서 이름 불러오기
         Step step = stepRepository.findById(stepId)
                 .orElseThrow(() -> new NoSuchElementException("Step not found"));
         String stepName = step.getStepName();
 
-        //2. 지원서 전체 문항 불러오기
+        //2. 지원서 필수 응답항목 불러오기
+        List<ApplicationDefaultField> applicationDefaultFields = applicationDefaultFieldRepository.findByStep(step);
+        List<Field> requiredFields = new ArrayList<>();
+        for (ApplicationDefaultField applicationDefaultField : applicationDefaultFields) {
+            requiredFields.add(applicationDefaultField.getField());
+        }
+
+        //3. 지원서 전체 문항 불러오기
         List<QuestionDto> questionDtos = new ArrayList<>();
         List<Question> questions = step.getQuestions();
         for (Question question : questions) {
@@ -95,7 +115,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         SortUtils.sortList(questionDtos, Comparator.comparing(QuestionDto::questionOrder));
 
-        return new GetQuestionResponse(stepName, questionDtos);
+        return new GetApplicationFormResponse(stepName, requiredFields, questionDtos);
     }
 
     @Override
@@ -106,10 +126,13 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .orElseThrow(() -> new NoSuchElementException("Step not found"));
         Club club = step.getRecruitment().getClub();
 
-        //2. 지원자 생성
-        Applicant applicant = Applicant.builder()
+        //2. 지원자 생성 및 필수 정보 저장
+        final Applicant applicant = Applicant.builder()
                 .club(club)
-                .build(); //TODO: 지원자 생성시 clubID 어떻게 찾을지 설정
+                .build();
+        applicant.setRequiredFields(body.requiredFieldAnswers());
+
+        //TODO: 지원자 생성시 clubID 어떻게 찾을지 설정
         applicantRepository.save(applicant);
 
         //3. 지원서 생성
@@ -180,7 +203,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = applicationRepository.findByApplicantAndStep(applicant, step)
                 .orElseThrow(() -> new NoSuchElementException("Application not found"));
 
-        //2. 질문 및 답변값 DTO 생성
+        //2-1. 회장에게만, 필수 응답값(지원자정보) DTO생성
+        RequiredFieldDto requiredFieldAnswerDto = applicant.toRequiredFieldDto();
+
+        //2-2. 질문 및 답변값 DTO 생성
         List<GetApplicationResponse.QuestionAnswerDto> questionAnswerDtos = new ArrayList<>();
         List<Answer> answers = answerRepository.findAllByApplication(application);
         if (answers.isEmpty())
@@ -191,7 +217,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .orElseThrow(() -> new NoSuchElementException("Question not found"));
 
             //동아리원 접근 제한 응답 확인
-            if(userClubRole.getClubRole() == ClubRole.MEMBER && !question.isAccessible())
+            if (userClubRole.getClubRole() == ClubRole.MEMBER && !question.isAccessible())
                 continue;
 
             String answerText = getAnswerText(question, answer);
@@ -211,6 +237,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         //3. 전체 지원서 반환값 생성
         return GetApplicationResponse.builder()
                 .applicantId(applicant.getId())
+                .requiredFieldAnswerDto(userClubRole.getClubRole() == ClubRole.PRESIDENT ? requiredFieldAnswerDto : null)
                 .questionAnswerDtos(questionAnswerDtos)
                 .build();
     }

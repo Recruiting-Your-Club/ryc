@@ -1,7 +1,7 @@
 package com.ryc.api.v1.application.controller;
 
 import com.ryc.api.v1.application.dto.request.CreateApplicationRequest;
-import com.ryc.api.v1.application.dto.request.CreateQuestionRequest;
+import com.ryc.api.v1.application.dto.request.CreateApplicationFormRequest;
 import com.ryc.api.v1.application.dto.request.UpdateAnswerAccessibilityRequest;
 import com.ryc.api.v1.application.dto.response.*;
 import com.ryc.api.v1.application.service.ApplicationService;
@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.*;
 public class ApplicationController {
     private final ApplicationService applicationService;
 
-    @PostMapping("/questions")
-    public ResponseEntity<?> createQuestion(@Valid @RequestBody CreateQuestionRequest body) {
+    @PostMapping("/form")
+    public ResponseEntity<?> createApplicationForm(@Valid @RequestBody CreateApplicationFormRequest body) {
         try {
-            CreateQuestionResponse response = applicationService.createQuestions(body);
+            CreateApplicationFormResponse response = applicationService.createApplicationForm(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
-    @GetMapping("/questions")
-    public ResponseEntity<?> getApplicationQuestions(@RequestParam(required = true) String stepId) {
+    @GetMapping("/form")
+    public ResponseEntity<?> getApplicationForm(@RequestParam(required = true) String stepId) {
         try {
-            GetQuestionResponse response = applicationService.getQuestions(stepId);
+            GetApplicationFormResponse response = applicationService.getApplicationForm(stepId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplicationRequest body) {
         try {
             CreateApplicationResponse response = applicationService.createApplication(body);
@@ -56,7 +56,7 @@ public class ApplicationController {
             GetApplicationResponse response = applicationService.findApplicationByApplicantId(stepId, applicantId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
