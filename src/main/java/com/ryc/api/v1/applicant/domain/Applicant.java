@@ -1,5 +1,6 @@
 package com.ryc.api.v1.applicant.domain;
 
+import com.ryc.api.v1.applicant.dto.internal.ApplicantDto;
 import com.ryc.api.v1.application.dto.internal.RequiredFieldDto;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.common.entity.BaseEntity;
@@ -49,6 +50,16 @@ public class Applicant extends BaseEntity {
 
     public RequiredFieldDto toRequiredFieldDto() {
         return RequiredFieldDto.builder()
+                .name(this.name)
+                .email(this.email)
+                .phone(this.phone)
+                .studentId(this.studentId)
+                .image(this.imageUrl)
+                .build();
+    }
+
+    public ApplicantDto toApplicantDto() {
+        return ApplicantDto.builder()
                 .name(this.name)
                 .email(this.email)
                 .phone(this.phone)
