@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                                 request
                                         .requestMatchers("/").permitAll() // health check
                                         .requestMatchers("/api/v1/auth/*").permitAll()
-                                        .requestMatchers(HttpMethod.POST,"/api/v1/application").permitAll()
+                                        .requestMatchers(HttpMethod.POST,"/api/v1/application/").permitAll()
                                         .requestMatchers(HttpMethod.GET,"/api/v1/application/form").permitAll()
                                         .requestMatchers(
                                                 "/swagger-ui/*",

@@ -39,7 +39,7 @@ public class ApplicationController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplicationRequest body) {
         try {
             CreateApplicationResponse response = applicationService.createApplication(body);
