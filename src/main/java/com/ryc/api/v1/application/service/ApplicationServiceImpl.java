@@ -20,6 +20,7 @@ import com.ryc.api.v1.application.repository.*;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
+import com.ryc.api.v1.recruitment.repository.RecruitmentRepository;
 import com.ryc.api.v1.recruitment.repository.StepRepository;
 import com.ryc.api.v1.role.domain.ClubRole;
 import com.ryc.api.v1.role.domain.UserClubRole;
@@ -128,6 +129,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         //2. 지원자 생성 및 필수 정보 저장
         final Applicant applicant = Applicant.builder()
+                .recruitment(step.getRecruitment())
                 .club(club)
                 .build();
         applicant.setRequiredFields(body.requiredFieldAnswers());

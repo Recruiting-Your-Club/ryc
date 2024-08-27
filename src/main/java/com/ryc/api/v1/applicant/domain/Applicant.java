@@ -3,6 +3,7 @@ package com.ryc.api.v1.applicant.domain;
 import com.ryc.api.v1.application.dto.internal.RequiredFieldDto;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.common.entity.BaseEntity;
+import com.ryc.api.v1.recruitment.domain.Recruitment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,10 @@ public class Applicant extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "applicant_id")
     private String id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recruitment_id")
+    private Recruitment recruitment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
