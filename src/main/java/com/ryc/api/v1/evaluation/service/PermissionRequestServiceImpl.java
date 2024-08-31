@@ -3,6 +3,7 @@ package com.ryc.api.v1.evaluation.service;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.evaluation.domain.PermissionApplication;
 import com.ryc.api.v1.evaluation.dto.request.PermissionRequest;
+import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.PermissionResponse;
 import com.ryc.api.v1.evaluation.repository.PermissionRequestRepository;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
@@ -19,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -65,5 +68,29 @@ public class PermissionRequestServiceImpl implements PermissionRequestService{
         permissionRequestRepository.saveAndFlush(permissionApplication);
 
         return new PermissionResponse(permissionApplication.getRequestAt());
+    }
+
+    @Override
+    @Transactional
+    public List<GetPermissionApplicationResponse> findPermissionApplications(String recruitmentId, RequestStatus status) {
+        List<PermissionApplication> permissionApplications;
+
+        //TODO: 동아리 회장인지 확인하기
+        //1. 필터링 조건에 맞게 평가권한 요청 리스트 찾기
+        if(status == RequestStatus.ALL)
+            permissionApplications = permissionRequestRepository.findByRecruitmentId(recruitmentId);
+        else
+            permissionApplications = permissionRequestRepository.findByRecruitmentIdAndRequestStatus(recruitmentId, status);
+
+        //2. 요청 리스트 반환
+        List<GetPermissionApplicationResponse> responses = new ArrayList<>();
+        for(PermissionApplication permissionApplication : permissionApplications){
+            GetPermissionApplicationResponse getPermissionApplicationResponse =
+                    permissionApplication.toGetPermissionApplicationResponse();
+
+            responses.add(getPermissionApplicationResponse);
+        }
+
+        return responses;
     }
 }

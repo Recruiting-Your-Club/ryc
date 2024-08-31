@@ -1,6 +1,7 @@
 package com.ryc.api.v1.evaluation.domain;
 
 import com.ryc.api.v1.common.constant.RequestStatus;
+import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
 import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
@@ -45,4 +46,13 @@ public class PermissionApplication {
 
     @UpdateTimestamp
     private LocalDateTime reviewedAt;
+
+    public GetPermissionApplicationResponse toGetPermissionApplicationResponse(){
+        return GetPermissionApplicationResponse.builder()
+                .permissionApplicationId(this.id)
+                .username(this.user.getUsername())
+                .requestStatus(this.requestStatus)
+                .requestAt(this.requestAt)
+                .build();
+    }
 }
