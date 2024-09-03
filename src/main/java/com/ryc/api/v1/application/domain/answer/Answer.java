@@ -37,6 +37,4 @@ public class Answer extends BaseEntity {
 
     @Builder.Default
     private boolean deleted = false;
-
-
 }
