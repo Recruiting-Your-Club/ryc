@@ -3,6 +3,7 @@ package com.ryc.api.v1.evaluation.domain;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
+import com.ryc.api.v1.role.dto.internal.UpdateStatusInformation;
 import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,5 +55,11 @@ public class PermissionApplication {
                 .requestStatus(this.requestStatus)
                 .requestAt(this.requestAt)
                 .build();
+    }
+
+    public void updateRequestStatus(UpdateStatusInformation updateStatusInformation) {
+        this.requestStatus = updateStatusInformation.requestStatus();
+        this.reviewedBy = updateStatusInformation.reviewedBy();
+        this.reviewedAt = LocalDateTime.now();
     }
 }

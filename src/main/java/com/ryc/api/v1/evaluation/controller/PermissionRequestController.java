@@ -2,14 +2,13 @@ package com.ryc.api.v1.evaluation.controller;
 
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.evaluation.dto.request.PermissionRequest;
+import com.ryc.api.v1.evaluation.dto.request.UpdatePermissionStatusRequest;
 import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.PermissionResponse;
+import com.ryc.api.v1.evaluation.dto.response.UpdatePermissionStatusResponse;
 import com.ryc.api.v1.evaluation.service.PermissionRequestService;
-import com.ryc.api.v1.role.domain.ClubRole;
-import com.ryc.api.v1.role.dto.request.ClubRoleRequest;
-import com.ryc.api.v1.role.dto.response.ClubRoleResponse;
-import com.ryc.api.v1.role.dto.response.GetClubRoleApplicationResponse;
-import com.ryc.api.v1.role.service.RoleService;
+import com.ryc.api.v1.role.dto.request.UpdateStatusRequest;
+import com.ryc.api.v1.role.dto.response.UpdateStatusResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -49,5 +48,14 @@ public class PermissionRequestController {
         }
     }
 
+    @PostMapping("/status")
+    public ResponseEntity<?> updateEvaluationPermissionStatus(@Valid @RequestBody UpdatePermissionStatusRequest body) {
+        try {
+            UpdatePermissionStatusResponse response = permissionRequestService.updatePermissionApplicationStatus(body);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
 }
