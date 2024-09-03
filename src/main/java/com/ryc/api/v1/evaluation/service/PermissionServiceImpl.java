@@ -3,10 +3,10 @@ package com.ryc.api.v1.evaluation.service;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.evaluation.domain.Permission;
 import com.ryc.api.v1.evaluation.domain.PermissionApplication;
-import com.ryc.api.v1.evaluation.dto.request.PermissionRequest;
+import com.ryc.api.v1.evaluation.dto.request.CreatePermissionApplicationRequest;
 import com.ryc.api.v1.evaluation.dto.request.UpdatePermissionStatusRequest;
 import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
-import com.ryc.api.v1.evaluation.dto.response.PermissionResponse;
+import com.ryc.api.v1.evaluation.dto.response.CreatePermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.UpdatePermissionStatusResponse;
 import com.ryc.api.v1.evaluation.repository.PermissionRepository;
 import com.ryc.api.v1.evaluation.repository.PermissionRequestRepository;
@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class PermissionRequestServiceImpl implements PermissionRequestService {
+public class PermissionServiceImpl implements PermissionService {
 
     private final UserRepository userRepository;
     private final RecruitmentRepository recruitmentRepository;
@@ -42,7 +42,7 @@ public class PermissionRequestServiceImpl implements PermissionRequestService {
 
     @Override
     @Transactional
-    public PermissionResponse requestPermission(PermissionRequest body) {
+    public CreatePermissionApplicationResponse requestPermission(CreatePermissionApplicationRequest body) {
         //1. 요청자 조회
         CustomUserDetail userDetails = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String requestUserId = userDetails.getId();
@@ -74,7 +74,7 @@ public class PermissionRequestServiceImpl implements PermissionRequestService {
                 .build();
         permissionRequestRepository.saveAndFlush(permissionApplication);
 
-        return new PermissionResponse(permissionApplication.getRequestAt());
+        return new CreatePermissionApplicationResponse(permissionApplication.getRequestAt());
     }
 
     @Override

@@ -19,14 +19,14 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "evaluation_permission_request",
+@Table(name = "evaluation_permission_application",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"user_id", "recruitment_id"})
         })
 public class PermissionApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "evaluation_permission_request_id")
+    @Column(name = "evaluation_permission_application_id")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

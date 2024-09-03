@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record PermissionResponse(@NotNull(message = "requestAt shouldn't be null") LocalDateTime requestAt) {
+public record CreatePermissionApplicationResponse(@NotNull(message = "requestAt shouldn't be null") LocalDateTime requestAt) {
 }
