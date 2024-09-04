@@ -5,6 +5,7 @@ import com.ryc.api.v1.applicant.repository.ApplicantRepository;
 import com.ryc.api.v1.evaluation.domain.Evaluation;
 import com.ryc.api.v1.evaluation.dto.request.CreateEvaluationRequest;
 import com.ryc.api.v1.evaluation.dto.response.CreateEvaluationResponse;
+import com.ryc.api.v1.evaluation.dto.response.GetEvaluationResponse;
 import com.ryc.api.v1.evaluation.repository.EvaluationRepository;
 import com.ryc.api.v1.evaluation.repository.PermissionRepository;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
@@ -21,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -66,7 +69,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 .applicant(applicant)
                 .score(body.score())
                 .comment(body.comment())
-                .reviewedBy(reviewUser.getId())
+                .reviewedBy(reviewUser)
                 .build();
 
         try {
@@ -78,5 +81,24 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         return new CreateEvaluationResponse(evaluation.getCreatedAt());
+    }
+
+    @Override
+    @Transactional
+    public List<GetEvaluationResponse> getEvaluations(String stepId, String applicantId) {
+        List<Evaluation> evaluations = new ArrayList<>();
+
+        if(applicantId == null)
+            evaluations = evaluationRepository.findByStepId(stepId);
+        else
+            evaluations = evaluationRepository.findByStepIdAndApplicantId(stepId,applicantId);
+
+        List<GetEvaluationResponse> responses = new ArrayList<>();
+        for(Evaluation evaluation : evaluations){
+            GetEvaluationResponse getEvaluationResponse = evaluation.toGetEvaluationResponse();
+            responses.add(getEvaluationResponse);
+        }
+
+        return responses;
     }
 }

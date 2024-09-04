@@ -2,8 +2,10 @@ package com.ryc.api.v1.evaluation.domain;
 
 import com.ryc.api.v1.applicant.domain.Applicant;
 import com.ryc.api.v1.common.entity.BaseEntity;
+import com.ryc.api.v1.evaluation.dto.response.GetEvaluationResponse;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
 import com.ryc.api.v1.recruitment.domain.Step;
+import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,8 +46,33 @@ public class Evaluation extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String comment;
 
-    private String reviewedBy;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewedBy")
+    private User reviewedBy;
 
     @Builder.Default
     private boolean deleted = false;
+
+    public GetEvaluationResponse toGetEvaluationResponse() {
+        GetEvaluationResponse.ApplicantDto applicantInfo = GetEvaluationResponse.ApplicantDto.builder()
+                .applicantId(this.applicant.getId())
+                .applicantName(this.applicant.getName())
+                .build();
+
+        GetEvaluationResponse.EvaluatorDto evaluatorInfo = GetEvaluationResponse.EvaluatorDto.builder()
+                .evaluatorUserId(this.reviewedBy.getId())
+                .evaluatorUserName(this.reviewedBy.getUsername())
+                .build();
+
+        GetEvaluationResponse.EvaluationDto evaluationInfo = GetEvaluationResponse.EvaluationDto.builder()
+                .score(this.score)
+                .comment(this.comment)
+                .build();
+
+        return GetEvaluationResponse.builder()
+                .applicantInfo(applicantInfo)
+                .evaluatorInfo(evaluatorInfo)
+                .evaluationInfo(evaluationInfo)
+                .build();
+    }
 }
