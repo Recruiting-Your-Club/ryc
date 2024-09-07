@@ -1,10 +1,12 @@
 package com.ryc.api.v1.evaluation.service;
 
 import com.ryc.api.v1.applicant.domain.Applicant;
+import com.ryc.api.v1.applicant.dto.internal.ApplicantDto;
 import com.ryc.api.v1.applicant.repository.ApplicantRepository;
 import com.ryc.api.v1.evaluation.domain.StepPasser;
 import com.ryc.api.v1.evaluation.dto.request.CreatePasserRequest;
 import com.ryc.api.v1.evaluation.dto.response.CreatePasserResponse;
+import com.ryc.api.v1.evaluation.dto.response.GetPasserResponse;
 import com.ryc.api.v1.evaluation.repository.StepPasserRepository;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.repository.StepRepository;
@@ -19,6 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -43,7 +47,7 @@ public class PassedServiceImpl implements PassedService {
         UserClubRole userClubRole = userClubRoleRepository.findByClubIdAndUser(body.clubId(), user)
                 .orElseThrow(() -> new NoSuchElementException("UserClubRole not found"));
 
-        if(userClubRole.getClubRole() != ClubRole.PRESIDENT)
+        if (userClubRole.getClubRole() != ClubRole.PRESIDENT)
             throw new IllegalStateException("user is not president");
 
         //2.합격자 생성
@@ -60,5 +64,27 @@ public class PassedServiceImpl implements PassedService {
         stepPasserRepository.save(stepPasser);
 
         return new CreatePasserResponse(stepPasser.getCreatedAt());
+    }
+
+    @Override
+    @Transactional
+    public List<GetPasserResponse> getPasser(String stepId) {
+        //TODO: 회장권한 확인
+        List<StepPasser> stepPassers = stepPasserRepository.findAllByStepId(stepId);
+        if (stepPassers.isEmpty())
+            throw new NoSuchElementException("passers not found");
+
+        List<GetPasserResponse> responses = new ArrayList<>();
+        for (StepPasser stepPasser : stepPassers) {
+            ApplicantDto applicantDto = stepPasser.getApplicant().toApplicantDto();
+            GetPasserResponse getPasserResponse = GetPasserResponse.builder()
+                    .applicantId(stepPasser.getApplicant().getId())
+                    .applicantDto(applicantDto)
+                    .build();
+
+            responses.add(getPasserResponse);
+        }
+
+        return responses;
     }
 }

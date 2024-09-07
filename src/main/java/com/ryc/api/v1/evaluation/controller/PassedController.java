@@ -2,16 +2,17 @@ package com.ryc.api.v1.evaluation.controller;
 
 import com.ryc.api.v1.evaluation.dto.request.CreatePasserRequest;
 import com.ryc.api.v1.evaluation.dto.response.CreatePasserResponse;
+import com.ryc.api.v1.evaluation.dto.response.GetPasserResponse;
 import com.ryc.api.v1.evaluation.service.PassedService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/evaluation/passer")
@@ -25,6 +26,17 @@ public class PassedController {
         try {
             CreatePasserResponse response = passedService.createPasser(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getPasser(
+            @NotEmpty @RequestParam String stepId) {
+        try {
+            List<GetPasserResponse> response = passedService.getPasser(stepId);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
