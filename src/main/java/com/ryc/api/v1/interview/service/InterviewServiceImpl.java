@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,7 +23,7 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
-    public CreateInterviewResponse createInterview(CreateInterviewRequest body) {
+    public List<CreateInterviewResponse> createInterview(CreateInterviewRequest body) {
         //TODO: 회장 권한 확인하기
 
         Step step = stepRepository.findById(body.stepId())
@@ -33,19 +32,27 @@ public class InterviewServiceImpl implements InterviewService {
         if (step.getStepType() != StepType.INTERVIEW)
             throw new IllegalStateException("step type is not INTERVIEW");
 
-        List<LocalDateTime> createdAt = new ArrayList<>();
         List<CreateInterviewRequest.InterviewScheduleDto> schedules = body.interviewSchedules();
+        List<CreateInterviewResponse> responses = new ArrayList<>();
         for (CreateInterviewRequest.InterviewScheduleDto schedule : schedules) {
-            Interview interview = Interview.builder()
-                    .step(step)
-                    .date(schedule.interviewDate())
-                    .timeNumber(schedule.timeNumber())
-                    .build();
+            for (int i = 1; i <= schedule.timeCount(); i++) {
+                Interview interview = Interview.builder()
+                        .step(step)
+                        .date(schedule.interviewDate())
+                        .timeNumber(i)
+                        .build();
+                interviewRepository.save(interview);
 
-            interviewRepository.save(interview);
-            createdAt.add(interview.getCreatedAt());
+                CreateInterviewResponse createInterviewResponse = CreateInterviewResponse.builder()
+                        .interviewId(interview.getId())
+                        .interviewDate(interview.getDate())
+                        .interviewTime(interview.getTimeNumber())
+                        .build();
+
+                responses.add(createInterviewResponse);
+            }
         }
 
-        return new CreateInterviewResponse(createdAt);
+        return responses;
     }
 }

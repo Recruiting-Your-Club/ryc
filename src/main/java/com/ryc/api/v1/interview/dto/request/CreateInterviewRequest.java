@@ -12,6 +12,6 @@ public record CreateInterviewRequest(@NotEmpty(message = "stepId shouldn't be em
 
     @Builder
     public record InterviewScheduleDto(@NotEmpty(message = "interviewDate shouldn't be empty") LocalDate interviewDate,
-                                       @NotEmpty(message = "timeNumber shouldn't be empty") int timeNumber) {
+                                       @NotEmpty(message = "timeNumber shouldn't be empty") int timeCount) {
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/interview")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class InterviewController {
     @PostMapping("/")
     public ResponseEntity<?> createInterview(@Valid @RequestBody CreateInterviewRequest body) {
         try {
-            CreateInterviewResponse response = interviewService.createInterview(body);
+            List<CreateInterviewResponse> response = interviewService.createInterview(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
