@@ -5,6 +5,7 @@ import com.ryc.api.v1.evaluation.domain.Permission;
 import com.ryc.api.v1.evaluation.domain.PermissionApplication;
 import com.ryc.api.v1.evaluation.dto.request.CreatePermissionApplicationRequest;
 import com.ryc.api.v1.evaluation.dto.request.UpdatePermissionStatusRequest;
+import com.ryc.api.v1.evaluation.dto.response.GetEvaluationAuthorizedUserResponse;
 import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.CreatePermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.UpdatePermissionStatusResponse;
@@ -145,5 +146,20 @@ public class PermissionServiceImpl implements PermissionService {
                 .requestStatus(permissionApplication.getRequestStatus())
                 .reviewedBy(permissionApplication.getReviewedBy())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public List<GetEvaluationAuthorizedUserResponse> findEvaluationAuthorizedUsers(String recruitmentId) {
+        List<GetEvaluationAuthorizedUserResponse> responses = new ArrayList<>();
+
+        List<Permission> permissions = permissionRepository.findAllByRecruitmentId(recruitmentId);
+        for (Permission permission : permissions) {
+            GetEvaluationAuthorizedUserResponse getEvaluationAuthorizedUserResponse
+                    = permission.toGetEvaluationAuthorizedUserResponse(recruitmentId);
+            responses.add(getEvaluationAuthorizedUserResponse);
+        }
+
+        return responses;
     }
 }

@@ -1,6 +1,7 @@
 package com.ryc.api.v1.evaluation.domain;
 
 import com.ryc.api.v1.common.entity.BaseEntity;
+import com.ryc.api.v1.evaluation.dto.response.GetEvaluationAuthorizedUserResponse;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
 import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
@@ -28,4 +29,12 @@ public class Permission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
+
+    public GetEvaluationAuthorizedUserResponse toGetEvaluationAuthorizedUserResponse(String permissionId){
+        return GetEvaluationAuthorizedUserResponse.builder()
+                .permissionId(permissionId)
+                .userId(this.user.getId())
+                .username(this.user.getUsername())
+                .build();
+    }
 }

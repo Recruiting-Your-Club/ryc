@@ -3,6 +3,7 @@ package com.ryc.api.v1.evaluation.controller;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.evaluation.dto.request.CreatePermissionApplicationRequest;
 import com.ryc.api.v1.evaluation.dto.request.UpdatePermissionStatusRequest;
+import com.ryc.api.v1.evaluation.dto.response.GetEvaluationAuthorizedUserResponse;
 import com.ryc.api.v1.evaluation.dto.response.GetPermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.CreatePermissionApplicationResponse;
 import com.ryc.api.v1.evaluation.dto.response.UpdatePermissionStatusResponse;
@@ -56,4 +57,14 @@ public class PermissionController {
         }
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<?> getEvaluationAuthorizedUserList(
+            @NotEmpty @RequestParam String recruitmentId) {
+        try {
+            List<GetEvaluationAuthorizedUserResponse> response = permissionService.findEvaluationAuthorizedUsers(recruitmentId);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
 }
