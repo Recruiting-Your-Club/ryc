@@ -2,6 +2,7 @@ package com.ryc.api.v1.interview.service;
 
 import com.ryc.api.v1.applicant.domain.Applicant;
 import com.ryc.api.v1.applicant.repository.ApplicantRepository;
+import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.interview.domain.Interview;
 import com.ryc.api.v1.interview.domain.Interviewee;
 import com.ryc.api.v1.interview.domain.Interviewer;
@@ -9,21 +10,29 @@ import com.ryc.api.v1.interview.dto.request.CreateInterviewAssignmentRequest;
 import com.ryc.api.v1.interview.dto.request.CreateInterviewRequest;
 import com.ryc.api.v1.interview.dto.response.CreateInterviewAssignmentResponse;
 import com.ryc.api.v1.interview.dto.response.CreateInterviewResponse;
+import com.ryc.api.v1.interview.dto.response.GetAllApplicantByInterviewResponse;
+import com.ryc.api.v1.interview.dto.response.GetInterviewScheduleResponse;
 import com.ryc.api.v1.interview.repository.InterviewRepository;
 import com.ryc.api.v1.interview.repository.IntervieweeRepository;
 import com.ryc.api.v1.interview.repository.InterviewerRepository;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
 import com.ryc.api.v1.recruitment.repository.StepRepository;
+import com.ryc.api.v1.role.domain.ClubRole;
+import com.ryc.api.v1.role.domain.UserClubRole;
+import com.ryc.api.v1.role.repository.UserClubRoleRepository;
+import com.ryc.api.v1.security.dto.CustomUserDetail;
 import com.ryc.api.v1.user.domain.User;
 import com.ryc.api.v1.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +43,7 @@ public class InterviewServiceImpl implements InterviewService {
     private final UserRepository userRepository;
     private final IntervieweeRepository intervieweeRepository;
     private final InterviewerRepository interviewerRepository;
+    private final UserClubRoleRepository userClubRoleRepository;
 
     @Override
     @Transactional
@@ -112,5 +122,99 @@ public class InterviewServiceImpl implements InterviewService {
         interviewerRepository.saveAll(interviewers);
 
         return new CreateInterviewAssignmentResponse();
+    }
+
+    @Override
+    @Transactional
+    public List<GetInterviewScheduleResponse> findInterviewSchedules(String stepId) {
+        //1. 회장 동아리원 검증
+        //TODO:해당 코드 겹친다. 추후에 분리하기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
+
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        Step step = stepRepository.findById(stepId)
+                .orElseThrow(() -> new NoSuchElementException("Step not found"));
+
+        Club club = step.getRecruitment().getClub();
+
+        UserClubRole userClubRole = userClubRoleRepository.findByClubAndUser(club, user)
+                .orElseThrow(() -> new NoSuchElementException("User is not in Club"));
+
+        //2. 면접 스케줄 조회
+        List<Interview> interviews = findAllInterviewList(step);
+        if (userClubRole.getClubRole() == ClubRole.MEMBER) {
+            interviews = findAssignedInterviewList(interviews, user);
+        }
+
+        //3. 응답값 생성하기
+        Map<LocalDate, List<Interview>> interviewsByDate = groupByinterviewDate(interviews);
+
+        List<GetInterviewScheduleResponse> responses = new ArrayList<>();
+
+        for (Map.Entry<LocalDate, List<Interview>> entry : interviewsByDate.entrySet()) {
+            LocalDate interviewDate = entry.getKey();
+            List<Interview> interviewsOnDate = entry.getValue();
+
+            List<GetInterviewScheduleResponse.InterviewTimeDto> interviewTimes = new ArrayList<>();
+            for (Interview interview : interviewsOnDate) {
+                GetInterviewScheduleResponse.InterviewTimeDto interviewTimeDto
+                        = GetInterviewScheduleResponse.InterviewTimeDto.builder()
+                        .interviewId(interview.getId())
+                        .interviewTimeNumber(interview.getTimeNumber())
+                        .build();
+
+                interviewTimes.add(interviewTimeDto);
+            }
+
+            GetInterviewScheduleResponse getInterviewScheduleResponse = GetInterviewScheduleResponse.builder()
+                    .interviewDate(interviewDate)
+                    .interviewTimes(interviewTimes)
+                    .build();
+
+            responses.add(getInterviewScheduleResponse);
+        }
+
+        return responses;
+    }
+
+    @Override
+    @Transactional
+    public GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId) {
+        Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new NoSuchElementException("interview not found"));
+
+        List<Interviewee> interviewees = intervieweeRepository.findByInterview(interview);
+        if (interviewees.isEmpty())
+            throw new NoSuchElementException("interviewee not found");
+
+        List<String> intervieweeIdList = interviewees.stream()
+                .map(Interviewee::getId)
+                .toList();
+
+        return new GetAllApplicantByInterviewResponse(intervieweeIdList);
+    }
+
+    private List<Interview> findAssignedInterviewList(List<Interview> interviews, User user) {
+        List<Interview> assignedInterviews = new ArrayList<>();
+        for (Interview interview : interviews) {
+            interviewerRepository.findByInterviewAndUser(interview, user)
+                    .ifPresent(interviewer -> assignedInterviews.add(interview));
+        }
+        return assignedInterviews;
+    }
+
+    private List<Interview> findAllInterviewList(Step step) {
+        List<Interview> interviews = interviewRepository.findByStep(step);
+        if (interviews.isEmpty())
+            throw new NoSuchElementException("interviews not found");
+
+        return interviews;
+    }
+
+    private Map<LocalDate, List<Interview>> groupByinterviewDate(List<Interview> interviews) {
+        return interviews.stream()
+                .collect(Collectors.groupingBy(Interview::getDate));
     }
 }
