@@ -1,6 +1,8 @@
 package com.ryc.api.v1.interview.controller;
 
+import com.ryc.api.v1.interview.dto.request.CreateInterviewAssignmentRequest;
 import com.ryc.api.v1.interview.dto.request.CreateInterviewRequest;
+import com.ryc.api.v1.interview.dto.response.CreateInterviewAssignmentResponse;
 import com.ryc.api.v1.interview.dto.response.CreateInterviewResponse;
 import com.ryc.api.v1.interview.service.InterviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +28,16 @@ public class InterviewController {
     public ResponseEntity<?> createInterview(@Valid @RequestBody CreateInterviewRequest body) {
         try {
             List<CreateInterviewResponse> response = interviewService.createInterview(body);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/assignment")
+    public ResponseEntity<?> createInterviewAssignment(@Valid @RequestBody CreateInterviewAssignmentRequest body) {
+        try {
+            CreateInterviewAssignmentResponse response = interviewService.createInterviewAssignment(body);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
