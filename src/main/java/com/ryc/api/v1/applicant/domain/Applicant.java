@@ -48,13 +48,19 @@ public class Applicant extends BaseEntity {
         this.studentId = requiredFieldDto.studentId();
     }
 
-    public RequiredFieldDto toRequiredFieldDto() {
+    public RequiredFieldDto toFullRequiredFieldDto() {
         return RequiredFieldDto.builder()
                 .name(this.name)
                 .email(this.email)
                 .phone(this.phone)
                 .studentId(this.studentId)
                 .image(this.imageUrl)
+                .build();
+    }
+
+    public RequiredFieldDto toNameOnlyRequiredFieldDto(){
+        return RequiredFieldDto.builder()
+                .name(this.name)
                 .build();
     }
 

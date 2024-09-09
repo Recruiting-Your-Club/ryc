@@ -20,7 +20,6 @@ import com.ryc.api.v1.application.repository.*;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
-import com.ryc.api.v1.recruitment.repository.RecruitmentRepository;
 import com.ryc.api.v1.recruitment.repository.StepRepository;
 import com.ryc.api.v1.role.domain.ClubRole;
 import com.ryc.api.v1.role.domain.UserClubRole;
@@ -180,7 +179,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    public GetApplicationResponse findApplicationByApplicantId(String stepId, String applicantId) {
+    public List<GetApplicationResponse> findApplicationByApplicantId(String stepId, List<String> applicantId) {
         //0. 해당 접근자가, 회장인지 동아리원인지 판단.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
@@ -197,51 +196,61 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
         //1. stepId(해당 전형 하위 step)와 applicantId(지원자id)로 지원서 찾기
-        Applicant applicant = applicantRepository.findById(applicantId)
-                .orElseThrow(() -> new NoSuchElementException("Applicant not found"));
-        Step step = stepRepository.findById(stepId)
-                .orElseThrow(() -> new NoSuchElementException("Step not found"));
+        List<Applicant> applicants = applicantRepository.findAllById(applicantId);
+        if (applicants.isEmpty())
+            throw new IllegalArgumentException("Applicant not found");
 
-        Application application = applicationRepository.findByApplicantAndStep(applicant, step)
-                .orElseThrow(() -> new NoSuchElementException("Application not found"));
+        List<Application> applications = applicationRepository.findAllByApplicantIn(applicants);
+        if (applications.isEmpty())
+            throw new IllegalArgumentException("application not found");
 
-        //2-1. 회장에게만, 필수 응답값(지원자정보) DTO생성
-        RequiredFieldDto requiredFieldAnswerDto = applicant.toRequiredFieldDto();
+        List<GetApplicationResponse> getApplicationResponses = new ArrayList<>();
+        for (Application application : applications) {
+            //2. 질문 및 답변값 DTO 생성
+            List<GetApplicationResponse.QuestionAnswerDto> questionAnswerDtos = new ArrayList<>();
+            List<Answer> answers = answerRepository.findAllByApplication(application);
+            if (answers.isEmpty())
+                throw new IllegalArgumentException("Answers cannot be empty");
 
-        //2-2. 질문 및 답변값 DTO 생성
-        List<GetApplicationResponse.QuestionAnswerDto> questionAnswerDtos = new ArrayList<>();
-        List<Answer> answers = answerRepository.findAllByApplication(application);
-        if (answers.isEmpty())
-            throw new IllegalArgumentException("Answers cannot be empty");
+            for (Answer answer : answers) {
+                Question question = questionRepository.findById(answer.getQuestion().getId())
+                        .orElseThrow(() -> new NoSuchElementException("Question not found"));
 
-        for (Answer answer : answers) {
-            Question question = questionRepository.findById(answer.getQuestion().getId())
-                    .orElseThrow(() -> new NoSuchElementException("Question not found"));
+                //동아리원 접근 제한 응답 확인
+                if (userClubRole.getClubRole() == ClubRole.MEMBER && !question.isAccessible())
+                    continue;
 
-            //동아리원 접근 제한 응답 확인
-            if (userClubRole.getClubRole() == ClubRole.MEMBER && !question.isAccessible())
-                continue;
+                String answerText = getAnswerText(question, answer);
+                GetApplicationResponse.QuestionAnswerDto questionAnswerDto = GetApplicationResponse.QuestionAnswerDto.builder()
+                        .questionId(question.getId())
+                        .questionOrder(question.getQuestionOrder())
+                        .questionText(question.getQuestionText())
+                        .questionType(question.getQuestionType())
+                        .answer(answerText)
+                        .build();
 
-            String answerText = getAnswerText(question, answer);
-            GetApplicationResponse.QuestionAnswerDto questionAnswerDto = GetApplicationResponse.QuestionAnswerDto.builder()
-                    .questionId(question.getId())
-                    .questionOrder(question.getQuestionOrder())
-                    .questionText(question.getQuestionText())
-                    .questionType(question.getQuestionType())
-                    .answer(answerText)
+                questionAnswerDtos.add(questionAnswerDto);
+            }
+            //2-1. 질문 순서에 맞게 정렬
+            SortUtils.sortList(questionAnswerDtos, Comparator.comparing(GetApplicationResponse.QuestionAnswerDto::questionOrder));
+
+            //2-2. 회장에게만, 필수 응답값(지원자정보) DTO생성
+            RequiredFieldDto requiredFieldAnswerDto;
+            if (userClubRole.getClubRole() == ClubRole.PRESIDENT)
+                requiredFieldAnswerDto = application.getApplicant().toFullRequiredFieldDto();
+            else
+                requiredFieldAnswerDto = application.getApplicant().toNameOnlyRequiredFieldDto();
+
+            //3. 전체 지원서 반환값 생성
+            GetApplicationResponse getApplicationResponse = GetApplicationResponse.builder()
+                    .applicantId(application.getApplicant().getId())
+                    .requiredFieldAnswerDto(requiredFieldAnswerDto)
+                    .questionAnswerDtos(questionAnswerDtos)
                     .build();
 
-            questionAnswerDtos.add(questionAnswerDto);
+            getApplicationResponses.add(getApplicationResponse);
         }
-        //2-1. 질문 순서에 맞게 정렬
-        SortUtils.sortList(questionAnswerDtos, Comparator.comparing(GetApplicationResponse.QuestionAnswerDto::questionOrder));
-
-        //3. 전체 지원서 반환값 생성
-        return GetApplicationResponse.builder()
-                .applicantId(applicant.getId())
-                .requiredFieldAnswerDto(userClubRole.getClubRole() == ClubRole.PRESIDENT ? requiredFieldAnswerDto : null)
-                .questionAnswerDtos(questionAnswerDtos)
-                .build();
+        return getApplicationResponses;
     }
 
     @Override

@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/application")
 @RequiredArgsConstructor
@@ -51,9 +53,9 @@ public class ApplicationController {
 
     @GetMapping("/")
     public ResponseEntity<?> getApplication(@RequestParam(required = true) String stepId,
-                                            @RequestParam(required = true) String applicantId) {
+                                            @RequestParam(required = true) List<String> applicantIdList) {
         try {
-            GetApplicationResponse response = applicationService.findApplicationByApplicantId(stepId, applicantId);
+            List<GetApplicationResponse> response = applicationService.findApplicationByApplicantId(stepId, applicantIdList);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
