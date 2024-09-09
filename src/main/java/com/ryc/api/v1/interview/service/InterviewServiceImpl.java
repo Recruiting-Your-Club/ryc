@@ -181,11 +181,24 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     @Transactional
-    public GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId) {
-        Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(() -> new NoSuchElementException("interview not found"));
+    public GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId, String stepId) {
+        if(stepId.equals("none") && interviewId.equals("none"))
+            throw new IllegalArgumentException("No valid filter option was provided. Please check your input.");
 
-        List<Interviewee> interviewees = intervieweeRepository.findByInterview(interview);
+        //step으로 조회(interviewId 없이 stepId만 있을때)
+        List<Interview> interviews = new ArrayList<>();
+        if(interviewId.equals("none")) {
+            interviews = interviewRepository.findByStepId(stepId);
+            if(interviews.isEmpty())
+                throw new NoSuchElementException("No Interview found");
+        }
+        else{
+            Interview interview = interviewRepository.findById(interviewId)
+                    .orElseThrow(() -> new NoSuchElementException("interview not found"));
+            interviews.add(interview);
+        }
+
+        List<Interviewee> interviewees = intervieweeRepository.findByInterviewIn(interviews);
         if (interviewees.isEmpty())
             throw new NoSuchElementException("interviewee not found");
 

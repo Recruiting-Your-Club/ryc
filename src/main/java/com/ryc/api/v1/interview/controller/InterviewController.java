@@ -1,6 +1,5 @@
 package com.ryc.api.v1.interview.controller;
 
-import com.ryc.api.v1.applicant.dto.response.GetAllApplicantResponse;
 import com.ryc.api.v1.interview.dto.request.CreateInterviewAssignmentRequest;
 import com.ryc.api.v1.interview.dto.request.CreateInterviewRequest;
 import com.ryc.api.v1.interview.dto.response.CreateInterviewAssignmentResponse;
@@ -57,9 +56,10 @@ public class InterviewController {
     }
 
     @GetMapping("/applicants")
-    public ResponseEntity<?> getAllApplicantsByInterview(@RequestParam(required = true) String interviewId) {
+    public ResponseEntity<?> getAllApplicantsByInterview(@RequestParam(required = false, defaultValue = "none") String interviewId,
+                                                         @RequestParam(required = false, defaultValue = "none") String stepId) {
         try {
-            GetAllApplicantByInterviewResponse response = interviewService.getAllApplicantsByInterview(interviewId);
+            GetAllApplicantByInterviewResponse response = interviewService.getAllApplicantsByInterview(interviewId,stepId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

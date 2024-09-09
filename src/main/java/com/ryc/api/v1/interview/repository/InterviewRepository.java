@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface InterviewRepository extends JpaRepository<Interview, String> {
     List<Interview> findByStep(Step step);
+    List<Interview> findByStepId(String stepId);
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface IntervieweeRepository extends JpaRepository<Interviewee, String> {
-    List<Interviewee> findByInterview(Interview interview);
+    List<Interviewee> findByInterviewIn(List<Interview> interviews);
 }

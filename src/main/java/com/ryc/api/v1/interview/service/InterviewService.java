@@ -15,5 +15,5 @@ public interface InterviewService {
 
     List<GetInterviewScheduleResponse> findInterviewSchedules(String stepId);
 
-    GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId);
+    GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId, String stepId);
 }
