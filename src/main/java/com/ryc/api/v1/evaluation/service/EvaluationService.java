@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface EvaluationService {
     CreateEvaluationResponse createEvaluation(CreateEvaluationRequest body);
-    List<GetEvaluationResponse> getEvaluations(String stepId, String applicantId);
+    List<GetEvaluationResponse> getEvaluations(String stepId, List<String> applicantIdList);
 }

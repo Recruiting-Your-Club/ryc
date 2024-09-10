@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         //0. applicant_id가 해당 전형 소속인지 검사
         Applicant applicant = applicantRepository.findById(body.applicantId())
                 .orElseThrow(() -> new NoSuchElementException("applicant not found"));
-        if(!applicant.getRecruitment().equals(recruitment))
+        if (!applicant.getRecruitment().equals(recruitment))
             throw new IllegalStateException("The applicant does not belong to the recruitment process.");
 
         //1. 평가자 정보 불러오기
@@ -59,7 +61,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         //2. 평가자 권한 확인하기
-        if(!permissionRepository.existsByUserAndRecruitment(reviewUser, recruitment))
+        if (!permissionRepository.existsByUserAndRecruitment(reviewUser, recruitment))
             throw new IllegalStateException("Permission not found.");
 
         //3. 평가 생성하기
@@ -85,18 +87,43 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     @Transactional
-    public List<GetEvaluationResponse> getEvaluations(String stepId, String applicantId) {
+    public List<GetEvaluationResponse> getEvaluations(String stepId, List<String> applicantIdList) {
         List<Evaluation> evaluations = new ArrayList<>();
 
-        if(applicantId == null)
+        if (applicantIdList == null)
+            applicantIdList = new ArrayList<>();
+
+        if (applicantIdList.isEmpty())
             evaluations = evaluationRepository.findByStepId(stepId);
         else
-            evaluations = evaluationRepository.findByStepIdAndApplicantId(stepId,applicantId);
+            evaluations = evaluationRepository.findAllByStepIdAndApplicantIdIn(stepId, applicantIdList);
+
+        Map<Applicant, List<Evaluation>> evaluationsByApplicant = evaluations.stream()
+                .collect(Collectors.groupingBy(Evaluation::getApplicant));
 
         List<GetEvaluationResponse> responses = new ArrayList<>();
-        for(Evaluation evaluation : evaluations){
-            GetEvaluationResponse getEvaluationResponse = evaluation.toGetEvaluationResponse();
-            responses.add(getEvaluationResponse);
+        for (Map.Entry<Applicant, List<Evaluation>> entry : evaluationsByApplicant.entrySet()) {
+            Applicant applicant = entry.getKey();
+            List<Evaluation> evaluationList = entry.getValue();
+
+            GetEvaluationResponse.ApplicantDto applicantDto =
+                    GetEvaluationResponse.ApplicantDto.builder()
+                            .applicantId(applicant.getId())
+                            .applicantName(applicant.getName())
+                            .build();
+
+            List<GetEvaluationResponse.EvaluationDto> evaluationDtos = new ArrayList<>();
+            for (Evaluation evaluation : evaluationList) {
+                GetEvaluationResponse.EvaluationDto evaluationDto = evaluation.toEvaluationDto();
+                evaluationDtos.add(evaluationDto);
+            }
+
+            GetEvaluationResponse response = GetEvaluationResponse.builder()
+                    .applicantInfo(applicantDto)
+                    .evaluationInfos(evaluationDtos)
+                    .build();
+
+            responses.add(response);
         }
 
         return responses;

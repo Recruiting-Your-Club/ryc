@@ -53,26 +53,12 @@ public class Evaluation extends BaseEntity {
     @Builder.Default
     private boolean deleted = false;
 
-    public GetEvaluationResponse toGetEvaluationResponse() {
-        GetEvaluationResponse.ApplicantDto applicantInfo = GetEvaluationResponse.ApplicantDto.builder()
-                .applicantId(this.applicant.getId())
-                .applicantName(this.applicant.getName())
-                .build();
-
-        GetEvaluationResponse.EvaluatorDto evaluatorInfo = GetEvaluationResponse.EvaluatorDto.builder()
+    public GetEvaluationResponse.EvaluationDto toEvaluationDto() {
+        return GetEvaluationResponse.EvaluationDto.builder()
                 .evaluatorUserId(this.reviewedBy.getId())
                 .evaluatorUserName(this.reviewedBy.getUsername())
-                .build();
-
-        GetEvaluationResponse.EvaluationDto evaluationInfo = GetEvaluationResponse.EvaluationDto.builder()
                 .score(this.score)
                 .comment(this.comment)
-                .build();
-
-        return GetEvaluationResponse.builder()
-                .applicantInfo(applicantInfo)
-                .evaluatorInfo(evaluatorInfo)
-                .evaluationInfo(evaluationInfo)
                 .build();
     }
 }

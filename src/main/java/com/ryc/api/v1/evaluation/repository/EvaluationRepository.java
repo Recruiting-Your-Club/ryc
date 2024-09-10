@@ -10,5 +10,5 @@ import java.util.List;
 public interface EvaluationRepository extends JpaRepository<Evaluation, String> {
     List<Evaluation> findByStepId(String stepId);
 
-    List<Evaluation> findByStepIdAndApplicantId(String stepId, String applicantId);
+    List<Evaluation> findAllByStepIdAndApplicantIdIn(String stepId, List<String> applicantIdList);
 }

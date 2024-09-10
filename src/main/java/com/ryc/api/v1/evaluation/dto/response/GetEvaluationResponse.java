@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Builder
 public record GetEvaluationResponse(@NotNull(message = "applicantInfo shouldn't be null") ApplicantDto applicantInfo,
-                                    @NotNull(message = "evaluatorInfo shouldn't be null") EvaluatorDto evaluatorInfo,
-                                    @NotNull(message = "evaluationInfo shouldn't be null") EvaluationDto evaluationInfo) {
+                                    @NotEmpty(message = "evaluationInfo shouldn't be null") List<EvaluationDto> evaluationInfos) {
 
     @Builder
     public record ApplicantDto(@NotEmpty(message = "applicantId shouldn't be empty") String applicantId,
@@ -17,12 +17,9 @@ public record GetEvaluationResponse(@NotNull(message = "applicantInfo shouldn't 
     }
 
     @Builder
-    public record EvaluatorDto(@NotEmpty(message = "evaluatorUserId shouldn't be empty") String evaluatorUserId,
-                                @NotEmpty(message = "evaluatorUserName shouldn't be empty") String evaluatorUserName) {
-    }
-
-    @Builder
-    public record EvaluationDto(@NotNull(message = "score shouldn't be null") BigDecimal score,
-                                 @NotEmpty(message = "comment shouldn't be empty") String comment) {
+    public record EvaluationDto(@NotEmpty(message = "evaluatorUserId shouldn't be empty") String evaluatorUserId,
+                                @NotEmpty(message = "evaluatorUserName shouldn't be empty") String evaluatorUserName,
+                                @NotNull(message = "score shouldn't be null") BigDecimal score,
+                                @NotEmpty(message = "comment shouldn't be empty") String comment) {
     }
 }
