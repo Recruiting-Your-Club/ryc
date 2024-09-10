@@ -1,7 +1,7 @@
 package com.ryc.api.v1.security.service;
 
-import com.ryc.api.v1.member.domain.Member;
-import com.ryc.api.v1.member.repository.MemberRepository;
+import com.ryc.api.v1.user.domain.User;
+import com.ryc.api.v1.user.repository.UserRepository;
 import com.ryc.api.v1.security.dto.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Override
     public CustomUserDetail loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email);
-        if (member == null) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return new CustomUserDetail(member);
+        return new CustomUserDetail(user);
     }
 }

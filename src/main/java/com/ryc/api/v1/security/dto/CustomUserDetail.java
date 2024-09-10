@@ -1,6 +1,6 @@
 package com.ryc.api.v1.security.dto;
 
-import com.ryc.api.v1.member.domain.Member;
+import com.ryc.api.v1.user.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -24,13 +24,13 @@ public class CustomUserDetail implements UserDetails, Serializable {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    public CustomUserDetail(Member member) {
-        this.id = member.getId();
-        this.username = member.getUsername();
-        this.email = member.getEmail();
-        this.password = member.getPassword();
+    public CustomUserDetail(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
         this.authorities
-                = Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + member.getRole().name()));
+                = Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().name()));
     }
 
     @Override

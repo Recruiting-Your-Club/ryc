@@ -4,14 +4,26 @@ import com.ryc.api.v1.club.domain.Category;
 import com.ryc.api.v1.club.domain.Club;
 import com.ryc.api.v1.club.domain.ClubCategory;
 import com.ryc.api.v1.club.domain.ClubCategoryId;
-import com.ryc.api.v1.club.dto.CreateClubRequestDto;
-import com.ryc.api.v1.club.dto.CreateClubResponseDto;
+import com.ryc.api.v1.club.dto.request.CreateClubRequest;
+import com.ryc.api.v1.club.dto.response.ClubResponse;
+import com.ryc.api.v1.club.dto.response.CreateClubResponse;
+import com.ryc.api.v1.club.dto.response.ClubOverviewResponse;
 import com.ryc.api.v1.club.repository.CategoryRepository;
 import com.ryc.api.v1.club.repository.ClubCategoryRepository;
 import com.ryc.api.v1.club.repository.ClubRepository;
+import com.ryc.api.v1.security.dto.CustomUserDetail;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,27 +34,95 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public CreateClubResponseDto createClub(CreateClubRequestDto body) {
-        Club club = body.toClub();
-        clubRepository.save(club);
+    public CreateClubResponse createClub(CreateClubRequest body) {
 
-        //없을 때, Category 생성
-        if (!categoryRepository.existsByName(body.category())) {
-            Category category = Category.builder()
-                    .name(body.category())
-                    .build();
-            categoryRepository.save(category);
+        if (clubRepository.existsByClubName(body.name())) {
+            throw new DuplicateKeyException("This club Already Exist");
         }
 
-        Category category = categoryRepository.findByName(body.category());
-        ClubCategoryId clubCategoryId = new ClubCategoryId(club.getId(), category.getId());
-        ClubCategory clubCategory = ClubCategory.builder()
-                .id(clubCategoryId)
-                .club(club)
-                .category(category)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetail userDetails = (CustomUserDetail) authentication.getPrincipal();
+
+        Club club = Club.builder()
+                .clubName(body.name())
+                .clubDescription(body.description())
+                .clubPresidentId(userDetails.getId())
                 .build();
 
-        clubCategoryRepository.save(clubCategory);
-        return new CreateClubResponseDto(club.getCreatedAt());
+        clubRepository.save(club);
+
+        //카테고리가 기존에 없을 때, Category 새로 생성
+        List<String> categoriesFromRequest = body.categories();
+        List<Category> newCategories = new ArrayList<>();
+        for (String categoryFromRequest : categoriesFromRequest) {
+            if (!categoryRepository.existsByName(categoryFromRequest)) {
+                Category category = Category.builder()
+                        .name(categoryFromRequest)
+                        .build();
+                newCategories.add(category);
+            }
+        }
+        categoryRepository.saveAll(newCategories);
+
+        List<ClubCategory> clubCategories = new ArrayList<>();
+        List<Category> categories = categoryRepository.findByNameIn(body.categories());
+        for (Category category : categories) {
+            ClubCategoryId clubCategoryId = new ClubCategoryId(club.getId(), category.getId());
+            ClubCategory clubCategory = ClubCategory.builder()
+                    .id(clubCategoryId)
+                    .club(club)
+                    .category(category)
+                    .build();
+            clubCategories.add(clubCategory);
+        }
+
+        clubCategoryRepository.saveAll(clubCategories);
+
+        return new CreateClubResponse(club.getCreatedAt());
+    }
+
+    @Override
+    @Transactional
+    public List<ClubOverviewResponse> findAllClubsOverview() {
+        List<Club> clubs = clubRepository.findAllWithCategories();
+
+        if (clubs.isEmpty())
+            throw new EntityNotFoundException("Club not found");
+
+        List<ClubOverviewResponse> responses = new ArrayList<>();
+        for (Club club : clubs) {
+            List<String> categoryNames = findCategoryNames(club);
+
+            ClubOverviewResponse clubOverview = ClubOverviewResponse.builder()
+                    .clubId(club.getId())
+                    .thumbnailUrl(club.getClubThumbnailImageUrl())
+                    .categories(categoryNames)
+                    .build();
+
+            responses.add(clubOverview);
+        }
+
+        return responses;
+    }
+
+    @Override
+    @Transactional
+    public ClubResponse findClubById(String clubId) {
+        Club club = clubRepository.findByIdWithCategories(clubId)
+                .orElseThrow(() -> new NoSuchElementException("Club not found"));
+
+        List<String> categoryNames = findCategoryNames(club);
+
+        return club.toClubResponse(categoryNames);
+    }
+
+    private List<String> findCategoryNames(Club club) {
+        List<ClubCategory> clubCategories = club.getClubCategories();
+
+        List<String> categoryNames = new ArrayList<>();
+        for (ClubCategory clubCategory : clubCategories) {
+            categoryNames.add(clubCategory.getCategory().getName());
+        }
+        return categoryNames;
     }
 }

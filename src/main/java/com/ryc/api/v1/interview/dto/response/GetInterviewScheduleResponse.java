@@ -1,0 +1,18 @@
+package com.ryc.api.v1.interview.dto.response;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Builder
+public record GetInterviewScheduleResponse(
+        @NotNull(message = "interviewDate shouldn't be null") LocalDate interviewDate,
+        @NotEmpty(message = "interviewTimes shouldn't be empty") List<InterviewTimeDto> interviewTimes) {
+
+    @Builder
+    public record InterviewTimeDto(@NotEmpty(message = "interviewId shouldn't be empty") String interviewId,
+                                @NotNull(message = "interviewTimeNumber shouldn't be empty") Integer interviewTimeNumber){}
+}

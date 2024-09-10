@@ -1,7 +1,7 @@
 package com.ryc.api.v1.auth.dto;
 
-import com.ryc.api.v1.member.domain.Member;
-import com.ryc.api.v1.member.domain.UserRole;
+import com.ryc.api.v1.user.domain.User;
+import com.ryc.api.v1.user.domain.UserRole;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -14,8 +14,8 @@ public record RegisterRequest(@NotEmpty(message = "username is empty") String us
         role = UserRole.USER;
     }
 
-    public Member toMember(PasswordEncoder passwordEncoder) {
-        return Member.builder()
+    public User toUser(PasswordEncoder passwordEncoder) {
+        return User.builder()
                 .username(this.username)
                 .email(this.email)
                 .password(passwordEncoder.encode(this.password))
