@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ApplicantRepository extends JpaRepository<Applicant, String> {
     List<Applicant> findByRecruitmentId(String recruitmentId);
+    List<Applicant> findAllByIdIn(List<String> applicantIdList);
 }

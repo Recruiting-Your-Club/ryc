@@ -38,6 +38,9 @@ public class Applicant extends BaseEntity {
     private String studentId;
 
     @Builder.Default
+    private boolean isFinalPassed = false;
+
+    @Builder.Default
     private boolean deleted = false;
 
     public void setRequiredFields(RequiredFieldDto requiredFieldDto) {
@@ -46,6 +49,10 @@ public class Applicant extends BaseEntity {
         this.email = requiredFieldDto.email();
         this.phone = requiredFieldDto.phone();
         this.studentId = requiredFieldDto.studentId();
+    }
+
+    public void updateIsFinalPassed(){
+        this.isFinalPassed = true;
     }
 
     public RequiredFieldDto toFullRequiredFieldDto() {
