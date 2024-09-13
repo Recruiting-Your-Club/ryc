@@ -1,6 +1,7 @@
 package com.ryc.api.v1.recruitment.dto.request;
 
 import com.ryc.api.v1.club.domain.Club;
+import com.ryc.api.v1.common.dto.ClubRoleSecuredDto;
 import com.ryc.api.v1.recruitment.domain.Recruitment;
 import com.ryc.api.v1.recruitment.domain.Step;
 import com.ryc.api.v1.recruitment.domain.StepType;
@@ -11,10 +12,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public record CreateRecruitmentRequest(@NotEmpty(message = "clubId shouldn't be empty") String clubId,
-                                       @NotEmpty(message = "clubId shouldn't be empty") String recruitmentName,
-                                       @NotNull(message = "clubId shouldn't be empty") LocalDate expireDate,
-                                       @NotEmpty List<RecruitmentStepDto> steps) {
+public record CreateRecruitmentRequest(
+        @NotNull(message = "clubRoleSecuredDto shouldn't be null") ClubRoleSecuredDto clubRoleSecuredDto,
+        @NotEmpty(message = "clubId shouldn't be empty") String clubId,
+        @NotEmpty(message = "clubId shouldn't be empty") String recruitmentName,
+        @NotNull(message = "clubId shouldn't be empty") LocalDate expireDate,
+        @NotEmpty List<RecruitmentStepDto> steps) {
 
     public record RecruitmentStepDto(
             @NotEmpty String stepName,
