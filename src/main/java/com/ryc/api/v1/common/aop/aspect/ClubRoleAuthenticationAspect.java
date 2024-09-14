@@ -24,8 +24,9 @@ public class ClubRoleAuthenticationAspect {
     /**
      * 회장 자격 검증
      */
-    // GET 요청 처리: clubId가 @RequestParam으로 전달된 경우
-    @Before("isPresidentRoleSecured() && isGetRequest() && args(clubId,..)")
+    // GET,PATCH 요청 처리: clubId가 @RequestParam으로 전달된 경우
+    @Before("(isPresidentRoleSecured() && isGetRequest() && args(clubId,..)) " +
+            "|| (isPresidentRoleSecured() && isPatchRequest() && args(clubId,..))")
     public void checkPresidentRoleForGet(String clubId) {
         validateClubRole(clubId, ClubRole.PRESIDENT);
     }
@@ -52,8 +53,9 @@ public class ClubRoleAuthenticationAspect {
     /**
      * 회장 또는 동아리원인지 자격 검증
      */
-    // GET 요청 처리: clubId가 @RequestParam으로 전달된 경우
-    @Before("isAnyRoleSecured() && isGetRequest() && args(clubId,..)")
+    // GET, PATCH 요청 처리: clubId가 @RequestParam으로 전달된 경우
+    @Before("isAnyRoleSecured() && isGetRequest() && args(clubId,..)" +
+            "|| isAnyRoleSecured() && isPatchRequest() && args(clubId,..)")
     public void checkClubRoleForGet(String clubId) {
         validateAnyClubRole(clubId);
     }
@@ -95,6 +97,11 @@ public class ClubRoleAuthenticationAspect {
     // Pointcut: POST 요청에서만 실행
     @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)")
     public void isPostRequest() {
+    }
+
+    // Pointcut: PATCH 요청에서만 실행
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.PatchMapping)")
+    public void isPatchRequest() {
     }
 
     //동아리 내 특정 권한 확인 공통로직

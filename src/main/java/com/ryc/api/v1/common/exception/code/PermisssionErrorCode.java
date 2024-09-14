@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum PermisssionErrorCode implements ErrorCode{
     FORBIDDEN_NOT_CLUB_PRESIDENT(HttpStatus.FORBIDDEN, "You are not the club president. Access forbidden."),
-    FORBIDDEN_NOT_CLUB_MEMBER(HttpStatus.FORBIDDEN, "You are not the club member. Access forbidden.");
+    FORBIDDEN_NOT_CLUB_MEMBER(HttpStatus.FORBIDDEN, "You are not the club member. Access forbidden."),
+    FORBIDDEN_NOT_CLUB_ANY_ROLE(HttpStatus.FORBIDDEN, "You don't have any club role. Access forbidden.");
 
     private final HttpStatus httpStatus;
     private final String message;
