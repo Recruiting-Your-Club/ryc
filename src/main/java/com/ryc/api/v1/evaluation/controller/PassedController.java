@@ -1,5 +1,7 @@
 package com.ryc.api.v1.evaluation.controller;
 
+import com.ryc.api.v1.common.aop.annotation.HasAnyRoleSecured;
+import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.evaluation.dto.request.CreatePasserRequest;
 import com.ryc.api.v1.evaluation.dto.response.CreatePasserResponse;
 import com.ryc.api.v1.evaluation.dto.response.GetPasserResponse;
@@ -21,6 +23,7 @@ import java.util.List;
 public class PassedController {
     private final PassedService passedService;
 
+    @HasPresidentRoleSecured
     @PostMapping("/")
     public ResponseEntity<?> createPasser(@Valid @RequestBody CreatePasserRequest body) {
         try {
@@ -31,9 +34,10 @@ public class PassedController {
         }
     }
 
+    @HasAnyRoleSecured
     @GetMapping("/")
-    public ResponseEntity<?> getPasser(
-            @NotEmpty @RequestParam String stepId) {
+    public ResponseEntity<?> getPasser(@NotEmpty @RequestParam String clubId,
+                                       @NotEmpty @RequestParam String stepId) {
         try {
             List<GetPasserResponse> response = passedService.getPasser(stepId);
             return ResponseEntity.status(HttpStatus.OK).body(response);

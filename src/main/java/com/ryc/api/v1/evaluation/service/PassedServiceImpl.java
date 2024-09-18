@@ -74,6 +74,7 @@ public class PassedServiceImpl implements PassedService {
         if (stepPassers.isEmpty())
             throw new NoSuchElementException("passers not found");
 
+        //TODO: 동아리원이 조회 시에는, 개인정보를 제외한 이름만 반환하도록 변경
         List<GetPasserResponse> responses = new ArrayList<>();
         for (StepPasser stepPasser : stepPassers) {
             ApplicantDto applicantDto = stepPasser.getApplicant().toApplicantDto();

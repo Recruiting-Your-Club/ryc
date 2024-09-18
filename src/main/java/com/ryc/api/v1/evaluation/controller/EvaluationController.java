@@ -1,5 +1,6 @@
 package com.ryc.api.v1.evaluation.controller;
 
+import com.ryc.api.v1.common.aop.annotation.HasAnyRoleSecured;
 import com.ryc.api.v1.evaluation.dto.request.CreateEvaluationRequest;
 import com.ryc.api.v1.evaluation.dto.response.CreateEvaluationResponse;
 import com.ryc.api.v1.evaluation.dto.response.GetEvaluationResponse;
@@ -21,6 +22,7 @@ import java.util.List;
 public class EvaluationController {
     private final EvaluationService evaluationService;
 
+    @HasAnyRoleSecured
     @PostMapping("/")
     public ResponseEntity<?> createEvaluation(@Valid @RequestBody CreateEvaluationRequest body) {
         try {
@@ -31,8 +33,10 @@ public class EvaluationController {
         }
     }
 
+    @HasAnyRoleSecured
     @GetMapping
-    public ResponseEntity<?> getEvaluations(@NotEmpty @RequestParam String stepId,
+    public ResponseEntity<?> getEvaluations(@NotEmpty @RequestParam String clubId,
+                                            @NotEmpty @RequestParam String stepId,
                                             @RequestParam(required = false) List<String> applicantIdList) {
         try {
             List<GetEvaluationResponse> response = evaluationService.getEvaluations(stepId, applicantIdList);
