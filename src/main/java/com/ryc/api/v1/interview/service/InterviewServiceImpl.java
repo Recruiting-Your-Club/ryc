@@ -48,8 +48,6 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional
     public List<CreateInterviewResponse> createInterview(CreateInterviewRequest body) {
-        //TODO: 회장 권한 확인하기
-
         Step step = stepRepository.findById(body.stepId())
                 .orElseThrow(() -> new NoSuchElementException("Step not found"));
 
@@ -83,7 +81,6 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     @Transactional
     public CreateInterviewAssignmentResponse createInterviewAssignment(CreateInterviewAssignmentRequest body) {
-        //TODO: 회장권한 확인
         List<CreateInterviewAssignmentRequest.assignmentDto> assignmentDtos
                 = body.assignmentDtos();
 
@@ -105,6 +102,7 @@ public class InterviewServiceImpl implements InterviewService {
                 interviewees.add(interviewee);
             }
 
+            //TODO: 해당 interviewer(user)가 해당 동아리 소속인지 검사하는 로직 추가 필요
             for (String interviewerId : assignment.interviewerIdList()) {
                 User user = userRepository.findById(interviewerId)
                         .orElseThrow(() -> new NoSuchElementException("interviewer not found"));

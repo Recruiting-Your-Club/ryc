@@ -11,9 +11,10 @@ import java.util.List;
 
 public interface InterviewService {
     List<CreateInterviewResponse> createInterview(CreateInterviewRequest body);
+
+    GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId, String stepId);
+
     CreateInterviewAssignmentResponse createInterviewAssignment(CreateInterviewAssignmentRequest body);
 
     List<GetInterviewScheduleResponse> findInterviewSchedules(String stepId);
-
-    GetAllApplicantByInterviewResponse getAllApplicantsByInterview(String interviewId, String stepId);
 }

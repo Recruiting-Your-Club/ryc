@@ -1,5 +1,7 @@
 package com.ryc.api.v1.interview.controller;
 
+import com.ryc.api.v1.common.aop.annotation.HasAnyRoleSecured;
+import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.interview.dto.request.CreateInterviewAssignmentRequest;
 import com.ryc.api.v1.interview.dto.request.CreateInterviewRequest;
 import com.ryc.api.v1.interview.dto.response.CreateInterviewAssignmentResponse;
@@ -24,6 +26,7 @@ import java.util.List;
 public class InterviewController {
     private final InterviewService interviewService;
 
+    @HasPresidentRoleSecured
     @PostMapping("/")
     public ResponseEntity<?> createInterview(@Valid @RequestBody CreateInterviewRequest body) {
         try {
@@ -34,17 +37,20 @@ public class InterviewController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> getInterviewScheduleList(
-            @NotEmpty @RequestParam String stepId) {
+    @HasAnyRoleSecured
+    @GetMapping("/applicants")
+    public ResponseEntity<?> getAllApplicantsByInterview(@NotEmpty @RequestParam String clubId,
+                                                         @RequestParam(required = false, defaultValue = "none") String interviewId,
+                                                         @RequestParam(required = false, defaultValue = "none") String stepId) {
         try {
-            List<GetInterviewScheduleResponse> response = interviewService.findInterviewSchedules(stepId);
+            GetAllApplicantByInterviewResponse response = interviewService.getAllApplicantsByInterview(interviewId, stepId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
+    @HasPresidentRoleSecured
     @PostMapping("/assignment")
     public ResponseEntity<?> createInterviewAssignment(@Valid @RequestBody CreateInterviewAssignmentRequest body) {
         try {
@@ -55,14 +61,15 @@ public class InterviewController {
         }
     }
 
-    @GetMapping("/applicants")
-    public ResponseEntity<?> getAllApplicantsByInterview(@RequestParam(required = false, defaultValue = "none") String interviewId,
-                                                         @RequestParam(required = false, defaultValue = "none") String stepId) {
+    @HasAnyRoleSecured
+    @GetMapping("/")
+    public ResponseEntity<?> getInterviewScheduleList(@NotEmpty @RequestParam String clubId,
+                                                      @NotEmpty @RequestParam String stepId) {
         try {
-            GetAllApplicantByInterviewResponse response = interviewService.getAllApplicantsByInterview(interviewId,stepId);
+            List<GetInterviewScheduleResponse> response = interviewService.findInterviewSchedules(stepId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
         }
     }
 }
