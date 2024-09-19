@@ -1,5 +1,6 @@
 package com.ryc.api.v1.role.controller;
 
+import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.role.domain.ClubRole;
 import com.ryc.api.v1.role.dto.request.ClubRoleRequest;
@@ -35,6 +36,7 @@ public class RoleController {
         }
     }
 
+    @HasPresidentRoleSecured
     @GetMapping("/applications")
     public ResponseEntity<?> getClubRoleApplications(
             @NotEmpty @RequestParam String clubId,
@@ -48,6 +50,7 @@ public class RoleController {
         }
     }
 
+    @HasPresidentRoleSecured
     @PostMapping("application/status")
     public ResponseEntity<?> updateClubRoleApplicationStatus(@Valid @RequestBody UpdateStatusRequest body) {
         try {

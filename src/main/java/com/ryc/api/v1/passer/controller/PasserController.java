@@ -1,6 +1,7 @@
 package com.ryc.api.v1.passer.controller;
 
-import com.ryc.api.v1.applicant.dto.response.GetAllApplicantResponse;
+import com.ryc.api.v1.common.aop.annotation.HasAnyRoleSecured;
+import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.passer.dto.request.CreateFinalPasserRequest;
 import com.ryc.api.v1.passer.dto.response.CreateFinalPasserResponse;
 import com.ryc.api.v1.passer.dto.response.GetAllFinalPasserResponse;
@@ -21,6 +22,7 @@ import java.util.List;
 public class PasserController {
     private final PasserService passerService;
 
+    @HasPresidentRoleSecured
     @PostMapping("/final")
     public ResponseEntity<?> createFinalPasser(@Valid @RequestBody CreateFinalPasserRequest body) {
         try {
@@ -31,8 +33,10 @@ public class PasserController {
         }
     }
 
+    @HasAnyRoleSecured
     @GetMapping("/final")
-    public ResponseEntity<?> getAllFinalPasser(@RequestParam(required = true) String recruitmentId) {
+    public ResponseEntity<?> getAllFinalPasser(@RequestParam(required = true) String clubId,
+                                               @RequestParam(required = true) String recruitmentId) {
         try {
             List<GetAllFinalPasserResponse> response = passerService.findAllFinalPasser(recruitmentId);
             return ResponseEntity.status(HttpStatus.OK).body(response);

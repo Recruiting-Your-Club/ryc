@@ -1,5 +1,7 @@
 package com.ryc.api.v1.evaluation.controller;
 
+import com.ryc.api.v1.common.aop.annotation.HasAnyRoleSecured;
+import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.evaluation.dto.request.CreatePermissionApplicationRequest;
 import com.ryc.api.v1.evaluation.dto.request.UpdatePermissionStatusRequest;
@@ -25,6 +27,7 @@ import java.util.List;
 public class PermissionController {
     private final PermissionService permissionService;
 
+    @HasAnyRoleSecured
     @PostMapping("/request")
     public ResponseEntity<?> createEvaluationPermissionRequest(@Valid @RequestBody CreatePermissionApplicationRequest body) {
         try {
@@ -35,8 +38,10 @@ public class PermissionController {
         }
     }
 
+    @HasPresidentRoleSecured
     @GetMapping("/requests")
     public ResponseEntity<?> getEvaluationPermissionRequest(
+            @NotEmpty @RequestParam String clubId,
             @NotEmpty @RequestParam String recruitmentId,
             @RequestParam(required = false, defaultValue = "ALL") RequestStatus status) {
         try {
@@ -47,6 +52,7 @@ public class PermissionController {
         }
     }
 
+    @HasPresidentRoleSecured
     @PostMapping("/status")
     public ResponseEntity<?> updateEvaluationPermissionStatus(@Valid @RequestBody UpdatePermissionStatusRequest body) {
         try {
@@ -57,8 +63,10 @@ public class PermissionController {
         }
     }
 
+    @HasPresidentRoleSecured
     @GetMapping("/users")
     public ResponseEntity<?> getEvaluationAuthorizedUserList(
+            @NotEmpty @RequestParam String clubId,
             @NotEmpty @RequestParam String recruitmentId) {
         try {
             List<GetEvaluationAuthorizedUserResponse> response = permissionService.findEvaluationAuthorizedUsers(recruitmentId);

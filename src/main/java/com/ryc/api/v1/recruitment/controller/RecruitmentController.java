@@ -1,10 +1,9 @@
 package com.ryc.api.v1.recruitment.controller;
 
+import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.recruitment.dto.request.CreateRecruitmentRequest;
 import com.ryc.api.v1.recruitment.dto.response.CreateRecruitmentResponse;
 import com.ryc.api.v1.recruitment.service.RecruitmentService;
-import com.ryc.api.v1.role.dto.request.ClubRoleRequest;
-import com.ryc.api.v1.role.dto.response.ClubRoleResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecruitmentController {
     private final RecruitmentService recruitmentService;
 
+    @HasPresidentRoleSecured
     @PostMapping("/")
     public ResponseEntity<?> createRecruitment(@Valid @RequestBody CreateRecruitmentRequest body) {
         try {
@@ -31,5 +31,4 @@ public class RecruitmentController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
-
 }

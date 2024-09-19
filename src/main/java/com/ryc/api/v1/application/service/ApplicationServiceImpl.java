@@ -96,6 +96,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         // 1.지원서 이름 불러오기
         Step step = stepRepository.findById(stepId)
                 .orElseThrow(() -> new NoSuchElementException("Step not found"));
+
+        //TODO: 해당 step 타입이 APPLICATION인지 확인하기
         String stepName = step.getStepName();
 
         //2. 지원서 필수 응답항목 불러오기
@@ -156,8 +158,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                 throw new IllegalArgumentException("answer should not be null");
 
             if (question.getQuestionType() == QuestionType.MULTIPLE_CHOICE) {
+                // TODO: questionId와 함께 조회하는 것으로 수정. 해당 optionId가 해당 questionId의 산하 선지인지 확인하는 절차 필요
                 MultipleChoiceOption multipleChoiceOption = multipleChoiceOptionRepository.findById(answerDto.optionAnswerId())
                         .orElseThrow(() -> new NoSuchElementException("option answer not found"));
+
                 Answer answer = Answer.builder()
                         .application(application)
                         .question(question)

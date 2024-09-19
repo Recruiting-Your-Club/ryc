@@ -11,9 +11,15 @@ import com.ryc.api.v1.club.dto.response.ClubOverviewResponse;
 import com.ryc.api.v1.club.repository.CategoryRepository;
 import com.ryc.api.v1.club.repository.ClubCategoryRepository;
 import com.ryc.api.v1.club.repository.ClubRepository;
+import com.ryc.api.v1.role.domain.ClubRole;
+import com.ryc.api.v1.role.domain.UserClubRole;
+import com.ryc.api.v1.role.repository.UserClubRoleRepository;
 import com.ryc.api.v1.security.dto.CustomUserDetail;
+import com.ryc.api.v1.user.domain.User;
+import com.ryc.api.v1.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +37,9 @@ public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final CategoryRepository categoryRepository;
     private final ClubCategoryRepository clubCategoryRepository;
+
+    private final UserRepository userRepository;
+    private final UserClubRoleRepository userClubRoleRepository;
 
     @Override
     @Transactional
@@ -50,6 +59,24 @@ public class ClubServiceImpl implements ClubService {
                 .build();
 
         clubRepository.save(club);
+
+        //club 생성자 -> 자동 회장 배정
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new NoSuchElementException("Club not found"));
+
+        UserClubRole userClubRole = UserClubRole.builder()
+                .club(club)
+                .user(user)
+                .clubRole(ClubRole.PRESIDENT)
+                .deleted(false)
+                .build();
+        try {
+            userClubRoleRepository.save(userClubRole);
+            userClubRoleRepository.flush();
+        } catch (DataIntegrityViolationException e){
+            // 중복 키 제약 조건 위반 시, 사용자 정의 예외 던지기
+            throw new DuplicateKeyException("Duplicate entry detected: The user,club,role combination already exists.");
+        }
 
         //카테고리가 기존에 없을 때, Category 새로 생성
         List<String> categoriesFromRequest = body.categories();
