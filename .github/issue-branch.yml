@@ -1,0 +1,9 @@
+branchName: short
+autoCloseIssue: true
+defaultBranch: 'develop'
+autoDeleteBranch: true
+commentMessage: '${issue.title} 이슈에 대한 ${branchName} 브랜치가 생성 되었습니다.'
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
