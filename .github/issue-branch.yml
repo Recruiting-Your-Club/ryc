@@ -1,4 +1,4 @@
-branchName: short
+branchName: '#${issue.number}-${issue.title}'
 branches:
   - label: ⭐️ feature
     prefix: feature/
