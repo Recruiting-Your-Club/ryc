@@ -16,6 +16,7 @@ branches:
     prefix: release/
   - label: 📝 test
     prefix: test/
+openDraftPR: true
 autoLinkIssue: true
 autoCloseIssue: true
 defaultBranch: 'develop'
