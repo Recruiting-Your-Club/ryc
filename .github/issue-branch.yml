@@ -1,4 +1,4 @@
-branchName: '#${issue.number}'
+branchName: short
 branches:
   - label: ⭐️ feature
     prefix: feature/
@@ -16,6 +16,7 @@ branches:
     prefix: release/
   - label: 📝 test
     prefix: test/
+autoLinkIssue: true
 autoCloseIssue: true
 defaultBranch: 'develop'
 autoDeleteBranch: true
