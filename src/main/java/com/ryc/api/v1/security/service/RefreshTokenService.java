@@ -20,6 +20,14 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
+    public void updateRefreshToken(User user, String newToken, long expirationMinutes) {
+        refreshTokenRepository.deleteByToken(newToken);
+
+        RefreshToken refreshToken = new RefreshToken(user, newToken, LocalDateTime.now().plusMinutes(expirationMinutes));
+        refreshTokenRepository.save(refreshToken);
+    }
+
+
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
     }

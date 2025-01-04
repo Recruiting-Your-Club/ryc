@@ -45,7 +45,7 @@ public class RefreshTokenController {
         String newAccessToken = jwtTokenManager.generateToken(email, storedToken.getUser().getRole().name());
 
         String newRefreshToken = jwtTokenManager.generateRefreshToken(email);
-        refreshTokenService.createRefreshToken(storedToken.getUser(), newRefreshToken, 7 * 24 * 60); // 7일 만료
+        refreshTokenService.updateRefreshToken(storedToken.getUser(), newRefreshToken, 7 * 24 * 60);
 
         return ResponseEntity.ok(Map.of(
                 "accessToken", newAccessToken,

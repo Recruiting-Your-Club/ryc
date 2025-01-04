@@ -63,7 +63,7 @@ public class JwtTokenManager {
                 .withIssuer(jwtProperties.getAccessToken().getIssuer())
                 .withIssuedAt(new Date())
                 .withExpiresAt(
-                        new Date(System.currentTimeMillis() + jwtProperties.getAccessToken().getExpirationMinute() * 24 * 60 * 60 * 1000)) // 24시간 이상
+                        new Date(System.currentTimeMillis() + jwtProperties.getAccessToken().getExpirationMinute() * 24 * 60 * 60 * 1000)) // 7일 이상
                 .sign(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()));
     }
 
