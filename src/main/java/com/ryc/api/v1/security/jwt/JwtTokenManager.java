@@ -67,4 +67,13 @@ public class JwtTokenManager {
                 .sign(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()));
     }
 
+    public boolean validateRefreshToken(String token) {
+        try {
+            DecodedJWT decodedJWT = getDecodedJWT(token);
+            return !isTokenExpired(token); // 만료되지 않은 경우 유효
+        } catch (Exception e) {
+            return false; // 검증 실패
+        }
+    }
+
 }
