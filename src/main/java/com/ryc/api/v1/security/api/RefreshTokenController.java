@@ -33,15 +33,23 @@ public class RefreshTokenController {
 
         String email = jwtTokenManager.getEmailFromToken(refreshToken);
 
+        // 데이터베이스에 저장된 Refresh Token과 비교함으로써 Refresh Token이 탈취되었을 가능성을 방지 -> 보안
         RefreshToken storedToken = refreshTokenService.findByToken(refreshToken)
                 .orElseThrow(() -> new IllegalArgumentException("Refresh Token 값을 가진 유저가 존재하지 않음"));
 
         if (!storedToken.getUser().getEmail().equals(email)) {
             return ResponseEntity.status(401).body(Map.of("message", "Refresh Token과 일치하는 유저 정보가 아님"));
         }
+        refreshTokenService.deleteByToken(refreshToken);
 
         String newAccessToken = jwtTokenManager.generateToken(email, storedToken.getUser().getRole().name());
 
-        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+        String newRefreshToken = jwtTokenManager.generateRefreshToken(email);
+        refreshTokenService.createRefreshToken(storedToken.getUser(), newRefreshToken, 7 * 24 * 60); // 7일 만료
+
+        return ResponseEntity.ok(Map.of(
+                "accessToken", newAccessToken,
+                "refreshToken", newRefreshToken
+        ));
     }
 }
