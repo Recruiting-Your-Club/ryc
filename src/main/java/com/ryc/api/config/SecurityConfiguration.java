@@ -6,6 +6,7 @@ import com.ryc.api.v1.security.filter.EmailPasswordAuthenticationFilter;
 import com.ryc.api.v1.security.filter.JwtAuthenticationFilter;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.security.service.RefreshTokenService;
+import com.ryc.api.v1.security.service.RefreshTokenServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

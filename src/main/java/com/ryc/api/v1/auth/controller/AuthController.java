@@ -4,20 +4,13 @@ import com.ryc.api.v1.auth.dto.LoginRequest;
 import com.ryc.api.v1.auth.dto.RegisterRequest;
 import com.ryc.api.v1.auth.dto.RegisterResponse;
 import com.ryc.api.v1.auth.service.AuthService;
-import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.security.service.RefreshTokenService;
-import com.ryc.api.v1.user.domain.User;
-import com.ryc.api.v1.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/auth")
