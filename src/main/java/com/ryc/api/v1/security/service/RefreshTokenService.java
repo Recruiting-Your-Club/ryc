@@ -1,6 +1,6 @@
 package com.ryc.api.v1.security.service;
 
-import com.ryc.api.v1.security.dao.RefreshTokenRepository;
+import com.ryc.api.v1.security.repository.RefreshTokenRepository;
 import com.ryc.api.v1.security.domain.RefreshToken;
 import com.ryc.api.v1.user.domain.User;
 import lombok.RequiredArgsConstructor;

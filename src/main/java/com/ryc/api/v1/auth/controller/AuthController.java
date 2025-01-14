@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,6 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
-    private final RefreshTokenService refreshTokenService;
-    private final UserRepository userRepository;
-    private final JwtTokenManager jwtTokenManager;
 
     @PostMapping("/login")
     @Operation(summary = "Login", description = "사용자 로그인 인증 후, 인증 성공시 토큰 발행")
@@ -48,21 +46,12 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Invalid Authorization header"));
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            return authService.logoutUser(authorizationHeader);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-
-        String token = authorizationHeader.replace("Bearer ", "");
-
-        String email = jwtTokenManager.getEmailFromToken(token);
-
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            refreshTokenService.deleteByUser(user);
-        }
-
-        return ResponseEntity.ok(Map.of("message", "Successful"));
     }
 
 }

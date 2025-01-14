@@ -1,4 +1,4 @@
-package com.ryc.api.v1.security.dao;
+package com.ryc.api.v1.security.repository;
 
 import com.ryc.api.v1.security.domain.RefreshToken;
 import com.ryc.api.v1.user.domain.User;

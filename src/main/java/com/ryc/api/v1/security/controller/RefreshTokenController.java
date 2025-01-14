@@ -1,4 +1,4 @@
-package com.ryc.api.v1.security.api;
+package com.ryc.api.v1.security.controller;
 
 
 import com.ryc.api.v1.security.dto.RefreshTokenRequest;
