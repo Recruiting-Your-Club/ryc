@@ -5,7 +5,6 @@ import com.ryc.api.v1.security.dto.RefreshTokenRequest;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.security.domain.RefreshToken;
 import com.ryc.api.v1.security.service.RefreshTokenService;
-import com.ryc.api.v1.security.service.RefreshTokenServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
