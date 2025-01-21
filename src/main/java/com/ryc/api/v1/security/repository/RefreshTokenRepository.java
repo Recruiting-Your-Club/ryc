@@ -1,6 +1,6 @@
 package com.ryc.api.v1.security.repository;
 
-import com.ryc.api.v1.security.domain.RefreshToken;
+import com.ryc.api.v1.auth.domain.RefreshToken;
 import com.ryc.api.v1.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

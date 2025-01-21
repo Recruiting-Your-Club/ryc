@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ryc.api.v1.security.dto.CustomUserDetail;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.security.service.RefreshTokenService;
+import com.ryc.api.v1.auth.service.RefreshTokenService;
 import com.ryc.api.v1.user.domain.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

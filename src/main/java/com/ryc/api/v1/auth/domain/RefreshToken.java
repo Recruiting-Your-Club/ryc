@@ -2,15 +2,17 @@ package com.ryc.api.v1.auth.domain;
 
 import com.ryc.api.v1.user.domain.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "refresh_token")
 public class RefreshToken {
@@ -28,11 +30,5 @@ public class RefreshToken {
 
     @Column(nullable = false)
     private LocalDateTime expiration;
-
-    public RefreshToken(User user, String token, LocalDateTime expiration) {
-        this.user = user;
-        this.token = token;
-        this.expiration = expiration;
-    }
 
 }

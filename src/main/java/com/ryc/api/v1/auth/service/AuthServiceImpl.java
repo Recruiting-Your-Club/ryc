@@ -1,9 +1,9 @@
 package com.ryc.api.v1.auth.service;
 
-import com.ryc.api.v1.auth.dto.RegisterRequest;
-import com.ryc.api.v1.auth.dto.RegisterResponse;
+import com.ryc.api.v1.auth.dto.request.RegisterRequest;
+import com.ryc.api.v1.auth.dto.response.RegisterResponse;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.security.service.RefreshTokenService;
+import com.ryc.api.v1.auth.service.RefreshTokenService;
 import com.ryc.api.v1.user.domain.User;
 import com.ryc.api.v1.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

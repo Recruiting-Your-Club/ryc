@@ -1,10 +1,10 @@
 package com.ryc.api.v1.auth.controller;
 
 
-import com.ryc.api.v1.security.domain.RefreshToken;
-import com.ryc.api.v1.security.dto.RefreshTokenRequest;
+import com.ryc.api.v1.auth.domain.RefreshToken;
+import com.ryc.api.v1.auth.dto.request.RefreshTokenRequest;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.security.service.RefreshTokenService;
+import com.ryc.api.v1.auth.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

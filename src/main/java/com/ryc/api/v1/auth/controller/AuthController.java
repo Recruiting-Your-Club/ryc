@@ -1,8 +1,8 @@
 package com.ryc.api.v1.auth.controller;
 
-import com.ryc.api.v1.auth.dto.LoginRequest;
-import com.ryc.api.v1.auth.dto.RegisterRequest;
-import com.ryc.api.v1.auth.dto.RegisterResponse;
+import com.ryc.api.v1.auth.dto.request.LoginRequest;
+import com.ryc.api.v1.auth.dto.request.RegisterRequest;
+import com.ryc.api.v1.auth.dto.response.RegisterResponse;
 import com.ryc.api.v1.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
