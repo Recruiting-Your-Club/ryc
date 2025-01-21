@@ -2,12 +2,16 @@ package com.ryc.api.v1.auth.controller;
 
 
 import com.ryc.api.v1.auth.domain.RefreshToken;
+import com.ryc.api.v1.auth.dto.exception.InvalidRefreshTokenException;
+import com.ryc.api.v1.auth.dto.exception.UnauthorizedUserException;
 import com.ryc.api.v1.auth.dto.request.RefreshTokenRequest;
+import com.ryc.api.v1.auth.dto.response.GenerateRefreshTokenResponse;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.auth.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,39 +26,19 @@ import java.util.Map;
 @Tag(name = "token")
 public class RefreshTokenController {
 
-    private final JwtTokenManager jwtTokenManager;
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(@Valid @RequestBody RefreshTokenRequest request) {
-        String refreshToken = request.refreshToken();
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Refresh Token이 비어 있음"));
+        try {
+            GenerateRefreshTokenResponse response = refreshTokenService.generateRefreshToken(request.refreshToken());
+            ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (InvalidRefreshTokenException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (UnauthorizedUserException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
-
-        if (!jwtTokenManager.validateRefreshToken(refreshToken)) {
-            return ResponseEntity.status(401).body(Map.of("message", "만료되었거나 유효하지 않은 Refresh Token"));
-        }
-
-        String email = jwtTokenManager.getEmailFromToken(refreshToken);
-
-        // 데이터베이스에 저장된 Refresh Token과 비교함으로써 Refresh Token이 탈취되었을 가능성을 방지 -> 보안
-        RefreshToken storedToken = refreshTokenService.findByToken(refreshToken)
-                .orElseThrow(() -> new IllegalArgumentException("Refresh Token 값을 가진 유저가 존재하지 않음"));
-
-        if (!storedToken.getUser().getEmail().equals(email)) {
-            return ResponseEntity.status(401).body(Map.of("message", "Refresh Token과 일치하는 유저 정보가 아님"));
-        }
-        refreshTokenService.deleteByToken(refreshToken);
-
-        String newAccessToken = jwtTokenManager.generateToken(email, storedToken.getUser().getRole().name());
-
-        String newRefreshToken = jwtTokenManager.generateRefreshToken(email);
-        refreshTokenService.updateRefreshToken(storedToken.getUser(), newRefreshToken, 7 * 24 * 60);
-
-        return ResponseEntity.ok(Map.of(
-                "accessToken", newAccessToken,
-                "refreshToken", newRefreshToken
-        ));
     }
 }

@@ -82,7 +82,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
         String refreshToken = jwtTokenManager.generateRefreshToken(email);
 
         User user = customUserDetail.getUser();
-        refreshTokenService.updateRefreshToken(user, refreshToken, jwtProperties.getRefreshTokenExpirationMinutes());
+        refreshTokenService.updateRefreshToken(user, refreshToken, jwtProperties.getRefreshToken().getExpirationMinute());
 
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);
