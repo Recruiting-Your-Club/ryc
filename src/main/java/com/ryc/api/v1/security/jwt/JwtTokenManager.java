@@ -60,10 +60,10 @@ public class JwtTokenManager {
     public String generateRefreshToken(String email) {
         return JWT.create()
                 .withSubject(email)
-                .withIssuer(jwtProperties.getAccessToken().getIssuer())
+                .withIssuer(jwtProperties.getRefreshToken().getIssuer())
                 .withIssuedAt(new Date())
                 .withExpiresAt(
-                        new Date(System.currentTimeMillis() + jwtProperties.getRefreshTokenExpirationMinutes() * 60 * 1000)
+                        new Date(System.currentTimeMillis() + jwtProperties.getRefreshToken().getExpirationMinute() * 60 * 1000)
                 )
                 .sign(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()));
     }
