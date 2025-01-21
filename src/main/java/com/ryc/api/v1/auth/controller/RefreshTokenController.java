@@ -32,7 +32,7 @@ public class RefreshTokenController {
     public ResponseEntity<?> refreshAccessToken(@Valid @RequestBody RefreshTokenRequest request) {
         try {
             GenerateRefreshTokenResponse response = refreshTokenService.generateRefreshToken(request.refreshToken());
-            ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (InvalidRefreshTokenException e){

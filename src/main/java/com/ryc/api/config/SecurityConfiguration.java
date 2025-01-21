@@ -4,6 +4,7 @@ import com.ryc.api.v1.security.exceptions.RestAuthenticationEntryPoint;
 import com.ryc.api.v1.security.exceptions.TokenAccessDeniedHandler;
 import com.ryc.api.v1.security.filter.EmailPasswordAuthenticationFilter;
 import com.ryc.api.v1.security.filter.JwtAuthenticationFilter;
+import com.ryc.api.v1.security.jwt.JwtProperties;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.auth.service.RefreshTokenService;
 import com.ryc.api.v1.auth.service.RefreshTokenServiceImpl;
@@ -31,6 +32,7 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtTokenManager jwtTokenManager;
+    private final JwtProperties jwtProperties;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final RefreshTokenService refreshTokenService;
 
@@ -45,6 +47,7 @@ public class SecurityConfiguration {
                         new EmailPasswordAuthenticationFilter(
                                 authenticationManager(authenticationConfiguration),
                                 jwtTokenManager,
+                                jwtProperties,
                                 refreshTokenService),
                         UsernamePasswordAuthenticationFilter.class) //email - password 로그인 필터
                 .exceptionHandling(
