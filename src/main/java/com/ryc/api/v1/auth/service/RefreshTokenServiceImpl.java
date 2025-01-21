@@ -5,7 +5,7 @@ import com.ryc.api.v1.auth.dto.exception.InvalidRefreshTokenException;
 import com.ryc.api.v1.auth.dto.exception.UnauthorizedUserException;
 import com.ryc.api.v1.auth.dto.response.GenerateRefreshTokenResponse;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.security.repository.RefreshTokenRepository;
+import com.ryc.api.v1.auth.repository.RefreshTokenRepository;
 import com.ryc.api.v1.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
