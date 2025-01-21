@@ -1,20 +1,23 @@
-package com.ryc.api.v1.security.controller;
+package com.ryc.api.v1.auth.controller;
 
 
+import com.ryc.api.v1.security.domain.RefreshToken;
 import com.ryc.api.v1.security.dto.RefreshTokenRequest;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.security.domain.RefreshToken;
 import com.ryc.api.v1.security.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/auth/token")
+@RequestMapping("/api/v1/token")
 @RequiredArgsConstructor
 @Tag(name = "token")
 public class RefreshTokenController {
@@ -24,7 +27,7 @@ public class RefreshTokenController {
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(@Valid @RequestBody RefreshTokenRequest request) {
-        String refreshToken = request.getRefreshToken();
+        String refreshToken = request.refreshToken();
         if (refreshToken == null || refreshToken.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("message", "Refresh Token이 비어 있음"));
         }
