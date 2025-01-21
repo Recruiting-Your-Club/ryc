@@ -25,6 +25,7 @@ public final class JwtProperties {
     @RequiredArgsConstructor
     public static final class RefreshToken {
         private final String issuer;
+        private final String secretKey;
         private final long expirationMinute;
     }
 
