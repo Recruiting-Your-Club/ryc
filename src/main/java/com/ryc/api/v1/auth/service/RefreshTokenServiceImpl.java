@@ -8,12 +8,10 @@ import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.security.repository.RefreshTokenRepository;
 import com.ryc.api.v1.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

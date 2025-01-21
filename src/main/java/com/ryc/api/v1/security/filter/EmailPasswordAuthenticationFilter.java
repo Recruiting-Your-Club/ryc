@@ -3,6 +3,7 @@ package com.ryc.api.v1.security.filter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ryc.api.v1.security.dto.CustomUserDetail;
+import com.ryc.api.v1.security.jwt.JwtProperties;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.auth.service.RefreshTokenService;
 import com.ryc.api.v1.user.domain.User;
@@ -27,6 +28,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenManager jwtTokenManager;
+    private final JwtProperties jwtProperties;
     private final RefreshTokenService refreshTokenService;
 
     {
@@ -80,7 +82,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
         String refreshToken = jwtTokenManager.generateRefreshToken(email);
 
         User user = customUserDetail.getUser();
-        refreshTokenService.updateRefreshToken(user, refreshToken, 7 * 24 * 60);
+        refreshTokenService.updateRefreshToken(user, refreshToken, jwtProperties.getRefreshTokenExpirationMinutes());
 
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);

@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public final class JwtProperties {
 
     private final AccessToken accessToken;
+    private final long refreshTokenExpirationMinutes;
 
     @Getter
     @RequiredArgsConstructor
