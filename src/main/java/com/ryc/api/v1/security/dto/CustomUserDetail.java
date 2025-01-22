@@ -16,7 +16,7 @@ import java.util.Collections;
 @ToString
 @RequiredArgsConstructor
 public class CustomUserDetail implements UserDetails, Serializable {
-    private final User user;
+    private final String userId;
     private final String id;
     private final String username;
     private final String email;
@@ -25,14 +25,14 @@ public class CustomUserDetail implements UserDetails, Serializable {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
-    public CustomUserDetail(User user) {
-        this.user = user;
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
+    public CustomUserDetail(User userId) {
+        this.userId = userId.getId();
+        this.id = userId.getId();
+        this.username = userId.getUsername();
+        this.email = userId.getEmail();
+        this.password = userId.getPassword();
         this.authorities
-                = Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().name()));
+                = Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + userId.getRole().name()));
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.ryc.api.v1.security.jwt.JwtProperties;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.auth.service.RefreshTokenService;
 import com.ryc.api.v1.user.domain.User;
+import com.ryc.api.v1.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import java.io.BufferedReader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -30,6 +32,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
     private final JwtTokenManager jwtTokenManager;
     private final JwtProperties jwtProperties;
     private final RefreshTokenService refreshTokenService;
+    private final UserRepository userRepository;
 
     {
         setFilterProcessesUrl("/api/v1/auth/login");
@@ -81,8 +84,13 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
         String accessToken = jwtTokenManager.generateToken(email, role);
         String refreshToken = jwtTokenManager.generateRefreshToken(email);
 
-        User user = customUserDetail.getUser();
-        refreshTokenService.updateRefreshToken(user, refreshToken, jwtProperties.getRefreshToken().getExpirationMinute());
+        Optional<User> user = userRepository.findById(customUserDetail.getUserId());
+
+        if (user.isEmpty()) {
+            throw new IllegalStateException("일치하는 유저 정보가 존재하지 않습니다.");
+        }
+
+        refreshTokenService.updateRefreshToken(user.get(), refreshToken, jwtProperties.getRefreshToken().getExpirationMinute());
 
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);

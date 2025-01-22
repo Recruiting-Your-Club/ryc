@@ -8,6 +8,7 @@ import com.ryc.api.v1.security.jwt.JwtProperties;
 import com.ryc.api.v1.security.jwt.JwtTokenManager;
 import com.ryc.api.v1.auth.service.RefreshTokenService;
 import com.ryc.api.v1.auth.service.RefreshTokenServiceImpl;
+import com.ryc.api.v1.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,7 @@ public class SecurityConfiguration {
     private final JwtProperties jwtProperties;
     private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
     private final RefreshTokenService refreshTokenService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +50,8 @@ public class SecurityConfiguration {
                                 authenticationManager(authenticationConfiguration),
                                 jwtTokenManager,
                                 jwtProperties,
-                                refreshTokenService),
+                                refreshTokenService,
+                                userRepository),
                         UsernamePasswordAuthenticationFilter.class) //email - password 로그인 필터
                 .exceptionHandling(
                         exceptions ->
