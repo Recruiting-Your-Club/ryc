@@ -84,13 +84,10 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
         String accessToken = jwtTokenManager.generateToken(email, role);
         String refreshToken = jwtTokenManager.generateRefreshToken(email);
 
-        Optional<User> user = userRepository.findById(customUserDetail.getUserId());
+        User user = userRepository.findById(customUserDetail.getId())
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 유저 정보가 존재하지 않습니다."));
 
-        if (user.isEmpty()) {
-            throw new IllegalStateException("일치하는 유저 정보가 존재하지 않습니다.");
-        }
-
-        refreshTokenService.updateRefreshToken(user.get(), refreshToken, jwtProperties.getRefreshToken().getExpirationMinute());
+        refreshTokenService.updateRefreshToken(user, refreshToken, jwtProperties.getRefreshToken().getExpirationMinute());
 
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);
