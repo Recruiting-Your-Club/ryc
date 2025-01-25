@@ -1,4 +1,4 @@
-package com.ryc.api.v1.util.constants;
+package com.ryc.api.v1.auth.domain;
 
 public enum TokenIdentifier {
     ISACCESSTOKEN(true),
