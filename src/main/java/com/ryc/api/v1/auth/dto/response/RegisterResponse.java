@@ -1,4 +1,4 @@
-package com.ryc.api.v1.auth.dto;
+package com.ryc.api.v1.auth.dto.response;
 
 import jakarta.validation.constraints.NotEmpty;
 

@@ -1,8 +1,8 @@
 package com.ryc.api.v1.auth.controller;
 
-import com.ryc.api.v1.auth.dto.LoginRequest;
-import com.ryc.api.v1.auth.dto.RegisterRequest;
-import com.ryc.api.v1.auth.dto.RegisterResponse;
+import com.ryc.api.v1.auth.dto.request.LoginRequest;
+import com.ryc.api.v1.auth.dto.request.RegisterRequest;
+import com.ryc.api.v1.auth.dto.response.RegisterResponse;
 import com.ryc.api.v1.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,10 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/auth")
@@ -40,4 +37,14 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            return authService.logoutUser(authorizationHeader);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
 }

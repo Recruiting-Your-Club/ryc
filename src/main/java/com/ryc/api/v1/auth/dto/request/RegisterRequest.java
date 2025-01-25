@@ -1,4 +1,4 @@
-package com.ryc.api.v1.auth.dto;
+package com.ryc.api.v1.auth.dto.request;
 
 import com.ryc.api.v1.user.domain.User;
 import com.ryc.api.v1.user.domain.UserRole;
