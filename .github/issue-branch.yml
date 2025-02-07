@@ -1,0 +1,28 @@
+branchName: short
+branches:
+  - label: ⭐️ feature
+    prefix: feature/
+  - label: 🐛 bug
+    prefix: hotfix/
+  - label: 🧹 chore
+    prefix: chore/
+  - label: 📑 docs
+    prefix: docs/
+  - label: 🔨 refactor
+    prefix: refactor/
+  - label: ⛑️ infra
+    prefix: infra/
+  - label: 🤩 release
+    prefix: release/
+  - label: 📝 test
+    prefix: test/
+openDraftPR: true
+autoLinkIssue: true
+autoCloseIssue: true
+defaultBranch: 'develop'
+autoDeleteBranch: true
+commentMessage: '${issue.title} 이슈에 대한 ${branchName} 브랜치가 생성 되었습니다.'
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
