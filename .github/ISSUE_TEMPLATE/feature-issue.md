@@ -1,17 +1,8 @@
 ---
 name: FEATURE ISSUE
 about: 기능 관련 이슈 템플릿
-title: "[FEAT]"
-labels: "\U0001F4BB backend, ⭐️ feature"
-assignees: ''
-
----
-
----
-name: 기능 템플릿
-about: 기능 관련 이슈 템플릿
-title: ''
-labels: 'feature'
+title: "[ALL/FE/BE]"
+labels: "⭐️ feature"
 assignees: ''
 
 ---

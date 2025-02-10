@@ -1,17 +1,8 @@
 ---
 name: BUG ISSUE
 about: 버그 관련 이슈 템플릿
-title: "[BUG]"
+title: "[ALL/FE/BE]"
 labels: "\U0001F41B bug"
-assignees: ''
-
----
-
----
-name: 버그 템플릿
-about: 버그 관련 이슈 템플릿
-title: ''
-labels: ''
 assignees: ''
 
 ---
