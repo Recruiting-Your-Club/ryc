@@ -1,7 +1,7 @@
 ---
 name: DOCS ISSUE
 about: 문서작업이나 레포지토리 기타작업 관련 이슈 템플릿
-title: "[docs]"
+title: "[ALL/FE/BE]"
 labels: "📑 docs"
 assignees: ''
 
