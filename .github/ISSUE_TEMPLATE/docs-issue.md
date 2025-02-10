@@ -7,15 +7,6 @@ assignees: ''
 
 ---
 
----
-name: 문서작업 요청 템플릿
-about: 문서작업 요청 템플릿
-title: ''
-labels: ''
-assignees: ''
-
----
-
 ## 🔨 작업 설명
 작업의 간략한 설명을 적어주세요.
 
