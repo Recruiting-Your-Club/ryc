@@ -1,7 +1,7 @@
 ---
 name: TEST ISSUE
 about: 성능테스트 관련 이슈 템플릿
-title: "[TEST]"
+title: "[ALL/FE/BE]"
 labels: "\U0001F4BB backend, \U0001F4DD test"
 assignees: ''
 

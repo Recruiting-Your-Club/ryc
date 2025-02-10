@@ -1,17 +1,8 @@
 ---
 name: REFACTOR ISSUE
 about: 리펙토링 관련 이슈 템플릿
-title: "[REFACTOR]"
+title: "[ALL/FE/BE]"
 labels: "\U0001F528 refactor"
-assignees: ''
-
----
-
----
-name: 리팩토링 요청 템플릿
-about: 코드 개선을 위한 리팩토링 요청 템플릿
-title: ''
-labels: ''
 assignees: ''
 
 ---
