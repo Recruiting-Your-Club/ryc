@@ -2,16 +2,7 @@
 name: INFRA ISSUE
 about: 배포 및 인프라 환경 관련 이슈 템플릿
 title: "[INFRA]"
-labels: "\U0001F4BB backend, ⛑️ infra"
-assignees: ''
-
----
-
----
-name: 인프라 이슈 템플릿
-about: 배포 및 인프라 관련 이슈 템플릿
-title: ''
-labels: 'infra'
+labels: "⛑️ infra"
 assignees: ''
 
 ---
