@@ -1,20 +1,20 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "ESNext", // 타입스크립트가 변환할 자바스크립트 버전
+        "module": "ESNext", 
+        "jsx": "react-jsx", // import React 없어도 jsx 사용가능하게 해줌
+        "skipLibCheck": true, // .d.ts 검사 건너뜀 
+        
         "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx"
+        "moduleResolution": "bundler",
+        "isolatedModules": true, // 타입스크립트 개별 컴파일 가능
+        "allowJs": true, // js파일 허용
+
+        "strict": true, // 타입 강하게 검사
+        "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 강제
+        "resolveJsonModule": true, // json import 
+        "noEmit": true, // tsconfig로 번들 안하고 webpack으로 함 
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["/node_modules/"]
 }
