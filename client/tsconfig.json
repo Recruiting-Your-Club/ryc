@@ -15,6 +15,8 @@
         "resolveJsonModule": true, // json import
         "noEmit": true, // tsconfig로 번들 안하고 webpack으로 함
 
+        "jsxImportSource": "@emotion/react", // html 속성에 css해도 타입에러 잡아줌
+
         "baseUrl": "./src",
         "paths": {
             "@assets/*" : ["assets/*"],
@@ -24,6 +26,7 @@
             "@pages/*" : ["pages/*"],
             "@types/*" : ["types/*"],
             "@utils/*" : ["utils/*"],
+            "@styles/*" : ["styles/*"],
         }
     },
     "include": ["src"],

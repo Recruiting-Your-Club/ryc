@@ -2,6 +2,7 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
     },
+    "editor.autoClosingTags": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode", // pritter를 기본 포매터로 설정
     "editor.formatOnSave": true,
     "editor.quickSuggestions": {
