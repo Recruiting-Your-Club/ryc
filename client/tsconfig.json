@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
         "target": "ESNext", // 타입스크립트가 변환할 자바스크립트 버전
-        "module": "ESNext", 
+        "module": "ESNext",
         "jsx": "react-jsx", // import React 없어도 jsx 사용가능하게 해줌
-        "skipLibCheck": true, // .d.ts 검사 건너뜀 
-        
+        "skipLibCheck": true, // .d.ts 검사 건너뜀
+
         "lib": ["dom", "dom.iterable", "esnext"],
         "moduleResolution": "bundler",
         "isolatedModules": true, // 타입스크립트 개별 컴파일 가능
@@ -12,8 +12,22 @@
 
         "strict": true, // 타입 강하게 검사
         "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 강제
-        "resolveJsonModule": true, // json import 
-        "noEmit": true, // tsconfig로 번들 안하고 webpack으로 함 
+        "resolveJsonModule": true, // json import
+        "noEmit": true, // tsconfig로 번들 안하고 webpack으로 함
+
+        "jsxImportSource": "@emotion/react", // html 속성에 css해도 타입에러 잡아줌
+
+        "baseUrl": "./src",
+        "paths": {
+            "@assets/*": ["assets/*"],
+            "@components/*": ["components/*"],
+            "@constants/*": ["constants/*"],
+            "@layouts/*": ["layouts/*"],
+            "@pages/*": ["pages/*"],
+            "@types/*": ["types/*"],
+            "@utils/*": ["utils/*"],
+            "@styles/*": ["styles/*"]
+        }
     },
     "include": ["src"],
     "exclude": ["/node_modules/"]
