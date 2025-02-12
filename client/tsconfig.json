@@ -19,14 +19,14 @@
 
         "baseUrl": "./src",
         "paths": {
-            "@assets/*" : ["assets/*"],
-            "@components/*" : ["components/*"],
-            "@constants/*" : ["constants/*"],
-            "@layouts/*" : ["layouts/*"],
-            "@pages/*" : ["pages/*"],
-            "@types/*" : ["types/*"],
-            "@utils/*" : ["utils/*"],
-            "@styles/*" : ["styles/*"],
+            "@assets/*": ["assets/*"],
+            "@components/*": ["components/*"],
+            "@constants/*": ["constants/*"],
+            "@layouts/*": ["layouts/*"],
+            "@pages/*": ["pages/*"],
+            "@types/*": ["types/*"],
+            "@utils/*": ["utils/*"],
+            "@styles/*": ["styles/*"]
         }
     },
     "include": ["src"],
