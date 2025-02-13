@@ -10,23 +10,23 @@ interface Size {
 
 export const buttonSize: Record<ButtonSize, Size> = {
     xs: {
-        width: '4rem',
-        height: '2.5rem',
-    },
-    s: {
         width: '5rem',
         height: '2.5rem',
     },
-    md: {
-        width: '6rem',
-        height: '2.5rem',
-    },
-    lg: {
+    s: {
         width: '7rem',
         height: '2.5rem',
     },
+    md: {
+        width: '9rem',
+        height: '2.5rem',
+    },
+    lg: {
+        width: '11rem',
+        height: '2.5rem',
+    },
     xl: {
-        width: '8rem',
+        width: '13rem',
         height: '2.5rem',
     },
     full: {
@@ -46,9 +46,9 @@ export const s_variant = {
         background-color: ${colors.default};
         color: ${colors.white};
         border: none;
-        transition: opacity 0.2s;
+        transition: background-color 0.2s;
         &:hover {
-            opacity: 0.8;
+            background-color: ${colors.defaultHover};
         }
     `,
 };
@@ -60,10 +60,14 @@ export const s_base = (borderRadius: number | string, zIndex: number) => {
         align-items: center;
         border-radius: ${borderRadius};
         z-index: ${zIndex};
-        :disabled {
+        &:disabled {
             background-color: ${colors.disabled};
             color: ${colors.white};
             cursor: not-allowed;
+        }
+        &:disabled:hover {
+            background-color: ${colors.disabled};
+            opacity: 1;
         }
     `;
 };
