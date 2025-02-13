@@ -2,7 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '.';
 
 const meta: Meta<typeof Button> = {
+    title: '기본버튼',
     component: Button,
+    parameters: {
+        docs: {
+            description: {
+                component: '버튼 컴포넌트입니다.',
+            },
+        },
+    },
 };
 
 export default meta;

@@ -1,28 +1,9 @@
 import React from 'react';
-import { Button } from '@components/Button';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
+
 function App() {
-    return (
-        <>
-            <Button variant="primary" size="xs">
-                ㅎㅇㅎㅇ
-            </Button>
-            <Button variant="primary" size="s">
-                중복확인
-            </Button>
-            <Button variant="primary" size="md">
-                ㅎㅇㅎㅇ
-            </Button>
-            <Button variant="primary" size="lg">
-                ㅎㅇㅎㅇ
-            </Button>
-            <Button variant="primary" size="xl">
-                ㅎㅇㅎㅇ
-            </Button>
-            <Button variant="primary" size="full">
-                ㅎㅇㅎㅇ
-            </Button>
-        </>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;
