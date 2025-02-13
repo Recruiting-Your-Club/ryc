@@ -1,6 +1,5 @@
-import { s_size, s_base, s_variant } from './Button.style';
 import React from 'react';
-
+import { s_size, s_base, s_variant } from './Button.style';
 import type { SerializedStyles } from '@emotion/react';
 import type { ButtonHTMLAttributes } from 'react';
 
