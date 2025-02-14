@@ -25,7 +25,15 @@ export const Primary: Story = {
         type: 'button',
     },
 };
-
+export const Outlined: Story = {
+    args: {
+        size: 'md',
+        onClick: () => {},
+        children: '버튼',
+        variant: 'outlined',
+        type: 'button',
+    },
+};
 export const Disabled: Story = {
     args: {
         size: 'md',
