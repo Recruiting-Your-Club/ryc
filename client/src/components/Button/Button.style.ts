@@ -10,28 +10,28 @@ interface Size {
 
 export const buttonSize: Record<ButtonSize, Size> = {
     xs: {
-        width: '5rem',
-        height: '2.5rem',
+        width: '4rem',
+        height: '2rem',
     },
     s: {
-        width: '7rem',
-        height: '2.5rem',
+        width: '6rem',
+        height: '2rem',
     },
     md: {
-        width: '9rem',
-        height: '2.5rem',
+        width: '8rem',
+        height: '2rem',
     },
     lg: {
-        width: '11rem',
-        height: '2.5rem',
+        width: '10rem',
+        height: '2rem',
     },
     xl: {
         width: '13rem',
-        height: '2.5rem',
+        height: '2rem',
     },
     full: {
         width: '100%',
-        height: '2.5rem',
+        height: '2rem',
     },
 };
 export const s_size = (size: ButtonSize) => {
@@ -49,6 +49,16 @@ export const s_variant = {
         transition: background-color 0.2s;
         &:hover {
             background-color: ${colors.defaultHover};
+        }
+    `,
+    outlined: css`
+        background-color: ${colors.white};
+        color: ${colors.default};
+        border: 0.1rem solid ${colors.default};
+        transition: background-color 0.2s;
+        &:hover {
+            background-color: ${colors.defaultHover};
+            color: ${colors.white};
         }
     `,
 };

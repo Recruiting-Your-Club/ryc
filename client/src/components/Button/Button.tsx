@@ -4,7 +4,7 @@ import type { SerializedStyles } from '@emotion/react';
 import type { ButtonHTMLAttributes } from 'react';
 
 export type ButtonSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
-export type ButtonVariant = 'primary';
+export type ButtonVariant = 'primary' | 'outlined';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant: ButtonVariant;
