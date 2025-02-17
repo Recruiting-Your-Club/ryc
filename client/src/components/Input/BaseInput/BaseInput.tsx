@@ -1,19 +1,21 @@
 import React from 'react';
-import { s_input, helperTextStyle } from './Input.style';
+import { inputVariant, baseContainer, helperTextStyle, labelStyle } from './Input.style';
 import type { InputHTMLAttributes } from 'react';
 
 export type InputVariant = 'primary' | 'lined';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    label?: string;
     variant?: InputVariant;
     isError?: boolean;
     helperText?: string;
 }
 
-function BaseInput({ variant = 'primary', type = 'text', isError = false, helperText, ...props }: InputProps) {
+function BaseInput({ variant = 'primary', type = 'text', isError = false, helperText, label, ...props }: InputProps) {
     return (
-        <div css={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-            <input css={s_input[variant]} type={type} {...props} />
+        <div css={baseContainer}>
+            {label && <label css={labelStyle}>{label}</label>}
+            <input css={inputVariant[variant]} type={type} {...props} />
             {helperText && <span css={helperTextStyle(isError)}>{helperText}</span>}
         </div>
     );
