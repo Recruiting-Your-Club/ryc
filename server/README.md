@@ -7,19 +7,26 @@
 ### 백앤드 팀원
 <table align="">
     <th align="center">조상준</th>
-    <th align="center">김현아</th>
+    <th align="center">서상혁</th>
+    <th align="center">김시원</th>
     <tr>
         <td align="center">
             <a href="https://github.com/sangjun121"><img src="https://github.com/sangjun121.png" width="100"/></a>
         </td>
         <td align="center">
-            <a href="https://github.com/10Hyuna"><img src="https://github.com/10Hyuna.png" width="100"/></a>
+            <a href="https://github.com/SangHyeok0908"><img src="https://github.com/SangHyeok0908.png" width="100"/></a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/Huro0906"><img src="https://github.com/Huro0906.png" width="100"/></a>
         </td>
     </tr>
 </table>
 
 ## 회고록
 [프로젝트 회고록](http://sangjunn.notion.site)
+
+## 회의록
+[프로젝트 회의록](https://sangjunn.notion.site/18e976a7f22380bea053feaba5e15826?pvs=4)
 
 ### api/v1 기능명세서
 [1차 기능구현 리스트](https://sangjunn.notion.site/5f7ab9f509d54edd9f5096eb5a059c63?v=98aebc87558b47748a3e64466a3cdb8e&pvs=4)
