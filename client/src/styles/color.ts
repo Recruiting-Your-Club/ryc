@@ -2,8 +2,8 @@ export const colors = {
     black: '#000000',
     white: '#ffffff',
     inputBorder: '#EDEDED',
-    default: '#543acc',
-    defaultHover: '#432CAC',
+    default: '#615FFF',
+    defaultHover: '#4F39F6',
     disabled: '#D4D4D4',
     textHelper: '#858585',
     red: {
