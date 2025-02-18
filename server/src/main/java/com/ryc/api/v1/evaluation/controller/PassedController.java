@@ -26,23 +26,15 @@ public class PassedController {
     @HasPresidentRoleSecured
     @PostMapping("/")
     public ResponseEntity<?> createPasser(@Valid @RequestBody CreatePasserRequest body) {
-        try {
-            CreatePasserResponse response = passedService.createPasser(body);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        CreatePasserResponse response = passedService.createPasser(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @HasAnyRoleSecured
     @GetMapping("/")
     public ResponseEntity<?> getPasser(@NotEmpty @RequestParam String clubId,
                                        @NotEmpty @RequestParam String stepId) {
-        try {
             List<GetPasserResponse> response = passedService.getPasser(stepId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
     }
 }
