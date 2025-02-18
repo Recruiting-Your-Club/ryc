@@ -54,6 +54,9 @@ spotless {
         removeUnusedImports() // 사용되지 않는 import 제거
         endWithNewline() // 모든 파일 끝에 개행 추가
         trimTrailingWhitespace() // 불필요한 공백 제거 (각 줄 끝에 남은 공백을 자동 삭제)
-        indentWithSpaces(4) // 4칸 공백으로 들여쓰기 강제 (탭 대신 스페이스 사용)
     }
+}
+
+tasks.named("compileJava") {
+    dependsOn "spotlessApply"
 }
