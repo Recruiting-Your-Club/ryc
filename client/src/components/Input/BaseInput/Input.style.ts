@@ -66,6 +66,7 @@ export const endNodeStyle = css`
 export const helperTextStyle = (error: boolean | undefined) => css`
     font-size: 0.8rem;
     margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
     padding-left: 0.2rem;
     color: ${error ? colors.red[1000] : colors.textHelper};
 `;
