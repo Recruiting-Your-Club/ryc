@@ -11,12 +11,16 @@ function PasswordInput({ ...props }: InputProps) {
     };
 
     return (
-        <div css={passwordContainer}>
-            <BaseInput variant="primary" type={isVisible ? 'text' : 'password'} {...props} />
-            <Button onClick={handleVisible} variant="primary" size="xs" type="button">
-                검색
-            </Button>
-        </div>
+        <BaseInput
+            variant="primary"
+            type={isVisible ? 'text' : 'password'}
+            endNode={
+                <Button size="xs" variant="primary" onClick={handleVisible}>
+                    asd
+                </Button>
+            }
+            {...props}
+        />
     );
 }
 export { PasswordInput };

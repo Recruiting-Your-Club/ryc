@@ -1,5 +1,13 @@
 import React from 'react';
-import { inputVariant, inputContainer, helperTextStyle, labelStyle, baseContainer } from './Input.style';
+import {
+    inputVariant,
+    inputContainer,
+    helperTextStyle,
+    labelStyle,
+    inputWrapperContainer,
+    endNodeStyle,
+    startNodeStyle,
+} from './Input.style';
 import type { InputHTMLAttributes } from 'react';
 
 export type InputVariant = 'primary' | 'lined';
@@ -20,15 +28,19 @@ function BaseInput({
     helperText,
     label,
     endNode,
+    startNode,
     ...props
 }: InputProps) {
     return (
-        <div css={baseContainer}>
+        <div css={inputWrapperContainer}>
             {label && <label css={labelStyle}>{label}</label>}
-            <div css={inputContainer[variant]}>
+
+            <div css={inputContainer(isError)[variant]}>
+                {startNode && <div css={startNodeStyle}>{startNode}</div>}
                 <input css={inputVariant[variant]} type={type} {...props} />
-                {endNode}
+                {endNode && <div css={endNodeStyle}>{endNode}</div>}
             </div>
+
             {helperText && <span css={helperTextStyle(isError)}>{helperText}</span>}
         </div>
     );
