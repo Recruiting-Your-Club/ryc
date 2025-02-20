@@ -7,6 +7,7 @@ import {
     inputWrapperContainer,
     endNodeStyle,
     startNodeStyle,
+    baseInputStyle,
 } from './Input.style';
 import type { InputHTMLAttributes } from 'react';
 import type { SerializedStyles } from '@emotion/react';
@@ -42,7 +43,7 @@ function BaseInput({
 
             <div css={[cssProps, customCss]}>
                 {startNode && <div css={startNodeStyle}>{startNode}</div>}
-                <input css={inputVariant[variant]} type={type} {...props} />
+                <input css={baseInputStyle} type={type} {...props} />
                 {endNode && <div css={endNodeStyle}>{endNode}</div>}
             </div>
 

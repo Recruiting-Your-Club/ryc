@@ -10,7 +10,7 @@ export const inputWrapperContainer = css`
 `;
 
 export const labelStyle = css`
-    font-size: 1.2;
+    font-size: 1.2rem;
     margin-bottom: 0.2rem;
     padding-left: 0.2rem;
 `;
@@ -50,6 +50,7 @@ export const baseInputStyle = css`
     height: 2rem;
     padding-left: 0.5rem;
     outline: none;
+    border: none;
     border-radius: 1rem;
 `;
 
