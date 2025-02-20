@@ -19,7 +19,6 @@ const globalStyles = css`
     pre,
     a,
     abbr,
-    acronym,
     address,
     big,
     cite,
