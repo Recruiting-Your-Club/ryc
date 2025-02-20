@@ -9,6 +9,7 @@ import {
     startNodeStyle,
 } from './Input.style';
 import type { InputHTMLAttributes } from 'react';
+import type { SerializedStyles } from '@emotion/react';
 
 export type InputVariant = 'primary' | 'lined';
 
@@ -19,6 +20,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     helperText?: string;
     startNode?: React.ReactNode;
     endNode?: React.ReactNode;
+    customCss?: SerializedStyles;
 }
 
 function BaseInput({
@@ -29,13 +31,16 @@ function BaseInput({
     label,
     endNode,
     startNode,
+    customCss,
     ...props
 }: InputProps) {
+    const cssProps = [inputContainer(isError)[variant]];
+
     return (
         <div css={inputWrapperContainer}>
             {label && <label css={labelStyle}>{label}</label>}
 
-            <div css={inputContainer(isError)[variant]}>
+            <div css={[cssProps, customCss]}>
                 {startNode && <div css={startNodeStyle}>{startNode}</div>}
                 <input css={inputVariant[variant]} type={type} {...props} />
                 {endNode && <div css={endNodeStyle}>{endNode}</div>}

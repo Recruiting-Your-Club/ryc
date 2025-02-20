@@ -15,7 +15,16 @@ export const labelStyle = css`
     padding-left: 0.2rem;
 `;
 
-export const inputContainer = (error: boolean | undefined) => ({
+const baseInputContainer = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 0.2rem;
+    padding-left: 0.2rem;
+`;
+
+export const inputContainer = (error: boolean) => ({
     primary: css`
         ${baseInputContainer};
         border: 1px solid ${error ? colors.red[1000] : colors.inputBorder};
@@ -38,9 +47,10 @@ export const inputContainer = (error: boolean | undefined) => ({
 
 export const baseInputStyle = css`
     width: 100%;
-    height: 2.2rem;
+    height: 2rem;
     padding-left: 0.5rem;
     outline: none;
+    border-radius: 1rem;
 `;
 
 export const inputVariant = {
@@ -55,7 +65,6 @@ export const inputVariant = {
 };
 
 export const startNodeStyle = css`
-    margin-left: 0.1rem;
     white-space: nowrap;
 `;
 
@@ -69,13 +78,4 @@ export const helperTextStyle = (error: boolean | undefined) => css`
     margin-bottom: 0.2rem;
     padding-left: 0.2rem;
     color: ${error ? colors.red[1000] : colors.textHelper};
-`;
-
-const baseInputContainer = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding-right: 0.2rem;
-    padding-left: 0.2rem;
 `;
