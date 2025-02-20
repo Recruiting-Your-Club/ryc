@@ -18,5 +18,5 @@ export const globalLayoutCss = css`
     height: 100%;
     min-width: 32rem;
     background-color: #fff;
-    padding-top: 60px; /* 헤더 높이만큼 패딩 추가 */
+    padding-top: 5rem; /* 헤더 높이만큼 패딩 추가 */
 `;
