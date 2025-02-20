@@ -74,6 +74,7 @@ export const s_base = (borderRadius: number | string, zIndex: number) => {
         align-items: center;
         border-radius: ${borderRadius};
         z-index: ${zIndex};
+        cursor: pointer;
         &:disabled {
             background-color: ${colors.disabled};
             color: ${colors.white};
