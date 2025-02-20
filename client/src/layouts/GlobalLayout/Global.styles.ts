@@ -1,16 +1,5 @@
 import { css } from '@emotion/react';
 
-export const headerCss = css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100vw;
-    height: 5rem;
-    padding: 2rem;
-`;
 export const globalLayoutCss = css`
     display: flex;
     flex-direction: column;
