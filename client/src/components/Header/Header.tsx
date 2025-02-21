@@ -1,20 +1,23 @@
 import React from 'react';
 import { css } from '@emotion/react';
-import { homeImageContainer, headerBarContainer, homeNavContainer, homeNavText } from './Header.style';
-import { useNavigate } from 'react-router-dom';
+import { homeImage, headerBarContainer, homeNavContainer, homeNavText } from './Header.style';
+import useRouter from '@hooks/useRouter';
+import { Link } from 'react-router-dom';
+import { Button } from '@components/Button';
 
 function Header() {
-    const navigate = useNavigate();
+    const { goTo } = useRouter();
 
     return (
         <header css={headerBarContainer}>
-            <div css={homeNavContainer}>
-                <div css={homeImageContainer} />
+            <Link to="/about" css={homeNavContainer}>
+                <div css={homeImage} />
                 <div css={homeNavText}>Recruting Your Club</div>
-            </div>
+            </Link>
             <nav>
-                <a href="/">Home</a>
-                <a href="/about">About</a>
+                <Button size="md" variant="primary">
+                    관리자 로그인
+                </Button>
             </nav>
         </header>
     );
