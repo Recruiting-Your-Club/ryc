@@ -1,12 +1,12 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
 import { AuthPage, TestPage, NotFoundPage } from './pages';
-import { GlobalLayout } from './layouts';
+import { UserLayout } from './layouts';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <GlobalLayout />,
+        element: <UserLayout />,
         children: [
             { index: true, element: <TestPage /> },
             { path: '*', element: <NotFoundPage /> },

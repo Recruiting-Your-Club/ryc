@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-export const globalLayoutCss = css`
+export const UserLayoutCss = css`
     display: flex;
     flex-direction: column;
     width: 100%;

@@ -1,17 +1,17 @@
 import React from 'react';
-import { globalLayoutCss } from './Global.styles';
+import { UserLayoutCss } from './UserLayout.styles';
 import { Header } from '@components/Header';
 import { Outlet } from 'react-router-dom';
 
-function GlobalLayout() {
+function UserLayout() {
     return (
         <>
             <Header />
-            <div css={globalLayoutCss}>
+            <div css={UserLayoutCss}>
                 <Outlet />
             </div>
         </>
     );
 }
 
-export { GlobalLayout };
+export { UserLayout };
