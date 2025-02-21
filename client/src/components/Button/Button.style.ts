@@ -6,38 +6,41 @@ import type { ButtonSize } from './Button';
 interface Size {
     width?: CSSProperties['width'];
     height?: CSSProperties['height'];
+    padding: CSSProperties['padding'];
 }
 
 export const buttonSize: Record<ButtonSize, Size> = {
     xs: {
-        width: '2rem',
         height: '2rem',
+        padding: '0.5rem',
     },
     s: {
-        width: '4rem',
-        height: '2rem',
+        height: '2.5rem',
+        padding: '0.5rem',
     },
     md: {
-        width: '6rem',
-        height: '2rem',
+        height: '2.7rem',
+        padding: '0.6rem',
     },
     lg: {
-        width: '8rem',
-        height: '2rem',
+        height: '3rem',
+        padding: '0.8rem',
     },
     xl: {
-        width: '10rem',
-        height: '2rem',
+        height: '3.6rem',
+        padding: '1rem',
     },
     full: {
         width: '100%',
-        height: '2rem',
+        height: '3.6rem',
+        padding: '0.8rem',
     },
 };
 export const s_size = (size: ButtonSize) => {
     return css`
         width: ${buttonSize[size].width};
         height: ${buttonSize[size].height};
+        padding: ${buttonSize[size].padding};
     `;
 };
 
@@ -72,6 +75,7 @@ export const s_base = (borderRadius: number | string, zIndex: number) => {
         display: flex;
         justify-content: center;
         align-items: center;
+        box-sizing: border-box;
         border-radius: ${borderRadius};
         z-index: ${zIndex};
         cursor: pointer;
