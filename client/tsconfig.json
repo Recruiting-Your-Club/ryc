@@ -26,7 +26,8 @@
             "@pages/*": ["pages/*"],
             "@types/*": ["types/*"],
             "@utils/*": ["utils/*"],
-            "@styles/*": ["styles/*"]
+            "@styles/*": ["styles/*"],
+            "@hooks/*": ["hooks/*"]
         }
     },
     "include": ["src"],
