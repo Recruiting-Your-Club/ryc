@@ -54,17 +54,6 @@ export const baseInputStyle = css`
     border-radius: 1rem;
 `;
 
-export const inputVariant = {
-    primary: css`
-        ${baseInputStyle};
-        border: none;
-    `,
-    lined: css`
-        ${baseInputStyle};
-        border: none;
-    `,
-};
-
 export const startNodeStyle = css`
     white-space: nowrap;
 `;
