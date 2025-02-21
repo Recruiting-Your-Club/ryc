@@ -1,10 +1,11 @@
 export const colors = {
     black: '#000000',
     white: '#ffffff',
-    default: '#543acc',
-    defaultHover: '#432CAC',
+    inputBorder: '#EDEDED',
+    default: '#615FFF',
+    defaultHover: '#4F39F6',
     disabled: '#D4D4D4',
-
+    textHelper: '#858585',
     red: {
         100: '#FFEEEE',
         200: '#FFDDDD',

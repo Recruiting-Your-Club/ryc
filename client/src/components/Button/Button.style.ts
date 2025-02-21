@@ -10,23 +10,23 @@ interface Size {
 
 export const buttonSize: Record<ButtonSize, Size> = {
     xs: {
-        width: '4rem',
+        width: '2rem',
         height: '2rem',
     },
     s: {
-        width: '6rem',
+        width: '4rem',
         height: '2rem',
     },
     md: {
-        width: '8rem',
+        width: '6rem',
         height: '2rem',
     },
     lg: {
-        width: '10rem',
+        width: '8rem',
         height: '2rem',
     },
     xl: {
-        width: '13rem',
+        width: '10rem',
         height: '2rem',
     },
     full: {
@@ -61,6 +61,10 @@ export const s_variant = {
             color: ${colors.white};
         }
     `,
+    transparent: css`
+        background-color: transparent;
+        border: none;
+    `,
 };
 
 export const s_base = (borderRadius: number | string, zIndex: number) => {
@@ -70,6 +74,7 @@ export const s_base = (borderRadius: number | string, zIndex: number) => {
         align-items: center;
         border-radius: ${borderRadius};
         z-index: ${zIndex};
+        cursor: pointer;
         &:disabled {
             background-color: ${colors.disabled};
             color: ${colors.white};
