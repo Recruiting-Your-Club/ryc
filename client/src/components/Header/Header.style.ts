@@ -8,8 +8,9 @@ export const headerBarContainer = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100vw;
+    width: calc(100% - 1rem); /* 패딩 포함한 width 계산 */
     height: 4rem;
+    padding-left: 1rem;
     border-bottom: 0.5px solid ${colors.disabled};
 `;
 
@@ -18,7 +19,6 @@ export const homeNavContainer = css`
     align-items: center;
     justify-content: space-between;
     width: 17rem;
-    padding-left: 0.5rem;
 `;
 
 export const homeImage = css`
@@ -28,6 +28,13 @@ export const homeImage = css`
     border-radius: 1rem;
     object-fit: cover;
     background-color: black;
+`;
+
+export const navContainer = css`
+    display: flex;
+    align-items: center;
+    width: 10rem;
+    justify-content: space-around;
 `;
 
 export const homeNavText = css`

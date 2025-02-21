@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
-import { homeImage, headerBarContainer, homeNavContainer, homeNavText } from './Header.style';
+import { homeImage, headerBarContainer, homeNavContainer, homeNavText, navContainer } from './Header.style';
 import useRouter from '@hooks/useRouter';
 import { Link } from 'react-router-dom';
 import { Button } from '@components/Button';
@@ -10,14 +10,17 @@ function Header() {
 
     return (
         <header css={headerBarContainer}>
-            <Link to="/about" css={homeNavContainer}>
+            <Link to="/" css={homeNavContainer}>
                 <div css={homeImage} />
                 <div css={homeNavText}>Recruting Your Club</div>
             </Link>
-            <nav>
-                <Button size="md" variant="primary">
-                    관리자 로그인
-                </Button>
+
+            <nav css={navContainer}>
+                <Link to="/login">
+                    <Button size="md" variant="primary" radius="10rem">
+                        관리자 로그인
+                    </Button>
+                </Link>
             </nav>
         </header>
     );
