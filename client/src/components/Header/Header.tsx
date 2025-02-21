@@ -1,14 +1,11 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { homeImage, headerBarContainer, homeNavContainer, homeNavText, navContainer } from './Header.style';
-import useRouter from '@hooks/useRouter';
 import { Link } from 'react-router-dom';
 import { Button } from '@components/Button';
 import Ryc from '@assets/images/Ryc.svg';
 
 function Header() {
-    const { goTo } = useRouter();
-
     return (
         <header css={headerBarContainer}>
             <Link to="/" css={homeNavContainer}>
