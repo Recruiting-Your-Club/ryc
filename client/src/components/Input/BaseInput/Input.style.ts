@@ -59,7 +59,7 @@ export const startNodeStyle = css`
 `;
 
 export const endNodeStyle = css`
-    margin-right: 0.1rem;
+    white-space: nowrap;
 `;
 
 export const helperTextStyle = (error: boolean | undefined) => css`
