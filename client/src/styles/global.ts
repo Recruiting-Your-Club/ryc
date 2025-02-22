@@ -166,6 +166,15 @@ const globalStyles = css`
         appearance: none;
         border: none;
     }
+
+    a {
+        text-decoration: none; /* 밑줄 제거 */
+        color: inherit; /* 기본 텍스트 색상 유지 */
+    }
+
+    a:hover {
+        text-decoration: none; /* 호버 시에도 밑줄 제거 */
+    }
 `;
 
 export default globalStyles;

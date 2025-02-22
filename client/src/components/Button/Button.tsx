@@ -30,7 +30,7 @@ function Button({
     'aria-label': ariaLabel,
     onClick,
 }: ButtonProps) {
-    const cssProp = [s_size(size), s_base(radius, zIndex)];
+    const cssProp = [s_base(radius, zIndex), s_size(size)];
 
     if (variant) cssProp.push(s_variant[variant]);
 
