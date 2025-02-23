@@ -17,7 +17,9 @@ export const LoginBox = css`
     width: 40rem;
     height: 35rem;
     border-radius: 1rem;
-    padding: 2rem 4rem;
+    padding: 0 4rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
     box-shadow: 0.1rem 0.2rem 0.6rem rgba(0, 0, 0, 0.2);
 `;
 
