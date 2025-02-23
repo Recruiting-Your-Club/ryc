@@ -21,11 +21,13 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     startNode?: React.ReactNode;
     endNode?: React.ReactNode;
     customCss?: SerializedStyles;
+    height?: string;
 }
 
 function BaseInput({
     variant = 'primary',
     type = 'text',
+    height = '3.6rem',
     isError = false,
     helperText,
     label,
@@ -42,7 +44,7 @@ function BaseInput({
 
             <div css={[cssProps, customCss]}>
                 {startNode && <div css={startNodeStyle}>{startNode}</div>}
-                <input css={baseInputStyle} type={type} {...props} />
+                <input css={baseInputStyle(height)} type={type} {...props} />
                 {endNode && <div css={endNodeStyle}>{endNode}</div>}
             </div>
 
