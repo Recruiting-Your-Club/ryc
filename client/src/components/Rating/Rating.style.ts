@@ -41,12 +41,34 @@ export const s_size = (size: StarSize) => {
 export const s_star = (filled: boolean) => {
     return css`
         cursor: pointer;
+        position: relative;
+        background: none;
+        border: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         & > svg {
             width: 100%;
             height: 100%;
             fill: ${filled ? colors.default : colors.disabled};
-            transition: fill 0.3s ease-in-out;
+        }
+    `;
+};
+
+export const s_halfStar = (percentage: number) => {
+    return css`
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        & > svg {
+            fill: ${colors.default};
+            clip-path: inset(0 ${100 - percentage}% 0 0);
         }
     `;
 };
