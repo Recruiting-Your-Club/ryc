@@ -7,8 +7,8 @@ const useRouter = () => {
     const goBack = () => navigate(-1);
     const goFront = () => navigate(1);
 
-    const replaceGoTo = (path: string) => navigate(path, { replace: true });
+    const removeHistoryAndGo = (path: string) => navigate(path, { replace: true });
 
-    return { goTo, goBack, goFront, replaceGoTo };
+    return { goTo, goBack, goFront, removeHistoryAndGo };
 };
 export default useRouter;

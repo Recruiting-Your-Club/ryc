@@ -67,6 +67,7 @@ export const s_variant = {
     transparent: css`
         background-color: transparent;
         border: none;
+        color: ${colors.textHelper};
     `,
 };
 
