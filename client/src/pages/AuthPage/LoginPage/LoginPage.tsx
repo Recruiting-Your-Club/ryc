@@ -1,10 +1,14 @@
 import React from 'react';
 import { LoginContainer, LoginBox, inputContainer, buttonContainer, titleContainer } from './LoginPage.style';
 import { Button, BaseInput, PasswordInput } from '@components';
+import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { colors } from '@styles/color';
+import useRouter from '@hooks/useRouter';
 
 function LoginPage() {
+    const { removeHistoryAndGo } = useRouter();
+
     return (
         <div css={LoginContainer}>
             <div css={LoginBox}>
@@ -20,6 +24,7 @@ function LoginPage() {
                         로그인
                     </Button>
                     <Button
+                        onClick={() => removeHistoryAndGo('/register')}
                         variant="transparent"
                         size="full"
                         customCss={css`
@@ -28,7 +33,7 @@ function LoginPage() {
                             }
                         `}
                     >
-                        회원가입
+                        계정이 없으신가요?
                     </Button>
                 </div>
             </div>
