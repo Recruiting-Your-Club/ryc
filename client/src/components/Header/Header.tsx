@@ -15,7 +15,15 @@ function Header() {
 
             <nav css={navContainer}>
                 <Link to="/login">
-                    <Button size="xl" variant="primary" radius="1.88rem">
+                    <Button
+                        size="xl"
+                        variant="primary"
+                        radius="1.5rem"
+                        customCss={css`
+                            font-size: 1.3rem;
+                            padding: 0.5rem 1.2rem;
+                        `}
+                    >
                         관리자 로그인
                     </Button>
                 </Link>

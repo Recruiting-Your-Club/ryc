@@ -31,5 +31,4 @@ export const homeNavText = css`
 export const navContainer = css`
     display: flex;
     align-items: center;
-    width: 11rem;
 `;
