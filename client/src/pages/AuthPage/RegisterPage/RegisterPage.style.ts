@@ -33,7 +33,11 @@ export const titleContainer = css`
     font-size: 2rem;
     font-weight: 700;
 `;
-
+export const emailContainer = css`
+    display: flex;
+    gap: 1rem;
+    align-items: end;
+`;
 export const inputContainer = css`
     display: flex;
     flex-direction: column;

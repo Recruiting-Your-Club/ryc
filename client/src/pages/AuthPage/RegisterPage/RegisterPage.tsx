@@ -1,5 +1,12 @@
 import React from 'react';
-import { RegisterContainer, RegisterBox, titleContainer, inputContainer, buttonContainer } from './RegisterPage.style';
+import {
+    RegisterContainer,
+    RegisterBox,
+    titleContainer,
+    inputContainer,
+    buttonContainer,
+    emailContainer,
+} from './RegisterPage.style';
 import { BaseInput, PasswordInput, Button } from '@components';
 import { css } from '@emotion/react';
 import { colors } from '@styles/color';
@@ -14,7 +21,27 @@ function RegisterPage() {
                 <h1 css={titleContainer}>회원가입</h1>
 
                 <div css={inputContainer}>
-                    <BaseInput placeholder="test@naver.com" height={'4.5rem'} label={'이메일'} />
+                    <div css={emailContainer}>
+                        <BaseInput
+                            placeholder="test@naver.com"
+                            height={'4.5rem'}
+                            label={'이메일'}
+                            inputCss={css`
+                                flex: 2;
+                            `}
+                        />
+                        <Button
+                            variant="primary"
+                            size="full"
+                            customCss={css`
+                                height: 4.5rem;
+                                width: 11rem;
+                                margin-bottom: 0.1rem;
+                            `}
+                        >
+                            중복확인
+                        </Button>
+                    </div>
                     <BaseInput placeholder="홍길동" height={'4.5rem'} label={'이름'} />
                     <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호'} />
                     <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호확인'} />
