@@ -43,8 +43,8 @@ function BaseInput({
     const cssProps = [inputContainer(isError)[variant]];
 
     return (
-        <div css={[inputWrapperContainer, labelCss]}>
-            {label && <label css={labelStyle}>{label}</label>}
+        <div css={inputWrapperContainer}>
+            {label && <label css={[labelStyle, labelCss]}>{label}</label>}
 
             <div css={[cssProps, inputCss]}>
                 {startNode && <div css={startNodeStyle}>{startNode}</div>}
