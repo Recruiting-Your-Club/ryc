@@ -13,7 +13,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     loading?: boolean;
     customCss?: SerializedStyles;
     type?: 'button' | 'submit' | 'reset';
-    onClick?: () => void;
     radius?: string;
     zIndex?: number;
 }
@@ -22,7 +21,7 @@ function Button({
     size,
     children,
     disabled = false,
-    radius = '0.3rem',
+    radius = '0.6rem',
     zIndex = 0,
     loading = false,
     customCss,

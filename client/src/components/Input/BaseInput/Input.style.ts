@@ -28,7 +28,7 @@ export const inputContainer = (error: boolean) => ({
     primary: css`
         ${baseInputContainer};
         border: 1px solid ${error ? colors.red[1000] : colors.inputBorder};
-        border-radius: 0.3rem;
+        border-radius: 0.6rem;
         transition: border-color 0.3s ease-in-out;
         &:focus-within {
             border-color: ${colors.default};
@@ -45,9 +45,9 @@ export const inputContainer = (error: boolean) => ({
     `,
 });
 
-export const baseInputStyle = css`
+export const baseInputStyle = (height: string) => css`
     width: 100%;
-    height: 2rem;
+    height: ${height};
     padding-left: 0.5rem;
     outline: none;
     border: none;
@@ -63,7 +63,7 @@ export const endNodeStyle = css`
 `;
 
 export const helperTextStyle = (error: boolean | undefined) => css`
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
     padding-left: 0.2rem;

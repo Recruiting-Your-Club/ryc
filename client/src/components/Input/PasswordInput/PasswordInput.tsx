@@ -17,9 +17,9 @@ function PasswordInput({ ...props }: InputProps) {
             endNode={
                 <Button size="xs" variant="transparent" onClick={handleVisible}>
                     {isVisible ? (
-                        <PasswordHide width="15" height="15" alt="hide" />
+                        <PasswordShow width="15" height="15" alt="hide" />
                     ) : (
-                        <PasswordShow width="15" height="15" alt="show" />
+                        <PasswordHide width="15" height="15" alt="show" />
                     )}
                 </Button>
             }

@@ -20,33 +20,39 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     helperText?: string;
     startNode?: React.ReactNode;
     endNode?: React.ReactNode;
-    customCss?: SerializedStyles;
+    inputCss?: SerializedStyles;
+    labelCss?: SerializedStyles;
+    helperCss?: SerializedStyles;
+    height?: string;
 }
 
 function BaseInput({
     variant = 'primary',
     type = 'text',
+    height = '3.6rem',
     isError = false,
     helperText,
     label,
     endNode,
     startNode,
-    customCss,
+    inputCss,
+    labelCss,
+    helperCss,
     ...props
 }: InputProps) {
     const cssProps = [inputContainer(isError)[variant]];
 
     return (
         <div css={inputWrapperContainer}>
-            {label && <label css={labelStyle}>{label}</label>}
+            {label && <label css={[labelStyle, labelCss]}>{label}</label>}
 
-            <div css={[cssProps, customCss]}>
+            <div css={[cssProps, inputCss]}>
                 {startNode && <div css={startNodeStyle}>{startNode}</div>}
-                <input css={baseInputStyle} type={type} {...props} />
+                <input css={baseInputStyle(height)} type={type} {...props} />
                 {endNode && <div css={endNodeStyle}>{endNode}</div>}
             </div>
 
-            {helperText && <span css={helperTextStyle(isError)}>{helperText}</span>}
+            {helperText && <span css={[helperTextStyle(isError), helperCss]}>{helperText}</span>}
         </div>
     );
 }
