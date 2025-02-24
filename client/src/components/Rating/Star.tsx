@@ -30,6 +30,7 @@ export function Star({ filled, partialFill, size, customCSS, onClick, onMouseEnt
     return (
         <button onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} css={[cssProp, customCSS]}>
             <StarSVG />
+
             {partialFill && partialFill > 0 && partialFill < 1 && (
                 <div css={s_halfStar(partialFill * 100)}>
                     <StarSVG />

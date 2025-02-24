@@ -72,3 +72,11 @@ export const s_halfStar = (percentage: number) => {
         }
     `;
 };
+
+export const ratingContainer = () => {
+    return css`
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    `;
+};
