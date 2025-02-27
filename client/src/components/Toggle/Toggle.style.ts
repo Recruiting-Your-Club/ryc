@@ -21,7 +21,9 @@ export const toggleContainer = (width: string, isChecked: boolean) => ({
     primary: css`
         ${toggleBase}
         padding: 0.2rem 0.1rem;
-        ${isChecked ? `background-color: ${colors.disabled};` : `background-color: ${colors.default};`}
+        ${isChecked
+            ? `background-color: ${colors.disabled};`
+            : `background-color: ${colors.default};`}
         border-radius: 1.1rem;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         width: ${width};
@@ -70,61 +72,34 @@ export const leftTextContainer = (isChecked: boolean) => ({
         border-radius: 0.25rem;
         ${textBase}
         ${isChecked
-            ? `
-      color: ${colors.default};
-      background-color: #f4f7ff; 
-    `
-            : `
-      color: #64748b;
-    `}
+            ? ` color: ${colors.default};   background-color: #f4f7ff; `
+            : ` color: #64748b;`}
     `,
     secondText: css`
         border-radius: 1rem;
         ${textBase}
         ${isChecked
-            ? `
-   color: ${colors.default};
-   background-color: ${colors.white};
- `
-            : `
-   color: ${colors.white};
- `}
+            ? `color: ${colors.default}; background-color: ${colors.white};`
+            : `color: ${colors.white};`}
     `,
 });
 
 export const rightTextContainer = (isChecked: boolean) => ({
     primary: css`
         ${noneTextBase}
-        ${!isChecked
-            ? `
-      background-color: ${colors.white};
-    `
-            : `
-      color: #64748b;
-    `}
+        ${!isChecked ? `background-color: ${colors.white};` : `color: #64748b;`}
     `,
+
     text: css`
         border-radius: 0.25rem;
         ${textBase}
-        ${!isChecked
-            ? `
-      color: ${colors.default};
-      background-color: #f4f7ff;
-    `
-            : `
-      color: #64748b;
-    `}
+        ${!isChecked ? `color: ${colors.default};background-color: #f4f7ff;` : `color: #64748b;`}
     `,
     secondText: css`
         border-radius: 1rem;
         ${textBase}
         ${!isChecked
-            ? `
-   color: ${colors.default};
-   background-color: ${colors.white};
- `
-            : `
-   color: ${colors.white};
- `}
+            ? `color: ${colors.default};background-color: ${colors.white};`
+            : `color: ${colors.white};`}
     `,
 });
