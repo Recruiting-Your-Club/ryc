@@ -30,7 +30,7 @@ export const toggleContainer = (width: string, isChecked: boolean) => ({
     `,
     text: css`
         ${toggleBase}
-        padding: 0.25rem;
+        padding: 0.2rem;
         background-color: white;
         border-radius: 0.375rem;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -38,7 +38,7 @@ export const toggleContainer = (width: string, isChecked: boolean) => ({
     `,
     secondText: css`
         ${toggleBase}
-        padding: 0.25rem;
+        padding: 0.2rem;
         background-color: ${colors.default};
         border-radius: 1.2rem;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
