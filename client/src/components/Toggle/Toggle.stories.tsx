@@ -8,7 +8,7 @@ const meta: Meta<typeof Toggle> = {
     parameters: {
         docs: {
             description: {
-                component: 'BaseInput 컴포넌트입니다.',
+                component: 'Toggle 컴포넌트입니다.',
             },
         },
     },
