@@ -1,6 +1,9 @@
 import { css } from '@emotion/react';
+import { fontFaces } from './fonts';
 
 const globalStyles = css`
+    ${fontFaces}
+
     html,
     body,
     div,
