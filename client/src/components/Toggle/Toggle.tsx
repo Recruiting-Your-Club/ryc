@@ -29,7 +29,7 @@ function Toggle({
 }: ToggleProps) {
     return (
         <>
-            <label css={toggleContainer(width, isChecked)[variant]}>
+            <label css={toggleContainer(variant, width, isChecked)}>
                 <input
                     type="checkbox"
                     css={hiddenCheckbox}
@@ -37,8 +37,8 @@ function Toggle({
                     onChange={handleToggle}
                     {...props}
                 />
-                <span css={leftTextContainer(isChecked)[variant]}>{leftText}</span>
-                <span css={rightTextContainer(isChecked)[variant]}>{rightText}</span>
+                <span css={leftTextContainer(variant, isChecked)}>{leftText}</span>
+                <span css={rightTextContainer(variant, isChecked)}>{rightText}</span>
             </label>
         </>
     );
