@@ -18,7 +18,8 @@ export const homeNavContainer = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 22rem;
+    white-space: nowrap;
+    gap: 0.5rem;
 `;
 export const homeImage = css`
     border-radius: 0.5rem;
