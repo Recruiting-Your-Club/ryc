@@ -1,6 +1,11 @@
 import React from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { hiddenCheckbox, toggleContainer, leftTextContainer, rightTextContainer } from './Toggle.style';
+import {
+    hiddenCheckbox,
+    toggleContainer,
+    leftTextContainer,
+    rightTextContainer,
+} from './Toggle.style';
 
 export type ToggleVariant = 'primary' | 'text' | 'secondText';
 
@@ -25,7 +30,13 @@ function Toggle({
     return (
         <>
             <label css={toggleContainer(width, isChecked)[variant]}>
-                <input type="checkbox" css={hiddenCheckbox} checked={isChecked} onChange={handleToggle} {...props} />
+                <input
+                    type="checkbox"
+                    css={hiddenCheckbox}
+                    checked={isChecked}
+                    onChange={handleToggle}
+                    {...props}
+                />
                 <span css={leftTextContainer(isChecked)[variant]}>{leftText}</span>
                 <span css={rightTextContainer(isChecked)[variant]}>{rightText}</span>
             </label>
