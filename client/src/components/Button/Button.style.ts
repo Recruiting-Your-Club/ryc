@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { colors } from '@styles/theme/color';
 import type { CSSProperties } from 'react';
 import type { ButtonSize } from './Button';
+import type { ButtonVariant } from './Button';
 
 interface Size {
     width?: CSSProperties['width'];
@@ -44,31 +45,46 @@ export const s_size = (size: ButtonSize) => {
     `;
 };
 
-export const s_variant = {
-    primary: css`
-        background-color: ${colors.default};
-        color: ${colors.white};
-        border: none;
-        transition: background-color 0.2s;
-        &:hover {
-            background-color: ${colors.defaultHover};
-        }
-    `,
-    outlined: css`
-        background-color: ${colors.white};
-        color: ${colors.default};
-        border: 0.1rem solid ${colors.default};
-        transition: background-color 0.2s;
-        &:hover {
-            background-color: ${colors.defaultHover};
-            color: ${colors.white};
-        }
-    `,
-    transparent: css`
-        background-color: transparent;
-        border: none;
-        color: ${colors.textHelper};
-    `,
+export const s_variant = (variant: ButtonVariant) => {
+    switch (variant) {
+        case 'primary':
+            return css`
+                background-color: ${colors.default};
+                color: ${colors.white};
+                border: none;
+                transition: background-color 0.2s;
+                &:hover {
+                    background-color: ${colors.defaultHover};
+                }
+            `;
+        case 'outlined':
+            return css`
+                background-color: ${colors.white};
+                color: ${colors.default};
+                border: 0.1rem solid ${colors.default};
+                transition: background-color 0.2s;
+                &:hover {
+                    background-color: ${colors.defaultHover};
+                    color: ${colors.white};
+                }
+            `;
+        case 'transparent':
+            return css`
+                background-color: transparent;
+                border: none;
+                color: ${colors.textHelper};
+            `;
+        default:
+            return css`
+                background-color: ${colors.default};
+                color: ${colors.white};
+                border: none;
+                transition: background-color 0.2s;
+                &:hover {
+                    background-color: ${colors.defaultHover};
+                }
+            `;
+    }
 };
 
 export const s_base = (borderRadius: number | string, zIndex: number) => {
