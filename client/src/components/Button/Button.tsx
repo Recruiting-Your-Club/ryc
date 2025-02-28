@@ -34,7 +34,13 @@ function Button({
     if (variant) cssProp.push(s_variant[variant]);
 
     return (
-        <button disabled={disabled} onClick={onClick} type={type} aria-label={ariaLabel} css={[cssProp, customCss]}>
+        <button
+            disabled={disabled}
+            onClick={onClick}
+            type={type}
+            aria-label={ariaLabel}
+            css={[cssProp, customCss]}
+        >
             {loading && '...'}
             {!loading && children}
         </button>

@@ -8,6 +8,7 @@
         "lib": ["dom", "dom.iterable", "esnext"],
         "moduleResolution": "bundler",
         "isolatedModules": true, // 타입스크립트 개별 컴파일 가능
+        "esModuleInterop": true, // commonjs 모듈을 es6 모듈로 변환
         "allowJs": true, // js파일 허용
 
         "strict": true, // 타입 강하게 검사

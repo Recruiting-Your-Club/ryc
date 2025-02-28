@@ -11,4 +11,4 @@ const useRouter = () => {
 
     return { goTo, goBack, goFront, removeHistoryAndGo };
 };
-export default useRouter;
+export { useRouter };

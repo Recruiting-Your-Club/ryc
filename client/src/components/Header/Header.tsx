@@ -1,6 +1,12 @@
 import React from 'react';
 import { css } from '@emotion/react';
-import { homeImage, headerBarContainer, homeNavContainer, homeNavText, navContainer } from './Header.style';
+import {
+    homeImage,
+    headerBarContainer,
+    homeNavContainer,
+    homeNavText,
+    navContainer,
+} from './Header.style';
 import { Link } from 'react-router-dom';
 import { Button } from '@components/Button';
 import Ryc from '@assets/images/Ryc.svg';
@@ -10,7 +16,7 @@ function Header() {
         <header css={headerBarContainer}>
             <Link to="/" css={homeNavContainer}>
                 <Ryc css={homeImage} width="35" height="35" alt="hide" viewBox="0 0 30 30" />
-                <div css={homeNavText}>Recruting Your Club</div>
+                <div css={homeNavText}>Recruiting Your Club</div>
             </Link>
 
             <nav css={navContainer}>
