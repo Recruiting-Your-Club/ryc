@@ -9,7 +9,7 @@ import {
 } from './RegisterPage.style';
 import { BaseInput, PasswordInput, Button } from '@components';
 import { css } from '@emotion/react';
-import { colors } from '@styles/color';
+import { colors } from '@styles/theme/color';
 import useRouter from '@hooks/useRouter';
 
 function RegisterPage() {

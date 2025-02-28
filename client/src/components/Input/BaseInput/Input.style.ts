@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { colors } from '@styles/color';
+import { colors } from '@styles/theme/color';
 
 export type InputVariant = 'primary' | 'lined';
 
