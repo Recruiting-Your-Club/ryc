@@ -31,7 +31,7 @@ function Button({
 }: ButtonProps) {
     const cssProp = [s_base(radius, zIndex), s_size(size)];
 
-    if (variant) cssProp.push(s_variant[variant]);
+    if (variant) cssProp.push(s_variant(variant));
 
     return (
         <button

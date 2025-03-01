@@ -3,7 +3,7 @@ import { LoginContainer, LoginBox, inputContainer, buttonContainer, titleContain
 import { Button, BaseInput, PasswordInput } from '@components';
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
-import { colors } from '@styles/color';
+import { colors } from '@styles/theme/color';
 import useRouter from '@hooks/useRouter';
 
 function LoginPage() {
