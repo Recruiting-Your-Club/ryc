@@ -2,6 +2,7 @@ import type { ReactNode, ElementType, ReactElement } from 'react';
 import React, { useMemo, Children, cloneElement, isValidElement } from 'react';
 import { s_stepper } from './Stepper.style';
 import { StepperContext } from './StepperContext';
+import { StepConnector } from './StepConnector';
 
 interface StepperProps {
     activeStep?: number;
@@ -14,12 +15,14 @@ interface StepperProps {
     customCSS?: string;
 }
 
+const defaultConnector = <StepConnector />;
+
 function Stepper({
     activeStep = 0,
     alternativeLabel = false,
     children,
     component: Component = 'div',
-    connector,
+    connector = defaultConnector,
     nonLinear = false,
     orientation = 'horizontal',
     customCSS,
