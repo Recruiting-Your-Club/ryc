@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { colors } from '@styles/theme/color';
+import { colors } from '@styles/theme/colors';
 import type { CSSProperties } from 'react';
 import type { ButtonSize } from './Button';
 import type { ButtonVariant } from './Button';

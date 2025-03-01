@@ -1,5 +1,5 @@
 import { TYPOGRAPHY } from './typography';
-import { colors } from './color';
+import { colors } from './colors';
 import type { Theme } from '@emotion/react';
 
 const theme: Theme = {
