@@ -10,7 +10,6 @@ interface StepperProps {
     children: ReactNode; //Step
     component?: ElementType; //하위 컴포넌트
     connector?: ReactNode; //연결선
-    nonLinear?: boolean; //skip
     orientation?: 'horizontal' | 'vertical';
     customCSS?: string;
 }
@@ -23,7 +22,6 @@ function Stepper({
     children,
     component: Component = 'div',
     connector = defaultConnector,
-    nonLinear = false,
     orientation = 'horizontal',
     customCSS,
 }: StepperProps) {
@@ -39,8 +37,8 @@ function Stepper({
     });
 
     const contextValue = useMemo(
-        () => ({ activeStep, alternativeLabel, connector, nonLinear, orientation }),
-        [activeStep, alternativeLabel, connector, nonLinear, orientation],
+        () => ({ activeStep, alternativeLabel, connector, orientation }),
+        [activeStep, alternativeLabel, connector, orientation],
     );
 
     return (
