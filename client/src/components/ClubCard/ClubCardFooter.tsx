@@ -19,7 +19,7 @@ function ClubCardFooter({ tag }: ClubCardFooterProps) {
         const newVisibleTag: string[] = [];
 
         const tagElements = Array.from(invisibleRef.current.children) as HTMLDivElement[];
-        tagElements.map((tagElement, index) => {
+        tagElements.forEach((tagElement, index) => {
             const tagWidth = tagElement.offsetWidth;
             if (currentTagsWidth + tagWidth <= cardWidth) {
                 newVisibleTag.push(tag[index]);
