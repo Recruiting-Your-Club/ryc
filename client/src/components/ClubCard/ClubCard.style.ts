@@ -1,6 +1,12 @@
 import { css } from '@emotion/react';
 import { colors } from '@styles/color';
 
+const baseDisplay = css`
+    display: flex;
+    flex-direction: row;
+    padding-inline: 1.5rem;
+`;
+
 const centerDisplay = css`
     display: flex;
     align-items: center;
@@ -16,21 +22,13 @@ export const baseClubCard = css`
 
     &:hover {
         cursor: pointer;
-        box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.1); /* shadow-lg */
-        transform: translateY(-0.25rem); /* -translate-y-1 (수치 맞춰서 변환) */
+        box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.1);
+        transform: translateY(-0.25rem);
     }
-    /* &:hover {
-        cursor: pointer;
-        border: 0.0625rem solid color-mix(in srgb, ${colors.default} 50%, transparent);
-
-        box-shadow: 0rem 0rem 0.2rem 0rem color-mix(in srgb, ${colors.gray[1000]} 25%, transparent);
-    } */
 `;
 
-export const baseDisplay = css`
-    display: flex;
-    flex-direction: row;
-    padding-inline: 1.5rem;
+export const titlePart = css`
+    ${baseDisplay};
 `;
 
 export const clubTitle = css`
@@ -41,7 +39,7 @@ export const clubTitle = css`
     overflow: hidden;
 `;
 
-export const statusTagDisplay = css`
+export const statusTag = css`
     ${centerDisplay};
     width: 20%;
     justify-content: flex-end;
@@ -77,7 +75,7 @@ export const calendarPart = css`
     padding-block: 1rem;
 `;
 
-export const calendarSVGDisplay = css`
+export const calendarSVG = css`
     ${centerDisplay};
     color: ${colors.gray[1600]};
 `;
@@ -98,12 +96,21 @@ export const line = css`
 
 export const tagDisplay = css`
     ${baseDisplay};
-    max-width: 100%;
+    max-width: 90%;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    gap: 1rem;
 `;
 
 export const perTag = css`
+    ${centerDisplay};
+    max-width: 100%;
     padding-block: 1.125rem;
-    padding-right: 1rem;
     white-space: nowrap;
-    text-overflow: ellipsis;
+`;
+
+export const invisibleTag = css`
+    position: absolute;
+    transform: translateX(-624.9375rem);
+    white-space: nowrap;
 `;
