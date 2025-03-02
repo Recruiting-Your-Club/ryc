@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import { ClubCard } from '.';
+import React from 'react';
 
 const meta: Meta<typeof ClubCard> = {
     title: '동아리 카드 컴포넌트',
@@ -11,6 +13,13 @@ const meta: Meta<typeof ClubCard> = {
             },
         },
     },
+    decorators: [
+        (Story) => (
+            <MemoryRouter>
+                <Story />
+            </MemoryRouter>
+        ),
+    ],
 };
 
 export default meta;
@@ -25,6 +34,7 @@ export const scheduled: Story = {
         startDate: '2099.03.01',
         endDate: '2099.03.05',
         tag: ['학술동아리', '코딩', '프로그래밍'],
+        path: '/',
     },
 };
 export const progress: Story = {
@@ -36,6 +46,7 @@ export const progress: Story = {
         startDate: '2025.01.01',
         endDate: '2099.03.01',
         tag: ['학술동아리', '코딩', '프로그래밍'],
+        path: '/',
     },
 };
 export const End: Story = {
@@ -47,5 +58,6 @@ export const End: Story = {
         startDate: '2025.01.01',
         endDate: '2025.01.05',
         tag: ['학술동아리', '코딩', '프로그래밍'],
+        path: '/',
     },
 };
