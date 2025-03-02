@@ -1,4 +1,4 @@
-import Calendar from '@assets/images/Calendar.svg';
+import Calendar from '@assets/images/calendar.svg';
 import type { tagVariant } from '@components/Tag';
 import { Tag } from '@components/Tag';
 import { getStatus } from '@utils/compareTime';
