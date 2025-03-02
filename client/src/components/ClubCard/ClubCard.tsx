@@ -5,19 +5,17 @@ import { getStatus } from '@utils/compareTime';
 import React from 'react';
 import {
     baseClubCard,
-    baseDisplay,
     calendarPart,
-    calendarSVGDisplay,
+    calendarSVG,
     clubImage,
     clubName,
     clubTitle,
     clubTypeText,
     dateText,
-    line,
-    perTag,
-    statusTagDisplay,
-    tagDisplay,
+    statusTag,
+    titlePart,
 } from './ClubCard.style';
+import { ClubCardFooter } from './ClubCardFooter';
 
 interface ClubCardProps {
     imageURL: string;
@@ -39,32 +37,25 @@ function ClubCard({ imageURL, name, type, startDate, endDate, tag }: ClubCardPro
 
     return (
         <div css={baseClubCard}>
-            <div css={baseDisplay}>
+            <div css={titlePart}>
                 <img src={imageURL} alt="동아리 대표 이미지" css={clubImage} />
                 <div css={clubTitle}>
                     <span css={clubName}>{name}</span>
                     <span css={clubTypeText}>{type}</span>
                 </div>
-                <div css={statusTagDisplay}>
+                <div css={statusTag}>
                     <Tag text={RECRUITMENT_STATUS[status]} variant={status} />
                 </div>
             </div>
             <div css={calendarPart}>
-                <span css={calendarSVGDisplay}>
+                <span css={calendarSVG}>
                     <Calendar />
                 </span>
                 <span css={dateText}>
                     {startDate} - {endDate}
                 </span>
             </div>
-            <hr css={line} />
-            <div css={tagDisplay}>
-                {tag.map((tag, index) => (
-                    <div key={index} css={perTag}>
-                        <Tag text={tag} variant="primary" />
-                    </div>
-                ))}
-            </div>
+            <ClubCardFooter tag={tag} />
         </div>
     );
 }
