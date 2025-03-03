@@ -10,6 +10,7 @@ function ClubCardFooter({ tag }: ClubCardFooterProps) {
     const visibleRef = useRef<HTMLDivElement | null>(null);
     const invisibleRef = useRef<HTMLDivElement | null>(null);
     const [visibleTag, setVisibleTag] = useState<string[]>([]);
+    const [isMeasuring, setIsMeasuring] = useState(true);
 
     useEffect(() => {
         if (!visibleRef.current || !invisibleRef.current) return;
@@ -27,6 +28,7 @@ function ClubCardFooter({ tag }: ClubCardFooterProps) {
             }
         });
         setVisibleTag(newVisibleTag);
+        setIsMeasuring(false);
     }, [tag]);
 
     return (
@@ -39,11 +41,13 @@ function ClubCardFooter({ tag }: ClubCardFooterProps) {
                     </span>
                 ))}
             </div>
-            <div ref={invisibleRef} css={invisibleTag} aria-hidden="true">
-                {tag.map((tag, index) => (
-                    <Tag key={index} text={tag} variant="primary" />
-                ))}
-            </div>
+            {isMeasuring && (
+                <div ref={invisibleRef} css={invisibleTag} aria-hidden="true">
+                    {tag.map((tag, index) => (
+                        <Tag key={index} text={tag} variant="primary" />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
