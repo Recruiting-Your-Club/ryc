@@ -3,7 +3,6 @@ import { colors } from '@styles/color';
 
 const baseDisplay = css`
     display: flex;
-    flex-direction: row;
     padding-inline: 1.5rem;
 `;
 
@@ -77,6 +76,7 @@ export const calendarPart = css`
 
 export const calendarSVG = css`
     ${centerDisplay};
+    padding-top: 0.099rem;
     color: ${colors.gray[1600]};
 `;
 
@@ -96,6 +96,7 @@ export const line = css`
 
 export const tagDisplay = css`
     ${baseDisplay};
+    height: 3.75rem;
     max-width: 90%;
     flex-wrap: nowrap;
     overflow: hidden;
@@ -105,7 +106,6 @@ export const tagDisplay = css`
 export const perTag = css`
     ${centerDisplay};
     max-width: 100%;
-    padding-block: 1.125rem;
     white-space: nowrap;
 `;
 
