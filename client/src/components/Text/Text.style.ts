@@ -9,7 +9,7 @@ const TEXT_COLORS = {
     white: theme.colors.white,
     primary: theme.colors.default,
     warning: theme.colors.red[800],
-    caption: theme.colors.gray[2000],
+    caption: theme.colors.gray[600],
 };
 
 const TEXT: Record<TextType, SerializedStyles> = {
