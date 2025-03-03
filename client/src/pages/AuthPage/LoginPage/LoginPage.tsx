@@ -10,7 +10,7 @@ import { Button, BaseInput, PasswordInput } from '@components';
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 import { colors } from '@styles/theme/colors';
-import useRouter from '@hooks/useRouter';
+import { useRouter } from '@hooks/useRouter';
 
 function LoginPage() {
     const { removeHistoryAndGo } = useRouter();

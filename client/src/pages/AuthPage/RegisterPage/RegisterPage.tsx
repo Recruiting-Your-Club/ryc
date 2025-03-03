@@ -10,7 +10,7 @@ import {
 import { BaseInput, PasswordInput, Button } from '@components';
 import { css } from '@emotion/react';
 import { colors } from '@styles/theme/colors';
-import useRouter from '@hooks/useRouter';
+import { useRouter } from '@hooks/useRouter';
 
 function RegisterPage() {
     const { removeHistoryAndGo } = useRouter();
