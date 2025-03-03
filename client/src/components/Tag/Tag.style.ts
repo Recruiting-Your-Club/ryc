@@ -16,7 +16,7 @@ export const tag = {
     `,
     progress: css`
         ${baseTag};
-        background-color: ${theme.colors.default};
+        background-color: ${theme.colors.blue[100]};
         color: ${theme.colors.defaultHover};
     `,
     end: css`

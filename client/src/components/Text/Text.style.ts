@@ -6,9 +6,10 @@ import type { CSSProperties } from 'react';
 
 const TEXT_COLORS = {
     black: theme.colors.black,
+    white: theme.colors.white,
     primary: theme.colors.default,
-    warning: theme.colors.red[900],
-    caption: theme.colors.gray[2100],
+    warning: theme.colors.red[800],
+    caption: theme.colors.gray[2000],
 };
 
 const TEXT: Record<TextType, SerializedStyles> = {
