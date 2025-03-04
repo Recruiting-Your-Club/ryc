@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { colors } from '@styles/theme/color';
+import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
 import type { StarSize } from './Star';
 
@@ -52,7 +52,7 @@ export const s_star = (filled: boolean) => {
         & > svg {
             width: 100%;
             height: 100%;
-            fill: ${filled ? colors.default : colors.disabled};
+            fill: ${filled ? theme.colors.default : theme.colors.disabled};
         }
     `;
 };
@@ -67,7 +67,7 @@ export const s_halfStar = (percentage: number) => {
         height: 100%;
 
         & > svg {
-            fill: ${colors.default};
+            fill: ${theme.colors.default};
             clip-path: inset(0 ${100 - percentage}% 0 0);
         }
     `;
