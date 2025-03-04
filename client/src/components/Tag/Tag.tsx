@@ -10,7 +10,7 @@ export interface TagProps {
 function Tag({ text = 'sample', variant = 'primary' }: TagProps) {
     return (
         <div>
-            <span css={tag[variant]}>{text}</span>
+            <span css={tag(variant)}>{text}</span>
         </div>
     );
 }

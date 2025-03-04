@@ -69,8 +69,7 @@ const textBase = css`
     align-items: center;
     gap: 0.375rem;
     padding: 0.5rem 1.125rem;
-    font-size: 1rem;
-    font-weight: 500;
+    ${theme.typography.subCaptionSemibold}
     white-space: nowrap;
 `;
 const noneTextBase = css`
@@ -85,7 +84,9 @@ export const leftTextContainer = (variant: ToggleVariant, isChecked: boolean) =>
         case 'primary':
             return css`
                 ${noneTextBase}
-                ${isChecked ? `background-color: ${theme.colors.white};` : `color: #64748b;`}
+                ${isChecked
+                    ? `background-color: ${theme.colors.white};`
+                    : `color: ${theme.colors.gray[700]}`}
             `;
         case 'text':
             return css`
@@ -93,7 +94,7 @@ export const leftTextContainer = (variant: ToggleVariant, isChecked: boolean) =>
                 ${textBase}
                 ${isChecked
                     ? ` color: ${theme.colors.default};   background-color: #f4f7ff; `
-                    : ` color: #64748b;`}
+                    : ` color: ${theme.colors.gray[500]};`}
             `;
         case 'secondText':
             return css`
@@ -106,7 +107,9 @@ export const leftTextContainer = (variant: ToggleVariant, isChecked: boolean) =>
         default:
             return css`
                 ${noneTextBase}
-                ${isChecked ? `background-color: ${theme.colors.white};` : `color: #64748b;`}
+                ${isChecked
+                    ? `background-color: ${theme.colors.white};`
+                    : `color: ${theme.colors.gray[500]}`}
             `;
     }
 };
@@ -116,7 +119,9 @@ export const rightTextContainer = (variant: ToggleVariant, isChecked: boolean) =
         case 'primary':
             return css`
                 ${noneTextBase}
-                ${!isChecked ? `background-color: ${theme.colors.white};` : `color: #64748b;`}
+                ${!isChecked
+                    ? `background-color: ${theme.colors.white};`
+                    : `color: ${theme.colors.gray[500]}`}
             `;
         case 'text':
             return css`
@@ -124,7 +129,7 @@ export const rightTextContainer = (variant: ToggleVariant, isChecked: boolean) =
                 ${textBase}
                 ${!isChecked
                     ? `color: ${theme.colors.default};background-color: #f4f7ff;`
-                    : `color: #64748b;`}
+                    : `color: ${theme.colors.gray[500]};`}
             `;
         case 'secondText':
             return css`
@@ -137,7 +142,9 @@ export const rightTextContainer = (variant: ToggleVariant, isChecked: boolean) =
         default:
             return css`
                 ${noneTextBase}
-                ${!isChecked ? `background-color: ${theme.colors.white};` : `color: #64748b;`}
+                ${!isChecked
+                    ? `background-color: ${theme.colors.white};`
+                    : `color: ${theme.colors.gray[500]};`}
             `;
     }
 };
