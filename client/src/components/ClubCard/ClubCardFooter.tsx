@@ -35,16 +35,16 @@ function ClubCardFooter({ tag }: ClubCardFooterProps) {
         <div>
             <hr css={line} />
             <div ref={visibleRef} css={tagDisplay}>
-                {visibleTag.map((tag, index) => (
-                    <span key={index} css={perTag}>
+                {visibleTag.map((tag, _) => (
+                    <span key={tag} css={perTag}>
                         <Tag text={tag} variant="primary" />
                     </span>
                 ))}
             </div>
             {isMeasuring && (
                 <div ref={invisibleRef} css={invisibleTag} aria-hidden="true">
-                    {tag.map((tag, index) => (
-                        <Tag key={index} text={tag} variant="primary" />
+                    {tag.map((tag, _) => (
+                        <Tag key={tag} text={tag} variant="primary" />
                     ))}
                 </div>
             )}
