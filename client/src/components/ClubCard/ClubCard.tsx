@@ -1,3 +1,4 @@
+import BasicImage from '@assets/images/basicImage.png';
 import Calendar from '@assets/images/calendar.svg';
 import type { tagVariant } from '@components/Tag';
 import { Tag } from '@components/Tag';
@@ -19,7 +20,7 @@ import {
 import { ClubCardFooter } from './ClubCardFooter';
 
 interface ClubCardProps {
-    imageURL: string;
+    imageURL?: string;
     name: string;
     type: string;
     startDate: string;
@@ -43,7 +44,7 @@ function ClubCard({ imageURL, name, type, startDate, endDate, tag, path, onClick
     return (
         <div onClick={() => goTo(path)} onKeyDown={onClickHandler} tabIndex={0} role="button" css={baseClubCard}>
             <div css={titlePart}>
-                <img src={imageURL} alt="동아리 대표 이미지" css={clubImage} />
+                <img src={imageURL ? imageURL : BasicImage} alt="동아리 대표 이미지" css={clubImage} />
                 <div css={clubTitle}>
                     <span css={clubName}>{name}</span>
                     <span css={clubTypeText}>{type}</span>
