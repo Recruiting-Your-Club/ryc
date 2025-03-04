@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import theme from '@styles/theme';
 
 export const RegisterContainer = css`
     display: flex;
@@ -15,7 +16,6 @@ export const RegisterBox = css`
     align-items: center;
     justify-content: space-between;
     width: 40rem;
-    height: 50rem;
     border-radius: 1rem;
     padding: 0 4rem;
     padding-top: 2rem;
@@ -30,8 +30,7 @@ export const titleContainer = css`
     justify-content: start;
     align-items: center;
     flex-grow: 0.2;
-    font-size: 2rem;
-    font-weight: 700;
+    ${theme.typography.h4Bold};
 `;
 export const emailContainer = css`
     display: flex;
