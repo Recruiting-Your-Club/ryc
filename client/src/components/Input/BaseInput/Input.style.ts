@@ -9,9 +9,9 @@ export const inputWrapperContainer = css`
     width: 100%;
 `;
 
-export const labelStyle = css`
-    font-size: 1.2rem;
-    margin-bottom: 0.2rem;
+export const labelStyle = (error: boolean) => css`
+    ${theme.typography.bodySemibold}
+    color: ${error ? theme.colors.red[800] : theme.colors.black};
     padding-left: 0.2rem;
 `;
 
@@ -27,7 +27,7 @@ const baseInputContainer = css`
 export const inputContainer = (error: boolean) => ({
     primary: css`
         ${baseInputContainer};
-        border: 1px solid ${error ? theme.colors.red[1000] : theme.colors.inputBorder};
+        border: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
         border-radius: 0.6rem;
         transition: border-color 0.3s ease-in-out;
         &:focus-within {
@@ -37,7 +37,7 @@ export const inputContainer = (error: boolean) => ({
     lined: css`
         ${baseInputContainer};
         border: none;
-        border-bottom: 1px solid ${error ? theme.colors.red[1000] : theme.colors.inputBorder};
+        border-bottom: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
         transition: border-bottom 0.3s ease-in-out;
         &:focus-within {
             border-color: ${theme.colors.default};
@@ -63,9 +63,9 @@ export const endNodeStyle = css`
 `;
 
 export const helperTextStyle = (error: boolean | undefined) => css`
-    font-size: 1.2rem;
     margin-top: 0.2rem;
     margin-bottom: 0.2rem;
     padding-left: 0.2rem;
-    color: ${error ? theme.colors.red[1000] : theme.colors.textHelper};
+    ${theme.typography.captionLight};
+    color: ${error ? theme.colors.red[800] : theme.colors.textHelper};
 `;

@@ -24,10 +24,6 @@ export const homeNavContainer = css`
 export const homeImage = css`
     border-radius: 0.5rem;
 `;
-export const homeNavText = css`
-    font-size: 2rem;
-    font-weight: bold;
-`;
 
 export const navContainer = css`
     display: flex;
