@@ -16,5 +16,11 @@ export const StepperContext = createContext<StepperContextType>({
 });
 
 export function useStepperContext(): StepperContextType {
-    return useContext(StepperContext);
+    const context = useContext(StepperContext);
+
+    if (context === undefined) {
+        throw new Error('useStepperContext must be used within a StepperContext.Provider');
+    }
+
+    return context;
 }

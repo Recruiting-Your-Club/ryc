@@ -19,5 +19,11 @@ export const StepContext = createContext<StepContextType>({
 });
 
 export function useStepContext(): StepContextType {
-    return useContext(StepContext);
+    const context = useContext(StepContext);
+
+    if (context === undefined) {
+        throw new Error('useStepContext must be used within a StepContext.Provider');
+    }
+
+    return context;
 }
