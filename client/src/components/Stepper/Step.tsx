@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode} from 'react';
+import type { ElementType, ReactNode } from 'react';
 import React, { useMemo } from 'react';
 import { StepperContext, useStepperContext } from './StepperContext';
 import { s_step } from './Stepper.style';
@@ -42,7 +42,6 @@ function Step({
         [index, last, active, completed, disabled],
     );
 
-    //라벨, 아이콘 수직 조건
     const newChildren = (
         <Component css={[s_step(orientation, alternativeLabel), customCss]}>
             {connector && alternativeLabel && index !== 0 ? connector : null}
@@ -52,7 +51,6 @@ function Step({
 
     return (
         <StepContext.Provider value={contextValue}>
-            {/*라벨, 아이콘 수평 조건*/}
             {connector && !alternativeLabel && index !== 0 ? (
                 <>
                     {connector}

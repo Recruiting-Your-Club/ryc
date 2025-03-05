@@ -6,10 +6,10 @@ import { StepConnector } from './StepConnector';
 
 interface StepperProps {
     activeStep?: number;
-    alternativeLabel?: boolean; //Label 수평 or 수직
-    children: ReactNode; //Step
-    component?: ElementType; //하위 컴포넌트
-    connector?: ReactNode; //연결선
+    alternativeLabel?: boolean;
+    children: ReactNode;
+    component?: ElementType;
+    connector?: ReactNode;
     orientation?: 'horizontal' | 'vertical';
     customCSS?: string;
 }
