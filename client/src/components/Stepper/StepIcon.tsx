@@ -13,11 +13,27 @@ interface StepIconProps {
 }
 
 function StepIcon({ active = false, completed = false, error = false, disabled = false, icon }: StepIconProps) {
+    // prop destruction
+
+    // lib hooks
+
+    // state, ref, querystring hooks
+
+    // form hooks
+
+    // query hooks
+
+    // calculated values
+
+    // effects
+
+    // handlers
     if (error) {
         return <WarningIcon />;
     }
 
     return (
+        //NOTE: svg 내부에 조건부 로직이 포함되어 있어 따로 assets폴더에서 import해오지 않고 직접 작성
         <svg viewBox="0 0 30 30" css={s_stepIcon(active, completed, error, disabled)}>
             <circle cx="15" cy="15" r="15" fill={completed ? '#C2C0FF' : active ? colors.default : colors.disabled} />
 

@@ -5,6 +5,7 @@ import { StepperContext } from './StepperContext';
 import { StepConnector } from './StepConnector';
 import type { SerializedStyles } from '@emotion/react';
 
+//interface
 interface StepperProps {
     activeStep?: number;
     alternativeLabel?: boolean;
@@ -26,10 +27,25 @@ function Stepper({
     orientation = 'horizontal',
     customCSS,
 }: StepperProps) {
+    //prop destruction
+
+    //lib hooks
+    const contextValue = useMemo(
+        () => ({ activeStep, alternativeLabel, connector, orientation }),
+        [activeStep, alternativeLabel, connector, orientation],
+    );
+    //state, ref, querystring hooks
+
+    //form hooks
+
+    //query hooks
+
+    //calculated values
     const childrenArray = Children.toArray(children).filter(isValidElement);
     const steps = childrenArray.map((step, index) => {
         const props = step.props || {};
 
+        // NOTE: 기존 step의 props를 유지하면서 새로운 props(index, last) 추가를 위해 cloneElement 사용
         return cloneElement(step as ReactElement, {
             index,
             last: index + 1 === childrenArray.length,
@@ -37,10 +53,9 @@ function Stepper({
         });
     });
 
-    const contextValue = useMemo(
-        () => ({ activeStep, alternativeLabel, connector, orientation }),
-        [activeStep, alternativeLabel, connector, orientation],
-    );
+    //effects
+
+    //handlers
 
     return (
         <StepperContext.Provider value={contextValue}>

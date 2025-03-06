@@ -14,8 +14,23 @@ export interface StepLabelProps {
 }
 
 function StepLabel({ children, error = false, optional, customCSS }: StepLabelProps) {
+    // prop destruction
+
+    // lib hooks
     const { alternativeLabel, orientation } = useStepperContext();
     const { active, completed, disabled, icon } = useStepContext();
+
+    // state, ref, querystring hooks
+
+    // form hooks
+
+    // query hooks
+
+    // calculated values
+
+    // effects
+
+    // handlers
 
     return (
         <span css={[s_stepLabel(alternativeLabel, disabled, orientation), customCSS]}>

@@ -26,10 +26,19 @@ function Step({
     last = false,
     customCss,
 }: StepProps) {
-    const { activeStep, connector, alternativeLabel, orientation } = useStepperContext();
-
+    //prop destruction
     let [active = false, completed = false, disabled = false] = [activeProp, completedProp, disabledProp];
 
+    //lib hooks
+    const { activeStep, connector, alternativeLabel, orientation } = useStepperContext();
+
+    //state, ref, querystring hooks
+
+    //form hooks
+
+    //query hooks
+
+    //calculated values
     if (activeStep === index) {
         active = activeProp !== undefined ? activeProp : true;
     } else if (activeStep > index) {
@@ -43,6 +52,7 @@ function Step({
         [index, last, active, completed, disabled],
     );
 
+    //NOTE: alternativeLabel 시 StepConnector가 s_step 컴포넌트 내부에서 렌더링 되도록 설정 (레이아웃 설정 이슈)
     const newChildren = (
         <Component css={[s_step(orientation, alternativeLabel), customCss]}>
             {connector && alternativeLabel && index !== 0 ? connector : null}
@@ -50,9 +60,13 @@ function Step({
         </Component>
     );
 
+    //effects
+
+    //handler
+
     return (
         <StepContext.Provider value={contextValue}>
-            {connector && !alternativeLabel && index !== 0 ? (
+            {connector && !alternativeLabel && index !== 0 ? ( //NOTE: alternativeLabel false -> s_step 외부에서 렌더링
                 <>
                     {connector}
                     {newChildren}

@@ -9,8 +9,23 @@ interface StepConnectorProps {
 }
 
 function StepConnector({ customCSS }: StepConnectorProps) {
+    //prop destruction
+
+    //lib hooks
     const { alternativeLabel, orientation } = useStepperContext();
     const { active, completed } = useStepContext();
+
+    //state, ref, querystring hooks
+
+    //form hooks
+
+    //query hooks
+
+    //calculated values
+
+    //effects
+
+    //handler
 
     return (
         <div css={[s_stepConnector(alternativeLabel, orientation), customCSS]}>
