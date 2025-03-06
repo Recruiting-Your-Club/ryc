@@ -4,12 +4,13 @@ import { useStepperContext } from './StepperContext';
 import { useStepContext } from './StepContext';
 import { s_stepLabel, s_stepLabelIconContainer, s_stepLabelOptional, s_stepLabelText } from './Stepper.style';
 import { StepIcon } from './StepIcon';
+import type { SerializedStyles } from '@emotion/react';
 
-interface StepLabelProps {
+export interface StepLabelProps {
     children: ReactNode;
     error?: boolean;
     optional?: ReactNode;
-    customCSS?: string;
+    customCSS?: SerializedStyles;
 }
 
 function StepLabel({ children, error = false, optional, customCSS }: StepLabelProps) {

@@ -3,8 +3,9 @@ import React, { useMemo } from 'react';
 import { StepperContext, useStepperContext } from './StepperContext';
 import { s_step } from './Stepper.style';
 import { StepContext } from './StepContext';
+import type { SerializedStyles } from '@emotion/react';
 
-interface StepProps {
+export interface StepProps {
     active?: boolean;
     children: ReactNode;
     component?: ElementType;
@@ -12,7 +13,7 @@ interface StepProps {
     disabled?: boolean;
     index?: number;
     last?: boolean;
-    customCss?: string;
+    customCss?: SerializedStyles;
 }
 
 function Step({

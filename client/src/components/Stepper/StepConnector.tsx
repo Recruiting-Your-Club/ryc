@@ -2,9 +2,10 @@ import React from 'react';
 import { s_stepConnector, s_stepConnectorLine } from './Stepper.style';
 import { useStepperContext } from './StepperContext';
 import { useStepContext } from './StepContext';
+import type { SerializedStyles } from '@emotion/react';
 
 interface StepConnectorProps {
-    customCSS?: string;
+    customCSS?: SerializedStyles;
 }
 
 function StepConnector({ customCSS }: StepConnectorProps) {

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import React from 'react';
 import { s_stepIcon, s_stepIconText } from './Stepper.style';
 import { colors } from '@styles/color';
+import WarningIcon from '@assets/images/warningIcon.svg';
 
 interface StepIconProps {
     active?: boolean;
@@ -9,14 +10,6 @@ interface StepIconProps {
     error?: boolean;
     disabled?: boolean;
     icon: ReactNode;
-}
-
-function WarningIcon() {
-    return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="red" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L1 22H23L12 2ZM12 18C11.45 18 11 17.55 11 17C11 16.45 11.45 16 12 16C12.55 16 13 16.45 13 17C13 17.55 12.55 18 12 18ZM13 14H11V10H13V14Z" />
-        </svg>
-    );
 }
 
 function StepIcon({ active = false, completed = false, error = false, disabled = false, icon }: StepIconProps) {
