@@ -13,16 +13,16 @@ interface StepLabelProps {
 }
 
 function StepLabel({ children, error = false, optional, customCSS }: StepLabelProps) {
-    const { alternativeLabel } = useStepperContext();
+    const { alternativeLabel, orientation } = useStepperContext();
     const { active, completed, disabled, icon } = useStepContext();
 
     return (
-        <span css={[s_stepLabel(alternativeLabel, disabled), customCSS]}>
+        <span css={[s_stepLabel(alternativeLabel, disabled, orientation), customCSS]}>
             <span css={s_stepLabelIconContainer(alternativeLabel)}>
                 <StepIcon active={active} completed={completed} error={error} disabled={disabled} icon={icon} />
             </span>
             <div>
-                <span css={s_stepLabelText(active, completed, error, disabled)}>{children}</span>
+                <span css={s_stepLabelText(active, completed, error, disabled, alternativeLabel)}>{children}</span>
                 {optional && <div css={s_stepLabelOptional}>{optional}</div>}
             </div>
         </span>

@@ -4,6 +4,7 @@ import { Button } from '@components/Button';
 import { Stepper } from '@components/Stepper/Stepper';
 import { Step } from '@components/Stepper/Step';
 import { StepLabel } from '@components/Stepper/StepLabel';
+import { css } from '@emotion/react';
 function TestPage() {
     const [activeStep, setActiveStep] = useState(0);
     const [error, setError] = useState(false);
@@ -25,9 +26,9 @@ function TestPage() {
         }
     };
     return (
-        <div>
+        <div style={{ width: '800px' }}>
             <div style={{ marginBottom: '100px' }}></div>
-            <Stepper activeStep={activeStep}>
+            <Stepper activeStep={activeStep} orientation="horizontal" alternativeLabel>
                 <Step>
                     <StepLabel>공고 상세 정보 편집</StepLabel>
                 </Step>

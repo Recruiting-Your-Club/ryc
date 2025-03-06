@@ -9,11 +9,11 @@ interface StepConnectorProps {
 
 function StepConnector({ customCSS }: StepConnectorProps) {
     const { alternativeLabel, orientation } = useStepperContext();
-    const { completed } = useStepContext();
+    const { active, completed } = useStepContext();
 
     return (
         <div css={[s_stepConnector(alternativeLabel, orientation), customCSS]}>
-            <span css={s_stepConnectorLine(orientation, completed)} />
+            <span css={s_stepConnectorLine(orientation, active, completed)} />
         </div>
     );
 }
