@@ -7,21 +7,37 @@ import {
     contentContainer,
     actionContainer,
 } from './BaseDialog.style';
+import type { SerializedStyles } from '@emotion/react';
+import X from '@assets/images/x.svg';
 
-function BaseDialog({ children }: { children: React.ReactNode }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleDialog = () => {
-        setIsOpen((open) => !open);
-    };
+function BaseDialog({
+    children,
+    open,
+    width = '',
+    height = '',
+}: {
+    children: React.ReactNode;
+    open: boolean;
+    width?: string;
+    height?: string;
+    handleClose?: () => void;
+}) {
+    // prop destruction
+    // lib hooks
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
 
     return (
         <>
-            <button onClick={handleDialog}>테스트 버튼 입니다.</button>
-            {isOpen &&
+            {open &&
                 createPortal(
                     <>
                         <div css={overlay}>
-                            <div css={dialogContainer}>{children}</div>
+                            <div css={dialogContainer(width, height)}>{children}</div>
                         </div>
                     </>,
                     document.body,
@@ -30,20 +46,28 @@ function BaseDialog({ children }: { children: React.ReactNode }) {
     );
 }
 
-function DialogTitle({ children }: { children: React.ReactNode }) {
-    return <h2 css={titleContainer}>{children}</h2>;
+function DialogHeader({
+    border = false,
+    children,
+    sx,
+}: {
+    border?: boolean;
+    children: React.ReactNode;
+    sx?: SerializedStyles;
+}) {
+    return <div css={[titleContainer(border), sx]}>{children}</div>;
 }
 
-function DialogContent({ children }: { children: React.ReactNode }) {
-    return <div css={contentContainer}>{children}</div>;
+function DialogContent({ children, sx }: { children: React.ReactNode; sx?: SerializedStyles }) {
+    return <div css={[contentContainer, sx]}>{children}</div>;
 }
 
-function DialogAction({ children }: { children: React.ReactNode }) {
-    return <div css={actionContainer}>{children}</div>;
+function DialogAction({ children, sx }: { children: React.ReactNode; sx?: SerializedStyles }) {
+    return <div css={[actionContainer, sx]}>{children}</div>;
 }
 
 const Dialog = Object.assign(BaseDialog, {
-    Header: DialogTitle,
+    Header: DialogHeader,
     Content: DialogContent,
     Action: DialogAction,
 });
