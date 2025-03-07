@@ -1,5 +1,6 @@
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../Avatar';
+import { Avatar } from '../Avatar';
 import { CardBottomBody } from './CardBottomBody';
 import { CardDivider } from './CardDivider';
 import { CardFooter } from './CardFooter';
@@ -9,25 +10,25 @@ import { CardTopBody } from './CardTopBody';
 import { DescriptionText } from './DescriptionText';
 
 interface CardProps {
-    width?: string;
-    radius?: string;
+    width: string;
+    radius: string;
     hover: boolean;
     avatarShape: AvatarShape;
     avatarSize: AvatarSize;
     avatarRadius?: string;
     titlePartPaddingLeft?: string;
-    footerHeight?: string;
+    footerHeight: string;
     imageURL?: string;
     imageName: string;
     title: string;
     subTitle: string;
-    description?: string;
+    description: string;
 }
 
 function Card({
     width = '35rem',
     radius = '0.3125rem',
-    hover = true,
+    hover,
     avatarShape = 'square',
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
@@ -42,13 +43,13 @@ function Card({
     return (
         <CardRoot width={width} radius={radius} hover={hover}>
             <CardTopBody>
-                {/* <Avatar
+                <Avatar
                     shape={avatarShape}
                     size={avatarSize}
                     radius={avatarRadius}
                     imageURL={imageURL}
                     imageName={imageName}
-                /> */}
+                />
                 <CardTitleContainer
                     titlePartPaddingLeft={titlePartPaddingLeft}
                     title={title}
