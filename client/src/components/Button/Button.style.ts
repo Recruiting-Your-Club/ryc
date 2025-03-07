@@ -73,6 +73,10 @@ export const s_variant = (variant: ButtonVariant) => {
                 background-color: transparent;
                 border: none;
                 color: ${theme.colors.textHelper};
+                transition: background-color 0.2s;
+                &:hover {
+                    background-color: ${theme.colors.gray[200]};
+                }
             `;
         default:
             return css`
