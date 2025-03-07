@@ -3,6 +3,7 @@ import type { tagVariant } from '@components/Tag';
 import { Tag } from '@components/Tag';
 import { useRouter } from '@hooks/useRouter';
 import React from 'react';
+import type { AvatarShape, AvatarSize } from '../../Avatar';
 import { CardBottomBody } from '../CardBottomBody';
 import { CardDescription } from '../CardDescription';
 import { CardDivider } from '../CardDivider';
@@ -15,6 +16,9 @@ import { TagList } from './TagList';
 interface ClubCardProps {
     width?: string;
     radius?: string;
+    avatarShape: AvatarShape;
+    avatarSize: AvatarSize;
+    avatarRadius?: string;
     footerHeight?: string;
     imageURL?: string;
     imageName: string;
@@ -35,6 +39,9 @@ function ClubCard({
     width = '35rem',
     radius = '0.3125rem',
     footerHeight = '3.75rem',
+    avatarShape = 'square',
+    avatarSize = 'xl',
+    avatarRadius = '0.3125rem',
     imageURL,
     imageName,
     title,
@@ -48,7 +55,13 @@ function ClubCard({
     return (
         <CardRoot width={width} radius={radius} onClick={() => goTo(path)}>
             <CardTopBody>
-                <Avatar imageURL={imageURL} imageName={imageName} />
+                <Avatar
+                    shape={avatarShape}
+                    size={avatarSize}
+                    radius={avatarRadius}
+                    imageURL={imageURL}
+                    imageName={imageName}
+                />
                 <CardDescription title={title} subTitle={type} />
                 <div css={statusTag}>
                     <Tag text={RECRUITMENT_STATUS[status]} variant={status} />
