@@ -10,7 +10,7 @@ interface AvatarProps {
     size: AvatarSize;
     radius?: string;
     imageURL?: string;
-    imageName: string;
+    imageName?: string;
 }
 
 function Avatar({ shape, size, radius, imageURL, imageName }: AvatarProps) {
@@ -20,7 +20,11 @@ function Avatar({ shape, size, radius, imageURL, imageName }: AvatarProps) {
 
     return (
         <>
-            <img src={imageURL ? imageURL : BasicImage} alt={imageName} css={cssProp} />
+            <img
+                src={imageURL ? imageURL : BasicImage}
+                alt={imageName ? imageName : 'BasicImage'}
+                css={cssProp}
+            />
         </>
     );
 }
