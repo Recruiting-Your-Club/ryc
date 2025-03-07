@@ -5,10 +5,10 @@ import { useRouter } from '@hooks/useRouter';
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../../Avatar';
 import { CardBottomBody } from '../CardBottomBody';
-import { CardDescription } from '../CardDescription';
 import { CardDivider } from '../CardDivider';
 import { CardFooter } from '../CardFooter';
 import { CardRoot } from '../CardRoot';
+import { CardTitleContainer } from '../CardTitleContainer';
 import { CardTopBody } from '../CardTopBody';
 import { statusTag } from './ClubCard.style';
 import { TagList } from './TagList';
@@ -16,9 +16,11 @@ import { TagList } from './TagList';
 interface ClubCardProps {
     width?: string;
     radius?: string;
+    hover: boolean;
     avatarShape: AvatarShape;
     avatarSize: AvatarSize;
     avatarRadius?: string;
+    titlePartPaddingLeft?: string;
     footerHeight?: string;
     imageURL?: string;
     imageName: string;
@@ -38,10 +40,12 @@ const RECRUITMENT_STATUS: Record<tagVariant, string> = {
 function ClubCard({
     width = '35rem',
     radius = '0.3125rem',
-    footerHeight = '3.75rem',
+    hover = false,
     avatarShape = 'square',
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
+    titlePartPaddingLeft = '1.25rem',
+    footerHeight = '3.75rem',
     imageURL,
     imageName,
     title,
@@ -53,7 +57,7 @@ function ClubCard({
     const { goTo } = useRouter();
 
     return (
-        <CardRoot width={width} radius={radius} onClick={() => goTo(path)}>
+        <CardRoot width={width} radius={radius} hover={hover} onClick={() => goTo(path)}>
             <CardTopBody>
                 <Avatar
                     shape={avatarShape}
@@ -62,7 +66,11 @@ function ClubCard({
                     imageURL={imageURL}
                     imageName={imageName}
                 />
-                <CardDescription title={title} subTitle={type} />
+                <CardTitleContainer
+                    titlePartPaddingLeft={titlePartPaddingLeft}
+                    title={title}
+                    subTitle={type}
+                />
                 <div css={statusTag}>
                     <Tag text={RECRUITMENT_STATUS[status]} variant={status} />
                 </div>
