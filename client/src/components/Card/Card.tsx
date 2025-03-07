@@ -19,7 +19,7 @@ interface CardProps {
     titlePartPaddingLeft?: string;
     footerHeight: string;
     imageURL?: string;
-    imageName: string;
+    imageName?: string;
     title: string;
     subTitle: string;
     description: string;

@@ -23,7 +23,7 @@ interface ClubCardProps {
     titlePartPaddingLeft?: string;
     footerHeight?: string;
     imageURL?: string;
-    imageName: string;
+    imageName?: string;
     title: string;
     type: string;
     status: tagVariant;
