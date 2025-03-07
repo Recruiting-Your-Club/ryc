@@ -1,20 +1,21 @@
-import { Avatar } from '@components/Avatar/Avatar';
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../Avatar';
 import { CardBottomBody } from './CardBottomBody';
-import { CardDescription } from './CardDescription';
 import { CardDivider } from './CardDivider';
 import { CardFooter } from './CardFooter';
 import { CardRoot } from './CardRoot';
+import { CardTitleContainer } from './CardTitleContainer';
 import { CardTopBody } from './CardTopBody';
 import { DescriptionText } from './DescriptionText';
 
 interface CardProps {
     width?: string;
     radius?: string;
+    hover: boolean;
     avatarShape: AvatarShape;
     avatarSize: AvatarSize;
     avatarRadius?: string;
+    titlePartPaddingLeft?: string;
     footerHeight?: string;
     imageURL?: string;
     imageName: string;
@@ -26,9 +27,11 @@ interface CardProps {
 function Card({
     width = '35rem',
     radius = '0.3125rem',
+    hover = true,
     avatarShape = 'square',
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
+    titlePartPaddingLeft,
     footerHeight = '3.75rem',
     imageURL,
     imageName,
@@ -37,16 +40,20 @@ function Card({
     description = '세계 최고의 동아리라고 확신할 수 있습니다.',
 }: CardProps) {
     return (
-        <CardRoot width={width} radius={radius}>
+        <CardRoot width={width} radius={radius} hover={hover}>
             <CardTopBody>
-                <Avatar
+                {/* <Avatar
                     shape={avatarShape}
                     size={avatarSize}
                     radius={avatarRadius}
                     imageURL={imageURL}
                     imageName={imageName}
+                /> */}
+                <CardTitleContainer
+                    titlePartPaddingLeft={titlePartPaddingLeft}
+                    title={title}
+                    subTitle={subTitle}
                 />
-                <CardDescription title={title} subTitle={subTitle} />
             </CardTopBody>
             <CardBottomBody>
                 <DescriptionText description={description} />
