@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { BaseInput, PasswordInput } from '@components/Input';
 import { Button } from '@components/Button';
@@ -26,6 +27,7 @@ function TestPage() {
         }
     };
     return (
+
         <div style={{ width: '800px' }}>
             <div style={{ marginBottom: '100px' }}></div>
             <Stepper activeStep={activeStep} orientation="horizontal" alternativeLabel>
@@ -51,6 +53,7 @@ function TestPage() {
             <button onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}>이전</button>
             <button onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}>다음</button>
         </div>
+
     );
 }
 export { TestPage };
