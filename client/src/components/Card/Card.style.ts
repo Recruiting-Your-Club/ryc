@@ -73,18 +73,20 @@ export const titleCss = css`
 `;
 
 export const subTitleCss = css`
-    ${theme.typography.subCaptionLight}
+    ${theme.typography.subCaptionRegular}
     color: ${theme.colors.gray[400]};
 `;
 
 export const cardBottomContainer = css`
-    ${baseDisplay};
+    /* ${baseDisplay}; */
+    padding-inline: 1.5rem;
     padding-block: 0.95rem;
 `;
 
 export const descriptionText = css`
     font-size: 1rem;
     font-weight: 600;
+    white-space: pre-line;
     /* ${theme.typography.subCaptionBold} */
     color: ${theme.colors.gray[500]};
 `;
