@@ -6,26 +6,33 @@ const baseDisplay = css`
     padding-inline: 1.5rem;
 `;
 
-const centerDisplay = css`
-    display: flex;
-    align-items: center;
+const baseCardRoot = css`
+    background-color: ${theme.colors.white};
+    padding-block: 1.5rem;
+    border: 0.0625rem solid ${theme.colors.gray[300]};
 `;
 
-export const baseCard = (width: string, radius: string) => {
-    return css`
-        width: ${width};
-        background-color: ${theme.colors.white};
-        padding-block: 1.5rem;
-        border-radius: ${radius};
-        border: 0.0625rem solid ${theme.colors.gray[300]};
-        transition: all 200ms;
+export const baseCard = (width: string, radius: string, hover: boolean) => {
+    if (hover) {
+        return css`
+            ${baseCardRoot}
+            width: ${width};
+            border-radius: ${radius};
+            transition: all 200ms;
 
-        &:hover {
-            cursor: pointer;
-            box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.1);
-            transform: translateY(-0.25rem);
-        }
-    `;
+            &:hover {
+                cursor: pointer;
+                box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.1);
+                transform: translateY(-0.25rem);
+            }
+        `;
+    } else {
+        return css`
+            ${baseCardRoot}
+            width: ${width};
+            border-radius: ${radius};
+        `;
+    }
 };
 
 export const baseClubCard = css`
@@ -47,11 +54,11 @@ export const cardTopContainer = css`
     ${baseDisplay};
 `;
 
-export const titleContainer = css`
+export const titleContainer = (paddingLeft?: string) => css`
     width: 65%;
     display: flex;
     flex-direction: column;
-    padding-left: 1.5rem;
+    padding-left: ${paddingLeft ? paddingLeft : 0};
     overflow: hidden;
 `;
 
