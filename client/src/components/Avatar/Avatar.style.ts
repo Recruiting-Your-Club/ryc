@@ -41,16 +41,12 @@ export const s_shape = (shape: AvatarShape, radius?: string) => {
     switch (shape) {
         case 'square':
             return css`
-                border-radius: ${radius ? radius : '0.3125rem'};
+                border-radius: ${radius ? radius : 0};
             `;
         case 'round':
             return css`
                 border-radius: 50%;
                 object-fit: cover;
-            `;
-        default:
-            return css`
-                border-radius: 0;
             `;
     }
 };
