@@ -26,6 +26,6 @@ function Text({
     sx,
     as: Tag = 'p',
 }: TextProps) {
-    return <Tag css={[sx, textStyle({ type, color, textAlign, noWrap, cropped })]}>{children}</Tag>;
+    return <Tag css={[textStyle({ type, color, textAlign, noWrap, cropped }), sx]}>{children}</Tag>;
 }
 export { Text };
