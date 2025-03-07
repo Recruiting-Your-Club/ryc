@@ -1,11 +1,6 @@
 import { css } from '@emotion/react';
 import type { CSSProperties } from '@emotion/serialize';
 import type { AvatarShape, AvatarSize } from './Avatar';
-export const image = css`
-    border-radius: 0.3125rem;
-    width: 4.5rem;
-    height: 4.5rem;
-`;
 
 interface Size {
     width?: CSSProperties['width'];
@@ -46,7 +41,7 @@ export const s_shape = (shape: AvatarShape, radius?: string) => {
     switch (shape) {
         case 'square':
             return css`
-                border-radius: ${radius ? radius : 0};
+                border-radius: ${radius ? radius : '0.3125rem'};
             `;
         case 'round':
             return css`
