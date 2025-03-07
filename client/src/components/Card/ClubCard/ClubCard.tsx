@@ -38,9 +38,9 @@ const RECRUITMENT_STATUS: Record<tagVariant, string> = {
 };
 
 function ClubCard({
-    width = '35rem',
+    width = '33rem',
     radius = '0.3125rem',
-    hover = false,
+    hover = true,
     avatarShape = 'square',
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
