@@ -7,11 +7,20 @@ interface CardFooterProps {
 }
 
 function TagList({ tag }: CardFooterProps) {
+    // prop destruction
+    // lib hooks
+
+    // state, ref, querystring hooks
     const visibleRef = useRef<HTMLDivElement | null>(null);
     const invisibleRef = useRef<HTMLDivElement | null>(null);
     const [visibleTag, setVisibleTag] = useState<string[]>([]);
     const [isMeasuring, setIsMeasuring] = useState(true);
 
+    // form hooks
+    // query hooks
+    // calculated values
+
+    // effects
     useEffect(() => {
         if (!visibleRef.current || !invisibleRef.current) return;
 
@@ -30,6 +39,8 @@ function TagList({ tag }: CardFooterProps) {
         setVisibleTag(newVisibleTag);
         setIsMeasuring(false);
     }, [tag]);
+
+    // handlers
 
     return (
         <>

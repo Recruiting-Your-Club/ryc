@@ -54,7 +54,17 @@ function ClubCard({
     tag,
     path,
 }: ClubCardProps) {
+    // prop destruction
+
+    // lib hooks
     const { goTo } = useRouter();
+
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
 
     return (
         <CardRoot width={width} radius={radius} hover={hover} onClick={() => goTo(path)}>

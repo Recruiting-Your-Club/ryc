@@ -7,6 +7,15 @@ interface CardTitleContainerProps {
     subTitle: string;
 }
 function CardTitleContainer({ titlePartPaddingLeft, title, subTitle }: CardTitleContainerProps) {
+    // prop destruction
+    // lib hooks
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
+
     return (
         <div css={titleContainer(titlePartPaddingLeft)}>
             <span css={titleCss}>{title}</span>

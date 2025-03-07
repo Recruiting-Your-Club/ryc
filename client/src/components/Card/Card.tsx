@@ -40,6 +40,15 @@ function Card({
     subTitle,
     description = '세계 최고의 동아리라고 확신할 수 있습니다.',
 }: CardProps) {
+    // prop destruction
+    // lib hooks
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
+
     return (
         <CardRoot width={width} radius={radius} hover={hover}>
             <CardTopBody>
