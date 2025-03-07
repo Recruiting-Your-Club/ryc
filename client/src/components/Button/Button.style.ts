@@ -29,7 +29,7 @@ export const buttonSize: Record<ButtonSize, Size> = {
     },
     xl: {
         height: '3.6rem',
-        padding: '1rem',
+        padding: '1rem 2rem',
     },
     full: {
         width: '100%',
