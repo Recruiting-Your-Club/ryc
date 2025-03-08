@@ -30,21 +30,6 @@ export const baseCard = (width: string, radius: string, hover: boolean) => {
     `;
 };
 
-export const baseClubCard = css`
-    width: 38rem;
-    background-color: ${theme.colors.white};
-    padding-top: 1.5rem;
-    border-radius: 0.3125rem;
-    border: 0.0625rem solid ${theme.colors.gray[300]};
-    transition: all 200ms;
-
-    &:hover {
-        cursor: pointer;
-        box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.1);
-        transform: translateY(-0.25rem);
-    }
-`;
-
 export const cardTopContainer = css`
     ${baseDisplay};
 `;
@@ -53,7 +38,7 @@ export const titleContainer = (paddingLeft?: string) => css`
     width: 65%;
     display: flex;
     flex-direction: column;
-    padding-left: ${paddingLeft ? paddingLeft : 0};
+    padding-left: ${paddingLeft ?? '0'};
     overflow: hidden;
     gap: 0.3rem;
 `;
