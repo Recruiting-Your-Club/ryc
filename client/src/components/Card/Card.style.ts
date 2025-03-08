@@ -34,11 +34,11 @@ export const cardTopContainer = css`
     ${baseDisplay};
 `;
 
-export const titleContainer = (paddingLeft?: string) => css`
+export const titleContainer = (paddingLeft = '0') => css`
     width: 65%;
     display: flex;
     flex-direction: column;
-    padding-left: ${paddingLeft ?? '0'};
+    padding-left: ${paddingLeft};
     overflow: hidden;
     gap: 0.3rem;
 `;
