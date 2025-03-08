@@ -27,7 +27,6 @@ function Step({
     customCss,
 }: StepProps) {
     //prop destruction
-    let [active = false, completed = false, disabled = false] = [activeProp, completedProp, disabledProp];
 
     //lib hooks
     const { activeStep, connector, alternativeLabel, orientation } = useStepperContext();
@@ -39,13 +38,9 @@ function Step({
     //query hooks
 
     //calculated values
-    if (activeStep === index) {
-        active = activeProp !== undefined ? activeProp : true;
-    } else if (activeStep > index) {
-        completed = completedProp !== undefined ? completedProp : true;
-    } else if (activeStep < index) {
-        disabled = disabledProp !== undefined ? disabledProp : true;
-    }
+    const active = activeProp ?? activeStep === index;
+    const completed = completedProp ?? activeStep > index;
+    const disabled = disabledProp ?? activeStep < index;
 
     const contextValue = useMemo(
         () => ({ index, last, icon: index + 1, active, completed, disabled }),

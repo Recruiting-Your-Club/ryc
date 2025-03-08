@@ -9,11 +9,11 @@ import type { SerializedStyles } from '@emotion/react';
 export interface StepLabelProps {
     children: ReactNode;
     error?: boolean;
-    optional?: ReactNode;
+    subText?: ReactNode;
     customCSS?: SerializedStyles;
 }
 
-function StepLabel({ children, error = false, optional, customCSS }: StepLabelProps) {
+function StepLabel({ children, error = false, subText, customCSS }: StepLabelProps) {
     // prop destruction
 
     // lib hooks
@@ -39,7 +39,7 @@ function StepLabel({ children, error = false, optional, customCSS }: StepLabelPr
             </span>
             <div>
                 <span css={s_stepLabelText(active, completed, error, disabled, alternativeLabel)}>{children}</span>
-                {optional && <div css={s_stepLabelOptional}>{optional}</div>}
+                {subText && <div css={s_stepLabelOptional}>{subText}</div>}
             </div>
         </span>
     );

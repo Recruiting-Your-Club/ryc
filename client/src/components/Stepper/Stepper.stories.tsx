@@ -70,7 +70,7 @@ export const ErrorDefault: Story = (args) => {
                     <StepLabel>Step 1</StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel error optional={'이메일 오류'}>
+                    <StepLabel error subText={'이메일 오류'}>
                         Step 2
                     </StepLabel>
                 </Step>

@@ -34,7 +34,7 @@ function StepIcon({ active = false, completed = false, error = false, disabled =
 
     return (
         //NOTE: svg 내부에 조건부 로직이 포함되어 있어 따로 assets폴더에서 import해오지 않고 직접 작성
-        <svg viewBox="0 0 30 30" css={s_stepIcon(active, completed, error, disabled)}>
+        <svg viewBox="0 0 30 30" css={s_stepIcon}>
             <circle cx="15" cy="15" r="15" fill={completed ? '#C2C0FF' : active ? colors.default : colors.disabled} />
 
             <text x="15" y="15" textAnchor="middle" dominantBaseline="central" css={s_stepIconText}>

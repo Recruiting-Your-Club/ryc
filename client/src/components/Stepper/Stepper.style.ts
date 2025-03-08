@@ -130,14 +130,12 @@ export const s_stepLabelOptional = () => {
     `;
 };
 
-export const s_stepIcon = (active: boolean, completed: boolean, error: boolean, disabled: boolean) => {
-    return css`
-        display: block;
-        width: 1.5rem;
-        height: 1.5rem;
-        transition: color 0.2s;
-    `;
-};
+export const s_stepIcon = css`
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: color 0.2s;
+`;
 
 export const s_stepIconText = css`
     fill: white;
