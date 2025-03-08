@@ -6,14 +6,14 @@ export type AvatarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';
 export type AvatarShape = 'square' | 'round';
 
 interface AvatarProps {
-    shape: AvatarShape;
-    size: AvatarSize;
+    shape?: AvatarShape;
+    size?: AvatarSize;
     radius?: string;
     imageURL?: string;
     imageName?: string;
 }
 
-function Avatar({ shape, size, radius, imageURL, imageName }: AvatarProps) {
+function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName }: AvatarProps) {
     const cssProp = [s_size(size)];
 
     if (shape) cssProp.push(s_shape(shape, radius));
