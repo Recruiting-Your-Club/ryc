@@ -35,11 +35,26 @@ const StepperTemplate: Story = (args) => {
                     <StepLabel>Step 5</StepLabel>
                 </Step>
             </Stepper>
-            <div style={{ display: 'flex', marginTop: '2rem', textAlign: 'center', justifyContent: 'space-between' }}>
-                <Button variant="primary" size="s" onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}>
+            <div
+                style={{
+                    display: 'flex',
+                    marginTop: '2rem',
+                    textAlign: 'center',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Button
+                    variant="primary"
+                    size="s"
+                    onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}
+                >
                     이전
                 </Button>
-                <Button variant="primary" size="s" onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}>
+                <Button
+                    variant="primary"
+                    size="s"
+                    onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}
+                >
                     다음
                 </Button>
             </div>
@@ -84,11 +99,26 @@ export const ErrorDefault: Story = (args) => {
                     <StepLabel>Step 5</StepLabel>
                 </Step>
             </Stepper>
-            <div style={{ display: 'flex', marginTop: '2rem', textAlign: 'center', justifyContent: 'space-between' }}>
-                <Button variant="primary" size="s" onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}>
+            <div
+                style={{
+                    display: 'flex',
+                    marginTop: '2rem',
+                    textAlign: 'center',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Button
+                    variant="primary"
+                    size="s"
+                    onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}
+                >
                     이전
                 </Button>
-                <Button variant="primary" size="s" onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}>
+                <Button
+                    variant="primary"
+                    size="s"
+                    onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}
+                >
                     다음
                 </Button>
             </div>

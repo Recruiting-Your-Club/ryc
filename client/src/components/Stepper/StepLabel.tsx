@@ -2,7 +2,12 @@ import type { ReactNode } from 'react';
 import React from 'react';
 import { useStepperContext } from './StepperContext';
 import { useStepContext } from './StepContext';
-import { s_stepLabel, s_stepLabelIconContainer, s_stepLabelOptional, s_stepLabelText } from './Stepper.style';
+import {
+    s_stepLabel,
+    s_stepLabelIconContainer,
+    s_stepLabelOptional,
+    s_stepLabelText,
+} from './Stepper.style';
 import { StepIcon } from './StepIcon';
 import type { SerializedStyles } from '@emotion/react';
 
@@ -35,10 +40,18 @@ function StepLabel({ children, error = false, subText, customCSS }: StepLabelPro
     return (
         <span css={[s_stepLabel(alternativeLabel, disabled, orientation), customCSS]}>
             <span css={s_stepLabelIconContainer(alternativeLabel)}>
-                <StepIcon active={active} completed={completed} error={error} disabled={disabled} icon={icon} />
+                <StepIcon
+                    active={active}
+                    completed={completed}
+                    error={error}
+                    disabled={disabled}
+                    icon={icon}
+                />
             </span>
             <div>
-                <span css={s_stepLabelText(active, completed, error, disabled, alternativeLabel)}>{children}</span>
+                <span css={s_stepLabelText(active, completed, error, disabled, alternativeLabel)}>
+                    {children}
+                </span>
                 {subText && <div css={s_stepLabelOptional}>{subText}</div>}
             </div>
         </span>

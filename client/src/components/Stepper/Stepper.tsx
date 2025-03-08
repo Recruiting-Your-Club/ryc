@@ -41,17 +41,6 @@ function Stepper({
     //query hooks
 
     //calculated values
-    // const childrenArray = Children.toArray(children).filter(isValidElement);
-    // const steps = childrenArray.map((step, index) => {
-    //     const props = step.props || {};
-
-    //     // NOTE: 기존 step의 props를 유지하면서 새로운 props(index, last) 추가를 위해 cloneElement 사용
-    //     return cloneElement(step as ReactElement, {
-    //         index,
-    //         last: index + 1 === childrenArray.length,
-    //         ...props,
-    //     });
-    // });
 
     const steps = Children.toArray(children)
         .filter(isValidElement)
@@ -72,7 +61,9 @@ function Stepper({
 
     return (
         <StepperContext.Provider value={contextValue}>
-            <Component css={[s_stepper(orientation, alternativeLabel), customCSS]}>{steps}</Component>
+            <Component css={[s_stepper(orientation, alternativeLabel), customCSS]}>
+                {steps}
+            </Component>
         </StepperContext.Provider>
     );
 }
