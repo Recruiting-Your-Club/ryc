@@ -3,9 +3,9 @@ import React from 'react';
 import { baseCard } from './Card.style';
 
 interface CardRootProps {
-    width: string;
-    radius: string;
-    hover: boolean;
+    width?: string;
+    radius?: string;
+    hover?: boolean;
     customCss?: SerializedStyles;
     children?: React.ReactNode;
     onClick?: () => void;
@@ -13,9 +13,9 @@ interface CardRootProps {
 }
 
 function CardRoot({
-    width,
-    radius,
-    hover,
+    width = '35rem',
+    radius = '0.3125rem',
+    hover = false,
     customCss,
     children,
     onClick,
