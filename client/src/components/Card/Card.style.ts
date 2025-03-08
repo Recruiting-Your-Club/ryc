@@ -13,26 +13,21 @@ const baseCardRoot = css`
 `;
 
 export const baseCard = (width: string, radius: string, hover: boolean) => {
-    if (hover) {
-        return css`
-            ${baseCardRoot}
-            width: ${width};
-            border-radius: ${radius};
-            transition: all 200ms;
+    return css`
+        ${baseCardRoot}
+        width: ${width};
+        border-radius: ${radius};
 
+        ${hover &&
+        css`
             &:hover {
                 cursor: pointer;
+                transition: all 200ms;
                 box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.1);
                 transform: translateY(-0.25rem);
             }
-        `;
-    } else {
-        return css`
-            ${baseCardRoot}
-            width: ${width};
-            border-radius: ${radius};
-        `;
-    }
+        `}
+    `;
 };
 
 export const baseClubCard = css`
