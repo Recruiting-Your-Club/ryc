@@ -1,7 +1,37 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { positionType } from './BaseDialog';
+import type { DialogSize } from './BaseDialog';
+import type { CSSProperties } from 'react';
+import type { CSSObject } from '@emotion/react';
 
+interface Size {
+    width?: CSSObject['width'];
+    height?: CSSObject['height'];
+}
+
+export const dialogSize: Record<DialogSize, Size> = {
+    sm: {
+        width: '35rem',
+        height: '20rem',
+    },
+    md: {
+        width: '50rem',
+        height: '30rem',
+    },
+    lg: {
+        width: '70rem',
+        height: '40rem',
+    },
+    xl: {
+        width: '90rem',
+        height: '50rem',
+    },
+    full: {
+        width: '100%',
+        height: '100%',
+    },
+};
 export const backdrop = css`
     position: fixed;
     top: 0;
@@ -61,16 +91,19 @@ const positionMap: Record<positionType, string> = {
     start: 'flex-start',
 };
 
-export const headerContainer = (position: positionType, border: boolean) => css`
+export const headerContainer = (border: boolean, position?: positionType) => css`
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: ${border ? `1px solid ${theme.colors.gray[300]}` : 0};
-    padding: 2rem;
-    padding-left: 2.5rem;
-    padding-right: 3rem;
+    padding: 2rem 3rem 1rem 2.5rem; // top right bottom left
+
+    & > div:first-child {
+        ${position === 'start' && 'margin-right: auto;'}
+        ${position === 'center' && 'margin-left: auto; margin-right: auto;'}
+        ${position === 'end' && 'margin-left: auto;'}
+    }
 `;
 
 export const contentContainer = css`

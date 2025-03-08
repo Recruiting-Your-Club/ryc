@@ -8,17 +8,44 @@ import {
     actionContainer,
 } from './BaseDialog.style';
 import type { CSSObject } from '@emotion/react';
-
+import type { ReactNode } from 'react';
 export type positionType = 'start' | 'center' | 'end';
+export type DialogSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+
+interface Size extends CSSObject {
+    width?: CSSObject['width'];
+    height?: CSSObject['height'];
+}
+
+export const dialogSize: Record<DialogSize, Size> = {
+    sm: {
+        width: '35rem',
+    },
+    md: {
+        width: '50rem',
+    },
+    lg: {
+        width: '70rem',
+    },
+    xl: {
+        width: '90rem',
+    },
+    full: {
+        width: '100%',
+        height: '100%',
+    },
+};
 
 function BaseDialog({
     children,
     open,
+    size = 'md',
     sx,
     handleClose,
 }: {
     children: React.ReactNode;
     open: boolean;
+    size?: DialogSize;
     sx?: CSSObject;
     handleClose?: () => void;
 }) {
@@ -36,7 +63,7 @@ function BaseDialog({
                 createPortal(
                     <>
                         <div css={backdrop} onClick={handleClose} aria-hidden="true" />
-                        <div css={[dialogContainer, sx]}>{children}</div>
+                        <div css={[dialogContainer(), dialogSize[size], sx]}>{children}</div>
                     </>,
                     document.body,
                 )}
@@ -48,17 +75,17 @@ function DialogHeader({
     border = false,
     children,
     sx,
-    position = 'center',
+    position,
 }: {
     position?: positionType;
     border?: boolean;
-    children: React.ReactNode;
+    children: ReactNode;
     sx?: CSSObject;
 }) {
-    return <header css={[headerContainer(position, border), sx]}>{children}</header>;
+    return <header css={[headerContainer(border, position), sx]}>{children}</header>;
 }
 
-function DialogContent({ children, sx }: { children: React.ReactNode; sx?: CSSObject }) {
+function DialogContent({ children, sx }: { children: ReactNode; sx?: CSSObject }) {
     return <div css={[contentContainer, sx]}>{children}</div>;
 }
 
@@ -68,7 +95,7 @@ function DialogAction({
     border = false,
     position = 'center',
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
     sx?: CSSObject;
     border?: boolean;
     position?: positionType;

@@ -9,6 +9,7 @@ import { Button } from '@components/Button';
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
 import type { positionType } from '../BaseDialog';
 import type { ButtonSize } from '@components/Button';
+import type { DialogSize } from '../BaseDialog';
 
 type DialogType = 'text' | 'confirm' | 'warning';
 
@@ -16,12 +17,14 @@ function ConfirmDialog({
     type = 'text',
     title = '알림',
     content = 'Sample Content입니다.',
+    dialogSize = 'md',
     open,
-    titlePosition = 'center',
+    titlePosition,
     contentPosition = 'center',
     actionPosition = 'end',
     buttonSize = 'xl',
     closeIcon = false,
+    cancleButton = false,
     handleClose,
     actionHandler,
 }: {
@@ -29,11 +32,13 @@ function ConfirmDialog({
     title: string;
     content: string;
     open: boolean;
+    dialogSize?: DialogSize;
     closeIcon?: boolean;
     buttonSize?: ButtonSize;
     titlePosition?: positionType;
     contentPosition?: positionType;
     actionPosition?: positionType;
+    cancleButton?: boolean;
     handleClose: () => void;
     actionHandler?: () => void;
 }) {
@@ -47,9 +52,8 @@ function ConfirmDialog({
     // handlers
     return (
         <>
-            <Dialog open={open} handleClose={handleClose}>
-                <Dialog.Header>
-                    {titlePosition === 'center' && <div />}
+            <Dialog open={open} handleClose={handleClose} size={dialogSize}>
+                <Dialog.Header position={titlePosition}>
                     <div css={confirmDialogHeaderContainer}>
                         {type === 'confirm' && <Check width="3rem" height="3rem" color="green" />}
                         {type === 'warning' && <Alert width="3rem" height="3rem" color="red" />}
@@ -57,22 +61,28 @@ function ConfirmDialog({
                             {title}
                         </Text>
                     </div>
-                    <Button
-                        variant="transparent"
-                        size="xs"
-                        aria-label="close"
-                        onClick={handleClose}
-                    >
-                        {closeIcon && <XIcon />}
-                    </Button>
+
+                    {closeIcon && (
+                        <Button
+                            variant="transparent"
+                            size="md"
+                            aria-label="close"
+                            onClick={handleClose}
+                            sx={{ position: 'absolute', right: '3rem' }}
+                        >
+                            <XIcon />
+                        </Button>
+                    )}
                 </Dialog.Header>
                 <Dialog.Content>
                     <Text textAlign={contentPosition}>{content}</Text>
                 </Dialog.Content>
                 <Dialog.Action position={actionPosition}>
-                    <Button variant="outlined" size={buttonSize} onClick={handleClose}>
-                        취소
-                    </Button>
+                    {cancleButton && (
+                        <Button variant="outlined" size={buttonSize} onClick={handleClose}>
+                            취소
+                        </Button>
+                    )}
                     <Button
                         variant="primary"
                         size={buttonSize}
