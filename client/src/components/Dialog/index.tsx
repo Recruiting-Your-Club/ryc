@@ -1,2 +1,2 @@
-export * from './NoticeDialog';
+export * from './ConfirmDialog';
 export * from './BaseDialog';

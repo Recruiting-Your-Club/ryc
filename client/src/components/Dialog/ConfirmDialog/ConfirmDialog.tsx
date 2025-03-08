@@ -8,20 +8,34 @@ import XIcon from '@assets/images/xIcon.svg';
 import { Button } from '@components/Button';
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
 import type { positionType } from '../BaseDialog';
+import type { ButtonSize } from '@components/Button';
+
+type DialogType = 'text' | 'confirm' | 'warning';
+
 function ConfirmDialog({
-    title,
-    content,
+    type = 'text',
+    title = '알림',
+    content = 'Sample Content입니다.',
     open,
-    position = 'end',
+    titlePosition = 'center',
+    contentPosition = 'center',
+    actionPosition = 'end',
+    buttonSize = 'xl',
+    closeIcon = false,
     handleClose,
-    hanlder,
+    actionHandler,
 }: {
+    type?: DialogType;
     title: string;
     content: string;
     open: boolean;
-    position: positionType;
+    closeIcon?: boolean;
+    buttonSize?: ButtonSize;
+    titlePosition?: positionType;
+    contentPosition?: positionType;
+    actionPosition?: positionType;
     handleClose: () => void;
-    handler?: () => void;
+    actionHandler?: () => void;
 }) {
     // prop destruction
     // lib hooks
@@ -33,32 +47,41 @@ function ConfirmDialog({
     // handlers
     return (
         <>
-            <Dialog open={open}>
+            <Dialog open={open} handleClose={handleClose}>
                 <Dialog.Header>
+                    {titlePosition === 'center' && <div />}
                     <div css={confirmDialogHeaderContainer}>
-                        <Check width="3rem" height="3rem" color="green" />
+                        {type === 'confirm' && <Check width="3rem" height="3rem" color="green" />}
+                        {type === 'warning' && <Alert width="3rem" height="3rem" color="red" />}
                         <Text as="h4" type="h4Semibold">
                             {title}
                         </Text>
                     </div>
-                    <XIcon />
+                    <Button
+                        variant="transparent"
+                        size="xs"
+                        aria-label="close"
+                        onClick={handleClose}
+                    >
+                        {closeIcon && <XIcon />}
+                    </Button>
                 </Dialog.Header>
                 <Dialog.Content>
-                    <Text>{content}</Text>
+                    <Text textAlign={contentPosition}>{content}</Text>
                 </Dialog.Content>
-                <Dialog.Action position={position}>
+                <Dialog.Action position={actionPosition}>
+                    <Button variant="outlined" size={buttonSize} onClick={handleClose}>
+                        취소
+                    </Button>
                     <Button
                         variant="primary"
-                        size="xl"
+                        size={buttonSize}
                         onClick={() => {
                             handleClose();
-                            hanlder();
+                            actionHandler?.();
                         }}
                     >
                         확인
-                    </Button>
-                    <Button variant="outlined" size="xl" onClick={handleClose}>
-                        취소
                     </Button>
                 </Dialog.Action>
             </Dialog>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import {
-    overlay,
+    backdrop,
     dialogContainer,
     headerContainer,
     contentContainer,
@@ -14,17 +14,13 @@ export type positionType = 'start' | 'center' | 'end';
 function BaseDialog({
     children,
     open,
-    width = '',
-    height = '',
     sx,
-    onClose,
+    handleClose,
 }: {
     children: React.ReactNode;
     open: boolean;
-    width?: string;
-    height?: string;
     sx?: CSSObject;
-    onClose?: () => void;
+    handleClose?: () => void;
 }) {
     // prop destruction
     // lib hooks
@@ -39,9 +35,8 @@ function BaseDialog({
             {open &&
                 createPortal(
                     <>
-                        <div css={overlay} onClick={onClose} aria-hidden="true">
-                            <div css={[dialogContainer(width, height), sx]}>{children}</div>
-                        </div>
+                        <div css={backdrop} onClick={handleClose} aria-hidden="true" />
+                        <div css={[dialogContainer, sx]}>{children}</div>
                     </>,
                     document.body,
                 )}
@@ -53,16 +48,18 @@ function DialogHeader({
     border = false,
     children,
     sx,
+    position = 'center',
 }: {
+    position?: positionType;
     border?: boolean;
     children: React.ReactNode;
     sx?: CSSObject;
 }) {
-    return <div css={[headerContainer(border), sx]}>{children}</div>;
+    return <header css={[headerContainer(position, border), sx]}>{children}</header>;
 }
 
 function DialogContent({ children, sx }: { children: React.ReactNode; sx?: CSSObject }) {
-    return <header css={[contentContainer, sx]}>{children}</header>;
+    return <div css={[contentContainer, sx]}>{children}</div>;
 }
 
 function DialogAction({
