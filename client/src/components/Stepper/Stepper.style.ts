@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { colors } from '@styles/color';
+import { COLORS } from '@styles/theme/colors';
 
 export const s_stepper = (orientation: string, alternativeLabel: boolean) => {
     return css`
@@ -44,7 +44,7 @@ export const s_stepConnector = (alternativeLabel: boolean, orientation: string) 
 export const s_stepConnectorLine = (orientation: string, active: boolean, completed: boolean) => {
     return css`
         display: block;
-        border-color: ${active || completed ? '#C2C0FF' : '#ccc'};
+        border-color: ${active || completed ? COLORS.blue[100] : '#ccc'};
         border-radius: 1rem;
         ${orientation === 'horizontal' &&
         css`
@@ -103,7 +103,15 @@ export const s_stepLabelText = (
     return css`
         display: block;
         font-weight: ${active ? 600 : 400};
-        color: ${disabled ? 'gray' : error ? 'red' : completed ? '#C2C0FF' : active ? colors.default : 'gray'};
+        color: ${disabled
+            ? 'gray'
+            : error
+              ? 'red'
+              : completed
+                ? COLORS.blue[100]
+                : active
+                  ? COLORS.default
+                  : 'gray'};
         transition: color 0.2s;
         width: 100%;
         ${alternativeLabel &&
