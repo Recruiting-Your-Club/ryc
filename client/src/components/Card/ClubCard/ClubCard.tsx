@@ -45,7 +45,7 @@ function ClubCard({
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
     titlePartPaddingLeft = '1.25rem',
-    footerHeight = '3.75rem',
+    footerHeight = '3.3rem',
     imageURL,
     imageName,
     title,

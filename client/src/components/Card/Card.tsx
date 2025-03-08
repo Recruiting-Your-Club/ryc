@@ -33,7 +33,7 @@ function Card({
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
     titlePartPaddingLeft,
-    footerHeight = '3.75rem',
+    footerHeight = '3.3rem',
     imageURL,
     imageName,
     title,
