@@ -12,7 +12,7 @@ import { DescriptionText } from './DescriptionText';
 interface CardProps {
     width?: string;
     radius?: string;
-    hover: boolean;
+    hover?: boolean;
     avatarShape?: AvatarShape;
     avatarSize?: AvatarSize;
     avatarRadius?: string;
@@ -26,14 +26,14 @@ interface CardProps {
 }
 
 function Card({
-    width = '35rem',
-    radius = '0.3125rem',
+    width,
+    radius,
     hover,
     avatarShape = 'square',
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
-    titlePartPaddingLeft,
-    footerHeight = '3.3rem',
+    titlePartPaddingLeft = '1.25rem',
+    footerHeight,
     imageURL,
     imageName,
     title,

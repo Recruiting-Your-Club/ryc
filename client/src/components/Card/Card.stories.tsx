@@ -57,9 +57,6 @@ const PrimaryTemplate: Story = ({
 };
 
 export const Primary = PrimaryTemplate.bind({});
-Primary.args = {
-    hover: false,
-};
 
 export const PrimaryHover = PrimaryTemplate.bind({});
 PrimaryHover.args = {
@@ -123,7 +120,6 @@ const NoDividerTemplate: Story = ({
     avatarSize = 'xl',
     avatarRadius = '0.3125rem',
     titlePartPaddingLeft,
-    footerHeight = '3.75rem',
     imageURL,
     imageName,
     title = 'EN#(Enjoy C#)',
