@@ -2,11 +2,11 @@ import React from 'react';
 import { footerContainer } from './Card.style';
 
 interface CardFooterProps {
-    footerHeight: string;
+    footerHeight?: string;
     children?: React.ReactNode;
 }
 
-function CardFooter({ footerHeight, children }: CardFooterProps) {
+function CardFooter({ footerHeight = '3.3rem', children }: CardFooterProps) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
