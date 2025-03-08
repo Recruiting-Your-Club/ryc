@@ -16,9 +16,9 @@ import { TagList } from './TagList';
 interface ClubCardProps {
     width?: string;
     radius?: string;
-    hover: boolean;
-    avatarShape: AvatarShape;
-    avatarSize: AvatarSize;
+    hover?: boolean;
+    avatarShape?: AvatarShape;
+    avatarSize?: AvatarSize;
     avatarRadius?: string;
     titlePartPaddingLeft?: string;
     footerHeight?: string;
@@ -86,7 +86,7 @@ function ClubCard({
                 </div>
             </CardTopBody>
             <CardBottomBody />
-            <Divider width="full" color="gray" weight="1" />
+            <Divider />
             <CardFooter footerHeight={footerHeight}>
                 <TagList tag={tag} />
             </CardFooter>

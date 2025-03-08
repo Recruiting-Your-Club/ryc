@@ -10,14 +10,14 @@ import { CardTopBody } from './CardTopBody';
 import { DescriptionText } from './DescriptionText';
 
 interface CardProps {
-    width: string;
-    radius: string;
+    width?: string;
+    radius?: string;
     hover: boolean;
-    avatarShape: AvatarShape;
-    avatarSize: AvatarSize;
+    avatarShape?: AvatarShape;
+    avatarSize?: AvatarSize;
     avatarRadius?: string;
     titlePartPaddingLeft?: string;
-    footerHeight: string;
+    footerHeight?: string;
     imageURL?: string;
     imageName?: string;
     title: string;
@@ -38,7 +38,7 @@ function Card({
     imageName,
     title,
     subTitle,
-    description = '세계 최고의 동아리라고 확신할 수 있습니다.',
+    description,
 }: CardProps) {
     // prop destruction
     // lib hooks
@@ -68,7 +68,7 @@ function Card({
             <CardBottomBody>
                 <DescriptionText description={description} />
             </CardBottomBody>
-            <Divider width="full" color="gray" weight="1" />
+            <Divider />
             <CardFooter footerHeight={footerHeight} />
         </CardRoot>
     );

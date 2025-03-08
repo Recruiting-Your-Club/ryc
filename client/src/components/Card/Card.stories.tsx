@@ -48,7 +48,7 @@ const PrimaryTemplate: Story = ({
             <CardBottomBody>
                 <DescriptionText description={description} />
             </CardBottomBody>
-            <Divider width="full" color="gray" weight="1" />
+            <Divider />
             <CardFooter footerHeight={footerHeight}>
                 <TagList tag={['코딩', '프로그래밍', 'IT']} />
             </CardFooter>
@@ -100,7 +100,7 @@ const AvatarTemplate: Story = ({
             <CardBottomBody>
                 <DescriptionText description={description} />
             </CardBottomBody>
-            <Divider width="full" color="gray" weight="1" />
+            <Divider />
             <CardFooter footerHeight={footerHeight}>
                 <TagList tag={['코딩', '프로그래밍', 'IT']} />
             </CardFooter>
