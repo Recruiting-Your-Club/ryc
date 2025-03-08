@@ -1,11 +1,11 @@
 import { Avatar } from '@components/Avatar/Avatar';
+import { Divider } from '@components/Divider';
 import type { tagVariant } from '@components/Tag';
 import { Tag } from '@components/Tag';
 import { useRouter } from '@hooks/useRouter';
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../../Avatar';
 import { CardBottomBody } from '../CardBottomBody';
-import { CardDivider } from '../CardDivider';
 import { CardFooter } from '../CardFooter';
 import { CardRoot } from '../CardRoot';
 import { CardTitleContainer } from '../CardTitleContainer';
@@ -86,7 +86,7 @@ function ClubCard({
                 </div>
             </CardTopBody>
             <CardBottomBody />
-            <CardDivider />
+            <Divider width="full" color="gray" weight="1" />
             <CardFooter footerHeight={footerHeight}>
                 <TagList tag={tag} />
             </CardFooter>

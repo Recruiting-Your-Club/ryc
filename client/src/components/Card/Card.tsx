@@ -1,8 +1,8 @@
+import { Divider } from '@components/Divider';
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../Avatar';
 import { Avatar } from '../Avatar';
 import { CardBottomBody } from './CardBottomBody';
-import { CardDivider } from './CardDivider';
 import { CardFooter } from './CardFooter';
 import { CardRoot } from './CardRoot';
 import { CardTitleContainer } from './CardTitleContainer';
@@ -68,7 +68,7 @@ function Card({
             <CardBottomBody>
                 <DescriptionText description={description} />
             </CardBottomBody>
-            <CardDivider />
+            <Divider width="full" color="gray" weight="1" />
             <CardFooter footerHeight={footerHeight} />
         </CardRoot>
     );

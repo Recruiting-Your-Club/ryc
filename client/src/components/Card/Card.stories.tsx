@@ -1,15 +1,15 @@
 import { Avatar } from '@components/Avatar';
+import { Divider } from '@components/Divider';
 import type { Meta, StoryFn } from '@storybook/react';
+import React from 'react';
 import { Card } from './Card';
 import { CardBottomBody } from './CardBottomBody';
-import { CardDivider } from './CardDivider';
 import { CardFooter } from './CardFooter';
 import { CardRoot } from './CardRoot';
 import { CardTitleContainer } from './CardTitleContainer';
 import { CardTopBody } from './CardTopBody';
 import { TagList } from './ClubCard/TagList';
 import { DescriptionText } from './DescriptionText';
-import React from 'react';
 
 const meta: Meta<typeof Card> = {
     title: '기본카드',
@@ -48,7 +48,7 @@ const PrimaryTemplate: Story = ({
             <CardBottomBody>
                 <DescriptionText description={description} />
             </CardBottomBody>
-            <CardDivider />
+            <Divider width="full" color="gray" weight="1" />
             <CardFooter footerHeight={footerHeight}>
                 <TagList tag={['코딩', '프로그래밍', 'IT']} />
             </CardFooter>
@@ -100,7 +100,7 @@ const AvatarTemplate: Story = ({
             <CardBottomBody>
                 <DescriptionText description={description} />
             </CardBottomBody>
-            <CardDivider />
+            <Divider width="full" color="gray" weight="1" />
             <CardFooter footerHeight={footerHeight}>
                 <TagList tag={['코딩', '프로그래밍', 'IT']} />
             </CardFooter>
