@@ -60,35 +60,13 @@ export const titleContainer = (paddingLeft?: string) => css`
     flex-direction: column;
     padding-left: ${paddingLeft ? paddingLeft : 0};
     overflow: hidden;
-`;
-
-export const titleCss = css`
-    max-width: 100%;
-    display: block;
-    overflow: hidden;
-    ${theme.typography.bodyBold};
-    text-overflow: ellipsis;
-    padding-bottom: 0.2rem;
-    white-space: nowrap;
-`;
-
-export const subTitleCss = css`
-    ${theme.typography.subCaptionRegular}
-    color: ${theme.colors.gray[400]};
+    gap: 0.3rem;
 `;
 
 export const cardBottomContainer = css`
     /* ${baseDisplay}; */
     padding-inline: 1.5rem;
     padding-block: 0.95rem;
-`;
-
-export const descriptionText = css`
-    font-size: 1rem;
-    font-weight: 600;
-    white-space: pre-line;
-    /* ${theme.typography.subCaptionBold} */
-    color: ${theme.colors.gray[500]};
 `;
 
 export const line = css`
