@@ -7,12 +7,12 @@ export type DividerWidth = '70' | '80' | '90' | 'full';
 export type DividerWeight = '1' | '2' | '3';
 
 interface DividerProps {
-    width: DividerWidth;
-    color: DividerColor;
-    weight: DividerWeight;
+    width?: DividerWidth;
+    color?: DividerColor;
+    weight?: DividerWeight;
     customCss?: SerializedStyles;
 }
-function Divider({ width, color, weight, customCss }: DividerProps) {
+function Divider({ width = 'full', color = 'gray', weight = '1', customCss }: DividerProps) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
