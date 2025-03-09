@@ -4,7 +4,7 @@ import { ConfirmDialog } from '.';
 import { Button } from '@components/Button';
 
 const meta: Meta<typeof ConfirmDialog> = {
-    title: 'ConfirmDialog',
+    title: 'Dialog/ConfirmDialog',
     component: ConfirmDialog,
     parameters: {
         docs: {

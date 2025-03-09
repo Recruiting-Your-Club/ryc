@@ -12,7 +12,7 @@ type Content = StoryObj<typeof Dialog.Content>;
 type Action = StoryObj<typeof Dialog.Action>;
 
 const meta: Meta<typeof Dialog> = {
-    title: 'Dialog',
+    title: 'Dialog/BaseDialog',
     component: Dialog,
     parameters: {
         docs: {
