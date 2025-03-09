@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import {
-    backdrop,
+    backdropContainer,
     dialogContainer,
     headerContainer,
     contentContainer,
@@ -9,8 +9,7 @@ import {
 } from './BaseDialog.style';
 import type { CSSObject } from '@emotion/react';
 import type { ReactNode } from 'react';
-export type positionType = 'start' | 'center' | 'end';
-export type DialogSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+import type { PositionType, DialogSize } from '../types';
 
 interface Size extends CSSObject {
     width?: CSSObject['width'];
@@ -41,13 +40,15 @@ function BaseDialog({
     open,
     size = 'md',
     sx,
+    backdrop = false,
     handleClose,
 }: {
     children: React.ReactNode;
     open: boolean;
+    backdrop?: boolean;
     size?: DialogSize;
     sx?: CSSObject;
-    handleClose?: () => void;
+    handleClose: () => void;
 }) {
     // prop destruction
     // lib hooks
@@ -62,8 +63,12 @@ function BaseDialog({
             {open &&
                 createPortal(
                     <>
-                        <div css={backdrop} onClick={handleClose} aria-hidden="true" />
-                        <div css={[dialogContainer(), dialogSize[size], sx]}>{children}</div>
+                        <div
+                            css={backdropContainer}
+                            onClick={() => backdrop && handleClose()}
+                            aria-hidden="true"
+                        />
+                        <div css={[dialogContainer, dialogSize[size], sx]}>{children}</div>
                     </>,
                     document.body,
                 )}
@@ -75,9 +80,9 @@ function DialogHeader({
     border = false,
     children,
     sx,
-    position,
+    position = 'start',
 }: {
-    position?: positionType;
+    position?: PositionType;
     border?: boolean;
     children: ReactNode;
     sx?: CSSObject;
@@ -98,7 +103,7 @@ function DialogAction({
     children: ReactNode;
     sx?: CSSObject;
     border?: boolean;
-    position?: positionType;
+    position?: PositionType;
 }) {
     return <div css={[actionContainer(border, position), sx]}>{children}</div>;
 }

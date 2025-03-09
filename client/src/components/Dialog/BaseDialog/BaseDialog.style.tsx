@@ -1,38 +1,8 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { positionType } from './BaseDialog';
-import type { DialogSize } from './BaseDialog';
-import type { CSSProperties } from 'react';
-import type { CSSObject } from '@emotion/react';
+import type { PositionType } from '../types';
 
-interface Size {
-    width?: CSSObject['width'];
-    height?: CSSObject['height'];
-}
-
-export const dialogSize: Record<DialogSize, Size> = {
-    sm: {
-        width: '35rem',
-        height: '20rem',
-    },
-    md: {
-        width: '50rem',
-        height: '30rem',
-    },
-    lg: {
-        width: '70rem',
-        height: '40rem',
-    },
-    xl: {
-        width: '90rem',
-        height: '50rem',
-    },
-    full: {
-        width: '100%',
-        height: '100%',
-    },
-};
-export const backdrop = css`
+export const backdropContainer = css`
     position: fixed;
     top: 0;
     left: 0;
@@ -55,7 +25,7 @@ export const backdrop = css`
     }
 `;
 
-export const dialogContainer = () => css`
+export const dialogContainer = css`
     position: fixed;
     top: 50%;
     left: 50%;
@@ -85,25 +55,19 @@ export const dialogContainer = () => css`
     }
 `;
 
-const positionMap: Record<positionType, string> = {
+const positionMap: Record<PositionType, string> = {
     center: 'center',
     end: 'flex-end',
     start: 'flex-start',
 };
 
-export const headerContainer = (border: boolean, position?: positionType) => css`
+export const headerContainer = (border: boolean, position: PositionType) => css`
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: ${positionMap[position]};
     align-items: center;
     border-bottom: ${border ? `1px solid ${theme.colors.gray[300]}` : 0};
     padding: 2rem 3rem 1rem 2.5rem; // top right bottom left
-
-    & > div:first-child {
-        ${position === 'start' && 'margin-right: auto;'}
-        ${position === 'center' && 'margin-left: auto; margin-right: auto;'}
-        ${position === 'end' && 'margin-left: auto;'}
-    }
 `;
 
 export const contentContainer = css`
@@ -116,12 +80,12 @@ export const contentContainer = css`
     padding: 1.5rem 2.5rem;
 `;
 
-export const actionContainer = (border: boolean, position: positionType) => css`
+export const actionContainer = (border: boolean, position: PositionType) => css`
     width: 100%;
     display: flex;
     justify-content: ${positionMap[position]};
     align-items: center;
-    padding: 2rem 2.5rem;
+    padding: 1.5rem 2rem;
     gap: 0.5rem;
     border-top: ${border ? `1px solid ${theme.colors.gray[300]}` : 0};
 `;

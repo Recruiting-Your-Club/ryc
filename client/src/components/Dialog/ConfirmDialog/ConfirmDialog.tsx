@@ -7,11 +7,8 @@ import Check from '@assets/images/check.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { Button } from '@components/Button';
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
-import type { positionType } from '../BaseDialog';
+import type { PositionType, DialogSize, DialogType } from '../types';
 import type { ButtonSize } from '@components/Button';
-import type { DialogSize } from '../BaseDialog';
-
-type DialogType = 'text' | 'confirm' | 'warning';
 
 function ConfirmDialog({
     type = 'text',
@@ -19,6 +16,7 @@ function ConfirmDialog({
     content = 'Sample Content입니다.',
     dialogSize = 'md',
     open,
+    backdrop = false,
     titlePosition,
     contentPosition = 'center',
     actionPosition = 'end',
@@ -32,12 +30,13 @@ function ConfirmDialog({
     title: string;
     content: string;
     open: boolean;
+    backdrop?: boolean;
     dialogSize?: DialogSize;
     closeIcon?: boolean;
     buttonSize?: ButtonSize;
-    titlePosition?: positionType;
-    contentPosition?: positionType;
-    actionPosition?: positionType;
+    titlePosition?: PositionType;
+    contentPosition?: PositionType;
+    actionPosition?: PositionType;
     cancleButton?: boolean;
     handleClose: () => void;
     actionHandler?: () => void;
@@ -52,7 +51,7 @@ function ConfirmDialog({
     // handlers
     return (
         <>
-            <Dialog open={open} handleClose={handleClose} size={dialogSize}>
+            <Dialog open={open} handleClose={handleClose} size={dialogSize} backdrop={backdrop}>
                 <Dialog.Header position={titlePosition}>
                     <div css={confirmDialogHeaderContainer}>
                         {type === 'confirm' && <Check width="3rem" height="3rem" color="green" />}

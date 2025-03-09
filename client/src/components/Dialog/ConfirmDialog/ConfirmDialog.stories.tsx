@@ -99,7 +99,7 @@ export const YesOrNoDialog: Story = {
     },
     args: {
         type: 'warning',
-        title: '진심으로 할거임?',
+        title: '진심으로 등록 안할거임?',
         content: '공고 게시 시 면접 날짜는 미정으로 등록됩니다. 면접 날짜를 수정하시겠습니까?',
         dialogSize: 'sm',
         open: false,
