@@ -44,7 +44,7 @@ function BaseInput({
 
     return (
         <div css={inputWrapperContainer}>
-            {label && <label css={[labelStyle, labelSx]}>{label}</label>}
+            {label && <label css={[labelStyle(isError), labelSx]}>{label}</label>}
 
             <div css={[cssProps, inputSx]}>
                 {startNode && <div css={startNodeStyle}>{startNode}</div>}
