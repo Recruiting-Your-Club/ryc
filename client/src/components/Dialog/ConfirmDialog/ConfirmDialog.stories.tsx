@@ -49,14 +49,14 @@ export const NotificationDialog: Story = {
         );
     },
     args: {
-        type: 'text',
+        type: 'confirm',
         title: '알림사항',
         content: '공고 게시 시 면접 날짜는 미정으로 등록됩니다. 면접 날짜를 수정하시겠습니까?',
         dialogSize: 'sm',
         open: false,
         backdrop: false,
-        titlePosition: 'center',
-        contentPosition: 'center',
+        titlePosition: 'start',
+        contentPosition: 'start',
         actionPosition: 'end',
         buttonSize: 'xl',
         closeIcon: false,
