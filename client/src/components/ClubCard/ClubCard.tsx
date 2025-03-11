@@ -1,15 +1,15 @@
-import { Avatar } from '@components/Avatar/Avatar';
-import { Divider } from '@components/Divider';
+import { Avatar } from '@components/_common/Avatar/Avatar';
+import { Divider } from '@components/_common/Divider';
 import type { tagVariant } from '@components/Tag';
 import { Tag } from '@components/Tag';
 import { useRouter } from '@hooks/useRouter';
 import React from 'react';
-import type { AvatarShape, AvatarSize } from '../../Avatar';
-import { CardBottomBody } from '../CardBottomBody';
-import { CardFooter } from '../CardFooter';
-import { CardRoot } from '../CardRoot';
-import { CardTitleContainer } from '../CardTitleContainer';
-import { CardTopBody } from '../CardTopBody';
+import type { AvatarShape, AvatarSize } from '../_common/Avatar';
+import { CardBottomBody } from '../_common/Card/CardBottomBody';
+import { CardFooter } from '../_common/Card/CardFooter';
+import { CardRoot } from '../_common/Card/CardRoot';
+import { CardTitleContainer } from '../_common/Card/CardTitleContainer';
+import { CardTopBody } from '../_common/Card/CardTopBody';
 import { statusTag } from './ClubCard.style';
 import { TagList } from './TagList';
 

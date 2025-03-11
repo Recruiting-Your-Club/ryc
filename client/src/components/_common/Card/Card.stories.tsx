@@ -1,5 +1,5 @@
-import { Avatar } from '@components/Avatar';
-import { Divider } from '@components/Divider';
+import { Avatar } from '@components/_common/Avatar';
+import { Divider } from '@components/_common/Divider';
 import type { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
 import { CardBottomBody } from './CardBottomBody';
@@ -8,7 +8,7 @@ import { CardRoot } from './CardRoot';
 import { Card } from './CardTest';
 import { CardTitleContainer } from './CardTitleContainer';
 import { CardTopBody } from './CardTopBody';
-import { TagList } from './ClubCard/TagList';
+import { TagList } from '../../ClubCard/TagList';
 import { DescriptionText } from './DescriptionText';
 
 const meta: Meta<typeof Card> = {

@@ -1,4 +1,4 @@
-import { Divider } from '@components/Divider';
+import { Divider } from '@components/_common/Divider';
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../Avatar';
 import { Avatar } from '../Avatar';
