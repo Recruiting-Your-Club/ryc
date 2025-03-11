@@ -12,12 +12,12 @@ import type { ButtonSize } from '@components/Button';
 
 function ConfirmDialog({
     type = 'text',
-    title = '알림',
+    title = 'Sample Title입니다.',
     content = 'Sample Content입니다.',
     dialogSize = 'md',
     open,
     backdrop = false,
-    titlePosition,
+    titlePosition = 'start',
     contentPosition = 'center',
     actionPosition = 'end',
     buttonSize = 'xl',
@@ -27,8 +27,8 @@ function ConfirmDialog({
     actionHandler,
 }: {
     type?: DialogType;
-    title: string;
-    content: string;
+    title?: string;
+    content?: string;
     open: boolean;
     backdrop?: boolean;
     dialogSize?: DialogSize;
