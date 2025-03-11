@@ -67,7 +67,7 @@ export const headerContainer = (border: boolean, position: PositionType) => css`
     justify-content: ${positionMap[position]};
     align-items: center;
     border-bottom: ${border ? `1px solid ${theme.colors.gray[300]}` : 0};
-    padding: 2rem 3rem 1rem 2.5rem; // top right bottom left
+    padding: 1.5rem 2rem;
 `;
 
 export const contentContainer = css`

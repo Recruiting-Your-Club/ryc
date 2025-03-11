@@ -67,7 +67,7 @@ function ConfirmDialog({
                             size="md"
                             aria-label="close"
                             onClick={handleClose}
-                            sx={{ position: 'absolute', right: '3rem' }}
+                            sx={{ position: 'absolute', right: '2rem' }}
                         >
                             <XIcon />
                         </Button>
