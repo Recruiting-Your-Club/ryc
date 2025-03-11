@@ -125,14 +125,8 @@ const globalStyles = css`
     }
 
     * {
-        scrollbar-width: none;
         box-sizing: border-box;
-
         -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
 
     ol,
