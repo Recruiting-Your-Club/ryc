@@ -25,7 +25,7 @@ interface CardProps {
     description: string;
 }
 
-function Card({
+function CardTest({
     width,
     radius,
     hover,
@@ -73,4 +73,14 @@ function Card({
         </CardRoot>
     );
 }
+
+const Card = Object.assign(CardTest, {
+    Root: CardRoot,
+    TopBody: CardTopBody,
+    TitleContainer: CardTitleContainer,
+    BottomBody: CardBottomBody,
+    DescriptionText: DescriptionText,
+    Footer: CardFooter,
+});
+
 export { Card };
