@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 import { fontFaces } from './fonts';
+import theme from './theme';
+
 
 const globalStyles = css`
     ${fontFaces}
@@ -171,6 +173,30 @@ const globalStyles = css`
 
     a:hover {
         text-decoration: none; /* 호버 시에도 밑줄 제거 */
+    }
+    /* 스크롤 바 부분 */
+    * {
+        overflow-y: auto; 
+
+        &::-webkit-scrollbar {
+            width: 0.8rem;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: ${theme.colors.gray[200]};
+            border-radius: 1rem;
+            
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: ${theme.colors.default}; 
+            border-radius: 1rem;
+            min-height: 10rem;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: ${theme.colors.defaultHover};
+        }
     }
 `;
 
