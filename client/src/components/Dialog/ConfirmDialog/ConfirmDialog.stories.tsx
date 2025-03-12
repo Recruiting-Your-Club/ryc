@@ -41,7 +41,7 @@ export const NotificationDialog: Story = {
                     actionPosition={args.actionPosition}
                     buttonSize={args.buttonSize}
                     closeIcon={args.closeIcon}
-                    cancleButton={args.cancleButton}
+                    cancelButton={args.cancelButton}
                     actionHandler={args.actionHandler}
                     backdrop={args.backdrop}
                 />
@@ -60,7 +60,7 @@ export const NotificationDialog: Story = {
         actionPosition: 'end',
         buttonSize: 'xl',
         closeIcon: false,
-        cancleButton: false,
+        cancelButton: false,
         handleClose: () => {},
         actionHandler: () => {},
     },
@@ -90,7 +90,7 @@ export const YesOrNoDialog: Story = {
                     actionPosition={args.actionPosition}
                     buttonSize={args.buttonSize}
                     closeIcon={args.closeIcon}
-                    cancleButton={args.cancleButton}
+                    cancelButton={args.cancelButton}
                     actionHandler={args.actionHandler}
                     backdrop={args.backdrop}
                 />
@@ -109,7 +109,7 @@ export const YesOrNoDialog: Story = {
         actionPosition: 'end',
         buttonSize: 'xl',
         closeIcon: false,
-        cancleButton: true,
+        cancelButton: true,
         handleClose: () => {},
         actionHandler: () => {},
     },
