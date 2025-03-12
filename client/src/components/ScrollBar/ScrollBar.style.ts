@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import  theme  from '@styles/theme';
 
-export const scrollBarStyle = css`
+export const scrollBarStyle = (height?: string) => css`
   
   overflow-y : auto; 
   
@@ -9,9 +9,10 @@ export const scrollBarStyle = css`
   // Chrome, edge, safari에서 scrollbar를 적용하려면 -webkit-scrollbar로 적용시켜야한다.
 
   // 전체 스크롤바
- &::-webkit-scrollbar {
-  width: 8px;
-}
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: ${height ?? "100%"};
+  }
 
   // 스크롤바에서 움직이는 부분을 제외한 나머지 부분
  &::-webkit-scrollbar-track {
@@ -30,3 +31,4 @@ export const scrollBarStyle = css`
 }
 
 `;
+
