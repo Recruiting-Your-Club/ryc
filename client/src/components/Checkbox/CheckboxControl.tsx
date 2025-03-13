@@ -1,6 +1,6 @@
 import type { CSSObject } from '@emotion/react';
 import React from 'react';
-import { s_size, s_svgSize, s_variant } from './Checkbox.style';
+import { s_size, s_svgColor, s_svgSize, s_variant } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
 interface ControlProps {
@@ -8,8 +8,10 @@ interface ControlProps {
 }
 
 function CheckboxControl({ sx }: ControlProps) {
-    const { isChecked, onChange, variant, size, color } = useCheckboxContext();
-    const cssProp = [s_variant(isChecked, variant, color), s_size(size)];
+    const { isChecked, onChange, variant, size, color, defaultChecked, disabled } =
+        useCheckboxContext();
+    const cssProp = [s_variant(isChecked, variant, color, defaultChecked, disabled), s_size(size)];
+
     const onKeyDownHandler = (e: KeyboardEvent) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
@@ -21,7 +23,10 @@ function CheckboxControl({ sx }: ControlProps) {
     const Check = () => {
         return (
             <svg
-                css={s_svgSize(isChecked, size, color)}
+                css={[
+                    s_svgSize(size),
+                    s_svgColor(variant, color, isChecked, defaultChecked, disabled),
+                ]}
                 viewBox="0 0 6 4"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"

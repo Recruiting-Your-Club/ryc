@@ -11,11 +11,25 @@ interface CheckboxRootProps {
     size?: CheckboxSize;
     color?: CheckboxColor;
     children?: React.ReactNode;
+    defaultChecked?: boolean;
+    disabled?: boolean;
 }
 
-function CheckboxRoot({ variant, size, color, children }: CheckboxRootProps) {
-    const [isChecked, setIsChecked] = useState(false);
+function CheckboxRoot({
+    variant,
+    size,
+    color,
+    children,
+    defaultChecked = false,
+    disabled,
+}: CheckboxRootProps) {
+    const [isChecked, setIsChecked] = useState(defaultChecked);
     const id = useId(); // HiddenInput과 Label 연결을 위해 임의 아이디 생성
+
+    const onChange = () => {
+        if (disabled) return;
+        setIsChecked(!isChecked);
+    };
 
     return (
         <CheckboxContext.Provider
@@ -25,7 +39,9 @@ function CheckboxRoot({ variant, size, color, children }: CheckboxRootProps) {
                 size,
                 color,
                 isChecked: isChecked,
-                onChange: () => setIsChecked(!isChecked),
+                onChange: () => onChange(),
+                defaultChecked,
+                disabled,
             }}
         >
             <div css={rootContainer}>{children}</div>

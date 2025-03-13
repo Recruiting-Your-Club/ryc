@@ -3,7 +3,7 @@ import { hiddenInputCss } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
 function CheckboxHiddenInput() {
-    const { id, isChecked, onChange } = useCheckboxContext();
+    const { id, isChecked, onChange, defaultChecked, disabled } = useCheckboxContext();
 
     return (
         <>
@@ -12,6 +12,8 @@ function CheckboxHiddenInput() {
                 type="checkbox"
                 checked={isChecked}
                 onChange={onChange}
+                defaultChecked={defaultChecked}
+                disabled={disabled}
                 css={hiddenInputCss}
             />
         </>

@@ -1,16 +1,16 @@
 import React from 'react';
-import { s_textSize } from './Checkbox.style';
+import { s_text } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
 interface LabelProps {
     children: React.ReactNode;
 }
 function CheckboxLabel({ children }: LabelProps) {
-    const { id, size } = useCheckboxContext();
+    const { id, size, disabled } = useCheckboxContext();
 
     return (
         <>
-            <label htmlFor={id} css={s_textSize(size)}>
+            <label htmlFor={id} css={s_text(size, disabled)}>
                 {children}
             </label>
         </>

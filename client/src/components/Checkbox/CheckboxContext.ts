@@ -8,6 +8,8 @@ interface CheckboxContextType {
     variant?: CheckboxVariant;
     size?: CheckboxSize;
     color?: CheckboxColor;
+    defaultChecked?: boolean;
+    disabled?: boolean;
 }
 
 export const CheckboxContext = createContext<CheckboxContextType | undefined>(undefined);

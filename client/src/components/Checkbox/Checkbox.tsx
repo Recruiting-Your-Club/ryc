@@ -9,12 +9,26 @@ interface CheckboxProps {
     variant?: CheckboxVariant;
     size?: CheckboxSize;
     color?: CheckboxColor;
+    disabled?: boolean;
+    defaultChecked?: boolean;
 }
 
-function Checkbox({ variant, size, color }: CheckboxProps) {
+function Checkbox({
+    variant,
+    size,
+    color,
+    disabled = false,
+    defaultChecked = false,
+}: CheckboxProps) {
     return (
         <>
-            <CheckboxRoot variant={variant} size={size} color={color}>
+            <CheckboxRoot
+                variant={variant}
+                size={size}
+                color={color}
+                disabled={disabled}
+                defaultChecked={defaultChecked}
+            >
                 <CheckboxHiddenInput />
                 <CheckboxControl />
                 <CheckboxLabel>Checkbox 입니다.</CheckboxLabel>
