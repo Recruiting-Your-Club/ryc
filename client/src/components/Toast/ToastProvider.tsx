@@ -1,33 +1,22 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Toast } from './Toast';
 import type { PropsWithChildren } from 'react';
-import type { ToastPosition, ToastType } from './type';
+import type { ToastPosition, ToastType, ToastProps } from './type';
+import { ToastContainer } from './ToastContainer';
 
-interface ToastProviderProps {
-    children: React.ReactNode;
-    duration?: number;
-    position?: ToastPosition;
-    message?: string;
-    type: ToastType;
+interface ToastContextType {
+    toasts: ToastProps[];
+    createToast: (message: string, options?: Partial<ToastProps>) => void;
+    removeToast: (id: number) => void;
+    clearAllToasts: () => void;
 }
-const ToastContext = createContext({});
+
+const ToastContext = createContext<ToastContextType | null>(null);
 
 function ToastProvider({ children }: PropsWithChildren) {
-    const [toasts, setToasts] = useState([]);
+    const [toasts, setToasts] = useState<ToastProps[]>([]);
 
-    const addToast = (message = 'test', type = 'info', duration = 3000) => {
-        const id = Date.now();
-    };
-    return (
-        <ToastContext.Provider value={{ toasts, addToast }}>
-            <div className="toast-container">
-                {toasts.map((toast, index) => (
-                    <Toast key={index} />
-                ))}
-            </div>
-            {children}
-        </ToastContext.Provider>
-    );
+    return <div></div>;
 }
 
 export { ToastProvider };

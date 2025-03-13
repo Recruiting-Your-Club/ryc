@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
-import { Container } from './Toast.style';
+import React, { useEffect, useState } from 'react';
+import { Container, ContainerPosition } from './Toast.style';
 import { createPortal } from 'react-dom';
-import type { ToastPosition } from './type';
+import type { ToastPosition, ToastContainerProps } from './type';
 import type { CSSObject } from '@emotion/react';
+import { Toast } from './Toast';
 import { css } from '@emotion/react';
+import type { ToastProps } from './type';
 
-export interface ToastContainerProps {
-    /**
-     * An optional css class to set.
-     */
-    sx?: CSSObject;
-
-    position?: ToastPosition;
-}
-
-function ToastContainer({ sx, position = 'topCenter' }: ToastContainerProps) {
-    const [running, setRunning] = useState<Element | null>(null);
-    const sampleData = ['info', 'success', 'error'];
-
+function ToastContainer({ toasts }: { toasts: ToastProps[] }) {
     return (
         <>
-            {true &&
+            {toasts &&
                 createPortal(
-                    <div css={[Container, sx]}>
-                        {sampleData.map((data, index) => {
-                            return <div key={index}>{data}</div>;
+                    <div css={[Container, ContainerPosition['topRight']]}>
+                        {toasts?.map((data, index) => {
+                            return (
+                                <div key={index}>
+                                    <Toast
+                                        id={data.id}
+                                        type={data.type}
+                                        backgroundColor={data.backgroundColor}
+                                        content={data.content}
+                                        duration={data.duration}
+                                        autoClose={data.autoClose}
+                                        status={data.status}
+                                    />
+                                </div>
+                            );
                         })}
                     </div>,
                     document.body,
