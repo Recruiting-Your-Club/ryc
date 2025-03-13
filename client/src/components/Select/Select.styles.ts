@@ -48,3 +48,7 @@ export const s_select = css`
 export const s_selectContent = (open: boolean) => {
     return css``;
 };
+
+export const s_selectItem = (highlighted: boolean, selected: boolean) => {
+    return css``;
+};

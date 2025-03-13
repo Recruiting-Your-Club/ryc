@@ -1,9 +1,10 @@
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from 'react';
+import type { ButtonHTMLAttributes, HTMLAttributes, KeyboardEvent, ReactNode, Ref } from 'react';
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { SelectContext, useSelectContext } from './SelectContext';
 import type { CSSObject } from '@emotion/react';
-import { s_select, s_selectContent, s_size } from './Select.styles';
+import { s_select, s_selectContent, s_selectItem, s_size } from './Select.styles';
 import { DownArrow } from '@assets/images/downArrow.svg';
+import { Check } from '@assets/images/select_check.svg';
 
 export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 
@@ -108,7 +109,7 @@ interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
     sx?: CSSObject;
 }
 
-function SelectContent(
+function SelectContentFunction(
     { children, sx, ...props }: SelectContentProps,
     forwardedRef: Ref<HTMLDivElement>,
 ) {
@@ -120,8 +121,67 @@ function SelectContent(
     );
 
     return (
-        <div ref={ref} css={[s_selectContent(open), sx]}>
+        <div role="listbox" ref={ref} css={[s_selectContent(open), sx]}>
             {children}
+        </div>
+    );
+}
+
+const SelectContent = forwardRef(SelectContentFunction);
+
+/**
+ * SelectItem 컴포넌트
+ */
+interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
+    children: ReactNode;
+    value: string;
+    disabled?: boolean;
+    sx?: CSSObject;
+}
+
+function SelectItemFunction({
+    children,
+    value: itemValue,
+    disabled = false,
+    sx,
+    ...props
+}: SelectItemProps) {
+    const { value, setValue, setOpen, setLabel } = useSelectContext();
+    const isSelected = value === itemValue;
+    const [isHighlighted, setIsHighlighted] = useState(false);
+
+    const handleSelect = () => {
+        if (!disabled) {
+            setValue(itemValue);
+            setLabel(typeof children === 'string' ? children : ''); //item의 children이 Node일 경우 저장X
+            setOpen(false);
+        }
+    };
+
+    //div에 onClick 달려면 필요
+    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (!disabled && (event.key === 'Enter' || event.key === ' ')) {
+            handleSelect();
+        }
+    };
+
+    return (
+        <div
+            role="option"
+            aria-selected={isSelected}
+            onMouseEnter={() => setIsHighlighted(true)}
+            onMouseLeave={() => setIsHighlighted(false)}
+            onClick={handleSelect}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            css={[s_selectItem(isHighlighted, isSelected), sx]}
+        >
+            {children}
+            {isSelected && (
+                <span>
+                    <Check size={16} />
+                </span>
+            )}
         </div>
     );
 }

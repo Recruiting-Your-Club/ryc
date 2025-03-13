@@ -1,4 +1,4 @@
-import type { Dispatch, RefObject, SetStateAction} from 'react';
+import type { Dispatch, RefObject, SetStateAction } from 'react';
 import React, { createContext, useContext } from 'react';
 
 interface SelectContextType {
