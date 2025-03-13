@@ -26,7 +26,7 @@ export const Default = ({ height = '30rem' }: { height?: string }) => {
         <div
             style={{
                 border: '0.1rem solid gray',
-                borderRadius: '10px',
+                borderRadius: '1rem',
                 padding: '0.2rem',
                 height,
                 width: '30rem',
