@@ -1,20 +1,15 @@
-import type {
-    ButtonHTMLAttributes,
-    ReactNode,
-    Ref} from 'react';
-import React, {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode, Ref } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { SelectContext, useSelectContext } from './SelectContext';
 import type { CSSObject } from '@emotion/react';
-import { s_select, s_size } from './Select.styles';
+import { s_select, s_selectContent, s_size } from './Select.styles';
 import { DownArrow } from '@assets/images/downArrow.svg';
 
 export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 
+/**
+ * Select 루트 컴포넌트
+ */
 interface SelectProps {
     children: ReactNode;
     value: string;
@@ -61,12 +56,16 @@ function Select({ children, value, onValueChange, size = 'md', sx }: SelectProps
     );
 }
 
+/**
+ * SelectTrigger 컴포넌트
+ */
 interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
+    sx?: CSSObject;
 }
 
-function SelectTrigger(
-    { children, ...props }: SelectTriggerProps,
+function SelectTriggerFunction(
+    { children, sx, ...props }: SelectTriggerProps,
     forwardedRef: Ref<HTMLButtonElement>,
 ) {
     const { open, setOpen, triggerRef } = useSelectContext();
@@ -77,10 +76,53 @@ function SelectTrigger(
     );
 
     return (
-        <button type="button" onClick={() => setOpen(!open)} {...props}>
+        <button css={sx} type="button" ref={ref} onClick={() => setOpen(!open)} {...props}>
             {children}
             <DownArrow size={16} />
         </button>
+    );
+}
+
+//forwardRef 적용을 위해 HOC 적용
+const SelectTrigger = forwardRef(SelectTriggerFunction);
+
+/**
+ * SelectValue 컴포넌트
+ */
+interface SelectValueProps {
+    placeholder?: string;
+    sx?: CSSObject;
+}
+
+function SelectValue({ placeholder, sx }: SelectValueProps) {
+    const { value, label } = useSelectContext();
+
+    return <span css={sx}>{value ? label : (placeholder ?? <span>{placeholder}</span>)}</span>;
+}
+
+/**
+ * SelectContent 컴포넌트
+ */
+interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
+    children: ReactNode;
+    sx?: CSSObject;
+}
+
+function SelectContent(
+    { children, sx, ...props }: SelectContentProps,
+    forwardedRef: Ref<HTMLDivElement>,
+) {
+    const { open, contentRef } = useSelectContext();
+
+    const ref = useMemo(
+        () => (forwardedRef ? forwardedRef : contentRef),
+        [forwardedRef, contentRef],
+    );
+
+    return (
+        <div ref={ref} css={[s_selectContent(open), sx]}>
+            {children}
+        </div>
     );
 }
 

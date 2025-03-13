@@ -44,3 +44,7 @@ export const s_size = (size: SelectSize) => {
 export const s_select = css`
     position: relative;
 `;
+
+export const s_selectContent = (open: boolean) => {
+    return css``;
+};
