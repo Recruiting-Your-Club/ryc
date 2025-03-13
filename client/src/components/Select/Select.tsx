@@ -2,9 +2,9 @@ import type { ButtonHTMLAttributes, HTMLAttributes, KeyboardEvent, ReactNode, Re
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { SelectContext, useSelectContext } from './SelectContext';
 import type { CSSObject } from '@emotion/react';
-import { s_select, s_selectContent, s_selectItem, s_size } from './Select.styles';
-import { DownArrow } from '@assets/images/downArrow.svg';
-import { Check } from '@assets/images/select_check.svg';
+import { s_select, s_selectContent, s_selectItem, s_selectTrigger, s_size } from './Select.styles';
+import DownArrow from '@assets/images/downArrow.svg';
+import Check from '@assets/images/select_check.svg';
 
 export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 
@@ -77,9 +77,15 @@ function SelectTriggerFunction(
     );
 
     return (
-        <button css={sx} type="button" ref={ref} onClick={() => setOpen(!open)} {...props}>
+        <button
+            css={[s_selectTrigger, sx]}
+            type="button"
+            ref={ref}
+            onClick={() => setOpen(!open)}
+            {...props}
+        >
             {children}
-            <DownArrow size={16} />
+            <DownArrow />
         </button>
     );
 }
@@ -121,7 +127,7 @@ function SelectContentFunction(
     );
 
     return (
-        <div role="listbox" ref={ref} css={[s_selectContent(open), sx]}>
+        <div role="listbox" ref={ref} css={[s_selectContent(open), sx]} {...props}>
             {children}
         </div>
     );
@@ -175,6 +181,7 @@ function SelectItemFunction({
             onKeyDown={handleKeyDown}
             tabIndex={0}
             css={[s_selectItem(isHighlighted, isSelected), sx]}
+            {...props}
         >
             {children}
             {isSelected && (
@@ -186,4 +193,36 @@ function SelectItemFunction({
     );
 }
 
-export { Select };
+/**
+ * SelectLabel 컴포넌트
+ */
+interface SelectLabelProps extends HTMLAttributes<HTMLDivElement> {
+    children: ReactNode;
+    sx?: CSSObject;
+}
+
+function SelectLabel({ children, ...props }: SelectLabelProps) {
+    return <div {...props}>{children}</div>;
+}
+
+/**
+ * SelectGroup 컴포넌트
+ */
+interface SelectGroupProps extends HTMLAttributes<HTMLDivElement> {
+    children: ReactNode;
+    sx?: CSSObject;
+}
+
+function SelectGroup({ children, ...props }: SelectGroupProps) {
+    return (
+        <div role="group" {...props}>
+            {children}
+        </div>
+    );
+}
+
+function SelectSeparator(props: HTMLAttributes<HTMLDivElement>) {
+    <div role="separator" {...props}></div>;
+}
+
+export { Select, SelectTrigger, SelectValue };
