@@ -7,16 +7,20 @@ import {
     contentContainer,
     actionContainer,
 } from './BaseDialog.style';
+import XIcon from '@assets/images/xIcon.svg';
+import { Button } from '@components/Button';
 import type { CSSObject } from '@emotion/react';
 import type { ReactNode } from 'react';
-import type { PositionType, DialogSize } from '../types';
+import type {
+    DialogHeaderProps,
+    DialogContentProps,
+    DialogActionProps,
+    PositionType,
+    DialogSize,
+    Size,
+} from '../types';
 
-interface Size extends CSSObject {
-    width?: CSSObject['width'];
-    height?: CSSObject['height'];
-}
-
-export const dialogSize: Record<DialogSize, Size> = {
+const dialogSize: Record<DialogSize, Size> = {
     sm: {
         width: '35rem',
     },
@@ -40,7 +44,7 @@ function BaseDialog({
     open,
     size = 'md',
     sx,
-    backdrop = false,
+    backdrop = true,
     handleClose,
 }: {
     children: React.ReactNode;
@@ -81,30 +85,32 @@ function DialogHeader({
     children,
     sx,
     position = 'start',
-}: {
-    position?: PositionType;
-    border?: boolean;
-    children: ReactNode;
-    sx?: CSSObject;
-}) {
-    return <header css={[headerContainer(border, position), sx]}>{children}</header>;
+    handleClose,
+    closeIcon = false,
+}: DialogHeaderProps) {
+    return (
+        <header css={[headerContainer(border, position), sx]}>
+            {children}
+            {closeIcon && (
+                <Button
+                    variant="transparent"
+                    size="md"
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{ position: 'absolute', right: '2rem' }}
+                >
+                    <XIcon />
+                </Button>
+            )}
+        </header>
+    );
 }
 
-function DialogContent({ children, sx }: { children: ReactNode; sx?: CSSObject }) {
+function DialogContent({ children, sx }: DialogContentProps) {
     return <div css={[contentContainer, sx]}>{children}</div>;
 }
 
-function DialogAction({
-    children,
-    sx,
-    border = false,
-    position = 'center',
-}: {
-    children: ReactNode;
-    sx?: CSSObject;
-    border?: boolean;
-    position?: PositionType;
-}) {
+function DialogAction({ children, sx, border = false, position = 'center' }: DialogActionProps) {
     return <div css={[actionContainer(border, position), sx]}>{children}</div>;
 }
 

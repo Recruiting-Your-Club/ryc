@@ -4,10 +4,9 @@ import { Dialog } from '@components/Dialog';
 import { Text } from '@components/Text';
 import Alert from '@assets/images/alert.svg';
 import Check from '@assets/images/check.svg';
-import XIcon from '@assets/images/xIcon.svg';
 import { Button } from '@components/Button';
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
-import type { PositionType, DialogSize, DialogType } from '../types';
+import type { DialogProps } from '../types';
 import type { ButtonSize } from '@components/Button';
 
 function ConfirmDialog({
@@ -21,26 +20,11 @@ function ConfirmDialog({
     contentPosition = 'center',
     actionPosition = 'end',
     buttonSize = 'xl',
-    closeIcon = false,
-    cancelButton = false,
+    closeIcon,
+    cancleButton = false,
     handleClose,
     actionHandler,
-}: {
-    type?: DialogType;
-    title?: string;
-    content?: string;
-    open: boolean;
-    backdrop?: boolean;
-    dialogSize?: DialogSize;
-    closeIcon?: boolean;
-    buttonSize?: ButtonSize;
-    titlePosition?: PositionType;
-    contentPosition?: PositionType;
-    actionPosition?: PositionType;
-    cancelButton?: boolean;
-    handleClose: () => void;
-    actionHandler?: () => void;
-}) {
+}: DialogProps & { buttonSize?: ButtonSize }) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
@@ -52,32 +36,24 @@ function ConfirmDialog({
     return (
         <>
             <Dialog open={open} handleClose={handleClose} size={dialogSize} backdrop={backdrop}>
-                <Dialog.Header position={titlePosition}>
-                    <div css={confirmDialogHeaderContainer}>
+                <Dialog.Header
+                    position={titlePosition}
+                    closeIcon={closeIcon}
+                    handleClose={handleClose}
+                >
+                    <div css={confirmDialogHeaderContainer(titlePosition, type)}>
                         {type === 'confirm' && <Check width="3rem" height="3rem" color="green" />}
                         {type === 'warning' && <Alert width="3rem" height="3rem" color="red" />}
                         <Text as="h4" type="h4Semibold">
                             {title}
                         </Text>
                     </div>
-
-                    {closeIcon && (
-                        <Button
-                            variant="transparent"
-                            size="md"
-                            aria-label="close"
-                            onClick={handleClose}
-                            sx={{ position: 'absolute', right: '2rem' }}
-                        >
-                            <XIcon />
-                        </Button>
-                    )}
                 </Dialog.Header>
                 <Dialog.Content>
                     <Text textAlign={contentPosition}>{content}</Text>
                 </Dialog.Content>
                 <Dialog.Action position={actionPosition}>
-                    {cancelButton && (
+                    {cancleButton && (
                         <Button variant="outlined" size={buttonSize} onClick={handleClose}>
                             취소
                         </Button>

@@ -12,8 +12,8 @@ export const backdropContainer = css`
     z-index: 100;
     opacity: 0;
     backdrop-filter: blur(0px); /* 초기 상태 명시 */
-    animation: backdrop 0.2s ease-in-out forwards; // forwards는 애니메이션 종료 후 유지
-    @keyframes backdrop {
+    animation: dialog-backdrop 0.2s ease-in-out forwards; // forwards는 애니메이션 종료 후 유지
+    @keyframes dialog-backdrop {
         from {
             backdrop-filter: blur(0);
             opacity: 0;
@@ -41,9 +41,9 @@ export const dialogContainer = css`
     border-radius: 1rem;
     background-color: ${theme.colors.white};
     z-index: 101;
-    animation: dialogdown 0.2s ease-in-out;
+    animation: dialog-down 0.2s ease-in-out;
 
-    @keyframes dialogdown {
+    @keyframes dialog-down {
         from {
             opacity: 0;
             transform: translate(-50%, -50%) translateY(-15%);
