@@ -27,6 +27,14 @@ export interface Size extends CSSObject {
     height?: CSSObject['height'];
 }
 
+export interface BaseDialogProps {
+    children: React.ReactNode;
+    open: boolean;
+    backdrop?: boolean;
+    size?: DialogSize;
+    sx?: CSSObject;
+    handleClose: () => void;
+}
 export interface DialogHeaderProps {
     position?: PositionType;
     border?: boolean;

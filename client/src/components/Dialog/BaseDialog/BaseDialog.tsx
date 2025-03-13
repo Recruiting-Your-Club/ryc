@@ -9,13 +9,11 @@ import {
 } from './BaseDialog.style';
 import XIcon from '@assets/images/xIcon.svg';
 import { Button } from '@components/Button';
-import type { CSSObject } from '@emotion/react';
-import type { ReactNode } from 'react';
 import type {
     DialogHeaderProps,
     DialogContentProps,
     DialogActionProps,
-    PositionType,
+    BaseDialogProps,
     DialogSize,
     Size,
 } from '../types';
@@ -46,14 +44,7 @@ function BaseDialog({
     sx,
     backdrop = true,
     handleClose,
-}: {
-    children: React.ReactNode;
-    open: boolean;
-    backdrop?: boolean;
-    size?: DialogSize;
-    sx?: CSSObject;
-    handleClose: () => void;
-}) {
+}: BaseDialogProps) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
