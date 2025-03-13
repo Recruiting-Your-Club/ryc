@@ -4,6 +4,22 @@ import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
+// rgba에서 rgb부분에 쓰이기 위한 변환 함수
+const hexToRgba = (hex: string): string => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+
+    return `${r}, ${g}, ${b}`;
+};
+
+const CHECKBOX_COLORS = {
+    black: theme.colors.black,
+    gray: theme.colors.gray[500],
+    default: theme.colors.default,
+    red: theme.colors.red[900],
+};
+
 interface Typography extends CSSObject {
     fontSize: CSSProperties['fontSize'];
     fontWeight: CSSProperties['fontWeight'];
@@ -12,30 +28,92 @@ interface Typography extends CSSObject {
 interface Size {
     width?: CSSProperties['width'];
     height?: CSSProperties['height'];
-    typography: Typography;
+    typography?: Typography;
 }
 
 export const checkboxSize: Record<CheckboxSize, Size> = {
-    xs: { width: '1rem', height: '1rem', typography: theme.typography.subCaptionRegular },
-    s: { width: '1.5rem', height: '1.5rem', typography: theme.typography.captionRegular },
-    md: { width: '2rem', height: '2rem', typography: theme.typography.captionRegular },
-    lg: { width: '2.5rem', height: '2.5rem', typography: theme.typography.bodyRegular },
+    xs: { width: '1.2rem', height: '1.2rem' },
+    s: { width: '1.3rem', height: '1.3rem' },
+    md: { width: '1.5rem', height: '1.5rem' },
+    lg: { width: '1.75rem', height: '1.75rem' },
 };
 
-export const s_size = (size: CheckboxSize = 's') => {
+export const typographySize: Record<CheckboxSize, Size> = {
+    xs: { typography: theme.typography.subCaptionRegular },
+    s: { typography: theme.typography.captionRegular },
+    md: { typography: theme.typography.captionRegular },
+    lg: { typography: theme.typography.bodyRegular },
+};
+
+export const svgSize: Record<CheckboxSize, Size> = {
+    xs: { width: '0.8rem', height: '0.8rem' },
+    s: { width: '0.8rem', height: '0.8rem' },
+    md: { width: '1.2rem', height: '0.6rem' },
+    lg: { width: '1.2rem', height: '0.8rem' },
+};
+
+export const s_size = (size: CheckboxSize = 'xs') => {
     return css`
         width: ${checkboxSize[size].width};
         height: ${checkboxSize[size].height};
     `;
 };
 
+export const s_textSize = (size: CheckboxSize = 'xs') => {
+    return css`
+        ${typographySize[size].typography};
+        color: ${theme.colors.black};
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        ${size === 'md' &&
+        css`
+            padding-top: 0.04rem;
+        `}
+
+        ${size === 'lg' &&
+        css`
+            padding-top: 0.1rem;
+        `}
+    `;
+};
+
+export const s_svgSize = (
+    isChecked: boolean = false,
+    size: CheckboxSize = 'xs',
+    color: CheckboxColor = 'default',
+) => css`
+    width: ${svgSize[size].width};
+    height: ${svgSize[size].height};
+    margin-left: ${(size === 's' && '0.05rem') || '0rem'};
+    color: ${(isChecked && CHECKBOX_COLORS[color]) || 'transparent'};
+`;
+
+const baseVariant = css`
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    cursor: pointer;
+`;
+
 export const s_variant = (
+    isChecked?: boolean,
     variant: CheckboxVariant = 'outline',
     color: CheckboxColor = 'default',
 ) => {
     switch (variant) {
         case 'outline':
-            return css``;
+            return css`
+                ${baseVariant};
+                border: 0.025rem solid;
+                border-color: ${(isChecked && `rgba(${hexToRgba(CHECKBOX_COLORS[color])}, 0.7)`) ||
+                theme.colors.gray[400]};
+            `;
         case 'solid':
             return css``;
         case 'subtle':
@@ -44,44 +122,23 @@ export const s_variant = (
 };
 
 export const rootContainer = css`
-    display: 'inline-flex';
-    align-items: 'center';
-    vertical-align: 'top';
-    line-height: '1.2';
-    cursor: 'pointer';
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    /* padding: 0.25rem; */
 `;
 
 export const hiddenInputCss = css`
-    border: 0rem;
-    clip: rect(0rem, 0rem, 0rem, 0rem);
-    height: 0rem;
-    margin: 0rem;
-    overflow: hidden;
-    padding: 0rem;
     position: absolute;
     width: 0rem;
+    height: 0rem;
+    border: 0rem;
+    clip: rect(0rem, 0rem, 0rem, 0rem);
+    padding: 0rem;
+    margin: 0rem;
+    overflow: hidden;
     white-space: nowrap;
     overflow-wrap: normal;
-`;
-
-export const controlCss = (isChecked?: boolean) => {
-    return css`
-        width: 1rem;
-        height: 1rem;
-        display: inline-block;
-        position: relative;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        border: 0.125rem solid;
-        border-color: ${isChecked ? theme.colors.default : theme.colors.black};
-    `;
-};
-
-export const labelCss = css`
-    margin-left: 0.5rem;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 `;

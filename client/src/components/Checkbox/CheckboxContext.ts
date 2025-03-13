@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { CheckboxSize, CheckboxVariant } from './CheckboxRoot';
+import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
 interface CheckboxContextType {
     id?: string;
@@ -7,7 +7,7 @@ interface CheckboxContextType {
     onChange: () => void;
     variant?: CheckboxVariant;
     size?: CheckboxSize;
-    color?: string;
+    color?: CheckboxColor;
 }
 
 export const CheckboxContext = createContext<CheckboxContextType | undefined>(undefined);
