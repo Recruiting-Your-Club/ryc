@@ -29,6 +29,7 @@ interface Size {
     width?: CSSProperties['width'];
     height?: CSSProperties['height'];
     typography?: Typography;
+    marginLeft?: CSSProperties['marginLeft'];
 }
 
 export const checkboxSize: Record<CheckboxSize, Size> = {
@@ -46,10 +47,10 @@ export const typographySize: Record<CheckboxSize, Size> = {
 };
 
 export const svgSize: Record<CheckboxSize, Size> = {
-    xs: { width: '0.8rem', height: '0.8rem' },
-    s: { width: '0.8rem', height: '0.8rem' },
-    md: { width: '1.2rem', height: '0.6rem' },
-    lg: { width: '1.2rem', height: '0.8rem' },
+    xs: { width: '0.8rem', height: '0.8rem', marginLeft: '0rem' },
+    s: { width: '0.8rem', height: '0.8rem', marginLeft: '0.05rem' },
+    md: { width: '1.2rem', height: '0.6rem', marginLeft: '0rem' },
+    lg: { width: '1.2rem', height: '0.8rem', marginLeft: '0.05rem' },
 };
 
 export const s_size = (size: CheckboxSize = 'xs') => {
@@ -86,7 +87,7 @@ export const s_svgSize = (
 ) => css`
     width: ${svgSize[size].width};
     height: ${svgSize[size].height};
-    margin-left: ${(size === 's' && '0.05rem') || '0rem'};
+    margin-left: ${svgSize[size].marginLeft};
     color: ${(isChecked && CHECKBOX_COLORS[color]) || 'transparent'};
 `;
 

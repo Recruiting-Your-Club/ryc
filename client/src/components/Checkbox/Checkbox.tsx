@@ -17,7 +17,7 @@ function Checkbox({ variant, size, color }: CheckboxProps) {
             <CheckboxRoot variant={variant} size={size} color={color}>
                 <CheckboxHiddenInput />
                 <CheckboxControl />
-                <CheckboxLabel>이름 입니다.</CheckboxLabel>
+                <CheckboxLabel>Checkbox 입니다.</CheckboxLabel>
             </CheckboxRoot>
         </>
     );

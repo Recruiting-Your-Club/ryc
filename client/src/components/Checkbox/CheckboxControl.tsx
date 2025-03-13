@@ -17,6 +17,7 @@ function CheckboxControl({ sx }: ControlProps) {
         }
     };
 
+    // custom을 위한 check svg 컴포넌트 함수
     const Check = () => {
         return (
             <svg
