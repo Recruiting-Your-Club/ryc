@@ -3,7 +3,16 @@ import { hiddenInputCss } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
 function CheckboxHiddenInput() {
+    // prop destruction
+    // lib hooks
     const { id, isChecked, onChange, defaultChecked, disabled } = useCheckboxContext();
+
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
 
     return (
         <>

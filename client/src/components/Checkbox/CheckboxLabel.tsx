@@ -6,7 +6,16 @@ interface LabelProps {
     children: React.ReactNode;
 }
 function CheckboxLabel({ children }: LabelProps) {
+    // prop destruction
+    // lib hooks
     const { id, size, disabled } = useCheckboxContext();
+
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
 import { rootContainer } from './Checkbox.style';
 import { CheckboxContext } from './CheckboxContext';
 
@@ -23,27 +23,40 @@ function CheckboxRoot({
     defaultChecked = false,
     disabled,
 }: CheckboxRootProps) {
-    const [isChecked, setIsChecked] = useState(defaultChecked);
+    // prop destruction
+    // lib hooks
     const id = useId(); // HiddenInput과 Label 연결을 위해 임의 아이디 생성
 
+    // state, ref, querystring hooks
+    const [isChecked, setIsChecked] = useState(defaultChecked);
+
+    // form hooks
+    // query hooks
+    // effects
+
+    // handlers
     const onChange = () => {
         if (disabled) return;
         setIsChecked(!isChecked);
     };
 
+    // calculated values
+    const memoizedValue = useMemo(
+        () => ({
+            id: id,
+            variant,
+            size,
+            color,
+            isChecked: isChecked,
+            onChange: () => onChange(),
+            defaultChecked,
+            disabled,
+        }),
+        [variant, size, color, isChecked, onChange, defaultChecked, disabled],
+    );
+
     return (
-        <CheckboxContext.Provider
-            value={{
-                id: id,
-                variant,
-                size,
-                color,
-                isChecked: isChecked,
-                onChange: () => onChange(),
-                defaultChecked,
-                disabled,
-            }}
-        >
+        <CheckboxContext.Provider value={memoizedValue}>
             <div css={rootContainer}>{children}</div>
         </CheckboxContext.Provider>
     );

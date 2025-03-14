@@ -20,6 +20,14 @@ function BaseCheckbox({
     disabled = false,
     defaultChecked = false,
 }: CheckboxProps) {
+    // prop destruction
+    // lib hooks
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
     return (
         <>
             <CheckboxRoot

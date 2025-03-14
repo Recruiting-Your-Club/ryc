@@ -8,10 +8,19 @@ interface ControlProps {
 }
 
 function CheckboxControl({ sx }: ControlProps) {
+    // prop destruction
+    // lib hooks
     const { isChecked, onChange, variant, size, color, defaultChecked, disabled } =
         useCheckboxContext();
+
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     const cssProp = [s_variant(isChecked, variant, color, defaultChecked, disabled), s_size(size)];
 
+    // effects
+    // handlers
     const onKeyDownHandler = (e: KeyboardEvent) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
