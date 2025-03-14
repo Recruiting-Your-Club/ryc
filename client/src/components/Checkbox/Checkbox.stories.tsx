@@ -98,20 +98,3 @@ export const NoLabel = CheckboxNoLabelTemplate.bind({});
 NoLabel.args = {
     size: 'lg',
 };
-
-// export const Solid: Story = {
-//     render: (args) => {
-//         return (
-//             <Checkbox.Root {...args}>
-//                 <Checkbox.HiddenInput />
-//                 <Checkbox.Control />
-//                 <Checkbox.Label>Checkbox 입니다.</Checkbox.Label>
-//             </Checkbox.Root>
-//         );
-//     },
-//     args: {
-//         variant: 'solid',
-//         size: 'md',
-//         color: 'default',
-//     },
-// };
