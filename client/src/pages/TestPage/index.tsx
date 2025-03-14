@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
-import { BaseInput, PasswordInput } from '@components/Input';
-import { Button } from '@components/Button';
-import { Stepper } from '@components/Stepper/Stepper';
-import { Step } from '@components/Stepper/Step';
-import { StepLabel } from '@components/Stepper/StepLabel';
-import { css } from '@emotion/react';
-import { Select, SelectTrigger, SelectValue } from '@components/Select/Select';
+import { Select } from '@components/Select/Select';
 function TestPage() {
-    const [value, setValue] = React.useState('apple');
+    const [value, setValue] = useState('');
 
     return (
-        <div className="w-full max-w-xs mx-auto p-4">
-            <p className="mb-2">Selected value: {value}</p>
-            <Select value={value} onValueChange={setValue}>
-                <SelectTrigger>
-                    <SelectValue placeholder="Select a fruit" />
-                </SelectTrigger>
+        <div>
+            <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
+            <Select value={value} onValueChange={setValue} size="md">
+                <Select.Trigger>
+                    <Select.Value placeholder="Select a fruit" />
+                </Select.Trigger>
+                <Select.Content>
+                    <Select.Group>
+                        <Select.Label>Fruits</Select.Label>
+                        <Select.Item value="apple">안녕1</Select.Item>
+                        <Select.Item value="banana">안녕2</Select.Item>
+                        <Select.Item value="orange">안녕3</Select.Item>
+                    </Select.Group>
+                    <Select.Separator />
+                    <Select.Group>
+                        <Select.Label>Vegetables</Select.Label>
+                        <Select.Item value="carrot">Carrot</Select.Item>
+                        <Select.Item value="potato">Potato</Select.Item>
+                        <Select.Item value="broccoli">Broccoli</Select.Item>
+                    </Select.Group>
+                </Select.Content>
             </Select>
         </div>
     );

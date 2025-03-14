@@ -9,19 +9,19 @@ interface Size {
 
 export const selectSize: Record<SelectSize, Size> = {
     xs: {
-        width: '8rem',
+        width: '6rem',
     },
     s: {
         width: '10rem',
     },
     md: {
-        width: '12rem',
-    },
-    lg: {
         width: '14rem',
     },
+    lg: {
+        width: '18rem',
+    },
     xl: {
-        width: '16rem',
+        width: '22rem',
     },
     full: {
         width: '100%',
@@ -45,7 +45,7 @@ export const s_selectTrigger = css`
     align-items: center;
     justify-content: space-between;
     border-radius: 0.4rem;
-    border: 1px solid ${theme.colors.gray[200]};
+    border: 1px solid ${theme.colors.gray[300]};
     background-color: white;
     padding: 0 0.9rem;
     ${theme.typography.subCaptionRegular}
@@ -66,9 +66,89 @@ export const s_selectTrigger = css`
 `;
 
 export const s_selectContent = (open: boolean) => {
-    return css``;
+    return css`
+        position: absolute;
+        left: 0;
+        margin-top: 0.5rem;
+        width: 100%;
+        overflow: hidden;
+        background-color: ${theme.colors.white};
+        border-radius: 0.4rem;
+        border: 1px solid ${theme.colors.gray[200]};
+        box-shadow: 0 0.6rem 0.9rem -0.2rem ${theme.colors.black}10;
+        z-index: 50;
+        display: none;
+        ${open &&
+        css`
+            display: block;
+        `}
+        max-height: 15rem;
+        overflow-y: auto;
+    `;
 };
 
 export const s_selectItem = (highlighted: boolean, selected: boolean) => {
-    return css``;
+    return css`
+        ${theme.typography.subCaptionRegular}
+        color: ${theme.colors.gray[900]};
+        border-radius: 0.3rem;
+        display: flex;
+        align-items: center;
+        height: 2.5rem;
+        padding: 0 0.5rem 0 2rem;
+        position: relative;
+        user-select: none;
+        cursor: pointer;
+        ${highlighted &&
+        css`
+            background-color: ${theme.colors.blue[100]};
+        `}
+        ${selected && theme.typography.subCaptionRegular}
+
+        &:hover {
+            background-color: ${theme.colors.blue[100]};
+        }
+        &:disabled {
+            color: ${theme.colors.disabled};
+            pointer-events: none;
+        }
+    `;
 };
+
+export const s_selectLabel = css`
+    padding: 0.1rem 1rem 0.2rem;
+    ${theme.typography.captionSemibold};
+    font-size: 1rem;
+    color: ${theme.colors.gray[600]};
+`;
+
+export const s_selectSeperator = css`
+    height: 1px;
+    background-color: ${theme.colors.gray[200]};
+    margin-top: 0.3rem;
+`;
+
+export const s_selectGroup = css`
+    padding: 0.3rem 0;
+`;
+
+export const s_selectValue = css`
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
+export const s_selectPlaceholder = css`
+    color: ${theme.colors.gray[600]};
+`;
+
+export const s_selectItemIndicator = css`
+    position: absolute;
+    left: 0.3rem;
+    width: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+`;
