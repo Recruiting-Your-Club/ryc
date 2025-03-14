@@ -21,7 +21,6 @@ interface Size {
     width?: CSSProperties['width'];
     height?: CSSProperties['height'];
     typography?: Typography;
-    marginLeft?: CSSProperties['marginLeft'];
 }
 
 export const checkboxSize: Record<CheckboxSize, Size> = {
@@ -39,10 +38,10 @@ export const typographySize: Record<CheckboxSize, Size> = {
 };
 
 export const svgSize: Record<CheckboxSize, Size> = {
-    xs: { width: '0.8rem', height: '0.8rem', marginLeft: '0rem' },
-    s: { width: '0.8rem', height: '0.8rem', marginLeft: '0.05rem' },
-    md: { width: '1.2rem', height: '0.6rem', marginLeft: '0rem' },
-    lg: { width: '1.2rem', height: '0.8rem', marginLeft: '0.05rem' },
+    xs: { width: '0.8rem', height: '0.8rem' },
+    s: { width: '0.9rem', height: '0.7rem' },
+    md: { width: '1.2rem', height: '0.6rem' },
+    lg: { width: '1.2rem', height: '0.8rem' },
 };
 
 export const s_size = (size: CheckboxSize = 'xs') => {
@@ -75,11 +74,16 @@ export const s_text = (size: CheckboxSize = 'xs', disabled: boolean = false) => 
 export const s_svgSize = (size: CheckboxSize = 'xs') => css`
     width: ${svgSize[size].width};
     height: ${svgSize[size].height};
-    margin-left: ${svgSize[size].marginLeft};
+    margin-left: ${size === 'lg' && '0.05rem'};
+    margin-top: ${(size === 's' || size === 'md') && '0.01rem'};
 `;
 
-const defaultTrueSvgColor = (defaultChecked: boolean = false, disabled: boolean = false) => css`
-    color: ${defaultChecked && disabled && theme.colors.white} !important;
+const defaultTrueSvgColor = (
+    isChecked: boolean = false,
+    defaultChecked: boolean = false,
+    disabled: boolean = false,
+) => css`
+    color: ${(isChecked || defaultChecked) && disabled && theme.colors.white} !important;
 `;
 
 export const s_svgColor = (
@@ -93,18 +97,22 @@ export const s_svgColor = (
         case 'outline':
         case 'subtle':
             return css`
-                ${defaultTrueSvgColor(defaultChecked, disabled)}
+                ${defaultTrueSvgColor(isChecked, defaultChecked, disabled)}
                 color: ${(isChecked && CHECKBOX_COLORS[color]) || 'transparent'};
             `;
         case 'solid':
             return css`
-                ${defaultTrueSvgColor(defaultChecked, disabled)}
+                ${defaultTrueSvgColor(isChecked, defaultChecked, disabled)}
                 color: ${(isChecked && theme.colors.white) || 'transparent'};
             `;
     }
 };
 
-const baseVariant = (defaultChecked: boolean = false, disabled: boolean = false) => css`
+const baseVariant = (
+    isChecked: boolean = false,
+    defaultChecked: boolean = false,
+    disabled: boolean = false,
+) => css`
     width: 1rem;
     height: 1rem;
     display: flex;
@@ -116,12 +124,10 @@ const baseVariant = (defaultChecked: boolean = false, disabled: boolean = false)
 
     ${disabled &&
     css`
-        border: 0.025rem solid !important;
-        border-color: rgba(${hexToRgb(theme.colors.black)}, 0.3) !important;
         cursor: default !important;
     `}
 
-    ${defaultChecked &&
+    ${(isChecked || defaultChecked) &&
     disabled &&
     css`
         border-color: transparent !important;
@@ -130,7 +136,7 @@ const baseVariant = (defaultChecked: boolean = false, disabled: boolean = false)
 `;
 
 export const s_variant = (
-    isChecked?: boolean,
+    isChecked: boolean = false,
     variant: CheckboxVariant = 'outline',
     color: CheckboxColor = 'default',
     defaultChecked: boolean = false,
@@ -139,22 +145,23 @@ export const s_variant = (
     switch (variant) {
         case 'outline':
             return css`
-                ${baseVariant(defaultChecked, disabled)};
+                ${baseVariant(isChecked, defaultChecked, disabled)};
                 border: 0.025rem solid;
                 border-color: ${(isChecked && `rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.7)`) ||
                 theme.colors.gray[400]};
             `;
         case 'solid':
             return css`
-                ${baseVariant(defaultChecked, disabled)};
+                ${baseVariant(isChecked, defaultChecked, disabled)};
                 border: 0.025rem solid;
                 border-color: ${(isChecked && 'transparent') || theme.colors.gray[400]};
                 background-color: ${(isChecked && CHECKBOX_COLORS[color]) || 'transparent'};
             `;
         case 'subtle':
             return css`
-                ${baseVariant(defaultChecked, disabled)};
-                background-color: rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.2);
+                ${baseVariant(isChecked, defaultChecked, disabled)};
+                background-color: ${(disabled && `rgba(${hexToRgb(theme.colors.black)}, 0.3)`) ||
+                `rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.2)`};
             `;
     }
 };
@@ -165,7 +172,6 @@ export const rootContainer = css`
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    /* padding: 0.25rem; */
 `;
 
 export const hiddenInputCss = css`

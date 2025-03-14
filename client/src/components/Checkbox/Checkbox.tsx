@@ -5,7 +5,7 @@ import { CheckboxLabel } from './CheckboxLabel';
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 import { CheckboxRoot } from './CheckboxRoot';
 
-interface CheckboxProps {
+export interface CheckboxProps {
     variant?: CheckboxVariant;
     size?: CheckboxSize;
     color?: CheckboxColor;
@@ -13,7 +13,7 @@ interface CheckboxProps {
     defaultChecked?: boolean;
 }
 
-function Checkbox({
+function BaseCheckbox({
     variant,
     size,
     color,
@@ -36,5 +36,12 @@ function Checkbox({
         </>
     );
 }
+
+const Checkbox = Object.assign(BaseCheckbox, {
+    Root: CheckboxRoot,
+    HiddenInput: CheckboxHiddenInput,
+    Control: CheckboxControl,
+    Label: CheckboxLabel,
+});
 
 export { Checkbox };
