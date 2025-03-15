@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
 import { rootContainer } from './Checkbox.style';
 import { CheckboxContext } from './CheckboxContext';
 
@@ -11,7 +11,7 @@ interface CheckboxRootProps {
     size?: CheckboxSize;
     color?: CheckboxColor;
     children?: React.ReactNode;
-    onCheckChange?: () => void;
+    onChange?: () => void;
     isChecked?: boolean;
     defaultChecked?: boolean;
     disabled?: boolean;
@@ -22,7 +22,7 @@ function CheckboxRoot({
     size,
     color,
     children,
-    onCheckChange,
+    onChange,
     isChecked: externalChecked,
     defaultChecked = false,
     disabled = false,
@@ -45,10 +45,10 @@ function CheckboxRoot({
         setChecked((prev) => !prev);
     };
 
-    const changeHandler = useCallback(() => {
+    const changeHandler = () => {
         if (disabled) return;
-        (onCheckChange ?? onChangeInner)();
-    }, [onCheckChange]);
+        (onChange ?? onChangeInner)();
+    };
 
     // calculated values
     const memoizedValue = useMemo(

@@ -39,7 +39,7 @@ function BaseCheckbox({
                 size={size}
                 color={color}
                 isChecked={isChecked}
-                onCheckChange={onChange}
+                onChange={onChange}
                 defaultChecked={defaultChecked}
                 disabled={disabled}
             >
