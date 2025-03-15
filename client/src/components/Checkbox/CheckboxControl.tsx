@@ -10,14 +10,13 @@ interface ControlProps {
 function CheckboxControl({ sx }: ControlProps) {
     // prop destruction
     // lib hooks
-    const { isChecked, onChange, variant, size, color, defaultChecked, disabled } =
-        useCheckboxContext();
+    const { isChecked, onChange, variant, size, color, disabled } = useCheckboxContext();
 
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
-    const cssProp = [s_variant(isChecked, variant, color, defaultChecked, disabled), s_size(size)];
+    const cssProp = [s_variant(isChecked, variant, color, disabled), s_size(size)];
 
     // effects
     // handlers
@@ -32,10 +31,7 @@ function CheckboxControl({ sx }: ControlProps) {
     const Check = () => {
         return (
             <svg
-                css={[
-                    s_svgSize(size),
-                    s_svgColor(variant, color, isChecked, defaultChecked, disabled),
-                ]}
+                css={[s_svgSize(size), s_svgColor(variant, color, isChecked, disabled)]}
                 viewBox="0 0 6 4"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"

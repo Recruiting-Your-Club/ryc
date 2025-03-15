@@ -3,12 +3,11 @@ import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoo
 
 interface CheckboxContextType {
     id?: string;
-    isChecked: boolean;
+    isChecked?: boolean;
     onChange: () => void;
     variant?: CheckboxVariant;
     size?: CheckboxSize;
     color?: CheckboxColor;
-    defaultChecked?: boolean;
     disabled?: boolean;
 }
 

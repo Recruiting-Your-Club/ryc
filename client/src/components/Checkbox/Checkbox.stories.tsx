@@ -1,6 +1,6 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { Checkbox } from '.';
+import type { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
+import { Checkbox } from '.';
 
 type Story = StoryFn<typeof Checkbox>;
 
@@ -68,13 +68,13 @@ lg.args = {
 
 export const DefaultChecked = CheckboxTemplate.bind({});
 DefaultChecked.args = {
-    defaultChecked: true,
+    isChecked: true,
     size: 'md',
 };
 
 export const DefaultCheckedButDisabled = CheckboxTemplate.bind({});
 DefaultCheckedButDisabled.args = {
-    defaultChecked: true,
+    isChecked: true,
     disabled: true,
     size: 'md',
 };

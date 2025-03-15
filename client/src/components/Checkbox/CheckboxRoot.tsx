@@ -11,6 +11,7 @@ interface CheckboxRootProps {
     size?: CheckboxSize;
     color?: CheckboxColor;
     children?: React.ReactNode;
+    isChecked?: boolean;
     defaultChecked?: boolean;
     disabled?: boolean;
 }
@@ -20,7 +21,8 @@ function CheckboxRoot({
     size,
     color,
     children,
-    defaultChecked = false,
+    isChecked = false,
+    // defaultChecked = false,
     disabled,
 }: CheckboxRootProps) {
     // prop destruction
@@ -28,7 +30,7 @@ function CheckboxRoot({
     const id = useId(); // HiddenInput과 Label 연결을 위해 임의 아이디 생성
 
     // state, ref, querystring hooks
-    const [isChecked, setIsChecked] = useState(defaultChecked);
+    const [checked, setChecked] = useState(isChecked);
 
     // form hooks
     // query hooks
@@ -37,7 +39,7 @@ function CheckboxRoot({
     // handlers
     const onChange = () => {
         if (disabled) return;
-        setIsChecked(!isChecked);
+        setChecked(!checked);
     };
 
     // calculated values
@@ -47,12 +49,12 @@ function CheckboxRoot({
             variant,
             size,
             color,
-            isChecked: isChecked,
+            isChecked: checked,
             onChange: () => onChange(),
-            defaultChecked,
+            // defaultChecked,
             disabled,
         }),
-        [variant, size, color, isChecked, onChange, defaultChecked, disabled],
+        [variant, size, color, isChecked, onChange, disabled],
     );
 
     return (
