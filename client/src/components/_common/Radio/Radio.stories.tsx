@@ -1,5 +1,5 @@
-import type { Meta} from '@storybook/react';
-import { StoryObj } from '@storybook/react';
+import type { Meta } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { RadioGroup } from './RadioGroup';
 
@@ -17,31 +17,25 @@ const meta: Meta<typeof RadioGroup> = {
 
 export default meta;
 
-export const Default = () => {
-    const [selectedValue, setSelectedValue] = useState<string>('');
-    return (
-        <>
-            <RadioGroup
-                options={['옵션 1']}
-                name="defaultGroup"
-                value={selectedValue}
-                onChange={setSelectedValue}
-            ></RadioGroup>
-        </>
-    );
+type Story = StoryObj<typeof RadioGroup>;
+
+export const Primary: Story = {
+    args: {
+        options: [''],
+        name: 'primary',
+    },
 };
 
-export const GroupDefault = () => {
-    const [selectedValue, setSelectedValue] = useState('옵션 1');
+export const text: Story = {
+    args: {
+        options: ['옵션1'],
+        name: 'text',
+    },
+};
 
-    return (
-        <>
-            <RadioGroup
-                options={['옵션 1', '옵션 2', '옵션 3']}
-                name="radioGroup"
-                value={selectedValue}
-                onChange={setSelectedValue}
-            />
-        </>
-    );
+export const variableText: Story = {
+    args: {
+        options: ['옵션1', '옵션2', '옵션3'],
+        name: 'variableText',
+    },
 };
