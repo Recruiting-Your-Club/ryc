@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 interface ToastContextType {
     toasts: ToastProps[];
     createToast: (
-        message: string,
+        message: ReactNode,
         options?: ToastProps,
         containerOptions?: ToastContainerProps,
     ) => void;
@@ -20,13 +20,14 @@ interface ToastContextType {
 const defaultOptions: ToastProps = {
     type: 'info',
     toastTheme: 'white',
+    status: 'entering',
     duration: 3000,
     autoClose: true,
 };
 
 const defaultContainerOptions: ToastContainerProps = {
     position: 'topCenter',
-    max: 3,
+    limit: 4,
 };
 
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -48,24 +49,54 @@ function ToastProvider({ children }: PropsWithChildren) {
         options?: ToastProps,
         containerOptions?: ToastContainerProps,
     ) => {
+        // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능
         if (containerOptions && Object.keys(containerOptions).length > 0) {
-            // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능
             setContainer({ ...defaultContainerOptions, ...containerOptions });
         }
-        setToasts((prev) => {
-            return [
-                ...prev,
-                {
-                    content: content,
-                    ...defaultOptions,
-                    ...options,
-                },
-            ];
-        });
+        const id = Date.now();
+        const mergeOptions = { ...defaultOptions, ...options };
+        const newToast = {
+            id: id,
+            content: content,
+            ...mergeOptions,
+        };
+
+        const isExceed = checkLimitAndRemoveToast();
+        if (!isExceed) {
+            // 값 추가
+            setToasts((prev) => [...prev, newToast]);
+        }
+        if (mergeOptions?.autoClose) AutoRemoveToast(id, { ...mergeOptions });
     };
 
-    const removeToast = (id: number) => {
-        setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    const checkLimitAndRemoveToast = (): boolean => {
+        if (toasts.length >= (container?.limit || 3)) {
+            toasts.map((toast, index) => {
+                if (index === 0) {
+                    toast.status = 'exiting';
+                }
+            });
+
+            const removeToast = () => setToasts((prev) => prev.slice(1));
+            animation(removeToast, 500);
+            return true;
+        }
+        return false;
+    };
+
+    const AutoRemoveToast = (id: number, mergeOptions: ToastProps) => {
+        const removeAnimation = () =>
+            setToasts((prev) =>
+                prev.map((toast) => (toast.id === id ? { ...toast, status: 'exiting' } : toast)),
+            );
+        animation(removeAnimation, mergeOptions.duration || 3000);
+
+        const removeToast = () => setToasts((prev) => prev.filter((toast) => toast.id !== id));
+        animation(removeToast, (mergeOptions.duration || 3000) + 1000);
+    };
+
+    const animation = (method: () => void, duration: number) => {
+        setTimeout(method, duration);
     };
 
     return (
