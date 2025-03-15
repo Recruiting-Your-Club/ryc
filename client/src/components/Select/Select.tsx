@@ -10,6 +10,7 @@ import { SelectLabel } from './SelectLabel';
 import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
+import { useClickOutside } from '@hooks/useClickOutside';
 
 export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 
@@ -34,29 +35,15 @@ function SelectRoot({ children, value, onValueChange, size = 'md', sx }: SelectP
         onValueChange(newValue);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                contentRef.current &&
-                triggerRef.current &&
-                !contentRef.current.contains(event.target as Node) &&
-                !triggerRef.current.contains(event.target as Node)
-            ) {
-                setOpen(false);
-            }
-        };
+    useClickOutside([triggerRef, contentRef], () => setOpen(false));
 
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+    const contextValue = useMemo(
+        () => ({ open, setOpen, value, setValue, label, setLabel, triggerRef, contentRef }),
+        [open, value, label, triggerRef, contentRef],
+    );
 
     return (
-        <SelectContext.Provider
-            value={{ open, setOpen, value, setValue, label, setLabel, triggerRef, contentRef }}
-        >
+        <SelectContext.Provider value={contextValue}>
             <div css={[s_size(size), s_select, sx]}>{children}</div>
         </SelectContext.Provider>
     );
