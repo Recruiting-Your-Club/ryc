@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import { rootContainer } from './Checkbox.style';
 import { CheckboxContext } from './CheckboxContext';
 
@@ -11,6 +11,7 @@ interface CheckboxRootProps {
     size?: CheckboxSize;
     color?: CheckboxColor;
     children?: React.ReactNode;
+    onCheckChange?: () => void;
     isChecked?: boolean;
     defaultChecked?: boolean;
     disabled?: boolean;
@@ -21,26 +22,33 @@ function CheckboxRoot({
     size,
     color,
     children,
-    isChecked = false,
-    // defaultChecked = false,
-    disabled,
+    onCheckChange,
+    isChecked: externalChecked,
+    defaultChecked = false,
+    disabled = false,
 }: CheckboxRootProps) {
     // prop destruction
     // lib hooks
     const id = useId(); // HiddenInput과 Label 연결을 위해 임의 아이디 생성
 
     // state, ref, querystring hooks
-    const [checked, setChecked] = useState(isChecked);
+    const [checked, setChecked] = useState(defaultChecked);
 
     // form hooks
     // query hooks
     // effects
 
     // handlers
-    const onChange = () => {
-        if (disabled) return;
-        setChecked(!checked);
+    const isChecked = externalChecked ?? checked;
+
+    const onChangeInner = () => {
+        setChecked((prev) => !prev);
     };
+
+    const changeHandler = useCallback(() => {
+        if (disabled) return;
+        (onCheckChange ?? onChangeInner)();
+    }, [onCheckChange]);
 
     // calculated values
     const memoizedValue = useMemo(
@@ -49,12 +57,12 @@ function CheckboxRoot({
             variant,
             size,
             color,
-            isChecked: checked,
-            onChange: () => onChange(),
-            // defaultChecked,
+            isChecked: isChecked,
+            onChange: changeHandler,
+            defaultChecked,
             disabled,
         }),
-        [variant, size, color, isChecked, onChange, disabled],
+        [variant, size, color, isChecked, changeHandler, defaultChecked, disabled],
     );
 
     return (

@@ -10,6 +10,8 @@ interface CheckboxProps {
     size?: CheckboxSize;
     color?: CheckboxColor;
     isChecked?: boolean;
+    onChange?: () => void;
+    defaultChecked?: boolean;
     disabled?: boolean;
 }
 
@@ -17,7 +19,9 @@ function BaseCheckbox({
     variant,
     size,
     color,
-    isChecked = false,
+    isChecked,
+    onChange,
+    defaultChecked = false,
     disabled = false,
 }: CheckboxProps) {
     // prop destruction
@@ -35,6 +39,8 @@ function BaseCheckbox({
                 size={size}
                 color={color}
                 isChecked={isChecked}
+                onCheckChange={onChange}
+                defaultChecked={defaultChecked}
                 disabled={disabled}
             >
                 <CheckboxHiddenInput />
