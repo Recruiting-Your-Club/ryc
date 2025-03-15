@@ -68,13 +68,13 @@ lg.args = {
 
 export const DefaultChecked = CheckboxTemplate.bind({});
 DefaultChecked.args = {
-    isChecked: true,
+    defaultChecked: true,
     size: 'md',
 };
 
 export const DefaultCheckedButDisabled = CheckboxTemplate.bind({});
 DefaultCheckedButDisabled.args = {
-    isChecked: true,
+    defaultChecked: true,
     disabled: true,
     size: 'md',
 };
