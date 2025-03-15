@@ -62,7 +62,7 @@ function CheckboxRoot({
             defaultChecked,
             disabled,
         }),
-        [variant, size, color, isChecked, changeHandler, defaultChecked, disabled],
+        [variant, size, color, isChecked, defaultChecked, disabled],
     );
 
     return (
