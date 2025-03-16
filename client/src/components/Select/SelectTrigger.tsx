@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { ButtonHTMLAttributes, ReactNode, Ref} from 'react';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import React, { forwardRef, useMemo } from 'react';
 import { useSelectContext } from './SelectContext';
 import { s_selectTrigger } from './Select.styles';

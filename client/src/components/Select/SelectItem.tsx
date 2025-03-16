@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { HTMLAttributes, KeyboardEvent, ReactNode} from 'react';
+import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
 import React, { useState } from 'react';
 import { useSelectContext } from './SelectContext';
 import { s_selectItem, s_selectItemIndicator } from './Select.styles';
