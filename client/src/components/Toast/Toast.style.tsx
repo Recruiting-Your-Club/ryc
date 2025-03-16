@@ -1,7 +1,7 @@
 import { css, keyframes } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSObject } from '@emotion/react';
-import type { ToastPosition } from './type';
+import type { ToastPosition, ToastTheme } from './type';
 
 export const Container = css`
     position: fixed;
@@ -37,60 +37,24 @@ export const ContainerPosition: Record<ToastPosition, CSSObject> = {
     },
 };
 
-export const ToastStyle = (status: string) => css`
+export const ToastStyle = (status: string, toastTheme: ToastTheme) => css`
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: ${theme.colors.blue[100]};
-    padding: 1rem 2rem;
+    background-color: ${toastTheme === 'dark' ? theme.colors.black : theme.colors.white};
+    color: white;
+    padding: 1rem 1.5rem;
     gap: 1rem;
     margin-bottom: 1rem;
-    border-radius: 0.8rem;
-    animation: ${status === 'entering' ? fadeIn : status === 'exiting' ? fadeOut : 'none'} 300ms
+    border-radius: 0.625rem;
+    animation: ${status === 'entering' ? fadeIn : status === 'exiting' ? fadeOut : 'none'} 1000ms
         ease forwards;
-    //animation: bounce-in-right 1s ease-in-out;
-    @keyframes bounce-in-right {
-        0% {
-            transform: translateX(60rem);
-            animation-timing-function: ease-in;
-            opacity: 0;
-        }
-        38% {
-            transform: translateX(0);
-            animation-timing-function: ease-out;
-            opacity: 1;
-        }
-        55% {
-            transform: translateX(6.8rem);
-            animation-timing-function: ease-in;
-        }
-        72% {
-            transform: translateX(0);
-            animation-timing-function: ease-out;
-        }
-        81% {
-            transform: translateX(3.2rem);
-            animation-timing-function: ease-in;
-        }
-        90% {
-            transform: translateX(0);
-            animation-timing-function: ease-out;
-        }
-        95% {
-            transform: translateX(1rem);
-            animation-timing-function: ease-in;
-        }
-        100% {
-            transform: translateX(0);
-            animation-timing-function: ease-out;
-        }
-    }
 `;
 
 const fadeIn = keyframes`
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(2rem);
   }
   to {
     opacity: 1;
@@ -105,6 +69,6 @@ const fadeOut = keyframes`
   }
   to {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-2rem);
   }
 `;
