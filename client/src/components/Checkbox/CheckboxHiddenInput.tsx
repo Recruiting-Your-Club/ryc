@@ -1,8 +1,9 @@
+import type { InputHTMLAttributes } from 'react';
 import React from 'react';
 import { hiddenInputCss } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
-function CheckboxHiddenInput() {
+function CheckboxHiddenInput({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
     // prop destruction
     // lib hooks
     const { id, isChecked, onChange, defaultChecked, disabled } = useCheckboxContext();
@@ -24,6 +25,7 @@ function CheckboxHiddenInput() {
                 defaultChecked={defaultChecked}
                 disabled={disabled}
                 css={hiddenInputCss}
+                {...props}
             />
         </>
     );
