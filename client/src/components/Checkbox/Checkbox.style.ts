@@ -179,10 +179,6 @@ export const hiddenInputCss = css`
     width: 0rem;
     height: 0rem;
     border: 0rem;
-    clip: rect(0rem, 0rem, 0rem, 0rem);
     padding: 0rem;
     margin: 0rem;
-    overflow: hidden;
-    white-space: nowrap;
-    overflow-wrap: normal;
 `;
