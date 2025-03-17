@@ -3,11 +3,7 @@ import React from 'react';
 import { s_size, s_svgColor, s_svgSize, s_variant } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
-interface ControlProps {
-    sx?: CSSObject;
-}
-
-function CheckboxControl({ sx }: ControlProps) {
+function CheckboxControl({ sx }: CSSObject) {
     // prop destruction
     // lib hooks
     const { isChecked, onChange, variant, size, color, defaultChecked, disabled } =
