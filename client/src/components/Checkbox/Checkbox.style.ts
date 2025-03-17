@@ -54,11 +54,17 @@ export const s_size = (size: CheckboxSize = 'xs') => {
 export const s_text = (size: CheckboxSize = 'xs', disabled: boolean = false) => {
     return css`
         ${typographySize[size].typography};
-        color: ${(disabled && `rgba(${hexToRgb(theme.colors.black)}, 0.3)`) || theme.colors.black};
+        color: ${theme.colors.black};
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+
+        ${disabled &&
+        css`
+            color: ${theme.colors.disabled};
+        `}
+
         ${size === 'md' &&
         css`
             padding-top: 0.04rem;
@@ -74,8 +80,15 @@ export const s_text = (size: CheckboxSize = 'xs', disabled: boolean = false) => 
 export const s_svgSize = (size: CheckboxSize = 'xs') => css`
     width: ${svgSize[size].width};
     height: ${svgSize[size].height};
-    margin-left: ${size === 'lg' && '0.05rem'};
-    margin-top: ${(size === 's' || size === 'md') && '0.01rem'};
+    ${size === 'lg' &&
+    css`
+        margin-left: 0.05rem;
+    `};
+
+    ${(size === 's' || size === 'md') &&
+    css`
+        margin-top: 0.01rem;
+    `}
 `;
 
 const defaultTrueSvgColor = (
@@ -83,7 +96,7 @@ const defaultTrueSvgColor = (
     defaultChecked: boolean = false,
     disabled: boolean = false,
 ) => css`
-    color: ${(defaultChecked || isChecked) && disabled && theme.colors.white} !important;
+    color: ${(defaultChecked || isChecked) && disabled && theme.colors.white};
 `;
 
 export const s_svgColor = (
@@ -97,13 +110,21 @@ export const s_svgColor = (
         case 'outline':
         case 'subtle':
             return css`
+                color: transparent;
+                ${isChecked &&
+                css`
+                    color: ${CHECKBOX_COLORS[color]};
+                `}
                 ${defaultTrueSvgColor(isChecked, defaultChecked, disabled)}
-                color: ${(isChecked && CHECKBOX_COLORS[color]) || 'transparent'};
             `;
         case 'solid':
             return css`
+                color: transparent;
+                ${isChecked &&
+                css`
+                    color: ${theme.colors.white};
+                `}
                 ${defaultTrueSvgColor(isChecked, defaultChecked, disabled)}
-                color: ${(isChecked && theme.colors.white) || 'transparent'};
             `;
     }
 };
@@ -113,8 +134,6 @@ const baseVariant = (
     defaultChecked: boolean = false,
     disabled: boolean = false,
 ) => css`
-    width: 1rem;
-    height: 1rem;
     display: flex;
     position: relative;
     align-items: center;
@@ -124,7 +143,7 @@ const baseVariant = (
 
     ${disabled &&
     css`
-        cursor: default !important;
+        cursor: default;
     `}
 
     ${(defaultChecked || isChecked) &&
@@ -147,21 +166,32 @@ export const s_variant = (
             return css`
                 ${baseVariant(isChecked, defaultChecked, disabled)};
                 border: 0.025rem solid;
-                border-color: ${(isChecked && `rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.7)`) ||
-                theme.colors.gray[400]};
+                border-color: ${theme.colors.gray[400]};
+                ${isChecked &&
+                css`
+                    border-color: rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.7);
+                `}
             `;
         case 'solid':
             return css`
                 ${baseVariant(isChecked, defaultChecked, disabled)};
                 border: 0.025rem solid;
-                border-color: ${(isChecked && 'transparent') || theme.colors.gray[400]};
-                background-color: ${(isChecked && CHECKBOX_COLORS[color]) || 'transparent'};
+                border-color: ${theme.colors.gray[400]};
+                background-color: transparent;
+                ${isChecked &&
+                css`
+                    border-color: transparent;
+                    background-color: ${CHECKBOX_COLORS[color]};
+                `}
             `;
         case 'subtle':
             return css`
                 ${baseVariant(isChecked, defaultChecked, disabled)};
-                background-color: ${(disabled && `rgba(${hexToRgb(theme.colors.black)}, 0.3)`) ||
-                `rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.2)`};
+                background-color: rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.2);
+                ${disabled &&
+                css`
+                    background-color: ${theme.colors.disabled};
+                `};
             `;
     }
 };
