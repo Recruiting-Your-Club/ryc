@@ -50,7 +50,7 @@ function SelectItem({
             onClick={handleSelect}
             onKeyDown={handleKeyDown}
             tabIndex={0}
-            css={[s_selectItem(isHighlighted, isSelected), sx]}
+            css={[s_selectItem(isHighlighted), sx]}
             {...props}
         >
             {children}

@@ -86,7 +86,7 @@ export const s_selectContent = (open: boolean) => {
     `;
 };
 
-export const s_selectItem = (highlighted: boolean, selected: boolean) => {
+export const s_selectItem = (highlighted: boolean) => {
     return css`
         ${theme.typography.subCaptionRegular}
         color: ${theme.colors.gray[900]};
@@ -102,7 +102,6 @@ export const s_selectItem = (highlighted: boolean, selected: boolean) => {
         css`
             background-color: ${theme.colors.blue[100]};
         `}
-        ${selected && theme.typography.subCaptionRegular}
 
         &:hover {
             background-color: ${theme.colors.blue[100]};
