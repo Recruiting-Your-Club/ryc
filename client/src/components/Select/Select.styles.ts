@@ -86,7 +86,7 @@ export const s_selectContent = (open: boolean) => {
     `;
 };
 
-export const s_selectItem = (highlighted: boolean) => {
+export const s_selectItem = () => {
     return css`
         ${theme.typography.subCaptionRegular}
         color: ${theme.colors.gray[900]};
@@ -98,10 +98,6 @@ export const s_selectItem = (highlighted: boolean) => {
         position: relative;
         user-select: none;
         cursor: pointer;
-        ${highlighted &&
-        css`
-            background-color: ${theme.colors.blue[100]};
-        `}
 
         &:hover {
             background-color: ${theme.colors.blue[100]};

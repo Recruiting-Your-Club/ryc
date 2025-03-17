@@ -12,6 +12,7 @@ interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
     value: string;
     disabled?: boolean;
+    highlight?: boolean;
     sx?: CSSObject;
 }
 
@@ -24,7 +25,6 @@ function SelectItem({
 }: SelectItemProps) {
     const { value, setValue, setOpen, setLabel } = useSelectContext();
     const isSelected = value === itemValue;
-    const [isHighlighted, setIsHighlighted] = useState(false);
 
     const handleSelect = () => {
         if (!disabled) {
@@ -45,12 +45,10 @@ function SelectItem({
         <div
             role="option"
             aria-selected={isSelected}
-            onMouseEnter={() => setIsHighlighted(true)}
-            onMouseLeave={() => setIsHighlighted(false)}
             onClick={handleSelect}
             onKeyDown={handleKeyDown}
             tabIndex={0}
-            css={[s_selectItem(isHighlighted), sx]}
+            css={[s_selectItem(), sx]}
             {...props}
         >
             {children}
