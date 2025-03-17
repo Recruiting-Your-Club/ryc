@@ -52,7 +52,6 @@ export const s_selectTrigger = css`
     gap: 0.5rem;
     outline: none;
     transition: all 0.2s ease;
-    cursor: pointer;
 
     &:focus {
         box-shadow: 0 0 0 0.1rem ${theme.colors.blue[200]}50;
