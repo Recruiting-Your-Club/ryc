@@ -149,8 +149,8 @@ const baseVariant = (
     ${(defaultChecked || isChecked) &&
     disabled &&
     css`
-        border-color: transparent !important;
-        background-color: rgba(${hexToRgb(theme.colors.black)}, 0.3) !important;
+        border-color: transparent;
+        background-color: ${theme.colors.disabled};
     `}
 `;
 
@@ -164,17 +164,16 @@ export const s_variant = (
     switch (variant) {
         case 'outline':
             return css`
-                ${baseVariant(isChecked, defaultChecked, disabled)};
                 border: 0.025rem solid;
                 border-color: ${theme.colors.gray[400]};
                 ${isChecked &&
                 css`
                     border-color: rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.7);
                 `}
+                ${baseVariant(isChecked, defaultChecked, disabled)};
             `;
         case 'solid':
             return css`
-                ${baseVariant(isChecked, defaultChecked, disabled)};
                 border: 0.025rem solid;
                 border-color: ${theme.colors.gray[400]};
                 background-color: transparent;
@@ -183,15 +182,16 @@ export const s_variant = (
                     border-color: transparent;
                     background-color: ${CHECKBOX_COLORS[color]};
                 `}
+                ${baseVariant(isChecked, defaultChecked, disabled)};
             `;
         case 'subtle':
             return css`
-                ${baseVariant(isChecked, defaultChecked, disabled)};
                 background-color: rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.2);
                 ${disabled &&
                 css`
                     background-color: ${theme.colors.disabled};
                 `};
+                ${baseVariant(isChecked, defaultChecked, disabled)};
             `;
     }
 };
