@@ -19,20 +19,33 @@ export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
  */
 interface SelectProps {
     children: ReactNode;
-    value: string;
+    value?: string;
     size?: SelectSize;
-    onValueChange: (value: string) => void;
+    onValueChange?: (value: string) => void;
     sx?: CSSObject;
 }
 
-function SelectRoot({ children, value, onValueChange, size = 'md', sx }: SelectProps) {
+function SelectRoot({
+    children,
+    value: controlledValue,
+    onValueChange,
+    size = 'md',
+    sx,
+}: SelectProps) {
     const [open, setOpen] = useState(false);
     const [label, setLabel] = useState('');
+    const [internalValue, setInternalValue] = useState(controlledValue || '');
     const triggerRef = useRef<HTMLButtonElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
+    const value = controlledValue ?? internalValue;
+
     const setValue = (newValue: string) => {
-        onValueChange(newValue);
+        if (onValueChange) {
+            onValueChange(newValue);
+        } else {
+            setInternalValue(newValue);
+        }
     };
 
     useClickOutside([triggerRef, contentRef], () => setOpen(false));

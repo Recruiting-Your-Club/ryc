@@ -9,19 +9,10 @@ interface SelectContextType {
     label: string; //현재 선택된 라벨 (value에 따른 UI 값)
     setLabel: Dispatch<SetStateAction<string>>; //라벨 변경 함수
     triggerRef: RefObject<HTMLButtonElement>; // Select.Trigger의 Ref
-    contentRef: RefObject<HTMLDivElement>; // Select.Content의 Ref
+    contentRef: RefObject<HTMLDivElement>; // Select.Content의 Refa
 }
 
-export const SelectContext = createContext<SelectContextType>({
-    open: false,
-    setOpen: () => {},
-    value: '',
-    setValue: () => {},
-    label: '',
-    setLabel: () => {},
-    triggerRef: { current: null },
-    contentRef: { current: null },
-});
+export const SelectContext = createContext<SelectContextType | undefined>(undefined);
 
 export function useSelectContext(): SelectContextType {
     const context = useContext(SelectContext);

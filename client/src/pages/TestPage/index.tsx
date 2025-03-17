@@ -6,7 +6,7 @@ function TestPage() {
     return (
         <div>
             <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
-            <Select value={value} onValueChange={setValue} size="md">
+            <Select size="md">
                 <Select.Trigger>
                     <Select.Value placeholder="Select a fruit" />
                 </Select.Trigger>
