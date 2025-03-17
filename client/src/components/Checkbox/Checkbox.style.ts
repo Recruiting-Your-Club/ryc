@@ -175,10 +175,5 @@ export const rootContainer = css`
 `;
 
 export const hiddenInputCss = css`
-    position: absolute;
-    width: 0rem;
-    height: 0rem;
-    border: 0rem;
-    padding: 0rem;
-    margin: 0rem;
+    display: none;
 `;
