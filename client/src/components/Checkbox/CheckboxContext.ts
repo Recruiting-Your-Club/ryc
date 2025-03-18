@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, InputHTMLAttributes, useContext } from 'react';
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
 interface CheckboxContextType {

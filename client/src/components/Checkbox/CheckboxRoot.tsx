@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import React, { useId, useMemo, useState } from 'react';
+import React, { InputHTMLAttributes, useId, useMemo, useState } from 'react';
 import { rootContainer } from './Checkbox.style';
 import { CheckboxContext } from './CheckboxContext';
 
@@ -29,6 +29,7 @@ function CheckboxRoot({
     defaultChecked = false,
     disabled = false,
     sx,
+    ...props
 }: CheckboxRootProps) {
     // prop destruction
     // lib hooks
@@ -54,7 +55,7 @@ function CheckboxRoot({
     };
 
     // calculated values
-    const memoizedValue = useMemo(
+    const contextValue = useMemo(
         () => ({
             id: id,
             variant,
@@ -69,7 +70,7 @@ function CheckboxRoot({
     );
 
     return (
-        <CheckboxContext.Provider value={memoizedValue}>
+        <CheckboxContext.Provider value={contextValue}>
             <div css={[rootContainer, sx]}>{children}</div>
         </CheckboxContext.Provider>
     );
