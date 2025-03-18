@@ -43,14 +43,14 @@ export const svgSize: Record<CheckboxSize, Size> = {
     lg: { width: '1.2rem', height: '0.8rem' },
 };
 
-export const s_size = (size: CheckboxSize = 'xs') => {
+export const s_size = (size: CheckboxSize = 's') => {
     return css`
         width: ${checkboxSize[size].width};
         height: ${checkboxSize[size].height};
     `;
 };
 
-export const s_text = (size: CheckboxSize = 'xs', disabled: boolean = false) => {
+export const s_text = (size: CheckboxSize = 's', disabled: boolean = false) => {
     return css`
         ${typographySize[size].typography};
         color: ${theme.colors.black};
@@ -76,7 +76,7 @@ export const s_text = (size: CheckboxSize = 'xs', disabled: boolean = false) => 
     `;
 };
 
-export const s_svgSize = (size: CheckboxSize = 'xs') => css`
+export const s_svgSize = (size: CheckboxSize = 's') => css`
     width: ${svgSize[size].width};
     height: ${svgSize[size].height};
     ${size === 'lg' &&
