@@ -36,11 +36,10 @@ export const typographySize: Record<CheckboxSize, Size> = {
     md: { typography: theme.typography.captionRegular },
     lg: { typography: theme.typography.bodyRegular },
 };
-
 export const svgSize: Record<CheckboxSize, Size> = {
-    xs: { width: '0.8rem', height: '0.8rem' },
-    s: { width: '0.9rem', height: '0.7rem' },
-    md: { width: '1.2rem', height: '0.6rem' },
+    xs: { width: '0.82rem', height: '0.52rem' },
+    s: { width: '0.89rem', height: '0.56rem' },
+    md: { width: '1.02rem', height: '0.68rem' },
     lg: { width: '1.2rem', height: '0.8rem' },
 };
 
