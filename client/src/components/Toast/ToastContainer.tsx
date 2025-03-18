@@ -7,24 +7,16 @@ import { Toast } from './Toast';
 import { css } from '@emotion/react';
 import type { ToastProps } from './type';
 
-function ToastContainer({ toasts }: { toasts: ToastProps[] }) {
+function ToastContainer({ toasts, props }: { toasts: ToastProps[]; props: ToastContainerProps }) {
     return (
         <>
             {toasts &&
                 createPortal(
-                    <div css={[Container, ContainerPosition['topRight']]}>
-                        {toasts?.map((data, index) => {
+                    <div css={[Container, ContainerPosition[props?.position || 'topCenter']]}>
+                        {toasts?.map((toast, id) => {
                             return (
-                                <div key={index}>
-                                    <Toast
-                                        id={data.id}
-                                        type={data.type}
-                                        backgroundColor={data.backgroundColor}
-                                        content={data.content}
-                                        duration={data.duration}
-                                        autoClose={data.autoClose}
-                                        status={data.status}
-                                    />
+                                <div key={id}>
+                                    <Toast {...toast} />
                                 </div>
                             );
                         })}

@@ -1,7 +1,7 @@
 import { css, keyframes } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSObject } from '@emotion/react';
-import type { ToastPosition, ToastTheme } from './type';
+import type { ToastPosition, ToastTheme, Type } from './type';
 
 export const Container = css`
     position: fixed;
@@ -36,19 +36,98 @@ export const ContainerPosition: Record<ToastPosition, CSSObject> = {
         left: '2rem',
     },
 };
+export const labelStyle = (error: boolean) => css`
+    ${theme.typography.bodySemibold}
+    color: ${error ? theme.colors.red[800] : theme.colors.black};
+    padding-left: 0.2rem;
+`;
 
-export const ToastStyle = (status: string, toastTheme: ToastTheme) => css`
+const getColorByType = (type: Type): string => {
+    switch (type) {
+        case 'error':
+            return theme.colors.red[800];
+        case 'success':
+            return theme.colors.green[200];
+        case 'info':
+            return theme.colors.default;
+        default:
+            return theme.colors.white;
+    }
+};
+
+const getToastBackgroundStyles = (type: Type, toastTheme: ToastTheme): string => {
+    switch (toastTheme) {
+        case 'white':
+            return `
+                background-color: ${theme.colors.white};
+                color: ${theme.colors.black};
+            `;
+        case 'dark':
+            return `
+                background-color: ${theme.colors.black};
+                color: ${theme.colors.white};
+            `;
+        case 'colored':
+            return `
+                background-color: ${getColorByType(type)};
+                color: ${theme.colors.white};
+            `;
+        default:
+            return `
+                background-color: ${theme.colors.white};
+                color: ${theme.colors.black};
+            `;
+    }
+};
+
+export const toastStyle = (status: string, toastTheme: ToastTheme, type: Type) => css`
+    ${getToastBackgroundStyles(type, toastTheme)}
+    ${theme.typography.bodySemibold}
     display: flex;
     align-items: center;
     justify-content: start;
-    background-color: ${toastTheme === 'dark' ? theme.colors.black : theme.colors.white};
-    color: white;
-    padding: 1rem 1.5rem;
-    gap: 1rem;
+    padding: 1rem 1rem;
+    gap: 0.5rem;
     margin-bottom: 1rem;
     border-radius: 0.625rem;
+    min-width: 30rem;
+    min-height: 5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     animation: ${status === 'entering' ? fadeIn : status === 'exiting' ? fadeOut : 'none'} 1000ms
         ease forwards;
+`;
+
+const svgColor = (type: Type) => {
+    switch (type) {
+        case 'info':
+            return `
+                stroke: ${theme.colors.blue[300]};
+                fill: ${theme.colors.white};
+                color: ${theme.colors.blue[300]};
+            `;
+        case 'success':
+            return `
+                stroke: ${theme.colors.green[200]};
+                fill: ${theme.colors.white};
+                color: ${theme.colors.green[200]};
+            `;
+        case 'error':
+            return `
+                stroke: ${theme.colors.red[800]};
+                fill: ${theme.colors.white};
+                color: ${theme.colors.red[800]};
+            `;
+        default:
+            return `
+                color: ${theme.colors.black};
+        `;
+    }
+};
+
+export const svgStyle = (type: Type) => css`
+    width: 2rem;
+    height: 2rem;
+    ${svgColor(type)}
 `;
 
 const fadeIn = keyframes`

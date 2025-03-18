@@ -8,11 +8,10 @@ const useToast = () => {
         throw new Error('ToastContext를 사용할 수 없는 컴포넌트입니다.');
     }
 
-    const { toasts, createToast } = toastContext;
+    const { toast } = toastContext;
 
     return {
-        toasts,
-        createToast,
+        toast,
     };
 };
 export { useToast };

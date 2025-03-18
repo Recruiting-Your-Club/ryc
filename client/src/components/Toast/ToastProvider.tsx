@@ -1,17 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Toast } from './Toast';
 import type { PropsWithChildren } from 'react';
-import type { ToastPosition, ToastType, ToastProps, ToastContainerProps } from './type';
+import type { ToastPosition, Type, ToastProps, ToastContainerProps, ToastType } from './type';
 import { ToastContainer } from './ToastContainer';
 import type { ReactNode } from 'react';
 
 interface ToastContextType {
-    toasts: ToastProps[];
-    createToast: (
-        message: ReactNode,
-        options?: ToastProps,
-        containerOptions?: ToastContainerProps,
-    ) => void;
+    toast: ToastType;
     removeToast?: (id: number) => void;
     clearAllToasts?: () => void;
     setContainer?: (options: ToastContainerProps) => void;
@@ -27,7 +22,7 @@ const defaultOptions: ToastProps = {
 
 const defaultContainerOptions: ToastContainerProps = {
     position: 'topCenter',
-    limit: 4,
+    limit: 3,
 };
 
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -44,33 +39,30 @@ function ToastProvider({ children }: PropsWithChildren) {
     //calculated values
     //effects
     //handlers
-    const createToast = (
+    function createToast(
         content?: ReactNode,
         options?: ToastProps,
         containerOptions?: ToastContainerProps,
-    ) => {
+    ) {
         // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능
         if (containerOptions && Object.keys(containerOptions).length > 0) {
             setContainer({ ...defaultContainerOptions, ...containerOptions });
         }
         const id = Date.now();
-        const mergeOptions = { ...defaultOptions, ...options };
         const newToast = {
             id: id,
             content: content,
-            ...mergeOptions,
+            ...options,
         };
 
-        const isExceed = checkLimitAndRemoveToast();
-        if (!isExceed) {
-            // 값 추가
-            setToasts((prev) => [...prev, newToast]);
-        }
-        if (mergeOptions?.autoClose) AutoRemoveToast(id, { ...mergeOptions });
-    };
+        checkLimitAndRemoveToast();
+        setToasts((prev) => [...prev, newToast]);
 
-    const checkLimitAndRemoveToast = (): boolean => {
-        if (toasts.length >= (container?.limit || 3)) {
+        if (options?.autoClose) AutoRemoveToast(id, options);
+    }
+
+    function checkLimitAndRemoveToast() {
+        if (toasts.length > (container?.limit || 3)) {
             toasts.map((toast, index) => {
                 if (index === 0) {
                     toast.status = 'exiting';
@@ -79,28 +71,54 @@ function ToastProvider({ children }: PropsWithChildren) {
 
             const removeToast = () => setToasts((prev) => prev.slice(1));
             animation(removeToast, 500);
-            return true;
         }
-        return false;
-    };
+    }
 
-    const AutoRemoveToast = (id: number, mergeOptions: ToastProps) => {
+    function AutoRemoveToast(id: number, options: ToastProps) {
         const removeAnimation = () =>
             setToasts((prev) =>
                 prev.map((toast) => (toast.id === id ? { ...toast, status: 'exiting' } : toast)),
             );
-        animation(removeAnimation, mergeOptions.duration || 3000);
+        animation(removeAnimation, options.duration || 3000);
 
         const removeToast = () => setToasts((prev) => prev.filter((toast) => toast.id !== id));
-        animation(removeToast, (mergeOptions.duration || 3000) + 1000);
-    };
+        animation(removeToast, (options.duration || 3000) + 1000); // 애니메이션 끝난 후 제거해야해서 1000ms 추가
+    }
 
-    const animation = (method: () => void, duration: number) => {
+    function animation(method: () => void, duration: number) {
         setTimeout(method, duration);
-    };
+    }
+
+    function toast(
+        content?: ReactNode,
+        options?: ToastProps,
+        containerOptions?: ToastContainerProps,
+    ) {
+        return createToast(content, mergeOptions('default', options), containerOptions);
+    }
+
+    function createToastByType(type: Type) {
+        return (
+            content?: ReactNode,
+            options?: ToastProps,
+            containerOptions?: ToastContainerProps,
+        ) => createToast(content, mergeOptions(type, options), containerOptions);
+    }
+
+    function mergeOptions(type: Type, options?: ToastProps) {
+        return {
+            ...defaultOptions,
+            ...options,
+            type: type || 'default',
+        };
+    }
+
+    toast.info = createToastByType('info');
+    toast.success = createToastByType('success');
+    toast.error = createToastByType('error');
 
     return (
-        <ToastContext.Provider value={{ toasts, createToast }}>
+        <ToastContext.Provider value={{ toast }}>
             {children}
             <ToastContainer toasts={toasts} props={container} />
         </ToastContext.Provider>

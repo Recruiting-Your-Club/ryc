@@ -9,21 +9,35 @@ export type ToastPosition =
     | 'bottomCenter'
     | 'bottomLeft';
 
-export type Theme = 'light' | 'dark' | 'colored';
-export type ToastType = 'info' | 'success' | 'error';
+export type ToastTheme = 'white' | 'dark' | 'colored';
+export type Type = 'info' | 'success' | 'error' | 'default';
+
+export type ToastMethod = (
+    content?: ReactNode,
+    options?: ToastProps,
+    containerOptions?: ToastContainerProps,
+) => void;
+
+export interface ToastType {
+    (content?: ReactNode, options?: ToastProps, containerOptions?: ToastContainerProps): void;
+    info: ToastMethod;
+    success: ToastMethod;
+    error: ToastMethod;
+}
 
 export interface ToastContainerProps {
     sx?: CSSObject;
     position?: ToastPosition;
-    max?: number;
+    limit?: number;
 }
 
 export interface ToastProps {
     id?: number;
-    type?: ToastType;
-    backgroundColor: string;
-    content?: string;
+    type?: Type;
+    toastTheme?: ToastTheme;
+    content?: ReactNode;
     duration?: number;
     autoClose?: boolean;
     status?: string;
+    children?: ReactNode;
 }

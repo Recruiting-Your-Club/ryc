@@ -1,56 +1,145 @@
 import React, { useState } from 'react';
-import { BaseInput, PasswordInput } from '@components/Input';
+import { useToast } from '@hooks/useToast';
 import { Button } from '@components/Button';
-import { Stepper } from '@components/Stepper/Stepper';
-import { Step } from '@components/Stepper/Step';
-import { StepLabel } from '@components/Stepper/StepLabel';
-import { css } from '@emotion/react';
+import { Text } from '@components/Text';
 function TestPage() {
-    const [activeStep, setActiveStep] = useState(0);
-    const [error, setError] = useState(false);
+    const { toast } = useToast();
 
-    const stepComponent = (step: number) => {
-        switch (step) {
-            case 0:
-                return <div>step 1 자기소개서</div>;
-            case 1:
-                return <div>step 2 자기소개서</div>;
-            case 2:
-                return <div>step 3 자기소개서</div>;
-            case 3:
-                return <div>step 4 자기소개서</div>;
-            case 4:
-                return <div>step 5 자기소개서</div>;
-            default:
-                return <div> 오류입니다. </div>;
-        }
-    };
     return (
-        <div style={{ width: '800px' }}>
-            <div style={{ marginBottom: '100px' }}></div>
-            <Stepper activeStep={activeStep} orientation="horizontal" alternativeLabel>
-                <Step>
-                    <StepLabel>공고 상세 정보 편집</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>사전 질문 설정</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>자기소개서 설정</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>면접 설정</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>미리보기</StepLabel>
-                </Step>
-            </Stepper>
-            <div style={{ marginTop: '50px', marginBottom: '50px' }}>
-                <div>{stepComponent(activeStep)}</div>
+        <>
+            <Text type="h1Bold">Theme : dark입니다.</Text>
+            <div style={{ width: '100%', display: 'flex', marginBottom: '30px' }}>
+                <Button size="full" variant="primary" onClick={() => toast('Hello world')}>
+                    기본 Toast 입니다.
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.info(
+                            'Hello world',
+                            { toastTheme: 'dark', autoClose: false },
+                            { position: 'topRight' },
+                        )
+                    }
+                >
+                    info
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.error(
+                            'Hello world',
+                            { toastTheme: 'dark', autoClose: false },
+                            { position: 'topRight' },
+                        )
+                    }
+                >
+                    warning
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.success(
+                            'Hello world',
+                            { toastTheme: 'dark', autoClose: false },
+                            { position: 'topRight' },
+                        )
+                    }
+                >
+                    success toast
+                </Button>
             </div>
-            <button onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}>이전</button>
-            <button onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}>다음</button>
-        </div>
+            <br />
+
+            <Text type="h1Bold">Theme : White입니다.</Text>
+            <div style={{ width: '800px', display: 'flex' }}>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.info(
+                            '메일을 성공적으로 전송하였습니다.',
+                            { toastTheme: 'white', autoClose: false },
+                            { position: 'topLeft' },
+                        )
+                    }
+                >
+                    info 입니다.
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.success(
+                            'Hello world',
+                            { toastTheme: 'white', autoClose: false },
+                            { position: 'topLeft' },
+                        )
+                    }
+                >
+                    success입니다.
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.error(
+                            'Hello world',
+                            { toastTheme: 'white', autoClose: false },
+                            { position: 'topLeft' },
+                        )
+                    }
+                >
+                    error입니다.
+                </Button>
+            </div>
+
+            <Text type="h1Bold">Theme : Colored입니다.</Text>
+            <div style={{ width: '100%', display: 'flex', marginBottom: '30px' }}>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.info(
+                            '메일을 성공적으로 전송하였습니다.',
+                            { toastTheme: 'colored', autoClose: false },
+                            { position: 'topLeft' },
+                        )
+                    }
+                >
+                    info 입니다.
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.success(
+                            'Hello world',
+                            { toastTheme: 'colored', autoClose: false },
+                            { position: 'topLeft' },
+                        )
+                    }
+                >
+                    success입니다.
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() =>
+                        toast.error(
+                            'Hello world',
+                            { toastTheme: 'colored', autoClose: false },
+                            { position: 'topLeft' },
+                        )
+                    }
+                >
+                    error입니다.
+                </Button>
+            </div>
+        </>
     );
 }
 export { TestPage };

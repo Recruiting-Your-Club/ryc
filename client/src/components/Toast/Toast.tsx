@@ -1,25 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import type { ToastPosition, ToastType, ToastProps } from './type';
-import { ToastStyle } from './Toast.style';
-import type { ReactNode } from 'react';
-import { Text } from '@components/Text';
+import React from 'react';
+import type { Type, ToastProps, ToastTheme } from './type';
+import { toastStyle, svgStyle } from './Toast.style';
+import Alert from '@assets/images/alert.svg';
+import Check from '@assets/images/check.svg';
+import CheckFilled from '@assets/images/check-filled.svg';
+import AlertFilled from '@assets/images/alert-filled.svg';
 
 function Toast({
-    id,
-    type,
-    backgroundColor,
+    type = 'default',
     content,
-    duration,
-    autoClose,
     status = 'entering',
+    toastTheme = 'white',
 }: ToastProps) {
     return (
-        <div css={ToastStyle(status)}>
-            <Text type="bodyBold" color="black">
-                {content}
-            </Text>
+        <div css={[toastStyle(status, toastTheme, type)]}>
+            {getSVG(type, toastTheme)}
+            <div>{content}</div>
         </div>
     );
+}
+
+function getSVG(type: Type, toastTheme: ToastTheme) {
+    if (toastTheme === 'dark' || toastTheme === 'white') {
+        switch (type) {
+            case 'info':
+                return <Alert css={svgStyle(type)} />;
+            case 'success':
+                return <Check css={svgStyle(type)} />;
+            case 'error':
+                return <Alert css={svgStyle(type)} />;
+            default:
+                return null;
+        }
+    } else if (toastTheme === 'colored') {
+        switch (type) {
+            case 'info':
+                return <AlertFilled css={svgStyle(type)} />;
+            case 'success':
+                return <CheckFilled css={svgStyle(type)} />;
+            case 'error':
+                return <AlertFilled css={svgStyle(type)} />;
+            default:
+                return null;
+        }
+    }
 }
 export { Toast };
