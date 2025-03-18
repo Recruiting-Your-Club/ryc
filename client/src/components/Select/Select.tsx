@@ -10,7 +10,7 @@ import { SelectLabel } from './SelectLabel';
 import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
-import { useClickOutside } from '@hooks/useClickOutside';
+import { useClickOutside } from '@hooks/components/useClickOutside';
 
 export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 

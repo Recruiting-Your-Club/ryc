@@ -110,7 +110,7 @@ export const s_selectItem = () => {
 };
 
 export const s_selectLabel = css`
-    padding: 0.1rem 1rem 0.2rem;
+    padding: 0rem 1rem;
     ${theme.typography.captionSemibold};
     font-size: 1rem;
     color: ${theme.colors.gray[600]};

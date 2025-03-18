@@ -6,16 +6,16 @@ import { s_selectLabel } from './Select.styles';
 /**
  * SelectLabel 컴포넌트
  */
-interface SelectLabelProps extends HTMLAttributes<HTMLDivElement> {
+interface SelectLabelProps extends HTMLAttributes<HTMLLabelElement> {
     children: ReactNode;
     sx?: CSSObject;
 }
 
 function SelectLabel({ children, ...props }: SelectLabelProps) {
     return (
-        <div css={s_selectLabel} {...props}>
+        <label css={s_selectLabel} {...props}>
             {children}
-        </div>
+        </label>
     );
 }
 
