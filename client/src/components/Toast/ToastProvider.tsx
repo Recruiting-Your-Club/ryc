@@ -39,12 +39,14 @@ function ToastProvider({ children }: PropsWithChildren) {
     //calculated values
     //effects
     //handlers
+
+    // 토스트 생성
     function createToast(
         content?: ReactNode,
         options?: ToastProps,
         containerOptions?: ToastContainerProps,
     ) {
-        // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능
+        // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능 && Container setting
         if (containerOptions && Object.keys(containerOptions).length > 0) {
             setContainer({ ...defaultContainerOptions, ...containerOptions });
         }
@@ -61,6 +63,7 @@ function ToastProvider({ children }: PropsWithChildren) {
         if (options?.autoClose) AutoRemoveToast(id, options);
     }
 
+    // 사용자가 제한 둔 toast 개수 넘어가면 삭제
     function checkLimitAndRemoveToast() {
         if (toasts.length > (container?.limit || 3)) {
             toasts.map((toast, index) => {
@@ -74,6 +77,7 @@ function ToastProvider({ children }: PropsWithChildren) {
         }
     }
 
+    // 시간 지나면 자동삭제
     function AutoRemoveToast(id: number, options: ToastProps) {
         const removeAnimation = () =>
             setToasts((prev) =>
@@ -85,10 +89,12 @@ function ToastProvider({ children }: PropsWithChildren) {
         animation(removeToast, (options.duration || 3000) + 1000); // 애니메이션 끝난 후 제거해야해서 1000ms 추가
     }
 
+    // 애니메이션
     function animation(method: () => void, duration: number) {
         setTimeout(method, duration);
     }
 
+    // 토스트 발행
     function toast(
         content?: ReactNode,
         options?: ToastProps,
@@ -97,6 +103,7 @@ function ToastProvider({ children }: PropsWithChildren) {
         return createToast(content, mergeOptions('default', options), containerOptions);
     }
 
+    // 토스트 타입별로 분류해서 발행
     function createToastByType(type: Type) {
         return (
             content?: ReactNode,
@@ -105,11 +112,12 @@ function ToastProvider({ children }: PropsWithChildren) {
         ) => createToast(content, mergeOptions(type, options), containerOptions);
     }
 
+    // 옵션 머지
     function mergeOptions(type: Type, options?: ToastProps) {
         return {
             ...defaultOptions,
             ...options,
-            type: type || 'default',
+            type: type,
         };
     }
 

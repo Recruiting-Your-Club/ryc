@@ -14,7 +14,7 @@ function Toast({
 }: ToastProps) {
     return (
         <div css={[toastStyle(status, toastTheme, type)]}>
-            {getSVG(type, toastTheme)}
+            {type !== 'default' && getSVG(type, toastTheme)}
             <div>{content}</div>
         </div>
     );

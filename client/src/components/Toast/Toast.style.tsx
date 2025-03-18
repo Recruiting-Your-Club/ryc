@@ -66,11 +66,13 @@ const getToastBackgroundStyles = (type: Type, toastTheme: ToastTheme): string =>
             return `
                 background-color: ${theme.colors.black};
                 color: ${theme.colors.white};
+                ${type === 'default' && `color: ${theme.colors.white};`}
             `;
         case 'colored':
             return `
                 background-color: ${getColorByType(type)};
                 color: ${theme.colors.white};
+                ${type === 'default' && `color: ${theme.colors.black};`}
             `;
         default:
             return `

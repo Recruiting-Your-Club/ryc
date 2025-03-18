@@ -9,7 +9,11 @@ function TestPage() {
         <>
             <Text type="h1Bold">Theme : dark입니다.</Text>
             <div style={{ width: '100%', display: 'flex', marginBottom: '30px' }}>
-                <Button size="full" variant="primary" onClick={() => toast('Hello world')}>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() => toast('Hello world', { toastTheme: 'dark' })}
+                >
                     기본 Toast 입니다.
                 </Button>
                 <Button
@@ -55,7 +59,14 @@ function TestPage() {
             <br />
 
             <Text type="h1Bold">Theme : White입니다.</Text>
-            <div style={{ width: '800px', display: 'flex' }}>
+            <div style={{ width: '800px', display: 'flex', marginBottom: '30px' }}>
+                <Button
+                    size="full"
+                    variant="primary"
+                    onClick={() => toast('Hello world', { toastTheme: 'white' })}
+                >
+                    기본 Toast 입니다.
+                </Button>
                 <Button
                     size="full"
                     variant="primary"
@@ -63,7 +74,7 @@ function TestPage() {
                         toast.info(
                             '메일을 성공적으로 전송하였습니다.',
                             { toastTheme: 'white', autoClose: false },
-                            { position: 'topLeft' },
+                            { position: 'topRight' },
                         )
                     }
                 >
@@ -76,7 +87,7 @@ function TestPage() {
                         toast.success(
                             'Hello world',
                             { toastTheme: 'white', autoClose: false },
-                            { position: 'topLeft' },
+                            { position: 'topRight' },
                         )
                     }
                 >
@@ -89,7 +100,7 @@ function TestPage() {
                         toast.error(
                             'Hello world',
                             { toastTheme: 'white', autoClose: false },
-                            { position: 'topLeft' },
+                            { position: 'topRight' },
                         )
                     }
                 >
@@ -102,10 +113,17 @@ function TestPage() {
                 <Button
                     size="full"
                     variant="primary"
+                    onClick={() => toast('기본 Toast', { toastTheme: 'colored', autoClose: false })}
+                >
+                    기본 Toast 입니다.
+                </Button>
+                <Button
+                    size="full"
+                    variant="primary"
                     onClick={() =>
                         toast.info(
                             '메일을 성공적으로 전송하였습니다.',
-                            { toastTheme: 'colored', autoClose: false },
+                            { toastTheme: 'colored', autoClose: false, position: 'topLeft' },
                             { position: 'topLeft' },
                         )
                     }
@@ -118,8 +136,8 @@ function TestPage() {
                     onClick={() =>
                         toast.success(
                             'Hello world',
-                            { toastTheme: 'colored', autoClose: false },
-                            { position: 'topLeft' },
+                            { toastTheme: 'colored', autoClose: false, position: 'topCenter' },
+                            { position: 'topRight' },
                         )
                     }
                 >
@@ -131,8 +149,8 @@ function TestPage() {
                     onClick={() =>
                         toast.error(
                             'Hello world',
-                            { toastTheme: 'colored', autoClose: false },
-                            { position: 'topLeft' },
+                            { toastTheme: 'colored', autoClose: false, position: 'topRight' },
+                            { position: 'topRight' },
                         )
                     }
                 >

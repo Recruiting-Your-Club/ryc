@@ -40,4 +40,5 @@ export interface ToastProps {
     autoClose?: boolean;
     status?: string;
     children?: ReactNode;
+    position?: ToastPosition;
 }
