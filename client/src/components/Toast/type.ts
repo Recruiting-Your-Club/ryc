@@ -9,7 +9,7 @@ export type ToastPosition =
     | 'bottomCenter'
     | 'bottomLeft';
 
-export type ToastTheme = 'white' | 'dark' | 'colored';
+export type ToastTheme = 'white' | 'black' | 'colored';
 export type Type = 'info' | 'success' | 'error' | 'default';
 
 export type ToastMethod = (
@@ -27,7 +27,6 @@ export interface ToastType {
 
 export interface ToastContainerProps {
     sx?: CSSObject;
-    position?: ToastPosition;
     limit?: number;
 }
 
@@ -39,6 +38,7 @@ export interface ToastProps {
     duration?: number;
     autoClose?: boolean;
     status?: string;
-    children?: ReactNode;
     position?: ToastPosition;
+    progressBar?: boolean;
+    sx?: CSSObject;
 }

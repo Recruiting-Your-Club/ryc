@@ -1,27 +1,23 @@
-import React, { createContext, useContext, useState } from 'react';
-import { Toast } from './Toast';
+import React, { createContext, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import type { ToastPosition, Type, ToastProps, ToastContainerProps, ToastType } from './type';
+import type { Type, ToastProps, ToastContainerProps, ToastType } from './type';
 import { ToastContainer } from './ToastContainer';
 import type { ReactNode } from 'react';
 
 interface ToastContextType {
     toast: ToastType;
-    removeToast?: (id: number) => void;
-    clearAllToasts?: () => void;
-    setContainer?: (options: ToastContainerProps) => void;
 }
 
 const defaultOptions: ToastProps = {
-    type: 'info',
+    type: 'default',
     toastTheme: 'white',
     status: 'entering',
+    progressBar: true,
     duration: 3000,
     autoClose: true,
 };
 
 const defaultContainerOptions: ToastContainerProps = {
-    position: 'topCenter',
     limit: 3,
 };
 
@@ -40,13 +36,40 @@ function ToastProvider({ children }: PropsWithChildren) {
     //effects
     //handlers
 
+    // 기본 토스트 발행
+    function toast(
+        content?: ReactNode,
+        options?: ToastProps,
+        containerOptions?: ToastContainerProps,
+    ) {
+        return createToast(content, mergeOptions('default', options), containerOptions);
+    }
+
+    // 토스트 타입별로 분류해서 발행
+    function createToastByType(type: Type) {
+        return (
+            content?: ReactNode,
+            options?: ToastProps,
+            containerOptions?: ToastContainerProps,
+        ) => createToast(content, mergeOptions(type, options), containerOptions);
+    }
+
+    // default옵션 + 사용자 정의 옵션 + 타입 합치기
+    function mergeOptions(type: Type, options?: ToastProps) {
+        return {
+            ...defaultOptions,
+            ...options,
+            type: type,
+        };
+    }
+
     // 토스트 생성
     function createToast(
         content?: ReactNode,
         options?: ToastProps,
         containerOptions?: ToastContainerProps,
     ) {
-        // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능 && Container setting
+        // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능 && Container 세팅
         if (containerOptions && Object.keys(containerOptions).length > 0) {
             setContainer({ ...defaultContainerOptions, ...containerOptions });
         }
@@ -65,7 +88,7 @@ function ToastProvider({ children }: PropsWithChildren) {
 
     // 사용자가 제한 둔 toast 개수 넘어가면 삭제
     function checkLimitAndRemoveToast() {
-        if (toasts.length > (container?.limit || 3)) {
+        if (toasts.length >= (container?.limit || 3)) {
             toasts.map((toast, index) => {
                 if (index === 0) {
                     toast.status = 'exiting';
@@ -94,33 +117,6 @@ function ToastProvider({ children }: PropsWithChildren) {
         setTimeout(method, duration);
     }
 
-    // 토스트 발행
-    function toast(
-        content?: ReactNode,
-        options?: ToastProps,
-        containerOptions?: ToastContainerProps,
-    ) {
-        return createToast(content, mergeOptions('default', options), containerOptions);
-    }
-
-    // 토스트 타입별로 분류해서 발행
-    function createToastByType(type: Type) {
-        return (
-            content?: ReactNode,
-            options?: ToastProps,
-            containerOptions?: ToastContainerProps,
-        ) => createToast(content, mergeOptions(type, options), containerOptions);
-    }
-
-    // 옵션 머지
-    function mergeOptions(type: Type, options?: ToastProps) {
-        return {
-            ...defaultOptions,
-            ...options,
-            type: type,
-        };
-    }
-
     toast.info = createToastByType('info');
     toast.success = createToastByType('success');
     toast.error = createToastByType('error');
@@ -128,7 +124,7 @@ function ToastProvider({ children }: PropsWithChildren) {
     return (
         <ToastContext.Provider value={{ toast }}>
             {children}
-            <ToastContainer toasts={toasts} props={container} />
+            <ToastContainer toasts={toasts} />
         </ToastContext.Provider>
     );
 }
