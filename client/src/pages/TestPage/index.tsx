@@ -154,6 +154,22 @@ function TestPage() {
                     error입니다.
                 </Button>
             </div>
+            <Button
+                size="full"
+                variant="primary"
+                onClick={() =>
+                    toast.error(
+                        'Hello world',
+                        {
+                            toastTheme: 'colored',
+                            position: 'topRight',
+                        },
+                        { limit: 3 }, // 최대 toast 발행 수
+                    )
+                }
+            >
+                컨테이너 제어하는 방법은 이 코드 참고
+            </Button>
         </>
     );
 }
