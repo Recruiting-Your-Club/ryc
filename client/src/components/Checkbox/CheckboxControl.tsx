@@ -1,7 +1,7 @@
-import Check from '@assets/images/checkboxBigcheck.svg';
+import Check from '@assets/images/checkbox_check.svg';
 import type { CSSObject } from '@emotion/react';
 import React from 'react';
-import { s_size, s_svgColor, s_svgSize, s_variant } from './Checkbox.style';
+import { s_size, s_svgColor, s_variant } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 
 function CheckboxControl({ sx }: CSSObject) {
@@ -34,12 +34,7 @@ function CheckboxControl({ sx }: CSSObject) {
             tabIndex={0}
             role="checkbox"
         >
-            <Check
-                css={[
-                    s_svgSize(size),
-                    s_svgColor(variant, color, isChecked, defaultChecked, disabled),
-                ]}
-            />
+            <Check css={[s_svgColor(variant, color, isChecked, defaultChecked, disabled)]} />
         </div>
     );
 }

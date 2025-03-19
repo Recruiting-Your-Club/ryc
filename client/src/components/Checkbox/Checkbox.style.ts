@@ -36,12 +36,6 @@ export const typographySize: Record<CheckboxSize, Size> = {
     md: { typography: theme.typography.captionRegular },
     lg: { typography: theme.typography.bodyRegular },
 };
-export const svgSize: Record<CheckboxSize, Size> = {
-    xs: { width: '0.82rem', height: '0.52rem' },
-    s: { width: '0.89rem', height: '0.56rem' },
-    md: { width: '1.02rem', height: '0.68rem' },
-    lg: { width: '1.2rem', height: '0.8rem' },
-};
 
 export const s_size = (size: CheckboxSize = 's') => {
     return css`
@@ -59,42 +53,34 @@ export const s_text = (size: CheckboxSize = 's', disabled: boolean = false) => {
         -ms-user-select: none;
         user-select: none;
 
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
         ${disabled &&
         css`
             color: ${theme.colors.disabled};
         `}
-
         ${size === 'md' &&
         css`
-            padding-top: 0.04rem;
+            padding-bottom: 0.04rem;
         `}
 
         ${size === 'lg' &&
         css`
-            padding-top: 0.1rem;
+            padding-bottom: 0.1rem;
         `}
     `;
 };
 
-export const s_svgSize = (size: CheckboxSize = 's') => css`
-    width: ${svgSize[size].width};
-    height: ${svgSize[size].height};
-    ${size === 'lg' &&
-    css`
-        margin-left: 0.05rem;
-    `};
-
-    ${(size === 's' || size === 'md') &&
-    css`
-        margin-top: 0.01rem;
-    `}
-`;
-
-const defaultTrueSvgColor = (
+const baseSVGwithColor = (
     isChecked: boolean = false,
     defaultChecked: boolean = false,
     disabled: boolean = false,
 ) => css`
+    position: absolute;
+    width: 100%;
+    height: 100%;
     color: ${(defaultChecked || isChecked) && disabled && theme.colors.white};
 `;
 
@@ -114,7 +100,7 @@ export const s_svgColor = (
                 css`
                     color: ${CHECKBOX_COLORS[color]};
                 `}
-                ${defaultTrueSvgColor(isChecked, defaultChecked, disabled)}
+                ${baseSVGwithColor(isChecked, defaultChecked, disabled)}
             `;
         case 'solid':
             return css`
@@ -123,7 +109,7 @@ export const s_svgColor = (
                 css`
                     color: ${theme.colors.white};
                 `}
-                ${defaultTrueSvgColor(isChecked, defaultChecked, disabled)}
+                ${baseSVGwithColor(isChecked, defaultChecked, disabled)}
             `;
     }
 };
@@ -138,8 +124,15 @@ const baseVariant = (
     align-items: center;
     justify-content: center;
     border-radius: 0.25rem;
-    cursor: pointer;
 
+    margin: 0;
+    padding: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-sizing: border-box;
+
+    cursor: pointer;
     ${disabled &&
     css`
         cursor: default;
@@ -185,6 +178,8 @@ export const s_variant = (
             `;
         case 'subtle':
             return css`
+                border: 0.025rem solid;
+                border-color: transparent;
                 background-color: rgba(${hexToRgb(CHECKBOX_COLORS[color])}, 0.2);
                 ${disabled &&
                 css`
