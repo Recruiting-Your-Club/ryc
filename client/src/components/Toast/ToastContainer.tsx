@@ -3,28 +3,9 @@ import { Container, ContainerPosition } from './Toast.style';
 import { createPortal } from 'react-dom';
 import type { ToastPosition } from './type';
 import { Toast } from './Toast';
-import type { ToastProps } from './type';
+import type { ToastProps, getToastAndPositionProps } from './type';
 
-function ToastContainer({ toasts }: { toasts: ToastProps[] }) {
-    const getToastPosition = () => {
-        const positionMap: Record<ToastPosition, ToastProps[]> = {
-            topRight: [],
-            topCenter: [],
-            topLeft: [],
-            bottomRight: [],
-            bottomCenter: [],
-            bottomLeft: [],
-        };
-
-        // 각 토스트를 key값에 맞는 위치에 추가
-        toasts.forEach((toast) => {
-            const position = toast.position || 'topCenter';
-            positionMap[position].push(toast);
-        });
-
-        return positionMap;
-    };
-
+function ToastContainer({ getToastPosition }: getToastAndPositionProps) {
     return (
         <>
             {Object.entries(getToastPosition()).map(

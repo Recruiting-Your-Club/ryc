@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import type { Type, ToastProps, ToastContainerProps, ToastType } from './type';
+import type { Type, ToastProps, ToastContainerProps, ToastType, ToastPosition } from './type';
 import { ToastContainer } from './ToastContainer';
 import type { ReactNode } from 'react';
 
@@ -117,6 +117,26 @@ function ToastProvider({ children }: PropsWithChildren) {
         setTimeout(method, duration);
     }
 
+    // Container에서 toast 렌더링할 때 각 위치의 컨테이너에 토스트 스택으로 쌓아줌
+    function getToastPosition() {
+        const positionMap: Record<ToastPosition, ToastProps[]> = {
+            topRight: [],
+            topCenter: [],
+            topLeft: [],
+            bottomRight: [],
+            bottomCenter: [],
+            bottomLeft: [],
+        };
+
+        // 각 토스트를 key값에 맞는 위치에 추가
+        toasts.forEach((toast) => {
+            const position = toast.position || 'topCenter';
+            positionMap[position].push(toast);
+        });
+
+        return positionMap;
+    }
+
     toast.info = createToastByType('info');
     toast.success = createToastByType('success');
     toast.error = createToastByType('error');
@@ -124,7 +144,7 @@ function ToastProvider({ children }: PropsWithChildren) {
     return (
         <ToastContext.Provider value={{ toast }}>
             {children}
-            <ToastContainer toasts={toasts} />
+            <ToastContainer getToastPosition={getToastPosition} />
         </ToastContext.Provider>
     );
 }

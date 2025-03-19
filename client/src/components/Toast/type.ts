@@ -42,3 +42,6 @@ export interface ToastProps {
     progressBar?: boolean;
     sx?: CSSObject;
 }
+export interface getToastAndPositionProps {
+    getToastPosition: () => Record<ToastPosition, ToastProps[]>;
+}
