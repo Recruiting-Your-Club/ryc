@@ -12,16 +12,13 @@ interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
     sx?: CSSObject;
 }
 
-function SelectContentFunction(
+function SelectContent(
     { children, sx, ...props }: SelectContentProps,
     forwardedRef: Ref<HTMLDivElement>,
 ) {
     const { open, contentRef } = useSelectContext();
 
-    const ref = useMemo(
-        () => (forwardedRef ? forwardedRef : contentRef),
-        [forwardedRef, contentRef],
-    );
+    const ref = forwardedRef || contentRef;
 
     return (
         <div role="listbox" ref={ref} css={[s_selectContent(open), sx]} {...props}>
@@ -29,7 +26,5 @@ function SelectContentFunction(
         </div>
     );
 }
-
-const SelectContent = forwardRef(SelectContentFunction);
 
 export { SelectContent };

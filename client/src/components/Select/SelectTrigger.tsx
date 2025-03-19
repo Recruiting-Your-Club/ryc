@@ -10,16 +10,13 @@ interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     sx?: CSSObject;
 }
 
-function SelectTriggerFunction(
+function SelectTrigger(
     { children, sx, ...props }: SelectTriggerProps,
     forwardedRef: Ref<HTMLButtonElement>,
 ) {
     const { open, setOpen, triggerRef } = useSelectContext();
 
-    const ref = useMemo(
-        () => (forwardedRef ? forwardedRef : triggerRef),
-        [forwardedRef, triggerRef],
-    );
+    const ref = forwardedRef || triggerRef;
 
     return (
         <button
@@ -34,8 +31,5 @@ function SelectTriggerFunction(
         </button>
     );
 }
-
-//forwardRef 적용을 위해 HOC 적용
-const SelectTrigger = forwardRef(SelectTriggerFunction);
 
 export { SelectTrigger };
