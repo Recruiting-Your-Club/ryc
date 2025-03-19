@@ -1,11 +1,11 @@
 import type { Meta } from '@storybook/react';
 import type { StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { RadioGroup } from './RadioGroup';
+import { Radio } from './Radio';
 
-const meta: Meta<typeof RadioGroup> = {
+const meta: Meta<typeof Radio> = {
     title: 'RadioGroup',
-    component: RadioGroup,
+    component: Radio,
     parameters: {
         docs: {
             description: {
@@ -17,7 +17,7 @@ const meta: Meta<typeof RadioGroup> = {
 
 export default meta;
 
-type Story = StoryObj<typeof RadioGroup>;
+type Story = StoryObj<typeof Radio>;
 
 export const Primary: Story = {
     args: {

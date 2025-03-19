@@ -1,22 +1,34 @@
-import React from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import { s_radio, s_label, s_input } from './Radio.style';
+import React, { useState } from 'react';
+import { radioContainer } from './Radio.style';
+import { RadioItem } from './RadioItem';
 
 interface RadioProps {
-    label: string;
+    options: string[];
     name: string;
-    checked: boolean;
-    onChange: () => void;
+    value: string;
+    onChange?: (value: string) => void;
     customCSS?: SerializedStyles;
 }
 
-function Radio({ label, name, checked, onChange, customCSS }: RadioProps) {
+function Radio({ options, name, value, onChange, customCSS }: RadioProps) {
+    const [selectedValue, setSelectedValue] = useState<string>(value || '');
+    const handleChange = (option: string) => {
+        setSelectedValue(option);
+        onChange?.(option);
+    };
     return (
-        <label css={s_label}>
-            <input type="radio" name={name} checked={checked} onChange={onChange} css={s_input} />
-            <span css={s_radio(checked)} />
-            {label}
-        </label>
+        <div css={[radioContainer, customCSS]}>
+            {options.map((option, index) => (
+                <RadioItem
+                    key={index}
+                    label={option}
+                    name={name}
+                    checked={selectedValue === option}
+                    onChange={() => handleChange(option)}
+                />
+            ))}
+        </div>
     );
 }
 
