@@ -52,7 +52,7 @@ function SelectRoot({
 
     const contextValue = useMemo(
         () => ({ open, setOpen, value, setValue, label, setLabel, triggerRef, contentRef }),
-        [open, value, label, triggerRef, contentRef],
+        [open, value, label],
     );
 
     return (
