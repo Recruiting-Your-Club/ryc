@@ -46,7 +46,7 @@ export const s_selectTrigger = css`
     justify-content: space-between;
     border-radius: 0.4rem;
     border: 1px solid ${theme.colors.gray[300]};
-    background-color: white;
+    background-color: ${theme.colors.white};
     padding: 0 0.9rem;
     ${theme.typography.subCaptionRegular}
     gap: 0.5rem;
