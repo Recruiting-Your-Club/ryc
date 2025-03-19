@@ -52,11 +52,7 @@ function SelectItem({
             {...props}
         >
             {children}
-            {isSelected && (
-                <span css={s_selectItemIndicator}>
-                    <Check />
-                </span>
-            )}
+            {isSelected && <Check css={s_selectItemIndicator} />}
         </div>
     );
 }
