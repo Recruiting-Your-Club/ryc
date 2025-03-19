@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Radio } from './Radio';
 
 const meta: Meta<typeof Radio> = {
-    title: 'RadioGroup',
+    title: 'Radio',
     component: Radio,
     parameters: {
         docs: {
