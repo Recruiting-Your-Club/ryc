@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { fontFaces } from './fonts';
+import theme from './theme';
 
 const globalStyles = css`
     ${fontFaces}
@@ -95,6 +96,7 @@ const globalStyles = css`
 
     html {
         font-size: 62.5%;
+        overflow-y: auto;
     }
 
     body {
@@ -108,6 +110,7 @@ const globalStyles = css`
         font-size: 1.6rem;
 
         background-color: #fff;
+        overflow-y: auto;
     }
 
     article,
@@ -125,14 +128,8 @@ const globalStyles = css`
     }
 
     * {
-        scrollbar-width: none;
         box-sizing: border-box;
-
         -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
 
     ol,
@@ -177,6 +174,26 @@ const globalStyles = css`
 
     a:hover {
         text-decoration: none; /* 호버 시에도 밑줄 제거 */
+    }
+    /* 스크롤 바 부분 */
+
+    &::-webkit-scrollbar {
+        width: 0.8rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: ${theme.colors.gray[200]};
+        border-radius: 1rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: ${theme.colors.default};
+        border-radius: 1rem;
+        min-height: 10rem;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: ${theme.colors.defaultHover};
     }
 `;
 

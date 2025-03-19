@@ -1,19 +1,13 @@
+import { Global, ThemeProvider } from '@emotion/react';
 import React from 'react';
-import { withThemeFromJSXProvider } from '@storybook/addon-themes';
-import { Global, css } from '@emotion/react';
-
-const GlobalStyles = () => (
-    <Global
-        styles={css`
-            body {
-                font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            }
-        `}
-    />
-);
+import theme from '../src/styles/theme';
+import global from '../src/styles/global';
 
 export const decorators = [
-    withThemeFromJSXProvider({
-        GlobalStyles, // 모든 스토리에 GlobalStyles 적용
-    }),
+    (Story) => (
+        <ThemeProvider theme={theme}>
+            <Global styles={global} />
+            <Story />
+        </ThemeProvider>
+    ),
 ];
