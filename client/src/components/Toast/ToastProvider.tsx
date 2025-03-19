@@ -58,8 +58,8 @@ function ToastProvider({ children }: PropsWithChildren) {
     function mergeOptions(type: Type, options?: ToastProps) {
         return {
             ...defaultOptions,
-            ...options,
             type: type,
+            ...options,
         };
     }
 
