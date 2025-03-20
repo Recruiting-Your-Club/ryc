@@ -1,31 +1,40 @@
-import type { SerializedStyles } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import React, { useState } from 'react';
 import { radioContainer } from './Radio.style';
 import { RadioItem } from './RadioItem';
 
+export type RadioOrientation = 'horizontal' | 'vertical';
+
 interface RadioProps {
     options: string[];
     name: string;
-    value: string;
-    onChange?: (value: string) => void;
-    customCSS?: SerializedStyles;
+    disabled?: boolean;
+    orientation: RadioOrientation;
+    onChange: (value: string) => void;
+    sx?: CSSObject;
 }
 
-function Radio({ options, name, value, onChange, customCSS }: RadioProps) {
-    const [selectedValue, setSelectedValue] = useState<string>(value || '');
-    const handleChange = (option: string) => {
-        setSelectedValue(option);
-        onChange?.(option);
+function Radio({ options, name, disabled, orientation, onChange, sx }: RadioProps) {
+    const [selectedValue, setSelectedValue] = useState<string>('');
+
+    const handleChange = (index: number) => {
+        if (!disabled) {
+            setSelectedValue(String(index));
+            onChange?.(String(index));
+        }
     };
+
     return (
-        <div css={[radioContainer, customCSS]}>
+        <div css={[radioContainer(orientation), sx]}>
             {options.map((option, index) => (
                 <RadioItem
                     key={index}
-                    label={option}
+                    option={option}
+                    value={String(index)}
                     name={name}
-                    checked={selectedValue === option}
-                    onChange={() => handleChange(option)}
+                    checked={selectedValue === String(index)}
+                    disabled={disabled}
+                    onChange={() => handleChange(index)}
                 />
             ))}
         </div>
