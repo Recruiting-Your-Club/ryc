@@ -1,0 +1,92 @@
+{
+    "name": "client",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "webpack serve --open --config webpack.prod.js",
+        "dev": "webpack serve --open --config webpack.dev.js",
+        "build": "webpack --config webpack.prod.js",
+        "lint": "eslint --fix .",
+        "format": "prettier --write .",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "prepare": "cd .. && husky client/.husky",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "prettier . --write",
+            "eslint . --fix"
+        ]
+    },
+    "dependencies": {
+        "@emotion/babel-preset-css-prop": "^11.12.0",
+        "@emotion/react": "^11.13.0",
+        "@types/react-dom": "^18.0.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "react-router-dom": "^7.1.5"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.26.7",
+        "@babel/preset-env": "^7.26.7",
+        "@babel/preset-react": "^7.26.3",
+        "@babel/preset-typescript": "^7.26.0",
+        "@chromatic-com/storybook": "^3.2.4",
+        "@emotion/babel-plugin": "11.11.0",
+        "@emotion/babel-preset-css-prop": "^11.12.0",
+        "@storybook/addon-essentials": "^8.5.4",
+        "@storybook/addon-interactions": "^8.5.4",
+        "@storybook/addon-onboarding": "^8.5.4",
+        "@storybook/addon-themes": "^8.5.4",
+        "@storybook/addon-webpack5-compiler-babel": "^3.0.5",
+        "@storybook/blocks": "^8.5.4",
+        "@storybook/react": "^8.5.4",
+        "@storybook/react-webpack5": "^8.5.4",
+        "@storybook/test": "^8.5.4",
+        "@svgr/webpack": "^8.1.0",
+        "@types/jest": "^27.0.1",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.22.0",
+        "@typescript-eslint/parser": "^8.22.0",
+        "babel-loader": "^9.2.1",
+        "eslint": "^8.19.0",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
+        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-react-hooks": "^5.1.0",
+        "eslint-plugin-storybook": "^0.11.2",
+        "file-loader": "^6.2.0",
+        "html-webpack-plugin": "^5.6.3",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.4.3",
+        "prettier": "^3.4.2",
+        "storybook": "^8.5.4",
+        "tsconfig-paths-webpack-plugin": "^4.2.0",
+        "typescript": "^4.4.2",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1",
+        "webpack-dev-server": "^5.2.0",
+        "webpack-merge": "^6.0.1"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}

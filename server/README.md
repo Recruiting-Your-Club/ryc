@@ -7,19 +7,26 @@
 ### 백앤드 팀원
 <table align="">
     <th align="center">조상준</th>
-    <th align="center">김현아</th>
+    <th align="center">서상혁</th>
+    <th align="center">김시원</th>
     <tr>
         <td align="center">
             <a href="https://github.com/sangjun121"><img src="https://github.com/sangjun121.png" width="100"/></a>
         </td>
         <td align="center">
-            <a href="https://github.com/10Hyuna"><img src="https://github.com/10Hyuna.png" width="100"/></a>
+            <a href="https://github.com/SangHyeok0908"><img src="https://github.com/SangHyeok0908.png" width="100"/></a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/Huro0906"><img src="https://github.com/Huro0906.png" width="100"/></a>
         </td>
     </tr>
 </table>
 
 ## 회고록
 [프로젝트 회고록](http://sangjunn.notion.site)
+
+## 회의록
+[프로젝트 회의록](https://sangjunn.notion.site/18e976a7f22380bea053feaba5e15826?pvs=4)
 
 ### api/v1 기능명세서
 [1차 기능구현 리스트](https://sangjunn.notion.site/5f7ab9f509d54edd9f5096eb5a059c63?v=98aebc87558b47748a3e64466a3cdb8e&pvs=4)
@@ -32,4 +39,6 @@
 [FIGMA](https://www.figma.com/design/bRET7spZWHW3tV6oKcD3fg/Recruiting-Your-Club!-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85?node-id=0-1&t=XmewJnwbVNENIfix-1)
 
 ### ERD
-[ERD 설계](https://www.erdcloud.com/p/7jod2Hsx3XAPRi48F)
+[ERD 1차 설계](https://www.erdcloud.com/p/7jod2Hsx3XAPRi48F)
+
+[ERD 2차 설계](https://www.erdcloud.com/p/y6aAXa5JNJx3Ny6qs)
