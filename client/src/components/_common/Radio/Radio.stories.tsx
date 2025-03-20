@@ -39,3 +39,19 @@ export const variableText: Story = {
         name: 'variableText',
     },
 };
+
+export const verticalRadio: Story = {
+    args: {
+        options: ['옵션1', '옵션2', '옵션3'],
+        name: 'verticalRadio',
+        orientation: 'vertical',
+    },
+};
+
+export const disabledRadio: Story = {
+    args: {
+        options: ['옵션1', '옵션2', '옵션3'],
+        name: 'disabledRadio',
+        disabled: true,
+    },
+};
