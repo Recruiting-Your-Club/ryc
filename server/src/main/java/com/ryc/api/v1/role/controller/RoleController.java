@@ -1,5 +1,14 @@
 package com.ryc.api.v1.role.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import com.ryc.api.v1.common.aop.annotation.HasPresidentRoleSecured;
 import com.ryc.api.v1.common.constant.RequestStatus;
 import com.ryc.api.v1.role.domain.ClubRole;
@@ -9,15 +18,9 @@ import com.ryc.api.v1.role.dto.response.ClubRoleResponse;
 import com.ryc.api.v1.role.dto.response.GetClubRoleApplicationResponse;
 import com.ryc.api.v1.role.dto.response.UpdateStatusResponse;
 import com.ryc.api.v1.role.service.RoleService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/role")
@@ -31,6 +34,7 @@ public class RoleController {
         ClubRoleResponse response = roleService.createClubRoleApplication(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+  }
 
     @HasPresidentRoleSecured
     @GetMapping("/applications")
@@ -41,6 +45,8 @@ public class RoleController {
         List<GetClubRoleApplicationResponse> response = roleService.findClubRoleApplications(clubId, clubRole, status);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+  }
+
 
     @HasPresidentRoleSecured
     @PostMapping("application/status")
@@ -48,4 +54,5 @@ public class RoleController {
         UpdateStatusResponse response = roleService.updateClubRoleApplicationStatus(body);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+  }
 }
