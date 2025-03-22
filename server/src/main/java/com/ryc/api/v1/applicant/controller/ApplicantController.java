@@ -21,11 +21,12 @@ import lombok.RequiredArgsConstructor;
 public class ApplicantController {
   private final ApplicantService applicantService;
 
-    @HasAnyRoleSecured
-    @GetMapping("/")
-    public ResponseEntity<?> getAllApplicants(@RequestParam(required = true) String clubId, String recruitmentId) {
-        GetAllApplicantResponse response = applicantService.getAllApplicantsByRecruitmentId(recruitmentId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasAnyRoleSecured
+  @GetMapping("/")
+  public ResponseEntity<?> getAllApplicants(
+      @RequestParam(required = true) String clubId, String recruitmentId) {
+    GetAllApplicantResponse response =
+        applicantService.getAllApplicantsByRecruitmentId(recruitmentId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

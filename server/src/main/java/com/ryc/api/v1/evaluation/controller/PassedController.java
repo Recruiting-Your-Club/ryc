@@ -24,23 +24,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "합격자")
 public class PassedController {
-    private final PassedService passedService;
+  private final PassedService passedService;
 
-    @HasPresidentRoleSecured
-    @PostMapping("/")
-    public ResponseEntity<?> createPasser(@Valid @RequestBody CreatePasserRequest body) {
-        CreatePasserResponse response = passedService.createPasser(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
-    }
+  @HasPresidentRoleSecured
+  @PostMapping("/")
+  public ResponseEntity<?> createPasser(@Valid @RequestBody CreatePasserRequest body) {
+    CreatePasserResponse response = passedService.createPasser(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-    @HasAnyRoleSecured
-    @GetMapping("/")
-    public ResponseEntity<?> getPasser(@NotEmpty @RequestParam String clubId,
-                                       @NotEmpty @RequestParam String stepId) {
-            List<GetPasserResponse> response = passedService.getPasser(stepId);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasAnyRoleSecured
+  @GetMapping("/")
+  public ResponseEntity<?> getPasser(
+      @NotEmpty @RequestParam String clubId, @NotEmpty @RequestParam String stepId) {
+    List<GetPasserResponse> response = passedService.getPasser(stepId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

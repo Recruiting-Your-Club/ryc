@@ -22,28 +22,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "club")
 public class ClubController {
+  private final ClubService clubService;
 
-    private final ClubService clubService;
-
-    @PostMapping("/")
-    public ResponseEntity<?> createClub(@Valid @RequestBody CreateClubRequest body) {
-        CreateClubResponse responseDto = clubService.createClub(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-    }
+  @PostMapping("/")
+  public ResponseEntity<?> createClub(@Valid @RequestBody CreateClubRequest body) {
+    CreateClubResponse responseDto = clubService.createClub(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
   }
 
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllClubsOverview() {
-        List<ClubOverviewResponse> response = clubService.findAllClubsOverview();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @GetMapping("/all")
+  public ResponseEntity<?> getAllClubsOverview() {
+    List<ClubOverviewResponse> response = clubService.findAllClubsOverview();
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-    @GetMapping("/")
-    public ResponseEntity<?> getClub(@RequestParam(required = true) String clubId) {
-        ClubResponse response = clubService.findClubById(clubId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @GetMapping("/")
+  public ResponseEntity<?> getClub(@RequestParam(required = true) String clubId) {
+    ClubResponse response = clubService.findClubById(clubId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

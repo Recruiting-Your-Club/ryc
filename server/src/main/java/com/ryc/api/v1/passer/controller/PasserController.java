@@ -23,22 +23,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "합격자 관리")
 public class PasserController {
-    private final PasserService passerService;
+  private final PasserService passerService;
 
-    @HasPresidentRoleSecured
-    @PostMapping("/final")
-    public ResponseEntity<?> createFinalPasser(@Valid @RequestBody CreateFinalPasserRequest body) {
-        List<CreateFinalPasserResponse> response = passerService.createFinalPasser(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @HasPresidentRoleSecured
+  @PostMapping("/final")
+  public ResponseEntity<?> createFinalPasser(@Valid @RequestBody CreateFinalPasserRequest body) {
+    List<CreateFinalPasserResponse> response = passerService.createFinalPasser(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-    @HasAnyRoleSecured
-    @GetMapping("/final")
-    public ResponseEntity<?> getAllFinalPasser(@RequestParam(required = true) String clubId,
-                                               @RequestParam(required = true) String recruitmentId) {
-        List<GetAllFinalPasserResponse> response = passerService.findAllFinalPasser(recruitmentId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasAnyRoleSecured
+  @GetMapping("/final")
+  public ResponseEntity<?> getAllFinalPasser(
+      @RequestParam(required = true) String clubId,
+      @RequestParam(required = true) String recruitmentId) {
+    List<GetAllFinalPasserResponse> response = passerService.findAllFinalPasser(recruitmentId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

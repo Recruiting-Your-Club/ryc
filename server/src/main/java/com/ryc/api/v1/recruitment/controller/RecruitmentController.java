@@ -24,11 +24,10 @@ import lombok.RequiredArgsConstructor;
 public class RecruitmentController {
   private final RecruitmentService recruitmentService;
 
-    @HasPresidentRoleSecured
-    @PostMapping("/")
-    public ResponseEntity<?> createRecruitment(@Valid @RequestBody CreateRecruitmentRequest body) {
-        CreateRecruitmentResponse response = recruitmentService.createRecruitment(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @HasPresidentRoleSecured
+  @PostMapping("/")
+  public ResponseEntity<?> createRecruitment(@Valid @RequestBody CreateRecruitmentRequest body) {
+    CreateRecruitmentResponse response = recruitmentService.createRecruitment(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }

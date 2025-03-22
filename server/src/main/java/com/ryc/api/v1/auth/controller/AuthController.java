@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "auth")
 public class AuthController {
-
   private final AuthService authService;
 
   @PostMapping("/login")
@@ -32,11 +31,10 @@ public class AuthController {
         "This method should not be called. It's handled by Spring Security filter chain.");
   }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
-        RegisterResponse response = authService.register(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @PostMapping("/register")
+  public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
+    RegisterResponse response = authService.register(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PostMapping("/logout")

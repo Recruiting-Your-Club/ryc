@@ -30,41 +30,40 @@ import lombok.RequiredArgsConstructor;
 public class PermissionController {
   private final PermissionService permissionService;
 
-
-    @HasAnyRoleSecured
-    @PostMapping("/request")
-    public ResponseEntity<?> createEvaluationPermissionRequest(@Valid @RequestBody CreatePermissionApplicationRequest body) {
-        CreatePermissionApplicationResponse response = permissionService.requestPermission(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @HasAnyRoleSecured
+  @PostMapping("/request")
+  public ResponseEntity<?> createEvaluationPermissionRequest(
+      @Valid @RequestBody CreatePermissionApplicationRequest body) {
+    CreatePermissionApplicationResponse response = permissionService.requestPermission(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-    @HasPresidentRoleSecured
-    @GetMapping("/requests")
-    public ResponseEntity<?> getEvaluationPermissionRequest(
-            @NotEmpty @RequestParam String clubId,
-            @NotEmpty @RequestParam String recruitmentId,
-            @RequestParam(required = false, defaultValue = "ALL") RequestStatus status) {
-        List<GetPermissionApplicationResponse> response = permissionService.findPermissionApplications(recruitmentId, status);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasPresidentRoleSecured
+  @GetMapping("/requests")
+  public ResponseEntity<?> getEvaluationPermissionRequest(
+      @NotEmpty @RequestParam String clubId,
+      @NotEmpty @RequestParam String recruitmentId,
+      @RequestParam(required = false, defaultValue = "ALL") RequestStatus status) {
+    List<GetPermissionApplicationResponse> response =
+        permissionService.findPermissionApplications(recruitmentId, status);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-    @HasPresidentRoleSecured
-    @PostMapping("/status")
-    public ResponseEntity<?> updateEvaluationPermissionStatus(@Valid @RequestBody UpdatePermissionStatusRequest body) {
-        UpdatePermissionStatusResponse response = permissionService.updatePermissionApplicationStatus(body);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasPresidentRoleSecured
+  @PostMapping("/status")
+  public ResponseEntity<?> updateEvaluationPermissionStatus(
+      @Valid @RequestBody UpdatePermissionStatusRequest body) {
+    UpdatePermissionStatusResponse response =
+        permissionService.updatePermissionApplicationStatus(body);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-    @HasPresidentRoleSecured
-    @GetMapping("/users")
-    public ResponseEntity<?> getEvaluationAuthorizedUserList(
-            @NotEmpty @RequestParam String clubId,
-            @NotEmpty @RequestParam String recruitmentId) {
-        List<GetEvaluationAuthorizedUserResponse> response = permissionService.findEvaluationAuthorizedUsers(recruitmentId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasPresidentRoleSecured
+  @GetMapping("/users")
+  public ResponseEntity<?> getEvaluationAuthorizedUserList(
+      @NotEmpty @RequestParam String clubId, @NotEmpty @RequestParam String recruitmentId) {
+    List<GetEvaluationAuthorizedUserResponse> response =
+        permissionService.findEvaluationAuthorizedUsers(recruitmentId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

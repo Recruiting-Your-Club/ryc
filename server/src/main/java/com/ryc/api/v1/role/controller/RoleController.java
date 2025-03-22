@@ -27,32 +27,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "동아리 내 권한")
 public class RoleController {
-    private final RoleService roleService;
+  private final RoleService roleService;
 
-    @PostMapping("/application")
-    public ResponseEntity<?> createClubRoleApplication(@Valid @RequestBody ClubRoleRequest body) {
-        ClubRoleResponse response = roleService.createClubRoleApplication(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @PostMapping("/application")
+  public ResponseEntity<?> createClubRoleApplication(@Valid @RequestBody ClubRoleRequest body) {
+    ClubRoleResponse response = roleService.createClubRoleApplication(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-    @HasPresidentRoleSecured
-    @GetMapping("/applications")
-    public ResponseEntity<?> getClubRoleApplications(
-            @NotEmpty @RequestParam String clubId,
-            @RequestParam(required = false, defaultValue = "ALL") ClubRole clubRole,
-            @RequestParam(required = false, defaultValue = "ALL") RequestStatus status) {
-        List<GetClubRoleApplicationResponse> response = roleService.findClubRoleApplications(clubId, clubRole, status);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasPresidentRoleSecured
+  @GetMapping("/applications")
+  public ResponseEntity<?> getClubRoleApplications(
+      @NotEmpty @RequestParam String clubId,
+      @RequestParam(required = false, defaultValue = "ALL") ClubRole clubRole,
+      @RequestParam(required = false, defaultValue = "ALL") RequestStatus status) {
+    List<GetClubRoleApplicationResponse> response =
+        roleService.findClubRoleApplications(clubId, clubRole, status);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-
-    @HasPresidentRoleSecured
-    @PostMapping("application/status")
-    public ResponseEntity<?> updateClubRoleApplicationStatus(@Valid @RequestBody UpdateStatusRequest body) {
-        UpdateStatusResponse response = roleService.updateClubRoleApplicationStatus(body);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasPresidentRoleSecured
+  @PostMapping("application/status")
+  public ResponseEntity<?> updateClubRoleApplicationStatus(
+      @Valid @RequestBody UpdateStatusRequest body) {
+    UpdateStatusResponse response = roleService.updateClubRoleApplicationStatus(body);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

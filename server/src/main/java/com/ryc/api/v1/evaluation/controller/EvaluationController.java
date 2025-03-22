@@ -23,23 +23,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "평가하기")
 public class EvaluationController {
-    private final EvaluationService evaluationService;
+  private final EvaluationService evaluationService;
 
-    @HasAnyRoleSecured
-    @PostMapping("/")
-    public ResponseEntity<?> createEvaluation(@Valid @RequestBody CreateEvaluationRequest body) {
-        CreateEvaluationResponse response = evaluationService.createEvaluation(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+  @HasAnyRoleSecured
+  @PostMapping("/")
+  public ResponseEntity<?> createEvaluation(@Valid @RequestBody CreateEvaluationRequest body) {
+    CreateEvaluationResponse response = evaluationService.createEvaluation(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-    @HasAnyRoleSecured
-    @GetMapping
-    public ResponseEntity<?> getEvaluations(@NotEmpty @RequestParam String clubId,
-                                            @NotEmpty @RequestParam String stepId,
-                                            @RequestParam(required = false) List<String> applicantIdList) {
-        List<GetEvaluationResponse> response = evaluationService.getEvaluations(stepId, applicantIdList);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
+  @HasAnyRoleSecured
+  @GetMapping
+  public ResponseEntity<?> getEvaluations(
+      @NotEmpty @RequestParam String clubId,
+      @NotEmpty @RequestParam String stepId,
+      @RequestParam(required = false) List<String> applicantIdList) {
+    List<GetEvaluationResponse> response =
+        evaluationService.getEvaluations(stepId, applicantIdList);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }
