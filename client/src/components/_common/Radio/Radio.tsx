@@ -5,36 +5,33 @@ import { RadioItem } from './RadioItem';
 
 export type RadioOrientation = 'horizontal' | 'vertical';
 
+interface RadioOption {
+    label?: string; // 실제로 보여질 옵션 값
+    value: string; // 서버에 넘겨질 옵션 값(직접 설정 가능)
+}
+
 interface RadioProps {
-    options: string[];
+    options: RadioOption[];
     name: string;
+    value?: string;
     disabled?: boolean;
     orientation: RadioOrientation;
     onChange: (value: string) => void;
     sx?: CSSObject;
 }
 
-function Radio({ options, name, disabled, orientation, onChange, sx }: RadioProps) {
-    const [selectedValue, setSelectedValue] = useState<string>('');
-
-    const handleChange = (index: number) => {
-        if (!disabled) {
-            setSelectedValue(String(index));
-            onChange?.(String(index));
-        }
-    };
-
+function Radio({ options, name, value, disabled, orientation, onChange, sx }: RadioProps) {
     return (
         <div css={[radioContainer(orientation), sx]}>
-            {options.map((option, index) => (
+            {options.map(({ label, value: itemValue }, index) => (
                 <RadioItem
                     key={index}
-                    option={option}
-                    value={String(index)}
+                    option={label}
+                    value={itemValue}
                     name={name}
-                    checked={selectedValue === String(index)}
+                    checked={value === itemValue}
                     disabled={disabled}
-                    onChange={() => handleChange(index)}
+                    onChange={() => onChange?.(itemValue)}
                 />
             ))}
         </div>

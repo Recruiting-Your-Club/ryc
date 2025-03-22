@@ -3,7 +3,7 @@ import React from 'react';
 import { s_radio, s_label, s_input } from './Radio.style';
 
 interface RadioItemProps extends HTMLAttributes<HTMLInputElement> {
-    option: string;
+    option?: string;
     value: string;
     name: string;
     checked: boolean;
