@@ -30,32 +30,20 @@ public class ApplicationController {
   @PostMapping("/form")
   public ResponseEntity<?> createApplicationForm(
       @Valid @RequestBody CreateApplicationFormRequest body) {
-    try {
-      CreateApplicationFormResponse response = applicationService.createApplicationForm(body);
-      return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    CreateApplicationFormResponse response = applicationService.createApplicationForm(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @GetMapping("/form")
   public ResponseEntity<?> getApplicationForm(@RequestParam(required = true) String stepId) {
-    try {
-      GetApplicationFormResponse response = applicationService.getApplicationForm(stepId);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
-    }
+    GetApplicationFormResponse response = applicationService.getApplicationForm(stepId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @PostMapping("/")
   public ResponseEntity<?> createApplication(@Valid @RequestBody CreateApplicationRequest body) {
-    try {
-      CreateApplicationResponse response = applicationService.createApplication(body);
-      return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    CreateApplicationResponse response = applicationService.createApplication(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @HasAnyRoleSecured
@@ -64,13 +52,9 @@ public class ApplicationController {
       @RequestParam(required = true) String clubId,
       @RequestParam(required = true) String stepId,
       @RequestParam(required = true) List<String> applicantIdList) {
-    try {
-      List<GetApplicationResponse> response =
-          applicationService.findApplicationByApplicantId(stepId, applicantIdList);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
+    List<GetApplicationResponse> response =
+        applicationService.findApplicationByApplicantId(stepId, applicantIdList);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @HasPresidentRoleSecured
@@ -79,12 +63,8 @@ public class ApplicationController {
       @RequestParam(required = true) String clubId,
       @PathVariable String questionId,
       @RequestBody @Valid UpdateAnswerAccessibilityRequest body) {
-    try {
-      UpdateAnswerAccessibilityResponse response =
-          applicationService.updateAnswerAccessibility(questionId, body);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    UpdateAnswerAccessibilityResponse response =
+        applicationService.updateAnswerAccessibility(questionId, body);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

@@ -34,12 +34,8 @@ public class PermissionController {
   @PostMapping("/request")
   public ResponseEntity<?> createEvaluationPermissionRequest(
       @Valid @RequestBody CreatePermissionApplicationRequest body) {
-    try {
-      CreatePermissionApplicationResponse response = permissionService.requestPermission(body);
-      return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    CreatePermissionApplicationResponse response = permissionService.requestPermission(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @HasPresidentRoleSecured
@@ -48,38 +44,26 @@ public class PermissionController {
       @NotEmpty @RequestParam String clubId,
       @NotEmpty @RequestParam String recruitmentId,
       @RequestParam(required = false, defaultValue = "ALL") RequestStatus status) {
-    try {
-      List<GetPermissionApplicationResponse> response =
-          permissionService.findPermissionApplications(recruitmentId, status);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    List<GetPermissionApplicationResponse> response =
+        permissionService.findPermissionApplications(recruitmentId, status);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @HasPresidentRoleSecured
   @PostMapping("/status")
   public ResponseEntity<?> updateEvaluationPermissionStatus(
       @Valid @RequestBody UpdatePermissionStatusRequest body) {
-    try {
-      UpdatePermissionStatusResponse response =
-          permissionService.updatePermissionApplicationStatus(body);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
+    UpdatePermissionStatusResponse response =
+        permissionService.updatePermissionApplicationStatus(body);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @HasPresidentRoleSecured
   @GetMapping("/users")
   public ResponseEntity<?> getEvaluationAuthorizedUserList(
       @NotEmpty @RequestParam String clubId, @NotEmpty @RequestParam String recruitmentId) {
-    try {
-      List<GetEvaluationAuthorizedUserResponse> response =
-          permissionService.findEvaluationAuthorizedUsers(recruitmentId);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    List<GetEvaluationAuthorizedUserResponse> response =
+        permissionService.findEvaluationAuthorizedUsers(recruitmentId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }
