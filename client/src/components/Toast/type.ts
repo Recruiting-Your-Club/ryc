@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { CSSObject } from '@emotion/react';
+import type { CSSProperties } from 'react';
 
 export type ToastPosition =
     | 'topRight'
@@ -11,6 +12,7 @@ export type ToastPosition =
 
 export type ToastTheme = 'white' | 'black' | 'colored';
 export type Type = 'info' | 'success' | 'error' | 'default';
+export type Status = 'entering' | 'exiting';
 
 export type ToastMethod = (
     content?: ReactNode,
@@ -37,11 +39,16 @@ export interface ToastProps {
     content?: ReactNode;
     duration?: number;
     autoClose?: boolean;
-    status?: string;
+    status?: Status;
     position?: ToastPosition;
     progressBar?: boolean;
     sx?: CSSObject;
 }
 export interface getToastAndPositionProps {
     getToastPosition: () => Record<ToastPosition, ToastProps[]>;
+}
+
+export interface TypeColor {
+    backgroundColor?: CSSProperties['backgroundColor'];
+    coloredBackgroundColor?: CSSProperties['backgroundColor'];
 }

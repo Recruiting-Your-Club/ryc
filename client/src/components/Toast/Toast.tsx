@@ -25,29 +25,14 @@ function Toast({
     );
 }
 
+const iconMap = {
+    info: { outline: Alert, filled: AlertFilled },
+    success: { outline: Check, filled: CheckFilled },
+    error: { outline: Alert, filled: AlertFilled },
+    default: null,
+};
 function getSVG(type: Type, toastTheme: ToastTheme) {
-    if (toastTheme === 'colored') {
-        switch (type) {
-            case 'info':
-                return <AlertFilled css={svgStyle(type)} />;
-            case 'success':
-                return <CheckFilled css={svgStyle(type)} />;
-            case 'error':
-                return <AlertFilled css={svgStyle(type)} />;
-            default:
-                return null;
-        }
-    } else {
-        switch (type) {
-            case 'info':
-                return <Alert css={svgStyle(type)} />;
-            case 'success':
-                return <Check css={svgStyle(type)} />;
-            case 'error':
-                return <Alert css={svgStyle(type)} />;
-            default:
-                return null;
-        }
-    }
+    const Icon = iconMap[type]?.[toastTheme === 'colored' ? 'filled' : 'outline'];
+    return <Icon css={svgStyle(type)} />;
 }
 export { Toast };

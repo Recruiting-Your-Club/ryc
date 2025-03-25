@@ -8,22 +8,18 @@ import type { ToastProps, getToastAndPositionProps } from './type';
 function ToastContainer({ getToastPosition }: getToastAndPositionProps) {
     return (
         <>
-            {Object.entries(getToastPosition()).map(
-                ([position, toasts]) =>
-                    toasts &&
-                    createPortal(
-                        <div
-                            key={position}
-                            css={[Container, ContainerPosition[position as ToastPosition]]}
-                        >
-                            {toasts.map((toast: ToastProps) => (
-                                <div key={toast.id}>
-                                    <Toast {...toast} />
-                                </div>
-                            ))}
-                        </div>,
-                        document.body,
-                    ),
+            {Object.entries(getToastPosition()).map(([position, toasts]) =>
+                createPortal(
+                    <div
+                        key={position}
+                        css={[Container, ContainerPosition[position as ToastPosition]]}
+                    >
+                        {toasts.map((toast: ToastProps) => (
+                            <Toast key={toast.id} {...toast} />
+                        ))}
+                    </div>,
+                    document.body,
+                ),
             )}
         </>
     );

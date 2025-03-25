@@ -1,7 +1,7 @@
 import { css, keyframes } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSObject } from '@emotion/react';
-import type { ToastPosition, ToastTheme, Type } from './type';
+import type { ToastPosition, ToastTheme, Type, TypeColor } from './type';
 
 // colored일 때 테마에 따른 색상 추출
 const getColorByTypeAtColoredTheme = (type: Type): string => {
@@ -72,47 +72,37 @@ const svgColor = (type: Type) => {
             `;
     }
 };
-//FIXME 이게 로직이 맞나.....
+
+const ToastType: Record<Type, TypeColor> = {
+    info: {
+        backgroundColor: theme.colors.blue[300],
+        coloredBackgroundColor: theme.colors.blue[200],
+    },
+    success: {
+        backgroundColor: theme.colors.green[200],
+        coloredBackgroundColor: theme.colors.green[100],
+    },
+    error: {
+        backgroundColor: theme.colors.red[800],
+        coloredBackgroundColor: theme.colors.red[600],
+    },
+    default: {
+        backgroundColor: theme.colors.white,
+        coloredBackgroundColor: theme.colors.black,
+    },
+};
+
 const progressBarColor = (toastTheme: ToastTheme, type: Type) => {
     if (toastTheme === 'colored') {
-        switch (type) {
-            case 'info':
-                return `
-                    background-color: ${theme.colors.blue[200]};
-                `;
-            case 'success':
-                return `
-                    background-color: ${theme.colors.green[100]};
-                `;
-            case 'error':
-                return `
-                    background-color: ${theme.colors.red[600]};
-                `;
-            default:
-                return `
-                    background-color: ${theme.colors.black};
-                `;
-        }
-    } else {
-        switch (type) {
-            case 'info':
-                return `
-                    background-color: ${theme.colors.blue[300]};
-                `;
-            case 'success':
-                return `
-                    background-color: ${theme.colors.green[200]};
-                `;
-            case 'error':
-                return `
-                    background-color: ${theme.colors.red[800]};
-                `;
-            default:
-                return `
-                    background-color: ${theme.colors.black};
-                `;
-        }
+        return `background-color: ${ToastType[type].coloredBackgroundColor};`;
     }
+    if (toastTheme === 'black' && type === 'default') {
+        return `background-color: ${ToastType[type].backgroundColor};`;
+    }
+    if (toastTheme === 'white' && type === 'default') {
+        return `background-color: ${ToastType[type].coloredBackgroundColor};`;
+    }
+    return `background-color: ${ToastType[type].backgroundColor};`;
 };
 
 const toastFadeIn = keyframes`
@@ -190,7 +180,7 @@ export const toastStyle = (status: string, toastTheme: ToastTheme, type: Type) =
     padding: 1rem 1rem;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    border-radius: 0.625rem;
+    border-radius: 5px;
     min-width: 30rem;
     min-height: 5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -207,7 +197,8 @@ export const svgStyle = (type: Type) => css`
 export const progressBarStyle = (toastTheme: ToastTheme, type: Type, duration: number) => css`
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 0.1rem;
+    border-radius: 0 0 0 7px;
     height: 0.3rem;
     width: 100%;
     ${progressBarColor(toastTheme, type)}

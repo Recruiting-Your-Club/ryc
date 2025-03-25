@@ -35,23 +35,20 @@ export const CustomDefaultToast: Story = {
     render: (args) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const { toast } = useToast();
+        const handleToast = () => {
+            toast(args.content, {
+                toastTheme: args.toastTheme,
+                type: args.type,
+                duration: args.duration,
+                autoClose: args.autoClose,
+                status: args.status,
+                position: args.position,
+                progressBar: args.progressBar,
+                sx: args.sx,
+            });
+        };
         return (
-            <Button
-                size="full"
-                variant="primary"
-                onClick={() =>
-                    toast(args.content, {
-                        toastTheme: args.toastTheme,
-                        type: args.type,
-                        duration: args.duration,
-                        autoClose: args.autoClose,
-                        status: args.status,
-                        position: args.position,
-                        progressBar: args.progressBar,
-                        sx: args.sx,
-                    })
-                }
-            >
+            <Button size="full" variant="primary" onClick={handleToast}>
                 커스텀 해보세여
             </Button>
         );

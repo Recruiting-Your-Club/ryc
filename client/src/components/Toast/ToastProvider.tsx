@@ -71,7 +71,7 @@ function ToastProvider({ children }: PropsWithChildren) {
     ) {
         // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능 && Container 세팅
         if (containerOptions && Object.keys(containerOptions).length > 0) {
-            setContainer({ ...defaultContainerOptions, ...containerOptions });
+            setContainer((prev) => ({ ...prev, ...containerOptions }));
         }
         const id = Date.now();
         const newToast = {
@@ -89,14 +89,12 @@ function ToastProvider({ children }: PropsWithChildren) {
     // 사용자가 제한 둔 toast 개수 넘어가면 삭제
     function checkLimitAndRemoveToast() {
         if (toasts.length >= (container?.limit || 3)) {
-            toasts.map((toast, index) => {
-                if (index === 0) {
-                    toast.status = 'exiting';
-                }
-            });
+            setToasts((prev) =>
+                prev.map((toast, index) => (index === 0 ? { ...toast, status: 'exiting' } : toast)),
+            );
 
             const removeToast = () => setToasts((prev) => prev.slice(1));
-            animation(removeToast, 500);
+            setTimeout(removeToast, 500);
         }
     }
 
@@ -106,10 +104,10 @@ function ToastProvider({ children }: PropsWithChildren) {
             setToasts((prev) =>
                 prev.map((toast) => (toast.id === id ? { ...toast, status: 'exiting' } : toast)),
             );
-        animation(removeAnimation, options.duration || 3000);
+        setTimeout(removeAnimation, options.duration || 3000);
 
         const removeToast = () => setToasts((prev) => prev.filter((toast) => toast.id !== id));
-        animation(removeToast, (options.duration || 3000) + 1000); // 애니메이션 끝난 후 제거해야해서 1000ms 추가
+        setTimeout(removeToast, (options.duration || 3000) + 1000); // 애니메이션 끝난 후 제거해야해서 1000ms 추가
     }
 
     // 애니메이션
