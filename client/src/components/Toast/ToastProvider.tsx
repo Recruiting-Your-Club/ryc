@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react';
-import type { PropsWithChildren } from 'react';
 import type { Type, ToastProps, ToastContainerProps, ToastType, ToastPosition } from './type';
 import { ToastContainer } from './ToastContainer';
 import type { ReactNode } from 'react';
@@ -17,18 +16,13 @@ const defaultOptions: ToastProps = {
     autoClose: true,
 };
 
-const defaultContainerOptions: ToastContainerProps = {
-    limit: 3,
-};
-
 const ToastContext = createContext<ToastContextType | null>(null);
 
-function ToastProvider({ children }: PropsWithChildren) {
+function ToastProvider({ children, limit }: ToastContainerProps) {
     //prop destruction
     //lib hooks
     //state, ref, querystring hooks
     const [toasts, setToasts] = useState<ToastProps[]>([]);
-    const [container, setContainer] = useState<ToastContainerProps>(defaultContainerOptions);
 
     //form hooks
     //query hooks
@@ -37,21 +31,14 @@ function ToastProvider({ children }: PropsWithChildren) {
     //handlers
 
     // 기본 토스트 발행
-    function toast(
-        content?: ReactNode,
-        options?: ToastProps,
-        containerOptions?: ToastContainerProps,
-    ) {
-        return createToast(content, mergeOptions('default', options), containerOptions);
+    function toast(content?: ReactNode, options?: ToastProps) {
+        return createToast(content, mergeOptions('default', options));
     }
 
     // 토스트 타입별로 분류해서 발행
     function createToastByType(type: Type) {
-        return (
-            content?: ReactNode,
-            options?: ToastProps,
-            containerOptions?: ToastContainerProps,
-        ) => createToast(content, mergeOptions(type, options), containerOptions);
+        return (content?: ReactNode, options?: ToastProps) =>
+            createToast(content, mergeOptions(type, options));
     }
 
     // default옵션 + 사용자 정의 옵션 + 타입 합치기
@@ -64,15 +51,7 @@ function ToastProvider({ children }: PropsWithChildren) {
     }
 
     // 토스트 생성
-    function createToast(
-        content?: ReactNode,
-        options?: ToastProps,
-        containerOptions?: ToastContainerProps,
-    ) {
-        // 객체가 존재하면서 객체가 비어있지 않을 때 ex) {}면 불가능 && Container 세팅
-        if (containerOptions && Object.keys(containerOptions).length > 0) {
-            setContainer((prev) => ({ ...prev, ...containerOptions }));
-        }
+    function createToast(content?: ReactNode, options?: ToastProps) {
         const id = Date.now();
         const newToast = {
             id: id,
@@ -88,7 +67,7 @@ function ToastProvider({ children }: PropsWithChildren) {
 
     // 사용자가 제한 둔 toast 개수 넘어가면 삭제
     function checkLimitAndRemoveToast() {
-        if (toasts.length >= (container?.limit || 3)) {
+        if (toasts.length >= (limit || 3)) {
             setToasts((prev) =>
                 prev.map((toast, index) => (index === 0 ? { ...toast, status: 'exiting' } : toast)),
             );

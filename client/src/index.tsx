@@ -11,7 +11,7 @@ root.render(
     <React.StrictMode>
         <Global styles={globalStyles} />
         <ThemeProvider theme={theme}>
-            <ToastProvider>
+            <ToastProvider limit={5}>
                 <App />
             </ToastProvider>
         </ThemeProvider>

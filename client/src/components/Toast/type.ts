@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import type { CSSObject } from '@emotion/react';
 import type { CSSProperties } from 'react';
 
@@ -14,20 +14,16 @@ export type ToastTheme = 'white' | 'black' | 'colored';
 export type Type = 'info' | 'success' | 'error' | 'default';
 export type Status = 'entering' | 'exiting';
 
-export type ToastMethod = (
-    content?: ReactNode,
-    options?: ToastProps,
-    containerOptions?: ToastContainerProps,
-) => void;
+export type ToastMethod = (content?: ReactNode, options?: ToastProps) => void;
 
 export interface ToastType {
-    (content?: ReactNode, options?: ToastProps, containerOptions?: ToastContainerProps): void;
+    (content?: ReactNode, options?: ToastProps): void;
     info: ToastMethod;
     success: ToastMethod;
     error: ToastMethod;
 }
 
-export interface ToastContainerProps {
+export interface ToastContainerProps extends PropsWithChildren {
     sx?: CSSObject;
     limit?: number;
 }
