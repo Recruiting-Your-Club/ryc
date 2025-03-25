@@ -16,10 +16,9 @@ export const headerBarContainer = css`
 
 export const homeNavContainer = css`
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     justify-content: space-between;
-    white-space: nowrap;
-    gap: 0.5rem;
 `;
 export const homeImage = css`
     border-radius: 0.5rem;
@@ -28,4 +27,5 @@ export const homeImage = css`
 export const navContainer = css`
     display: flex;
     align-items: center;
+    gap: 1rem;
 `;

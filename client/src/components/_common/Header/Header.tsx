@@ -3,30 +3,44 @@ import { css } from '@emotion/react';
 import { homeImage, headerBarContainer, homeNavContainer, navContainer } from './Header.style';
 import { Link } from 'react-router-dom';
 import { Button } from '@components/_common/Button';
-import Ryc from '@assets/images/Ryc.svg';
-import { Text } from '@components/_common/Text';
+import Search from '@assets/images/Search.svg';
+import { Text, Input } from '@components';
+import theme from '@styles/theme';
 
 function Header() {
     return (
         <header css={headerBarContainer}>
             <Link to="/" css={homeNavContainer}>
-                <Ryc css={homeImage} width="35" height="35" alt="hide" viewBox="0 0 30 30" />
-                <Text as="h1" type="h4Bold">
-                    Recruiting Your Club
+                <Text as="h1" type="h4Light">
+                    <Text.HighLignt text="R" sx={{ color: 'black', fontWeight: 'bold' }} />
+                    ecruiting
+                </Text>
+                <Text as="h1" type="h4Light">
+                    <Text.HighLignt text="Y" sx={{ color: 'black', fontWeight: 'bold' }} />
+                    our
+                    <Text.HighLignt text="C" sx={{ color: 'black', fontWeight: 'bold' }} />
+                    lub
                 </Text>
             </Link>
 
             <nav css={navContainer}>
+                <Input
+                    variant="transparent"
+                    startNode={
+                        <Button variant="text" size="s">
+                            <Search width="1.5rem" height="1.5 rem" />
+                        </Button>
+                    }
+                    inputSx={{
+                        borderRadius: '10px',
+                        backgroundColor: theme.colors.gray[200],
+                        width: '25rem',
+                        boxShadow: 'inset 0 10px 6px -8px rgba(0, 0, 0, 0.2)',
+                    }}
+                    placeholder="동아리명 검색 또는 키워드 입력"
+                />
                 <Link to="/login">
-                    <Button
-                        size="xl"
-                        variant="primary"
-                        radius="1.5rem"
-                        customCss={css`
-                            font-size: 1.4rem;
-                            padding: 0.5rem 1.2rem;
-                        `}
-                    >
+                    <Button size="xl" variant="primary" radius="1.5rem">
                         관리자 로그인
                     </Button>
                 </Link>
