@@ -21,7 +21,7 @@ function ConfirmDialog({
     actionPosition = 'end',
     buttonSize = 'xl',
     closeIcon,
-    cancleButton = false,
+    cancelButton = false,
     handleClose,
     actionHandler,
 }: DialogProps & { buttonSize?: ButtonSize }) {
@@ -53,7 +53,7 @@ function ConfirmDialog({
                     <Text textAlign={contentPosition}>{content}</Text>
                 </Dialog.Content>
                 <Dialog.Action position={actionPosition}>
-                    {cancleButton && (
+                    {cancelButton && (
                         <Button variant="outlined" size={buttonSize} onClick={handleClose}>
                             취소
                         </Button>

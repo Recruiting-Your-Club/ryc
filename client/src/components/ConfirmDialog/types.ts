@@ -17,7 +17,7 @@ export interface DialogProps {
     titlePosition?: PositionType; // 'start' 등이 포함될 수 있는 타입
     contentPosition?: PositionType; // 'center' 등이 포함될 수 있는 타입
     actionPosition?: PositionType; // 'end' 등이 포함될 수 있는 타입
-    cancleButton?: boolean; // 오타로 보임, 'cancelButton'으로 수정 권장
+    cancelButton?: boolean; // 오타로 보임, 'cancelButton'으로 수정 권장
     handleClose: () => void;
     actionHandler?: () => void;
 }
