@@ -18,27 +18,27 @@ const getColorByTypeAtColoredTheme = (type: Type): string => {
 };
 
 // 토스트 테마에 따른 배경색 및 글자색 추출
-const getToastBackgroundStyles = (type: Type, toastTheme: ToastTheme): string => {
+const getToastBackgroundStyles = (type: Type, toastTheme: ToastTheme) => {
     switch (toastTheme) {
         case 'white':
-            return `
+            return css`
                 background-color: ${theme.colors.white};
                 color: ${theme.colors.black};
             `;
         case 'black':
-            return `
+            return css`
                 background-color: ${theme.colors.black};
                 color: ${theme.colors.white};
                 ${type === 'default' && `color: ${theme.colors.white};`}
             `;
         case 'colored':
-            return `
+            return css`
                 background-color: ${getColorByTypeAtColoredTheme(type)};
                 color: ${theme.colors.white};
                 ${type === 'default' && `color: ${theme.colors.black};`}
             `;
         default:
-            return `
+            return css`
                 background-color: ${theme.colors.white};
                 color: ${theme.colors.black};
             `;
@@ -49,25 +49,25 @@ const getToastBackgroundStyles = (type: Type, toastTheme: ToastTheme): string =>
 const svgColor = (type: Type) => {
     switch (type) {
         case 'info':
-            return `
+            return css`
                 stroke: ${theme.colors.blue[300]};
                 fill: ${theme.colors.white};
                 color: ${theme.colors.blue[300]};
             `;
         case 'success':
-            return `
+            return css`
                 stroke: ${theme.colors.green[200]};
                 fill: ${theme.colors.white};
                 color: ${theme.colors.green[200]};
             `;
         case 'error':
-            return `
+            return css`
                 stroke: ${theme.colors.red[800]};
                 fill: ${theme.colors.white};
                 color: ${theme.colors.red[800]};
             `;
         default:
-            return `
+            return css`
                 color: ${theme.colors.black};
             `;
     }
@@ -94,15 +94,23 @@ const ToastType: Record<Type, TypeColor> = {
 
 const progressBarColor = (toastTheme: ToastTheme, type: Type) => {
     if (toastTheme === 'colored') {
-        return `background-color: ${ToastType[type].coloredBackgroundColor};`;
+        return css`
+            background-color: ${ToastType[type].coloredBackgroundColor};
+        `;
     }
     if (toastTheme === 'black' && type === 'default') {
-        return `background-color: ${ToastType[type].backgroundColor};`;
+        return css`
+            background-color: ${ToastType[type].backgroundColor};
+        `;
     }
     if (toastTheme === 'white' && type === 'default') {
-        return `background-color: ${ToastType[type].coloredBackgroundColor};`;
+        return css`
+            background-color: ${ToastType[type].coloredBackgroundColor};
+        `;
     }
-    return `background-color: ${ToastType[type].backgroundColor};`;
+    return css`
+        background-color: ${ToastType[type].backgroundColor};
+    `;
 };
 
 const toastFadeIn = keyframes`
