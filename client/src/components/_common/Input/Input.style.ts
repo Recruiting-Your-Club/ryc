@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-
-export type InputVariant = 'primary' | 'lined';
+import type { InputVariant } from './types';
 
 export const inputWrapperContainer = css`
     display: flex;
@@ -24,26 +23,52 @@ const baseInputContainer = css`
     padding-left: 0.2rem;
 `;
 
-export const inputContainer = (error: boolean) => ({
-    primary: css`
-        ${baseInputContainer};
-        border: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
-        border-radius: 0.6rem;
-        transition: border-color 0.3s ease-in-out;
-        &:focus-within {
-            border-color: ${theme.colors.default};
-        }
-    `,
-    lined: css`
-        ${baseInputContainer};
-        border: none;
-        border-bottom: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
-        transition: border-bottom 0.3s ease-in-out;
-        &:focus-within {
-            border-color: ${theme.colors.default};
-        }
-    `,
-});
+export const inputContainer = (error: boolean, variant: InputVariant) => {
+    switch (variant) {
+        case 'primary':
+            return css`
+                ${baseInputContainer};
+                border: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
+                border-radius: 0.6rem;
+                transition: border-color 0.3s ease-in-out;
+                &:focus-within {
+                    border-color: ${theme.colors.default};
+                    ${error &&
+                    css`
+                        border: 1.5px solid ${theme.colors.red[800]};
+                    `}
+                }
+            `;
+        case 'lined':
+            return css`
+                ${baseInputContainer};
+                border: none;
+                border-bottom: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
+                transition: border-bottom 0.3s ease-in-out;
+                &:focus-within {
+                    border-color: ${theme.colors.default};
+                    ${error &&
+                    css`
+                        border: 1.5px solid ${theme.colors.red[800]};
+                    `}
+                }
+            `;
+        default:
+            return css`
+                ${baseInputContainer};
+                border: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
+                border-radius: 0.6rem;
+                transition: border-color 0.3s ease-in-out;
+                &:focus-within {
+                    border-color: ${theme.colors.default};
+                    ${error &&
+                    css`
+                        border: 1.5px solid ${theme.colors.red[800]};
+                    `}
+                }
+            `;
+    }
+};
 
 export const baseInputStyle = (height: string) => css`
     width: 100%;
@@ -52,14 +77,6 @@ export const baseInputStyle = (height: string) => css`
     outline: none;
     border: none;
     border-radius: 1rem;
-`;
-
-export const startNodeStyle = css`
-    white-space: nowrap;
-`;
-
-export const endNodeStyle = css`
-    white-space: nowrap;
 `;
 
 export const helperTextStyle = (error: boolean | undefined) => css`

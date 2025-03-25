@@ -4,55 +4,35 @@ import {
     helperTextStyle,
     labelStyle,
     inputWrapperContainer,
-    endNodeStyle,
-    startNodeStyle,
     baseInputStyle,
 } from './Input.style';
-import type { InputHTMLAttributes } from 'react';
-import type { SerializedStyles } from '@emotion/react';
-
-export type InputVariant = 'primary' | 'lined';
-
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-    label?: string;
-    variant?: InputVariant;
-    isError?: boolean;
-    helperText?: string;
-    startNode?: React.ReactNode;
-    endNode?: React.ReactNode;
-    inputSx?: SerializedStyles;
-    labelSx?: SerializedStyles;
-    helperSx?: SerializedStyles;
-    height?: string;
-}
+import type { InputProps } from './types';
 
 function Input({
     variant = 'primary',
     type = 'text',
     height = '3.6rem',
-    isError = false,
+    error = false,
     helperText,
     label,
-    endNode,
     startNode,
+    endNode,
     inputSx,
     labelSx,
     helperSx,
     ...props
 }: InputProps) {
-    const cssProps = [inputContainer(isError)[variant]];
-
     return (
         <div css={inputWrapperContainer}>
-            {label && <label css={[labelStyle(isError), labelSx]}>{label}</label>}
+            {label && <label css={[labelStyle(error), labelSx]}>{label}</label>}
 
-            <div css={[cssProps, inputSx]}>
-                {startNode && <div css={startNodeStyle}>{startNode}</div>}
+            <div css={[inputContainer(error, variant), inputSx]}>
+                {startNode && <div>{startNode}</div>}
                 <input css={baseInputStyle(height)} type={type} {...props} />
-                {endNode && <div css={endNodeStyle}>{endNode}</div>}
+                {endNode && <div>{endNode}</div>}
             </div>
 
-            {helperText && <span css={[helperTextStyle(isError), helperSx]}>{helperText}</span>}
+            {helperText && <span css={[helperTextStyle(error), helperSx]}>{helperText}</span>}
         </div>
     );
 }

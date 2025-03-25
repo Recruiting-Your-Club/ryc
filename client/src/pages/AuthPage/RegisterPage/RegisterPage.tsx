@@ -22,14 +22,7 @@ function RegisterPage() {
 
                 <div css={inputContainer}>
                     <div css={emailContainer}>
-                        <Input
-                            placeholder="test@naver.com"
-                            height={'4.5rem'}
-                            label={'이메일'}
-                            inputSx={css`
-                                flex: 2;
-                            `}
-                        />
+                        <Input placeholder="test@naver.com" height={'4.5rem'} label={'이메일'} />
                         <Button
                             variant="primary"
                             size="full"
@@ -43,7 +36,12 @@ function RegisterPage() {
                         </Button>
                     </div>
                     <Input placeholder="홍길동" height={'4.5rem'} label={'이름'} />
-                    <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호'} />
+                    <PasswordInput
+                        placeholder="••••••"
+                        height={'4.5rem'}
+                        label={'비밀번호'}
+                        isError
+                    />
                     <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호확인'} />
                 </div>
 
