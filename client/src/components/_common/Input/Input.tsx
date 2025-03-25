@@ -28,7 +28,7 @@ function Input({
 
             <div css={[inputContainer(error, variant), inputSx]}>
                 {startNode && <div>{startNode}</div>}
-                <input css={baseInputStyle(height)} type={type} {...props} />
+                <input css={[baseInputStyle(height)]} type={type} {...props} />
                 {endNode && <div>{endNode}</div>}
             </div>
 

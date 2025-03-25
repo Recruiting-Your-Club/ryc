@@ -53,6 +53,11 @@ export const inputContainer = (error: boolean, variant: InputVariant) => {
                     `}
                 }
             `;
+        case 'transparent':
+            return css`
+                ${baseInputContainer};
+                border: none;
+            `;
         default:
             return css`
                 ${baseInputContainer};
@@ -77,6 +82,7 @@ export const baseInputStyle = (height: string) => css`
     outline: none;
     border: none;
     border-radius: 1rem;
+    background-color: transparent;
 `;
 
 export const helperTextStyle = (error: boolean | undefined) => css`
