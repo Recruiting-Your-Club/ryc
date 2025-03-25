@@ -110,11 +110,6 @@ function ToastProvider({ children }: PropsWithChildren) {
         setTimeout(removeToast, (options.duration || 3000) + 1000); // 애니메이션 끝난 후 제거해야해서 1000ms 추가
     }
 
-    // 애니메이션
-    function animation(method: () => void, duration: number) {
-        setTimeout(method, duration);
-    }
-
     // Container에서 toast 렌더링할 때 각 위치의 컨테이너에 토스트 스택으로 쌓아줌
     function getToastPosition() {
         const positionMap: Record<ToastPosition, ToastProps[]> = {
