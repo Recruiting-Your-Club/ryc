@@ -21,35 +21,3 @@ export interface DialogProps {
     handleClose: () => void;
     actionHandler?: () => void;
 }
-
-export interface Size extends CSSObject {
-    width?: CSSObject['width'];
-    height?: CSSObject['height'];
-}
-
-export interface BaseDialogProps {
-    children: React.ReactNode;
-    open: boolean;
-    backdrop?: boolean;
-    size?: DialogSize;
-    sx?: CSSObject;
-    handleClose: () => void;
-}
-export interface DialogHeaderProps {
-    position?: PositionType;
-    border?: boolean;
-    children: ReactNode;
-    sx?: CSSObject;
-    handleClose?: () => void;
-    closeIcon?: boolean;
-}
-export interface DialogContentProps {
-    children: ReactNode;
-    sx?: CSSObject;
-}
-export interface DialogActionProps {
-    children: ReactNode;
-    sx?: CSSObject;
-    border?: boolean;
-    position?: PositionType;
-}

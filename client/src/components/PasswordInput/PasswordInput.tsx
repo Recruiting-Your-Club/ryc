@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { BaseInput } from '@components/Input';
-import { Button } from '@components/Button';
-import type { InputProps } from '@components/Input';
+import { Button } from '@components/_common/Button';
 import PasswordShow from '@assets/images/passwordShow.svg';
 import PasswordHide from '@assets/images/passwordHide.svg';
+import { Input } from '@components/_common';
+import type { InputProps } from '@components/_common';
 
 function PasswordInput({ ...props }: InputProps) {
     const [isVisible, setIsVisible] = useState(false);
@@ -12,7 +12,7 @@ function PasswordInput({ ...props }: InputProps) {
     };
 
     return (
-        <BaseInput
+        <Input
             type={isVisible ? 'text' : 'password'}
             endNode={
                 <Button size="xs" variant="transparent" onClick={handleVisible}>

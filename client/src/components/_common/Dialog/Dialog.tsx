@@ -6,9 +6,9 @@ import {
     headerContainer,
     contentContainer,
     actionContainer,
-} from './BaseDialog.style';
+} from './Dialog.style';
 import XIcon from '@assets/images/xIcon.svg';
-import { Button } from '@components/Button';
+import { Button } from '@components/_common/Button';
 import type {
     DialogHeaderProps,
     DialogContentProps,
@@ -16,7 +16,7 @@ import type {
     BaseDialogProps,
     DialogSize,
     Size,
-} from '../types';
+} from './types';
 
 const dialogSize: Record<DialogSize, Size> = {
     sm: {

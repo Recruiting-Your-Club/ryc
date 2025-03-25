@@ -26,7 +26,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     height?: string;
 }
 
-function BaseInput({
+function Input({
     variant = 'primary',
     type = 'text',
     height = '3.6rem',
@@ -56,4 +56,4 @@ function BaseInput({
         </div>
     );
 }
-export { BaseInput };
+export { Input };

@@ -2,9 +2,9 @@ import React from 'react';
 import { css } from '@emotion/react';
 import { homeImage, headerBarContainer, homeNavContainer, navContainer } from './Header.style';
 import { Link } from 'react-router-dom';
-import { Button } from '@components/Button';
+import { Button } from '@components/_common/Button';
 import Ryc from '@assets/images/Ryc.svg';
-import { Text } from '@components/Text';
+import { Text } from '@components/_common/Text';
 
 function Header() {
     return (

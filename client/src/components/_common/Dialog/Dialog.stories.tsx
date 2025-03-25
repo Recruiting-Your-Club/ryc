@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button } from '@components/Button';
-import { Text } from '@components/Text';
+import { Button } from '@components/_common/Button';
+import { Text } from '@components/_common/Text';
 import XIcon from '@assets/images/xIcon.svg';
 import { Dialog } from '.';
 import type { Meta, StoryObj } from '@storybook/react';

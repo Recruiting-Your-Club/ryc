@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDialog } from '@hooks/useDialog';
-import { Dialog } from '@components/Dialog';
-import { Text } from '@components/Text';
+import { Dialog } from '@components/_common';
+import { Text } from '@components/_common/Text';
 import Alert from '@assets/images/alert.svg';
 import Check from '@assets/images/check.svg';
-import { Button } from '@components/Button';
+import { Button } from '@components/_common/Button';
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
-import type { DialogProps } from '../types';
-import type { ButtonSize } from '@components/Button';
+import type { DialogProps } from './types';
+import type { ButtonSize } from '@components/_common/Button';
 
 function ConfirmDialog({
     type = 'text',

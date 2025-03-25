@@ -7,9 +7,9 @@ import {
     buttonContainer,
     emailContainer,
 } from './RegisterPage.style';
-import { BaseInput, PasswordInput, Button } from '@components';
+import { Input, Button } from '@components/_common';
+import { PasswordInput } from '@components/PasswordInput';
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
 import { useRouter } from '@hooks/useRouter';
 
 function RegisterPage() {
@@ -22,18 +22,18 @@ function RegisterPage() {
 
                 <div css={inputContainer}>
                     <div css={emailContainer}>
-                        <BaseInput
+                        <Input
                             placeholder="test@naver.com"
                             height={'4.5rem'}
                             label={'이메일'}
-                            inputCss={css`
+                            inputSx={css`
                                 flex: 2;
                             `}
                         />
                         <Button
                             variant="primary"
                             size="full"
-                            customCss={css`
+                            sx={css`
                                 height: 4.5rem;
                                 width: 11rem;
                                 margin-bottom: 0.1rem;
@@ -42,7 +42,7 @@ function RegisterPage() {
                             중복확인
                         </Button>
                     </div>
-                    <BaseInput placeholder="홍길동" height={'4.5rem'} label={'이름'} />
+                    <Input placeholder="홍길동" height={'4.5rem'} label={'이름'} />
                     <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호'} />
                     <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호확인'} />
                 </div>
@@ -55,11 +55,6 @@ function RegisterPage() {
                         onClick={() => removeHistoryAndGo('/login')}
                         variant="transparent"
                         size="full"
-                        customCss={css`
-                            :hover {
-                                color: ${theme.colors.defaultHover};
-                            }
-                        `}
                     >
                         이미 계정이 있으신가요?
                     </Button>
