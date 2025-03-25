@@ -1,7 +1,7 @@
 import type { TYPOGRAPHY } from '@styles/theme/typography';
 import type { CSSProperties, ElementType, PropsWithChildren } from 'react';
 import React from 'react';
-import { textStyle } from './Text.style';
+import { textStyle, highlightStyle } from './Text.style';
 import type { CSSObject } from '@emotion/react';
 
 export type TextType = keyof typeof TYPOGRAPHY;
@@ -16,6 +16,10 @@ interface TextProps extends PropsWithChildren {
     sx?: CSSObject;
     as?: ElementType;
 }
+
+function HighLignt({ text, sx }: { text?: string | number; sx?: CSSObject }) {
+    return <span css={[highlightStyle, sx]}>{text}</span>;
+}
 function Text({
     type = 'bodyRegular',
     color = 'black',
@@ -28,4 +32,6 @@ function Text({
 }: TextProps) {
     return <Tag css={[textStyle({ type, color, textAlign, noWrap, cropped }), sx]}>{children}</Tag>;
 }
+
+Text.HighLignt = HighLignt;
 export { Text };
