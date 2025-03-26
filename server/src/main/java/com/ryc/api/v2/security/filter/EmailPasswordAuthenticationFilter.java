@@ -1,6 +1,7 @@
 package com.ryc.api.v2.security.filter;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -83,8 +84,22 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
     String accessToken = jwtTokenManager.generateAccessToken(email, role);
 
-    response.addHeader("Authorization", "Bearer " + accessToken);
     response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    String jsonResponse =
+        """
+                {
+                    "accessToken": "%s",
+                    "tokenType": "Bearer"
+                }
+                """
+            .formatted(accessToken);
+    try {
+      response.getWriter().write(jsonResponse);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
