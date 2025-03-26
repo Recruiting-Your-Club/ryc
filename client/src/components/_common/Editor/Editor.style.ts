@@ -16,11 +16,39 @@ export const toolbarContainer = (width: string = '100%', radius: string = '4px')
     border-radius: ${radius};
     padding: 0.3rem 0.3rem;
     background-color: ${theme.colors.gray[100]};
+    display: flex;
+    align-items: center;
 
     @media screen and (max-width: 1024px) {
         // 태블릿 pc까지
         width: 100%;
     }
+`;
+
+export const buttonGroup = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+`;
+
+export const perButtonCss = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+`;
+
+export const svgCss = (isColor: boolean) => css`
+    width: 1rem;
+    height: 1rem;
+    color: ${theme.colors.black};
+    align-items: center;
+    justify-content: center;
+    ${isColor &&
+    css`
+        color: ${theme.colors.default};
+    `}
 `;
 
 export const textareaContainer = (
@@ -33,6 +61,8 @@ export const textareaContainer = (
     resize: none;
     border: 0.0625rem solid ${theme.colors.gray[500]};
     border-radius: ${radius};
+    padding: 0.5rem;
+    font-size: 10px;
 
     &:focus {
         border-color: ${theme.colors.black};
