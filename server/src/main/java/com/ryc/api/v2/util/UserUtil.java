@@ -1,34 +1,36 @@
 package com.ryc.api.v2.util;
 
-import com.ryc.api.v1.security.dto.CustomUserDetail;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.ryc.api.v2.security.dto.CustomUserDetail;
+
 public class UserUtil {
-    private UserUtil() {}
+  private UserUtil() {}
 
-    public static String getCurrentUserId() {
-        CustomUserDetail userDetails = getCurrentUserDetails();
-        return (userDetails != null) ? userDetails.getId() : null;
+  public static String getCurrentUserId() {
+    CustomUserDetail userDetails = getCurrentUserDetails();
+    return userDetails.getId();
+  }
+
+  public static String getCurrentUsername() {
+    CustomUserDetail userDetails = getCurrentUserDetails();
+    return userDetails.getUsername();
+  }
+
+  private static CustomUserDetail getCurrentUserDetails() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication == null || !authentication.isAuthenticated()) {
+      throw new IllegalStateException("인증되지 않은 사용자입니다.");
     }
 
-    public static String getCurrentUsername() {
-        CustomUserDetail userDetails = getCurrentUserDetails();
-        return (userDetails != null) ? userDetails.getUsername() : null;
+    Object principal = authentication.getPrincipal();
+
+    if (!(principal instanceof CustomUserDetail)) {
+      throw new IllegalStateException("principal 타입이 올바르지 않습니다.");
     }
 
-    private static CustomUserDetail getCurrentUserDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
-        }
-
-        Object principal = authentication.getPrincipal();
-
-        if (principal instanceof CustomUserDetail) {
-            return (CustomUserDetail) principal;
-        }
-        return null;
-    }
+    return (CustomUserDetail) principal;
+  }
 }
