@@ -1,10 +1,10 @@
 import { Button } from '@components/Button';
 import React, { useRef } from 'react';
 import { s_fileUpLoaderInput } from './FileUpLoader.style';
-import { useFileLoader } from './FileUpLoaderContext';
+import { useFileUpLoaderContext } from './FileUpLoaderContext';
 
 function FileUpLoaderButton() {
-    const { files, setFiles } = useFileLoader();
+    const { files, setFiles } = useFileUpLoaderContext();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleClick = () => {
         fileInputRef.current?.click();
