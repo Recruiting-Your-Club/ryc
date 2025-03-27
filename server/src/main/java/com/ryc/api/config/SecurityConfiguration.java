@@ -14,14 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ryc.api.v1.auth.service.RefreshTokenService;
-import com.ryc.api.v1.security.exceptions.RestAuthenticationEntryPoint;
-import com.ryc.api.v1.security.exceptions.TokenAccessDeniedHandler;
-import com.ryc.api.v1.security.filter.EmailPasswordAuthenticationFilter;
-import com.ryc.api.v1.security.filter.JwtAuthenticationFilter;
-import com.ryc.api.v1.security.jwt.JwtProperties;
-import com.ryc.api.v1.security.jwt.JwtTokenManager;
-import com.ryc.api.v1.user.repository.UserRepository;
+import com.ryc.api.v2.security.exception.RestAuthenticationEntryPoint;
+import com.ryc.api.v2.security.exception.TokenAccessDeniedHandler;
+import com.ryc.api.v2.security.filter.EmailPasswordAuthenticationFilter;
+import com.ryc.api.v2.security.filter.JwtAuthenticationFilter;
+import com.ryc.api.v2.security.jwt.JwtTokenManager;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,14 +27,10 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtTokenManager jwtTokenManager;
-  private final JwtProperties jwtProperties;
   private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
-  private final RefreshTokenService refreshTokenService;
-  private final UserRepository userRepository;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,11 +41,7 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter, EmailPasswordAuthenticationFilter.class) // jwt 인증 필터
         .addFilterAt(
             new EmailPasswordAuthenticationFilter(
-                authenticationManager(authenticationConfiguration),
-                jwtTokenManager,
-                jwtProperties,
-                refreshTokenService,
-                userRepository),
+                authenticationManager(authenticationConfiguration), jwtTokenManager),
             UsernamePasswordAuthenticationFilter.class) // email - password 로그인 필터
         .exceptionHandling(
             exceptions ->
@@ -68,13 +57,11 @@ public class SecurityConfiguration {
                 request
                     .requestMatchers("/")
                     .permitAll() // health check
-                    .requestMatchers("/api/v1/auth/*")
+                    .requestMatchers("/api/v2/auth/*")
                     .permitAll()
-                    .requestMatchers("/api/v1/auth/token/refresh")
+                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v1/application/")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v1/application/form")
+                    .requestMatchers(HttpMethod.GET, "/api/v2/application/form")
                     .permitAll()
                     .requestMatchers(
                         "/actuator/**",
