@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useState } from 'react';
 import { FileUpLoaderContext } from './FileUpLoaderContext';
 interface FileUpLoader {
@@ -9,8 +9,9 @@ interface FileUpLoader {
 
 function FileUpLoader({ children, sx }: FileUpLoader) {
     const [files, setFiles] = useState<File[]>([]);
+    const [hasFile, setHasFile] = useState(false);
     return (
-        <FileUpLoaderContext.Provider value={{ files, setFiles }}>
+        <FileUpLoaderContext.Provider value={{ files, setFiles, hasFile, setHasFile }}>
             {children}
         </FileUpLoaderContext.Provider>
     );
