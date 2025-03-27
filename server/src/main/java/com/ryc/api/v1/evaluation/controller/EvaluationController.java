@@ -28,12 +28,8 @@ public class EvaluationController {
   @HasAnyRoleSecured
   @PostMapping("/")
   public ResponseEntity<?> createEvaluation(@Valid @RequestBody CreateEvaluationRequest body) {
-    try {
-      CreateEvaluationResponse response = evaluationService.createEvaluation(body);
-      return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    CreateEvaluationResponse response = evaluationService.createEvaluation(body);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @HasAnyRoleSecured
@@ -42,12 +38,8 @@ public class EvaluationController {
       @NotEmpty @RequestParam String clubId,
       @NotEmpty @RequestParam String stepId,
       @RequestParam(required = false) List<String> applicantIdList) {
-    try {
-      List<GetEvaluationResponse> response =
-          evaluationService.getEvaluations(stepId, applicantIdList);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    List<GetEvaluationResponse> response =
+        evaluationService.getEvaluations(stepId, applicantIdList);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }
