@@ -1,17 +1,15 @@
 import React from 'react';
 import { s_fileUpLoaderBox } from './FileUpLoader.style';
-import { useFileLoader } from './FileUpLoaderContext';
+import { useFileUpLoaderContext } from './FileUpLoaderContext';
+import { FileUpLoaderContent } from './FileUpLoaderContent';
 
 function FileUpLoaderBox() {
-    const { files } = useFileLoader();
+    const { files, hasFile } = useFileUpLoaderContext();
 
     return (
-        <div css={s_fileUpLoaderBox}>
+        <div css={s_fileUpLoaderBox(hasFile)}>
             {files?.length === 0 ? (
-                <>
-                    {/* 파일이 없을 때 UI */}
-                    <p>📁 파일이 없습니다. 파일을 선택해 주세요.</p>
-                </>
+                <FileUpLoaderContent />
             ) : (
                 <>
                     {/* 파일이 있을 때 UI */}
