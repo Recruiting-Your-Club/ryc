@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { BaseInput } from './BaseInput';
+import { Input } from './Input';
 
-const meta: Meta<typeof BaseInput> = {
+const meta: Meta<typeof Input> = {
     title: 'BaseInput',
-    component: BaseInput,
+    component: Input,
     parameters: {
         docs: {
             description: {
@@ -15,7 +15,7 @@ const meta: Meta<typeof BaseInput> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof BaseInput>;
+type Story = StoryObj<typeof Input>;
 
 export const Primary: Story = {
     args: {
@@ -48,6 +48,6 @@ export const errorInput: Story = {
         placeholder: '텍스트를 입력해주세요',
         label: '비밀번호',
         helperText: '비밀번호가 일치하지 않습니다.',
-        isError: true,
+        error: true,
     },
 };

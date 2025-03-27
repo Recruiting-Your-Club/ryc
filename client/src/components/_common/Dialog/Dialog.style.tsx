@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { PositionType } from '../types';
+import type { PositionType } from './types';
 
 export const backdropContainer = css`
     position: fixed;

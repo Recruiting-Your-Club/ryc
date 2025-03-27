@@ -76,3 +76,7 @@ export const textStyle = ({
         text-overflow: ${cropped ? 'ellipsis' : ''};
     `;
 };
+
+export const highlightStyle = css`
+    color: ${theme.colors.default};
+`;

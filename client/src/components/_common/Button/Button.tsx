@@ -4,21 +4,20 @@ import type { CSSObject, SerializedStyles } from '@emotion/react';
 import type { ButtonHTMLAttributes } from 'react';
 
 export type ButtonSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
-export type ButtonVariant = 'primary' | 'outlined' | 'transparent';
+export type ButtonVariant = 'primary' | 'outlined' | 'transparent' | 'text';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant: ButtonVariant;
+    variant?: ButtonVariant;
     disabled?: boolean;
-    size: ButtonSize;
+    size?: ButtonSize;
     loading?: boolean;
     sx?: CSSObject;
-    type?: 'button' | 'submit' | 'reset';
     radius?: string;
     zIndex?: number;
 }
 function Button({
-    variant,
-    size,
+    variant = 'primary',
+    size = 'xl',
     children,
     disabled = false,
     radius = '0.6rem',

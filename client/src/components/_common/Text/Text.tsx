@@ -1,8 +1,9 @@
 import type { TYPOGRAPHY } from '@styles/theme/typography';
 import type { CSSProperties, ElementType, PropsWithChildren } from 'react';
 import React from 'react';
-import { textStyle } from './Text.style';
+import { textStyle, highlightStyle } from './Text.style';
 import type { CSSObject } from '@emotion/react';
+import type { ReactNode } from 'react';
 
 export type TextType = keyof typeof TYPOGRAPHY;
 export type TextColor = 'black' | 'primary' | 'warning' | 'caption' | 'subCaption' | 'helper';
@@ -16,6 +17,10 @@ interface TextProps extends PropsWithChildren {
     sx?: CSSObject;
     as?: ElementType;
 }
+
+function HighLight({ children, sx }: { children?: ReactNode; sx?: CSSObject }) {
+    return <span css={[highlightStyle, sx]}>{children}</span>;
+}
 function Text({
     type = 'bodyRegular',
     color = 'black',
@@ -28,4 +33,6 @@ function Text({
 }: TextProps) {
     return <Tag css={[textStyle({ type, color, textAlign, noWrap, cropped }), sx]}>{children}</Tag>;
 }
+
+Text.HighLight = HighLight;
 export { Text };

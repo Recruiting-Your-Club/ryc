@@ -31,26 +31,26 @@ export const buttonSize: Record<ButtonSize, Size> = {
     md: {
         height: '2.7rem',
         padding: '0.6rem',
-        typography: theme.typography.bodyRegular,
+        typography: theme.typography.captionRegular,
     },
     lg: {
         height: '3rem',
         padding: '0.8rem',
-        typography: theme.typography.bodyRegular,
+        typography: theme.typography.captionRegular,
     },
     xl: {
         height: '3.6rem',
         padding: '1rem 2rem',
-        typography: theme.typography.bodyRegular,
+        typography: theme.typography.captionRegular,
     },
     full: {
         width: '100%',
         height: '3.6rem',
         padding: '0.8rem',
-        typography: theme.typography.bodyBold,
+        typography: theme.typography.captionRegular,
     },
 };
-export const s_size = (size: ButtonSize) => {
+export const s_size = (size: ButtonSize = 'md') => {
     return css`
         ${buttonSize[size].typography}
         width: ${buttonSize[size].width};
@@ -89,7 +89,16 @@ export const s_variant = (variant: ButtonVariant) => {
                 color: ${theme.colors.textHelper};
                 transition: background-color 0.2s;
                 &:hover {
-                    background-color: ${theme.colors.gray[200]};
+                    background-color: ${theme.colors.gray[100]};
+                }
+            `;
+        case 'text':
+            return css`
+                background-color: transparent;
+                border: none;
+                transition: background-color 0.2s;
+                &:hover {
+                    color: ${theme.colors.defaultHover};
                 }
             `;
         default:
@@ -105,7 +114,7 @@ export const s_variant = (variant: ButtonVariant) => {
     }
 };
 
-export const s_base = (borderRadius: number | string, zIndex: number) => {
+export const s_base = (borderRadius: string = '0.6rem', zIndex: number = 0) => {
     return css`
         display: flex;
         justify-content: center;
@@ -113,6 +122,7 @@ export const s_base = (borderRadius: number | string, zIndex: number) => {
         box-sizing: border-box;
         border-radius: ${borderRadius};
         z-index: ${zIndex};
+        white-space: nowrap;
         cursor: pointer;
         &:disabled {
             background-color: ${theme.colors.disabled};
