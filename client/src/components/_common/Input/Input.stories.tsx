@@ -48,6 +48,6 @@ export const errorInput: Story = {
         placeholder: '텍스트를 입력해주세요',
         label: '비밀번호',
         helperText: '비밀번호가 일치하지 않습니다.',
-        isError: true,
+        error: true,
     },
 };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@components/_common/Button';
 import { Text } from '@components/_common/Text';
 import { ClubCard } from '@components';
+import { Input } from '@components/_common/Input';
 function TestPage() {
     return (
         <>
@@ -11,9 +12,10 @@ function TestPage() {
                 <Button variant="transparent">hd</Button>
                 <Button variant="primary">hd</Button>
                 <Text type="h1Bold">
-                    <Text.HighLignt>하이</Text.HighLignt>
+                    <Text.HighLight>하이</Text.HighLight>
                     하이요
                 </Text>
+                <Input />
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '10rem' }}>
                     <ClubCard
                         imageURL="https://avatars.githubusercontent.com/u/176916276?s=400&u=48a14c04c14ce04adfebdf9290c6e36492b0994d&v=4"

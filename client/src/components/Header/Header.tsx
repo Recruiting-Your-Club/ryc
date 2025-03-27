@@ -12,13 +12,13 @@ function Header() {
         <header css={headerBarContainer}>
             <Link to="/" css={homeNavContainer}>
                 <Text as="h1" type="h4Light">
-                    <Text.HighLignt text="R" sx={{ color: 'black', fontWeight: 'bold' }} />
+                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>Y</Text.HighLight>
                     ecruiting
                 </Text>
                 <Text as="h1" type="h4Light">
-                    <Text.HighLignt text="Y" sx={{ color: 'black', fontWeight: 'bold' }} />
+                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>Y</Text.HighLight>
                     our
-                    <Text.HighLignt text="C" sx={{ color: 'black', fontWeight: 'bold' }} />
+                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>C</Text.HighLight>
                     lub
                 </Text>
             </Link>
@@ -35,7 +35,8 @@ function Header() {
                         borderRadius: '10px',
                         backgroundColor: theme.colors.gray[200],
                         width: '25rem',
-                        boxShadow: 'inset 0 10px 6px -8px rgba(0, 0, 0, 0.2)',
+                        boxShadow:
+                            'inset -1px -1px 1px rgba(255, 255, 255, 1), inset 1px 1px 1px rgba(0, 0, 0, 0.1)',
                     }}
                     placeholder="동아리명 검색 또는 키워드 입력"
                 />

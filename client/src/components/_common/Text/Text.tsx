@@ -18,7 +18,7 @@ interface TextProps extends PropsWithChildren {
     as?: ElementType;
 }
 
-function HighLignt({ children, sx }: { children?: ReactNode; sx?: CSSObject }) {
+function HighLight({ children, sx }: { children?: ReactNode; sx?: CSSObject }) {
     return <span css={[highlightStyle, sx]}>{children}</span>;
 }
 function Text({
@@ -34,5 +34,5 @@ function Text({
     return <Tag css={[textStyle({ type, color, textAlign, noWrap, cropped }), sx]}>{children}</Tag>;
 }
 
-Text.HighLignt = HighLignt;
+Text.HighLight = HighLight;
 export { Text };

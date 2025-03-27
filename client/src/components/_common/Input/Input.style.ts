@@ -29,7 +29,7 @@ export const inputContainer = (error: boolean, variant: InputVariant) => {
             return css`
                 ${baseInputContainer};
                 border: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
-                border-radius: 0.6rem;
+                border-radius: 6px;
                 transition: border-color 0.3s ease-in-out;
                 &:focus-within {
                     border-color: ${theme.colors.default};
@@ -58,20 +58,6 @@ export const inputContainer = (error: boolean, variant: InputVariant) => {
                 ${baseInputContainer};
                 border: none;
             `;
-        default:
-            return css`
-                ${baseInputContainer};
-                border: 1px solid ${error ? theme.colors.red[800] : theme.colors.inputBorder};
-                border-radius: 0.6rem;
-                transition: border-color 0.3s ease-in-out;
-                &:focus-within {
-                    border-color: ${theme.colors.default};
-                    ${error &&
-                    css`
-                        border: 1.5px solid ${theme.colors.red[800]};
-                    `}
-                }
-            `;
     }
 };
 
@@ -81,7 +67,7 @@ export const baseInputStyle = (height: string) => css`
     padding-left: 0.5rem;
     outline: none;
     border: none;
-    border-radius: 1rem;
+    border-radius: 10px;
     background-color: transparent;
 `;
 
