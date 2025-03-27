@@ -3,6 +3,7 @@ import type { CSSProperties, ElementType, PropsWithChildren } from 'react';
 import React from 'react';
 import { textStyle, highlightStyle } from './Text.style';
 import type { CSSObject } from '@emotion/react';
+import type { ReactNode } from 'react';
 
 export type TextType = keyof typeof TYPOGRAPHY;
 export type TextColor = 'black' | 'primary' | 'warning' | 'caption' | 'subCaption' | 'helper';
@@ -17,8 +18,8 @@ interface TextProps extends PropsWithChildren {
     as?: ElementType;
 }
 
-function HighLignt({ text, sx }: { text?: string | number; sx?: CSSObject }) {
-    return <span css={[highlightStyle, sx]}>{text}</span>;
+function HighLignt({ children, sx }: { children?: ReactNode; sx?: CSSObject }) {
+    return <span css={[highlightStyle, sx]}>{children}</span>;
 }
 function Text({
     type = 'bodyRegular',
