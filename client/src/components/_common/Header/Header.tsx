@@ -28,7 +28,7 @@ function Header() {
                     variant="transparent"
                     startNode={
                         <Button variant="text" size="s">
-                            <Search width="1.5rem" height="1.5 rem" />
+                            <Search width="1.5rem" height="1.5rem" />
                         </Button>
                     }
                     inputSx={{
@@ -40,7 +40,7 @@ function Header() {
                     placeholder="동아리명 검색 또는 키워드 입력"
                 />
                 <Link to="/login">
-                    <Button size="xl" variant="primary" radius="1.5rem">
+                    <Button size="xl" variant="primary" radius="10px">
                         관리자 로그인
                     </Button>
                 </Link>
