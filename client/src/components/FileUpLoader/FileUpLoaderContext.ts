@@ -6,6 +6,8 @@ interface FileUpLoaderContextType {
     setFiles: (files: File[]) => void;
     hasFile: boolean;
     setHasFile: React.Dispatch<React.SetStateAction<boolean>>;
+    handleDelete: (index: number) => void;
+    handleDeleteEntire: () => void;
 }
 
 export const FileUpLoaderContext = createContext<FileUpLoaderContextType | undefined>(undefined);
