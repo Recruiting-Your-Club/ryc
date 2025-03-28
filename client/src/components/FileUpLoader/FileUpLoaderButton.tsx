@@ -4,7 +4,7 @@ import { s_fileUpLoaderInput } from './FileUpLoader.style';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 
 function FileUpLoaderButton() {
-    const { files, setFiles } = useFileUpLoaderContext();
+    const { files, setFiles, setHasFile } = useFileUpLoaderContext();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleClick = () => {
         fileInputRef.current?.click();
@@ -18,6 +18,7 @@ function FileUpLoaderButton() {
         const copyFiles = files ? [...files, ...selectedArray] : selectedArray;
 
         setFiles(copyFiles);
+        setHasFile(true);
     };
 
     return (
