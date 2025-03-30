@@ -8,8 +8,6 @@ import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.ClubTagEntity;
 
 public class ClubMapper {
-  // TODO: created, updated 따로 변환할 필요 없을까? (Domain -> Entity) 지금 생각에는, Domain 영역에서 created,updated를
-  // 수정할 케이스가 없고, 임의로 수정되서도 안된다고 판단
   public static ClubEntity toEntity(Club club) {
     return ClubEntity.builder()
         .id(club.getId())
