@@ -5,4 +5,4 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 
 @Builder
-public record CreateClubResponse(@NotEmpty(message = "clubId shouldn't be empty") String clubId) {}
+public record ClubCreateResponse(@NotEmpty(message = "clubId shouldn't be empty") String clubId) {}

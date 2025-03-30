@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ryc.api.v2.club.presentation.dto.request.CreateClubRequest;
-import com.ryc.api.v2.club.presentation.dto.response.CreateClubResponse;
+import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.service.ClubService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +25,8 @@ public class ClubHttpApi {
   private final ClubService clubService;
 
   @PostMapping("/")
-  public ResponseEntity<?> createClub(@Valid @RequestBody CreateClubRequest body) {
-    CreateClubResponse response = clubService.createClub(body);
+  public ResponseEntity<?> createClub(@Valid @RequestBody ClubCreateRequest body) {
+    ClubCreateResponse response = clubService.createClub(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }

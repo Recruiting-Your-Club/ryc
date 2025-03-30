@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubTag;
-import com.ryc.api.v2.club.presentation.dto.request.CreateClubRequest;
-import com.ryc.api.v2.club.presentation.dto.response.CreateClubResponse;
+import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ClubService {
   private final ClubRepository clubRepository;
 
   @Transactional
-  public CreateClubResponse createClub(CreateClubRequest body) {
+  public ClubCreateResponse createClub(ClubCreateRequest body) {
     /**
      * 1. 이미지 저장 및 URL 받아오기 2. ClubTag 리스트 생성 및 Club 객체 생성 3. Club 갹채 및 ClubTags DB 저장 4. 생성한 유저,
      * 운영진 권한 부여 및 저장
@@ -38,6 +38,6 @@ public class ClubService {
     // TODO: Security Context에서 사용자를 찾고, 해당 사용자에게 MANAGER 권한 부여
     final String currentUserId = UserUtil.getCurrentUserId();
 
-    return CreateClubResponse.builder().clubId(savedClub.getId()).build();
+    return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }
 }
