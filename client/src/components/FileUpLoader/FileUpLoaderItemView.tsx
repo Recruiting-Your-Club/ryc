@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
-import type { HTMLAttributes, KeyboardEvent } from 'react';
+import type { KeyboardEvent } from 'react';
 import {
     s_fileTable,
     s_fileTableHead,
@@ -55,6 +55,7 @@ function FileUpLoaderItemView() {
                     <th>
                         <span css={s_fileNameWithIcon}>
                             <XIcon
+                                role="button"
                                 css={s_xIcon}
                                 tabIndex={0}
                                 onClick={handleDeleteEntire}
