@@ -32,10 +32,11 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
     `}
 `;
 
-export const s_fileUpLoaderHelperText = css`
+export const s_fileUpLoaderEmptyView = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
     ${theme.typography.helperTextRegular}
 `;
 export const s_fileImage = css`
