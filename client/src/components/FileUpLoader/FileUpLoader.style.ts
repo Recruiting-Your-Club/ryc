@@ -5,7 +5,7 @@ export const s_fileUpLoaderInput = css`
     display: none;
 `;
 
-export const s_fileUpLoaderBox = (hasFile: boolean) => css`
+export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
     width: 60rem;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 8px;
@@ -26,7 +26,12 @@ export const s_fileUpLoaderBox = (hasFile: boolean) => css`
               text-align: center;
               height: 5rem;
           `}
+    ${isActive &&
+    css`
+        border-color: ${theme.colors.default};
+    `}
 `;
+
 export const s_fileUpLoaderHelperText = css`
     display: flex;
     align-items: center;
