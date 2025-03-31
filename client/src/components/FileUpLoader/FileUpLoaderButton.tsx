@@ -1,25 +1,10 @@
+import React from 'react';
 import { Button } from '@components/Button';
-import React, { useRef } from 'react';
 import { s_fileUpLoaderInput } from './FileUpLoader.style';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 
 function FileUpLoaderButton() {
-    const { files, setFiles, setHasFile } = useFileUpLoaderContext();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const handleClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFiles = e.target.files;
-        if (!selectedFiles) return;
-
-        const selectedArray = Array.from(selectedFiles);
-        const copyFiles = files ? [...files, ...selectedArray] : selectedArray;
-
-        setFiles(copyFiles);
-        setHasFile(true);
-    };
+    const { fileInputRef, handleChangeFile, handleClickInput } = useFileUpLoaderContext();
 
     return (
         <>
@@ -27,10 +12,10 @@ function FileUpLoaderButton() {
                 ref={fileInputRef}
                 type="file"
                 multiple
-                onChange={handleChange}
+                onChange={handleChangeFile}
                 css={s_fileUpLoaderInput}
             />
-            <Button variant="outlined" size="s" onClick={handleClick}>
+            <Button variant="outlined" size="s" onClick={handleClickInput}>
                 파일선택
             </Button>
         </>
