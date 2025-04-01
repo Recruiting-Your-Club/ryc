@@ -5,18 +5,18 @@ import { useFileUpLoaderContext } from './FileUpLoaderContext';
 import type { KeyboardEvent } from 'react';
 
 function FileUpLoaderEmptyView() {
-    const { handleClickInput } = useFileUpLoaderContext();
+    const { handleClickButton } = useFileUpLoaderContext();
 
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter' || event.key === ' ') {
-            handleClickInput();
+            handleClickButton();
         }
     };
     return (
         <span
             role="button"
             css={s_fileUpLoaderEmptyView}
-            onClick={handleClickInput}
+            onClick={handleClickButton}
             tabIndex={0}
             onKeyDown={handleKeyDown}
         >
