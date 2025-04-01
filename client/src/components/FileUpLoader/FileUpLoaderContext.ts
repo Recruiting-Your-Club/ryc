@@ -13,7 +13,7 @@ interface FileUpLoaderContextType {
     handleDragEnd: () => void;
     handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
     fileInputRef: React.RefObject<HTMLInputElement>;
-    handleClickInput: () => void;
+    handleClickButton: () => void;
     handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
