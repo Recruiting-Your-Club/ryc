@@ -1,8 +1,7 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
 import { TestPage, NotFoundPage, LoginPage, RegisterPage } from './pages';
-import { UserLayout } from './layouts';
-import { ManagerLayout } from '@layouts/ManagerLayout/ManagerLayout';
+import { UserLayout, ManagerLayout } from './layouts';
 
 const router = createBrowserRouter([
     {
