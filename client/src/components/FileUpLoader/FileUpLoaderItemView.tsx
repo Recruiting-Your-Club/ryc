@@ -2,12 +2,14 @@ import React from 'react';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 import type { KeyboardEvent } from 'react';
 import {
-    s_fileTable,
-    s_fileTableHead,
-    s_fileTableBody,
+    s_fileItemList,
+    s_fileItem,
+    s_fileHeader,
+    s_fileRow,
     s_fileNameWithIcon,
-    s_fileIcon,
+    s_fileMetaItem,
     s_xIcon,
+    s_fileHeaderText,
 } from './FileUpLoader.style';
 import PdfIcon from '@assets/images/PdfIcon.svg';
 import WordIcon from '@assets/images/DocIcon.svg';
@@ -49,53 +51,53 @@ function FileUpLoaderItemView() {
     };
 
     return (
-        <table css={s_fileTable}>
-            <thead css={s_fileTableHead}>
-                <tr>
-                    <th>
-                        <span css={s_fileNameWithIcon}>
-                            <XIcon
-                                role="button"
-                                css={s_xIcon}
-                                tabIndex={0}
-                                onClick={handleDeleteEntire}
-                                onKeyDown={handleKeyDown}
-                            />
-                            파일명
-                        </span>
-                    </th>
-                    <th>최종 수정 일시</th>
-                    <th>크기</th>
-                    <th>파일 유형</th>
-                </tr>
-            </thead>
-            <tbody css={s_fileTableBody}>
-                {files?.map((file, idx) => {
+        <div>
+            {/* 헤더 */}
+            <div css={s_fileHeader}>
+                <div css={s_fileRow}>
+                    <XIcon
+                        css={s_xIcon}
+                        role="button"
+                        tabIndex={0}
+                        onClick={handleDeleteEntire}
+                        onKeyDown={handleKeyDown}
+                    />
+                    <div style={{ textAlign: 'left' }}>파일명</div>
+                    <div css={s_fileHeaderText}>최종 수정 일시</div>
+                    <div css={s_fileHeaderText}>크기</div>
+                    <div css={s_fileHeaderText}>파일 유형</div>
+                </div>
+            </div>
+
+            {/* 리스트 */}
+            <ul css={s_fileItemList}>
+                {files?.map((file, index) => {
                     const ext = getExtension(file.name);
                     const IconComponent = fileTypeIcons[ext];
 
                     return (
-                        <tr key={idx}>
-                            <td>
-                                <span css={s_fileNameWithIcon}>
-                                    <XIcon
-                                        css={s_xIcon}
-                                        tabIndex={0}
-                                        onClick={() => handleDelete(idx)}
-                                        onKeyDown={handleKeyDown}
-                                    />
-                                    <IconComponent css={s_fileIcon} />
-                                    {file.name}
-                                </span>
-                            </td>
-                            <td>{formatDate(file.lastModified)}</td>
-                            <td>{formatBytes(file.size)}</td>
-                            <td>{file.type}</td>
-                        </tr>
+                        <li key={index} css={s_fileItem}>
+                            <div css={s_fileRow}>
+                                <XIcon
+                                    css={s_xIcon}
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => handleDelete(index)}
+                                    onKeyDown={handleKeyDown}
+                                />
+                                <div css={s_fileNameWithIcon}>
+                                    {IconComponent && <IconComponent />}
+                                    <span>{file.name}</span>
+                                </div>
+                                <div css={s_fileMetaItem}>{formatDate(file.lastModified)}</div>
+                                <div css={s_fileMetaItem}>{formatBytes(file.size)}</div>
+                                <div css={s_fileMetaItem}>{ext}</div>
+                            </div>
+                        </li>
                     );
                 })}
-            </tbody>
-        </table>
+            </ul>
+        </div>
     );
 }
 

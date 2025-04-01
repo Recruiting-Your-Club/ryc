@@ -13,6 +13,7 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
     padding: 0;
     ${theme.typography.helperTextRegular};
     overflow: auto;
+    overflow-x: hidden;
 
     ${hasFile
         ? css`
@@ -39,45 +40,64 @@ export const s_fileUpLoaderEmptyView = css`
     cursor: pointer;
     ${theme.typography.helperTextRegular}
 `;
+
 export const s_fileImage = css`
     margin-right: 0.5rem;
 `;
 
-export const s_fileTable = css`
-    width: 100%;
-    text-align: left;
-`;
-
-export const s_fileTableHead = css`
+export const s_fileHeader = css`
+    border-bottom: 1px solid ${theme.colors.gray[300]};
+    padding: 0.75rem 1rem;
     background-color: ${theme.colors.gray[100]};
     color: ${theme.colors.gray[700]};
     ${theme.typography.subCaptionRegular};
-    th {
-        padding: 0.5rem;
-    }
 `;
 
-export const s_fileTableBody = css`
-    td {
-        padding: 0.75rem;
-        border-top: 1px solid ${theme.colors.gray[200]};
-        word-break: break-all;
-    }
+export const s_fileRow = css`
+    display: grid;
+    grid-template-columns: 5% 45% 20% 15% 15%;
+    align-items: center;
+    gap: 0.5rem;
+    padding-right: 1rem;
+`;
+
+export const s_fileHeaderText = css`
+    text-align: center;
+`;
+
+export const s_fileItemList = css`
+    list-style: none;
+    padding: 0;
+    margin: 0;
+`;
+
+export const s_fileItem = css`
+    padding: 1rem;
+    border-bottom: 1px solid ${theme.colors.gray[200]};
 `;
 
 export const s_fileNameWithIcon = css`
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
+    ${theme.typography.helperTextBold};
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
-export const s_fileIcon = css`
-    width: 1.25rem;
-    height: 1.25rem;
+export const s_fileMetaItem = css`
+    color: ${theme.colors.gray[600]};
+    ${theme.typography.helperTextRegular};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
 `;
+
 export const s_xIcon = css`
-    width: 1.25rem;
-    height: 1.25rem;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
 `;
