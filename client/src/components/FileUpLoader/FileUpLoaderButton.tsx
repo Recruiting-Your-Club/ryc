@@ -4,7 +4,7 @@ import { s_fileUpLoaderInput } from './FileUpLoader.style';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 
 function FileUpLoaderButton() {
-    const { fileInputRef, handleChangeFile, handleClickInput } = useFileUpLoaderContext();
+    const { fileInputRef, handleChangeFile, handleClickButton } = useFileUpLoaderContext();
 
     return (
         <>
@@ -15,7 +15,7 @@ function FileUpLoaderButton() {
                 onChange={handleChangeFile}
                 css={s_fileUpLoaderInput}
             />
-            <Button variant="outlined" size="s" onClick={handleClickInput}>
+            <Button variant="outlined" size="s" onClick={handleClickButton}>
                 파일선택
             </Button>
         </>

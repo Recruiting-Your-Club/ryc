@@ -7,6 +7,7 @@ import { FileUpLoaderItemView } from './FileUpLoaderItemView';
 function FileUpLoaderBox() {
     const { files, hasFile, isActive, handleDragStart, handleDragEnd, handleDrop } =
         useFileUpLoaderContext();
+
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     };
