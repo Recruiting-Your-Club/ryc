@@ -80,7 +80,7 @@ export const s_fileNameWithIcon = css`
     display: flex;
     align-items: center;
     gap: 1rem;
-    ${theme.typography.helperTextBold};
+    ${theme.typography.helperTextRegular};
     word-break: break-all;
     overflow: hidden;
     text-overflow: ellipsis;
