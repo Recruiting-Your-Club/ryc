@@ -17,7 +17,18 @@ const router = createBrowserRouter([
     {
         path: '/manager',
         element: <ManagerLayout />,
-        children: [{ index: true, element: <TestPage /> }],
+        children: [
+            { index: true, element: <TestPage /> },
+            { path: 'test', element: <LoginPage /> },
+            { path: 'recruitment', element: <RegisterPage /> },
+            { path: 'steps', element: <LoginPage /> },
+            { path: 'rejected', element: <RegisterPage /> },
+            { path: 'edit', element: <LoginPage /> },
+            { path: 'time-slots', element: <RegisterPage /> },
+            { path: 'evaluation', element: <LoginPage /> },
+            { path: 'questions', element: <RegisterPage /> },
+            { path: 'setting', element: <LoginPage /> },
+        ],
     },
 ]);
 

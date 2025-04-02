@@ -8,29 +8,22 @@ export const sideBarContainer = (isCollapsed: boolean) => css`
     left: 0;
     height: 100dvh;
     overflow: clip;
-    width: ${isCollapsed ? '6rem' : '30rem'};
-    background-color: ${theme.colors.gray[100]};
-    border-right: 1px solid #e9ecef;
-`;
-
-export const headerContainer = css`
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 1rem;
-    width: 100%;
+    width: ${isCollapsed ? '7rem' : '30rem'};
+    background-color: #f6f7f9;
+    border-right: 1px solid ${theme.colors.gray[100]};
+    transition: all 0.2s ease-out;
 `;
 
 export const sectionContainer = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem 0 3rem;
-    width: 6rem;
+    padding: 2rem 0 3rem;
+    width: 7rem;
     height: inherit;
     overflow: auto;
     z-index: 1;
-    border-right: 1px solid black;
+    border-right: 1px solid ${theme.colors.gray[300]};
 `;
 
 export const navContainer = css`
@@ -41,14 +34,67 @@ export const navContainer = css`
     gap: 1rem;
 `;
 
-export const menuContainer = css`
+export const menuListContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
+    margin-bottom: 1rem;
+`;
+
+/**
+export const sectionMenuTitle = css`
+    ${theme.typography.captionSemibold}
+    color: ${theme.colors.gray[700]};
+`
+ */
+
+export const menuButton = (isActive: boolean) => css`
+    width: 4rem;
+    height: 4rem;
+    border-radius: 10px;
+    ${isActive && `background-color: ${theme.colors.gray[300]};`}
+    :hover {
+        background-color: ${theme.colors.gray[300]};
+    }
 `;
 export const contentContainer = css`
-    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    width: 23rem;
     height: inherit;
+    border-right: 1px solid ${theme.colors.gray[300]};
+    padding: 2rem 0rem;
+`;
+
+export const menuTitle = css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    padding: 0 1rem;
+    ${theme.typography.h4Semibold}
+`;
+
+export const menuContainer = css`
+    padding: 0 0.5rem;
+`;
+export const menuContent = (isActive: boolean) => css`
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 4rem;
+    width: 100%;
+    padding: 0 1rem;
+    border-radius: 7px;
+    ${theme.typography.captionRegular};
+    ${isActive &&
+    css`
+        background-color: ${theme.colors.blue[100]};
+        color: ${theme.colors.defaultHover};
+    `}
+    :hover {
+        color: ${theme.colors.defaultHover};
+    }
 `;
