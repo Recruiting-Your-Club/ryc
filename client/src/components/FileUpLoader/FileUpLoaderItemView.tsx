@@ -16,7 +16,7 @@ import WordIcon from '@assets/images/DocIcon.svg';
 import ExcelIcon from '@assets/images/XlsxIcon.svg';
 import PptIcon from '@assets/images/PptIcon.svg';
 import ZipIcon from '@assets/images/ZipIcon.svg';
-import XIcon from '@assets/images/xIcon.svg';
+import XIcon from '@assets/images/gray_xicon.svg';
 
 const fileTypeIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
     pdf: PdfIcon,
