@@ -5,7 +5,7 @@ export const s_fileUpLoaderInput = css`
     display: none;
 `;
 
-export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
+export const s_fileUpLoaderBox = (hasFile: boolean) => css`
     width: 60rem;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 8px;
@@ -13,12 +13,17 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
     padding: 0;
     ${theme.typography.helperTextRegular};
     overflow: auto;
-    overflow-x: hidden;
+    cursor: pointer;
+
+    &:hover {
+        border-color: ${theme.colors.default};
+    }
 
     ${hasFile
         ? css`
               display: block;
               max-height: 10rem;
+              cursor: default;
           `
         : css`
               display: flex;
@@ -27,17 +32,12 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
               text-align: center;
               height: 5rem;
           `}
-    ${isActive &&
-    css`
-        border-color: ${theme.colors.default};
-    `}
 `;
 
 export const s_fileUpLoaderEmptyView = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    cursor: pointer;
     ${theme.typography.helperTextRegular}
 `;
 
