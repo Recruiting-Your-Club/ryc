@@ -15,7 +15,12 @@ function FileUpLoaderButton() {
                 onChange={handleChangeFile}
                 css={s_fileUpLoaderInput}
             />
-            <Button variant="outlined" size="s" onClick={handleClickButton}>
+            <Button
+                variant="outlined"
+                size="s"
+                onClick={handleClickButton}
+                sx={{ padding: '1rem' }}
+            >
                 파일선택
             </Button>
         </>
