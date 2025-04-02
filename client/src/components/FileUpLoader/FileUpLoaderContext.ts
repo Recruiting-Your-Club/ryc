@@ -11,6 +11,7 @@ interface FileUpLoaderContextType {
     handleDeleteEntire: () => void;
     handleDragStart: () => void;
     handleDragEnd: () => void;
+    handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
     handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
     fileInputRef: React.RefObject<HTMLInputElement>;
     handleClickButton: () => void;
