@@ -10,6 +10,7 @@ import {
     s_fileMetaItem,
     s_xIcon,
     s_fileHeaderText,
+    s_fileImagePreview,
 } from './FileUpLoader.style';
 import PdfIcon from '@assets/images/PdfIcon.svg';
 import WordIcon from '@assets/images/DocIcon.svg';
@@ -22,9 +23,10 @@ const fileTypeIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
     pdf: PdfIcon,
     docx: WordIcon,
     xlsx: ExcelIcon,
-    ppt: PptIcon,
+    pptx: PptIcon,
     zip: ZipIcon,
 };
+const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
 function getExtension(fileName: string): string {
     return fileName.split('.').pop()?.toLowerCase() || '';
@@ -74,6 +76,7 @@ function FileUpLoaderItemView() {
                 {files?.map((file, index) => {
                     const ext = getExtension(file.name);
                     const IconComponent = fileTypeIcons[ext];
+                    const isImage = imageExtensions.includes(ext);
 
                     return (
                         <li key={index} css={s_fileItem}>
@@ -86,8 +89,22 @@ function FileUpLoaderItemView() {
                                     onKeyDown={handleKeyDown}
                                 />
                                 <div css={s_fileNameWithIcon}>
-                                    {IconComponent && <IconComponent />}
-                                    <span>{file.name}</span>
+                                    {isImage ? (
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt={file.name}
+                                            css={s_fileImagePreview}
+                                        />
+                                    ) : (
+                                        IconComponent && <IconComponent />
+                                    )}
+                                    <a
+                                        href={URL.createObjectURL(file)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {file.name}
+                                    </a>
                                 </div>
                                 <div css={s_fileMetaItem}>{formatDate(file.lastModified)}</div>
                                 <div css={s_fileMetaItem}>{formatBytes(file.size)}</div>
