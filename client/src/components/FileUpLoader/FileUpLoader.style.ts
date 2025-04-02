@@ -101,3 +101,9 @@ export const s_xIcon = css`
     align-items: center;
     cursor: pointer;
 `;
+
+export const s_fileImagePreview = css`
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+`;
