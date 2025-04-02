@@ -7,9 +7,9 @@ function ManagerLayout() {
     return (
         <>
             <div css={layoutContainer}>
-                <SideBar />
+                <ManagerHeader />
                 <div css={contentContainer}>
-                    <ManagerHeader />
+                    <SideBar />
                     <Outlet />
                 </div>
             </div>

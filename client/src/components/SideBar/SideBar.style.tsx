@@ -6,7 +6,7 @@ export const sideBarContainer = (isCollapsed: boolean) => css`
     position: sticky;
     top: 0;
     left: 0;
-    height: 100dvh;
+    height: 100%;
     overflow: clip;
     width: ${isCollapsed ? '7rem' : '30rem'};
     background-color: #f6f7f9;
@@ -22,7 +22,6 @@ export const sectionContainer = css`
     width: 7rem;
     height: inherit;
     overflow: auto;
-    z-index: 1;
     border-right: 1px solid ${theme.colors.gray[300]};
 `;
 
@@ -43,14 +42,20 @@ export const menuListContainer = css`
     margin-bottom: 1rem;
 `;
 
-/**
-export const sectionMenuTitle = css`
-    ${theme.typography.captionSemibold}
-    color: ${theme.colors.gray[700]};
-`
- */
-
+export const emptyContainer = css`
+    display: flex;
+    flex: 1 1 0%;
+    min-height: 5rem;
+`;
+export const imageContainer = css`
+    width: 4rem;
+    height: 4rem;
+    border-radius: 10px;
+`;
 export const menuButton = (isActive: boolean) => css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 4rem;
     height: 4rem;
     border-radius: 10px;

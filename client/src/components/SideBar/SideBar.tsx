@@ -9,13 +9,18 @@ import {
     menuContent,
     menuListContainer,
     menuButton,
+    emptyContainer,
+    imageContainer,
 } from './SideBar.style';
-import { Button, Text, Divider } from '@components';
+import { Button, Divider } from '@components';
+import { useRouter } from '@hooks/useRouter';
+import basicImage from '@assets/images/basicImage.png';
+import EditApplication from '@assets/images/EditApplication.svg';
+import ApplicationManage from '@assets/images/ApplicationManage.svg';
 import Home from '@assets/images/home.svg';
 import AplicantManage from '@assets/images/AplicantManage.svg';
 import UserSet from '@assets/images/UserSet.svg';
 import Ryc from '@assets/images/Ryc.svg';
-import { useRouter } from '@hooks/useRouter';
 
 function SideBar() {
     // prop destruction
@@ -23,8 +28,8 @@ function SideBar() {
     const menuItems = [
         { id: 1, title: '모집공고', icon: <Home /> },
         { id: 2, title: '지원자 관리', icon: <AplicantManage /> },
-        { id: 3, title: '공고 편집', icon: <AplicantManage /> },
-        { id: 4, title: '면접 관리', icon: <AplicantManage /> },
+        { id: 3, title: '공고 편집', icon: <EditApplication /> },
+        { id: 4, title: '면접 관리', icon: <ApplicationManage /> },
         { id: 5, title: '사용자 설정', icon: <UserSet /> },
     ];
 
@@ -46,6 +51,7 @@ function SideBar() {
     const [filteredSubMenu, setFilteredSubMenu] = useState<
         { parentId: number; title: string; link: string }[]
     >([]);
+
     // form hooks
     // query hooks
     // calculated values
@@ -64,19 +70,11 @@ function SideBar() {
 
     // handlers
     const handleCollapsed = (id: number) => {
-        if (!isCollapsed) {
-            // 열려있을 때
-            // 닫음
-            if (activeMenu === id) {
-                setIsCollapsed(true);
-            }
-            // active
-            else {
-                setActiveMenu(id);
-            }
-        } else {
-            // 열림
+        if (isCollapsed || activeMenu !== id) {
+            setActiveMenu(id);
             setIsCollapsed(false);
+        } else {
+            setIsCollapsed(true);
         }
     };
 
@@ -92,12 +90,13 @@ function SideBar() {
                                 marginBottom: '2rem',
                             }}
                         >
-                            <Ryc style={{ borderRadius: '6px' }} />
+                            <div css={imageContainer}>
+                                <Ryc width="100%" height="100%" css={{ borderRadius: '10px' }} />
+                            </div>
                         </Button>
                         {menuItems.map((item) => (
                             <div key={item.id} css={menuListContainer}>
                                 <Button
-                                    key={item.id}
                                     variant="transparent"
                                     size="lg"
                                     sx={menuButton(item.id === activeMenu)}
@@ -106,11 +105,22 @@ function SideBar() {
                                         setActiveMenu(item.id);
                                     }}
                                 >
-                                    <div>{item.icon}</div>
+                                    {item.icon}
                                 </Button>
                             </div>
                         ))}
                     </nav>
+                    <div css={emptyContainer} />
+
+                    <div css={imageContainer}>
+                        <img
+                            src={basicImage}
+                            alt="User profile"
+                            width="100%"
+                            height="100%"
+                            style={{ borderRadius: '10px' }}
+                        />
+                    </div>
                 </section>
 
                 {!isCollapsed && (
