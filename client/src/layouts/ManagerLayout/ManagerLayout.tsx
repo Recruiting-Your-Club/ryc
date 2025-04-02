@@ -1,15 +1,17 @@
 import React from 'react';
-import { Header } from '@components/Header';
-import { SideBar } from '@components';
+import { SideBar, ManagerHeader } from '@components';
 import { Outlet } from 'react-router-dom';
-import { ManagerLayoutCss } from './ManagerLayout.style';
+import { layoutContainer, contentContainer } from './ManagerLayout.style';
 
 function ManagerLayout() {
     return (
         <>
-            <div css={ManagerLayoutCss}>
+            <div css={layoutContainer}>
                 <SideBar />
-                <Outlet />
+                <div css={contentContainer}>
+                    <ManagerHeader />
+                    <Outlet />
+                </div>
             </div>
         </>
     );
