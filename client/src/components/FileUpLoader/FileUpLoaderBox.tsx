@@ -3,33 +3,20 @@ import { s_fileUpLoaderBox } from './FileUpLoader.style';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 import { FileUpLoaderEmptyView } from './FileUpLoaderEmptyView';
 import { FileUpLoaderItemView } from './FileUpLoaderItemView';
-import type { KeyboardEvent } from 'react';
 
 function FileUpLoaderBox() {
-    const { files, hasFile, handleDragStart, handleDragEnd, handleDrop, handleClickButton } =
+    const { files, hasFile, isActive, handleDragStart, handleDragEnd, handleDragOver, handleDrop } =
         useFileUpLoaderContext();
-
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-    };
-
-    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            handleClickButton();
-        }
-    };
 
     return (
         <div
-            role="button"
-            css={s_fileUpLoaderBox(hasFile)}
+            role="region"
+            aria-label="파일을 여기에 드래그하여 업로드하세요"
+            css={s_fileUpLoaderBox(hasFile, isActive)}
             onDragEnter={handleDragStart}
             onDragLeave={handleDragEnd}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            onKeyDown={handleKeyDown}
-            onClick={handleClickButton}
-            tabIndex={0}
         >
             {files?.length === 0 ? <FileUpLoaderEmptyView /> : <FileUpLoaderItemView />}
         </div>

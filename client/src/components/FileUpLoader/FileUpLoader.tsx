@@ -47,6 +47,10 @@ function FileUpLoaderRoot({ children }: FileUpLoaderProps) {
     const handleDragEnd = () => {
         return setIsActive(false);
     };
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+    };
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const droppedFiles = Array.from(e.dataTransfer.files);
@@ -54,6 +58,7 @@ function FileUpLoaderRoot({ children }: FileUpLoaderProps) {
 
         setFiles((prev) => [...prev, ...droppedFiles]);
         setHasFile(true);
+        setIsActive(false);
     };
 
     //ref는 자체가 바뀌지는 않기 때문에 안넣어줘도 된다.
@@ -69,6 +74,7 @@ function FileUpLoaderRoot({ children }: FileUpLoaderProps) {
             handleDeleteEntire,
             handleDragStart,
             handleDragEnd,
+            handleDragOver,
             handleDrop,
             fileInputRef,
             handleClickButton,
