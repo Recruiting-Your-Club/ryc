@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
     sideBarContainer,
     sectionContainer,
@@ -22,61 +23,82 @@ import AplicantManage from '@assets/images/AplicantManage.svg';
 import UserSet from '@assets/images/UserSet.svg';
 import Ryc from '@assets/images/Ryc.svg';
 
-function SideBar() {
+interface MenuItem {
+    id: number;
+    menu: string;
+    icon: React.ReactNode;
+}
+interface SubMenuItem {
+    parentId: number;
+    subMenu: string;
+    link: string;
+}
+
+function SideBar(menu?: MenuItem[], subMenu?: SubMenuItem[]) {
     // prop destruction
-    const menuItems = [
-        { id: 1, title: '모집공고', icon: <Home /> },
-        { id: 2, title: '지원자 관리', icon: <AplicantManage /> },
-        { id: 3, title: '공고 편집', icon: <EditApplication /> },
-        { id: 4, title: '면접 관리', icon: <ApplicationManage /> },
-        { id: 5, title: '사용자 설정', icon: <UserSet /> },
+    const defaultMenuItems: MenuItem[] = [
+        { id: 1, menu: '모집공고', icon: <Home /> },
+        { id: 2, menu: '지원자 관리', icon: <AplicantManage /> },
+        { id: 3, menu: '공고 편집', icon: <EditApplication /> },
+        { id: 4, menu: '면접 관리', icon: <ApplicationManage /> },
+        { id: 5, menu: '사용자 설정', icon: <UserSet /> },
     ];
 
-    const subMenuItems = [
-        { parentId: 1, title: '모집공고', link: '/manager/recruitment' },
-        { parentId: 2, title: '단계별 통합 관리', link: '/manager/steps' },
-        { parentId: 2, title: '불합격자 관리', link: '/manager/rejected' },
-        { parentId: 3, title: '공고 편집', link: '/manager/edit' },
-        { parentId: 4, title: '시간대 별 지원자 편집', link: '/manager/time-slots' },
-        { parentId: 4, title: '면접 평가 테이블', link: '/manager/evaluation' },
-        { parentId: 4, title: '면접 공통 질문 설정', link: '/manager/questions' },
-        { parentId: 5, title: '사용자 권한 설정', link: '/manager/setting' },
+    const defaultSubMenuItems: SubMenuItem[] = [
+        { parentId: 1, subMenu: '모집공고', link: '/manager/recruitment' },
+        { parentId: 2, subMenu: '단계별 통합 관리', link: '/manager/steps' },
+        { parentId: 2, subMenu: '불합격자 관리', link: '/manager/rejected' },
+        { parentId: 3, subMenu: '공고 편집', link: '/manager/edit' },
+        { parentId: 4, subMenu: '시간대 별 지원자 편집', link: '/manager/time-slots' },
+        { parentId: 4, subMenu: '면접 평가 테이블', link: '/manager/evaluation' },
+        { parentId: 4, subMenu: '면접 공통 질문 설정', link: '/manager/questions' },
+        { parentId: 5, subMenu: '사용자 권한 설정', link: '/manager/setting' },
     ];
+    const menuItems = Array.isArray(menu) ? menu : defaultMenuItems;
+    const subMenuItems = Array.isArray(subMenu) ? subMenu : defaultSubMenuItems;
+
     // lib hooks
+    const location = useLocation();
     const { goTo } = useRouter();
 
     // state, ref, querystring hooks
-    const [activeMenu, setActiveMenu] = useState<number | undefined>(1);
-    const [activeSubMenu, setActiveSubMenu] = useState<string | undefined>(subMenuItems[0].title);
+    const [activeMenu, setActiveMenu] = useState<number | undefined>(getCurrentMenuId());
+    const [activeSubMenu, setActiveSubMenu] = useState<string>(getCurrentSubMenuTitle());
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [filteredSubMenu, setFilteredSubMenu] = useState<
-        { parentId: number; title: string; link: string }[]
-    >([]);
+    const [filteredSubMenu, setFilteredSubMenu] = useState<SubMenuItem[]>([]);
 
     // form hooks
     // query hooks
     // calculated values
     // effects
     useEffect(() => {
-        setFilteredSubMenu(subMenuItems.filter((item) => item.parentId === activeMenu));
-    }, [activeMenu]);
-
-    useEffect(() => {
-        // active된거 초기화
+        // 접힌 상태에서는 활성 메뉴 초기화
         if (isCollapsed) {
             setActiveMenu(undefined);
+        } else if (activeMenu) {
+            setFilteredSubMenu(subMenuItems.filter((item) => item.parentId === activeMenu));
         }
-    }, [isCollapsed]);
+    }, [isCollapsed, activeMenu]);
 
     // handlers
+    //NOTE useState의 초기값인데 const로 선언하면 정의해둔 위치에 어긋나기 때문에 호이스팅을 이용하기 위해 function을 사용
+    function getCurrentSubMenuTitle() {
+        const currentPath = location.pathname;
+        const activatedSubMenu = subMenuItems.find((item) => item.link === currentPath);
+        return activatedSubMenu ? activatedSubMenu.subMenu : subMenuItems[0].subMenu;
+    }
+    function getCurrentMenuId() {
+        const currentPath = location.pathname;
+        const activatedSubMenu = subMenuItems.find((item) => item.link === currentPath);
+        return activatedSubMenu ? activatedSubMenu.parentId : 1;
+    }
+
     const handleCollapsed = (id: number) => {
         if (isCollapsed || activeMenu !== id) {
             setActiveMenu(id);
             setIsCollapsed(false);
         } else {
-            setTimeout(() => {
-                setIsCollapsed(true);
-            }, 100);
+            setIsCollapsed(true);
         }
     };
 
@@ -89,7 +111,7 @@ function SideBar() {
                             variant="transparent"
                             size="lg"
                             sx={{
-                                marginBottom: '2rem',
+                                marginBottom: '1rem',
                                 width: '4rem',
                                 height: '4rem',
                                 padding: '0',
@@ -127,12 +149,12 @@ function SideBar() {
                 </section>
 
                 {!isCollapsed && (
-                    <div css={contentContainer}>
+                    <section css={contentContainer}>
                         {menuItems
                             .filter((item) => item.id === activeMenu)
                             .map((item) => (
                                 <div key={item.id} css={menuTitle}>
-                                    {item.title}
+                                    {item.menu}
                                 </div>
                             ))}
 
@@ -147,19 +169,19 @@ function SideBar() {
                                 .filter((item) => item.parentId === activeMenu)
                                 .map((item) => (
                                     <Button
-                                        key={item.parentId}
+                                        key={item.subMenu}
                                         variant="text"
                                         onClick={() => {
-                                            setActiveSubMenu(item.title);
+                                            setActiveSubMenu(item.subMenu);
                                             goTo(item.link);
                                         }}
-                                        sx={menuContent(activeSubMenu === item.title)}
+                                        sx={menuContent(activeSubMenu === item.subMenu)}
                                     >
-                                        {item.title}
+                                        {item.subMenu}
                                     </Button>
                                 ))}
                         </div>
-                    </div>
+                    </section>
                 )}
             </div>
         </>

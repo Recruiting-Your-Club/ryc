@@ -1,15 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 import theme from '@styles/theme';
 
-const test = keyframes`
-    0% {
-        width: 30rem;
-    }
-    100% {
-        width: 100rem;
-    }
-`;
-
 export const sideBarContainer = (isCollapsed: boolean) => css`
     display: flex;
     position: sticky;
@@ -20,10 +11,7 @@ export const sideBarContainer = (isCollapsed: boolean) => css`
     width: ${isCollapsed ? '7rem' : '30rem'};
     background-color: #f6f7f9;
     border-right: 1px solid ${theme.colors.gray[100]};
-    //transition: all 0.2s ease-out;
-    animation: ${isCollapsed
-        ? `${test} 0.2s ease-out forwards`
-        : `${test} 0.2s ease-out reverse forwards`};
+    transition: all 0.2s ease-out;
 `;
 
 export const sectionContainer = css`
