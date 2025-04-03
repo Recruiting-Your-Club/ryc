@@ -18,7 +18,7 @@ import { useRouter } from '@hooks/useRouter';
 import basicImage from '@assets/images/basicImage.png';
 import EditApplication from '@assets/images/EditApplication.svg';
 import ApplicationManage from '@assets/images/ApplicationManage.svg';
-import Home from '@assets/images/home.svg';
+import Home from '@assets/images/Home.svg';
 import AplicantManage from '@assets/images/AplicantManage.svg';
 import UserSet from '@assets/images/UserSet.svg';
 import Ryc from '@assets/images/Ryc.svg';
