@@ -109,7 +109,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
 
     return (
         <>
-            <div css={sideBarContainer}>
+            <aside css={sideBarContainer}>
                 <section css={sectionContainer}>
                     <nav css={navContainer}>
                         <Button
@@ -186,7 +186,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
                             ))}
                     </div>
                 </section>
-            </div>
+            </aside>
         </>
     );
 }
