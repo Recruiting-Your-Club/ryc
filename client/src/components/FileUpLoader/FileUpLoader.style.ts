@@ -7,24 +7,27 @@ export const s_fileUpLoaderInput = css`
 
 export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
     width: 60rem;
-    height: 8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
+    min-height: 8rem;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 8px;
     margin-top: 0.5rem;
     padding: 0;
     ${theme.typography.helperTextRegular};
-    overflow: auto;
+
+    ${!hasFile &&
+    css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    `}
+
     ${hasFile &&
     css`
         display: block;
-        max-height: 10rem;
     `}
-    ${isActive &&
+
+  ${isActive &&
     css`
         border-color: ${theme.colors.default};
         background-color: ${theme.colors.gray[100]};
@@ -36,6 +39,13 @@ export const s_fileUpLoaderEmptyView = css`
     align-items: center;
     justify-content: space-between;
     ${theme.typography.helperTextRegular}
+`;
+
+export const s_fileUpLoaderItemList = css`
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 8rem;
 `;
 
 export const s_fileImage = css`
@@ -58,14 +68,8 @@ export const s_fileRow = css`
     padding-right: 1rem;
 `;
 
-export const s_fileHeaderText = css`
-    text-align: center;
-`;
-
-export const s_fileItemList = css`
-    list-style: none;
-    padding: 0;
-    margin: 0;
+export const s_fileHeaderText = (align: 'left' | 'center' | 'right') => css`
+    text-align: ${align};
 `;
 
 export const s_fileItem = css`
