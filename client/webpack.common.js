@@ -48,6 +48,7 @@ module.exports = {
     output: {
         filename: 'ryc.bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
         clean: true,
     },
     plugins: [
