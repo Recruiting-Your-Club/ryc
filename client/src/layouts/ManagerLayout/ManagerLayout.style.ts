@@ -12,5 +12,5 @@ export const contentContainer = css`
     flex: 1;
     width: 100%;
     overflow-y: auto;
-    background-color: #f8f9fa;
+    background-color: white;
 `;
