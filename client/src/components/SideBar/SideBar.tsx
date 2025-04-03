@@ -24,7 +24,6 @@ import Ryc from '@assets/images/Ryc.svg';
 
 function SideBar() {
     // prop destruction
-    const { goTo } = useRouter();
     const menuItems = [
         { id: 1, title: '모집공고', icon: <Home /> },
         { id: 2, title: '지원자 관리', icon: <AplicantManage /> },
@@ -44,6 +43,8 @@ function SideBar() {
         { parentId: 5, title: '사용자 권한 설정', link: '/manager/setting' },
     ];
     // lib hooks
+    const { goTo } = useRouter();
+
     // state, ref, querystring hooks
     const [activeMenu, setActiveMenu] = useState<number | undefined>(1);
     const [activeSubMenu, setActiveSubMenu] = useState<string | undefined>(subMenuItems[0].title);
@@ -64,7 +65,6 @@ function SideBar() {
         // active된거 초기화
         if (isCollapsed) {
             setActiveMenu(undefined);
-            setActiveSubMenu('');
         }
     }, [isCollapsed]);
 
@@ -74,7 +74,9 @@ function SideBar() {
             setActiveMenu(id);
             setIsCollapsed(false);
         } else {
-            setIsCollapsed(true);
+            setTimeout(() => {
+                setIsCollapsed(true);
+            }, 100);
         }
     };
 
@@ -88,11 +90,12 @@ function SideBar() {
                             size="lg"
                             sx={{
                                 marginBottom: '2rem',
+                                width: '4rem',
+                                height: '4rem',
+                                padding: '0',
                             }}
                         >
-                            <div css={imageContainer}>
-                                <Ryc width="100%" height="100%" css={{ borderRadius: '10px' }} />
-                            </div>
+                            <Ryc width="100%" height="100%" css={{ borderRadius: '10px' }} />
                         </Button>
                         {menuItems.map((item) => (
                             <div key={item.id} css={menuListContainer}>
