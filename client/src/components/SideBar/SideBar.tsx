@@ -34,7 +34,12 @@ interface SubMenuItem {
     link: string;
 }
 
-function SideBar(menu?: MenuItem[], subMenu?: SubMenuItem[]) {
+interface SideBarProps {
+    menu?: MenuItem[];
+    subMenu?: SubMenuItem[];
+}
+
+function SideBar({ menu, subMenu }: SideBarProps) {
     // prop destruction
     const defaultMenuItems: MenuItem[] = [
         { id: 1, menu: '모집공고', icon: <Home /> },
@@ -64,7 +69,7 @@ function SideBar(menu?: MenuItem[], subMenu?: SubMenuItem[]) {
     // state, ref, querystring hooks
     const [activeMenu, setActiveMenu] = useState<number | undefined>(getCurrentMenuId());
     const [activeSubMenu, setActiveSubMenu] = useState<string>(getCurrentSubMenuTitle());
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
     const [filteredSubMenu, setFilteredSubMenu] = useState<SubMenuItem[]>([]);
 
     // form hooks
@@ -73,12 +78,12 @@ function SideBar(menu?: MenuItem[], subMenu?: SubMenuItem[]) {
     // effects
     useEffect(() => {
         // 접힌 상태에서는 활성 메뉴 초기화
-        if (isCollapsed) {
+        if (!isExpanded) {
             setActiveMenu(undefined);
         } else if (activeMenu) {
             setFilteredSubMenu(subMenuItems.filter((item) => item.parentId === activeMenu));
         }
-    }, [isCollapsed, activeMenu]);
+    }, [isExpanded, activeMenu]);
 
     // handlers
     //NOTE useState의 초기값인데 const로 선언하면 정의해둔 위치에 어긋나기 때문에 호이스팅을 이용하기 위해 function을 사용
@@ -94,17 +99,17 @@ function SideBar(menu?: MenuItem[], subMenu?: SubMenuItem[]) {
     }
 
     const handleCollapsed = (id: number) => {
-        if (isCollapsed || activeMenu !== id) {
+        if (!isExpanded || activeMenu !== id) {
             setActiveMenu(id);
-            setIsCollapsed(false);
+            setIsExpanded(true);
         } else {
-            setIsCollapsed(true);
+            setIsExpanded(false);
         }
     };
 
     return (
         <>
-            <div css={sideBarContainer(isCollapsed)}>
+            <div css={sideBarContainer}>
                 <section css={sectionContainer}>
                     <nav css={navContainer}>
                         <Button
@@ -148,41 +153,39 @@ function SideBar(menu?: MenuItem[], subMenu?: SubMenuItem[]) {
                     </div>
                 </section>
 
-                {!isCollapsed && (
-                    <section css={contentContainer}>
-                        {menuItems
-                            .filter((item) => item.id === activeMenu)
-                            .map((item) => (
-                                <div key={item.id} css={menuTitle}>
-                                    {item.menu}
-                                </div>
-                            ))}
+                <section css={contentContainer(isExpanded)}>
+                    {menuItems
+                        .filter((item) => item.id === activeMenu)
+                        .map((item) => (
+                            <div key={item.id} css={menuTitle}>
+                                {item.menu}
+                            </div>
+                        ))}
 
-                        <Divider
-                            width="90"
-                            color="gray"
-                            weight="1"
-                            sx={{ marginTop: '2rem', marginBottom: '1rem' }}
-                        />
-                        <div css={menuContainer}>
-                            {filteredSubMenu
-                                .filter((item) => item.parentId === activeMenu)
-                                .map((item) => (
-                                    <Button
-                                        key={item.subMenu}
-                                        variant="text"
-                                        onClick={() => {
-                                            setActiveSubMenu(item.subMenu);
-                                            goTo(item.link);
-                                        }}
-                                        sx={menuContent(activeSubMenu === item.subMenu)}
-                                    >
-                                        {item.subMenu}
-                                    </Button>
-                                ))}
-                        </div>
-                    </section>
-                )}
+                    <Divider
+                        width="90"
+                        color="gray"
+                        weight="1"
+                        sx={{ marginTop: '2rem', marginBottom: '1rem' }}
+                    />
+                    <div css={menuContainer}>
+                        {filteredSubMenu
+                            .filter((item) => item.parentId === activeMenu)
+                            .map((item) => (
+                                <Button
+                                    key={item.subMenu}
+                                    variant="text"
+                                    onClick={() => {
+                                        setActiveSubMenu(item.subMenu);
+                                        goTo(item.link);
+                                    }}
+                                    sx={menuContent(activeSubMenu === item.subMenu)}
+                                >
+                                    {item.subMenu}
+                                </Button>
+                            ))}
+                    </div>
+                </section>
             </div>
         </>
     );

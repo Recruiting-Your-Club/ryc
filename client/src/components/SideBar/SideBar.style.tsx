@@ -1,17 +1,15 @@
 import { css, keyframes } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const sideBarContainer = (isCollapsed: boolean) => css`
+export const sideBarContainer = css`
     display: flex;
     position: sticky;
     top: 0;
     left: 0;
     height: 100%;
     overflow: clip;
-    width: ${isCollapsed ? '7rem' : '30rem'};
-    background-color: #f6f7f9;
+    width: '30rem';
     border-right: 1px solid ${theme.colors.gray[100]};
-    transition: all 0.2s ease-out;
 `;
 
 export const sectionContainer = css`
@@ -22,6 +20,7 @@ export const sectionContainer = css`
     width: 7rem;
     height: inherit;
     overflow: auto;
+    background-color: #f6f7f9;
     border-right: 1px solid ${theme.colors.gray[300]};
 `;
 
@@ -64,13 +63,46 @@ export const menuButton = (isActive: boolean) => css`
         background-color: ${theme.colors.gray[300]};
     }
 `;
-export const contentContainer = css`
+
+export const contentContainer = (isExpanded: boolean) => css`
     display: flex;
     flex-direction: column;
-    width: 23rem;
     height: inherit;
     border-right: 1px solid ${theme.colors.gray[300]};
     padding: 2rem 0rem;
+    white-space: nowrap;
+    background-color: #f6f7f9;
+    animation: ${isExpanded
+        ? `expand 0.2s ease-in-out forwards, opacity 1s ease forwards`
+        : `collapse 0.4s ease forwards`};
+
+    @keyframes expand {
+        0% {
+            width: 0;
+        }
+        100% {
+            border-right: 1px solid ${theme.colors.gray[300]};
+            width: 23rem;
+        }
+    }
+    @keyframes collapse {
+        0% {
+            width: 23rem;
+        }
+        100% {
+            border-right: 0;
+            width: 0;
+        }
+    }
+
+    @keyframes opacity {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
 `;
 
 export const menuTitle = css`
