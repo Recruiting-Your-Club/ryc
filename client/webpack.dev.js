@@ -7,6 +7,9 @@ module.exports = merge(common, {
     devServer: {
         port: 3000,
         hot: true,
-        historyApiFallback: true,
+        //NOTE : 나중에 서버에서 하위경로인 manager는 따로 설정해줘야함
+        historyApiFallback: {
+            index: '/index.html',
+        },
     },
 });
