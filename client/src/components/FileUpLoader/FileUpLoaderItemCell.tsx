@@ -1,23 +1,13 @@
-// FileUpLoaderCell.tsx
 import React from 'react';
-import { css } from '@emotion/react';
 import { s_fileMetaItem, s_fileNameWithIcon, s_fileHeaderText } from './FileUpLoader.style';
-
-type Align = 'left' | 'center' | 'right';
-
-interface Props {
-    children: React.ReactNode;
-    align?: Align;
-    isNameCell?: boolean;
-    isHeader?: boolean;
-}
+import type { FileUpLoaderItemCellProps } from './type';
 
 function FileUpLoaderItemCell({
     children,
     align = 'center',
     isNameCell = false,
     isHeader = false,
-}: Props) {
+}: FileUpLoaderItemCellProps) {
     const baseStyle = isHeader
         ? s_fileHeaderText(align)
         : isNameCell
