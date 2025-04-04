@@ -54,6 +54,8 @@ export const s_fileImage = css`
 
 export const s_fileHeader = css`
     border-bottom: 1px solid ${theme.colors.gray[300]};
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     padding: 0.75rem 1rem;
     background-color: ${theme.colors.gray[100]};
     color: ${theme.colors.gray[700]};
