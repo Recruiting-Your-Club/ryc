@@ -2,6 +2,7 @@ import React from 'react';
 import { s_size, s_base, s_variant } from './Button.style';
 import type { CSSObject, SerializedStyles } from '@emotion/react';
 import type { ButtonHTMLAttributes } from 'react';
+import { PulseSpinner } from '../LoadingSpinner';
 
 export type ButtonSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 export type ButtonVariant = 'primary' | 'outlined' | 'transparent' | 'text';
@@ -40,7 +41,7 @@ function Button({
             aria-label={ariaLabel}
             css={[cssProp, sx]}
         >
-            {loading && '...'}
+            {loading && <PulseSpinner />}
             {!loading && children}
         </button>
     );
