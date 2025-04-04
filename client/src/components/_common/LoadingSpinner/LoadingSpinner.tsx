@@ -22,7 +22,6 @@ function SpinSpinner(props: SpinnerProps) {
         size: 30,
         backgroundColor: '#f3f3f3',
         color: theme.colors.defaultHover,
-        sx: {},
     };
     const mergeProps = { ...defaultProps, ...props };
     return (
@@ -36,7 +35,6 @@ function PulseSpinner(props: LoadingProps) {
     const defaultProps = {
         size: 8,
         color: theme.colors.white,
-        sx: {},
     };
     const mergeProps = { ...defaultProps, ...props };
     return (
