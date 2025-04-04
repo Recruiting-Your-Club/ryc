@@ -7,7 +7,7 @@ import {
 import type { CSSObject } from '@emotion/react';
 import theme from '@styles/theme';
 
-interface LoadingProps {
+export interface LoadingProps {
     size?: number;
     color?: string;
     sx?: CSSObject;
