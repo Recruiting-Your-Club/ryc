@@ -3,11 +3,11 @@ import React, { useMemo, useRef, useState } from 'react';
 import { FileUpLoaderContext } from './FileUpLoaderContext';
 import { FileUpLoaderBox } from './FileUpLoaderBox';
 import { FileUpLoaderButton } from './FileUpLoaderButton';
-interface FileUpLoaderProps {
-    children: ReactNode;
-}
+import { FileUpLoaderHelperText } from './FileUpLoaderHelperText';
+import { s_fileUpLoader } from './FileUpLoader.style';
+import type { FileUpLoaderProps } from './type';
 
-function FileUpLoaderRoot({ children }: FileUpLoaderProps) {
+function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     const [files, setFiles] = useState<File[]>([]);
     const [hasFile, setHasFile] = useState(false);
     const [isActive, setIsActive] = useState(false);
@@ -84,10 +84,13 @@ function FileUpLoaderRoot({ children }: FileUpLoaderProps) {
     );
 
     return (
-        <FileUpLoaderContext.Provider value={contextValue}>{children}</FileUpLoaderContext.Provider>
+        <FileUpLoaderContext.Provider value={contextValue}>
+            <div css={[s_fileUpLoader, sx]}>{children}</div>
+        </FileUpLoaderContext.Provider>
     );
 }
 export const FileUpLoader = Object.assign(FileUpLoaderRoot, {
     Box: FileUpLoaderBox,
+    HelperText: FileUpLoaderHelperText,
     Button: FileUpLoaderButton,
 });

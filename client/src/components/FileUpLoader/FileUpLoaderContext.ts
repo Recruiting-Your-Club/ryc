@@ -1,26 +1,12 @@
 import type React from 'react';
 import { createContext, useContext } from 'react';
+import type { FileUpLoaderContextValueType } from './type';
 
-interface FileUpLoaderContextType {
-    files: File[];
-    setFiles: (files: File[]) => void;
-    hasFile: boolean;
-    isActive: boolean;
-    setHasFile: React.Dispatch<React.SetStateAction<boolean>>;
-    handleDelete: (index: number) => void;
-    handleDeleteEntire: () => void;
-    handleDragStart: () => void;
-    handleDragEnd: () => void;
-    handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
-    handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
-    fileInputRef: React.RefObject<HTMLInputElement>;
-    handleClickButton: () => void;
-    handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+export const FileUpLoaderContext = createContext<FileUpLoaderContextValueType | undefined>(
+    undefined,
+);
 
-export const FileUpLoaderContext = createContext<FileUpLoaderContextType | undefined>(undefined);
-
-export function useFileUpLoaderContext(): FileUpLoaderContextType {
+export function useFileUpLoaderContext(): FileUpLoaderContextValueType {
     const context = useContext(FileUpLoaderContext);
 
     if (context === undefined) {
