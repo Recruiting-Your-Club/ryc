@@ -1,6 +1,17 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
+export const s_fileUpLoader = css`
+    position: relative;
+`;
+export const s_fileUpLoaderHelperText = css`
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    ${theme.typography.subCaptionLight};
+    color: ${theme.colors.gray[600]};
+`;
+
 export const s_fileUpLoaderInput = css`
     display: none;
 `;
