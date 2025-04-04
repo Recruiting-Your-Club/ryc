@@ -20,7 +20,7 @@ export interface SpinnerProps extends LoadingProps {
 function SpinSpinner(props: SpinnerProps) {
     const defaultProps = {
         size: 30,
-        backgroundColor: 'gray',
+        backgroundColor: '#f3f3f3',
         color: theme.colors.defaultHover,
         sx: {},
     };
