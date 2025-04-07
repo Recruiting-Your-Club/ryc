@@ -6,7 +6,7 @@ import { FileUpLoaderItemView } from './FileUpLoaderItemView';
 import type { FileUpLoaderBoxProps } from './type';
 
 function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
-    const { files, hasFile, isActive, handleDragStart, handleDragEnd, handleDragOver, handleDrop } =
+    const { hasFile, isActive, handleDragStart, handleDragEnd, handleDragOver, handleDrop } =
         useFileUpLoaderContext();
 
     return (
@@ -19,7 +19,7 @@ function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
         >
-            {files?.length === 0 ? <FileUpLoaderEmptyView /> : <FileUpLoaderItemView />}
+            {!hasFile ? <FileUpLoaderEmptyView /> : <FileUpLoaderItemView />}
         </div>
     );
 }
