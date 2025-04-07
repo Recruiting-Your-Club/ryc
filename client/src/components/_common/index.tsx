@@ -8,3 +8,4 @@ export * from './Text';
 export * from './Dialog';
 export * from './Toggle';
 export * from './Divider';
+export * from './Calendar';
