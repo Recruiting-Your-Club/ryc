@@ -40,7 +40,12 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
                     ) : (
                         IconComponent && <IconComponent />
                     )}
-                    <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                    <a
+                        href={fileUrl}
+                        download={file.name}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         {file.name}
                     </a>
                 </FileUpLoaderItemCell>
