@@ -13,7 +13,7 @@ function FileUpLoaderItemHeader() {
             <div css={s_fileRow}>
                 <XIcon css={s_xIcon} role="button" tabIndex={0} onClick={handleDeleteEntire} />
                 {headerItems.map(({ label, align }) => (
-                    <FileUpLoaderItemCell key={label} isHeader align={align}>
+                    <FileUpLoaderItemCell key={label} isHeader={true} align={align}>
                         {label}
                     </FileUpLoaderItemCell>
                 ))}
