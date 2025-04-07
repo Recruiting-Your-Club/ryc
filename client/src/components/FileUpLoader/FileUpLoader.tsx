@@ -40,15 +40,16 @@ function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     };
 
     const handleDragStart = () => {
-        return setIsActive(true);
+        setIsActive(true);
     };
 
     const handleDragEnd = () => {
-        return setIsActive(false);
+        setIsActive(false);
     };
 
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
+        setIsActive(true);
     };
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
