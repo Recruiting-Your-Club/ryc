@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
+import type { Align } from './type';
 
 export const s_fileUpLoader = css`
     position: relative;
@@ -81,7 +82,7 @@ export const s_fileRow = css`
     padding-right: 1rem;
 `;
 
-export const s_fileHeaderText = (align: 'left' | 'center' | 'right') => css`
+export const s_fileHeaderText = (align: Align) => css`
     text-align: ${align};
 `;
 
