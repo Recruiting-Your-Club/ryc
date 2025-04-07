@@ -46,7 +46,7 @@ export interface FileUpLoaderItemProps {
 export interface FileUpLoaderItemCellProps {
     children: ReactNode;
     align?: Align;
-    isNameCell?: boolean;
+    isFileNameCell?: boolean;
     isHeader?: boolean;
 }
 export type Align = 'left' | 'center' | 'right';

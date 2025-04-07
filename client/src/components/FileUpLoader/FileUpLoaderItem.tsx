@@ -34,7 +34,7 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
                     tabIndex={0}
                     onClick={() => handleDelete(index)}
                 />
-                <FileUpLoaderItemCell isNameCell={true} align="left">
+                <FileUpLoaderItemCell isFileNameCell={true} align="left">
                     {isImage ? (
                         <img src={fileUrl} alt={file.name} css={s_fileImagePreview} />
                     ) : (
