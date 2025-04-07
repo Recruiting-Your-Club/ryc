@@ -59,7 +59,7 @@ export const s_fileUpLoaderItemList = css`
     max-height: 8rem;
 `;
 
-export const s_fileImage = css`
+export const s_fileUpLoaderIcon = css`
     margin-right: 0.5rem;
 `;
 
