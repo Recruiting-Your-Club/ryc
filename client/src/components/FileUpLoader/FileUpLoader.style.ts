@@ -4,6 +4,7 @@ import type { Align } from './type';
 
 export const s_fileUpLoader = css`
     position: relative;
+    margin-top: 1rem;
 `;
 export const s_fileUpLoaderHelperText = css`
     position: absolute;
