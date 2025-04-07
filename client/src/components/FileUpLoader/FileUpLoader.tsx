@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import React, { useMemo, useRef, useState } from 'react';
 import { FileUpLoaderContext } from './FileUpLoaderContext';
 import { FileUpLoaderBox } from './FileUpLoaderBox';
