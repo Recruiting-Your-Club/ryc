@@ -5,6 +5,7 @@ import { FileUpLoaderButton } from './FileUpLoaderButton';
 import { FileUpLoaderHelperText } from './FileUpLoaderHelperText';
 import { s_fileUpLoader } from './FileUpLoader.style';
 import type { FileUpLoaderProps } from './type';
+import { useFilteredFile } from './\bhooks/useFilteredFile';
 
 function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     const [files, setFiles] = useState<File[]>([]);
@@ -12,6 +13,7 @@ function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     const [isActive, setIsActive] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { filterAndSetFiles } = useFilteredFile(files, setFiles, setHasFile);
 
     const handleClickButton = () => {
         fileInputRef.current?.click();
@@ -20,11 +22,7 @@ function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = e.target.files;
         if (!selectedFiles) return;
-        const selectedArray = Array.from(selectedFiles);
-        const copyFiles = files && [...files, ...selectedArray];
-
-        setFiles(copyFiles);
-        setHasFile(true);
+        filterAndSetFiles(selectedFiles);
     };
 
     const handleDelete = (index: number) => {
@@ -53,11 +51,7 @@ function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     };
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        const droppedFiles = Array.from(e.dataTransfer.files);
-        if (droppedFiles.length === 0) return;
-
-        setFiles((prev) => [...prev, ...droppedFiles]);
-        setHasFile(true);
+        filterAndSetFiles(e.dataTransfer.files);
         setIsActive(false);
     };
 
