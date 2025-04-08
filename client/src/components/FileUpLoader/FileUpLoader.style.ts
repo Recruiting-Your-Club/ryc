@@ -19,7 +19,7 @@ export const s_fileUpLoaderInput = css`
     display: none;
 `;
 
-export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
+export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean, disabled: boolean) => css`
     width: 100%;
     min-height: 8rem;
     border: 1px solid ${theme.colors.gray[300]};
@@ -45,6 +45,14 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
     css`
         border-color: ${theme.colors.default};
         background-color: ${theme.colors.gray[100]};
+    `}
+
+    ${disabled &&
+    css`
+        opacity: 0.5;
+        pointer-events: none;
+        user-select: none;
+        cursor: not-allowed;
     `}
 `;
 

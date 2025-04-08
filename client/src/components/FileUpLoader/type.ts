@@ -9,6 +9,7 @@ import ZipIcon from '@assets/images/ZipIcon.svg';
 export interface FileUpLoaderProps {
     children: ReactNode;
     sx?: CSSObject;
+    disabled?: boolean;
 }
 
 export interface FileUpLoaderBoxProps {
@@ -36,6 +37,7 @@ export interface FileUpLoaderContextValueType {
     fileInputRef: RefObject<HTMLInputElement>;
     handleClickButton: () => void;
     handleChangeFile: (e: ChangeEvent<HTMLInputElement>) => void;
+    disabled: boolean;
 }
 
 export interface FileUpLoaderItemProps {

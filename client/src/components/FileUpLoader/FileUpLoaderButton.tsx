@@ -4,7 +4,8 @@ import { s_fileUpLoaderInput } from './FileUpLoader.style';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 
 function FileUpLoaderButton() {
-    const { fileInputRef, handleChangeFile, handleClickButton } = useFileUpLoaderContext();
+    const { fileInputRef, handleChangeFile, handleClickButton, disabled } =
+        useFileUpLoaderContext();
 
     return (
         <>
@@ -14,12 +15,14 @@ function FileUpLoaderButton() {
                 multiple
                 onChange={handleChangeFile}
                 css={s_fileUpLoaderInput}
+                disabled={disabled}
             />
             <Button
                 variant="outlined"
                 size="s"
                 onClick={handleClickButton}
                 sx={{ padding: '1rem' }}
+                disabled={disabled}
             >
                 파일선택
             </Button>
