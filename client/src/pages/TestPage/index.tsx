@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Select } from '@components/Select/Select';
+import { FileUpLoader } from '@components/FileUpLoader/FileUpLoader';
 function TestPage() {
     const [value, setValue] = useState('');
 
@@ -26,6 +27,12 @@ function TestPage() {
                     </Select.Group>
                 </Select.Content>
             </Select>
+
+            <FileUpLoader>
+                <FileUpLoader.Button />
+                <FileUpLoader.HelperText helperText="최대 5개의 pdf,이미지 파일만 업로드 가능합니다." />
+                <FileUpLoader.Box />
+            </FileUpLoader>
         </div>
     );
 }
