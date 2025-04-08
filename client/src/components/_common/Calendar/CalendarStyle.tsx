@@ -38,9 +38,10 @@ export const daysContainer = css`
     grid-template-rows: repeat(6, 1fr);
     width: 100%;
     gap: 0.5rem;
+    // 세로 크기로 각 셀의 크기 조정
 `;
 
-export const weekendColor = (index: number) => {
+const weekendColor = (index: number) => {
     if (index % 7 === 0) {
         return css`
             color: ${theme.colors.red[900]};
@@ -52,22 +53,32 @@ export const weekendColor = (index: number) => {
     }
 };
 
+const selectedColor = (startDay: number, endDay: number, index: number) => {
+    if (index === startDay - 1 || (index >= startDay - 1 && index <= endDay - 1)) {
+        return css`
+            background-color: ${theme.colors.default};
+            color: white;
+            &:hover {
+                background-color: ${theme.colors.default}; /* 호버 시에도 동일 색상 유지 */
+            }
+        `;
+    }
+};
 export const weekCell = (index: number) => {
     return weekendColor(index);
 };
 
-export const dayCell = (index: number) => {
+export const dayCell = (startDay: number, endDay: number, index: number) => {
     return css`
         background-color: transparent;
         width: 100%;
         height: 100%;
         padding: 0.5rem;
-        cursor: pointer;
+        border-radius: 5px;
         ${weekendColor(index)}
-        // 세로 크기로 각 셀의 크기 조정
         &:hover {
             background-color: #f0f0f0;
-            border-radius: 7px;
         }
+        ${selectedColor(startDay, endDay, index)}
     `;
 };

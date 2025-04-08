@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/react';
 import {
     calendarContainer,
@@ -13,7 +13,7 @@ import { Button } from '@components'; // 기존 Button 컴포넌트 사용 가�
 
 const Calendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDay, setSelectedDay] = useState<number[]>([]);
 
     // 월 이름 (한글)
     const months = [
@@ -38,6 +38,21 @@ const Calendar = () => {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         26, 27, 28,
     ];
+
+    const handleSeletedDate = (selectDate: number) => {
+        if (selectedDay?.length === 1) {
+            if (selectedDay[0] > selectDate) {
+                setSelectedDay([selectDate]);
+            } else {
+                setSelectedDay([...selectedDay, selectDate]);
+            }
+        } else {
+            setSelectedDay([selectDate]);
+        }
+    };
+
+    useEffect(() => {}, [selectedDay]);
+
     return (
         <div css={calendarContainer}>
             <div css={calendarHeaderContainer}>
@@ -59,7 +74,11 @@ const Calendar = () => {
 
                 <div css={daysContainer}>
                     {days.map((day, index) => (
-                        <button key={index} css={dayCell(index)}>
+                        <button
+                            key={index}
+                            css={dayCell(selectedDay[0], selectedDay[1], index)}
+                            onClick={() => handleSeletedDate(day)}
+                        >
                             {day}
                         </button>
                     ))}
