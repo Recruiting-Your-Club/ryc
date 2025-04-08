@@ -6,14 +6,21 @@ import { FileUpLoaderItemView } from './FileUpLoaderItemView';
 import type { FileUpLoaderBoxProps } from './type';
 
 function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
-    const { hasFile, isActive, handleDragStart, handleDragEnd, handleDragOver, handleDrop } =
-        useFileUpLoaderContext();
+    const {
+        hasFile,
+        isActive,
+        handleDragStart,
+        handleDragEnd,
+        handleDragOver,
+        handleDrop,
+        disabled,
+    } = useFileUpLoaderContext();
 
     return (
         <div
             role="region"
             aria-label="파일을 여기에 드래그하여 업로드하세요"
-            css={[s_fileUpLoaderBox(hasFile, isActive), sx]}
+            css={[s_fileUpLoaderBox(hasFile, isActive, disabled), sx]}
             onDragEnter={handleDragStart}
             onDragLeave={handleDragEnd}
             onDragOver={handleDragOver}

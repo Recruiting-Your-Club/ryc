@@ -7,7 +7,7 @@ import { s_fileUpLoader } from './FileUpLoader.style';
 import type { FileUpLoaderProps } from './type';
 import { useFilteredFile } from './\bhooks/useFilteredFile';
 
-function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
+function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
     const [files, setFiles] = useState<File[]>([]);
     const [hasFile, setHasFile] = useState(false);
     const [isActive, setIsActive] = useState(false);
@@ -16,40 +16,48 @@ function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
     const { filterAndSetFiles } = useFilteredFile(files, setFiles, setHasFile);
 
     const handleClickButton = () => {
+        if (disabled) return;
         fileInputRef.current?.click();
     };
 
     const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (disabled) return;
         const selectedFiles = e.target.files;
         if (!selectedFiles) return;
         filterAndSetFiles(selectedFiles);
     };
 
     const handleDelete = (index: number) => {
+        if (disabled) return;
         const newFiles = files.filter((_, i) => i !== index);
         setFiles(newFiles);
         if (newFiles.length === 0) setHasFile(false);
     };
 
     const handleDeleteEntire = () => {
+        if (disabled) return;
         setFiles([]);
         setHasFile(false);
         setIsActive(false);
     };
 
     const handleDragStart = () => {
+        if (disabled) return;
         setIsActive(true);
     };
 
     const handleDragEnd = () => {
+        if (disabled) return;
         setIsActive(false);
     };
 
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        if (disabled) return;
         e.preventDefault();
         setIsActive(true);
     };
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        if (disabled) return;
         e.preventDefault();
         filterAndSetFiles(e.dataTransfer.files);
         setIsActive(false);
@@ -73,6 +81,7 @@ function FileUpLoaderRoot({ children, sx }: FileUpLoaderProps) {
             fileInputRef,
             handleClickButton,
             handleChangeFile,
+            disabled,
         }),
         [files, hasFile, isActive],
     );
