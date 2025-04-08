@@ -51,17 +51,6 @@ export interface FileUpLoaderItemCellProps {
 }
 export type Align = 'left' | 'center' | 'right';
 
-export const fileTypeIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
-    pdf: PdfIcon,
-    doc: WordIcon,
-    docx: WordIcon,
-    xls: ExcelIcon,
-    xlsx: ExcelIcon,
-    ppt: PptIcon,
-    pptx: PptIcon,
-    zip: ZipIcon,
-};
-
 export enum ImageExtension {
     JPG = 'jpg',
     JPEG = 'jpeg',
