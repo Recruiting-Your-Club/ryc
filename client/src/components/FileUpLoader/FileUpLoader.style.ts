@@ -5,6 +5,7 @@ import type { Align } from './type';
 export const s_fileUpLoader = css`
     position: relative;
     margin-top: 1rem;
+    width: 60rem;
 `;
 export const s_fileUpLoaderHelperText = css`
     position: absolute;
@@ -19,7 +20,7 @@ export const s_fileUpLoaderInput = css`
 `;
 
 export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean) => css`
-    width: 60rem;
+    width: 100%;
     min-height: 8rem;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 8px;
