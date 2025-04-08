@@ -1,29 +1,29 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 import { s_fileItem, s_fileRow, s_xIcon, s_fileImagePreview } from './FileUpLoader.style';
 import XIcon from '@assets/images/gray_xicon.svg';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
 import type { FileUpLoaderItemProps } from './type';
-import { fileTypeIcons } from './type';
 import { ImageExtension } from './type';
-import { formatBytes } from '@utils/\bbyteFormatter';
-
-function formatDate(timestamp: number): string {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-}
+import PdfIcon from '@assets/images/PdfIcon.svg';
+import { formatDate, formatBytes, getExtension } from './utills';
 
 function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     const { handleDelete } = useFileUpLoaderContext();
 
-    const getExtension = (fileName: string): string => {
-        return fileName.split('.').pop()?.toLowerCase() || '';
-    };
-
     const ext = getExtension(file.name);
     const isImage = Object.values(ImageExtension).includes(ext as ImageExtension);
-    const IconComponent = fileTypeIcons[ext];
+    const isPdf = ext === 'pdf';
     const fileUrl = URL.createObjectURL(file);
+
+    const renderFileIcon = (): ReactNode => {
+        if (isImage) {
+            return <img src={fileUrl} alt={file.name} css={s_fileImagePreview} />;
+        } else if (isPdf) {
+            return <PdfIcon />;
+        }
+    };
 
     return (
         <li css={s_fileItem}>
@@ -34,12 +34,8 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
                     tabIndex={0}
                     onClick={() => handleDelete(index)}
                 />
-                <FileUpLoaderItemCell isFileNameCell={true} align="left">
-                    {isImage ? (
-                        <img src={fileUrl} alt={file.name} css={s_fileImagePreview} />
-                    ) : (
-                        IconComponent && <IconComponent />
-                    )}
+                <FileUpLoaderItemCell isFileNameCell align="left">
+                    {renderFileIcon()}
                     <a
                         href={fileUrl}
                         download={file.name}
@@ -56,5 +52,4 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
         </li>
     );
 }
-
 export { FileUpLoaderItem };
