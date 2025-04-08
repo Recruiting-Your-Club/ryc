@@ -176,24 +176,28 @@ const globalStyles = css`
         text-decoration: none; /* 호버 시에도 밑줄 제거 */
     }
     /* 스크롤 바 부분 */
+    * {
+        scrollbar-color: ${theme.colors.blue[200]} ${theme.colors.gray[200]};
+        scrollbar-width: thin;
+    }
 
     &::-webkit-scrollbar {
-        width: 0.8rem;
+        width: 0.7rem;
+        height: 0.7rem;
     }
 
     &::-webkit-scrollbar-track {
         background: ${theme.colors.gray[200]};
-        border-radius: 1rem;
+        border-radius: 5px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: ${theme.colors.default};
-        border-radius: 1rem;
-        min-height: 10rem;
+        background: ${theme.colors.blue[200]};
+        border-radius: 8px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background: ${theme.colors.defaultHover};
+        background: ${theme.colors.default};
     }
 `;
 
