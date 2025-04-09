@@ -8,16 +8,17 @@ export const rootContainer = css`
     justify-content: center;
     gap: 1rem;
 `;
-export const toolbarContainer = (width: string = '100%', radius: string = '4px') => css`
-    width: ${width};
+export const toolbarContainer = (radius: string = '4px') => css`
+    width: 100%;
+    height: 30px;
     box-sizing: border-box;
-    aspect-ratio: 16 / 1;
-    border: 0.0625rem solid ${theme.colors.black};
+    border: 1px solid ${theme.colors.black};
     border-radius: ${radius};
-    padding: 0.3rem 0.3rem;
+    padding: 2px 10px;
     background-color: ${theme.colors.gray[100]};
     display: flex;
     align-items: center;
+    gap: 6px;
 
     @media screen and (max-width: 1024px) {
         // 태블릿 pc까지
@@ -29,10 +30,12 @@ export const buttonGroup = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.1rem;
+    height: 100%;
+    gap: 1.2px;
 `;
 
 export const perButtonCss = css`
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,8 +43,7 @@ export const perButtonCss = css`
 `;
 
 export const svgCss = (isColor: boolean) => css`
-    width: 1rem;
-    height: 1rem;
+    height: 60%;
     color: ${theme.colors.black};
     align-items: center;
     justify-content: center;
@@ -51,18 +53,22 @@ export const svgCss = (isColor: boolean) => css`
     `}
 `;
 
-export const textareaContainer = (
-    width: string = '100%',
-    height: string = '30rem',
-    radius: string = '4px',
-) => css`
-    width: ${width};
+interface textareaContainerProps {
+    height?: string;
+    radius?: string;
+    fontSize?: string;
+    fontWeight?: string;
+    fontStyle?: string;
+    textDecoration?: string[];
+}
+
+export const textareaContainer = (height: string = '350px', radius: string = '4px') => css`
+    width: 100%;
     height: ${height};
     resize: none;
-    border: 0.0625rem solid ${theme.colors.gray[500]};
+    border: 1px solid ${theme.colors.gray[500]};
     border-radius: ${radius};
-    padding: 0.5rem;
-    font-size: 10px;
+    padding: 8px;
 
     &:focus {
         border-color: ${theme.colors.black};
