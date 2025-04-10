@@ -47,7 +47,7 @@ class ClubHttpApiTest {
   }
 
   @Test
-  @DisplayName("동아리 생성 테스트")
+  @DisplayName("동아리 생성 성공 테스트")
   void createClub() throws Exception {
     // given
     ClubCreateRequest request =
@@ -70,5 +70,31 @@ class ClubHttpApiTest {
 
     // then
     result.andExpect(status().isCreated()).andExpect(jsonPath("$.clubId").value(response.clubId()));
+  }
+
+  @Test
+  @DisplayName("동아리 생성 실패 테스트 - 유효성 검사 실패")
+  void createClubInvalidRequest() throws Exception {
+    // given
+    ClubCreateRequest request =
+        ClubCreateRequest.builder()
+            .name(" ")
+            .description(" ")
+            .category(null)
+            .tagNames(List.of())
+            .build();
+
+    // when
+    ResultActions result =
+        mockMvc.perform(
+            post("/api/v2/club/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)));
+
+    // then
+    result
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.code").value("INVALID_PARAMETER"))
+        .andExpect(jsonPath("$.errors").isArray());
   }
 }
