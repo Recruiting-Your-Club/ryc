@@ -47,7 +47,7 @@ class ClubHttpApiTest {
   }
 
   @Test
-  @DisplayName("동아리 생성 성공 테스트")
+  @DisplayName("정상적인 동아리 생성 요청 시 201 Created와 clubId를 반환한다.")
   void createClub() throws Exception {
     // given
     ClubCreateRequest request =
@@ -73,7 +73,7 @@ class ClubHttpApiTest {
   }
 
   @Test
-  @DisplayName("동아리 생성 실패 테스트 - 유효성 검사 실패")
+  @DisplayName("동아리 생성 요청이 유효하지 않으면 400 BAD REQUEST 응답을 반환한다.")
   void createClubInvalidRequest() throws Exception {
     // given
     ClubCreateRequest request =
