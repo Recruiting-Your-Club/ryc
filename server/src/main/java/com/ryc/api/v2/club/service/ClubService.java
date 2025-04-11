@@ -10,7 +10,6 @@ import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
-import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +35,7 @@ public class ClubService {
     Club savedClub = clubRepository.save(club);
 
     // TODO: Security Context에서 사용자를 찾고, 해당 사용자에게 MANAGER 권한 부여
-    final String currentUserId = UserUtil.getCurrentUserId();
+    //    final String currentUserId = UserUtil.getCurrentUserId();
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }
