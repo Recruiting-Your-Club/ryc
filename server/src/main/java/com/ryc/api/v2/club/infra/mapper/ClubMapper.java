@@ -20,7 +20,7 @@ public class ClubMapper {
         .build();
   }
 
-  public static Club toDomain(ClubEntity clubEntity, List<ClubTagEntity> clubTagEntities) {
+  public static Club toDomainWithClubTagEntities(ClubEntity clubEntity, List<ClubTagEntity> clubTagEntities) {
     final List<ClubTag> clubTags = clubTagEntities.stream().map(ClubTagMapper::toDomain).toList();
 
     return Club.builder()

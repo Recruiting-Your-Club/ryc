@@ -2,6 +2,7 @@ package com.ryc.api.v2.club.service;
 
 import java.util.List;
 
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +18,16 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ClubService {
+
   private final ClubRepository clubRepository;
 
   @Transactional
   public ClubCreateResponse createClub(ClubCreateRequest body) {
     /**
-     * 1. 이미지 저장 및 URL 받아오기 2. ClubTag 리스트 생성 및 Club 객체 생성 3. Club 갹채 및 ClubTags DB 저장 4. 생성한 유저,
-     * 운영진 권한 부여 및 저장
+     * 1. 이미지 저장 및 URL 받아오기
+     * 2. ClubTag 리스트 생성 및 Club 객체 생성
+     * 3. Club 갹채 및 ClubTags DB 저장
+     * 4. 생성한 유저, 운영진 권한 부여 및 저장
      */
 
     // TODO: 클라이언트에서 받은 이미지 파일 S3 저장 후 ImageUrl, ThumnailUrl 받아오는 프로세스 필요. (추후 아래, "MOCK_URL" 삭제)
@@ -39,5 +43,24 @@ public class ClubService {
     final String currentUserId = UserUtil.getCurrentUserId();
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
+  }
+
+  @Transactional(readOnly = true)
+  public ClubGetResponse getClub(String clubId) {
+    Club club = clubRepository.findById(clubId)
+        .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
+
+    return ClubGetResponse.builder()
+        .id(club.getId())
+        .name(club.getName())
+        .description(club.getDescription())
+        .imageUrl(club.getImageUrl())
+        .thumbnailUrl(club.getThumbnailUrl())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .deleted(club.getDeleted())
+        .createdAt(club.getCreatedAt())
+        .updatedAt(club.getUpdatedAt())
+        .build();
   }
 }

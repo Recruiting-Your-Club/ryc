@@ -1,6 +1,7 @@
 package com.ryc.api.v2.club.infra;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +33,15 @@ public class ClubRepositoryImpl implements ClubRepository {
 
     List<ClubTagEntity> savedClubTagEntities = clubTagJpaRepository.saveAll(clubTagEntities);
 
-    return ClubMapper.toDomain(savedClubEntity, savedClubTagEntities);
+    return ClubMapper.toDomainWithClubTagEntities(savedClubEntity, savedClubTagEntities);
+  }
+
+  @Override
+  public Optional<Club> findById(String id) {
+    Optional<ClubEntity> clubEntity = clubJpaRepository.findById(id);
+    List<ClubTagEntity> clubTagEntities =
+        clubTagJpaRepository.findAllByClubId(id);
+
+    return clubEntity.map(entity -> ClubMapper.toDomainWithClubTagEntities(entity, clubTagEntities));
   }
 }
