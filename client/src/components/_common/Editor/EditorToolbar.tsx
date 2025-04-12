@@ -56,17 +56,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             const startOffset = range.startOffset;
             const endOffset = range.endOffset;
 
-            // 텍스트 세 부분 나누기
-            const before = text.slice(0, startOffset);
-            const selected = text.slice(startOffset, endOffset);
-            const after = text.slice(endOffset);
-
             const parent = textNode.parentNode as HTMLElement;
             const grandParent = parent?.parentNode;
 
             // span으로 감싸졌는지 확인 -> 기존 스타일이 없는 경우 기본값
             const isSpan = parent?.nodeName === 'SPAN';
-            const originalStyle = isSpan ? parent.getAttribute('style') || '' : '';
 
             // 기존 텍스트 제거
             if (isSpan) {
@@ -75,28 +69,28 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 parent?.removeChild(textNode);
             }
 
-            const frag = document.createDocumentFragment();
-            if (before) frag.appendChild(createSpan(format, before, originalStyle));
-            frag.appendChild(createSpan(format, selected, originalStyle, true));
-            if (after) frag.appendChild(createSpan(format, after, originalStyle));
-
-            range.insertNode(frag); // 원래 위치에 삽입
+            range.insertNode(
+                applyStyleInSelectedText(text, parent, format, isSpan, startOffset, endOffset),
+            ); // 원래 위치에 삽입
         } else {
             // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
             const commonAncestor = range.commonAncestorContainer; // 공통 조상 노드, 즉 TextArea(div)에 해당
+            let isDiv = false; // 줄바꿈 확인용 (추후 <br> 태그 처리 필요)
 
             // 범위 내 TEXT 노드 탐색
             const walker = document.createTreeWalker(commonAncestor, NodeFilter.SHOW_TEXT, {
                 acceptNode: (node) => {
                     // range에 속한 노드여야 함
                     if (range.intersectsNode(node)) {
+                        if ((node as HTMLElement).parentElement?.tagName === 'DIV') {
+                            isDiv = true;
+                        }
                         const text = node.textContent?.trim();
                         return text ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
                     }
                     return NodeFilter.FILTER_REJECT;
                 },
             });
-
             const textNodesInCommon: Text[] = [];
             let currentNode = walker.nextNode();
             while (currentNode) {
@@ -112,20 +106,78 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             });
 
             // 스타일 적용 or 제거
-            textNodesInCommon.forEach((textNode) => {
+            textNodesInCommon.forEach((textNode, index) => {
                 const parent = textNode.parentElement;
-
                 if (parent?.tagName === 'SPAN') {
                     // 이미 span으로 감싸졌을 경우
-                    toggleFormat(parent, format, !isOverallStyle);
+                    const text = textNode.textContent || '';
+                    if (isDiv) {
+                        if (index === 0 && range.startOffset != 0) {
+                            parent.replaceWith(
+                                applyStyleInSelectedText(
+                                    text,
+                                    parent,
+                                    format,
+                                    true,
+                                    range.startOffset,
+                                    text.length,
+                                ),
+                            );
+                        } else if (
+                            index === textNodesInCommon.length - 1 &&
+                            range.endOffset != text.length
+                        ) {
+                            parent.replaceWith(
+                                applyStyleInSelectedText(
+                                    text,
+                                    parent,
+                                    format,
+                                    true,
+                                    0,
+                                    range.endOffset,
+                                ),
+                            );
+                        }
+                    } else {
+                        toggleFormat(parent, format, !isOverallStyle);
+                    }
                 } else {
                     // span이 아닐 경우 span으로 감싸고 스타일 적용
                     const span = document.createElement('span');
                     span.textContent = textNode.textContent;
+                    const text = span.textContent || '';
 
-                    if (!isOverallStyle) applyFormat(span, format);
-
-                    textNode.replaceWith(span);
+                    if (isDiv) {
+                        if (index === 0 && range.startOffset != 0) {
+                            textNode.replaceWith(
+                                applyStyleInSelectedText(
+                                    text,
+                                    parent,
+                                    format,
+                                    false,
+                                    range.startOffset,
+                                    text.length,
+                                ),
+                            );
+                        } else if (
+                            index === textNodesInCommon.length - 1 &&
+                            range.endOffset != text.length
+                        ) {
+                            textNode.replaceWith(
+                                applyStyleInSelectedText(
+                                    text,
+                                    parent,
+                                    format,
+                                    false,
+                                    0,
+                                    range.endOffset,
+                                ),
+                            );
+                        }
+                    } else {
+                        if (!isOverallStyle) applyFormat(span, format);
+                        textNode.replaceWith(span);
+                    }
                 }
             });
         }
@@ -134,6 +186,28 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         //     ...prev,
         //     [format]: !prev[format],
         // }));
+    };
+
+    const applyStyleInSelectedText = (
+        text: string,
+        parent: HTMLElement | null,
+        format: Format,
+        isSpan: boolean,
+        selectedStart: number,
+        selectedEnd: number,
+    ): DocumentFragment => {
+        const originalStyle = isSpan ? parent?.getAttribute('style') || '' : '';
+
+        const before = text.slice(0, selectedStart);
+        const selected = text.slice(selectedStart, selectedEnd);
+        const after = text.slice(selectedEnd);
+
+        const frag = document.createDocumentFragment();
+        if (before) frag.appendChild(createSpan(format, before, originalStyle));
+        frag.appendChild(createSpan(format, selected, originalStyle, true));
+        if (after) frag.appendChild(createSpan(format, after, originalStyle));
+
+        return frag;
     };
 
     // 새로운 span 노드 생성
