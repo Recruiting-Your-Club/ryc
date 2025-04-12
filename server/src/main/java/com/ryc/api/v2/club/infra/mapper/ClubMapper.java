@@ -1,11 +1,7 @@
 package com.ryc.api.v2.club.infra.mapper;
 
-import java.util.List;
-
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
-import com.ryc.api.v2.club.infra.entity.ClubTagEntity;
 
 public class ClubMapper {
   public static ClubEntity toEntity(Club club) {
@@ -20,10 +16,7 @@ public class ClubMapper {
         .build();
   }
 
-  public static Club toDomainWithClubTagEntities(
-      ClubEntity clubEntity, List<ClubTagEntity> clubTagEntities) {
-    final List<ClubTag> clubTags = clubTagEntities.stream().map(ClubTagMapper::toDomain).toList();
-
+  public static Club toDomain(ClubEntity clubEntity) {
     return Club.builder()
         .id(clubEntity.getId())
         .name(clubEntity.getName())
@@ -31,7 +24,7 @@ public class ClubMapper {
         .imageUrl(clubEntity.getImageUrl())
         .thumbnailUrl(clubEntity.getThumbnailUrl())
         .category(clubEntity.getCategory())
-        .clubTags(clubTags)
+        .clubTags(clubEntity.getClubTags().stream().map(ClubTagMapper::toDomain).toList())
         .deleted(clubEntity.getDeleted())
         .createdAt(clubEntity.getCreatedAt())
         .updatedAt(clubEntity.getUpdatedAt())

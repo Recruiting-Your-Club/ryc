@@ -63,4 +63,27 @@ public class ClubService {
         .updatedAt(club.getUpdatedAt())
         .build();
   }
+
+  @Transactional(readOnly = true)
+  public List<ClubGetResponse> getClubs() {
+    // TODO: N + 1 문제 확인 필요
+
+    List<Club> clubs = clubRepository.findAll();
+    return clubs.stream()
+        .map(
+            club ->
+                ClubGetResponse.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .description(club.getDescription())
+                    .imageUrl(club.getImageUrl())
+                    .thumbnailUrl(club.getThumbnailUrl())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .deleted(club.getDeleted())
+                    .createdAt(club.getCreatedAt())
+                    .updatedAt(club.getUpdatedAt())
+                    .build())
+        .toList();
+  }
 }

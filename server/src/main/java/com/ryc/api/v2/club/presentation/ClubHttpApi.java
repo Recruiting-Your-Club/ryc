@@ -1,5 +1,7 @@
 package com.ryc.api.v2.club.presentation;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -33,5 +35,10 @@ public class ClubHttpApi {
   public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
     ClubGetResponse response = clubService.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("all")
+  public ResponseEntity<List<ClubGetResponse>> getClubs() {
+    return ResponseEntity.status(HttpStatus.OK).body(clubService.getClubs());
   }
 }
