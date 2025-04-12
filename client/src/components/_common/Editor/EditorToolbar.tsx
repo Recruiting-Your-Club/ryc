@@ -82,34 +82,51 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
             range.insertNode(frag); // 원래 위치에 삽입
         } else {
-            // 선택 범위 안에 여러 span이 존재할 경우
-            const commonAncestor = range.commonAncestorContainer;
+            // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
+            const commonAncestor = range.commonAncestorContainer; // 공통 조상 노드, 즉 TextArea(div)에 해당
 
-            // 범위 내 span 탐색
-            const walker = document.createTreeWalker(commonAncestor, NodeFilter.SHOW_ELEMENT, {
+            // 범위 내 TEXT 노드 탐색
+            const walker = document.createTreeWalker(commonAncestor, NodeFilter.SHOW_TEXT, {
                 acceptNode: (node) => {
-                    // range에 속한 span이어야함
-                    if (node.nodeName === 'SPAN' && range.intersectsNode(node)) {
-                        return NodeFilter.FILTER_ACCEPT;
+                    // range에 속한 노드여야 함
+                    if (range.intersectsNode(node)) {
+                        const text = node.textContent?.trim();
+                        return text ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
                     }
                     return NodeFilter.FILTER_REJECT;
                 },
             });
 
-            const spansInCommon: HTMLElement[] = [];
+            const textNodesInCommon: Text[] = [];
             let currentNode = walker.nextNode();
             while (currentNode) {
                 // commonAncestor 내부 노드 순회
-                spansInCommon.push(currentNode as HTMLElement);
+                textNodesInCommon.push(currentNode as Text);
                 currentNode = walker.nextNode();
             }
 
-            // 모든 span이 해당 스타일을 가지고 있는지 확인
-            const isOverallStyle = spansInCommon.every((el) => hasFormat(el, format));
+            // span이 이미 해당 스타일을 가지고 있는지 확인
+            const isOverallStyle = textNodesInCommon.every((textNode) => {
+                const parent = textNode.parentElement;
+                return parent?.tagName === 'SPAN' && hasFormat(parent, format);
+            });
 
             // 스타일 적용 or 제거
-            spansInCommon.forEach((span) => {
-                toggleFormat(span, format, !isOverallStyle);
+            textNodesInCommon.forEach((textNode) => {
+                const parent = textNode.parentElement;
+
+                if (parent?.tagName === 'SPAN') {
+                    // 이미 span으로 감싸졌을 경우
+                    toggleFormat(parent, format, !isOverallStyle);
+                } else {
+                    // span이 아닐 경우 span으로 감싸고 스타일 적용
+                    const span = document.createElement('span');
+                    span.textContent = textNode.textContent;
+
+                    if (!isOverallStyle) applyFormat(span, format);
+
+                    textNode.replaceWith(span);
+                }
             });
         }
 
