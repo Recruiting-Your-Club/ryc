@@ -1,6 +1,5 @@
 package com.ryc.api.v2.club.presentation;
 
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.service.ClubService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,7 +30,7 @@ public class ClubHttpApi {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getClub(@PathVariable String id) {
+  public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
     ClubGetResponse response = clubService.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }

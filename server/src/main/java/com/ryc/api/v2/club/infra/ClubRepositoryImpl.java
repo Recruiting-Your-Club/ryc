@@ -39,9 +39,9 @@ public class ClubRepositoryImpl implements ClubRepository {
   @Override
   public Optional<Club> findById(String id) {
     Optional<ClubEntity> clubEntity = clubJpaRepository.findById(id);
-    List<ClubTagEntity> clubTagEntities =
-        clubTagJpaRepository.findAllByClubId(id);
+    List<ClubTagEntity> clubTagEntities = clubTagJpaRepository.findAllByClubId(id);
 
-    return clubEntity.map(entity -> ClubMapper.toDomainWithClubTagEntities(entity, clubTagEntities));
+    return clubEntity.map(
+        entity -> ClubMapper.toDomainWithClubTagEntities(entity, clubTagEntities));
   }
 }

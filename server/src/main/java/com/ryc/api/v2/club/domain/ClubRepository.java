@@ -1,6 +1,5 @@
 package com.ryc.api.v2.club.domain;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ClubRepository {
