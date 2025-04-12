@@ -23,7 +23,7 @@ public class ClubHttpApi {
 
   private final ClubService clubService;
 
-  @PostMapping("/")
+  @PostMapping
   public ResponseEntity<?> createClub(@Valid @RequestBody ClubCreateRequest body) {
     ClubCreateResponse response = clubService.createClub(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
