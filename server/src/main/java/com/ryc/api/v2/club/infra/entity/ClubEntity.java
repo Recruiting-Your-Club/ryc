@@ -1,5 +1,8 @@
 package com.ryc.api.v2.club.infra.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 import com.ryc.api.v2.club.domain.Category;
@@ -26,6 +29,13 @@ public class ClubEntity extends BaseEntity {
 
   private String imageUrl;
   private String thumbnailUrl;
+
+  @OneToMany(
+      mappedBy = "clubEntity",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<ClubTagEntity> clubTags = new ArrayList<>();
 
   @Enumerated(EnumType.STRING)
   private Category category;

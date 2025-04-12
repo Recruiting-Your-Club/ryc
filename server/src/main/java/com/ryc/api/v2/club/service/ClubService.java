@@ -10,6 +10,7 @@ import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ClubService {
+
   private final ClubRepository clubRepository;
 
   @Transactional
@@ -39,5 +41,49 @@ public class ClubService {
     final String currentUserId = UserUtil.getCurrentUserId();
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
+  }
+
+  @Transactional(readOnly = true)
+  public ClubGetResponse getClub(String clubId) {
+    Club club =
+        clubRepository
+            .findById(clubId)
+            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
+
+    return ClubGetResponse.builder()
+        .id(club.getId())
+        .name(club.getName())
+        .description(club.getDescription())
+        .imageUrl(club.getImageUrl())
+        .thumbnailUrl(club.getThumbnailUrl())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .deleted(club.getDeleted())
+        .createdAt(club.getCreatedAt())
+        .updatedAt(club.getUpdatedAt())
+        .build();
+  }
+
+  @Transactional(readOnly = true)
+  public List<ClubGetResponse> getClubs() {
+    // TODO: N + 1 문제 확인 필요
+
+    List<Club> clubs = clubRepository.findAll();
+    return clubs.stream()
+        .map(
+            club ->
+                ClubGetResponse.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .description(club.getDescription())
+                    .imageUrl(club.getImageUrl())
+                    .thumbnailUrl(club.getThumbnailUrl())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .deleted(club.getDeleted())
+                    .createdAt(club.getCreatedAt())
+                    .updatedAt(club.getUpdatedAt())
+                    .build())
+        .toList();
   }
 }
