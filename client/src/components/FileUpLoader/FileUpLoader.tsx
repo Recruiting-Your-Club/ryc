@@ -5,7 +5,7 @@ import { FileUpLoaderButton } from './FileUpLoaderButton';
 import { FileUpLoaderHelperText } from './FileUpLoaderHelperText';
 import { s_fileUpLoader } from './FileUpLoader.style';
 import type { FileUpLoaderProps } from './type';
-import { useFilteredFile } from './\bhooks/useFilteredFile';
+import { useFilteredFile } from '@hooks/components/useFilteredFile';
 
 function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
     const [files, setFiles] = useState<File[]>([]);
