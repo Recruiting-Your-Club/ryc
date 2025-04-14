@@ -8,10 +8,14 @@ import type { FileUpLoaderItemProps } from './type';
 import { ImageExtension } from './type';
 import PdfIcon from '@assets/images/PdfIcon.svg';
 import { formatDate, formatBytes, getExtension } from './utills';
+import { Button } from '@components/_common';
 
 function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
-    const { handleDelete } = useFileUpLoaderContext();
+    //props destruction
+    // lib hooks
+    const { files, handleDelete } = useFileUpLoaderContext();
 
+    // calculated value
     const ext = getExtension(file.name);
     const isImage = Object.values(ImageExtension).includes(ext as ImageExtension);
     const isPdf = ext === 'pdf';
@@ -26,14 +30,11 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     };
 
     return (
-        <li css={s_fileItem}>
+        <li css={s_fileItem(files)}>
             <div css={s_fileRow}>
-                <XIcon
-                    css={s_xIcon}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => handleDelete(index)}
-                />
+                <Button variant="transparent" size="xs" onClick={() => handleDelete(index)}>
+                    <XIcon />
+                </Button>
                 <FileUpLoaderItemCell isFileNameCell align="left">
                     {renderFileIcon()}
                     <a
