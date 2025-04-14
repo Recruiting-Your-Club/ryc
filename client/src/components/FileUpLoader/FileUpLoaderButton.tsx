@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@components/Button';
+import { Button } from '@components/_common/Button';
 import { s_fileUpLoaderInput } from './FileUpLoader.style';
 import { useFileUpLoaderContext } from './FileUpLoaderContext';
 
