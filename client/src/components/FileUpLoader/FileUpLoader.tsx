@@ -8,6 +8,8 @@ import type { FileUpLoaderProps } from './type';
 import { useFilteredFile } from '@hooks/components/useFilteredFile';
 
 function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
+    // state, ref, querystring hooks
+
     const [files, setFiles] = useState<File[]>([]);
     const [hasFile, setHasFile] = useState(false);
     const [isActive, setIsActive] = useState(false);
@@ -15,6 +17,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { filterAndSetFiles } = useFilteredFile(files, setFiles, setHasFile);
 
+    // handler
     const handleClickButton = () => {
         if (disabled) return;
         fileInputRef.current?.click();
