@@ -56,7 +56,7 @@ const weekendColor = (index: number) => {
 };
 
 const selectedColor = (startDay: number, endDay: number, index: number) => {
-    if (index === startDay - 1 || (index >= startDay - 1 && index <= endDay - 1)) {
+    if (index === startDay || (index >= startDay && index <= endDay)) {
         return css`
             background-color: ${theme.colors.default};
             color: white;
