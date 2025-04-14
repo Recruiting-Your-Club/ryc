@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import theme from '@styles/theme';
 import { SpinSpinner, PulseSpinner } from '.';
 
 const meta: Meta<typeof SpinSpinner> = {
@@ -21,6 +22,6 @@ export const Spin: StoryObj<typeof SpinSpinner> = {
 };
 
 export const Pulse: StoryObj<typeof PulseSpinner> = {
-    render: (args) => <PulseSpinner color="black" />,
+    render: (args) => <PulseSpinner color={theme.colors.black} />,
     args: {},
 };
