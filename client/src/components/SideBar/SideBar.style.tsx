@@ -64,7 +64,7 @@ export const menuButton = (isActive: boolean) => css`
     }
 `;
 
-const sideBarCollapse = keyframes`
+const sideBar_collapse = keyframes`
     0% {
             width: 23rem;
         }
@@ -73,7 +73,7 @@ const sideBarCollapse = keyframes`
             width: 0;
         }
 `;
-const sideBarExpand = keyframes`
+const sideBar_expand = keyframes`
     0% {
             width: 0;
         }
@@ -82,7 +82,7 @@ const sideBarExpand = keyframes`
             width: 23rem;
         }
 `;
-const sideBarOpacity = keyframes`
+const sideBar_opacity = keyframes`
     0% {
         opacity: 0;
     }
@@ -101,10 +101,10 @@ export const contentContainer = (isExpanded: boolean) => css`
     background-color: #f6f7f9;
     animation: ${isExpanded
         ? css`
-              ${sideBarExpand} 0.2s ease-in-out forwards, ${sideBarOpacity} 1s ease forwards
+              ${sideBar_expand} 0.2s ease-in-out forwards, ${sideBar_opacity} 1s ease forwards
           `
         : css`
-              ${sideBarCollapse} 0.4s ease forwards
+              ${sideBar_collapse} 0.4s ease forwards
           `};
 `;
 
