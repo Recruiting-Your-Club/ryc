@@ -28,7 +28,7 @@ const spinnerSize: Record<Size, CSSObject['px']> = {
     s: '40px',
     md: '50px',
     lg: '60px',
-    xl: '70px',
+    xl: '80px',
 };
 const pulseSize: Record<Size, CSSObject['px']> = {
     xs: '8px',
