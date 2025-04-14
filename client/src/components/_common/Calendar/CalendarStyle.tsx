@@ -4,7 +4,9 @@ import theme from '@styles/theme';
 export const calendarContainer = css`
     display: flex;
     flex-direction: column;
-    padding: 2rem;
+    padding: 1rem 2rem 2rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     // 가로 크기로 전체 캘린더 크기 조정
 `;
 
@@ -64,11 +66,23 @@ const selectedColor = (startDay: number, endDay: number, index: number) => {
         `;
     }
 };
+const currentMonthColor = (isCurrentMonth: boolean) => css`
+    ${!isCurrentMonth &&
+    css`
+        opacity: 0.5;
+    `}
+`;
+
 export const weekCell = (index: number) => {
     return weekendColor(index);
 };
 
-export const dayCell = (startDay: number, endDay: number, index: number) => {
+export const dayCell = (
+    startDay: number,
+    endDay: number,
+    index: number,
+    isCurrentMonth: boolean,
+) => {
     return css`
         background-color: transparent;
         width: 100%;
@@ -80,5 +94,6 @@ export const dayCell = (startDay: number, endDay: number, index: number) => {
             background-color: #f0f0f0;
         }
         ${selectedColor(startDay, endDay, index)}
+        ${currentMonthColor(isCurrentMonth)}
     `;
 };
