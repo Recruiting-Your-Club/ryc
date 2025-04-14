@@ -4,6 +4,7 @@ import XIcon from '@assets/images/gray_xicon.svg';
 import { s_fileHeader, s_fileRow, s_xIcon } from './FileUpLoader.style';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
 import { headerItems } from './type';
+import { Button } from '@components/_common';
 
 function FileUpLoaderItemHeader() {
     const { handleDeleteEntire } = useFileUpLoaderContext();
@@ -11,7 +12,9 @@ function FileUpLoaderItemHeader() {
     return (
         <div css={s_fileHeader}>
             <div css={s_fileRow}>
-                <XIcon css={s_xIcon} role="button" tabIndex={0} onClick={handleDeleteEntire} />
+                <Button variant="transparent" size="xs" onClick={() => handleDeleteEntire()}>
+                    <XIcon />
+                </Button>
                 {headerItems.map(({ label, align }) => (
                     <FileUpLoaderItemCell key={label} isHeader={true} align={align}>
                         {label}
