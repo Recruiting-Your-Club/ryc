@@ -75,6 +75,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
     // form hooks
     // query hooks
     // calculated values
+
     // effects
     useEffect(() => {
         // 접힌 상태에서는 활성 메뉴 초기화
@@ -132,7 +133,6 @@ function SideBar({ menu, subMenu }: SideBarProps) {
                                     sx={menuButton(item.id === activeMenu)}
                                     onClick={() => {
                                         handleCollapsed(item.id);
-                                        setActiveMenu(item.id);
                                     }}
                                 >
                                     {item.icon}
@@ -169,21 +169,19 @@ function SideBar({ menu, subMenu }: SideBarProps) {
                         sx={{ marginTop: '2rem', marginBottom: '1rem' }}
                     />
                     <div css={menuContainer}>
-                        {filteredSubMenu
-                            .filter((item) => item.parentId === activeMenu)
-                            .map((item) => (
-                                <Button
-                                    key={item.subMenu}
-                                    variant="text"
-                                    onClick={() => {
-                                        setActiveSubMenu(item.subMenu);
-                                        goTo(item.link);
-                                    }}
-                                    sx={menuContent(activeSubMenu === item.subMenu)}
-                                >
-                                    {item.subMenu}
-                                </Button>
-                            ))}
+                        {filteredSubMenu.map((item) => (
+                            <Button
+                                key={item.subMenu}
+                                variant="text"
+                                onClick={() => {
+                                    setActiveSubMenu(item.subMenu);
+                                    goTo(item.link);
+                                }}
+                                sx={menuContent(activeSubMenu === item.subMenu)}
+                            >
+                                {item.subMenu}
+                            </Button>
+                        ))}
                     </div>
                 </section>
             </aside>

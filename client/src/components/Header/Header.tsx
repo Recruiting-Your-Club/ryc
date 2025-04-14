@@ -12,7 +12,7 @@ function Header() {
         <header css={headerBarContainer}>
             <Link to="/" css={homeNavContainer}>
                 <Text as="h1" type="h4Light">
-                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>Y</Text.HighLight>
+                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>R</Text.HighLight>
                     ecruiting
                 </Text>
                 <Text as="h1" type="h4Light">

@@ -6,7 +6,7 @@ export const sideBarContainer = css`
     position: sticky;
     top: 0;
     left: 0;
-    height: 100dvh;
+    height: 100%;
     overflow: clip;
     width: '30rem';
     border-right: 1px solid ${theme.colors.gray[100]};
@@ -64,6 +64,33 @@ export const menuButton = (isActive: boolean) => css`
     }
 `;
 
+const sideBarCollapse = keyframes`
+    0% {
+            width: 23rem;
+        }
+        100% {
+            border-right: 0;
+            width: 0;
+        }
+`;
+const sideBarExpand = keyframes`
+    0% {
+            width: 0;
+        }
+        100% {
+            border-right: 1px solid ${theme.colors.gray[300]};
+            width: 23rem;
+        }
+`;
+const sideBarOpacity = keyframes`
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+`;
+
 export const contentContainer = (isExpanded: boolean) => css`
     display: flex;
     flex-direction: column;
@@ -73,36 +100,12 @@ export const contentContainer = (isExpanded: boolean) => css`
     white-space: nowrap;
     background-color: #f6f7f9;
     animation: ${isExpanded
-        ? `expand 0.2s ease-in-out forwards, opacity 1s ease forwards`
-        : `collapse 0.4s ease forwards`};
-
-    @keyframes expand {
-        0% {
-            width: 0;
-        }
-        100% {
-            border-right: 1px solid ${theme.colors.gray[300]};
-            width: 23rem;
-        }
-    }
-    @keyframes collapse {
-        0% {
-            width: 23rem;
-        }
-        100% {
-            border-right: 0;
-            width: 0;
-        }
-    }
-
-    @keyframes opacity {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
+        ? css`
+              ${sideBarExpand} 0.2s ease-in-out forwards, ${sideBarOpacity} 1s ease forwards
+          `
+        : css`
+              ${sideBarCollapse} 0.4s ease forwards
+          `};
 `;
 
 export const menuTitle = css`
