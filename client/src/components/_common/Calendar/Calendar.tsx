@@ -16,6 +16,7 @@ const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
     // lib hooks
     // initial values
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    const today = dayjs().format('YYYY-MM-DD');
     // state, ref, querystring hooks
     const [days, setDays] = useState<
         { day: number; isCurrentMonth: boolean; dateString: string }[]
@@ -44,7 +45,6 @@ const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
     };
     const generateCalendarDays = () => {
         const newDays = []; // days 업데이트를 위한 새 배열
-        const currentDate = dayjs(); // 현재 날짜
         const daysInMonth = currentDate.daysInMonth(); // 현재 월의 총 일수
         const prevMonth = currentDate.subtract(1, 'month'); // 이전 달
         const firstDayOfMonth = currentDate.day(); // 0(일) ~ 6(토)
@@ -112,18 +112,18 @@ const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
                 </div>
 
                 <div css={daysContainer}>
-                    {days.map((data, index) => (
+                    {days.map((date, index) => (
                         <button
                             key={index}
                             css={dayCell(
-                                selectedDate.includes(data.dateString),
+                                selectedDate.includes(date.dateString),
                                 index,
-                                data.dateString === currentDate.format('YYYY-MM-DD'),
-                                data.isCurrentMonth,
+                                date.dateString === today,
+                                date.isCurrentMonth,
                             )}
-                            onClick={() => handleSeletedDate(data.dateString)}
+                            onClick={() => handleSeletedDate(date.dateString)}
                         >
-                            {data.day}
+                            {date.day}
                         </button>
                     ))}
                 </div>
