@@ -14,19 +14,17 @@ import dayjs from 'dayjs';
 const Calendar = () => {
     // prop destruction
     // lib hooks
+    // initial values
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
     // state, ref, querystring hooks
-    const [days, setDays] = useState<{ day: number; isCurrentMonth: boolean }[]>([]);
+    const [days, setDays] = useState<
+        { day: number; isCurrentMonth: boolean; dateString: string }[]
+    >([]);
     const [currentDate, setCurrentDate] = useState(dayjs());
-    const [selectedDay, setSelectedDay] = useState<number[]>([]);
+    const [selectedDate, setSelectedDate] = useState<string[]>([]);
     // form hooks
     // query hooks
     // calculated values
-    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-
-    // effects
-    useEffect(() => {
-        generateCalendarDays();
-    }, [currentDate]); // currentDate가 변경될 때마다 이 effect를 실행합니다.
 
     // handlers
     const handleBackMonth = () => {
@@ -35,15 +33,11 @@ const Calendar = () => {
     const handleNextMonth = () => {
         setCurrentDate(currentDate.add(1, 'month'));
     };
-    const handleSeletedDate = (selectDate: number) => {
-        if (selectedDay?.length === 1) {
-            if (selectedDay[0] > selectDate) {
-                setSelectedDay([selectDate]);
-            } else {
-                setSelectedDay([...selectedDay, selectDate]);
-            }
+    const handleSeletedDate = (selectDate: string) => {
+        if (selectedDate.includes(selectDate)) {
+            setSelectedDate(selectedDate.filter((day) => day !== selectDate));
         } else {
-            setSelectedDay([selectDate]);
+            setSelectedDate([...selectedDate, selectDate]);
         }
     };
     const generateCalendarDays = () => {
@@ -54,24 +48,45 @@ const Calendar = () => {
         const firstDayOfMonth = currentDate.day(); // 0(일) ~ 6(토)
         const prevDaysInMonth = prevMonth.daysInMonth(); // 이전 달의 총 일수
 
-        // 저번 달 날짜, i는 저번 달 날짜를 나타낼 횟수, prevDaysInMonth - i는 저번 달 날짜
+        // 저번 달 날짜
         for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-            newDays.push({ day: prevDaysInMonth - i, isCurrentMonth: false });
+            const date = prevMonth.date(prevDaysInMonth - i);
+            newDays.push({
+                day: prevDaysInMonth - i,
+                isCurrentMonth: false,
+                dateString: date.format('YYYY-MM-DD'),
+            });
         }
 
         // 현재 달 날짜
         for (let i = 1; i <= daysInMonth; i++) {
-            newDays.push({ day: i, isCurrentMonth: true });
+            const date = currentDate.date(i);
+            newDays.push({
+                day: i,
+                isCurrentMonth: true,
+                dateString: date.format('YYYY-MM-DD'),
+            });
         }
 
         // 다음 달 날짜
+        const nextMonth = currentDate.add(1, 'month');
         const remainingDays = 42 - newDays.length; // 7x6 격자
         for (let i = 1; i <= remainingDays; i++) {
-            newDays.push({ day: i, isCurrentMonth: false });
+            const date = nextMonth.date(i);
+            newDays.push({
+                day: i,
+                isCurrentMonth: false,
+                dateString: date.format('YYYY-MM-DD'),
+            });
         }
 
         setDays(newDays); // 계산된 새 배열로 상태 업데이트
     };
+
+    // effects
+    useEffect(() => {
+        generateCalendarDays();
+    }, [currentDate]); // currentDate가 변경될 때마다 이 effect를 실행합니다.
 
     return (
         <div css={calendarContainer}>
@@ -99,12 +114,11 @@ const Calendar = () => {
                         <button
                             key={index}
                             css={dayCell(
-                                selectedDay[0],
-                                selectedDay[1],
+                                selectedDate.includes(data.dateString),
                                 index,
                                 data.isCurrentMonth,
                             )}
-                            onClick={() => handleSeletedDate(data.day)}
+                            onClick={() => handleSeletedDate(data.dateString)}
                         >
                             {data.day}
                         </button>

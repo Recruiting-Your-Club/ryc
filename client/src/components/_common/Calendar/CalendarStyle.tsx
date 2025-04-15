@@ -55,8 +55,8 @@ const weekendColor = (index: number) => {
     }
 };
 
-const selectedColor = (startDay: number, endDay: number, index: number) => {
-    if (index === startDay || (index >= startDay && index <= endDay)) {
+const selectedColor = (selectedDate: boolean) => {
+    if (selectedDate) {
         return css`
             background-color: ${theme.colors.default};
             color: white;
@@ -77,12 +77,7 @@ export const weekCell = (index: number) => {
     return weekendColor(index);
 };
 
-export const dayCell = (
-    startDay: number,
-    endDay: number,
-    index: number,
-    isCurrentMonth: boolean,
-) => {
+export const dayCell = (selectedDate: boolean, index: number, isCurrentMonth: boolean) => {
     return css`
         background-color: transparent;
         width: 100%;
@@ -93,7 +88,7 @@ export const dayCell = (
         &:hover {
             background-color: #f0f0f0;
         }
-        ${selectedColor(startDay, endDay, index)}
+        ${selectedColor(selectedDate)}
         ${currentMonthColor(isCurrentMonth)}
     `;
 };
