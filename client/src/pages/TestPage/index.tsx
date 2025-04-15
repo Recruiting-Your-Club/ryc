@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 function TestPage() {
     return (
         <>
-            <Calendar />
+            <Calendar isMultiple={false} />
         </>
     );
 }

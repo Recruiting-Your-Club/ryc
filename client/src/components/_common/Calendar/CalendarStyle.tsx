@@ -55,13 +55,21 @@ const weekendColor = (index: number) => {
     }
 };
 
-const selectedColor = (selectedDate: boolean) => {
+const selectedColor = (selectedDate: boolean, today: boolean) => {
     if (selectedDate) {
         return css`
             background-color: ${theme.colors.default};
             color: white;
             &:hover {
-                background-color: ${theme.colors.default}; /* 호버 시에도 동일 색상 유지 */
+                background-color: ${theme.colors.default};
+            }
+        `;
+    } else if (today) {
+        return css`
+            background-color: ${theme.colors.gray[200]};
+            color: black;
+            &:hover {
+                background-color: ${theme.colors.default};
             }
         `;
     }
@@ -77,7 +85,12 @@ export const weekCell = (index: number) => {
     return weekendColor(index);
 };
 
-export const dayCell = (selectedDate: boolean, index: number, isCurrentMonth: boolean) => {
+export const dayCell = (
+    selectedDate: boolean,
+    index: number,
+    today: boolean,
+    isCurrentMonth: boolean,
+) => {
     return css`
         background-color: transparent;
         width: 100%;
@@ -88,7 +101,7 @@ export const dayCell = (selectedDate: boolean, index: number, isCurrentMonth: bo
         &:hover {
             background-color: #f0f0f0;
         }
-        ${selectedColor(selectedDate)}
+        ${selectedColor(selectedDate, today)}
         ${currentMonthColor(isCurrentMonth)}
     `;
 };

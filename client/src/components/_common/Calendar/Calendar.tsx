@@ -11,7 +11,7 @@ import {
 import { Button } from '@components';
 import dayjs from 'dayjs';
 
-const Calendar = () => {
+const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
     // prop destruction
     // lib hooks
     // initial values
@@ -36,13 +36,15 @@ const Calendar = () => {
     const handleSeletedDate = (selectDate: string) => {
         if (selectedDate.includes(selectDate)) {
             setSelectedDate(selectedDate.filter((day) => day !== selectDate));
-        } else {
+        } else if (isMultiple) {
             setSelectedDate([...selectedDate, selectDate]);
+        } else {
+            setSelectedDate([selectDate]);
         }
     };
     const generateCalendarDays = () => {
         const newDays = []; // days 업데이트를 위한 새 배열
-
+        const currentDate = dayjs(); // 현재 날짜
         const daysInMonth = currentDate.daysInMonth(); // 현재 월의 총 일수
         const prevMonth = currentDate.subtract(1, 'month'); // 이전 달
         const firstDayOfMonth = currentDate.day(); // 0(일) ~ 6(토)
@@ -116,6 +118,7 @@ const Calendar = () => {
                             css={dayCell(
                                 selectedDate.includes(data.dateString),
                                 index,
+                                data.dateString === currentDate.format('YYYY-MM-DD'),
                                 data.isCurrentMonth,
                             )}
                             onClick={() => handleSeletedDate(data.dateString)}
