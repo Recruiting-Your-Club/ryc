@@ -66,9 +66,30 @@ function SideBar({ menu, subMenu }: SideBarProps) {
     const location = useLocation();
     const { goTo } = useRouter();
 
+    // initial values
+    const getCurrentBase = <T extends string | number>(
+        callback: (activatedSubMenu?: SubMenuItem) => T,
+    ): T => {
+        const currentPath = location.pathname;
+        const activatedSubMenu = subMenuItems.find((item) => item.link === currentPath);
+        return callback(activatedSubMenu);
+    };
+
+    const getInitialMenuTitle = () => {
+        return getCurrentBase((activatedSubMenu) => {
+            return activatedSubMenu ? activatedSubMenu.subMenu : subMenuItems[0].subMenu;
+        });
+    };
+
+    const getInitialMenuId = () => {
+        return getCurrentBase((activatedSubMenu) => {
+            return activatedSubMenu ? activatedSubMenu.parentId : 1;
+        });
+    };
+
     // state, ref, querystring hooks
-    const [activeMenu, setActiveMenu] = useState<number | undefined>(getCurrentMenuId());
-    const [activeSubMenu, setActiveSubMenu] = useState<string>(getCurrentSubMenuTitle());
+    const [activeMenu, setActiveMenu] = useState<number | undefined>(getInitialMenuId);
+    const [activeSubMenu, setActiveSubMenu] = useState<string>(getInitialMenuTitle);
     const [isExpanded, setIsExpanded] = useState(true);
     const [filteredSubMenu, setFilteredSubMenu] = useState<SubMenuItem[]>([]);
 
@@ -87,18 +108,6 @@ function SideBar({ menu, subMenu }: SideBarProps) {
     }, [isExpanded, activeMenu]);
 
     // handlers
-    //NOTE useState의 초기값인데 const로 선언하면 정의해둔 위치에 어긋나기 때문에 호이스팅을 이용하기 위해 function을 사용
-    function getCurrentSubMenuTitle() {
-        const currentPath = location.pathname;
-        const activatedSubMenu = subMenuItems.find((item) => item.link === currentPath);
-        return activatedSubMenu ? activatedSubMenu.subMenu : subMenuItems[0].subMenu;
-    }
-    function getCurrentMenuId() {
-        const currentPath = location.pathname;
-        const activatedSubMenu = subMenuItems.find((item) => item.link === currentPath);
-        return activatedSubMenu ? activatedSubMenu.parentId : 1;
-    }
-
     const handleCollapsed = (id: number) => {
         if (!isExpanded || activeMenu !== id) {
             setActiveMenu(id);
