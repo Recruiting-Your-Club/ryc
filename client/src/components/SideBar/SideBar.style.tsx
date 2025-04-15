@@ -8,7 +8,6 @@ export const sideBarContainer = css`
     left: 0;
     height: 100%;
     overflow: clip;
-    width: '30rem';
     border-right: 1px solid ${theme.colors.gray[100]};
 `;
 
@@ -66,21 +65,21 @@ export const menuButton = (isActive: boolean) => css`
 
 const sideBar_collapse = keyframes`
     0% {
-            width: 23rem;
-        }
-        100% {
-            border-right: 0;
-            width: 0;
-        }
+        width: 23rem;
+    }
+    100% {
+        border-right: 0;
+        width: 0;
+    }
 `;
 const sideBar_expand = keyframes`
     0% {
-            width: 0;
-        }
-        100% {
-            border-right: 1px solid ${theme.colors.gray[300]};
-            width: 23rem;
-        }
+        width: 0;
+    }
+    100% {
+        border-right: 1px solid ${theme.colors.gray[300]};
+        width: 23rem;
+    }
 `;
 const sideBar_opacity = keyframes`
     0% {
@@ -94,7 +93,7 @@ const sideBar_opacity = keyframes`
 export const contentContainer = (isExpanded: boolean) => css`
     display: flex;
     flex-direction: column;
-    height: 100dvh;
+    height: inherit;
     border-right: 1px solid ${theme.colors.gray[300]};
     padding: 2rem 0rem;
     white-space: nowrap;
@@ -114,7 +113,7 @@ export const menuTitle = css`
     justify-content: space-between;
     height: 3rem;
     padding: 0 1rem;
-    ${theme.typography.h4Semibold}
+    ${theme.typography.h4Semibold};
 `;
 
 export const menuContainer = css`

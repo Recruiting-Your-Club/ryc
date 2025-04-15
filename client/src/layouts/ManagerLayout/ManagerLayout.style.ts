@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import theme from '@styles/theme';
 
 export const layoutContainer = css`
     display: flex;
@@ -12,5 +13,5 @@ export const contentContainer = css`
     flex: 1;
     width: 100%;
     overflow-y: auto;
-    background-color: white;
+    background-color: ${theme.colors.white};
 `;
