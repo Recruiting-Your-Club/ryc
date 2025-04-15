@@ -22,6 +22,5 @@ export const Spin: StoryObj<typeof SpinSpinner> = {
 };
 
 export const Pulse: StoryObj<typeof PulseSpinner> = {
-    render: (args) => <PulseSpinner color={theme.colors.black} />,
-    args: {},
+    render: () => <PulseSpinner color={theme.colors.black} />,
 };

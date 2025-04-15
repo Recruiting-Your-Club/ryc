@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { SpinSpinner, Button, PulseSpinner } from '@components';
 import { Spin } from '@components/_common/LoadingSpinner/LoadingSpinner.stories';
+import theme from '@styles/theme';
+
 function TestPage() {
     return (
         <>
@@ -16,7 +18,7 @@ function TestPage() {
             <SpinSpinner size="xl" />
             <br />
 
-            <PulseSpinner color="black" size="xs" />
+            <PulseSpinner color={theme.colors.blue[100]} size="xs" />
             <br />
             <PulseSpinner color="black" size="s" />
             <br />
