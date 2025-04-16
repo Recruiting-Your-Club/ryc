@@ -1,8 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FileUpLoader } from './FileUpLoader';
-import type { FileUpLoaderContextValueType } from './type';
-import { FileUpLoaderContext } from './FileUpLoaderContext';
+import type { FileUpLoaderInteractionContextType, FileUpLoaderStateContextType } from './types';
+import { FileUpLoaderStateContext } from './FileUpLoaderStateContext';
+import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
 const mockPdfFile = new File(['%PDF-sample'], 'document.pdf', {
     type: 'application/pdf',
@@ -14,11 +15,15 @@ const mockImageFile = new File([], 'image.jpg', {
     lastModified: new Date().getTime(),
 });
 
-const mockContext: FileUpLoaderContextValueType = {
+const mockStateContext: FileUpLoaderStateContextType = {
     files: [mockPdfFile, mockImageFile],
     setFiles: () => {},
     isActive: false,
     setIsActive: () => {},
+    disabled: false,
+};
+
+const mockInteractionContext: FileUpLoaderInteractionContextType = {
     fileInputRef: { current: null },
     handleChangeFile: () => {},
     handleClickButton: () => {},
@@ -28,7 +33,6 @@ const mockContext: FileUpLoaderContextValueType = {
     handleDragEnd: () => {},
     handleDragOver: () => {},
     handleDrop: () => {},
-    disabled: false,
 };
 
 type Story = StoryObj<typeof FileUpLoader>;
@@ -92,14 +96,16 @@ export const OnlyEmptyBox: Story = {
 
 export const WithMockedFiles: Story = {
     render: () => (
-        <FileUpLoaderContext.Provider value={mockContext}>
-            <FileUpLoader.Button />
-            <FileUpLoader.HelperText
-                sx={{ top: 0 }}
-                helperText="이미 업로드된 파일을 확인해보세요."
-            />
-            <FileUpLoader.Box />
-        </FileUpLoaderContext.Provider>
+        <FileUpLoaderStateContext.Provider value={mockStateContext}>
+            <FileUpLoaderInteractionContext.Provider value={mockInteractionContext}>
+                <FileUpLoader.Button />
+                <FileUpLoader.HelperText
+                    sx={{ top: 0 }}
+                    helperText="이미 업로드된 파일을 확인해보세요."
+                />
+                <FileUpLoader.Box />
+            </FileUpLoaderInteractionContext.Provider>
+        </FileUpLoaderStateContext.Provider>
     ),
 };
 

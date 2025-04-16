@@ -1,19 +1,21 @@
 import type { ReactNode } from 'react';
 import React from 'react';
-import { s_fileItem, s_fileRow, s_xIcon, s_fileImagePreview } from './FileUpLoader.style';
+import { s_fileItem, s_fileRow, s_fileImagePreview } from './FileUpLoader.style';
 import XIcon from '@assets/images/gray_xicon.svg';
-import { useFileUpLoaderContext } from './FileUpLoaderContext';
+import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
-import type { FileUpLoaderItemProps } from './type';
-import { ImageExtension } from './type';
+import type { FileUpLoaderItemProps } from './types';
+import { ImageExtension } from './constants';
 import PdfIcon from '@assets/images/PdfIcon.svg';
 import { formatDate, formatBytes, getExtension } from './utills';
 import { Button } from '@components/_common';
+import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
 function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     //props destruction
     // lib hooks
-    const { files, handleDelete } = useFileUpLoaderContext();
+    const { files } = useFileUpLoaderStateContext();
+    const { handleDelete } = useFileUpLoaderInteractionContext();
 
     // calculated value
     const ext = getExtension(file.name);

@@ -1,13 +1,13 @@
 import React from 'react';
-import { useFileUpLoaderContext } from './FileUpLoaderContext';
 import XIcon from '@assets/images/gray_xicon.svg';
 import { s_fileHeader, s_fileRow } from './FileUpLoader.style';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
-import { headerItems } from './type';
+import { headerItems } from './constants';
 import { Button } from '@components/_common';
+import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
 function FileUpLoaderItemHeader() {
-    const { handleDeleteEntire } = useFileUpLoaderContext();
+    const { handleDeleteEntire } = useFileUpLoaderInteractionContext();
 
     return (
         <div css={s_fileHeader}>

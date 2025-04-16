@@ -1,10 +1,10 @@
 import React from 'react';
-import { useFileUpLoaderContext } from './FileUpLoaderContext';
+import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderItem } from './FileUpLoaderItem';
 import { s_fileUpLoaderItemList } from './FileUpLoader.style';
 
 function FileUpLoaderItemList() {
-    const { files } = useFileUpLoaderContext();
+    const { files } = useFileUpLoaderStateContext();
 
     return (
         <ul css={s_fileUpLoaderItemList}>
