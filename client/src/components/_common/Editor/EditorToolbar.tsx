@@ -44,6 +44,8 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
         const startContainer = range.startContainer;
         const endContainer = range.endContainer;
+        // console.log(startContainer);
+        // console.log(endContainer);
 
         // 선택된 영역이 하나의 텍스트 노드 안에서 이루어진 경우
         if (
@@ -75,16 +77,12 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         } else {
             // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
             const commonAncestor = range.commonAncestorContainer; // 공통 조상 노드, 즉 TextArea(div)에 해당
-            let isDiv = false; // 줄바꿈 확인용 (추후 <br> 태그 처리 필요)
 
             // 범위 내 TEXT 노드 탐색
             const walker = document.createTreeWalker(commonAncestor, NodeFilter.SHOW_TEXT, {
                 acceptNode: (node) => {
                     // range에 속한 노드여야 함
                     if (range.intersectsNode(node)) {
-                        if ((node as HTMLElement).parentElement?.tagName === 'DIV') {
-                            isDiv = true;
-                        }
                         const text = node.textContent?.trim();
                         return text ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
                     }
@@ -108,76 +106,45 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             // 스타일 적용 or 제거
             textNodesInCommon.forEach((textNode, index) => {
                 const parent = textNode.parentElement;
-                if (parent?.tagName === 'SPAN') {
-                    // 이미 span으로 감싸졌을 경우
-                    const text = textNode.textContent || '';
-                    if (isDiv) {
-                        if (index === 0 && range.startOffset != 0) {
-                            parent.replaceWith(
-                                applyStyleInSelectedText(
-                                    text,
-                                    parent,
-                                    format,
-                                    true,
-                                    range.startOffset,
-                                    text.length,
-                                ),
-                            );
-                        } else if (
-                            index === textNodesInCommon.length - 1 &&
-                            range.endOffset != text.length
-                        ) {
-                            parent.replaceWith(
-                                applyStyleInSelectedText(
-                                    text,
-                                    parent,
-                                    format,
-                                    true,
-                                    0,
-                                    range.endOffset,
-                                ),
-                            );
-                        }
-                    } else {
-                        toggleFormat(parent, format, !isOverallStyle);
-                    }
-                } else {
-                    // span이 아닐 경우 span으로 감싸고 스타일 적용
-                    const span = document.createElement('span');
-                    span.textContent = textNode.textContent;
-                    const text = span.textContent || '';
+                const text = textNode.textContent || '';
+                const isSpan = parent?.tagName === 'SPAN';
+                // console.log(text);
 
-                    if (isDiv) {
-                        if (index === 0 && range.startOffset != 0) {
-                            textNode.replaceWith(
-                                applyStyleInSelectedText(
-                                    text,
-                                    parent,
-                                    format,
-                                    false,
-                                    range.startOffset,
-                                    text.length,
-                                ),
-                            );
-                        } else if (
-                            index === textNodesInCommon.length - 1 &&
-                            range.endOffset != text.length
-                        ) {
-                            textNode.replaceWith(
-                                applyStyleInSelectedText(
-                                    text,
-                                    parent,
-                                    format,
-                                    false,
-                                    0,
-                                    range.endOffset,
-                                ),
-                            );
-                        }
+                const isFirst = index === 0;
+                const isLast = index === textNodesInCommon.length - 1;
+
+                const start = isFirst ? range.startOffset : 0;
+                const end = isLast ? range.endOffset : text.length;
+                // console.log(start);
+                // console.log(end);
+
+                // 노드 하나 안에서 일부 선택
+                if (start !== 0 || end !== text.length) {
+                    const frag = applyStyleInSelectedText(
+                        text,
+                        parent,
+                        format,
+                        isSpan,
+                        start,
+                        end,
+                        isOverallStyle,
+                    );
+                    if (isSpan) {
+                        parent.replaceWith(frag);
                     } else {
-                        if (!isOverallStyle) applyFormat(span, format);
-                        textNode.replaceWith(span);
+                        textNode.replaceWith(frag);
                     }
+                    return;
+                }
+
+                // 노드 범위 전체 선택
+                if (isSpan) {
+                    toggleFormat(parent, format, !isOverallStyle);
+                } else {
+                    const span = document.createElement('span');
+                    span.textContent = text;
+                    applyFormat(span, format);
+                    textNode.replaceWith(span);
                 }
             });
         }
@@ -195,27 +162,37 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         isSpan: boolean,
         selectedStart: number,
         selectedEnd: number,
+        isOverallStyle: boolean = true,
     ): DocumentFragment => {
         const originalStyle = isSpan ? parent?.getAttribute('style') || '' : '';
 
         const before = text.slice(0, selectedStart);
         const selected = text.slice(selectedStart, selectedEnd);
         const after = text.slice(selectedEnd);
+        // console.log(`before:${before}`);
+        // console.log(`selected:${selected}`);
+        // console.log(`after:${after}`);
 
         const frag = document.createDocumentFragment();
         if (before) frag.appendChild(createSpan(format, before, originalStyle));
-        frag.appendChild(createSpan(format, selected, originalStyle, true));
+        frag.appendChild(createSpan(format, selected, originalStyle, true, isOverallStyle));
         if (after) frag.appendChild(createSpan(format, after, originalStyle));
 
         return frag;
     };
 
     // 새로운 span 노드 생성
-    const createSpan = (format: Format, text: string, style: string, applyNewStyle = false) => {
+    const createSpan = (
+        format: Format,
+        text: string,
+        style: string,
+        applyNewStyle = false,
+        isOverallStyle?: boolean,
+    ) => {
         const span = document.createElement('span');
         span.style.cssText = style; // style 객체와 연동되는 cssText 사용
 
-        if (applyNewStyle) applyFormat(span, format); // format만 추가/제거
+        if (applyNewStyle) applyFormat(span, format, isOverallStyle); // format만 추가/제거
         span.textContent = text;
 
         return span;
@@ -263,9 +240,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         }
     };
 
-    const applyFormat = (span: HTMLElement, format: Format) => {
+    const applyFormat = (span: HTMLElement, format: Format, isOverallStyle?: boolean) => {
         const has = hasFormat(span, format);
-        toggleFormat(span, format, !has);
+        const toggledHas = !isOverallStyle && has ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
+
+        toggleFormat(span, format, !toggledHas);
     };
 
     // underline, strikethrough는 textDecoration 내부에서 동시 적용 가능하므로
