@@ -33,7 +33,6 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
         alias: {
             '@assets': path.resolve(__dirname, 'src/assets'),
-            '@components': path.resolve(__dirname, 'components/index'),
             '@components': path.resolve(__dirname, 'src/components'),
             '@constants': path.resolve(__dirname, 'src/constants'),
             '@layouts': path.resolve(__dirname, 'src/layouts'),
@@ -49,6 +48,7 @@ module.exports = {
     output: {
         filename: 'ryc.bundle.js',
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
         clean: true,
     },
     plugins: [
