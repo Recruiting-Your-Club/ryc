@@ -9,20 +9,31 @@ import {
     weekCell,
 } from './CalendarStyle';
 import { Button } from '@components';
+import { Text } from '@components/_common';
 import dayjs from 'dayjs';
+import type { CalendarProps } from './types';
+import type { CalendarData } from './types';
 
-const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
+const Calendar = ({
+    isMultiple = false,
+    selectedDate = [],
+    onSelect = () => {},
+    disabled = false,
+    size = 'lg',
+    border = false,
+    shadow = true,
+    sx = {},
+}: CalendarProps) => {
     // prop destruction
     // lib hooks
     // initial values
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
     const today = dayjs().format('YYYY-MM-DD');
+
     // state, ref, querystring hooks
-    const [days, setDays] = useState<
-        { day: number; isCurrentMonth: boolean; dateString: string }[]
-    >([]);
+    const [days, setDays] = useState<CalendarData[]>([]);
     const [currentDate, setCurrentDate] = useState(dayjs());
-    const [selectedDate, setSelectedDate] = useState<string[]>([]);
+
     // form hooks
     // query hooks
     // calculated values
@@ -36,11 +47,11 @@ const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
     };
     const handleSeletedDate = (selectDate: string) => {
         if (selectedDate.includes(selectDate)) {
-            setSelectedDate(selectedDate.filter((day) => day !== selectDate));
+            onSelect(selectedDate.filter((day) => day !== selectDate));
         } else if (isMultiple) {
-            setSelectedDate([...selectedDate, selectDate]);
+            onSelect([...selectedDate, selectDate]);
         } else {
-            setSelectedDate([selectDate]);
+            onSelect([selectDate]);
         }
     };
     const generateCalendarDays = () => {
@@ -82,21 +93,23 @@ const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
             });
         }
 
-        setDays(newDays); // 계산된 새 배열로 상태 업데이트
+        setDays(newDays);
     };
 
     // effects
     useEffect(() => {
         generateCalendarDays();
-    }, [currentDate]); // currentDate가 변경될 때마다 이 effect를 실행합니다.
+    }, [currentDate]);
 
     return (
-        <div css={calendarContainer}>
+        <div css={[calendarContainer({ size, border, shadow }), sx]}>
             <div css={calendarHeaderContainer}>
                 <Button variant="transparent" onClick={handleBackMonth}>
                     {'<'}
                 </Button>
-                <div>{currentDate.format('YYYY년 MM월')}</div>
+                <Text as="div" type="bodySemibold">
+                    {currentDate.format('YYYY년 MM월')}
+                </Text>
                 <Button variant="transparent" onClick={handleNextMonth}>
                     {'>'}
                 </Button>
@@ -114,12 +127,14 @@ const Calendar = ({ isMultiple }: { isMultiple: boolean }) => {
                 <div css={daysContainer}>
                     {days.map((date, index) => (
                         <button
+                            disabled={disabled}
                             key={index}
                             css={dayCell(
                                 selectedDate.includes(date.dateString),
                                 index,
                                 date.dateString === today,
                                 date.isCurrentMonth,
+                                disabled,
                             )}
                             onClick={() => handleSeletedDate(date.dateString)}
                         >

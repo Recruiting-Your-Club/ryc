@@ -1,21 +1,52 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
+import type { Size, SizeStyle } from './types';
+import type { CalendarProps } from './types';
 
-export const calendarContainer = css`
+export const SizeMap: Record<Size, SizeStyle> = {
+    sm: {
+        width: '30rem',
+        height: '32rem',
+    },
+    md: {
+        width: '35rem',
+        height: '37rem',
+    },
+    lg: {
+        width: '40rem',
+        height: '42rem',
+    },
+    full: {
+        width: '100%',
+        height: '100%',
+    },
+};
+
+export const calendarContainer = ({ size, border, shadow }: CalendarProps) => css`
     display: flex;
     flex-direction: column;
-    padding: 1rem 2rem 2rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    // 가로 크기로 전체 캘린더 크기 조정
+    align-items: center;
+    padding: 1rem;
+    border-radius: 10px;
+    ${border &&
+    css`
+        border: 1px solid ${theme.colors.gray[300]};
+    `}
+    ${shadow &&
+    css`
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    `}
+    width: ${SizeMap[size!].width};
+    height: ${SizeMap[size!].height};
 `;
 
 export const calendarHeaderContainer = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 0rem 1rem 1rem 1rem;
+    margin-left: 1rem;
+    width: 100%;
     ${theme.typography.bodyBold}
 `;
 
@@ -23,6 +54,9 @@ export const calendarBodyContainer = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 `;
 
 export const weekdaysContainer = css`
@@ -39,8 +73,8 @@ export const daysContainer = css`
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
     width: 100%;
+    height: 100%;
     gap: 0.5rem;
-    // 세로 크기로 각 셀의 크기 조정
 `;
 
 const weekendColor = (index: number) => {
@@ -55,11 +89,11 @@ const weekendColor = (index: number) => {
     }
 };
 
-const selectedColor = (selectedDate: boolean, today: boolean) => {
+const selectedColor = (selectedDate: boolean, today: boolean, disabled: boolean) => {
     if (selectedDate) {
         return css`
             background-color: ${theme.colors.default};
-            color: white;
+            color: ${theme.colors.white};
             &:hover {
                 background-color: ${theme.colors.default};
             }
@@ -67,10 +101,14 @@ const selectedColor = (selectedDate: boolean, today: boolean) => {
     } else if (today) {
         return css`
             background-color: ${theme.colors.gray[200]};
-            color: black;
-            &:hover {
-                background-color: ${theme.colors.default};
-            }
+            color: ${theme.colors.black};
+            ${!disabled &&
+            css`
+                &:hover {
+                    color: ${theme.colors.white};
+                    background-color: ${theme.colors.default};
+                }
+            `}
         `;
     }
 };
@@ -90,18 +128,24 @@ export const dayCell = (
     index: number,
     today: boolean,
     isCurrentMonth: boolean,
+    disabled: boolean,
 ) => {
     return css`
         background-color: transparent;
         width: 100%;
         height: 100%;
         padding: 0.5rem;
+        ${theme.typography.captionSemibold}
         border-radius: 5px;
+        transition: background-color 0.15s ease;
         ${weekendColor(index)}
-        &:hover {
-            background-color: #f0f0f0;
-        }
-        ${selectedColor(selectedDate, today)}
+        ${!disabled &&
+        css`
+            &:hover {
+                background-color: #f0f0f0;
+            }
+        `}
+        ${selectedColor(selectedDate, today, disabled)}
         ${currentMonthColor(isCurrentMonth)}
     `;
 };

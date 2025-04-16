@@ -1,6 +1,27 @@
+import type { CSSObject } from '@emotion/react';
+
 export interface CalendarProps {
-    selectedDate: string[];
-    setSelectedDate: (selectedDate: string[]) => void;
+    // useState의 왼쪽 값
+    selectedDate?: string[];
+    // useState의 오른쪽 값
+    onSelect?: (selectedDate: string[]) => void;
     isMultiple?: boolean;
-    readonly?: boolean;
+    disabled?: boolean;
+    border?: boolean;
+    shadow?: boolean;
+    size?: Size;
+    sx?: CSSObject;
+}
+
+export interface CalendarData {
+    day: number;
+    isCurrentMonth: boolean;
+    dateString: string;
+}
+
+export type Size = 'sm' | 'md' | 'lg' | 'full';
+
+export interface SizeStyle {
+    width?: CSSObject['width'];
+    height?: CSSObject['height'];
 }
