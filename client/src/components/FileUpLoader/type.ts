@@ -24,8 +24,6 @@ export interface FileUpLoaderHelperTextProps {
 export interface FileUpLoaderContextValueType {
     files: File[];
     setFiles: Dispatch<SetStateAction<File[]>>;
-    hasFile: boolean;
-    setHasFile: Dispatch<SetStateAction<boolean>>;
     isActive: boolean;
     setIsActive: Dispatch<SetStateAction<boolean>>;
     handleDelete: (index: number) => void;

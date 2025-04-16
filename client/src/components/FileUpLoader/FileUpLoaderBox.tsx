@@ -7,7 +7,7 @@ import type { FileUpLoaderBoxProps } from './type';
 
 function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
     const {
-        hasFile,
+        files,
         isActive,
         handleDragStart,
         handleDragEnd,
@@ -20,13 +20,13 @@ function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
         <div
             role="region"
             aria-label="파일을 여기에 드래그하여 업로드하세요"
-            css={[s_fileUpLoaderBox(hasFile, isActive, disabled), sx]}
+            css={[s_fileUpLoaderBox(files, isActive, disabled), sx]}
             onDragEnter={handleDragStart}
             onDragLeave={handleDragEnd}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
         >
-            {!hasFile ? <FileUpLoaderEmptyView /> : <FileUpLoaderItemView />}
+            {files.length === 0 ? <FileUpLoaderEmptyView /> : <FileUpLoaderItemView />}
         </div>
     );
 }

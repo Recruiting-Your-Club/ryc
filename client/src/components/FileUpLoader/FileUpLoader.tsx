@@ -11,11 +11,10 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
     // state, ref, querystring hooks
 
     const [files, setFiles] = useState<File[]>([]);
-    const [hasFile, setHasFile] = useState(false);
     const [isActive, setIsActive] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(files, setFiles, setHasFile);
+    const { filterAndSetFiles } = useFilteredFile(files, setFiles);
 
     // handler
     const handleClickButton = () => {
@@ -34,13 +33,11 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         if (disabled) return;
         const newFiles = files.filter((_, i) => i !== index);
         setFiles(newFiles);
-        if (newFiles.length === 0) setHasFile(false);
     };
 
     const handleDeleteEntire = () => {
         if (disabled) return;
         setFiles([]);
-        setHasFile(false);
         setIsActive(false);
     };
 
@@ -71,8 +68,6 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         () => ({
             files,
             setFiles,
-            hasFile,
-            setHasFile,
             isActive,
             setIsActive,
             handleDelete,
@@ -86,7 +81,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
             handleChangeFile,
             disabled,
         }),
-        [files, hasFile, isActive],
+        [files, isActive],
     );
 
     return (

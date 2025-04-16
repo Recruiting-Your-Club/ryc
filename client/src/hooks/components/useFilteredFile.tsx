@@ -1,11 +1,7 @@
 import { ImageExtension } from '@components/FileUpLoader/type';
 import { getExtension } from '@components/FileUpLoader/utills';
 
-function useFilteredFile(
-    files: File[],
-    setFiles: (files: File[]) => void,
-    setHasFile: (has: boolean) => void,
-) {
+function useFilteredFile(files: File[], setFiles: (files: File[]) => void) {
     const isValidFile = (file: File) => {
         const ext = getExtension(file.name);
         return ext === 'pdf' || Object.values(ImageExtension).includes(ext as ImageExtension);
@@ -20,7 +16,6 @@ function useFilteredFile(
         }
 
         setFiles([...files, ...validFiles]);
-        setHasFile(true);
     };
 
     return {

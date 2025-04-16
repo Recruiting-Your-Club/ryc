@@ -19,7 +19,7 @@ export const s_fileUpLoaderInput = css`
     display: none;
 `;
 
-export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean, disabled: boolean) => css`
+export const s_fileUpLoaderBox = (files: File[], isActive: boolean, disabled: boolean) => css`
     width: 100%;
     min-height: 8rem;
     border: 1px solid ${theme.colors.gray[300]};
@@ -28,7 +28,7 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean, disabled:
     padding: 0;
     ${theme.typography.helperTextRegular};
 
-    ${!hasFile &&
+    ${files.length === 0 &&
     css`
         display: flex;
         align-items: center;
@@ -36,7 +36,7 @@ export const s_fileUpLoaderBox = (hasFile: boolean, isActive: boolean, disabled:
         text-align: center;
     `}
 
-    ${hasFile &&
+    ${files.length > 0 &&
     css`
         display: block;
     `}
