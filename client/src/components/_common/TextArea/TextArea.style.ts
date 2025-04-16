@@ -58,8 +58,8 @@ export const s_label = css`
 
 export const s_errorText = css`
     position: absolute;
-    right: 0;
-    top: 1.5rem;
+    left: 0;
+    bottom: 0;
     color: ${theme.colors.red[800]};
     margin-top: 0.25rem;
     ${theme.typography.subCaptionLight};
