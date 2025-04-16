@@ -36,8 +36,8 @@ export const calendarContainer = ({ size, border, shadow }: CalendarProps) => cs
     css`
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     `}
-    width: ${SizeMap[size!].width};
-    height: ${SizeMap[size!].height};
+    width: ${SizeMap[size || 'md'].width};
+    height: ${SizeMap[size || 'md'].height};
 `;
 
 export const calendarHeaderContainer = css`
