@@ -56,10 +56,9 @@ export const Default: Story = {
     render: () => (
         <FileUpLoader>
             <FileUpLoader.Button />
-            <FileUpLoader.HelperText
-                helperText="최대 5개의 pdf, 이미지 파일만 업로드 가능합니다."
-                sx={{ top: 0 }}
-            />
+            <FileUpLoader.HelperText sx={{ top: 0 }}>
+                pdf, 이미지 파일만 업로드 가능합니다.
+            </FileUpLoader.HelperText>
             <FileUpLoader.Box />
         </FileUpLoader>
     ),
@@ -69,18 +68,6 @@ export const NoHelperText: Story = {
     render: () => (
         <FileUpLoader>
             <FileUpLoader.Button />
-            <FileUpLoader.Box />
-        </FileUpLoader>
-    ),
-};
-export const CustomHelperText: Story = {
-    render: () => (
-        <FileUpLoader>
-            <FileUpLoader.Button />
-            <FileUpLoader.HelperText
-                sx={{ top: 0 }}
-                helperText="상황에 맞게 텍스트를 작성할수있어요."
-            />
             <FileUpLoader.Box />
         </FileUpLoader>
     ),
@@ -99,10 +86,9 @@ export const WithMockedFiles: Story = {
         <FileUpLoaderStateContext.Provider value={mockStateContext}>
             <FileUpLoaderInteractionContext.Provider value={mockInteractionContext}>
                 <FileUpLoader.Button />
-                <FileUpLoader.HelperText
-                    sx={{ top: 0 }}
-                    helperText="이미 업로드된 파일을 확인해보세요."
-                />
+                <FileUpLoader.HelperText sx={{ top: 0 }}>
+                    이미 업로드된 파일을 확인해보세요.
+                </FileUpLoader.HelperText>
                 <FileUpLoader.Box />
             </FileUpLoaderInteractionContext.Provider>
         </FileUpLoaderStateContext.Provider>

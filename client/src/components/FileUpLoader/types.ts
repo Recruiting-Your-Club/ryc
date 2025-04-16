@@ -7,11 +7,6 @@ export interface FileUpLoaderProps {
     disabled?: boolean;
 }
 
-export interface FileUpLoaderHelperTextProps {
-    helperText?: string;
-    sx?: CSSObject;
-}
-
 export interface FileUpLoaderStateContextType {
     files: File[];
     setFiles: Dispatch<SetStateAction<File[]>>;
@@ -30,6 +25,11 @@ export interface FileUpLoaderInteractionContextType {
     handleClickButton: () => void;
     handleChangeFile: (e: ChangeEvent<HTMLInputElement>) => void;
     fileInputRef: RefObject<HTMLInputElement>;
+}
+
+export interface FileUpLoaderHelperTextProps {
+    children: ReactNode;
+    sx?: CSSObject;
 }
 
 export interface FileUpLoaderItemProps {
