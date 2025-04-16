@@ -3,10 +3,10 @@ import { s_fileUpLoaderBox } from './FileUpLoader.style';
 import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderEmptyView } from './FileUpLoaderEmptyView';
 import { FileUpLoaderItemView } from './FileUpLoaderItemView';
-import type { FileUpLoaderBoxProps } from './types';
 import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
+import type { CSSObject } from '@emotion/react';
 
-function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
+function FileUpLoaderBox({ sx }: CSSObject) {
     const { files, isActive, disabled } = useFileUpLoaderStateContext();
 
     const { handleDragStart, handleDragEnd, handleDragOver, handleDrop } =

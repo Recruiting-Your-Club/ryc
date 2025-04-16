@@ -7,10 +7,6 @@ export interface FileUpLoaderProps {
     disabled?: boolean;
 }
 
-export interface FileUpLoaderBoxProps {
-    sx?: CSSObject;
-}
-
 export interface FileUpLoaderHelperTextProps {
     helperText?: string;
     sx?: CSSObject;
