@@ -11,7 +11,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
     // state, ref, querystring hooks
 
     const [files, setFiles] = useState<File[]>([]);
-    const [isActive, setIsActive] = useState(false);
+    const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { filterAndSetFiles } = useFilteredFile(files, setFiles);
