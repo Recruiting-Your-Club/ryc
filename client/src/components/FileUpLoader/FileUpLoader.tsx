@@ -1,11 +1,12 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { FileUpLoaderContext } from './FileUpLoaderContext';
+import { FileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderBox } from './FileUpLoaderBox';
 import { FileUpLoaderButton } from './FileUpLoaderButton';
 import { FileUpLoaderHelperText } from './FileUpLoaderHelperText';
 import { s_fileUpLoader } from './FileUpLoader.style';
-import type { FileUpLoaderProps } from './type';
+import type { FileUpLoaderProps } from './types';
 import { useFilteredFile } from '@hooks/components/useFilteredFile';
+import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
 function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
     // state, ref, querystring hooks
@@ -63,31 +64,38 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         setIsActive(false);
     };
 
-    //ref는 자체가 바뀌지는 않기 때문에 안넣어줘도 된다.
-    const contextValue = useMemo(
+    const stateContextValue = useMemo(
         () => ({
             files,
             setFiles,
             isActive,
             setIsActive,
+            disabled,
+        }),
+        [files, isActive, disabled],
+    );
+
+    const interactionContextValue = useMemo(
+        () => ({
             handleDelete,
             handleDeleteEntire,
             handleDragStart,
             handleDragEnd,
             handleDragOver,
             handleDrop,
-            fileInputRef,
             handleClickButton,
             handleChangeFile,
-            disabled,
+            fileInputRef,
         }),
-        [files, isActive],
+        [],
     );
 
     return (
-        <FileUpLoaderContext.Provider value={contextValue}>
-            <div css={[s_fileUpLoader, sx]}>{children}</div>
-        </FileUpLoaderContext.Provider>
+        <FileUpLoaderStateContext.Provider value={stateContextValue}>
+            <FileUpLoaderInteractionContext.Provider value={interactionContextValue}>
+                <div css={[s_fileUpLoader, sx]}>{children}</div>
+            </FileUpLoaderInteractionContext.Provider>
+        </FileUpLoaderStateContext.Provider>
     );
 }
 export const FileUpLoader = Object.assign(FileUpLoaderRoot, {

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { Align } from './type';
+import type { Align } from './types';
 
 export const s_fileUpLoader = css`
     position: relative;

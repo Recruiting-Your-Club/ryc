@@ -1,4 +1,4 @@
-import { ImageExtension } from '@components/FileUpLoader/type';
+import { ImageExtension } from '@components/FileUpLoader/constants';
 import { getExtension } from '@components/FileUpLoader/utills';
 
 function useFilteredFile(files: File[], setFiles: (files: File[]) => void) {

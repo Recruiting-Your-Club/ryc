@@ -1,20 +1,16 @@
 import React from 'react';
 import { s_fileUpLoaderBox } from './FileUpLoader.style';
-import { useFileUpLoaderContext } from './FileUpLoaderContext';
+import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderEmptyView } from './FileUpLoaderEmptyView';
 import { FileUpLoaderItemView } from './FileUpLoaderItemView';
-import type { FileUpLoaderBoxProps } from './type';
+import type { FileUpLoaderBoxProps } from './types';
+import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
 function FileUpLoaderBox({ sx }: FileUpLoaderBoxProps) {
-    const {
-        files,
-        isActive,
-        handleDragStart,
-        handleDragEnd,
-        handleDragOver,
-        handleDrop,
-        disabled,
-    } = useFileUpLoaderContext();
+    const { files, isActive, disabled } = useFileUpLoaderStateContext();
+
+    const { handleDragStart, handleDragEnd, handleDragOver, handleDrop } =
+        useFileUpLoaderInteractionContext();
 
     return (
         <div
