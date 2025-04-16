@@ -11,6 +11,7 @@ export interface CalendarProps {
     shadow?: boolean;
     size?: Size;
     sx?: CSSObject;
+    zIndex?: CSSObject['zIndex'];
 }
 
 export interface CalendarData {

@@ -22,6 +22,7 @@ const Calendar = ({
     size = 'lg',
     border = false,
     shadow = true,
+    zIndex,
     sx = {},
 }: CalendarProps) => {
     // prop destruction
@@ -102,7 +103,7 @@ const Calendar = ({
     }, [currentDate]);
 
     return (
-        <div css={[calendarContainer({ size, border, shadow }), sx]}>
+        <div css={[calendarContainer({ size, border, shadow, zIndex }), sx]}>
             <div css={calendarHeaderContainer}>
                 <Button variant="transparent" onClick={handleBackMonth}>
                     {'<'}

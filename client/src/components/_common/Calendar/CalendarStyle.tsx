@@ -22,7 +22,7 @@ export const SizeMap: Record<Size, SizeStyle> = {
     },
 };
 
-export const calendarContainer = ({ size, border, shadow }: CalendarProps) => css`
+export const calendarContainer = ({ size, border, shadow, zIndex }: CalendarProps) => css`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,6 +38,7 @@ export const calendarContainer = ({ size, border, shadow }: CalendarProps) => cs
     `}
     width: ${SizeMap[size || 'md'].width};
     height: ${SizeMap[size || 'md'].height};
+    z-index: ${zIndex || 1};
 `;
 
 export const calendarHeaderContainer = css`
