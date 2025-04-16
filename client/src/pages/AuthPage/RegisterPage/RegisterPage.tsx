@@ -36,12 +36,7 @@ function RegisterPage() {
                         </Button>
                     </div>
                     <Input placeholder="홍길동" height={'4.5rem'} label={'이름'} />
-                    <PasswordInput
-                        placeholder="••••••"
-                        height={'4.5rem'}
-                        label={'비밀번호'}
-                        isError
-                    />
+                    <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호'} />
                     <PasswordInput placeholder="••••••" height={'4.5rem'} label={'비밀번호확인'} />
                 </div>
 
