@@ -36,7 +36,13 @@ export const s_textArea = (size: TextAreaSize, error?: boolean, disabled?: boole
     ${s_textAreaSize(size)}
 
     &:focus {
-        border-color: ${error ? theme.colors.red[800] : theme.colors.default};
+        outline: 1px solid ${theme.colors.default};
+        outline-offset: 0px;
+        border: none solid none;
+        ${error &&
+        css`
+            outline-color: ${theme.colors.red[800]};
+        `}
     }
 
     ${error &&
