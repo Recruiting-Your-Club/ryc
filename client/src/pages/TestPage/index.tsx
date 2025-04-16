@@ -5,6 +5,7 @@ import { Button } from '@components/_common/Button';
 import { Text } from '@components/_common/Text';
 import { ClubCard } from '@components';
 import { Input } from '@components/_common/Input';
+import { SideBar } from '@components';
 
 function TestPage() {
     return (
@@ -20,13 +21,14 @@ function TestPage() {
                 </Text>
                 <Input />
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '10rem' }}>
-                <FileUpLoader>
-                    <FileUpLoader.Button />
-                    <FileUpLoader.HelperText helperText="최대 5개의 pdf,이미지 파일만 업로드 가능합니다." />
-                    <FileUpLoader.Box />
-                </FileUpLoader>
+                  <FileUpLoader>
+                      <FileUpLoader.Button />
+                      <FileUpLoader.HelperText helperText="최대 5개의 pdf,이미지 파일만 업로드 가능합니다." />
+                      <FileUpLoader.Box />
+                  </FileUpLoader>
                 </div>
             </div>
+
         </>
 
     );

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '@components/Button';
-import { Text } from '@components/Text';
+import { Button, Text } from '@components';
 import { Toast } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ToastProvider } from './ToastProvider';
