@@ -17,8 +17,6 @@ const mockImageFile = new File([], 'image.jpg', {
 const mockContext: FileUpLoaderContextValueType = {
     files: [mockPdfFile, mockImageFile],
     setFiles: () => {},
-    hasFile: true,
-    setHasFile: () => {},
     isActive: false,
     setIsActive: () => {},
     fileInputRef: { current: null },
