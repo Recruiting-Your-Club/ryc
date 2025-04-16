@@ -1,6 +1,6 @@
 export const formatDate = (timestamp: number): string => {
     const date = new Date(timestamp);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 };
 
 export const getExtension = (fileName: string): string => {
