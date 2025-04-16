@@ -8,9 +8,10 @@ function FileUpLoaderItemList() {
 
     return (
         <ul css={s_fileUpLoaderItemList}>
-            {files?.map((file, index) => (
-                <FileUpLoaderItem key={index} file={file} index={index} />
-            ))}
+            {files?.map((file) => {
+                const key = `${file.name}-${file.lastModified}`;
+                return <FileUpLoaderItem key={key} file={file} index={files.indexOf(file)} />;
+            })}
         </ul>
     );
 }
