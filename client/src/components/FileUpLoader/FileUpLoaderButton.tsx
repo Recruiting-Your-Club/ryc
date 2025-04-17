@@ -21,7 +21,7 @@ function FileUpLoaderButton() {
                 disabled={disabled}
             />
             <Button
-                variant="outlined"
+                variant={disabled ? 'primary' : 'outlined'}
                 size="s"
                 onClick={handleClickButton}
                 sx={{ padding: '1rem' }}
