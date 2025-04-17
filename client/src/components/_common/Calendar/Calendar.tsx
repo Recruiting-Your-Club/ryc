@@ -59,7 +59,7 @@ const Calendar = ({
         const newDays = []; // days 업데이트를 위한 새 배열
         const daysInMonth = currentDate.daysInMonth(); // 현재 월의 총 일수
         const prevMonth = currentDate.subtract(1, 'month'); // 이전 달
-        const firstDayOfMonth = currentDate.day(); // 0(일) ~ 6(토)
+        const firstDayOfMonth = currentDate.startOf('month').day(); // 0(일) ~ 6(토)
         const prevDaysInMonth = prevMonth.daysInMonth(); // 이전 달의 총 일수
 
         // 저번 달 날짜
