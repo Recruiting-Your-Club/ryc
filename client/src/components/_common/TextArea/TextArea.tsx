@@ -2,21 +2,18 @@ import React from 'react';
 import {
     s_textAreaWrapper,
     s_textArea,
-    s_label,
-    s_errorText,
-    s_charCount,
-    s_textAreaLabelWrapper,
+    s_errorTextWrapper,
+    s_charCountWrapper,
 } from './TextArea.style';
 import type { TextAreaProps } from './type';
+import { Text } from '@components/_common/Text';
 
 function TextArea({
     size = 'md',
     width = '100%',
     error,
     errorText,
-    label,
     sx,
-    charCount,
     value,
     maxLength,
     ...props
@@ -25,13 +22,6 @@ function TextArea({
 
     return (
         <div css={[s_textAreaWrapper(width), sx]}>
-            {label && (
-                <span css={s_textAreaLabelWrapper}>
-                    <label css={s_label}>{label}</label>
-                    {error && errorText && <p css={s_errorText}>{errorText}</p>}
-                </span>
-            )}
-
             <textarea
                 css={[s_textArea(size, error, props.disabled), sx]}
                 value={value}
@@ -39,11 +29,19 @@ function TextArea({
                 disabled={props.disabled}
                 {...props}
             />
-
-            {charCount && typeof maxLength === 'number' && (
-                <p css={s_charCount}>
-                    {currentLength} / {maxLength}
-                </p>
+            <div css={s_errorTextWrapper}>
+                {error && errorText && (
+                    <Text type={'subCaptionLight'} color={'warning'}>
+                        {errorText}
+                    </Text>
+                )}
+            </div>
+            {maxLength && typeof maxLength === 'number' && (
+                <div css={s_charCountWrapper}>
+                    <Text type={'subCaptionLight'} color={'helper'}>
+                        {currentLength} / {maxLength}
+                    </Text>
+                </div>
             )}
         </div>
     );

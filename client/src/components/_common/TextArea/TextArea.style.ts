@@ -18,12 +18,6 @@ export const s_textAreaWrapper = (width: string) => css`
     margin: 1rem;
     position: relative;
 `;
-export const s_textAreaLabelWrapper = css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-`;
 
 export const s_textArea = (size: TextAreaSize, error?: boolean, disabled?: boolean) => css`
     resize: none;
@@ -62,20 +56,16 @@ export const s_label = css`
     ${theme.typography.h3Bold};
 `;
 
-export const s_errorText = css`
+export const s_errorTextWrapper = css`
     position: absolute;
     left: 0;
     bottom: 0;
-    color: ${theme.colors.red[800]};
     margin-top: 0.25rem;
-    ${theme.typography.subCaptionLight};
 `;
 
-export const s_charCount = css`
+export const s_charCountWrapper = css`
     width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-top: 0.25rem;
-    ${theme.typography.subCaptionLight};
-    color: ${theme.colors.gray[600]};
 `;

@@ -7,9 +7,7 @@ export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextArea
     width?: string;
     error?: boolean;
     errorText?: string;
-    label?: string;
     sx?: CSSObject;
-    charCount?: boolean;
 }
 
 export type TextAreaSize = 'sm' | 'md' | 'lg';
