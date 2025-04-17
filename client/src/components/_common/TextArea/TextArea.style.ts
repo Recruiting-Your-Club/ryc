@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { TextAreaSize } from './type';
-import { textAreaSize } from './type';
+import type { TextAreaSize } from './types';
+import { textAreaSize } from './types';
 
 export const s_textAreaSize = (size: TextAreaSize) => css`
     height: ${textAreaSize[size].height};
