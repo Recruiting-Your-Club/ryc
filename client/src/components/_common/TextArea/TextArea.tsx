@@ -5,7 +5,7 @@ import {
     s_errorTextWrapper,
     s_charCountWrapper,
 } from './TextArea.style';
-import type { TextAreaProps } from './type';
+import type { TextAreaProps } from './types';
 import { Text } from '@components/_common/Text';
 
 function TextArea({
