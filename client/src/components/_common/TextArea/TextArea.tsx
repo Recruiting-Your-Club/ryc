@@ -1,13 +1,7 @@
 import type { TextareaHTMLAttributes } from 'react';
 import React from 'react';
-import type {
-    TextAreaSize,
-    TextAreaVariant} from './TextArea.style';
-import {
-    s_textAreaWrapper,
-    s_textArea,
-    s_subTextWrapper
-} from './TextArea.style';
+import type { TextAreaSize, TextAreaVariant } from './TextArea.style';
+import { s_textAreaWrapper, s_textArea, s_subTextWrapper } from './TextArea.style';
 import { Text } from '@components/_common/Text';
 import type { CSSObject } from '@emotion/react';
 
@@ -29,17 +23,18 @@ function TextArea({
     sx,
     value,
     maxLength,
+    disabled,
     ...props
 }: TextAreaProps) {
     const currentLength = typeof value === 'string' ? value.length : 0;
 
     return (
-        <div css={[s_textAreaWrapper(width), sx]}>
+        <div css={s_textAreaWrapper(width)}>
             <textarea
-                css={[s_textArea(size, variant, error, props.disabled), sx]}
+                css={[s_textArea(size, variant, error, disabled), sx]}
                 value={value}
                 maxLength={maxLength}
-                disabled={props.disabled}
+                disabled={disabled}
                 {...props}
             />
             <div css={s_subTextWrapper}>

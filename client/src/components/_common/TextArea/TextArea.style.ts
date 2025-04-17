@@ -117,10 +117,6 @@ export const s_textArea = (
         background-color: ${theme.colors.gray[100]};
     `}
 `;
-export const s_label = css`
-    margin-bottom: 0.5rem;
-    ${theme.typography.h3Bold};
-`;
 
 export const s_subTextWrapper = css`
     width: 100%;
