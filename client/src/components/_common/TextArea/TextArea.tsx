@@ -1,15 +1,28 @@
+import type { TextareaHTMLAttributes } from 'react';
 import React from 'react';
+import type {
+    TextAreaSize,
+    TextAreaVariant} from './TextArea.style';
 import {
     s_textAreaWrapper,
     s_textArea,
-    s_errorTextWrapper,
-    s_charCountWrapper,
+    s_subTextWrapper
 } from './TextArea.style';
-import type { TextAreaProps } from './types';
 import { Text } from '@components/_common/Text';
+import type { CSSObject } from '@emotion/react';
+
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+    size?: TextAreaSize;
+    variant?: TextAreaVariant;
+    width?: string;
+    error?: boolean;
+    errorText?: string;
+    sx?: CSSObject;
+}
 
 function TextArea({
     size = 'md',
+    variant = 'outline',
     width = '100%',
     error,
     errorText,
@@ -23,26 +36,25 @@ function TextArea({
     return (
         <div css={[s_textAreaWrapper(width), sx]}>
             <textarea
-                css={[s_textArea(size, error, props.disabled), sx]}
+                css={[s_textArea(size, variant, error, props.disabled), sx]}
                 value={value}
                 maxLength={maxLength}
                 disabled={props.disabled}
                 {...props}
             />
-            <div css={s_errorTextWrapper}>
+            <div css={s_subTextWrapper}>
                 {error && errorText && (
                     <Text type={'subCaptionLight'} color={'warning'}>
                         {errorText}
                     </Text>
                 )}
-            </div>
-            {maxLength && typeof maxLength === 'number' && (
-                <div css={s_charCountWrapper}>
+
+                {maxLength && typeof maxLength === 'number' && (
                     <Text type={'subCaptionLight'} color={'helper'}>
                         {currentLength} / {maxLength}
                     </Text>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
