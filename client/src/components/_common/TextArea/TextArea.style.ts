@@ -74,7 +74,7 @@ export const s_textAreaWrapper = (width: string) => css`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 1rem;
+    margin: 2rem 0;
     position: relative;
 `;
 
@@ -118,10 +118,14 @@ export const s_textArea = (
     `}
 `;
 
-export const s_subTextWrapper = css`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.25rem;
+export const s_errorTextWrapper = css`
+    position: absolute;
+    left: 0;
+    bottom: -1.5rem;
+`;
+
+export const s_charCountwrapper = css`
+    position: absolute;
+    right: 0;
+    bottom: -1.5rem;
 `;
