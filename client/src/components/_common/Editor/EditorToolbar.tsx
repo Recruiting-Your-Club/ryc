@@ -7,10 +7,10 @@ import Italic from '@assets/images/text-italic.svg';
 import Strikethrough from '@assets/images/text-strikethrough.svg';
 import Underline from '@assets/images/text-underline.svg';
 import type { CSSObject } from '@emotion/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
-import { handleNewRange } from './utils';
+import { getCurrentFormats, getTextNodes, handleNewRange } from './utils';
 
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
@@ -20,7 +20,7 @@ interface ToolbarProps {
 }
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
-    const { formats, setFormats, toggleFormats, setAlign } = useEditorContext();
+    const { formats, setFormats, toggleFormatButton, setAlign } = useEditorContext();
 
     const formatButtons = [
         { format: 'bold', Svg: Bold },
@@ -41,6 +41,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         if (!selection || selection.rangeCount === 0) return;
 
         const range = selection.getRangeAt(0); // 드래그된 부분
+        toggleFormatButton(format);
 
         // 커서만 있는 경우
         if (range.collapsed) {
@@ -60,13 +61,13 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 const parent = currentNode.parentElement!;
                 const grandParent = parent.parentElement!;
 
-                const beforeSpan = parent.cloneNode(false) as HTMLElement;
+                const beforeSpan = parent.cloneNode(false) as HTMLSpanElement;
                 beforeSpan.textContent = before;
 
-                const afterSpan = parent.cloneNode(false) as HTMLElement;
+                const afterSpan = parent.cloneNode(false) as HTMLSpanElement;
                 afterSpan.textContent = after;
 
-                const newSpan = parent.cloneNode(false) as HTMLElement;
+                const newSpan = parent.cloneNode(false) as HTMLSpanElement;
                 applyFormat(newSpan, format);
                 newSpan.appendChild(emptyTextNode);
 
@@ -121,26 +122,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             ); // 원래 위치에 삽입
         } else {
             // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
-            const commonAncestor = range.commonAncestorContainer; // 공통 조상 노드, 즉 TextArea(div)에 해당
-
-            // 범위 내 TEXT 노드 탐색
-            const walker = document.createTreeWalker(commonAncestor, NodeFilter.SHOW_TEXT, {
-                acceptNode: (node) => {
-                    // range에 속한 노드여야 함
-                    if (range.intersectsNode(node)) {
-                        const text = node.textContent?.trim();
-                        return text ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-                    }
-                    return NodeFilter.FILTER_REJECT;
-                },
-            });
-            const textNodesInCommon: Text[] = [];
-            let currentNode = walker.nextNode();
-            while (currentNode) {
-                // commonAncestor 내부 노드 순회
-                textNodesInCommon.push(currentNode as Text);
-                currentNode = walker.nextNode();
-            }
+            const textNodesInCommon = getTextNodes(range);
 
             // span이 이미 해당 스타일을 가지고 있는지 확인
             const isOverallStyle = textNodesInCommon.every((textNode) => {
@@ -153,15 +135,12 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 const parent = textNode.parentElement;
                 const text = textNode.textContent || '';
                 const isSpan = parent?.tagName === 'SPAN';
-                // console.log(text);
 
                 const isFirst = index === 0;
                 const isLast = index === textNodesInCommon.length - 1;
 
                 const start = isFirst ? range.startOffset : 0;
                 const end = isLast ? range.endOffset : text.length;
-                // console.log(start);
-                // console.log(end);
 
                 // 노드 하나 안에서 일부 선택
                 if (start !== 0 || end !== text.length) {
@@ -193,11 +172,6 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 }
             });
         }
-
-        // setFormats((prev) => ({
-        //     ...prev,
-        //     [format]: !prev[format],
-        // }));
     };
 
     const applyStyleInSelectedText = (
@@ -214,9 +188,6 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         const before = text.slice(0, selectedStart);
         const selected = text.slice(selectedStart, selectedEnd);
         const after = text.slice(selectedEnd);
-        // console.log(`before:${before}`);
-        // console.log(`selected:${selected}`);
-        // console.log(`after:${after}`);
 
         const frag = document.createDocumentFragment();
         if (before) frag.appendChild(createSpan(format, before, originalStyle));
@@ -311,6 +282,22 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             return current;
         }
     };
+
+    useEffect(() => {
+        const updateFormats = () => {
+            setFormats(getCurrentFormats());
+        };
+
+        document.addEventListener('selectionchange', updateFormats);
+        document.addEventListener('mouseup', updateFormats);
+        document.addEventListener('keyup', updateFormats);
+
+        return () => {
+            document.removeEventListener('selectionchange', updateFormats);
+            document.removeEventListener('mouseup', updateFormats);
+            document.removeEventListener('keyup', updateFormats);
+        };
+    }, []);
 
     return (
         <div css={[toolbarContainer(radius), sx]}>

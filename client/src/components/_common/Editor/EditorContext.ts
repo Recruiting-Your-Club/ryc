@@ -1,10 +1,11 @@
-import type { Dispatch, SetStateAction} from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { createContext, useContext } from 'react';
 import type { Align, Format } from './EditorToolbar';
 
 interface EditorContextType {
     formats: Record<Format, boolean>;
     setFormats: Dispatch<SetStateAction<Record<Format, boolean>>>;
+    toggleFormatButton: (format: Format) => void;
     align: Align;
     setAlign: Dispatch<SetStateAction<Align>>;
 }
