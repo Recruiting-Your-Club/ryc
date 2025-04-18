@@ -46,7 +46,7 @@ const Calendar = ({
     const handleNextMonth = () => {
         setCurrentDate(currentDate.add(1, 'month'));
     };
-    const handleSeletedDate = (selectDate: string) => {
+    const handleSelectedDate = (selectDate: string) => {
         if (selectedDate.includes(selectDate)) {
             onSelect(selectedDate.filter((day) => day !== selectDate));
         } else if (isMultiple) {
@@ -129,7 +129,7 @@ const Calendar = ({
                     {days.map((date, index) => (
                         <button
                             disabled={disabled}
-                            key={index}
+                            key={date.dateString}
                             css={dayCell(
                                 selectedDate.includes(date.dateString),
                                 index,
@@ -137,7 +137,7 @@ const Calendar = ({
                                 date.isCurrentMonth,
                                 disabled,
                             )}
-                            onClick={() => handleSeletedDate(date.dateString)}
+                            onClick={() => handleSelectedDate(date.dateString)}
                         >
                             {date.day}
                         </button>

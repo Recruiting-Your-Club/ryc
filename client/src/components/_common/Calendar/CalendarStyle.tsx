@@ -96,13 +96,12 @@ const selectedColor = (selectedDate: boolean, today: boolean, disabled: boolean)
             background-color: ${theme.colors.default};
             color: ${theme.colors.white};
             &:hover {
-                background-color: ${theme.colors.default};
+                background-color: ${theme.colors.defaultHover};
             }
         `;
     } else if (today) {
         return css`
             background-color: ${theme.colors.gray[200]};
-            color: ${theme.colors.black};
             ${!disabled &&
             css`
                 &:hover {
@@ -143,7 +142,7 @@ export const dayCell = (
         ${!disabled &&
         css`
             &:hover {
-                background-color: #f0f0f0;
+                background-color: ${theme.colors.gray[200]};
             }
         `}
         ${selectedColor(selectedDate, today, disabled)}
