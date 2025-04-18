@@ -10,6 +10,7 @@ import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
+import { handleNewRange } from './utils';
 
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
@@ -19,7 +20,7 @@ interface ToolbarProps {
 }
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
-    const { formats, setFormats, setAlign } = useEditorContext();
+    const { formats, setFormats, toggleFormats, setAlign } = useEditorContext();
 
     const formatButtons = [
         { format: 'bold', Svg: Bold },
@@ -40,12 +41,56 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         if (!selection || selection.rangeCount === 0) return;
 
         const range = selection.getRangeAt(0); // 드래그된 부분
-        if (range.collapsed) return; // 커서만 있는 상태
+
+        // 커서만 있는 경우
+        if (range.collapsed) {
+            const currentNode = range.startContainer;
+            const offset = range.startOffset; // 커서 위치
+            const emptyTextNode = document.createTextNode('\u200B'); // &ZeroWidthSpace;
+
+            // 스타일 적용된 텍스트 안에 커서가 있는 경우
+            if (
+                currentNode.nodeType === Node.TEXT_NODE &&
+                currentNode.parentElement?.tagName === 'SPAN'
+            ) {
+                const text = currentNode.nodeValue!;
+                const before = text.slice(0, offset);
+                const after = text.slice(offset);
+
+                const parent = currentNode.parentElement!;
+                const grandParent = parent.parentElement!;
+
+                const beforeSpan = parent.cloneNode(false) as HTMLElement;
+                beforeSpan.textContent = before;
+
+                const afterSpan = parent.cloneNode(false) as HTMLElement;
+                afterSpan.textContent = after;
+
+                const newSpan = parent.cloneNode(false) as HTMLElement;
+                applyFormat(newSpan, format);
+                newSpan.appendChild(emptyTextNode);
+
+                // DOM 삽입
+                grandParent.insertBefore(beforeSpan, parent);
+                grandParent.insertBefore(newSpan, parent);
+                grandParent.insertBefore(afterSpan, parent);
+                grandParent.removeChild(parent);
+            } else {
+                // span으로 감싸져 있지 않은 경우
+                const span = document.createElement('span');
+                applyFormat(span, format);
+                span.appendChild(emptyTextNode);
+
+                range.insertNode(span);
+            }
+
+            handleNewRange(emptyTextNode, selection);
+
+            return;
+        }
 
         const startContainer = range.startContainer;
         const endContainer = range.endContainer;
-        // console.log(startContainer);
-        // console.log(endContainer);
 
         // 선택된 영역이 하나의 텍스트 노드 안에서 이루어진 경우
         if (
@@ -187,7 +232,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         text: string,
         style: string,
         applyNewStyle = false,
-        isOverallStyle?: boolean,
+        isOverallStyle = true,
     ) => {
         const span = document.createElement('span');
         span.style.cssText = style; // style 객체와 연동되는 cssText 사용
@@ -240,7 +285,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         }
     };
 
-    const applyFormat = (span: HTMLElement, format: Format, isOverallStyle?: boolean) => {
+    const applyFormat = (span: HTMLElement, format: Format, isOverallStyle: boolean = true) => {
         const has = hasFormat(span, format);
         const toggledHas = !isOverallStyle && has ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
 
