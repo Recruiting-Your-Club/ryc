@@ -17,7 +17,11 @@ const meta: Meta<typeof TextArea> = {
     },
     argTypes: {
         size: {
-            options: ['sm', 'md', 'lg'],
+            options: ['xs', 'sm', 'md', 'lg', 'xl', 'full'],
+            control: { type: 'radio' },
+        },
+        variant: {
+            options: ['outline', 'subtle', 'flushed'],
             control: { type: 'radio' },
         },
         width: {
@@ -26,17 +30,11 @@ const meta: Meta<typeof TextArea> = {
         placeholder: {
             control: { type: 'text' },
         },
-        label: {
-            control: { type: 'text' },
-        },
         error: {
             control: 'boolean',
         },
         errorText: {
             control: 'text',
-        },
-        charCount: {
-            control: 'boolean',
         },
         disabled: {
             control: 'boolean',
@@ -51,39 +49,82 @@ export default meta;
 
 const Template = (args: ComponentProps<typeof TextArea>) => {
     const [text, setText] = useState('');
-    return <TextArea {...args} value={text} onChange={(e) => setText(e.target.value)} />;
+    return (
+        <TextArea
+            {...args}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            sx={{ margin: '1rem' }}
+        />
+    );
 };
 export const Primary: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '기본 TextArea',
         size: 'md',
         placeholder: '여기에 내용을 입력하세요',
+    },
+};
+
+export const FlushedVariant: Story = {
+    render: (args) => <Template {...args} />,
+    args: {
+        size: 'md',
+        variant: 'flushed',
+        placeholder: 'Flushed variant',
+    },
+};
+
+export const SubtleVariant: Story = {
+    render: (args) => <Template {...args} />,
+    args: {
+        size: 'md',
+        variant: 'subtle',
+        placeholder: 'Subtle variant',
+    },
+};
+
+export const XsSize: Story = {
+    render: (args) => <Template {...args} />,
+    args: {
+        size: 'xs',
+        placeholder: 'xs 사이즈',
     },
 };
 
 export const SmallSize: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '작은 사이즈',
         size: 'sm',
-        placeholder: '작은 입력칸',
+        placeholder: 'sm 사이즈',
+    },
+};
+export const MiddleSize: Story = {
+    render: (args) => <Template {...args} />,
+    args: {
+        size: 'md',
+        placeholder: 'md 사이즈',
     },
 };
 
 export const LargeSize: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '큰 사이즈',
         size: 'lg',
         placeholder: '많은 내용을 입력하세요',
+    },
+};
+export const FullSize: Story = {
+    render: (args) => <Template {...args} />,
+    args: {
+        size: 'full',
+        placeholder: 'full 사이즈',
     },
 };
 
 export const ChangeWidth: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '80% 너비',
         size: 'md',
         width: '80%',
         placeholder: '너비가 조정된 TextArea',
@@ -93,9 +134,7 @@ export const ChangeWidth: Story = {
 export const CharCount: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '글자 수 제한',
         size: 'md',
-        charCount: true,
         maxLength: 300,
         placeholder: '최대 300자까지 입력 가능',
     },
@@ -104,7 +143,6 @@ export const CharCount: Story = {
 export const ErrorMode: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '에러 필드',
         size: 'md',
         error: true,
         errorText: '에러 메시지입니다.',
@@ -124,6 +162,8 @@ export const EntireMode: Story = {
                     onChange={(e) => setText(e.target.value)}
                     error={text.length < 10}
                     errorText="10자 이상 입력해주세요."
+                    maxLength={500}
+                    sx={{ margin: '1rem' }}
                 />
             );
         };
@@ -131,10 +171,7 @@ export const EntireMode: Story = {
         return <Component />;
     },
     args: {
-        label: '전체 모드',
         size: 'md',
-        charCount: true,
-        maxLength: 500,
         placeholder: '10자 이상 입력해야 에러가 사라져요',
     },
 };
@@ -142,7 +179,6 @@ export const EntireMode: Story = {
 export const DisabledMode: Story = {
     render: (args) => <Template {...args} />,
     args: {
-        label: '비활성 상태',
         size: 'md',
         disabled: true,
         placeholder: 'disabled 상태',
