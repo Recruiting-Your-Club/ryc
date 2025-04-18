@@ -10,7 +10,15 @@ import type { CSSObject } from '@emotion/react';
 import React, { useEffect } from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
-import { getCurrentFormats, getTextNodes, handleNewRange } from './utils';
+import {
+    applyFormat,
+    applyStyleInSelectedText,
+    getCurrentFormats,
+    getTextNodes,
+    handleNewRange,
+    hasFormat,
+    toggleFormat,
+} from './utils';
 
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
@@ -171,115 +179,6 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                     textNode.replaceWith(span);
                 }
             });
-        }
-    };
-
-    const applyStyleInSelectedText = (
-        text: string,
-        parent: HTMLElement | null,
-        format: Format,
-        isSpan: boolean,
-        selectedStart: number,
-        selectedEnd: number,
-        isOverallStyle: boolean = true,
-    ): DocumentFragment => {
-        const originalStyle = isSpan ? parent?.getAttribute('style') || '' : '';
-
-        const before = text.slice(0, selectedStart);
-        const selected = text.slice(selectedStart, selectedEnd);
-        const after = text.slice(selectedEnd);
-
-        const frag = document.createDocumentFragment();
-        if (before) frag.appendChild(createSpan(format, before, originalStyle));
-        frag.appendChild(createSpan(format, selected, originalStyle, true, isOverallStyle));
-        if (after) frag.appendChild(createSpan(format, after, originalStyle));
-
-        return frag;
-    };
-
-    // 새로운 span 노드 생성
-    const createSpan = (
-        format: Format,
-        text: string,
-        style: string,
-        applyNewStyle = false,
-        isOverallStyle = true,
-    ) => {
-        const span = document.createElement('span');
-        span.style.cssText = style; // style 객체와 연동되는 cssText 사용
-
-        if (applyNewStyle) applyFormat(span, format, isOverallStyle); // format만 추가/제거
-        span.textContent = text;
-
-        return span;
-    };
-
-    // 해당 span이 특정 스타일을 가지고 있는지 확인
-    const hasFormat = (elem: HTMLElement, format: Format): boolean => {
-        switch (format) {
-            case 'bold':
-                return elem.style.fontWeight === 'bold';
-            case 'italic':
-                return elem.style.fontStyle === 'italic';
-            case 'underline':
-                return elem.style.textDecoration.includes('underline');
-            case 'strikethrough':
-                return elem.style.textDecoration.includes('line-through');
-            default:
-                return false;
-        }
-    };
-
-    // 해당 span에 스타일 적용 or 제거
-    const toggleFormat = (elem: HTMLElement, format: Format, isApply: boolean) => {
-        switch (format) {
-            case 'bold':
-                elem.style.fontWeight = isApply ? 'bold' : '';
-                break;
-            case 'italic':
-                elem.style.fontStyle = isApply ? 'italic' : '';
-                break;
-            case 'underline':
-                elem.style.textDecoration = toggleTextDecoration(
-                    elem.style.textDecoration,
-                    'underline',
-                    isApply,
-                );
-                break;
-            case 'strikethrough':
-                elem.style.textDecoration = toggleTextDecoration(
-                    elem.style.textDecoration,
-                    'line-through',
-                    isApply,
-                );
-                break;
-        }
-    };
-
-    const applyFormat = (span: HTMLElement, format: Format, isOverallStyle: boolean = true) => {
-        const has = hasFormat(span, format);
-        const toggledHas = !isOverallStyle && has ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
-
-        toggleFormat(span, format, !toggledHas);
-    };
-
-    // underline, strikethrough는 textDecoration 내부에서 동시 적용 가능하므로
-    const toggleTextDecoration = (current: string, style: string, isApply: boolean): string => {
-        const values = current
-            .split(' ')
-            .map((value) => value.trim())
-            .filter((value) => value.length > 0);
-
-        const isExist = values.includes(style);
-
-        if (isApply && !isExist) {
-            // 추가
-            return [...values, style].join(' ');
-        } else if (!isApply && isExist) {
-            // 제거
-            return values.filter((value) => value !== style).join(' ');
-        } else {
-            return current;
         }
     };
 
