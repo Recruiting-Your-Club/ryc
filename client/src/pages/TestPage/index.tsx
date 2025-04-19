@@ -1,33 +1,25 @@
 import React, { useState } from 'react';
-import { SpinSpinner, Button, PulseSpinner } from '@components';
-import { Spin } from '@components/_common/LoadingSpinner/LoadingSpinner.stories';
-import theme from '@styles/theme';
+import { Calendar, Button } from '@components';
+import dayjs from 'dayjs';
 
 function TestPage() {
+    const [selectedDate, setSelectedDate] = useState<string[]>([]);
+
+    const handleButton = () => {
+        //console.log('선택한 날짜', selectedDate);
+    };
     return (
         <>
-            <Button loading={true}></Button>
-            <SpinSpinner size="xs" />
+            <div>asadasdasd</div>
             <br />
-            <SpinSpinner size="s" />
             <br />
-            <SpinSpinner size="md" />
-            <br />
-            <SpinSpinner size="lg" />
-            <br />
-            <SpinSpinner size="xl" />
-            <br />
-
-            <PulseSpinner color={theme.colors.blue[100]} size="xs" />
-            <br />
-            <PulseSpinner color="black" size="s" />
-            <br />
-            <PulseSpinner color="black" size="md" />
-            <br />
-            <PulseSpinner color="black" size="lg" />
-            <br />
-            <PulseSpinner color="black" size="xl" />
-            <br />
+            <Calendar
+                isMultiple={true}
+                selectedDate={selectedDate}
+                onSelect={setSelectedDate}
+                size="sm"
+            />
+            <button onClick={handleButton}>선택한 날짜를 확인해보아요</button>
         </>
     );
 }
