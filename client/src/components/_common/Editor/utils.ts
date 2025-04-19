@@ -206,26 +206,26 @@ export const hasFormat = (elem: HTMLElement, format: Format): boolean => {
 };
 
 // 해당 span에 스타일 적용 or 제거
-export const toggleFormat = (elem: HTMLElement, format: Format, isApply: boolean) => {
+export const toggleFormat = (elem: HTMLElement, format: Format, shouldApply: boolean) => {
     switch (format) {
         case 'bold':
-            elem.style.fontWeight = isApply ? 'bold' : '';
+            elem.style.fontWeight = shouldApply ? 'bold' : '';
             break;
         case 'italic':
-            elem.style.fontStyle = isApply ? 'italic' : '';
+            elem.style.fontStyle = shouldApply ? 'italic' : '';
             break;
         case 'underline':
             elem.style.textDecoration = toggleTextDecoration(
                 elem.style.textDecoration,
                 'underline',
-                isApply,
+                shouldApply,
             );
             break;
         case 'strikethrough':
             elem.style.textDecoration = toggleTextDecoration(
                 elem.style.textDecoration,
                 'line-through',
-                isApply,
+                shouldApply,
             );
             break;
     }
