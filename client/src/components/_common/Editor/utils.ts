@@ -49,7 +49,6 @@ export const getCurrentFormats = (): Record<Format, boolean> => {
             node.nodeType === Node.TEXT_NODE
                 ? (node.parentElement as HTMLElement)
                 : (node as HTMLElement);
-
         if (parent?.tagName === 'SPAN') {
             formatMap.bold = parent.style.fontWeight === 'bold';
             formatMap.italic = parent.style.fontStyle === 'italic';
@@ -138,6 +137,39 @@ export const applyStyleInSelectedText = (
     if (after) frag.appendChild(createSpan(format, after, originalStyle));
 
     return frag;
+};
+
+export const applyStyleInSplitedText = (
+    currentNode: Node,
+    offset: number,
+    parent: HTMLElement,
+    format: Format,
+    emptyTextNode: Text,
+) => {
+    const grandParent = parent.parentElement!;
+    const text = currentNode.nodeType === Node.TEXT_NODE ? currentNode.nodeValue! : '';
+
+    const before = text.slice(0, offset);
+    const after = text.slice(offset);
+
+    if (before) {
+        const beforeSpan = parent.cloneNode(false) as HTMLSpanElement;
+        beforeSpan.textContent = before;
+        grandParent.insertBefore(beforeSpan, parent);
+    }
+
+    const newSpan = parent.cloneNode(false) as HTMLSpanElement;
+    applyFormat(newSpan, format);
+    newSpan.appendChild(emptyTextNode);
+    grandParent.insertBefore(newSpan, parent);
+
+    if (after) {
+        const afterSpan = parent.cloneNode(false) as HTMLSpanElement;
+        afterSpan.textContent = after;
+        grandParent.insertBefore(afterSpan, parent);
+    }
+
+    grandParent.removeChild(parent);
 };
 
 // 새로운 span 노드 생성

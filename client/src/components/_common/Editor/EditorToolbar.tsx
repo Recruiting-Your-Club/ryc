@@ -13,6 +13,7 @@ import { useEditorContext } from './EditorContext';
 import {
     applyFormat,
     applyStyleInSelectedText,
+    applyStyleInSplitedText,
     getCurrentFormats,
     getTextNodes,
     handleNewRange,
@@ -57,33 +58,14 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             const offset = range.startOffset; // 커서 위치
             const emptyTextNode = document.createTextNode('\u200B'); // &ZeroWidthSpace;
 
-            // 스타일 적용된 텍스트 안에 커서가 있는 경우
-            if (
-                currentNode.nodeType === Node.TEXT_NODE &&
-                currentNode.parentElement?.tagName === 'SPAN'
-            ) {
-                const text = currentNode.nodeValue!;
-                const before = text.slice(0, offset);
-                const after = text.slice(offset);
+            const spanAncestor =
+                currentNode.nodeType === Node.TEXT_NODE
+                    ? (currentNode.parentElement?.closest('span') as HTMLSpanElement | null)
+                    : (currentNode as HTMLElement)?.closest?.('span');
 
-                const parent = currentNode.parentElement!;
-                const grandParent = parent.parentElement!;
-
-                const beforeSpan = parent.cloneNode(false) as HTMLSpanElement;
-                beforeSpan.textContent = before;
-
-                const afterSpan = parent.cloneNode(false) as HTMLSpanElement;
-                afterSpan.textContent = after;
-
-                const newSpan = parent.cloneNode(false) as HTMLSpanElement;
-                applyFormat(newSpan, format);
-                newSpan.appendChild(emptyTextNode);
-
-                // DOM 삽입
-                grandParent.insertBefore(beforeSpan, parent);
-                grandParent.insertBefore(newSpan, parent);
-                grandParent.insertBefore(afterSpan, parent);
-                grandParent.removeChild(parent);
+            if (spanAncestor) {
+                const parent = spanAncestor;
+                applyStyleInSplitedText(currentNode, offset, parent, format, emptyTextNode);
             } else {
                 // span으로 감싸져 있지 않은 경우
                 const span = document.createElement('span');
