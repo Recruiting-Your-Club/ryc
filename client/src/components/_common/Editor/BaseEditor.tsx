@@ -4,6 +4,16 @@ import { EditorTextarea } from './EditorTextarea';
 import { EditorToolbar } from './EditorToolbar';
 
 function BaseEditor() {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
+
     return (
         <>
             <EditorRoot>

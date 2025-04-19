@@ -11,6 +11,11 @@ interface RootProps {
 }
 
 function EditorRoot({ children, sx }: RootProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+
+    // state, ref, querystring hooks
     const [formats, setFormats] = useState<Record<Format, boolean>>({
         bold: false,
         italic: false,
@@ -19,13 +24,10 @@ function EditorRoot({ children, sx }: RootProps) {
     });
     const [align, setAlign] = useState<Align>('left');
 
-    const toggleFormatButton = (format: Format) => {
-        setFormats((prev) => ({
-            ...prev,
-            [format]: !prev[format],
-        }));
-    };
+    // form hooks
+    // query hooks
 
+    // calculated values
     const contextValue = useMemo(
         () => ({
             formats,
@@ -36,6 +38,16 @@ function EditorRoot({ children, sx }: RootProps) {
         }),
         [formats, align],
     );
+
+    // handlers
+    const toggleFormatButton = (format: Format) => {
+        setFormats((prev) => ({
+            ...prev,
+            [format]: !prev[format],
+        }));
+    };
+
+    // effects
 
     return (
         <EditorContext.Provider value={contextValue}>

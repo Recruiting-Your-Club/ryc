@@ -1,11 +1,4 @@
-import Center from '@assets/images/text-align-center.svg';
-import Justify from '@assets/images/text-align-justify.svg';
-import Left from '@assets/images/text-align-left.svg';
-import Right from '@assets/images/text-align-right.svg';
-import Bold from '@assets/images/text-bold.svg';
-import Italic from '@assets/images/text-italic.svg';
-import Strikethrough from '@assets/images/text-strikethrough.svg';
-import Underline from '@assets/images/text-underline.svg';
+import { alignButtons, formatButtons } from '@constants/Editor';
 import type { CSSObject } from '@emotion/react';
 import React, { useEffect } from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
@@ -29,22 +22,17 @@ interface ToolbarProps {
 }
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
+    // prop destruction
+    // lib hooks
     const { formats, setFormats, toggleFormatButton, setAlign } = useEditorContext();
 
-    const formatButtons = [
-        { format: 'bold', Svg: Bold },
-        { format: 'italic', Svg: Italic },
-        { format: 'underline', Svg: Underline },
-        { format: 'strikethrough', Svg: Strikethrough },
-    ];
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
 
-    const alignButtons = [
-        { align: 'left', Svg: Left },
-        { align: 'center', Svg: Center },
-        { align: 'right', Svg: Right },
-        { align: 'justify', Svg: Justify },
-    ];
-
+    // handlers
     const applyStyle = (format: Format) => {
         const selection = window.getSelection(); // 드래그로 선택된 객체
         if (!selection || selection.rangeCount === 0) return;
@@ -164,6 +152,9 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         }
     };
 
+    const applyAlignment = () => {};
+
+    // effects
     useEffect(() => {
         const updateFormats = () => {
             setFormats(getCurrentFormats());
