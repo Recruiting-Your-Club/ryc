@@ -7,7 +7,7 @@ import {
     applyAlignment,
     applyFormat,
     applyStyleInSelectedText,
-    applyStyleInSplitedText,
+    applyStyleAtCursor,
     getCurrentFormats,
     getTextNodes,
     handleNewRange,
@@ -54,7 +54,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
             if (spanAncestor) {
                 const parent = spanAncestor;
-                applyStyleInSplitedText(currentNode, offset, parent, format, emptyTextNode);
+                applyStyleAtCursor(currentNode, offset, parent, format, emptyTextNode);
             } else {
                 // span으로 감싸져 있지 않은 경우
                 const span = document.createElement('span');

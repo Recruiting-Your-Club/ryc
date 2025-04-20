@@ -29,6 +29,7 @@ export const getTextNodes = (range: Range): Text[] => {
     return textNodes;
 };
 
+// format 적용 여부를 버튼으로 알려주기 위한 Record 반환 함수
 export const getCurrentFormats = (): Record<Format, boolean> => {
     const formatMap: Record<Format, boolean> = {
         bold: false,
@@ -139,7 +140,8 @@ export const applyStyleInSelectedText = (
     return frag;
 };
 
-export const applyStyleInSplitedText = (
+// 커서 위치 기준으로 텍스트 나눠서 스타일 적용
+export const applyStyleAtCursor = (
     currentNode: Node,
     offset: number,
     parent: HTMLElement,
