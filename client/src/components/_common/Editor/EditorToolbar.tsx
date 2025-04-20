@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
 import {
+    applyAlignment,
     applyFormat,
     applyStyleInSelectedText,
     applyStyleInSplitedText,
@@ -152,7 +153,13 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         }
     };
 
-    const applyAlignment = () => {};
+    const handleAlignment = (align: Align) => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        applyAlignment(range, align);
+    };
 
     // effects
     useEffect(() => {
@@ -186,7 +193,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
             </div>
             <div css={buttonGroup}>
                 {alignButtons.map(({ align, Svg }) => (
-                    <button key={align} onClick={() => setAlign(align as Align)} css={perButtonCss}>
+                    <button
+                        key={align}
+                        onClick={() => handleAlignment(align as Align)}
+                        css={perButtonCss}
+                    >
                         <Svg css={svgCss(false)} />
                     </button>
                 ))}
