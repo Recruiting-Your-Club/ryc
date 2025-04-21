@@ -28,6 +28,14 @@ function EditorRoot({ children, sx }: RootProps) {
     // query hooks
 
     // calculated values
+
+    const toggleFormatButton = (format: Format) => {
+        setFormats((prev) => ({
+            ...prev,
+            [format]: !prev[format],
+        }));
+    }; // 호이스팅 문제로 이곳으로 위치 옮김 (원래 자리는 handlers)
+
     const contextValue = useMemo(
         () => ({
             formats,
@@ -40,12 +48,6 @@ function EditorRoot({ children, sx }: RootProps) {
     );
 
     // handlers
-    const toggleFormatButton = (format: Format) => {
-        setFormats((prev) => ({
-            ...prev,
-            [format]: !prev[format],
-        }));
-    };
 
     // effects
 
