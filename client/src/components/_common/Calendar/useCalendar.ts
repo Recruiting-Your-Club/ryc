@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import type { CalendarData } from './types';
+import { CALENDAR_SIZE } from '@constants/calendar';
 
 function useCalendar(
     selectedDate: string[] = [],
@@ -67,7 +68,7 @@ function useCalendar(
 
         // 다음 달 날짜
         const nextMonth = currentDate.add(1, 'month');
-        const remainingDays = 42 - newDays.length; // 7x6 격자
+        const remainingDays = CALENDAR_SIZE - newDays.length; // 7x6 격자
         for (let i = 1; i <= remainingDays; i++) {
             const date = nextMonth.date(i);
             newDays.push({
