@@ -78,12 +78,12 @@ export const daysContainer = css`
     gap: 0.5rem;
 `;
 
-const weekendColor = (index: number) => {
-    if (index % 7 === 0) {
+const weekendColor = (weekend: number) => {
+    if (weekend === 0) {
         return css`
             color: ${theme.colors.red[900]};
         `;
-    } else if (index % 7 === 6) {
+    } else if (weekend === 6) {
         return css`
             color: #2020fb;
         `;
