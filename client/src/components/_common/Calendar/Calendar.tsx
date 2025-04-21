@@ -105,13 +105,13 @@ const Calendar = ({
     return (
         <div css={[calendarContainer({ size, border, shadow, zIndex }), sx]}>
             <div css={calendarHeaderContainer}>
-                <Button variant="transparent" onClick={handleBackMonth}>
+                <Button variant="transparent" onClick={handleBackMonth} aria-label="이전 달">
                     {'<'}
                 </Button>
-                <Text as="div" type="bodySemibold">
+                <Text as="div" type="bodySemibold" aria-label={currentDate.format('YYYY년 MM월')}>
                     {currentDate.format('YYYY년 MM월')}
                 </Text>
-                <Button variant="transparent" onClick={handleNextMonth}>
+                <Button variant="transparent" onClick={handleNextMonth} aria-label="다음 달">
                     {'>'}
                 </Button>
             </div>
@@ -128,6 +128,7 @@ const Calendar = ({
                 <div css={daysContainer}>
                     {days.map((date, index) => (
                         <button
+                            aria-label={date.dateString}
                             disabled={disabled}
                             key={date.dateString}
                             css={dayCell(
