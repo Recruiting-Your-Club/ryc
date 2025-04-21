@@ -66,6 +66,7 @@ export const textareaContainer = (height: string = '350px', radius: string = '4p
     width: 100%;
     height: ${height};
     resize: none;
+    background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.gray[500]};
     border-radius: ${radius};
     padding: 8px;
