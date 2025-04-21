@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     calendarContainer,
     calendarBodyContainer,
@@ -10,9 +10,8 @@ import {
 } from './CalendarStyle';
 import { Button } from '@components';
 import { Text } from '@components/_common';
-import dayjs from 'dayjs';
 import { useCalendar } from './useCalendar';
-import type { CalendarProps, CalendarData } from './types';
+import type { CalendarProps } from './types';
 
 const Calendar = ({
     isMultiple = false,
