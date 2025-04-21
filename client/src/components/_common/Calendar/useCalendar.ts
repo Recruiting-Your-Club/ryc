@@ -50,6 +50,7 @@ function useCalendar(
                 day: prevDaysInMonth - i,
                 isCurrentMonth: false,
                 dateString: date.format('YYYY-MM-DD'),
+                weekend: date.day(),
             });
         }
 
@@ -60,6 +61,7 @@ function useCalendar(
                 day: i,
                 isCurrentMonth: true,
                 dateString: date.format('YYYY-MM-DD'),
+                weekend: date.day(),
             });
         }
 
@@ -72,6 +74,7 @@ function useCalendar(
                 day: i,
                 isCurrentMonth: false,
                 dateString: date.format('YYYY-MM-DD'),
+                weekend: date.day(),
             });
         }
 

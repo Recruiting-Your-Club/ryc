@@ -62,14 +62,14 @@ const Calendar = ({
                 </div>
 
                 <div css={daysContainer}>
-                    {days.map((date, index) => (
+                    {days.map((date) => (
                         <button
                             aria-label={date.dateString}
                             disabled={disabled}
                             key={date.dateString}
                             css={dayCell(
                                 selectedDate.includes(date.dateString),
-                                index,
+                                date.weekend,
                                 date.dateString === today,
                                 date.isCurrentMonth,
                                 disabled,
