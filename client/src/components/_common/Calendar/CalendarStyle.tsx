@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { Size, SizeStyle } from './types';
 import type { CalendarProps } from './types';
+import { SATURDAY, SUNDAY } from '@constants/calendar';
 
 export const SizeMap: Record<Size, SizeStyle> = {
     sm: {
@@ -79,11 +80,11 @@ export const daysContainer = css`
 `;
 
 const weekendColor = (weekend: number) => {
-    if (weekend === 0) {
+    if (weekend === SUNDAY) {
         return css`
             color: ${theme.colors.red[900]};
         `;
-    } else if (weekend === 6) {
+    } else if (weekend === SATURDAY) {
         return css`
             color: #2020fb;
         `;
