@@ -8,10 +8,10 @@ import {
     dayCell,
     weekCell,
 } from './CalendarStyle';
-import { Button } from '@components';
-import { Text } from '@components/_common';
+import { Button, Text } from '@components';
 import { useCalendar } from './useCalendar';
 import type { CalendarProps } from './types';
+import { WEEKDAYS } from '@constants/calendar';
 
 const Calendar = ({
     isMultiple = false,
@@ -29,7 +29,6 @@ const Calendar = ({
         useCalendar(selectedDate, isMultiple, onSelect);
     // lib hooks
     // initial values
-    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
     // state, ref, querystring hooks
     // form hooks
     // query hooks
@@ -53,7 +52,7 @@ const Calendar = ({
 
             <div css={calendarBodyContainer}>
                 <div css={weekdaysContainer}>
-                    {weekdays.map((day, index) => (
+                    {WEEKDAYS.map((day, index) => (
                         <div key={day} css={weekCell(index)}>
                             {day}
                         </div>
