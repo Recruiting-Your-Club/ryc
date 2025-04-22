@@ -6,20 +6,34 @@ export const headerBarContainer = css`
     top: 0;
     left: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%; /* 패딩 포함한 width 계산 */
     height: 6rem;
     padding: 0 1rem;
+    background-color: ${theme.colors.white};
     border-bottom: 0.5px solid ${theme.colors.disabled};
+    z-index: 20;
 `;
 
 export const homeNavContainer = css`
     display: flex;
-    flex-direction: column;
-    align-items: start;
     justify-content: space-between;
+    width: 120rem;
+
+    @media (max-width: ${theme.breakpoint.desktop}) {
+        width: 100rem;
+    }
+
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        width: 64rem;
+    }
+
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: 100%;
+    }
 `;
+
 export const homeImage = css`
     border-radius: 0.5rem;
 `;
@@ -28,4 +42,7 @@ export const navContainer = css`
     display: flex;
     align-items: center;
     gap: 1rem;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
 `;
