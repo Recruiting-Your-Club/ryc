@@ -17,7 +17,7 @@ function Header() {
                         </Text.HighLight>
                         ecruiting
                     </Text>
-                    <Text as="h1" type="h4Light" color="caption">
+                    <Text as="h1" type="h4Light" color="caption" textAlign="start">
                         <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
                             Y
                         </Text.HighLight>
