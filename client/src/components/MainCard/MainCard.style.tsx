@@ -4,6 +4,7 @@ import theme from '@styles/theme';
 export const cardContainer = css`
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     width: 35rem;
     padding: 1rem 2rem;
     gap: 1.5rem;
@@ -29,8 +30,9 @@ export const cardTitleContainer = css`
 export const cardFooterContainer = css`
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
     align-items: start;
-    gap: 1rem;
 `;
 export const hashTagContainer = css`
     display: flex;
