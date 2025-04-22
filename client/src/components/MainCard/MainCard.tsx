@@ -18,6 +18,8 @@ const getTagStatus = (status: string) => {
             return <Tag text="모집예정" variant="primary" />;
         case 'end':
             return <Tag text="모집마감" variant="end" />;
+        default:
+            return <Tag text="미상" variant="progress" />;
     }
 };
 function MainCard({
@@ -56,7 +58,6 @@ function MainCard({
                 <Text textAlign="start" type="bodyLight">
                     {description}
                 </Text>
-
                 <div css={hashTagContainer}>
                     {hashTag.map((tag: string) => (
                         <Text key={tag} type="captionLight" color="primary">
