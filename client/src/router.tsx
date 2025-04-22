@@ -13,6 +13,7 @@ const router = createBrowserRouter([
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
             { path: 'detail', element: <ClubDetailPage /> },
+            { path: 'test', element: <TestPage /> },
         ],
     },
     {
