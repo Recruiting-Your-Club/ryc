@@ -19,18 +19,19 @@ export const headerBarContainer = css`
 export const homeNavContainer = css`
     display: flex;
     justify-content: space-between;
-    width: 120rem;
+    width: 100rem;
 
+    // 840px ~ 1200px
     @media (max-width: ${theme.breakpoint.desktop}) {
-        width: 100rem;
+        width: 90rem;
     }
-
+    // 600px ~ 840px
     @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 64rem;
+        width: 70rem;
     }
-
+    // 0px ~ 600px
     @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 100%;
+        width: 35rem;
     }
 `;
 
