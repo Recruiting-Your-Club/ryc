@@ -1,12 +1,12 @@
 import type { Align } from '../EditorToolbar';
 
-const getClosestDiv = (node: Node): HTMLDivElement | null => {
+export const getClosestDiv = (node: Node): HTMLDivElement | null => {
     const element =
         node.nodeType === Node.ELEMENT_NODE ? (node as HTMLElement) : node.parentElement;
     return element?.closest('div') ?? null;
 };
 
-const getEditorRoot = (range: Range): HTMLElement => {
+export const getEditorRoot = (range: Range): HTMLElement => {
     let node: Node | null = range.commonAncestorContainer;
 
     // node와 그 조상을 계속 추적하여 최상단 element인지 판단함 (contentEditable 속성 -> 최상단에 속함)
@@ -47,12 +47,7 @@ const applyAlignmentToDivsInRange = (editor: HTMLElement, range: Range, align: A
             if (!(node instanceof HTMLElement)) return NodeFilter.FILTER_SKIP;
             if (node.tagName !== 'DIV') return NodeFilter.FILTER_SKIP;
 
-            const nodeRange = document.createRange();
-            nodeRange.selectNodeContents(node);
-
-            const isIntersecting =
-                range.compareBoundaryPoints(Range.END_TO_START, nodeRange) < 0 &&
-                range.compareBoundaryPoints(Range.START_TO_END, nodeRange) > 0;
+            const isIntersecting = range.intersectsNode(node);
             return isIntersecting ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
         },
     });
