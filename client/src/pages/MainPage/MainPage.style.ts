@@ -15,6 +15,7 @@ export const bannerContainer = css`
     width: 100%;
     margin-bottom: 1rem;
     @media (max-width: ${theme.breakpoint.desktop}) {
+        padding: 2rem 6rem;
         height: 20rem;
     }
     @media (max-width: ${theme.breakpoint.tablet}) {
@@ -66,7 +67,6 @@ export const clubCategoryContainer = css`
 
 export const progressContainer = (isActive: boolean) => css`
     display: flex;
-    flex-grow: 1;
     justify-content: end;
     align-items: center;
     gap: 0.5rem;
