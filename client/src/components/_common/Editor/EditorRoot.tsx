@@ -1,9 +1,9 @@
 import type { CSSObject } from '@emotion/react';
 import type { ReactNode } from 'react';
 import React, { useMemo, useState } from 'react';
-import { rootContainer } from './Editor.style';
+import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
-import type { Align, Format } from './EditorToolbar';
+import type { Align, Format, List } from './EditorToolbar';
 
 interface RootProps {
     children?: ReactNode;
@@ -23,6 +23,10 @@ function EditorRoot({ children, sx }: RootProps) {
         underline: false,
     });
     const [align, setAlign] = useState<Align>('left');
+    const [lists, setLists] = useState<Record<List, boolean>>({
+        disc: false,
+        decimal: false,
+    });
 
     // form hooks
     // query hooks
@@ -43,8 +47,10 @@ function EditorRoot({ children, sx }: RootProps) {
             toggleFormatButton,
             align,
             setAlign,
+            lists,
+            setLists,
         }),
-        [formats, align],
+        [formats, align, lists],
     );
 
     // handlers
@@ -53,7 +59,7 @@ function EditorRoot({ children, sx }: RootProps) {
 
     return (
         <EditorContext.Provider value={contextValue}>
-            <div css={[rootContainer, sx]}>{children}</div>
+            <div css={[rootContainer, editorListStyle, sx]}>{children}</div>
         </EditorContext.Provider>
     );
 }
