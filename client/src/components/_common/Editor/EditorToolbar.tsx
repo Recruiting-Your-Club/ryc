@@ -1,22 +1,16 @@
-import { alignButtons, formatButtons } from '@constants/Editor';
+import { alignButtons, formatButtons, listButtons } from '@constants/Editor';
 import type { CSSObject } from '@emotion/react';
 import React, { useEffect } from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
 import { applyAlignment } from './utils/alignment';
-import {
-    applyFormat,
-    applyStyleAtCursor,
-    applyStyleFormat,
-    applyStyleInSelectedText,
-    hasFormat,
-    toggleFormat,
-} from './utils/format';
-import { getTextNodes, handleNewRange } from './utils/range';
+import { applyStyleFormat } from './utils/format';
+import { applyList } from './utils/list';
 import { getCurrentFormats } from './utils/selection';
 
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
+export type List = 'disc' | 'decimal';
 interface ToolbarProps {
     radius?: string;
     sx?: CSSObject;
@@ -25,7 +19,7 @@ interface ToolbarProps {
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
     // lib hooks
-    const { formats, setFormats, toggleFormatButton, setAlign } = useEditorContext();
+    const { formats, setFormats, toggleFormatButton, lists, setLists } = useEditorContext();
 
     // initial values
     // state, ref, querystring hooks
@@ -50,6 +44,14 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
         const range = selection.getRangeAt(0);
         applyAlignment(range, align);
+    };
+
+    const handleList = (list: List) => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        applyList(range, list);
     };
 
     // effects
@@ -90,6 +92,13 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                         css={perButtonCss}
                     >
                         <Svg css={svgCss(false)} />
+                    </button>
+                ))}
+            </div>
+            <div css={buttonGroup}>
+                {listButtons.map(({ list, Svg }) => (
+                    <button key={list} onClick={() => handleList(list as List)} css={perButtonCss}>
+                        <Svg css={svgCss(lists[list as List])} />
                     </button>
                 ))}
             </div>
