@@ -4,4 +4,6 @@ export interface MainCardProps {
     description?: string;
     status?: string;
     hashTag?: string[];
+    link?: string;
+    imageURL?: string;
 }
