@@ -13,3 +13,4 @@ export * from './ClubNavigation';
 export * from './ClubBox';
 export * from './ImageDialog';
 export * from './RecruitCard';
+export * from './MainCard';
