@@ -53,15 +53,6 @@ export const svgCss = (isColor: boolean) => css`
     `}
 `;
 
-interface textareaContainerProps {
-    height?: string;
-    radius?: string;
-    fontSize?: string;
-    fontWeight?: string;
-    fontStyle?: string;
-    textDecoration?: string[];
-}
-
 export const textareaContainer = (height: string = '350px', radius: string = '4px') => css`
     width: 100%;
     height: ${height};
@@ -74,5 +65,32 @@ export const textareaContainer = (height: string = '350px', radius: string = '4p
     &:focus {
         border-color: ${theme.colors.black};
         outline: none;
+    }
+`;
+
+export const editorListStyle = css`
+    ul,
+    ol {
+        list-style-position: outside;
+        padding-left: 30px;
+    }
+
+    ul li,
+    ol li {
+        line-height: 30px;
+    }
+
+    ul li > div,
+    ol li > div {
+        display: block;
+        margin: 0;
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    ol {
+        list-style-type: decimal;
     }
 `;
