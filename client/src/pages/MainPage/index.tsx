@@ -249,6 +249,7 @@ function MainPage() {
                         {data.name}
                     </Button>
                 ))}
+                <div css={{ flex: 1 }} />
                 <Button
                     variant="text"
                     size="md"
