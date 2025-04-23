@@ -33,11 +33,37 @@ export const totalClubContainer = css`
     padding: 0rem 0.5rem;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    @media (max-width: ${theme.breakpoint.mobile}) {
+
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        padding-left: 4rem;
+    }
+    @media (max-width: ${theme.breakpoint.tabletMini}) {
+        padding-left: 0.5rem;
         margin: 0;
+    }
+    @media (max-width: ${theme.breakpoint.mobile}) {
         padding-left: 1rem;
     }
 `;
+
+export const clubCategoryContainer = css`
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height: 3.5rem;
+    border-bottom: 1px solid ${theme.colors.gray[200]};
+    padding-right: 0.5rem;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        margin-left: 4rem;
+        width: 90%;
+    }
+    @media (max-width: ${theme.breakpoint.tabletMini}) {
+        margin: 0;
+        width: 100%;
+    }
+`;
+
 export const progressContainer = (isActive: boolean) => css`
     display: flex;
     flex-grow: 1;
@@ -61,15 +87,6 @@ export const svgContainer = css`
     height: 2rem;
 `;
 
-export const clubCategoryContainer = css`
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    width: 100%;
-    height: 3.5rem;
-    border-bottom: 1px solid ${theme.colors.gray[200]};
-    padding-right: 0.5rem;
-`;
 export const categoryButton = (active: boolean) => css`
     color: ${theme.colors.gray[400]};
     ${theme.typography.bodyRegular};
