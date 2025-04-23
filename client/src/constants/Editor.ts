@@ -1,3 +1,5 @@
+import Decimal from '@assets/images/list_decimal.svg';
+import Disc from '@assets/images/list_disc.svg';
 import Center from '@assets/images/text-align-center.svg';
 import Justify from '@assets/images/text-align-justify.svg';
 import Left from '@assets/images/text-align-left.svg';
@@ -19,4 +21,9 @@ export const alignButtons = [
     { align: 'center', Svg: Center },
     { align: 'right', Svg: Right },
     { align: 'justify', Svg: Justify },
+];
+
+export const listButtons = [
+    { list: 'disc', Svg: Disc },
+    { list: 'decimal', Svg: Decimal },
 ];
