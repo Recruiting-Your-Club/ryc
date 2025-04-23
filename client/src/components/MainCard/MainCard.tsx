@@ -9,6 +9,7 @@ import {
     logoAndTitleContainer,
 } from './MainCard.style';
 import type { MainCardProps } from './types';
+import { Link } from 'react-router-dom';
 
 const getTagStatus = (status: string) => {
     switch (status) {
@@ -28,6 +29,8 @@ function MainCard({
     description = 'IT 동아리 EN# 신규 멤버 모집이야쥐기네~~~~~~',
     status = 'progress',
     hashTag = ['프로그래밍', '코딩', '자바스크립트'],
+    link = 'http://localhost:3000/manager',
+    imageURL = '',
 }: MainCardProps) {
     // prop destruction
     // lib hooks
@@ -39,10 +42,16 @@ function MainCard({
     // handlers
     // effects
     return (
-        <div css={cardContainer}>
+        <Link to={link} css={cardContainer}>
             <div css={cardHeaderContainer}>
                 <div css={logoAndTitleContainer}>
-                    <Avatar shape="square" size="xl" radius="10px" imageName="exampleImage" />
+                    <Avatar
+                        shape="square"
+                        size="xl"
+                        radius="10px"
+                        imageURL={imageURL}
+                        imageName="logo"
+                    />
                     <div css={cardTitleContainer}>
                         <Text as="div" type="h4Semibold" color="black">
                             {title}
@@ -66,7 +75,7 @@ function MainCard({
                     ))}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 export { MainCard };

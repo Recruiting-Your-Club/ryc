@@ -11,7 +11,7 @@ export const bannerContainer = css`
     display: flex;
     justify-content: center;
     padding: 2rem 3rem;
-    height: 20rem;
+    height: 22rem;
     width: 100%;
     margin-bottom: 1rem;
     @media (max-width: ${theme.breakpoint.desktop}) {
@@ -69,8 +69,6 @@ export const clubCategoryContainer = css`
     height: 3.5rem;
     border-bottom: 1px solid ${theme.colors.gray[200]};
     padding-right: 0.5rem;
-    //border-radius: 10px;
-    //background-color: ${theme.colors.gray[100]};
 `;
 export const categoryButton = (active: boolean) => css`
     color: ${theme.colors.gray[400]};
@@ -87,21 +85,17 @@ export const categoryButton = (active: boolean) => css`
 
 export const clubListContainer = css`
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Large: 3열 */
+    grid-template-columns: repeat(3, 1fr); // 기본 3열
     gap: 1rem;
     margin-top: 1rem;
-    justify-items: center; /* 아이템 수평 중앙 */
+    justify-items: center;
 
-    @media (max-width: ${theme.breakpoint.desktop}) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    /* Medium (600~839px): 2열 */
+    /* 1024px 이하일 때 2열 */
     @media (max-width: ${theme.breakpoint.tablet}) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Compact (<600px): 1열 */
+    /* 640px인가 이하일 때 */
     @media (max-width: ${theme.breakpoint.mobile}) {
         grid-template-columns: 1fr;
     }
