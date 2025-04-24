@@ -8,6 +8,11 @@ import Bold from '@assets/images/text-bold.svg';
 import Italic from '@assets/images/text-italic.svg';
 import Strikethrough from '@assets/images/text-strikethrough.svg';
 import Underline from '@assets/images/text-underline.svg';
+import Code from '@assets/images/option_code.svg';
+import Image from '@assets/images/option_image.svg';
+import Link from '@assets/images/option_link.svg';
+import Quote from '@assets/images/option_quote.svg';
+import Divider from '@assets/images/option_divider.svg';
 
 export const formatButtons = [
     { format: 'bold', Svg: Bold },
@@ -26,4 +31,12 @@ export const alignButtons = [
 export const listButtons = [
     { list: 'disc', Svg: Disc },
     { list: 'decimal', Svg: Decimal },
+];
+
+export const optionButtons = [
+    { option: 'link', Svg: Link },
+    { option: 'image', Svg: Image },
+    { option: 'code', Svg: Code },
+    { option: 'quote', Svg: Quote },
+    { option: 'divider', Svg: Divider },
 ];
