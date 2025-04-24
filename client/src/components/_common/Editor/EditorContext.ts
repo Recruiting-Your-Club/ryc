@@ -10,6 +10,7 @@ interface EditorContextType {
     setAlign: Dispatch<SetStateAction<Align>>;
     lists: Record<List, boolean>;
     setLists: Dispatch<SetStateAction<Record<List, boolean>>>;
+    toggleListButton: (list: List) => void;
 }
 
 export const EditorContext = createContext<EditorContextType | undefined>(undefined);

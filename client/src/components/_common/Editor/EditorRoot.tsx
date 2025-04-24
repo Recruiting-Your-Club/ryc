@@ -33,12 +33,25 @@ function EditorRoot({ children, sx }: RootProps) {
 
     // calculated values
 
+    ////
     const toggleFormatButton = (format: Format) => {
         setFormats((prev) => ({
             ...prev,
             [format]: !prev[format],
         }));
-    }; // 호이스팅 문제로 이곳으로 위치 옮김 (원래 자리는 handlers)
+    };
+
+    const toggleListButton = (list: List) => {
+        setLists((prev) => {
+            if (prev[list]) return prev;
+
+            return {
+                disc: list === 'disc',
+                decimal: list === 'decimal',
+            };
+        });
+    };
+    //// 호이스팅 문제로 이곳으로 위치 옮김 (원래 자리는 handlers)
 
     const contextValue = useMemo(
         () => ({
@@ -49,6 +62,7 @@ function EditorRoot({ children, sx }: RootProps) {
             setAlign,
             lists,
             setLists,
+            toggleListButton,
         }),
         [formats, align, lists],
     );
