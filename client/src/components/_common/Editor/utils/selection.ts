@@ -1,6 +1,7 @@
-import type { Format } from '../EditorToolbar';
+import type { Format, List } from '../EditorToolbar';
+import { getEditorRoot } from './alignment';
+import { getLinesInRange } from './list';
 import { getTextNodes } from './range';
-import React, { useEffect } from 'react';
 
 // format 적용 여부를 버튼으로 알려주기 위한 Record 반환 함수
 export const getCurrentFormats = (): Record<Format, boolean> => {
@@ -88,4 +89,33 @@ export const getCurrentFormats = (): Record<Format, boolean> => {
     }
 
     return allFormats;
+};
+
+// list 적용 여부를 버튼으로 알려주기 위한 Record 반환 함수
+export const getCurrentLists = (): Record<List, boolean> => {
+    const listMap: Record<List, boolean> = {
+        disc: false,
+        decimal: false,
+    };
+
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return listMap;
+
+    const range = selection.getRangeAt(0);
+
+    const editor = getEditorRoot(range);
+    if (!editor) return listMap;
+    if (range.startContainer === editor) return listMap;
+
+    const lines = getLinesInRange(editor, range);
+    if (lines.length === 0) return listMap;
+
+    const currentList = lines[0].closest('ul, ol');
+
+    if (currentList) {
+        listMap.disc = currentList.tagName === 'UL';
+        listMap.decimal = currentList.tagName === 'OL';
+    }
+
+    return listMap;
 };

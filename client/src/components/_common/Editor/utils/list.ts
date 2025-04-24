@@ -23,7 +23,7 @@ const wrapFirstLine = (editor: HTMLElement, lines: HTMLElement[]) => {
 };
 
 // 드래그 or 커서에 속한 라인 수집
-const getLinesInRange = (editor: HTMLElement, range: Range): HTMLElement[] => {
+export const getLinesInRange = (editor: HTMLElement, range: Range): HTMLElement[] => {
     const lines: HTMLElement[] = [];
 
     const walker = document.createTreeWalker(editor, NodeFilter.SHOW_ELEMENT, {
@@ -38,12 +38,6 @@ const getLinesInRange = (editor: HTMLElement, range: Range): HTMLElement[] => {
 
     while (walker.nextNode()) {
         lines.push(walker.currentNode as HTMLElement);
-    }
-
-    // 첫 줄이 div로 감싸져 있지 않다면 div 생성
-    const parentOfFirstLine = getClosestDiv(range.startContainer);
-    if (parentOfFirstLine === editor) {
-        wrapFirstLine(editor, lines);
     }
 
     return lines;
@@ -103,9 +97,17 @@ export const applyList = (range: Range, list: List) => {
     if (!range) return;
 
     const editor = getEditorRoot(range);
+    if (!editor) return;
     if (range.startContainer === editor) return;
 
     const lines = getLinesInRange(editor, range);
+
+    // 첫 줄이 div로 감싸져 있지 않다면 div 생성
+    const parentOfFirstLine = getClosestDiv(range.startContainer);
+    if (parentOfFirstLine === editor) {
+        wrapFirstLine(editor, lines);
+    }
+
     if (lines.length === 0) return;
 
     const listTag = list === 'disc' ? 'ul' : 'ol';

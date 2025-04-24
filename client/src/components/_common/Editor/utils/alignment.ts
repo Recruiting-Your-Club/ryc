@@ -6,7 +6,7 @@ export const getClosestDiv = (node: Node): HTMLDivElement | null => {
     return element?.closest('div') ?? null;
 };
 
-export const getEditorRoot = (range: Range): HTMLElement => {
+export const getEditorRoot = (range: Range): HTMLElement | null => {
     let node: Node | null = range.commonAncestorContainer;
 
     // node와 그 조상을 계속 추적하여 최상단 element인지 판단함 (contentEditable 속성 -> 최상단에 속함)
@@ -17,7 +17,8 @@ export const getEditorRoot = (range: Range): HTMLElement => {
         node = node.parentNode;
     }
 
-    throw new Error('Editor root not found.');
+    // throw new Error('Editor root not found.');
+    return null;
 };
 
 const wrapFirstLineInDiv = (editor: HTMLElement, align: Align) => {
@@ -62,6 +63,7 @@ export const applyAlignment = (range: Range, align: Align) => {
     if (!range) return;
 
     const editor = getEditorRoot(range);
+    if (!editor) return;
 
     // 커서만 존재할 때
     if (range.collapsed) {

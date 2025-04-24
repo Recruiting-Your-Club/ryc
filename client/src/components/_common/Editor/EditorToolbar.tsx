@@ -6,7 +6,7 @@ import { useEditorContext } from './EditorContext';
 import { applyAlignment } from './utils/alignment';
 import { applyStyleFormat } from './utils/format';
 import { applyList } from './utils/list';
-import { getCurrentFormats } from './utils/selection';
+import { getCurrentFormats, getCurrentLists } from './utils/selection';
 
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
@@ -19,7 +19,8 @@ interface ToolbarProps {
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
     // lib hooks
-    const { formats, setFormats, toggleFormatButton, lists, setLists } = useEditorContext();
+    const { formats, setFormats, toggleFormatButton, lists, setLists, toggleListButton } =
+        useEditorContext();
 
     // initial values
     // state, ref, querystring hooks
@@ -51,6 +52,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         if (!selection || selection.rangeCount === 0) return;
 
         const range = selection.getRangeAt(0);
+        toggleListButton(list);
         applyList(range, list);
     };
 
@@ -58,6 +60,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     useEffect(() => {
         const updateFormats = () => {
             setFormats(getCurrentFormats());
+            setLists(getCurrentLists());
         };
 
         document.addEventListener('selectionchange', updateFormats);
