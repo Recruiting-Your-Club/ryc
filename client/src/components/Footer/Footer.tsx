@@ -9,7 +9,8 @@ function Footer() {
                 <div css={footerStyle}>
                     <a
                         href="https://sangjunn.notion.site/RYC-1e0976a7f2238024bef3e14706f92824?pvs=4"
-                        target="_blank" rel="noreferrer"
+                        target="_blank"
+                        rel="noreferrer"
                     >
                         <Text type="subCaptionRegular">개인정보 처리방침</Text>
                     </a>
