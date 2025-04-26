@@ -2,10 +2,12 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const footerContainer = css`
+    position: relative;
     width: 100dvw;
-    max-width: 100%;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
+    left: 50%;
+    right: 50%;
+    margin-left: -50dvw;
+    margin-right: -50dvw;
     background-color: ${theme.colors.gray[100]};
 `;
 
@@ -15,7 +17,7 @@ export const footerStyle = css`
     align-items: flex-start;
     gap: 1rem;
     width: 100%;
+    max-width: 75rem;
     height: 14rem;
     padding: 2.5rem 4rem;
-    margin: 0 auto;
 `;
