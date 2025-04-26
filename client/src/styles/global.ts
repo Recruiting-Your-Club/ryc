@@ -111,6 +111,7 @@ const globalStyles = css`
 
         background-color: #fff;
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
     article,
