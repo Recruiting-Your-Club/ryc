@@ -11,7 +11,7 @@ export const UserLayoutCss = css`
     main {
         flex: 1;
         padding-top: 6rem; /* 헤더 높이만큼 패딩 추가 */
-        max-width: 1200px;
+        max-width: 75rem;
         margin: 0 auto;
         width: 100%;
     }
