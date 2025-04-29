@@ -1,9 +1,10 @@
-export enum ImageExtension {
+export enum FileExtension {
     JPG = 'jpg',
     JPEG = 'jpeg',
     PNG = 'png',
     GIF = 'gif',
     WEBP = 'webp',
+    PDF = 'pdf',
 }
 
 export const headerItems = [
