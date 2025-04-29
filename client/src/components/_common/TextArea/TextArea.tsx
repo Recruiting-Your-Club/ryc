@@ -1,12 +1,7 @@
 import type { TextareaHTMLAttributes } from 'react';
 import React from 'react';
 import type { TextAreaSize, TextAreaVariant } from './TextArea.style';
-import {
-    s_textAreaWrapper,
-    s_textArea,
-    s_errorTextWrapper,
-    s_charCountwrapper,
-} from './TextArea.style';
+import { s_textAreaWrapper, s_textArea, s_textAreaInfoWrapper } from './TextArea.style';
 import { Text } from '@components/_common/Text';
 import type { CSSObject } from '@emotion/react';
 
@@ -44,7 +39,7 @@ function TextArea({
             />
 
             {error && errorText && (
-                <div css={s_errorTextWrapper}>
+                <div css={s_textAreaInfoWrapper('left')}>
                     <Text type={'subCaptionLight'} color={'warning'}>
                         {errorText}
                     </Text>
@@ -52,7 +47,7 @@ function TextArea({
             )}
 
             {maxLength && (
-                <div css={s_charCountwrapper}>
+                <div css={s_textAreaInfoWrapper('right')}>
                     <Text type={'subCaptionLight'} color={'helper'}>
                         {currentLength} / {maxLength}
                     </Text>
