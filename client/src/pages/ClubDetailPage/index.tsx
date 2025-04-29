@@ -1,2 +1,1 @@
-export * from './RecruitmentListPage';
-export * from './ClubIntroPage';
+export * from './ClubDetailPage';
