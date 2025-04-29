@@ -27,9 +27,9 @@ function ClubBox() {
                 <div key={index} css={clubBoxItem}>
                     <Text
                         as="div"
-                        type="bodySemibold"
+                        type="bodyRegular"
                         color="caption"
-                        sx={{ width: '11rem' }}
+                        sx={{ width: '40%' }}
                         textAlign="start"
                     >
                         {item}
