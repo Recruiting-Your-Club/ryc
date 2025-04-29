@@ -9,6 +9,9 @@ import { useFilteredFile } from '@hooks/components/useFilteredFile';
 import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
 function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
     // state, ref, querystring hooks
 
     const [files, setFiles] = useState<File[]>([]);
@@ -17,7 +20,13 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { filterAndSetFiles } = useFilteredFile(files, setFiles);
 
-    // handler
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+
+    //---File upload Handler---//
+
     const handleClickButton = () => {
         if (disabled) return;
         fileInputRef.current?.click();
@@ -30,6 +39,8 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         filterAndSetFiles(selectedFiles);
     };
 
+    //---File delete Handler---//
+
     const handleDelete = (index: number) => {
         if (disabled) return;
         const newFiles = files.filter((_, i) => i !== index);
@@ -41,6 +52,8 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         setFiles([]);
         setIsActive(false);
     };
+
+    //---Drag and Drop Handler---//
 
     const handleDragStart = () => {
         if (disabled) return;
@@ -89,7 +102,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         }),
         [],
     );
-
+    // effects
     return (
         <FileUpLoaderStateContext.Provider value={stateContextValue}>
             <FileUpLoaderInteractionContext.Provider value={interactionContextValue}>
