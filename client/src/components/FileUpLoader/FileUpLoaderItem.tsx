@@ -5,7 +5,7 @@ import XIcon from '@assets/images/gray_xicon.svg';
 import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
 import type { FileUpLoaderItemProps } from './types';
-import { ImageExtension } from './constants';
+import { FileExtension } from './constants';
 import PdfIcon from '@assets/images/PdfIcon.svg';
 import { formatDate, formatBytes, getExtension } from './utills';
 import { Button } from '@components/_common';
@@ -17,10 +17,16 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     const { files } = useFileUpLoaderStateContext();
     const { handleDelete } = useFileUpLoaderInteractionContext();
 
-    // initial values
+    // calculated value
     const ext = getExtension(file.name);
-    const isImage = Object.values(ImageExtension).includes(ext as ImageExtension);
-    const isPdf = ext === 'pdf';
+    const isImage = [
+        FileExtension.JPG,
+        FileExtension.JPEG,
+        FileExtension.PNG,
+        FileExtension.GIF,
+        FileExtension.WEBP,
+    ].includes(ext as FileExtension);
+    const isPdf = ext === FileExtension.PDF;
     const fileUrl = URL.createObjectURL(file);
 
     // form hooks
