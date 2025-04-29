@@ -12,7 +12,7 @@ export const clubDetailPageContainer = css`
 `;
 
 export const contentContainer = css`
-    width: 70rem;
+    width: 90rem;
     height: inherit;
     background-color: ${theme.colors.white};
     padding: 2rem 2rem;
@@ -25,6 +25,10 @@ export const clubHeader = css`
     gap: 1rem;
     padding: 0 1rem;
     margin-bottom: 4rem;
+`;
+export const clubImage = css`
+    width: 6rem;
+    height: 6rem;
 `;
 export const clubHeaderText = css`
     display: flex;
