@@ -42,20 +42,22 @@ function TextArea({
                 disabled={disabled}
                 {...props}
             />
-            <div css={s_errorTextWrapper}>
-                {error && errorText && (
+
+            {error && errorText && (
+                <div css={s_errorTextWrapper}>
                     <Text type={'subCaptionLight'} color={'warning'}>
                         {errorText}
                     </Text>
-                )}
-            </div>
-            <div css={s_charCountwrapper}>
-                {maxLength && (
+                </div>
+            )}
+
+            {maxLength && (
+                <div css={s_charCountwrapper}>
                     <Text type={'subCaptionLight'} color={'helper'}>
                         {currentLength} / {maxLength}
                     </Text>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
