@@ -9,6 +9,7 @@ import {
     categoryButton,
     progressContainer,
     svgContainer,
+    emptyElement,
 } from './MainPage.style';
 import { MainCard, Text, Button } from '@components';
 import type { Category } from './types';
@@ -249,7 +250,7 @@ function MainPage() {
                         {data.name}
                     </Button>
                 ))}
-                <div css={{ flex: 1 }} />
+                <div css={emptyElement} />
                 <Button
                     variant="text"
                     size="md"

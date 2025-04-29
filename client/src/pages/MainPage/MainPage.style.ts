@@ -65,6 +65,13 @@ export const clubCategoryContainer = css`
     }
 `;
 
+export const emptyElement = css`
+    display: flex;
+    flex: 1;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
+`;
 export const progressContainer = (isActive: boolean) => css`
     display: flex;
     justify-content: end;
