@@ -43,8 +43,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
 
     const handleDelete = (index: number) => {
         if (disabled) return;
-        const newFiles = files.filter((_, i) => i !== index);
-        setFiles(newFiles);
+        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     };
 
     const handleDeleteEntire = () => {
@@ -100,7 +99,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
             handleChangeFile,
             fileInputRef,
         }),
-        [],
+        [disabled, filterAndSetFiles],
     );
     // effects
     return (
