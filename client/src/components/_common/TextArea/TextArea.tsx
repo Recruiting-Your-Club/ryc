@@ -50,7 +50,7 @@ function TextArea({
                 )}
             </div>
             <div css={s_charCountwrapper}>
-                {maxLength && typeof maxLength === 'number' && (
+                {maxLength && (
                     <Text type={'subCaptionLight'} color={'helper'}>
                         {currentLength} / {maxLength}
                     </Text>
