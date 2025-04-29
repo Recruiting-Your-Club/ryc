@@ -8,9 +8,12 @@ import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.club.domain.Category;
 
+import lombok.Builder;
+
+@Builder
 public record ClubCreateRequest(
-    @NotEmpty(message = "clubName shouldn't be empty") String name,
-    @NotEmpty(message = "description shouldn't be empty") String description,
+    @NotBlank(message = "clubName shouldn't be empty") String name,
+    @NotBlank(message = "description shouldn't be empty") String description,
     @NotNull(message = "category shouldn't be null") Category category,
     @NotEmpty(message = "tagNames shouldn't be empty")
         List<@NotBlank(message = "Each tagName shouldn't be blank") String> tagNames) {
