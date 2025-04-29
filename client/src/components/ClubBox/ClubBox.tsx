@@ -31,6 +31,7 @@ function ClubBox() {
                         color="caption"
                         sx={{ width: '40%' }}
                         textAlign="start"
+                        noWrap
                     >
                         {item}
                     </Text>

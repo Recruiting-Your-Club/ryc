@@ -10,6 +10,10 @@ export const clubBoxContainer = css`
     padding: 2rem 3rem;
     border-radius: 15px;
     margin-top: 10px;
+
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(1, 2fr);
+    }
 `;
 
 export const clubBoxItem = css`
