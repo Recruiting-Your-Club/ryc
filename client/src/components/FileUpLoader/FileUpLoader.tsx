@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useCallback } from 'react';
 import { FileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderBox } from './FileUpLoaderBox';
 import { FileUpLoaderButton } from './FileUpLoaderButton';
@@ -27,54 +27,67 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
 
     //---File upload Handler---//
 
-    const handleClickButton = () => {
+    const handleClickButton = useCallback(() => {
         if (disabled) return;
         fileInputRef.current?.click();
-    };
+    }, [disabled]);
 
-    const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (disabled) return;
-        const selectedFiles = e.target.files;
-        if (!selectedFiles) return;
-        filterAndSetFiles(selectedFiles);
-    };
+    const handleChangeFile = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (disabled) return;
+            const selectedFiles = e.target.files;
+            if (!selectedFiles) return;
+            filterAndSetFiles(selectedFiles);
+        },
+        [disabled, filterAndSetFiles],
+    );
 
     //---File delete Handler---//
 
-    const handleDelete = (index: number) => {
-        if (disabled) return;
-        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    };
+    const handleDelete = useCallback(
+        (index: number) => {
+            if (disabled) return;
+            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        },
+        [disabled],
+    );
 
-    const handleDeleteEntire = () => {
+    const handleDeleteEntire = useCallback(() => {
         if (disabled) return;
         setFiles([]);
         setIsActive(false);
-    };
+    }, [disabled]);
 
     //---Drag and Drop Handler---//
 
-    const handleDragStart = () => {
+    const handleDragStart = useCallback(() => {
         if (disabled) return;
         setIsActive(true);
-    };
+    }, [disabled]);
 
-    const handleDragEnd = () => {
+    const handleDragEnd = useCallback(() => {
         if (disabled) return;
         setIsActive(false);
-    };
+    }, [disabled]);
 
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        if (disabled) return;
-        e.preventDefault();
-        setIsActive(true);
-    };
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        if (disabled) return;
-        e.preventDefault();
-        filterAndSetFiles(e.dataTransfer.files);
-        setIsActive(false);
-    };
+    const handleDragOver = useCallback(
+        (e: React.DragEvent<HTMLDivElement>) => {
+            if (disabled) return;
+            e.preventDefault();
+            setIsActive(true);
+        },
+        [disabled],
+    );
+
+    const handleDrop = useCallback(
+        (e: React.DragEvent<HTMLDivElement>) => {
+            if (disabled) return;
+            e.preventDefault();
+            filterAndSetFiles(e.dataTransfer.files);
+            setIsActive(false);
+        },
+        [disabled, filterAndSetFiles],
+    );
 
     const stateContextValue = useMemo(
         () => ({
@@ -99,9 +112,18 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
             handleChangeFile,
             fileInputRef,
         }),
-        [disabled, filterAndSetFiles],
+        [
+            handleDelete,
+            handleDeleteEntire,
+            handleDragStart,
+            handleDragEnd,
+            handleDragOver,
+            handleDrop,
+            handleClickButton,
+            handleChangeFile,
+        ],
     );
-    // effects
+
     return (
         <FileUpLoaderStateContext.Provider value={stateContextValue}>
             <FileUpLoaderInteractionContext.Provider value={interactionContextValue}>
