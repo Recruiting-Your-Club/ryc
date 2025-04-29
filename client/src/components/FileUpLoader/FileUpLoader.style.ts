@@ -67,6 +67,7 @@ export const s_fileUpLoaderItemList = css`
     padding: 0;
     margin: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: 8rem;
 `;
 
