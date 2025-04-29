@@ -6,7 +6,13 @@ import { Text } from '@components/_common/Text';
 import { Input } from '@components/_common/Input';
 import { SideBar } from '@components';
 
+
 function TestPage() {
+    const [selectedDate, setSelectedDate] = useState<string[]>([]);
+
+    const handleButton = () => {
+        //console.log('선택한 날짜', selectedDate);
+    };
     return (
         <>
             <div>
