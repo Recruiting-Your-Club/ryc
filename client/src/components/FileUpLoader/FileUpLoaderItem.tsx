@@ -17,12 +17,15 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     const { files } = useFileUpLoaderStateContext();
     const { handleDelete } = useFileUpLoaderInteractionContext();
 
-    // calculated value
+    // initial values
     const ext = getExtension(file.name);
     const isImage = Object.values(ImageExtension).includes(ext as ImageExtension);
     const isPdf = ext === 'pdf';
     const fileUrl = URL.createObjectURL(file);
 
+    // form hooks
+    // query hooks
+    // calculated values
     const renderFileIcon = (): ReactNode => {
         if (isImage) {
             return <img src={fileUrl} alt={file.name} css={s_fileImagePreview} />;
