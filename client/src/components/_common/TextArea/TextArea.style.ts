@@ -118,14 +118,15 @@ export const s_textArea = (
     `}
 `;
 
-export const s_errorTextWrapper = css`
+export const s_textAreaInfoWrapper = (align: 'left' | 'right') => css`
     position: absolute;
-    left: 0;
-    bottom: -2.2rem;
-`;
-
-export const s_charCountwrapper = css`
-    position: absolute;
-    right: 0;
+    ${align === 'left' &&
+    css`
+        left: 0;
+    `}
+    ${align === 'right' &&
+    css`
+        right: 0;
+    `}
     bottom: -2.2rem;
 `;
