@@ -9,10 +9,7 @@ function ImageDialog(props: ImageDialogProps) {
         <Dialog open={open} handleClose={handleClose} size="md">
             <Dialog.Content sx={{ padding: 0, borderRadius: 0 }}>
                 <div css={imageContainer}>
-                    {imageUrl &&
-                        imageUrl.map((url: string) => (
-                            <img key={url} src={url} alt="clubImage" width="100%" height="100%" />
-                        ))}
+                    <img src={imageUrl} alt="clubImage" width="100%" height="100%" />
                 </div>
             </Dialog.Content>
         </Dialog>
