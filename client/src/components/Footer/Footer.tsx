@@ -4,6 +4,8 @@ import { footerContainer, footerStyle } from './Footer.style';
 import { useLocation } from 'react-router-dom';
 
 function Footer() {
+    // prop destruction
+    // lib hooks
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
     const isManagerRoute = pathSegments.includes('manager');
