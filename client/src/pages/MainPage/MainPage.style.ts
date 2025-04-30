@@ -77,12 +77,11 @@ export const progressContainer = (isActive: boolean) => css`
     justify-content: end;
     align-items: center;
     gap: 0.5rem;
-    ${theme.typography.bodyRegular};
+    line-height: normal ${theme.typography.bodyRegular};
     color: ${theme.colors.gray[500]};
     ${isActive &&
     css`
         color: ${theme.colors.default};
-        ${theme.typography.bodyRegular};
     `}
     @media (max-width: ${theme.breakpoint.mobile}) {
         justify-content: start;
