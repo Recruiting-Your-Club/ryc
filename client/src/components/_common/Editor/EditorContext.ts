@@ -1,17 +1,5 @@
-import type { Dispatch, SetStateAction } from 'react';
 import { createContext, useContext } from 'react';
-import type { Align, Format, List } from './EditorToolbar';
-
-interface EditorContextType {
-    formats: Record<Format, boolean>;
-    setFormats: Dispatch<SetStateAction<Record<Format, boolean>>>;
-    toggleFormatButton: (format: Format) => void;
-    align: Align;
-    setAlign: Dispatch<SetStateAction<Align>>;
-    lists: Record<List, boolean>;
-    setLists: Dispatch<SetStateAction<Record<List, boolean>>>;
-    toggleListButton: (list: List) => void;
-}
+import type { EditorContextType } from './types';
 
 export const EditorContext = createContext<EditorContextType | undefined>(undefined);
 

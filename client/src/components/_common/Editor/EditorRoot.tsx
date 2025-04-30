@@ -1,14 +1,9 @@
-import type { CSSObject } from '@emotion/react';
-import type { ReactNode } from 'react';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
-import type { Align, Format, List } from './EditorToolbar';
-
-interface RootProps {
-    children?: ReactNode;
-    sx?: CSSObject;
-}
+import { EditorHandlerContext } from './EditorHandlerContext';
+import type { Align, Format, List, Option } from './EditorToolbar';
+import type { RootProps } from './types';
 
 function EditorRoot({ children, sx }: RootProps) {
     // prop destruction
@@ -27,21 +22,40 @@ function EditorRoot({ children, sx }: RootProps) {
         disc: false,
         decimal: false,
     });
+    const [options, setOptions] = useState<Record<Option, boolean>>({
+        link: false,
+        image: false,
+        divider: false,
+    });
+
+    const contextValue = useMemo(
+        () => ({
+            formats,
+            align,
+            lists,
+            options,
+            setFormats,
+            setAlign,
+            setLists,
+            setOptions,
+        }),
+        [formats, align, lists, options],
+    );
 
     // form hooks
     // query hooks
 
     // calculated values
 
-    ////
-    const toggleFormatButton = (format: Format) => {
+    // handlers
+    const toggleFormatButton = useCallback((format: Format) => {
         setFormats((prev) => ({
             ...prev,
             [format]: !prev[format],
         }));
-    };
+    }, []);
 
-    const toggleListButton = (list: List) => {
+    const toggleListButton = useCallback((list: List) => {
         setLists((prev) => {
             if (prev[list]) return prev;
 
@@ -50,30 +64,20 @@ function EditorRoot({ children, sx }: RootProps) {
                 decimal: list === 'decimal',
             };
         });
-    };
-    //// 호이스팅 문제로 이곳으로 위치 옮김 (원래 자리는 handlers)
+    }, []);
 
-    const contextValue = useMemo(
-        () => ({
-            formats,
-            setFormats,
-            toggleFormatButton,
-            align,
-            setAlign,
-            lists,
-            setLists,
-            toggleListButton,
-        }),
-        [formats, align, lists],
+    const handlerContextValue = useMemo(
+        () => ({ toggleFormatButton, toggleListButton }),
+        [toggleFormatButton, toggleListButton],
     );
-
-    // handlers
 
     // effects
 
     return (
         <EditorContext.Provider value={contextValue}>
-            <div css={[rootContainer, editorListStyle, sx]}>{children}</div>
+            <EditorHandlerContext.Provider value={handlerContextValue}>
+                <div css={[rootContainer, editorListStyle, sx]}>{children}</div>
+            </EditorHandlerContext.Provider>
         </EditorContext.Provider>
     );
 }

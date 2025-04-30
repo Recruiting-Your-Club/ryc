@@ -1,26 +1,25 @@
-import { alignButtons, formatButtons, listButtons } from '@constants/Editor';
-import type { CSSObject } from '@emotion/react';
+import { alignButtons, formatButtons, listButtons, optionButtons } from '@constants/Editor';
 import React, { useEffect } from 'react';
 import { buttonGroup, perButtonCss, svgCss, toolbarContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
+import { useEditorHandlerContext } from './EditorHandlerContext';
+import type { ToolbarProps } from './types';
 import { applyAlignment } from './utils/alignment';
 import { applyStyleFormat } from './utils/format';
 import { applyList } from './utils/list';
+import { insertDivider } from './utils/options';
 import { getCurrentFormats, getCurrentLists } from './utils/selection';
 
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
 export type List = 'disc' | 'decimal';
-interface ToolbarProps {
-    radius?: string;
-    sx?: CSSObject;
-}
+export type Option = 'link' | 'image' | 'divider';
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
     // lib hooks
-    const { formats, setFormats, toggleFormatButton, lists, setLists, toggleListButton } =
-        useEditorContext();
+    const { formats, setFormats, lists, setLists, options, setOptions } = useEditorContext();
+    const { toggleFormatButton, toggleListButton } = useEditorHandlerContext();
 
     // initial values
     // state, ref, querystring hooks
@@ -54,6 +53,14 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         const range = selection.getRangeAt(0);
         toggleListButton(list);
         applyList(range, list);
+    };
+
+    const handleOption = (option: Option) => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        insertDivider(range, option);
     };
 
     // effects
@@ -102,6 +109,17 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 {listButtons.map(({ list, Svg }) => (
                     <button key={list} onClick={() => handleList(list as List)} css={perButtonCss}>
                         <Svg css={svgCss(lists[list as List])} />
+                    </button>
+                ))}
+            </div>
+            <div css={buttonGroup}>
+                {optionButtons.map(({ option, Svg }) => (
+                    <button
+                        key={option}
+                        onClick={() => handleOption(option as Option)}
+                        css={perButtonCss}
+                    >
+                        <Svg css={svgCss(options[option as Option])} />
                     </button>
                 ))}
             </div>
