@@ -1,12 +1,7 @@
-import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { textareaContainer } from './Editor.style';
+import type { EditorProps } from './types';
 
-interface EditorProps {
-    height?: string;
-    radius?: string;
-    sx?: CSSObject;
-}
 function EditorTextarea({ height, radius, sx }: EditorProps) {
     // prop destruction
     // lib hooks

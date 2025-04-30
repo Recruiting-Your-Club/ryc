@@ -14,8 +14,8 @@ function EditorRoot({ children, sx }: RootProps) {
     const [formats, setFormats] = useState<Record<Format, boolean>>({
         bold: false,
         italic: false,
-        strikethrough: false,
         underline: false,
+        strikethrough: false,
     });
     const [align, setAlign] = useState<Align>('left');
     const [lists, setLists] = useState<Record<List, boolean>>({
