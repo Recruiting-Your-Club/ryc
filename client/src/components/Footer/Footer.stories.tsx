@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { css } from '@emotion/react';
 import { Footer } from './Footer';
+import { UserLayoutCss } from '@layouts/UserLayout/UserLayout.styles';
 
 const meta: Meta<typeof Footer> = {
     title: 'Footer',
@@ -17,34 +17,15 @@ const meta: Meta<typeof Footer> = {
 
 export default meta;
 
-const storybookStyle = css`
-    a {
-        text-decoration: none;
-    }
-`;
-
 export const Primary = () => {
     return (
-        <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ flex: 1 }}>Content Area</div>
-            <div css={storybookStyle}>
-                <Footer />
+        <>
+            <div css={UserLayoutCss}>
+                <div style={{ marginBottom: '1rem' }}>컨텐츠1</div>
+                <div style={{ marginBottom: '1rem' }}>컨텐츠2</div>
+                <div style={{ marginBottom: '1rem' }}>컨텐츠3</div>
             </div>
-        </div>
-    );
-};
-
-export const WithLongContent = () => {
-    return (
-        <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ flex: 1, padding: '2rem' }}>
-                {Array.from({ length: 20 }).map((_, index) => (
-                    <p key={index}>긴 컨텐츠 {index + 1}</p>
-                ))}
-            </div>
-            <div css={storybookStyle}>
-                <Footer />
-            </div>
-        </div>
+            <Footer />
+        </>
     );
 };
