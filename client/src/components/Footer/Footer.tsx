@@ -1,10 +1,15 @@
 import React from 'react';
 import { Text } from '@components/_common';
 import { footerContainer, footerStyle } from './Footer.style';
+import { useLocation } from 'react-router-dom';
 
 function Footer() {
+    const location = useLocation();
+    const pathSegments = location.pathname.split('/');
+    const isManagerRoute = pathSegments.includes('manager');
+
     return (
-        <footer css={footerContainer}>
+        <footer css={footerContainer(isManagerRoute)}>
             <div css={footerStyle}>
                 <a
                     href="https://sangjunn.notion.site/RYC-1e0976a7f2238024bef3e14706f92824?pvs=4"

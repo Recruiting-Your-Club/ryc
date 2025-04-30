@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const footerContainer = css`
+export const footerContainer = (isManagerRoute: boolean) => css`
     position: relative;
     width: 100dvw;
     left: 50%;
@@ -9,6 +9,10 @@ export const footerContainer = css`
     margin-left: -50dvw;
     margin-right: -50dvw;
     background-color: ${theme.colors.gray[100]};
+    ${isManagerRoute &&
+    css`
+        border-top: 1px solid ${theme.colors.gray[300]};
+    `}
 `;
 
 export const footerStyle = css`
