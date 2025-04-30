@@ -6,13 +6,13 @@ import { Footer } from '@components/Footer';
 
 function UserLayout() {
     return (
-        <div css={UserLayoutCss}>
+        <>
             <Header />
-            <main>
+            <div css={UserLayoutCss}>
                 <Outlet />
-            </main>
+            </div>
             <Footer />
-        </div>
+        </>
     );
 }
 
