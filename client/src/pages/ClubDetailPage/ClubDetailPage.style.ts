@@ -18,6 +18,16 @@ export const contentContainer = css`
     padding: 2rem 2rem;
     border-radius: 10px;
     border: 1px solid ${theme.colors.gray[200]};
+
+    @media (max-width: 768px) {
+        width: 70rem;
+    }
+    @media (max-width: 480px) {
+        width: 40rem;
+    }
+    @media (max-width: 400px) {
+        width: 34rem;
+    }
 `;
 export const clubHeader = css`
     display: flex;
@@ -29,10 +39,21 @@ export const clubHeader = css`
 export const clubImage = css`
     width: 6rem;
     height: 6rem;
+    @media (max-width: 480px) {
+        width: 5rem;
+        height: 5rem;
+    }
 `;
-export const clubHeaderText = css`
+export const clubHeaderTextContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: start;
+    padding-bottom: 0.5rem;
+`;
+
+export const clubHeaderTitle = css`
+    @media (max-width: 480px) {
+        ${theme.typography.h3Semibold};
+    }
 `;

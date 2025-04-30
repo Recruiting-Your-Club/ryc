@@ -22,4 +22,12 @@ export const imageItem = css`
     width: 17rem;
     height: 17rem;
     gap: 1rem;
+    @media (max-width: 480px) {
+        width: 8rem;
+        height: 8rem;
+    }
+    @media (max-width: 400px) {
+        width: 6rem;
+        height: 6rem;
+    }
 `;

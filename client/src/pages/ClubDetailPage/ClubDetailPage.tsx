@@ -1,9 +1,10 @@
 import React from 'react';
-import { ClubNavigation, Avatar, Text } from '@components';
+import { ClubNavigation, Text } from '@components';
 import {
     clubDetailPageContainer,
     clubHeader,
-    clubHeaderText,
+    clubHeaderTextContainer,
+    clubHeaderTitle,
     clubImage,
     contentContainer,
 } from './ClubDetailPage.style';
@@ -37,6 +38,13 @@ function ClubDetailPage() {
      * 2. 동아리 이름
      * 3. 동아리 설명
      */
+
+    // compact: '0px',
+    // mobileMini: '400px',
+    // mobile: '480px',
+    // tabletMini: '768px',
+    // tablet: '1024px',
+    // desktop: '1200px',
     return (
         <div css={clubDetailPageContainer}>
             <div css={contentContainer}>
@@ -50,16 +58,11 @@ function ClubDetailPage() {
                             css={{ borderRadius: '10px' }}
                         />
                     </div>
-                    <div css={clubHeaderText}>
-                        <Text as="h4" type="h1Semibold" textAlign="start">
-                            엔샵(enjoy C#)
+                    <div css={clubHeaderTextContainer}>
+                        <Text as="h4" type="h1Semibold" textAlign="start" sx={clubHeaderTitle}>
+                            En#(엔샵)
                         </Text>
-                        <Text
-                            as="div"
-                            type="captionSemibold"
-                            color="caption"
-                            sx={{ marginLeft: '0.3rem' }}
-                        >
+                        <Text as="div" type="captionSemibold" color="helper">
                             동아리 설명
                         </Text>
                     </div>
