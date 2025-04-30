@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar, Tag, Text } from '@components';
 import {
+    cardBodyContainer,
     cardContainer,
     cardFooterContainer,
     cardHeaderContainer,
@@ -53,27 +54,27 @@ function MainCard({
                         imageName="logo"
                     />
                     <div css={cardTitleContainer}>
-                        <Text as="div" type="h4Semibold" color="black">
+                        <Text as="div" type="h4Semibold" color="black" noWrap cropped>
                             {title}
                         </Text>
-                        <Text as="div" type="bodyLight" color="caption">
+                        <Text as="div" type="bodyLight" color="caption" noWrap cropped>
                             {category}
                         </Text>
                     </div>
                 </div>
                 {getTagStatus(status)}
             </div>
-            <div css={cardFooterContainer}>
-                <Text textAlign="start" type="bodyLight">
+            <div css={cardBodyContainer}>
+                <Text textAlign="start" type="bodyLight" cropped noWrap>
                     {description}
                 </Text>
-                <div css={hashTagContainer}>
-                    {hashTag.map((tag: string) => (
-                        <Text key={tag} type="captionLight" color="primary">
-                            #{tag}
-                        </Text>
-                    ))}
-                </div>
+            </div>
+            <div css={cardFooterContainer}>
+                {hashTag.map((tag: string) => (
+                    <Text key={tag} type="captionLight" color="primary" noWrap cropped>
+                        #{tag}
+                    </Text>
+                ))}
             </div>
         </Link>
     );

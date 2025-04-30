@@ -32,15 +32,13 @@ export const cardTitleContainer = css`
     flex-direction: column;
     align-items: start;
 `;
+export const cardBodyContainer = css`
+    display: flex;
+    flex-grow: 1;
+`;
 export const cardFooterContainer = css`
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: space-between;
     align-items: start;
-`;
-export const hashTagContainer = css`
-    display: flex;
-    flex-wrap: wrap;
+    padding-bottom: 0.2rem;
     gap: 0.5rem;
 `;
