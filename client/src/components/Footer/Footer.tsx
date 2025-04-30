@@ -7,7 +7,9 @@ function Footer() {
     // prop destruction
     // lib hooks
     const location = useLocation();
+    //initial values
     const pathSegments = location.pathname.split('/');
+    // calculated values
     const isManagerRoute = pathSegments.includes('manager');
 
     return (
