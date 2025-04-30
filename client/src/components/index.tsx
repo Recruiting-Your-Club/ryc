@@ -12,3 +12,4 @@ export * from './ManagerHeader';
 export * from './ClubNavigation';
 export * from './ClubBox';
 export * from './ImageDialog';
+export * from './RecruitCard';
