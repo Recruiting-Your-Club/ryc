@@ -9,25 +9,18 @@ export const textContainer = css`
 `;
 
 export const imageListContainer = css`
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(4, 1fr); // 기본 3열
     padding: 4rem 3rem;
     gap: 0.5rem;
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
 `;
 
 export const imageItem = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 17rem;
-    height: 17rem;
-    gap: 1rem;
-    @media (max-width: 480px) {
-        width: 8rem;
-        height: 8rem;
-    }
-    @media (max-width: 400px) {
-        width: 6rem;
-        height: 6rem;
-    }
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    background-color: transparent;
 `;
