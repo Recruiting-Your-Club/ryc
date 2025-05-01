@@ -14,6 +14,12 @@ export const recruitCardContainer = css`
     :hover {
         background-color: ${theme.colors.gray[100]};
     }
+    @media (max-width: 480px) {
+        width: 28rem;
+    }
+    @media (max-width: 400px) {
+        width: 25rem;
+    }
 `;
 export const recruitCardHeader = css`
     display: flex;
