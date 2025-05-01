@@ -63,6 +63,10 @@ public class SecurityConfiguration {
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v2/application/form")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v2/club")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v2/club/all")
+                    .permitAll()
                     .requestMatchers(
                         "/actuator/**",
                         "/swagger-ui/*",
