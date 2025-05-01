@@ -13,14 +13,16 @@ export const NavigationButton = (isActive: boolean) => css`
     ${theme.typography.bodySemibold}
     color: ${theme.colors.gray[500]};
     margin-bottom: 0.5rem;
+    :hover {
+        color: ${theme.colors.gray[500]};
+    }
     ${isActive &&
     css`
         color: ${theme.colors.black};
         ${theme.typography.bodyBold}
+        :hover {
+            color: ${theme.colors.black};
+        }
     `}
-    :hover {
-        color: ${theme.colors.black};
-        ${theme.typography.bodyBold}
-    }
     transition: color 0.1s;
 `;
