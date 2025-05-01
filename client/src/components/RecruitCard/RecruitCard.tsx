@@ -1,23 +1,46 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     recruitCardBody,
     recruitCardContainer,
     recruitCardFooter,
     recruitCardHeader,
+    deadlineText,
 } from './Recruit.style';
 import { Text } from '@components';
 import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
 import type { RecruitCardProps } from './types';
 
 function RecruitCard(props: RecruitCardProps) {
-    const { title, content, dDay, link, hashtags } = props;
+    const { title, content, deadline, link, hashtags } = props;
+    // prop destruction
+    // lib hooks
+    // initial values
+    const today = dayjs().format('YYYY-MM-DD');
+    const formattedDeadline = dayjs(deadline);
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    const diffDay = formattedDeadline.diff(today, 'day');
+    const calculateDeadline = useMemo(() => {
+        if (diffDay > 7) {
+            return `~${formattedDeadline.format('MM.DD')}`;
+        } else if (diffDay > 1) {
+            return `D-${diffDay}`;
+        } else {
+            return `D-${diffDay}`;
+        }
+    }, [formattedDeadline, today]);
+    // handlers
 
+    // effects
     return (
         <Link css={recruitCardContainer} to={link}>
             <div css={recruitCardHeader}>
                 <Text>{title}</Text>
-                <Text type="bodySemibold" color="primary">
-                    {dDay}
+                <Text color="caption" sx={deadlineText(diffDay)}>
+                    {calculateDeadline}
                 </Text>
             </div>
 

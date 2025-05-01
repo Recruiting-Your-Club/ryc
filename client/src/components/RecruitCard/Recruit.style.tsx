@@ -22,6 +22,13 @@ export const recruitCardHeader = css`
     padding: 1rem;
 `;
 
+export const deadlineText = (diffDay: number) => css`
+    ${diffDay <= 3 &&
+    css`
+        color: ${theme.colors.red[800]};
+    `}
+`;
+
 export const recruitCardBody = css`
     display: flex;
     flex-wrap: wrap;
