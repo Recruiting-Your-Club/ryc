@@ -9,6 +9,7 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.util.UserUtil;
@@ -53,7 +54,7 @@ public class ClubService {
     return ClubGetResponse.builder()
         .id(club.getId())
         .name(club.getName())
-        .description(club.getDescription())
+        .description(club.getShortDescription())
         .imageUrl(club.getImageUrl())
         .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())
@@ -65,24 +66,21 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public List<ClubGetResponse> getClubs() {
+  public List<AllClubGetResponse> getClubs() {
     // TODO: N + 1 문제 확인 필요
 
     List<Club> clubs = clubRepository.findAll();
     return clubs.stream()
         .map(
             club ->
-                ClubGetResponse.builder()
+                AllClubGetResponse.builder()
                     .id(club.getId())
                     .name(club.getName())
-                    .description(club.getDescription())
+                    .shortDescription(club.getShortDescription())
                     .imageUrl(club.getImageUrl())
                     .thumbnailUrl(club.getThumbnailUrl())
                     .category(club.getCategory())
                     .clubTags(club.getClubTags())
-                    .deleted(club.getDeleted())
-                    .createdAt(club.getCreatedAt())
-                    .updatedAt(club.getUpdatedAt())
                     .build())
         .toList();
   }

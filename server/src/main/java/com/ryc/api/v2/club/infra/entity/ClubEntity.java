@@ -24,8 +24,10 @@ public class ClubEntity extends BaseEntity {
   @Column(unique = true)
   private String name;
 
+  private String shortDescription;
+
   @Column(columnDefinition = "TEXT")
-  private String description;
+  private String detailDescription;
 
   private String imageUrl;
   private String thumbnailUrl;

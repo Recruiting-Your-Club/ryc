@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.service.ClubService;
@@ -38,7 +39,7 @@ public class ClubHttpApi {
   }
 
   @GetMapping("all")
-  public ResponseEntity<List<ClubGetResponse>> getClubs() {
+  public ResponseEntity<List<AllClubGetResponse>> getClubs() {
     return ResponseEntity.status(HttpStatus.OK).body(clubService.getClubs());
   }
 }

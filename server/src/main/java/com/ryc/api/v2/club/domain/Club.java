@@ -14,12 +14,13 @@ import lombok.*;
 public class Club {
   private final String id;
   private final String name;
-  private final String description;
+  private final String shortDescription;
   private final String imageUrl;
   private final String thumbnailUrl;
   private final Category category;
   private final List<ClubTag> clubTags;
 
+  @Builder.Default private final String detailDescription = "";
   @Builder.Default private final Boolean deleted = Boolean.FALSE;
 
   private LocalDateTime createdAt;
@@ -34,7 +35,7 @@ public class Club {
     return Club.builder()
         .id(DEFAULT_INITIAL_ID) // 실제로 비즈니스 로직에서 사용되지 않음
         .name(clubCreateRequest.name())
-        .description(clubCreateRequest.description())
+        .shortDescription(clubCreateRequest.description())
         .imageUrl(imageUrl)
         .thumbnailUrl(thumbnailUrl)
         .category(clubCreateRequest.category())
