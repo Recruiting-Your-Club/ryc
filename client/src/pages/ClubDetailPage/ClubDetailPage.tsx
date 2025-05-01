@@ -8,7 +8,7 @@ import {
     clubImage,
     contentContainer,
 } from './ClubDetailPage.style';
-import { RecruitmentPage } from './RecruitmentListPage';
+import { RecruitmentPage } from './RecruitmentPage';
 import { ClubIntroPage } from './ClubIntroPage';
 
 function ClubDetailPage() {

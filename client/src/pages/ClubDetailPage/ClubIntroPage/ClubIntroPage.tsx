@@ -40,13 +40,6 @@ APP서비스를 구현하여 운영하는 경험을 목표로 하고 있습니�
         setImageUrl(url);
     };
     // effects
-
-    // 필요한거
-    /**
-     * 1. 동아리 이미지 리스트
-     * 2. 동아리 소개 글
-     * 3. ClubBox에 들어갈 정보들
-     */
     return (
         <div css={clubIntroContainer}>
             <ClubBox />
@@ -77,11 +70,7 @@ APP서비스를 구현하여 운영하는 경험을 목표로 하고 있습니�
             </div>
 
             {open && imageUrl && (
-                <ImageDialog
-                    open={open} // useDialog 훅에서 받은 open 상태 전달
-                    handleClose={closeDialog} // useDialog 훅에서 받은 handleClose 함수 전달
-                    imageUrl={imageUrl} // *** 추가: 새롭게 관리하는 dialogImageUrl 상태 전달 ***
-                />
+                <ImageDialog open={open} handleClose={closeDialog} imageUrl={imageUrl} />
             )}
         </div>
     );
