@@ -23,10 +23,7 @@ export const contentContainer = css`
         width: 70rem;
     }
     @media (max-width: 480px) {
-        width: 40rem;
-    }
-    @media (max-width: 400px) {
-        width: 34rem;
+        width: 100%;
     }
 `;
 export const clubHeader = css`
