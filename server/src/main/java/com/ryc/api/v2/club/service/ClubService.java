@@ -51,10 +51,16 @@ public class ClubService {
             .findById(clubId)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
 
+    String detailDescription = club.getDetailDescription();
+
+    if (detailDescription.isBlank()) {
+      detailDescription = club.getShortDescription();
+    }
+
     return ClubGetResponse.builder()
         .id(club.getId())
         .name(club.getName())
-        .description(club.getShortDescription())
+        .detailDescription(detailDescription)
         .imageUrl(club.getImageUrl())
         .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())

@@ -35,7 +35,7 @@ public class Club {
     return Club.builder()
         .id(DEFAULT_INITIAL_ID) // 실제로 비즈니스 로직에서 사용되지 않음
         .name(clubCreateRequest.name())
-        .shortDescription(clubCreateRequest.description())
+        .shortDescription(clubCreateRequest.shortDescription())
         .imageUrl(imageUrl)
         .thumbnailUrl(thumbnailUrl)
         .category(clubCreateRequest.category())
