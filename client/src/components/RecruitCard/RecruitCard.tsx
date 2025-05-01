@@ -38,7 +38,9 @@ function RecruitCard(props: RecruitCardProps) {
     return (
         <Link css={recruitCardContainer} to={link}>
             <div css={recruitCardHeader}>
-                <Text>{title}</Text>
+                <Text noWrap cropped>
+                    {title}
+                </Text>
                 <Text color="caption" sx={deadlineText(diffDay)}>
                     {calculateDeadline}
                 </Text>
