@@ -1,7 +1,7 @@
 export interface RecruitCardProps {
     title: string;
     content: string;
-    dDay: string;
+    deadline: string;
     link: string;
     hashtags: string[];
 }
