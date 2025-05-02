@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import type { Direction } from './Tooltip';
+import type { Direction } from './types';
 import theme from '@styles/theme';
 
 export const tooltipContainter = css`
@@ -9,12 +9,22 @@ export const tooltipContainter = css`
 
 export const tooltipStyle = (direction: Direction) => {
     const positionStyles: Record<Direction, ReturnType<typeof css>> = {
-        top: css`
+        topLeft: css`
+            bottom: 100%;
+            right: 50%;
+            margin-bottom: 0.3rem;
+        `,
+        topRight: css`
             bottom: 100%;
             left: 50%;
             margin-bottom: 0.3rem;
         `,
-        bottom: css`
+        bottomLeft: css`
+            top: 100%;
+            right: 50%;
+            margin-top: 0.3rem;
+        `,
+        bottomRight: css`
             top: 100%;
             left: 50%;
             margin-top: 0.3rem;
@@ -39,7 +49,7 @@ export const tooltipStyle = (direction: Direction) => {
         padding: 0.8rem 1rem;
         border-radius: 5px;
         white-space: nowrap;
-        ${theme.typography.subCaptionRegular};
+        ${theme.typography.subCaptionLight};
         ${positionStyles[direction]};
     `;
 };

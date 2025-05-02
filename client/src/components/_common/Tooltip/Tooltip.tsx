@@ -1,21 +1,10 @@
-import type { ReactNode } from 'react';
 import React, { useRef, useState } from 'react';
 import { tooltipContainter, tooltipStyle } from './Tooltip.style';
-import type { CSSObject } from '@emotion/react';
-export type Direction = 'top' | 'bottom' | 'left' | 'right';
-
-export interface TooltipProps {
-    content: string;
-    direction?: Direction;
-    children: ReactNode;
-    delay?: number;
-    disabled?: boolean;
-    sx?: CSSObject;
-}
+import type { TooltipProps } from './types';
 
 function Tooltip({
     content,
-    direction = 'bottom',
+    direction = 'bottomRight',
     delay = 300,
     disabled = false,
     children,
