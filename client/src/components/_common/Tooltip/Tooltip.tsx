@@ -9,10 +9,18 @@ export interface TooltipProps {
     direction?: Direction;
     children: ReactNode;
     delay?: number;
+    disabled?: boolean;
     sx?: CSSObject;
 }
 
-function Tooltip({ content, direction = 'bottom', children, delay = 300, sx }: TooltipProps) {
+function Tooltip({
+    content,
+    direction = 'bottom',
+    delay = 300,
+    disabled = false,
+    children,
+    sx,
+}: TooltipProps) {
     const [visible, setVisible] = useState<boolean>();
     const timeoutRef = useRef<NodeJS.Timeout>();
 
@@ -28,7 +36,7 @@ function Tooltip({ content, direction = 'bottom', children, delay = 300, sx }: T
     return (
         <div css={tooltipContainter} onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
             {children}
-            {visible && <div css={[tooltipStyle(direction), sx]}>{content}</div>}
+            {!disabled && visible && <div css={[tooltipStyle(direction), sx]}>{content}</div>}
         </div>
     );
 }
