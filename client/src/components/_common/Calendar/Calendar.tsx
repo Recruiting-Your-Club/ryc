@@ -7,6 +7,7 @@ import {
     daysContainer,
     dayCell,
     weekCell,
+    monthControlButton,
 } from './CalendarStyle';
 import { Button, Text } from '@components';
 import { useCalendar } from './useCalendar';
@@ -39,15 +40,25 @@ const Calendar = ({
     return (
         <div css={[calendarContainer({ size, border, shadow, zIndex }), sx]}>
             <div css={calendarHeaderContainer}>
-                <Button variant="transparent" onClick={handleBackMonth} aria-label="이전 달">
+                <button
+                    onClick={handleBackMonth}
+                    aria-label="이전 달"
+                    disabled={disabled}
+                    css={monthControlButton}
+                >
                     {'<'}
-                </Button>
+                </button>
                 <Text as="div" type="bodySemibold" aria-label={currentDate.format('YYYY년 MM월')}>
                     {currentDate.format('YYYY년 MM월')}
                 </Text>
-                <Button variant="transparent" onClick={handleNextMonth} aria-label="다음 달">
+                <button
+                    onClick={handleNextMonth}
+                    aria-label="다음 달"
+                    disabled={disabled}
+                    css={monthControlButton}
+                >
                     {'>'}
-                </Button>
+                </button>
             </div>
 
             <div css={calendarBodyContainer}>
