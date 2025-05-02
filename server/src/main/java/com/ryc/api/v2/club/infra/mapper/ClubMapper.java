@@ -7,6 +7,10 @@ import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 public class ClubMapper {
+  private ClubMapper() {
+    // Prevent instantiation
+  }
+
   public static ClubEntity toEntity(Club club) {
     List<ClubTag> clubTags = club.getClubTags();
     ClubEntity clubEntity =
