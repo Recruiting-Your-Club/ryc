@@ -1,20 +1,30 @@
 package com.ryc.api.v2.club.infra.mapper;
 
+import java.util.List;
+
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 public class ClubMapper {
   public static ClubEntity toEntity(Club club) {
-    return ClubEntity.builder()
-        .id(club.getId())
-        .name(club.getName())
-        .shortDescription(club.getShortDescription())
-        .detailDescription(club.getDetailDescription())
-        .imageUrl(club.getImageUrl())
-        .thumbnailUrl(club.getThumbnailUrl())
-        .category(club.getCategory())
-        .deleted(club.getDeleted())
-        .build();
+    List<ClubTag> clubTags = club.getClubTags();
+    ClubEntity clubEntity =
+        ClubEntity.builder()
+            .id(club.getId())
+            .name(club.getName())
+            .shortDescription(club.getShortDescription())
+            .detailDescription(club.getDetailDescription())
+            .imageUrl(club.getImageUrl())
+            .thumbnailUrl(club.getThumbnailUrl())
+            .category(club.getCategory())
+            .deleted(club.getDeleted())
+            .build();
+
+    for (ClubTag clubTag : clubTags) {
+      clubEntity.getClubTags().add(ClubTagMapper.toEntity(clubTag, clubEntity));
+    }
+    return clubEntity;
   }
 
   public static Club toDomain(ClubEntity clubEntity) {

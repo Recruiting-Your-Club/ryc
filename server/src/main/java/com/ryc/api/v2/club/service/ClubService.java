@@ -73,9 +73,9 @@ public class ClubService {
 
   @Transactional(readOnly = true)
   public List<AllClubGetResponse> getClubs() {
-    // TODO: N + 1 문제 확인 필요
-
+    // TODO: N + 1 문제 발생 중
     List<Club> clubs = clubRepository.findAll();
+
     return clubs.stream()
         .map(
             club ->

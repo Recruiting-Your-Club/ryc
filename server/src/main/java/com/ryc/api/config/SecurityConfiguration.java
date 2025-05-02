@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v2/application/form")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v2/club")
+                    .requestMatchers(HttpMethod.GET, "/api/v2/club/{id}")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v2/club/all")
                     .permitAll()
