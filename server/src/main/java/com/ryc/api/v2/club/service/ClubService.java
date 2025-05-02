@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.club.domain.ClubSummary;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
@@ -51,6 +52,7 @@ public class ClubService {
             .findById(clubId)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
 
+    List<ClubSummary> clubSummaries = clubRepository.findAllClubSummaryByClubId(clubId);
     String detailDescription = club.getDetailDescription();
 
     if (detailDescription.isBlank()) {
@@ -65,9 +67,7 @@ public class ClubService {
         .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())
         .clubTags(club.getClubTags())
-        .deleted(club.getDeleted())
-        .createdAt(club.getCreatedAt())
-        .updatedAt(club.getUpdatedAt())
+        .clubSummaries(clubSummaries)
         .build();
   }
 

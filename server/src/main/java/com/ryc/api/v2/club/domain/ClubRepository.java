@@ -9,4 +9,6 @@ public interface ClubRepository {
   Optional<Club> findById(String id);
 
   List<Club> findAll();
+
+  List<ClubSummary> findAllClubSummaryByClubId(String clubId);
 }
