@@ -1,7 +1,18 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import type { CSSObject } from '@emotion/react';
 import type { Direction } from './types';
 import theme from '@styles/theme';
+
+export const fadeInScale = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 export const tooltipContainter = css`
     position: relative;
@@ -49,8 +60,10 @@ export const tooltipStyle = (direction: Direction) => css`
     color: ${theme.colors.white};
     padding: 0.8rem 1rem;
     border-radius: 5px;
+    max-width: 20rem;
     white-space: nowrap;
     z-index: 999;
+    animation: ${fadeInScale} 0.2s ease-in-out;
     ${theme.typography.subCaptionRegular};
     ${positionStyles[direction]};
 `;
