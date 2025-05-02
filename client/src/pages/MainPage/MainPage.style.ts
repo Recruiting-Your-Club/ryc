@@ -83,6 +83,12 @@ export const progressContainer = (isActive: boolean) => css`
     css`
         color: ${theme.colors.default};
     `}
+    ${!isActive &&
+    css`
+        :hover {
+            color: ${theme.colors.gray[500]};
+        }
+    `}
     @media (max-width: ${theme.breakpoint.mobile}) {
         justify-content: start;
     }
