@@ -51,6 +51,6 @@ export const tooltipStyle = (direction: Direction) => css`
     border-radius: 5px;
     white-space: nowrap;
     z-index: 999;
-    ${theme.typography.subCaptionLight};
+    ${theme.typography.subCaptionRegular};
     ${positionStyles[direction]};
 `;
