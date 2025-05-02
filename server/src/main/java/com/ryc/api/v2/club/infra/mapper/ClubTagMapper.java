@@ -9,7 +9,7 @@ public class ClubTagMapper {
     // Prevent instantiation
   }
 
-  public static ClubTagEntity toEntity(ClubTag clubTag, ClubEntity clubEntity) {
+  public static ClubTagEntity toEntityWithClubEntity(ClubTag clubTag, ClubEntity clubEntity) {
     return ClubTagEntity.builder()
         .id(clubTag.getId())
         .name(clubTag.getName())

@@ -3,6 +3,7 @@ package com.ryc.api.v2.club.infra.mapper;
 import java.util.List;
 
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubSummary;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
@@ -12,26 +13,20 @@ public class ClubMapper {
   }
 
   public static ClubEntity toEntity(Club club) {
-    List<ClubTag> clubTags = club.getClubTags();
-    ClubEntity clubEntity =
-        ClubEntity.builder()
-            .id(club.getId())
-            .name(club.getName())
-            .shortDescription(club.getShortDescription())
-            .detailDescription(club.getDetailDescription())
-            .imageUrl(club.getImageUrl())
-            .thumbnailUrl(club.getThumbnailUrl())
-            .category(club.getCategory())
-            .deleted(club.getDeleted())
-            .build();
-
-    for (ClubTag clubTag : clubTags) {
-      clubEntity.getClubTags().add(ClubTagMapper.toEntity(clubTag, clubEntity));
-    }
-    return clubEntity;
+    return ClubEntity.builder()
+        .id(club.getId())
+        .name(club.getName())
+        .shortDescription(club.getShortDescription())
+        .detailDescription(club.getDetailDescription())
+        .imageUrl(club.getImageUrl())
+        .thumbnailUrl(club.getThumbnailUrl())
+        .category(club.getCategory())
+        .deleted(club.getDeleted())
+        .build();
   }
 
-  public static Club toDomain(ClubEntity clubEntity) {
+  public static Club toDomainWithClubTagsAndClubSummaries(
+      ClubEntity clubEntity, List<ClubTag> clubTags, List<ClubSummary> clubSummaries) {
     return Club.builder()
         .id(clubEntity.getId())
         .name(clubEntity.getName())
@@ -40,7 +35,8 @@ public class ClubMapper {
         .imageUrl(clubEntity.getImageUrl())
         .thumbnailUrl(clubEntity.getThumbnailUrl())
         .category(clubEntity.getCategory())
-        .clubTags(clubEntity.getClubTags().stream().map(ClubTagMapper::toDomain).toList())
+        .clubTags(clubTags)
+        .clubSummaries(clubSummaries)
         .deleted(clubEntity.getDeleted())
         .createdAt(clubEntity.getCreatedAt())
         .updatedAt(clubEntity.getUpdatedAt())

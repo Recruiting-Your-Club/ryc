@@ -10,7 +10,8 @@ public class ClubSummaryMapper {
     // Prevent instantiation
   }
 
-  public static ClubSummaryEntity toEntity(ClubSummary clubSummary, ClubEntity clubEntity) {
+  public static ClubSummaryEntity toEntityWithClubEntity(
+      ClubSummary clubSummary, ClubEntity clubEntity) {
     return ClubSummaryEntity.builder()
         .id(clubSummary.getId())
         .summaryKey(clubSummary.getKey())

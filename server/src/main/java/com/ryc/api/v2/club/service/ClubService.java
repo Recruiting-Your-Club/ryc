@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.ClubSummary;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
@@ -36,8 +35,9 @@ public class ClubService {
 
     final List<ClubTag> clubTags = body.tagNames().stream().map(ClubTag::initialize).toList();
 
-    Club club = Club.initialize(body, ImageUrlFromS3, ThumbnailUrlFromS3, clubTags);
-    Club savedClub = clubRepository.save(club);
+    final Club club = Club.initialize(body, ImageUrlFromS3, ThumbnailUrlFromS3, clubTags);
+
+    final Club savedClub = clubRepository.save(club);
 
     // TODO: Security Context에서 사용자를 찾고, 해당 사용자에게 MANAGER 권한 부여
     final String currentUserId = UserUtil.getCurrentUserId();
@@ -47,14 +47,9 @@ public class ClubService {
 
   @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
-    Club club =
-        clubRepository
-            .findById(clubId)
-            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
+    Club club = clubRepository.findById(clubId);
 
-    List<ClubSummary> clubSummaries = clubRepository.findAllClubSummaryByClubId(clubId);
     String detailDescription = club.getDetailDescription();
-
     if (detailDescription.isBlank()) {
       detailDescription = club.getShortDescription();
     }
@@ -67,7 +62,7 @@ public class ClubService {
         .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())
         .clubTags(club.getClubTags())
-        .clubSummaries(clubSummaries)
+        .clubSummaries(club.getClubSummaries())
         .build();
   }
 

@@ -9,5 +9,5 @@ import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
 
 public interface ClubSummaryJpaRepository extends JpaRepository<ClubSummaryEntity, String> {
   @Query("SELECT cs FROM ClubSummaryEntity cs WHERE cs.clubEntity.id = :clubId")
-  List<ClubSummaryEntity> findAllByClubId(String clubId);
+  List<ClubSummaryEntity> findByClubId(String clubId);
 }

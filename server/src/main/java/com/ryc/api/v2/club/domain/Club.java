@@ -3,6 +3,7 @@ package com.ryc.api.v2.club.domain;
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
@@ -18,8 +19,9 @@ public class Club {
   private final String imageUrl;
   private final String thumbnailUrl;
   private final Category category;
-  private final List<ClubTag> clubTags;
 
+  @Builder.Default private final List<ClubTag> clubTags = new ArrayList<>();
+  @Builder.Default private final List<ClubSummary> clubSummaries = new ArrayList<>();
   @Builder.Default private final String detailDescription = "";
   @Builder.Default private final Boolean deleted = Boolean.FALSE;
 
