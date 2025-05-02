@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import dayjs from 'dayjs';
 import type { CalendarData } from './types';
 import { CALENDAR_SIZE } from '@constants/calendar';
@@ -28,15 +28,19 @@ function useCalendar(
     const handleNextMonth = () => {
         setCurrentDate(currentDate.add(1, 'month'));
     };
-    const handleSelectedDate = (selectDate: string) => {
-        if (selectedDate.includes(selectDate)) {
-            onSelect(selectedDate.filter((day) => day !== selectDate));
-        } else if (isMultiple) {
-            onSelect([...selectedDate, selectDate]);
-        } else {
-            onSelect([selectDate]);
-        }
-    };
+    const handleSelectedDate = useCallback(
+        (selectDate: string) => {
+            if (selectedDate.includes(selectDate)) {
+                onSelect(selectedDate.filter((day) => day !== selectDate));
+            } else if (isMultiple) {
+                onSelect([...selectedDate, selectDate]);
+            } else {
+                onSelect([selectDate]);
+            }
+        },
+        [selectedDate, onSelect, isMultiple],
+    );
+
     const generateCalendarDays = () => {
         const newDays = []; // days 업데이트를 위한 새 배열
         const daysInMonth = currentDate.daysInMonth(); // 현재 월의 총 일수
