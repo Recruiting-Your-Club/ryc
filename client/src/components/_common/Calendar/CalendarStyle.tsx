@@ -60,8 +60,8 @@ export const monthControlButton = css`
     height: 2.7rem;
     width: 4rem;
     padding: 0.6rem;
-    ${theme.typography.captionRegular};
     border: none;
+    ${theme.typography.captionRegular};
     color: ${theme.colors.textHelper};
     transition: background-color 0.2s;
     background-color: transparent;
