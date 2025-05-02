@@ -52,6 +52,30 @@ export const calendarHeaderContainer = css`
     ${theme.typography.bodyBold}
 `;
 
+export const monthControlButton = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    height: 2.7rem;
+    width: 4rem;
+    padding: 0.6rem;
+    ${theme.typography.captionRegular};
+    border: none;
+    color: ${theme.colors.textHelper};
+    transition: background-color 0.2s;
+    background-color: transparent;
+    &:hover {
+        background-color: ${theme.colors.gray[100]};
+    }
+    &:disabled {
+        cursor: not-allowed;
+    }
+    &:disabled:hover {
+        background-color: transparent;
+    }
+`;
+
 export const calendarBodyContainer = css`
     display: flex;
     flex-direction: column;
@@ -96,9 +120,12 @@ const selectedColor = (selectedDate: boolean, today: boolean, disabled: boolean)
         return css`
             background-color: ${theme.colors.default};
             color: ${theme.colors.white};
-            &:hover {
-                background-color: ${theme.colors.defaultHover};
-            }
+            ${!disabled &&
+            css`
+                &:hover {
+                    background-color: ${theme.colors.defaultHover};
+                }
+            `}
         `;
     } else if (today) {
         return css`
@@ -145,6 +172,11 @@ export const dayCell = (
             &:hover {
                 background-color: ${theme.colors.gray[200]};
             }
+        `}
+        ${disabled &&
+        css`
+            opacity: 0.7;
+            cursor: not-allowed;
         `}
         ${selectedColor(selectedDate, today, disabled)}
         ${currentMonthColor(isCurrentMonth)}
