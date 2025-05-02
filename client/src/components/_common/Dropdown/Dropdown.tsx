@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { ReactNode, SetStateAction} from 'react';
+import type { ReactNode, SetStateAction } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DropdownContext } from './DropdownContext';
 import { s_dropdown } from './Dropdown.styles';
