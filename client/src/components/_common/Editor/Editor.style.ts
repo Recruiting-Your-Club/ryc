@@ -11,12 +11,10 @@ export const sizeSelect = css`
     border: 1px solid transparent;
     border-radius: 0;
     height: 100%;
-    /* ${theme.typography.subCaptionRegular}; */
 
     &:focus {
         box-shadow: 0 0 0 0 transparent;
         border-color: transparent;
-        /* background-color: ${theme.colors.white}; */
     }
 `;
 
