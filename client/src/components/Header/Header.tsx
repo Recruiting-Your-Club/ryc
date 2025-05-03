@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { homeImage, headerBarContainer, homeNavContainer, navContainer } from './Header.style';
 import { Link } from 'react-router-dom';
 import { Button } from '@components/_common/Button';
-import Search from '@assets/images/Search.svg';
+import Search from '@assets/images/search.svg';
 import { Text, Input } from '@components';
 import theme from '@styles/theme';
 
@@ -12,7 +12,7 @@ function Header() {
         <header css={headerBarContainer}>
             <Link to="/" css={homeNavContainer}>
                 <Text as="h1" type="h4Light">
-                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>Y</Text.HighLight>
+                    <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>R</Text.HighLight>
                     ecruiting
                 </Text>
                 <Text as="h1" type="h4Light">

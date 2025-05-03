@@ -40,7 +40,7 @@ public class ClubService {
     final Club savedClub = clubRepository.save(club);
 
     // TODO: Security Context에서 사용자를 찾고, 해당 사용자에게 MANAGER 권한 부여
-    final String currentUserId = UserUtil.getCurrentUserId();
+    //    final String currentUserId = UserUtil.getCurrentUserId();
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }
