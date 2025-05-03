@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.club.domain.Category;
+import com.ryc.api.v2.club.domain.ClubDetailImage;
 import com.ryc.api.v2.club.domain.ClubSummary;
 import com.ryc.api.v2.club.domain.ClubTag;
 
@@ -24,4 +25,5 @@ public record ClubGetResponse(
         String thumbnailUrl,
     @Schema(description = "동아리 카테고리", example = "ACADEMIC") @NotNull Category category,
     @Schema(description = "동아리 태그 리스트", example = "[\"코딩\", \"AI\"]") List<ClubTag> clubTags,
-    @Schema(description = "동아리 요약 리스트") List<ClubSummary> clubSummaries) {}
+    @Schema(description = "동아리 요약 리스트") List<ClubSummary> clubSummaries,
+    @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImage> clubDetailImages) {}

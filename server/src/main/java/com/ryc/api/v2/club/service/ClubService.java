@@ -63,6 +63,7 @@ public class ClubService {
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .clubSummaries(club.getClubSummaries())
+        .clubDetailImages(club.getClubDetailImages())
         .build();
   }
 
