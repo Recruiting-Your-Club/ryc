@@ -1,10 +1,11 @@
-import type { Format } from '../EditorToolbar';
+import type { Format, Size } from '../EditorToolbar';
+import { getEditorRoot } from './alignment';
 import { getTextNodes, handleNewRange } from './range';
 
 export const applyStyleInSelectedText = (
     text: string,
     parent: HTMLElement | null,
-    format: Format,
+    format: Format | Size,
     isSpan: boolean,
     selectedStart: number,
     selectedEnd: number,
@@ -29,7 +30,7 @@ export const applyStyleAtCursor = (
     currentNode: Node,
     offset: number,
     parent: HTMLElement,
-    format: Format,
+    format: Format | Size,
     emptyTextNode: Text,
 ) => {
     const grandParent = parent.parentElement!;
@@ -60,14 +61,14 @@ export const applyStyleAtCursor = (
 
 // 새로운 span 노드 생성
 const createSpan = (
-    format: Format,
+    format: Format | Size,
     text: string,
-    style: string,
+    originalStyle: string,
     applyNewStyle = false,
     isOverallStyle = true,
 ) => {
     const span = document.createElement('span');
-    span.style.cssText = style; // style 객체와 연동되는 cssText 사용
+    span.style.cssText = originalStyle; // style 객체와 연동되는 cssText 사용
 
     if (applyNewStyle) applyFormat(span, format, isOverallStyle); // format만 추가/제거
     span.textContent = text;
@@ -76,7 +77,7 @@ const createSpan = (
 };
 
 // 해당 span이 특정 스타일을 가지고 있는지 확인
-export const hasFormat = (elem: HTMLElement, format: Format): boolean => {
+export const hasFormat = (elem: HTMLElement, format: Format | Size): boolean => {
     switch (format) {
         case 'bold':
             return elem.style.fontWeight === 'bold';
@@ -87,12 +88,12 @@ export const hasFormat = (elem: HTMLElement, format: Format): boolean => {
         case 'strikethrough':
             return elem.style.textDecoration.includes('line-through');
         default:
-            return false;
+            return elem.style.fontSize === format;
     }
 };
 
 // 해당 span에 스타일 적용 or 제거
-export const toggleFormat = (elem: HTMLElement, format: Format, shouldApply: boolean) => {
+export const toggleFormat = (elem: HTMLElement, format: Format | Size, shouldApply: boolean) => {
     switch (format) {
         case 'bold':
             elem.style.fontWeight = shouldApply ? 'bold' : '';
@@ -114,6 +115,8 @@ export const toggleFormat = (elem: HTMLElement, format: Format, shouldApply: boo
                 shouldApply,
             );
             break;
+        default:
+            elem.style.fontSize = shouldApply ? format : '';
     }
 };
 
@@ -137,26 +140,25 @@ const toggleTextDecoration = (current: string, style: string, shouldApply: boole
     }
 };
 
-export const applyFormat = (span: HTMLElement, format: Format, isOverallStyle: boolean = true) => {
+export const applyFormat = (
+    span: HTMLElement,
+    format: Format | Size,
+    isOverallStyle: boolean = true,
+) => {
     const has = hasFormat(span, format);
     const toggledHas = !isOverallStyle && has ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
 
     toggleFormat(span, format, !toggledHas);
 };
 
-const applyStyleFormatAtCursor = (selection: Selection, range: Range, format: Format) => {
+const applyStyleFormatAtCursor = (selection: Selection, range: Range, format: Format | Size) => {
     const currentNode = range.startContainer;
     const offset = range.startOffset; // 커서 위치
     const emptyTextNode = document.createTextNode('\u200B'); // &ZeroWidthSpace;
 
-    const spanAncestor =
-        currentNode.nodeType === Node.TEXT_NODE
-            ? (currentNode.parentElement?.closest('span') as HTMLSpanElement | null)
-            : (currentNode as HTMLElement)?.closest?.('span');
-
+    const spanAncestor = currentNode.parentElement?.closest('span') as HTMLSpanElement | null;
     if (spanAncestor) {
-        const parent = spanAncestor;
-        applyStyleAtCursor(currentNode, offset, parent, format, emptyTextNode);
+        applyStyleAtCursor(currentNode, offset, spanAncestor, format, emptyTextNode);
     } else {
         // span으로 감싸져 있지 않은 경우
         const span = document.createElement('span');
@@ -169,7 +171,7 @@ const applyStyleFormatAtCursor = (selection: Selection, range: Range, format: Fo
     handleNewRange(emptyTextNode, selection);
 };
 
-const applyStyleFormatInSingleTextNode = (range: Range, format: Format) => {
+const applyStyleFormatInSingleTextNode = (range: Range, format: Format | Size) => {
     const textNode = range.startContainer as Text;
     const text = textNode.textContent || '';
     const startOffset = range.startOffset;
@@ -193,7 +195,7 @@ const applyStyleFormatInSingleTextNode = (range: Range, format: Format) => {
     );
 };
 
-const applyStyleFormatInMultipleTextNode = (range: Range, format: Format) => {
+const applyStyleFormatInMultipleTextNode = (range: Range, format: Format | Size) => {
     const textNodesInCommon = getTextNodes(range);
 
     // 모든 span이 이미 해당 스타일을 가지고 있는지 확인
@@ -245,10 +247,13 @@ const applyStyleFormatInMultipleTextNode = (range: Range, format: Format) => {
     });
 };
 
-export const applyStyleFormat = (selection: Selection, range: Range, format: Format) => {
+export const applyStyle = (selection: Selection, range: Range, style: Format | Size) => {
+    const editor = getEditorRoot(range);
+    if (!editor) return;
+
     // 커서만 있는 경우
     if (range.collapsed) {
-        return applyStyleFormatAtCursor(selection, range, format);
+        return applyStyleFormatAtCursor(selection, range, style);
     }
 
     // 선택된 영역이 하나의 텍스트 노드 안에서 이루어진 경우
@@ -257,9 +262,9 @@ export const applyStyleFormat = (selection: Selection, range: Range, format: For
         range.endContainer.nodeType === Node.TEXT_NODE &&
         range.startContainer === range.endContainer
     ) {
-        return applyStyleFormatInSingleTextNode(range, format);
+        return applyStyleFormatInSingleTextNode(range, style);
     }
 
     // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
-    return applyStyleFormatInMultipleTextNode(range, format);
+    return applyStyleFormatInMultipleTextNode(range, style);
 };

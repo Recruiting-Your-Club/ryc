@@ -1,8 +1,10 @@
 import type { CSSObject } from '@emotion/react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import type { Align, Format, List, Option } from './EditorToolbar';
+import type { Align, Format, List, Option, Size } from './EditorToolbar';
 
 export interface EditorContextType {
+    size: Size;
+    setSize: Dispatch<SetStateAction<Size>>;
     formats: Record<Format, boolean>;
     setFormats: Dispatch<SetStateAction<Record<Format, boolean>>>;
     align: Align;

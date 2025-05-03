@@ -1,5 +1,7 @@
 import Decimal from '@assets/images/list_decimal.svg';
 import Disc from '@assets/images/list_disc.svg';
+import Divider from '@assets/images/option_divider.svg';
+import Image from '@assets/images/option_image.svg';
 import Center from '@assets/images/text-align-center.svg';
 import Justify from '@assets/images/text-align-justify.svg';
 import Left from '@assets/images/text-align-left.svg';
@@ -8,11 +10,7 @@ import Bold from '@assets/images/text-bold.svg';
 import Italic from '@assets/images/text-italic.svg';
 import Strikethrough from '@assets/images/text-strikethrough.svg';
 import Underline from '@assets/images/text-underline.svg';
-import Code from '@assets/images/option_code.svg';
-import Image from '@assets/images/option_image.svg';
-import Link from '@assets/images/option_link.svg';
-import Quote from '@assets/images/option_quote.svg';
-import Divider from '@assets/images/option_divider.svg';
+import type { Size } from '@components/_common/Editor/EditorToolbar';
 
 export const formatButtons = [
     { format: 'bold', Svg: Bold },
@@ -34,9 +32,11 @@ export const listButtons = [
 ];
 
 export const optionButtons = [
-    { option: 'link', Svg: Link },
+    // { option: 'link', Svg: Link },
     { option: 'image', Svg: Image },
-    { option: 'code', Svg: Code },
-    { option: 'quote', Svg: Quote },
+    // { option: 'code', Svg: Code },
+    // { option: 'quote', Svg: Quote },
     { option: 'divider', Svg: Divider },
 ];
+
+export const DEFAULT_FONT_SIZE: Size = '14px';

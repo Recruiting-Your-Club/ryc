@@ -1,5 +1,24 @@
+import { DEFAULT_FONT_SIZE } from '@constants/Editor';
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
+
+export const selectCss = css`
+    width: 75px;
+`;
+
+export const sizeSelect = css`
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0;
+    height: 100%;
+    /* ${theme.typography.subCaptionRegular}; */
+
+    &:focus {
+        box-shadow: 0 0 0 0 transparent;
+        border-color: transparent;
+        /* background-color: ${theme.colors.white}; */
+    }
+`;
 
 export const rootContainer = css`
     display: flex;
@@ -10,7 +29,7 @@ export const rootContainer = css`
 `;
 export const toolbarContainer = (radius: string = '4px') => css`
     width: 100%;
-    height: 30px;
+    height: 40px;
     box-sizing: border-box;
     border: 1px solid ${theme.colors.black};
     border-radius: ${radius};
@@ -61,6 +80,7 @@ export const textareaContainer = (height: string = '350px', radius: string = '4p
     border: 1px solid ${theme.colors.gray[500]};
     border-radius: ${radius};
     padding: 8px;
+    font-size: ${DEFAULT_FONT_SIZE};
 
     &:focus {
         border-color: ${theme.colors.black};

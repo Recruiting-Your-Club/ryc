@@ -1,8 +1,9 @@
+import { DEFAULT_FONT_SIZE } from '@constants/Editor';
 import React, { useCallback, useMemo, useState } from 'react';
 import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
 import { EditorHandlerContext } from './EditorHandlerContext';
-import type { Align, Format, List, Option } from './EditorToolbar';
+import type { Align, Format, List, Option, Size } from './EditorToolbar';
 import type { RootProps } from './types';
 
 function EditorRoot({ children, sx }: RootProps) {
@@ -11,6 +12,7 @@ function EditorRoot({ children, sx }: RootProps) {
     // initial values
 
     // state, ref, querystring hooks
+    const [size, setSize] = useState<Size>(DEFAULT_FONT_SIZE);
     const [formats, setFormats] = useState<Record<Format, boolean>>({
         bold: false,
         italic: false,
@@ -30,16 +32,18 @@ function EditorRoot({ children, sx }: RootProps) {
 
     const contextValue = useMemo(
         () => ({
+            size,
             formats,
             align,
             lists,
             options,
+            setSize,
             setFormats,
             setAlign,
             setLists,
             setOptions,
         }),
-        [formats, align, lists, options],
+        [size, formats, align, lists, options],
     );
 
     // form hooks

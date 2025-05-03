@@ -1,4 +1,5 @@
-import type { Format, List } from '../EditorToolbar';
+import { DEFAULT_FONT_SIZE } from '@constants/Editor';
+import type { Format, List, Size } from '../EditorToolbar';
 import { getEditorRoot } from './alignment';
 import { getLinesInRange } from './list';
 import { getTextNodes } from './range';
@@ -118,4 +119,68 @@ export const getCurrentLists = (): Record<List, boolean> => {
     }
 
     return listMap;
+};
+
+// size 적용 여부를 알려주기 위한 Size 반환 함수
+// 16px과 24px text를 함께 드래그했을 경우 -> 작은 텍스트 크기인 16px로 반영됩니다.
+export const getCurrentSize = (): Size => {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return DEFAULT_FONT_SIZE;
+
+    const range = selection.getRangeAt(0);
+
+    const editor = getEditorRoot(range);
+    if (!editor) return DEFAULT_FONT_SIZE;
+
+    if (range.collapsed) {
+        const node = range.startContainer;
+        const parent =
+            node.nodeType === Node.TEXT_NODE
+                ? (node.parentElement as HTMLElement)
+                : (node as HTMLElement);
+        if (parent?.tagName === 'SPAN') {
+            return parent.style.fontSize as Size;
+        }
+
+        return DEFAULT_FONT_SIZE;
+    }
+
+    // 드래그 영역이 하나의 텍스트 노드 내부일 때
+    if (
+        range.startContainer === range.endContainer &&
+        range.startContainer.nodeType === Node.TEXT_NODE
+    ) {
+        const node = range.startContainer as Text;
+        const selectedText = node.nodeValue?.slice(range.startOffset, range.endOffset) ?? '';
+        if (!selectedText.trim()) return DEFAULT_FONT_SIZE;
+
+        const parent = node.parentElement;
+        if (parent?.tagName === 'SPAN') {
+            return parent.style.fontSize as Size;
+        }
+
+        return DEFAULT_FONT_SIZE;
+    }
+
+    // 드래그 영역이 여러 텍스트 노드에 걸쳐 있을 때
+    const textNodes = getTextNodes(range);
+
+    let minSize: Size = '36px';
+
+    for (const textNode of textNodes) {
+        const parent = textNode.parentElement;
+        if (!parent || parent.tagName !== 'SPAN') {
+            minSize = DEFAULT_FONT_SIZE;
+            break;
+        }
+
+        const fontSizeInt = parseInt(parent.style.fontSize);
+        const minSizeInt = parseInt(minSize);
+
+        if (fontSizeInt < minSizeInt) {
+            minSize = parent.style.fontSize as Size;
+        }
+    }
+
+    return minSize;
 };
