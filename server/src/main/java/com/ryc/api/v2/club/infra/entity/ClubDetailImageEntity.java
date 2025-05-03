@@ -5,19 +5,18 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "club_summaries")
+@Table(name = "club_detail_images")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ClubSummaryEntity {
+public class ClubDetailImageEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  private String title;
-
-  private String value;
+  private String imageUrl;
+  private String thumbnailUrl;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id")

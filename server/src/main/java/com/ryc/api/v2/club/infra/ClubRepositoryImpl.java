@@ -4,16 +4,16 @@ import java.util.*;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.ClubSummary;
-import com.ryc.api.v2.club.domain.ClubTag;
+import com.ryc.api.v2.club.domain.*;
+import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
 import com.ryc.api.v2.club.infra.entity.ClubTagEntity;
+import com.ryc.api.v2.club.infra.jpa.ClubDetailImageJpaRepository;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.infra.jpa.ClubSummaryJpaRepository;
 import com.ryc.api.v2.club.infra.jpa.ClubTagJpaRepository;
+import com.ryc.api.v2.club.infra.mapper.ClubDetailImageMapper;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
 import com.ryc.api.v2.club.infra.mapper.ClubSummaryMapper;
 import com.ryc.api.v2.club.infra.mapper.ClubTagMapper;
@@ -23,9 +23,11 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepository {
+
   private final ClubJpaRepository clubJpaRepository;
   private final ClubSummaryJpaRepository clubSummaryJpaRepository;
   private final ClubTagJpaRepository clubTagJpaRepository;
+  private final ClubDetailImageJpaRepository clubDetailImageJpaRepository;
 
   @Override
   public Club save(Club club) {
@@ -39,7 +41,7 @@ public class ClubRepositoryImpl implements ClubRepository {
 
     ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
     clubTagJpaRepository.saveAll(clubTagEntities);
-    return ClubMapper.toDomainWithClubTagsAndClubSummaries(savedClubEntity, clubTags, List.of());
+    return ClubMapper.toDomain(savedClubEntity, clubTags, new ArrayList<>(), new ArrayList<>());
   }
 
   @Override
@@ -50,13 +52,16 @@ public class ClubRepositoryImpl implements ClubRepository {
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
     List<ClubTagEntity> clubTagEntities = clubTagJpaRepository.findByClubId(id);
     List<ClubSummaryEntity> clubSummaryEntities = clubSummaryJpaRepository.findByClubId(id);
+    List<ClubDetailImageEntity> clubDetailImageEntities =
+        clubDetailImageJpaRepository.findByClubId(id);
 
     List<ClubTag> clubTags = clubTagEntities.stream().map(ClubTagMapper::toDomain).toList();
-
     List<ClubSummary> clubSummaries =
         clubSummaryEntities.stream().map(ClubSummaryMapper::toDomain).toList();
+    List<ClubDetailImage> clubDetailImages =
+        clubDetailImageEntities.stream().map(ClubDetailImageMapper::toDomain).toList();
 
-    return ClubMapper.toDomainWithClubTagsAndClubSummaries(clubEntity, clubTags, clubSummaries);
+    return ClubMapper.toDomain(clubEntity, clubTags, clubSummaries, clubDetailImages);
   }
 
   @Override
@@ -66,6 +71,7 @@ public class ClubRepositoryImpl implements ClubRepository {
 
     List<ClubTagEntity> clubTagEntities = clubTagJpaRepository.findAll();
     List<ClubSummaryEntity> clubSummaryEntities = clubSummaryJpaRepository.findAll();
+    List<ClubDetailImageEntity> clubDetailImageEntities = clubDetailImageJpaRepository.findAll();
 
     for (ClubEntity clubEntity : clubEntities) {
       List<ClubTag> clubTags =
@@ -83,8 +89,15 @@ public class ClubRepositoryImpl implements ClubRepository {
               .map(ClubSummaryMapper::toDomain)
               .toList();
 
-      clubs.add(
-          ClubMapper.toDomainWithClubTagsAndClubSummaries(clubEntity, clubTags, clubSummaries));
+      List<ClubDetailImage> clubDetailImages =
+          clubDetailImageEntities.stream()
+              .filter(
+                  clubDetailImageEntity ->
+                      clubDetailImageEntity.getClubEntity().getId().equals(clubEntity.getId()))
+              .map(ClubDetailImageMapper::toDomain)
+              .toList();
+
+      clubs.add(ClubMapper.toDomain(clubEntity, clubTags, clubSummaries, clubDetailImages));
     }
     return clubs;
   }

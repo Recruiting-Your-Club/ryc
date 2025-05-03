@@ -22,9 +22,10 @@ public class Club {
 
   @Builder.Default private final List<ClubTag> clubTags = new ArrayList<>();
   @Builder.Default private final List<ClubSummary> clubSummaries = new ArrayList<>();
+  @Builder.Default private final List<ClubDetailImage> clubDetailImages = new ArrayList<>();
   @Builder.Default private final String detailDescription = "";
-  @Builder.Default private final Boolean deleted = Boolean.FALSE;
 
+  @Builder.Default private final Boolean deleted = Boolean.FALSE;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 

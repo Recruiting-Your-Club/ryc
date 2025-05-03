@@ -14,7 +14,7 @@ public class ClubSummaryMapper {
       ClubSummary clubSummary, ClubEntity clubEntity) {
     return ClubSummaryEntity.builder()
         .id(clubSummary.getId())
-        .summaryKey(clubSummary.getKey())
+        .title(clubSummary.getTitle())
         .value(clubSummary.getValue())
         .clubEntity(clubEntity)
         .build();
@@ -23,7 +23,7 @@ public class ClubSummaryMapper {
   public static ClubSummary toDomain(ClubSummaryEntity clubSummaryEntity) {
     return ClubSummary.builder()
         .id(clubSummaryEntity.getId())
-        .key(clubSummaryEntity.getSummaryKey())
+        .title(clubSummaryEntity.getTitle())
         .value(clubSummaryEntity.getValue())
         .build();
   }
