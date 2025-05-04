@@ -7,6 +7,7 @@ import Justify from '@assets/images/text-align-justify.svg';
 import Left from '@assets/images/text-align-left.svg';
 import Right from '@assets/images/text-align-right.svg';
 import Bold from '@assets/images/text-bold.svg';
+import ColorText from '@assets/images/text-color.svg';
 import Italic from '@assets/images/text-italic.svg';
 import Strikethrough from '@assets/images/text-strikethrough.svg';
 import Underline from '@assets/images/text-underline.svg';
@@ -39,4 +40,48 @@ export const optionButtons = [
     { option: 'divider', Svg: Divider },
 ];
 
+export const textButtons = [
+    { text: 'color', Svg: ColorText },
+    { text: 'background', Svg: Divider },
+];
+
 export const DEFAULT_FONT_SIZE: Size = '14px';
+export const MAX_FONT_SIZE: Size = '36px';
+
+export const PICKER_COLORS = [
+    '#000000',
+    '#E60000',
+    '#FF9900',
+    '#FFFF00',
+    '#008A00',
+    '#0066CC',
+    '#9933FF',
+    '#FFFFFF',
+    '#FACCCC',
+    '#FFEBCC',
+    '#FFFFCC',
+    '#CCE8CC',
+    '#CCE0F5',
+    '#EBD6FF',
+    '#BBBBBB',
+    '#F06666',
+    '#FFC266',
+    '#FFFF66',
+    '#66B966',
+    '#66A3E0',
+    '#C285FF',
+    '#888888',
+    '#A10000',
+    '#B26B00',
+    '#B2B200',
+    '#006100',
+    '#0047B2',
+    '#6B24B2',
+    '#444444',
+    '#5C0000',
+    '#663D00',
+    '#666600',
+    '#003700',
+    '#002966',
+    '#3D1466',
+];

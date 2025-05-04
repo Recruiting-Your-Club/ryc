@@ -1,4 +1,4 @@
-import { DEFAULT_FONT_SIZE } from '@constants/Editor';
+import { DEFAULT_FONT_SIZE, MAX_FONT_SIZE } from '@constants/Editor';
 import type { Format, List, Size } from '../EditorToolbar';
 import { getEditorRoot } from './alignment';
 import { getLinesInRange } from './list';
@@ -139,9 +139,10 @@ export const getCurrentSize = (): Size => {
                 ? (node.parentElement as HTMLElement)
                 : (node as HTMLElement);
         if (parent?.tagName === 'SPAN') {
+            if (!parent.style.fontSize) return DEFAULT_FONT_SIZE;
+
             return parent.style.fontSize as Size;
         }
-
         return DEFAULT_FONT_SIZE;
     }
 
@@ -156,6 +157,7 @@ export const getCurrentSize = (): Size => {
 
         const parent = node.parentElement;
         if (parent?.tagName === 'SPAN') {
+            if (!parent.style.fontSize) return DEFAULT_FONT_SIZE;
             return parent.style.fontSize as Size;
         }
 
@@ -165,7 +167,7 @@ export const getCurrentSize = (): Size => {
     // 드래그 영역이 여러 텍스트 노드에 걸쳐 있을 때
     const textNodes = getTextNodes(range);
 
-    let minSize: Size = '36px';
+    let minSize: Size = MAX_FONT_SIZE;
 
     for (const textNode of textNodes) {
         const parent = textNode.parentElement;
