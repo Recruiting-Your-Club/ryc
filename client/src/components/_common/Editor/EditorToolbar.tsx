@@ -11,18 +11,20 @@ import {
 } from './Editor.style';
 import { useEditorContext } from './EditorContext';
 import { useEditorHandlerContext } from './EditorHandlerContext';
+import { TextColorPicker } from './EditorTextColorPicker';
 import type { ToolbarProps } from './types';
 import { applyAlignment } from './utils/alignment';
-import { applyStyle } from './utils/format';
 import { applyList } from './utils/list';
 import { insertDivider } from './utils/options';
 import { getCurrentFormats, getCurrentLists, getCurrentSize } from './utils/selection';
+import { applyStyle } from './utils/textStyles';
 
 export type Size = '10px' | '12px' | '14px' | '16px' | '24px' | '36px';
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
 export type Align = 'left' | 'center' | 'right' | 'justify';
 export type List = 'disc' | 'decimal';
 export type Option = 'link' | 'image' | 'divider';
+export type TextColor = 'color' | 'background';
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
@@ -44,7 +46,14 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
         const range = selection.getRangeAt(0); // 드래그된 부분
         applyStyle(selection, range, size);
-        // setSize(size);
+    };
+
+    const handleColor = (textColorType: TextColor, color: string) => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        applyStyle(selection, range, textColorType, color);
     };
 
     const handleFormat = (format: Format) => {
@@ -133,6 +142,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                         <Svg css={svgCss(formats[format as Format])} />
                     </button>
                 ))}
+            </div>
+            <div css={buttonGroup}>
+                <TextColorPicker
+                    onChange={(textColorType, color) => handleColor(textColorType, color)}
+                />
             </div>
             <div css={buttonGroup}>
                 {alignButtons.map(({ align, Svg }) => (

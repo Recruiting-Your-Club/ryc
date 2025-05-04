@@ -1,6 +1,6 @@
 import type { CSSObject } from '@emotion/react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import type { Align, Format, List, Option, Size } from './EditorToolbar';
+import type { Align, Format, List, Option, Size, TextColor } from './EditorToolbar';
 
 export interface EditorContextType {
     size: Size;
@@ -34,4 +34,8 @@ export interface RootProps {
 export interface ToolbarProps {
     radius?: string;
     sx?: CSSObject;
+}
+
+export interface ColorPickerProps {
+    onChange: (textColorType: TextColor, color: string) => void;
 }

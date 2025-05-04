@@ -1,15 +1,17 @@
-import type { Format, Size } from '../EditorToolbar';
+import theme from '@styles/theme';
+import type { Format, Size, TextColor } from '../EditorToolbar';
 import { getEditorRoot } from './alignment';
 import { getTextNodes, handleNewRange } from './range';
 
 export const applyStyleInSelectedText = (
     text: string,
     parent: HTMLElement | null,
-    format: Format | Size,
+    style: Format | Size | TextColor,
     isSpan: boolean,
     selectedStart: number,
     selectedEnd: number,
     isOverallStyle: boolean = true,
+    color?: string,
 ): DocumentFragment => {
     const originalStyle = isSpan ? parent?.getAttribute('style') || '' : '';
 
@@ -18,9 +20,11 @@ export const applyStyleInSelectedText = (
     const after = text.slice(selectedEnd);
 
     const frag = document.createDocumentFragment();
-    if (before) frag.appendChild(createSpan(format, before, originalStyle));
-    frag.appendChild(createSpan(format, selected, originalStyle, true, isOverallStyle));
-    if (after) frag.appendChild(createSpan(format, after, originalStyle));
+    if (before)
+        frag.appendChild(createSpan(style, before, originalStyle, undefined, undefined, color));
+    frag.appendChild(createSpan(style, selected, originalStyle, true, isOverallStyle, color));
+    if (after)
+        frag.appendChild(createSpan(style, after, originalStyle, undefined, undefined, color));
 
     return frag;
 };
@@ -30,8 +34,9 @@ export const applyStyleAtCursor = (
     currentNode: Node,
     offset: number,
     parent: HTMLElement,
-    format: Format | Size,
+    style: Format | Size | TextColor,
     emptyTextNode: Text,
+    color?: string,
 ) => {
     const grandParent = parent.parentElement!;
     const text = currentNode.nodeType === Node.TEXT_NODE ? currentNode.nodeValue! : '';
@@ -46,7 +51,7 @@ export const applyStyleAtCursor = (
     }
 
     const newSpan = parent.cloneNode(false) as HTMLSpanElement;
-    applyFormat(newSpan, format);
+    applyTextStyle(newSpan, style, undefined, color);
     newSpan.appendChild(emptyTextNode);
     grandParent.insertBefore(newSpan, parent);
 
@@ -61,24 +66,60 @@ export const applyStyleAtCursor = (
 
 // 새로운 span 노드 생성
 const createSpan = (
-    format: Format | Size,
+    style: Format | Size | TextColor,
     text: string,
     originalStyle: string,
     applyNewStyle = false,
     isOverallStyle = true,
+    color?: string,
 ) => {
     const span = document.createElement('span');
     span.style.cssText = originalStyle; // style 객체와 연동되는 cssText 사용
 
-    if (applyNewStyle) applyFormat(span, format, isOverallStyle); // format만 추가/제거
+    if (applyNewStyle) applyTextStyle(span, style, isOverallStyle, color); // style만 추가/제거
     span.textContent = text;
 
     return span;
 };
 
+const hasColor = (elem: HTMLElement, colorType: TextColor, color: string): boolean => {
+    switch (colorType) {
+        case 'color':
+            return elem.style.color === color;
+        case 'background':
+            return elem.style.backgroundColor === color;
+        default:
+            return false;
+    }
+};
+
+const toggleColor = (
+    elem: HTMLElement,
+    colorType: TextColor,
+    color: string,
+    shouldApply: boolean,
+) => {
+    switch (colorType) {
+        case 'color':
+            elem.style.color = shouldApply ? color : elem.style.color;
+            break;
+        case 'background':
+            if (color === theme.colors.white) color = 'transparent';
+            elem.style.backgroundColor = shouldApply ? color : elem.style.backgroundColor;
+            break;
+    }
+};
+
 // 해당 span이 특정 스타일을 가지고 있는지 확인
-export const hasFormat = (elem: HTMLElement, format: Format | Size): boolean => {
-    switch (format) {
+const hasTextStyle = (
+    elem: HTMLElement,
+    style: Format | Size | TextColor,
+    color?: string,
+): boolean => {
+    if (color) return hasColor(elem, style as TextColor, color); // TextColor
+    if (style.endsWith('px')) return elem.style.fontSize === style; // FontSize
+
+    switch (style as Format) {
         case 'bold':
             return elem.style.fontWeight === 'bold';
         case 'italic':
@@ -88,13 +129,26 @@ export const hasFormat = (elem: HTMLElement, format: Format | Size): boolean => 
         case 'strikethrough':
             return elem.style.textDecoration.includes('line-through');
         default:
-            return elem.style.fontSize === format;
+            return false;
     }
 };
 
 // 해당 span에 스타일 적용 or 제거
-export const toggleFormat = (elem: HTMLElement, format: Format | Size, shouldApply: boolean) => {
-    switch (format) {
+const toggleTextStyle = (
+    elem: HTMLElement,
+    style: Format | Size | TextColor,
+    shouldApply: boolean,
+    color?: string,
+) => {
+    if (color) {
+        toggleColor(elem, style as TextColor, color, shouldApply);
+    }
+
+    if (style.endsWith('px')) {
+        elem.style.fontSize = shouldApply ? style : elem.style.fontSize;
+    }
+
+    switch (style as Format) {
         case 'bold':
             elem.style.fontWeight = shouldApply ? 'bold' : '';
             break;
@@ -115,8 +169,6 @@ export const toggleFormat = (elem: HTMLElement, format: Format | Size, shouldApp
                 shouldApply,
             );
             break;
-        default:
-            elem.style.fontSize = shouldApply ? format : '';
     }
 };
 
@@ -140,29 +192,35 @@ const toggleTextDecoration = (current: string, style: string, shouldApply: boole
     }
 };
 
-export const applyFormat = (
+const applyTextStyle = (
     span: HTMLElement,
-    format: Format | Size,
+    style: Format | Size | TextColor,
     isOverallStyle: boolean = true,
+    color?: string,
 ) => {
-    const has = hasFormat(span, format);
+    const has = hasTextStyle(span, style, color);
     const toggledHas = !isOverallStyle && has ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
 
-    toggleFormat(span, format, !toggledHas);
+    toggleTextStyle(span, style, !toggledHas, color);
 };
 
-const applyStyleFormatAtCursor = (selection: Selection, range: Range, format: Format | Size) => {
+const applyTextStyleAtCursor = (
+    selection: Selection,
+    range: Range,
+    style: Format | Size | TextColor,
+    color?: string,
+) => {
     const currentNode = range.startContainer;
     const offset = range.startOffset; // 커서 위치
     const emptyTextNode = document.createTextNode('\u200B'); // &ZeroWidthSpace;
 
     const spanAncestor = currentNode.parentElement?.closest('span') as HTMLSpanElement | null;
     if (spanAncestor) {
-        applyStyleAtCursor(currentNode, offset, spanAncestor, format, emptyTextNode);
+        applyStyleAtCursor(currentNode, offset, spanAncestor, style, emptyTextNode, color);
     } else {
         // span으로 감싸져 있지 않은 경우
         const span = document.createElement('span');
-        applyFormat(span, format);
+        applyTextStyle(span, style, undefined, color);
         span.appendChild(emptyTextNode);
 
         range.insertNode(span);
@@ -171,7 +229,11 @@ const applyStyleFormatAtCursor = (selection: Selection, range: Range, format: Fo
     handleNewRange(emptyTextNode, selection);
 };
 
-const applyStyleFormatInSingleTextNode = (range: Range, format: Format | Size) => {
+const applyTextStyleInSingleTextNode = (
+    range: Range,
+    style: Format | Size | TextColor,
+    color?: string,
+) => {
     const textNode = range.startContainer as Text;
     const text = textNode.textContent || '';
     const startOffset = range.startOffset;
@@ -191,17 +253,30 @@ const applyStyleFormatInSingleTextNode = (range: Range, format: Format | Size) =
     }
 
     range.insertNode(
-        applyStyleInSelectedText(text, parent, format, isSpan, startOffset, endOffset),
+        applyStyleInSelectedText(
+            text,
+            parent,
+            style,
+            isSpan,
+            startOffset,
+            endOffset,
+            undefined,
+            color,
+        ),
     );
 };
 
-const applyStyleFormatInMultipleTextNode = (range: Range, format: Format | Size) => {
+const applyTextStyleInMultipleTextNode = (
+    range: Range,
+    style: Format | Size | TextColor,
+    color?: string,
+) => {
     const textNodesInCommon = getTextNodes(range);
 
     // 모든 span이 이미 해당 스타일을 가지고 있는지 확인
     const isOverallStyle = textNodesInCommon.every((textNode) => {
         const parent = textNode.parentElement;
-        return parent?.tagName === 'SPAN' && hasFormat(parent, format);
+        return parent?.tagName === 'SPAN' && hasTextStyle(parent, style, color);
     });
 
     // 스타일 적용 or 제거
@@ -221,11 +296,12 @@ const applyStyleFormatInMultipleTextNode = (range: Range, format: Format | Size)
             const frag = applyStyleInSelectedText(
                 text,
                 parent,
-                format,
+                style,
                 isSpan,
                 start,
                 end,
                 isOverallStyle,
+                color,
             );
             if (isSpan) {
                 parent.replaceWith(frag);
@@ -237,23 +313,28 @@ const applyStyleFormatInMultipleTextNode = (range: Range, format: Format | Size)
 
         // 노드 범위 전체 선택
         if (isSpan) {
-            toggleFormat(parent, format, !isOverallStyle);
+            toggleTextStyle(parent, style, !isOverallStyle, color);
         } else {
             const span = document.createElement('span');
             span.textContent = text;
-            applyFormat(span, format);
+            applyTextStyle(span, style, undefined, color);
             textNode.replaceWith(span);
         }
     });
 };
 
-export const applyStyle = (selection: Selection, range: Range, style: Format | Size) => {
+export const applyStyle = (
+    selection: Selection,
+    range: Range,
+    style: Format | Size | TextColor,
+    color?: string,
+) => {
     const editor = getEditorRoot(range);
     if (!editor) return;
 
     // 커서만 있는 경우
     if (range.collapsed) {
-        return applyStyleFormatAtCursor(selection, range, style);
+        return applyTextStyleAtCursor(selection, range, style, color);
     }
 
     // 선택된 영역이 하나의 텍스트 노드 안에서 이루어진 경우
@@ -262,9 +343,9 @@ export const applyStyle = (selection: Selection, range: Range, style: Format | S
         range.endContainer.nodeType === Node.TEXT_NODE &&
         range.startContainer === range.endContainer
     ) {
-        return applyStyleFormatInSingleTextNode(range, style);
+        return applyTextStyleInSingleTextNode(range, style, color);
     }
 
     // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
-    return applyStyleFormatInMultipleTextNode(range, style);
+    return applyTextStyleInMultipleTextNode(range, style, color);
 };

@@ -6,6 +6,7 @@ import Center from '@assets/images/text-align-center.svg';
 import Justify from '@assets/images/text-align-justify.svg';
 import Left from '@assets/images/text-align-left.svg';
 import Right from '@assets/images/text-align-right.svg';
+import BackgroundText from '@assets/images/text-background-color.svg';
 import Bold from '@assets/images/text-bold.svg';
 import ColorText from '@assets/images/text-color.svg';
 import Italic from '@assets/images/text-italic.svg';
@@ -42,7 +43,7 @@ export const optionButtons = [
 
 export const textButtons = [
     { text: 'color', Svg: ColorText },
-    { text: 'background', Svg: Divider },
+    { text: 'background', Svg: BackgroundText },
 ];
 
 export const DEFAULT_FONT_SIZE: Size = '14px';

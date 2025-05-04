@@ -1,6 +1,8 @@
 import { DEFAULT_FONT_SIZE } from '@constants/Editor';
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
+import { hexToRgb } from '@utils/hexToRgb';
+import type { TextColor } from './EditorToolbar';
 
 export const selectCss = css`
     width: 75px;
@@ -70,6 +72,23 @@ export const svgCss = (isColor: boolean) => css`
     `}
 `;
 
+export const textColorSvgCss = (isColor: boolean, selectedColor?: string) => css`
+    height: 60%;
+    color: ${theme.colors.black};
+    align-items: center;
+    justify-content: center;
+
+    ${selectedColor &&
+    css`
+        color: ${selectedColor};
+    `}
+
+    ${isColor &&
+    css`
+        color: ${theme.colors.default};
+    `}
+`;
+
 export const textareaContainer = (height: string = '350px', radius: string = '4px') => css`
     width: 100%;
     height: ${height};
@@ -110,5 +129,50 @@ export const editorListStyle = css`
 
     ol {
         list-style-type: decimal;
+    }
+`;
+
+export const textButtonContainer = css`
+    position: relative;
+    height: 100%;
+`;
+
+export const pickerContainer = css`
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: ${theme.colors.white};
+
+    box-shadow: rgba(${hexToRgb(theme.colors.black)}, 0.2) 0 2px 8px;
+
+    display: grid;
+    grid-template-columns: repeat(7, 16px);
+
+    padding: 8px;
+    gap: 3px;
+    margin-top: -3px;
+    z-index: 30;
+`;
+
+export const perColorCss = (color: string, text: TextColor) => css`
+    width: 16px;
+    height: 16px;
+    background-color: ${color};
+    cursor: pointer;
+
+    ${text === 'background' &&
+    color === theme.colors.white &&
+    css`
+        background: linear-gradient(
+            45deg,
+            transparent 47%,
+            ${theme.colors.red[800]} 50%,
+            transparent 53%
+        );
+    `}
+
+    &:hover {
+        border: 1px solid ${theme.colors.black};
+        box-shadow: inset 0 0 0 1px ${theme.colors.gray[200]};
     }
 `;
