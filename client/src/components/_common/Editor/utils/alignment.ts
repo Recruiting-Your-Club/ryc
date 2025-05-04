@@ -1,4 +1,4 @@
-import type { Align } from '../EditorToolbar';
+import type { Align } from '../types';
 
 export const getClosestDiv = (node: Node): HTMLDivElement | null => {
     const element =

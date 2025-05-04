@@ -1,5 +1,5 @@
 import { DEFAULT_FONT_SIZE, MAX_FONT_SIZE } from '@constants/Editor';
-import type { Format, List, Size } from '../EditorToolbar';
+import type { Format, List, Size } from '../types';
 import { getEditorRoot } from './alignment';
 import { getLinesInRange } from './list';
 import { getTextNodes } from './range';

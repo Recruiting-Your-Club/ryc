@@ -1,4 +1,4 @@
-import type { Option } from '../EditorToolbar';
+import type { Option } from '../types';
 import { getEditorRoot } from './alignment';
 
 const insertSplitedNodes = (
