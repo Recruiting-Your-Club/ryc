@@ -1,5 +1,5 @@
 import theme from '@styles/theme';
-import type { Format, Size, TextColor } from '../EditorToolbar';
+import type { Format, Size, TextColor } from '../types';
 import { getEditorRoot } from './alignment';
 import { getTextNodes, handleNewRange } from './range';
 

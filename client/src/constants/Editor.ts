@@ -12,7 +12,7 @@ import ColorText from '@assets/images/text-color.svg';
 import Italic from '@assets/images/text-italic.svg';
 import Strikethrough from '@assets/images/text-strikethrough.svg';
 import Underline from '@assets/images/text-underline.svg';
-import type { Size } from '@components/_common/Editor/EditorToolbar';
+import type { Size } from '@components/_common/Editor/types';
 
 export const formatButtons = [
     { format: 'bold', Svg: Bold },

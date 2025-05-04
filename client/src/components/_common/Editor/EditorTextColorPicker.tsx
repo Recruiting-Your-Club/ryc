@@ -7,8 +7,7 @@ import {
     textButtonContainer,
     textColorSvgCss,
 } from './Editor.style';
-import type { TextColor } from './EditorToolbar';
-import type { ColorPickerProps } from './types';
+import type { ColorPickerProps, TextColor } from './types';
 
 function TextColorPicker({ onChange }: ColorPickerProps) {
     // prop destruction

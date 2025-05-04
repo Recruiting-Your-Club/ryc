@@ -2,7 +2,7 @@ import { DEFAULT_FONT_SIZE } from '@constants/Editor';
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';
-import type { TextColor } from './EditorToolbar';
+import type { TextColor } from './types';
 
 export const selectCss = css`
     width: 75px;

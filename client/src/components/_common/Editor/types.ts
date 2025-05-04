@@ -1,6 +1,12 @@
 import type { CSSObject } from '@emotion/react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import type { Align, Format, List, Option, Size, TextColor } from './EditorToolbar';
+
+export type Size = '10px' | '12px' | '14px' | '16px' | '24px' | '36px';
+export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
+export type Align = 'left' | 'center' | 'right' | 'justify';
+export type List = 'disc' | 'decimal';
+export type Option = 'link' | 'image' | 'divider';
+export type TextColor = 'color' | 'background';
 
 export interface EditorContextType {
     size: Size;
