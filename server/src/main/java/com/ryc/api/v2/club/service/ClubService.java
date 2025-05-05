@@ -12,7 +12,6 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
-import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 

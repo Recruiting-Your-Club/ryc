@@ -34,12 +34,13 @@ public class ClubRepositoryImpl implements ClubRepository {
     List<ClubTag> clubTags = club.getClubTags();
 
     ClubEntity clubEntity = ClubMapper.toEntity(club);
+    ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
+
     List<ClubTagEntity> clubTagEntities =
         clubTags.stream()
-            .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, clubEntity))
+            .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, savedClubEntity))
             .toList();
 
-    ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
     clubTagJpaRepository.saveAll(clubTagEntities);
     return ClubMapper.toDomain(savedClubEntity, clubTags, new ArrayList<>(), new ArrayList<>());
   }
