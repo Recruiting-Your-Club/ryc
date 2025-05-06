@@ -2,9 +2,13 @@ package com.ryc.api.v2.club.infra;
 
 import java.util.*;
 
-import com.ryc.api.v2.club.domain.*;
 import org.springframework.stereotype.Repository;
 
+import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubDetailImage;
+import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.club.domain.ClubSummary;
+import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
@@ -31,18 +35,21 @@ public class ClubRepositoryImpl implements ClubRepository {
 
   @Override
   public Club save(Club club) {
-    List<ClubTag> clubTags = club.getClubTags();
-
     ClubEntity clubEntity = ClubMapper.toEntity(club);
     ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
 
     List<ClubTagEntity> clubTagEntities =
-        clubTags.stream()
+        club.getClubTags().stream()
             .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, savedClubEntity))
             .toList();
 
-    clubTagJpaRepository.saveAll(clubTagEntities);
-    return ClubMapper.toDomain(savedClubEntity, clubTags, new ArrayList<>(), new ArrayList<>());
+    List<ClubTag> savedClubTags =
+        clubTagJpaRepository.saveAll(clubTagEntities).stream()
+            .map(ClubTagMapper::toDomain)
+            .toList();
+
+    return ClubMapper.toDomain(
+        savedClubEntity, savedClubTags, new ArrayList<>(), new ArrayList<>());
   }
 
   @Override
