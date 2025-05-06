@@ -1,6 +1,6 @@
 export const BREAKPOINT = {
     compact: '0px',
-    mobileMini: '400px',
+    mobileMini: '340px',
     mobile: '480px',
     tabletMini: '768px',
     tablet: '1024px',
