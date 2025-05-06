@@ -5,9 +5,7 @@ export const footerContainer = (isManagerRoute: boolean) => css`
     position: relative;
     width: 100dvw;
     left: 50%;
-    right: 50%;
     margin-left: -50dvw;
-    margin-right: -50dvw;
     background-color: ${theme.colors.gray[100]};
     ${isManagerRoute &&
     css`
