@@ -2,9 +2,9 @@ package com.ryc.api.v2.club.infra;
 
 import java.util.*;
 
+import com.ryc.api.v2.club.domain.*;
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.club.domain.*;
 import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
