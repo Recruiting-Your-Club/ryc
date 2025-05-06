@@ -71,8 +71,6 @@ public class ClubRepositoryImpl implements ClubRepository {
     List<ClubEntity> clubEntities = clubJpaRepository.findAll();
 
     List<ClubTagEntity> clubTagEntities = clubTagJpaRepository.findAll();
-    List<ClubSummaryEntity> clubSummaryEntities = clubSummaryJpaRepository.findAll();
-    List<ClubDetailImageEntity> clubDetailImageEntities = clubDetailImageJpaRepository.findAll();
 
     for (ClubEntity clubEntity : clubEntities) {
       List<ClubTag> clubTags =
@@ -82,23 +80,7 @@ public class ClubRepositoryImpl implements ClubRepository {
               .map(ClubTagMapper::toDomain)
               .toList();
 
-      List<ClubSummary> clubSummaries =
-          clubSummaryEntities.stream()
-              .filter(
-                  clubSummaryEntity ->
-                      clubSummaryEntity.getClubEntity().getId().equals(clubEntity.getId()))
-              .map(ClubSummaryMapper::toDomain)
-              .toList();
-
-      List<ClubDetailImage> clubDetailImages =
-          clubDetailImageEntities.stream()
-              .filter(
-                  clubDetailImageEntity ->
-                      clubDetailImageEntity.getClubEntity().getId().equals(clubEntity.getId()))
-              .map(ClubDetailImageMapper::toDomain)
-              .toList();
-
-      clubs.add(ClubMapper.toDomain(clubEntity, clubTags, clubSummaries, clubDetailImages));
+      clubs.add(ClubMapper.toDomain(clubEntity, clubTags, null, null));
     }
     return clubs;
   }
