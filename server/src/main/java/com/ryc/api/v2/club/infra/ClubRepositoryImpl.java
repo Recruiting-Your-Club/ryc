@@ -87,7 +87,7 @@ public class ClubRepositoryImpl implements ClubRepository {
               .map(ClubTagMapper::toDomain)
               .toList();
 
-      clubs.add(ClubMapper.toDomain(clubEntity, clubTags, null, null));
+      clubs.add(ClubMapper.toDomain(clubEntity, clubTags, new ArrayList<>(), new ArrayList<>()));
     }
     return clubs;
   }

@@ -44,5 +44,5 @@ public class ClubEntity extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private Category category;
 
-  private Boolean deleted;
+  @Builder.Default private Boolean deleted = Boolean.FALSE;
 }

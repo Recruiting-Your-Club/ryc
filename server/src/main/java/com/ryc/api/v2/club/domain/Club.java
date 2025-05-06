@@ -20,15 +20,13 @@ public class Club {
   private final String imageUrl;
   private final String thumbnailUrl;
   private final Category category;
-
-  @Builder.Default private final List<ClubTag> clubTags = new ArrayList<>();
-  @Builder.Default private final List<ClubSummary> clubSummaries = new ArrayList<>();
-  @Builder.Default private final List<ClubDetailImage> clubDetailImages = new ArrayList<>();
-  @Builder.Default private final String detailDescription = "";
-
-  @Builder.Default private final Boolean deleted = Boolean.FALSE;
+  private final List<ClubTag> clubTags;
+  private final List<ClubSummary> clubSummaries;
+  private final List<ClubDetailImage> clubDetailImages;
+  private final String detailDescription;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  @Builder.Default private final Boolean deleted = Boolean.FALSE;
 
   /** Club 동아리 최초 생성시에만 사용 (id가 생성되기 전에만) */
   public static Club initialize(
@@ -44,6 +42,9 @@ public class Club {
         .thumbnailUrl(thumbnailUrl)
         .category(clubCreateRequest.category())
         .clubTags(clubTags)
+        .clubSummaries(new ArrayList<>())
+        .clubDetailImages(new ArrayList<>())
+        .detailDescription("")
         .deleted(false)
         .build();
   }
