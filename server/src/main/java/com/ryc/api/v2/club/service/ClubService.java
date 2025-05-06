@@ -67,7 +67,7 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public List<AllClubGetResponse> getClubs() {
+  public List<AllClubGetResponse> getAllClub() {
     // TODO: N + 1 문제 발생 중
     List<Club> clubs = clubRepository.findAll();
 

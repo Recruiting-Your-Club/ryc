@@ -40,7 +40,7 @@ public class ClubHttpApi {
   }
 
   @GetMapping("/all")
-  public ResponseEntity<List<AllClubGetResponse>> getClubs() {
-    return ResponseEntity.status(HttpStatus.OK).body(clubService.getClubs());
+  public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
+    return ResponseEntity.status(HttpStatus.OK).body(clubService.getAllClub());
   }
 }
