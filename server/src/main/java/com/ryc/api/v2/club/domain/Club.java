@@ -13,6 +13,7 @@ import lombok.*;
 @Getter
 @Builder
 public class Club {
+
   private final String id;
   private final String name;
   private final String shortDescription;

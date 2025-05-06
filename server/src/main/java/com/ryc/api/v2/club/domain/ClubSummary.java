@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ClubSummary {
+
   private final String id;
   private final String title;
   private final String value;

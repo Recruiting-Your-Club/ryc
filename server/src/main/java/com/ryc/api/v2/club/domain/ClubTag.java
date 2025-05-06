@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ClubTag {
+
   private final String id;
   private String name;
 
