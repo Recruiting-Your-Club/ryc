@@ -1,1 +1,1 @@
-export * from './ClubApplypage';
+export * from './ClubApplyPage';
