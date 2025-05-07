@@ -24,7 +24,7 @@ function ClubBox() {
     return (
         <div css={clubBoxContainer}>
             {data.map((item, index) => (
-                <div key={index} css={clubBoxItem}>
+                <div key={item} css={clubBoxItem}>
                     <Text
                         as="div"
                         type="bodyRegular"
