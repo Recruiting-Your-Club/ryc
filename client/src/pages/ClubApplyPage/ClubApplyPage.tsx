@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import { Text } from '@components/_common/Text';
+import React from 'react';
 import {
-    clubApplyForm,
-    clubApplyFormConatiner,
     clubApplyPageContainer,
     clubApplyTabContainer,
     clubApplyTabName,
@@ -12,9 +9,9 @@ import {
     svgContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
-import { Button, Input } from '@components';
-import { Radio } from '@components/_common/Radio';
+import { Button } from '@components';
 import { ClubApplySubmitCard } from './ClubApplySubmitCard';
+import { ClubApplyPersonalInfoPage } from './ClubApplyPersonalInfoPage';
 //질문 배열로 받아서 form map으로 뿌리기
 
 export const clubData = {
@@ -51,35 +48,8 @@ function ClubApplyPage() {
                     </Button>
                 ))}
             </div>
-
-            <div css={clubApplyFormConatiner}>
-                <div css={clubApplyForm}>
-                    <Input variant="lined" label={clubData.name} inputSx={{ width: '50%' }} />
-                </div>
-                <div css={clubApplyForm}>
-                    <Input variant="lined" label={clubData.birth} inputSx={{ width: '50%' }} />
-                </div>
-                <div css={clubApplyForm}>
-                    <Input
-                        variant="lined"
-                        label={clubData.phoneNumber}
-                        inputSx={{ width: '50%' }}
-                    />
-                </div>
-                <div css={clubApplyForm}>
-                    <Text>{clubData.gender}</Text>
-                    <Radio
-                        name="gender"
-                        orientation="vertical"
-                        options={[
-                            { label: '남', value: 'male' },
-                            { label: '여', value: 'female' },
-                        ]}
-                        // eslint-disable-next-line no-console
-                        onChange={() => console.log('a')}
-                    />
-                </div>
-            </div>
+            {/* 페이지 */}
+            <ClubApplyPersonalInfoPage />
         </div>
     );
 }
