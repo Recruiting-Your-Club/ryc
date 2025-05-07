@@ -12,7 +12,7 @@ import ColorText from '@assets/images/text-color.svg';
 import Italic from '@assets/images/text-italic.svg';
 import Strikethrough from '@assets/images/text-strikethrough.svg';
 import Underline from '@assets/images/text-underline.svg';
-import type { Size } from '@components/_common/Editor/types';
+import type { Align, Size } from '@components/_common/Editor/types';
 
 export const formatButtons = [
     { format: 'bold', Svg: Bold },
@@ -22,10 +22,10 @@ export const formatButtons = [
 ];
 
 export const alignButtons = [
-    { align: 'left', Svg: Left },
-    { align: 'center', Svg: Center },
-    { align: 'right', Svg: Right },
-    { align: 'justify', Svg: Justify },
+    { alignment: 'left', Svg: Left },
+    { alignment: 'center', Svg: Center },
+    { alignment: 'right', Svg: Right },
+    { alignment: 'justify', Svg: Justify },
 ];
 
 export const listButtons = [
@@ -48,6 +48,7 @@ export const textButtons = [
 
 export const DEFAULT_FONT_SIZE: Size = '14px';
 export const MAX_FONT_SIZE: Size = '36px';
+export const DEFAULT_TEXT_ALIGN: Align = 'inherit';
 
 export const PICKER_COLORS = [
     '#000000',

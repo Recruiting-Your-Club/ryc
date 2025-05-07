@@ -3,7 +3,7 @@ import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export type Size = '10px' | '12px' | '14px' | '16px' | '24px' | '36px';
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
-export type Align = 'left' | 'center' | 'right' | 'justify';
+export type Align = 'left' | 'center' | 'right' | 'justify' | 'inherit';
 export type List = 'disc' | 'decimal';
 export type Option = 'link' | 'image' | 'divider';
 export type TextColor = 'color' | 'background';
@@ -23,7 +23,9 @@ export interface EditorContextType {
 
 export interface EditorHandlerContextType {
     toggleFormatButton: (format: Format) => void;
+    toggleAlignButton: (align: Align) => void;
     toggleListButton: (list: List) => void;
+    toggleOptionButton: (option: Option) => void;
 }
 
 export interface EditorProps {

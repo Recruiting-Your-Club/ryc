@@ -3,8 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
 import { EditorHandlerContext } from './EditorHandlerContext';
-import type { Align, Format, List, Option, Size } from './EditorToolbar';
-import type { RootProps } from './types';
+import type { Align, Format, List, Option, RootProps, Size } from './types';
 
 function EditorRoot({ children, sx }: RootProps) {
     // prop destruction
@@ -19,7 +18,7 @@ function EditorRoot({ children, sx }: RootProps) {
         underline: false,
         strikethrough: false,
     });
-    const [align, setAlign] = useState<Align>('left');
+    const [align, setAlign] = useState<Align>('inherit');
     const [lists, setLists] = useState<Record<List, boolean>>({
         disc: false,
         decimal: false,
@@ -59,6 +58,10 @@ function EditorRoot({ children, sx }: RootProps) {
         }));
     }, []);
 
+    const toggleAlignButton = useCallback((alignment: Align) => {
+        setAlign(alignment);
+    }, []);
+
     const toggleListButton = useCallback((list: List) => {
         setLists((prev) => {
             if (prev[list]) return prev;
@@ -70,9 +73,16 @@ function EditorRoot({ children, sx }: RootProps) {
         });
     }, []);
 
+    const toggleOptionButton = useCallback((option: Option) => {
+        setOptions((prev) => ({
+            ...prev,
+            [option]: !prev[option],
+        }));
+    }, []);
+
     const handlerContextValue = useMemo(
-        () => ({ toggleFormatButton, toggleListButton }),
-        [toggleFormatButton, toggleListButton],
+        () => ({ toggleFormatButton, toggleAlignButton, toggleListButton, toggleOptionButton }),
+        [toggleFormatButton, toggleAlignButton, toggleListButton, toggleOptionButton],
     );
 
     // effects

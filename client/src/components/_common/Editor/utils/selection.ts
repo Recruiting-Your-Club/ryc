@@ -1,5 +1,5 @@
-import { DEFAULT_FONT_SIZE, MAX_FONT_SIZE } from '@constants/Editor';
-import type { Format, List, Size } from '../types';
+import { DEFAULT_FONT_SIZE, DEFAULT_TEXT_ALIGN, MAX_FONT_SIZE } from '@constants/Editor';
+import type { Align, Format, List, Size } from '../types';
 import { getEditorRoot } from './alignment';
 import { getLinesInRange } from './list';
 import { getTextNodes } from './range';
@@ -90,6 +90,28 @@ export const getCurrentFormats = (): Record<Format, boolean> => {
     }
 
     return allFormats;
+};
+
+export const getCurrentAlignment = (): Align => {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return DEFAULT_TEXT_ALIGN;
+
+    const range = selection.getRangeAt(0);
+
+    const editor = getEditorRoot(range);
+    if (!editor) return DEFAULT_TEXT_ALIGN;
+    if (range.startContainer === editor) return DEFAULT_TEXT_ALIGN;
+
+    const lines = getLinesInRange(editor, range);
+    if (lines.length === 0) return DEFAULT_TEXT_ALIGN;
+
+    const currentDiv = lines[0].closest('div');
+
+    if (currentDiv) {
+        return currentDiv.style.textAlign as Align;
+    }
+
+    return DEFAULT_TEXT_ALIGN;
 };
 
 // list 적용 여부를 버튼으로 알려주기 위한 Record 반환 함수

@@ -16,15 +16,31 @@ import type { Align, Format, List, Option, Size, TextColor, ToolbarProps } from 
 import { applyAlignment } from './utils/alignment';
 import { applyList } from './utils/list';
 import { insertDivider } from './utils/options';
-import { getCurrentFormats, getCurrentLists, getCurrentSize } from './utils/selection';
+import {
+    getCurrentAlignment,
+    getCurrentFormats,
+    getCurrentLists,
+    getCurrentSize,
+} from './utils/selection';
 import { applyStyle } from './utils/textStyles';
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
     // lib hooks
-    const { size, setSize, formats, setFormats, lists, setLists, options, setOptions } =
-        useEditorContext();
-    const { toggleFormatButton, toggleListButton } = useEditorHandlerContext();
+    const {
+        size,
+        setSize,
+        formats,
+        setFormats,
+        align,
+        setAlign,
+        lists,
+        setLists,
+        options,
+        setOptions,
+    } = useEditorContext();
+    const { toggleFormatButton, toggleAlignButton, toggleListButton, toggleOptionButton } =
+        useEditorHandlerContext();
 
     // initial values
     // state, ref, querystring hooks
@@ -64,6 +80,8 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         if (!selection || selection.rangeCount === 0) return;
 
         const range = selection.getRangeAt(0);
+        toggleAlignButton(align);
+
         applyAlignment(range, align);
     };
 
@@ -73,6 +91,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
         const range = selection.getRangeAt(0);
         toggleListButton(list);
+
         applyList(range, list);
     };
 
@@ -81,13 +100,16 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         if (!selection || selection.rangeCount === 0) return;
 
         const range = selection.getRangeAt(0);
-        insertDivider(range, option);
+        // toggleOptionButton(option);
+
+        insertDivider(selection, range, option);
     };
 
     // effects
     useEffect(() => {
         const updateFormats = () => {
             setFormats(getCurrentFormats());
+            setAlign(getCurrentAlignment());
             setLists(getCurrentLists());
             setSize(getCurrentSize());
         };
@@ -142,13 +164,13 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 />
             </div>
             <div css={buttonGroup}>
-                {alignButtons.map(({ align, Svg }) => (
+                {alignButtons.map(({ alignment, Svg }) => (
                     <button
-                        key={align}
-                        onClick={() => handleAlignment(align as Align)}
+                        key={alignment}
+                        onClick={() => handleAlignment(alignment as Align)}
                         css={perButtonCss}
                     >
-                        <Svg css={svgCss(false)} />
+                        <Svg css={svgCss(align === alignment)} />
                     </button>
                 ))}
             </div>
