@@ -26,10 +26,10 @@ function RecruitCard(props: RecruitCardProps) {
     const calculateDeadline = useMemo(() => {
         if (diffDay > 7) {
             return `~${formattedDeadline.format('MM.DD')}`;
-        } else if (diffDay > 1) {
+        } else if (diffDay > 0) {
             return `D-${diffDay}`;
-        } else {
-            return `D-${diffDay}`;
+        } else if (diffDay === 0) {
+            return `D-Day`;
         }
     }, [formattedDeadline, today]);
     // handlers
@@ -41,7 +41,7 @@ function RecruitCard(props: RecruitCardProps) {
                 <Text noWrap cropped>
                     {title}
                 </Text>
-                <Text color="caption" sx={deadlineText(diffDay)}>
+                <Text color="caption" sx={deadlineText(diffDay)} noWrap>
                     {calculateDeadline}
                 </Text>
             </div>

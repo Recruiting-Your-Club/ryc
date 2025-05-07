@@ -26,6 +26,7 @@ export const recruitCardHeader = css`
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    gap: 1rem;
 `;
 
 export const deadlineText = (diffDay: number) => css`
