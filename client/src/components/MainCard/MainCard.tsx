@@ -6,12 +6,12 @@ import {
     cardFooterContainer,
     cardHeaderContainer,
     cardTitleContainer,
-    hashTagContainer,
     logoAndTitleContainer,
 } from './MainCard.style';
 import type { MainCardProps } from './types';
 import { Link } from 'react-router-dom';
 
+// FIXME: 나중에 useMemo로 최적화 해야할듯?
 const getTagStatus = (status: string) => {
     switch (status) {
         case 'progress':
@@ -24,6 +24,7 @@ const getTagStatus = (status: string) => {
             return <Tag text="미상" variant="progress" />;
     }
 };
+
 function MainCard({
     title = 'En#',
     category = '학술동아리',
