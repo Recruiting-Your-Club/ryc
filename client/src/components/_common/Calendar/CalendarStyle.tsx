@@ -115,8 +115,8 @@ const weekendColor = (weekend: number) => {
     }
 };
 
-const selectedColor = (selectedDate: boolean, today: boolean, disabled: boolean) => {
-    if (selectedDate) {
+const selectedColor = (isSelected: boolean, today: boolean, disabled: boolean) => {
+    if (isSelected) {
         return css`
             background-color: ${theme.colors.default};
             color: ${theme.colors.white};
@@ -152,7 +152,7 @@ export const weekCell = (index: number) => {
 };
 
 export const dayCell = (
-    selectedDate: boolean,
+    isSelected: boolean,
     index: number,
     today: boolean,
     isCurrentMonth: boolean,
@@ -178,7 +178,7 @@ export const dayCell = (
             opacity: 0.7;
             cursor: not-allowed;
         `}
-        ${selectedColor(selectedDate, today, disabled)}
+        ${selectedColor(isSelected, today, disabled)}
         ${currentMonthColor(isCurrentMonth)}
     `;
 };
