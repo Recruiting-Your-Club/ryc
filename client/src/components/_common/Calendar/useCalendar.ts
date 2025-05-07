@@ -12,7 +12,7 @@ function useCalendar(
     // lib hooks
     // initial values
     const today = dayjs().format('YYYY-MM-DD');
-
+    const newSelectedDate = new Set<string>(selectedDate);
     // state, ref, querystring hooks
     const [days, setDays] = useState<CalendarData[]>([]);
     const [currentDate, setCurrentDate] = useState(dayjs());
@@ -30,10 +30,13 @@ function useCalendar(
     };
     const handleSelectedDate = useCallback(
         (selectDate: string) => {
-            if (selectedDate.includes(selectDate)) {
-                onSelect(selectedDate.filter((day) => day !== selectDate));
+            const newSelectedDate = new Set<string>(selectedDate);
+            if (newSelectedDate.has(selectDate)) {
+                newSelectedDate.delete(selectDate);
+                onSelect([...newSelectedDate]);
             } else if (isMultiple) {
-                onSelect([...selectedDate, selectDate]);
+                newSelectedDate.add(selectDate);
+                onSelect([...newSelectedDate]);
             } else {
                 onSelect([selectDate]);
             }
@@ -95,6 +98,7 @@ function useCalendar(
         currentDate,
         days,
         today,
+        newSelectedDate,
         handleBackMonth,
         handleNextMonth,
         handleSelectedDate,

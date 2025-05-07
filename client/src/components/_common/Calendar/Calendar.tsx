@@ -9,7 +9,7 @@ import {
     weekCell,
     monthControlButton,
 } from './CalendarStyle';
-import { Button, Text } from '@components';
+import { Text } from '@components';
 import { useCalendar } from './useCalendar';
 import type { CalendarProps } from './types';
 import { WEEKDAYS } from '@constants/calendar';
@@ -26,8 +26,15 @@ const Calendar = ({
     sx = {},
 }: CalendarProps) => {
     // prop destruction
-    const { today, days, currentDate, handleBackMonth, handleNextMonth, handleSelectedDate } =
-        useCalendar(selectedDate, isMultiple, onSelect);
+    const {
+        today,
+        days,
+        currentDate,
+        newSelectedDate,
+        handleBackMonth,
+        handleNextMonth,
+        handleSelectedDate,
+    } = useCalendar(selectedDate, isMultiple, onSelect);
     // lib hooks
     // initial values
     // state, ref, querystring hooks
@@ -77,7 +84,7 @@ const Calendar = ({
                             disabled={disabled}
                             key={date.dateString}
                             css={dayCell(
-                                selectedDate.includes(date.dateString),
+                                newSelectedDate.has(date.dateString),
                                 date.weekend,
                                 date.dateString === today,
                                 date.isCurrentMonth,
