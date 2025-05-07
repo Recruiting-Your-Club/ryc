@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from '@components/_common/Text';
 import {
     clubApplyForm,
@@ -13,11 +13,11 @@ import {
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button, Input } from '@components';
-import theme from '@styles/theme';
 import { Radio } from '@components/_common/Radio';
+import { ClubApplySubmitCard } from './ClubApplySubmitCard';
 //질문 배열로 받아서 form map으로 뿌리기
 
-const clubData = {
+export const clubData = {
     clubName: '엔샵 (Enjoy C#)',
     tag: '학술동아리',
     name: '이름',
@@ -25,6 +25,13 @@ const clubData = {
     phoneNumber: '전화번호',
     gender: '성별',
 };
+const applyData = [
+    {
+        question: '사전질문',
+        index: 0,
+    },
+    { question: '자기소개서', index: 1 },
+];
 
 function ClubApplyPage() {
     return (
@@ -36,14 +43,15 @@ function ClubApplyPage() {
                     <div css={clubTagContainer}>{clubData.tag}</div>
                 </div>
             </div>
+            <ClubApplySubmitCard />
             <div css={clubApplyTabContainer}>
-                <Button variant="text" sx={clubApplyTabName}>
-                    사전질문
-                </Button>
-                <Button variant="text" sx={clubApplyTabName}>
-                    자기소개서
-                </Button>
+                {applyData.map((data) => (
+                    <Button key={data.question} variant="text" sx={clubApplyTabName}>
+                        {data.question}
+                    </Button>
+                ))}
             </div>
+
             <div css={clubApplyFormConatiner}>
                 <div css={clubApplyForm}>
                     <Input variant="lined" label={clubData.name} inputSx={{ width: '50%' }} />
