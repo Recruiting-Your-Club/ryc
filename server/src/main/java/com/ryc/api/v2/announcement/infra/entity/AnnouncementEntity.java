@@ -5,7 +5,7 @@ import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "announcements")
@@ -26,16 +26,16 @@ public class AnnouncementEntity extends BaseEntity {
     private String description;
     private String target;
 
-    private LocalDateTime announcementStartDate;
-    private LocalDateTime announcementEndDate;
+    @Embedded
+    private AnnouncementPeriod announcementPeriod;
 
-    private LocalDateTime applicationStartDate;
-    private LocalDateTime applicationEndDate;
+    @ElementCollection
+    @CollectionTable(name = "announcement_images")
+    private List<String> images;
 
-    private LocalDateTime interviewStartDate;
-    private LocalDateTime interviewEndDate;
-
-    private LocalDateTime resultAnnouncementDate;
+    @ElementCollection
+    @CollectionTable(name = "announcement_tags")
+    private List<String> tags;
 
     private String activityPeriod;
 
