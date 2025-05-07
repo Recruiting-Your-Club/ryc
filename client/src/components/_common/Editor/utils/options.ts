@@ -1,5 +1,6 @@
 import type { Option } from '../types';
 import { getEditorRoot } from './alignment';
+import { handleNewRange } from './range';
 
 const insertSplitedNodes = (
     parent: HTMLElement,
@@ -113,9 +114,17 @@ const insertDividerInSingleNode = (range: Range, editor: HTMLElement) => {
     }
 };
 
-const insertDividerAtCursor = (editor: HTMLElement, range: Range) => {
+const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Selection) => {
     const currentNode = range.startContainer;
     const offset = range.startOffset;
+
+    // 첫째줄에 아무 것도 없을 경우
+    if (currentNode === editor) {
+        const hr = document.createElement('hr');
+        editor.insertBefore(hr, null);
+        handleNewRange(currentNode, selection);
+        return;
+    }
 
     const spanAncestor = currentNode.parentElement?.closest('span') as HTMLSpanElement | null;
     const divAncestor = currentNode.parentElement?.closest('div') as HTMLDivElement | null;
@@ -138,14 +147,14 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range) => {
     }
 };
 
-export const insertDivider = (range: Range, option: Option) => {
+export const insertDivider = (selection: Selection, range: Range, option: Option) => {
     if (!range || option !== 'divider') return;
 
     const editor = getEditorRoot(range);
     if (!editor) return;
 
     if (range.collapsed) {
-        return insertDividerAtCursor(editor, range);
+        return insertDividerAtCursor(editor, range, selection);
     }
 
     // 선택된 영역이 하나의 텍스트 노드 안에서 이루어진 경우

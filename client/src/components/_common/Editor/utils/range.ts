@@ -1,6 +1,6 @@
-export const handleNewRange = (textNode: Text, selection: Selection) => {
+export const handleNewRange = (node: Node, selection: Selection) => {
     const newRange = document.createRange();
-    newRange.setStart(textNode, 1);
+    newRange.setStart(node, 1);
     newRange.collapse(true);
 
     selection.removeAllRanges();

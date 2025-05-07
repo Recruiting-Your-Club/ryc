@@ -30,7 +30,7 @@ export const applyStyleInSelectedText = (
 };
 
 // 커서 위치 기준으로 텍스트 나눠서 스타일 적용
-export const applyStyleAtCursor = (
+export const splitTextAndApplyStyleAtCursor = (
     currentNode: Node,
     offset: number,
     parent: HTMLElement,
@@ -116,8 +116,8 @@ const hasTextStyle = (
     style: Format | Size | TextColor,
     color?: string,
 ): boolean => {
-    if (color) return hasColor(elem, style as TextColor, color); // TextColor
-    if (style.endsWith('px')) return elem.style.fontSize === style; // FontSize
+    if ((style as TextColor) && color) return hasColor(elem, style as TextColor, color);
+    if ((style as Size).endsWith('px')) return elem.style.fontSize === style;
 
     switch (style as Format) {
         case 'bold':
@@ -140,13 +140,10 @@ const toggleTextStyle = (
     shouldApply: boolean,
     color?: string,
 ) => {
-    if (color) {
-        toggleColor(elem, style as TextColor, color, shouldApply);
-    }
+    if ((style as TextColor) && color) toggleColor(elem, style as TextColor, color, shouldApply);
 
-    if (style.endsWith('px')) {
+    if ((style as Size).endsWith('px'))
         elem.style.fontSize = shouldApply ? style : elem.style.fontSize;
-    }
 
     switch (style as Format) {
         case 'bold':
@@ -216,7 +213,14 @@ const applyTextStyleAtCursor = (
 
     const spanAncestor = currentNode.parentElement?.closest('span') as HTMLSpanElement | null;
     if (spanAncestor) {
-        applyStyleAtCursor(currentNode, offset, spanAncestor, style, emptyTextNode, color);
+        splitTextAndApplyStyleAtCursor(
+            currentNode,
+            offset,
+            spanAncestor,
+            style,
+            emptyTextNode,
+            color,
+        );
     } else {
         // span으로 감싸져 있지 않은 경우
         const span = document.createElement('span');
@@ -225,7 +229,6 @@ const applyTextStyleAtCursor = (
 
         range.insertNode(span);
     }
-
     handleNewRange(emptyTextNode, selection);
 };
 
