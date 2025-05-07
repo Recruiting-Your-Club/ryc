@@ -52,7 +52,7 @@ function ClubDetailPage() {
                         <Text as="h4" type="h1Semibold" textAlign="start" sx={clubHeaderTitle}>
                             {clubName}
                         </Text>
-                        <Text as="div" type="captionSemibold" color="helper">
+                        <Text as="div" type="captionSemibold" color="helper" textAlign="start">
                             {clubDescription}
                         </Text>
                     </div>

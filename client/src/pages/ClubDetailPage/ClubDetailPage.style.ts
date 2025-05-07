@@ -36,7 +36,9 @@ export const clubHeader = css`
 export const clubImage = css`
     width: 6rem;
     height: 6rem;
+    min-width: 6rem;
     @media (max-width: 480px) {
+        min-width: 5rem;
         width: 5rem;
         height: 5rem;
     }
