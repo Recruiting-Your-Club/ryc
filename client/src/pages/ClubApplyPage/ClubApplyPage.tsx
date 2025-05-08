@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     clubApplyPageContainer,
     clubApplyTabContainer,
@@ -12,6 +12,7 @@ import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
 import { ClubApplySubmitCard } from './ClubApplySubmitCard';
 import { ClubApplyPersonalInfoPage } from './ClubApplyPersonalInfoPage';
+import { ClubApplyDetailQuestionPage } from './ClubApplyDetailQuestionPage';
 //질문 배열로 받아서 form map으로 뿌리기
 
 export const clubData = {
@@ -31,6 +32,7 @@ const applyData = [
 ];
 
 function ClubApplyPage() {
+    const [idx, setIdx] = useState<number>(0);
     return (
         <div css={clubApplyPageContainer}>
             <div css={clubLogoAndNameContainer}>
@@ -43,13 +45,22 @@ function ClubApplyPage() {
             <ClubApplySubmitCard />
             <div css={clubApplyTabContainer}>
                 {applyData.map((data) => (
-                    <Button key={data.question} variant="text" sx={clubApplyTabName}>
+                    <Button
+                        key={data.question}
+                        variant="text"
+                        sx={clubApplyTabName}
+                        onClick={() => setIdx(data.index)}
+                    >
                         {data.question}
                     </Button>
                 ))}
             </div>
             {/* 페이지 */}
-            <ClubApplyPersonalInfoPage />
+            {idx === 0 ? (
+                <ClubApplyPersonalInfoPage idx={idx} />
+            ) : (
+                <ClubApplyDetailQuestionPage idx={idx} />
+            )}
         </div>
     );
 }

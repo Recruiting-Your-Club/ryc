@@ -49,11 +49,17 @@ export const clubApplyTabName = css`
     padding: 0;
 `;
 
-export const clubApplyFormConatiner = css`
+export const clubApplyFormConatiner = (index: number) => css`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    ${index === 0 &&
+    css`
+        justify-content: space-between;
+    `}
+    ${index === 1 &&
+    css`
+        gap: 1.5rem;
+    `};
     margin: 3rem 0;
 `;
 
@@ -64,7 +70,7 @@ export const clubApplyForm = css`
     gap: 0.5rem;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 5px;
-    width: 80%;
+    width: 100%;
     height: 10rem;
     padding: 1.5rem 1.5rem;
     margin: 2.5rem 0;
@@ -100,4 +106,10 @@ export const clubApplySubmitCardSubCaption = css`
     align-items: start;
     gap: 1rem;
     margin-top: 1rem;
+`;
+
+export const clubApplyDetailQuestionContainer = css`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: -0.5rem;
 `;

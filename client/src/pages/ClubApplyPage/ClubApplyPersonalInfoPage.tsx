@@ -4,10 +4,13 @@ import { clubApplyForm, clubApplyFormConatiner } from './ClubApplyPage.style';
 import { Input } from '@components';
 import { clubData } from './ClubApplyPage';
 import { Radio } from '@components/_common/Radio';
+interface ClubApplyDetailQuestionPageProps {
+    idx: number;
+}
 
-function ClubApplyPersonalInfoPage() {
+function ClubApplyPersonalInfoPage({ idx }: ClubApplyDetailQuestionPageProps) {
     return (
-        <div css={clubApplyFormConatiner}>
+        <div css={clubApplyFormConatiner(idx)}>
             <div css={clubApplyForm}>
                 <Input variant="lined" label={clubData.name} inputSx={{ width: '50%' }} />
             </div>
