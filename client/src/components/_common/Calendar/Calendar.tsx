@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     calendarContainer,
     calendarBodyContainer,
@@ -7,12 +7,12 @@ import {
     daysContainer,
     dayCell,
     weekCell,
+    monthControlButton,
 } from './CalendarStyle';
-import { Button } from '@components';
-import { Text } from '@components/_common';
-import dayjs from 'dayjs';
+import { Text } from '@components';
+import { useCalendar } from './useCalendar';
 import type { CalendarProps } from './types';
-import type { CalendarData } from './types';
+import { WEEKDAYS } from '@constants/calendar';
 
 const Calendar = ({
     isMultiple = false,
@@ -26,99 +26,51 @@ const Calendar = ({
     sx = {},
 }: CalendarProps) => {
     // prop destruction
+    const {
+        today,
+        days,
+        currentDate,
+        newSelectedDate,
+        handleBackMonth,
+        handleNextMonth,
+        handleSelectedDate,
+    } = useCalendar(selectedDate, isMultiple, onSelect);
     // lib hooks
     // initial values
-    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-    const today = dayjs().format('YYYY-MM-DD');
-
     // state, ref, querystring hooks
-    const [days, setDays] = useState<CalendarData[]>([]);
-    const [currentDate, setCurrentDate] = useState(dayjs());
-
     // form hooks
     // query hooks
     // calculated values
-
     // handlers
-    const handleBackMonth = () => {
-        setCurrentDate(currentDate.subtract(1, 'month'));
-    };
-    const handleNextMonth = () => {
-        setCurrentDate(currentDate.add(1, 'month'));
-    };
-    const handleSelectedDate = (selectDate: string) => {
-        if (selectedDate.includes(selectDate)) {
-            onSelect(selectedDate.filter((day) => day !== selectDate));
-        } else if (isMultiple) {
-            onSelect([...selectedDate, selectDate]);
-        } else {
-            onSelect([selectDate]);
-        }
-    };
-    const generateCalendarDays = () => {
-        const newDays = []; // days 업데이트를 위한 새 배열
-        const daysInMonth = currentDate.daysInMonth(); // 현재 월의 총 일수
-        const prevMonth = currentDate.subtract(1, 'month'); // 이전 달
-        const firstDayOfMonth = currentDate.startOf('month').day(); // 0(일) ~ 6(토)
-        const prevDaysInMonth = prevMonth.daysInMonth(); // 이전 달의 총 일수
-
-        // 저번 달 날짜
-        for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-            const date = prevMonth.date(prevDaysInMonth - i);
-            newDays.push({
-                day: prevDaysInMonth - i,
-                isCurrentMonth: false,
-                dateString: date.format('YYYY-MM-DD'),
-            });
-        }
-
-        // 현재 달 날짜
-        for (let i = 1; i <= daysInMonth; i++) {
-            const date = currentDate.date(i);
-            newDays.push({
-                day: i,
-                isCurrentMonth: true,
-                dateString: date.format('YYYY-MM-DD'),
-            });
-        }
-
-        // 다음 달 날짜
-        const nextMonth = currentDate.add(1, 'month');
-        const remainingDays = 42 - newDays.length; // 7x6 격자
-        for (let i = 1; i <= remainingDays; i++) {
-            const date = nextMonth.date(i);
-            newDays.push({
-                day: i,
-                isCurrentMonth: false,
-                dateString: date.format('YYYY-MM-DD'),
-            });
-        }
-
-        setDays(newDays);
-    };
-
     // effects
-    useEffect(() => {
-        generateCalendarDays();
-    }, [currentDate]);
 
     return (
         <div css={[calendarContainer({ size, border, shadow, zIndex }), sx]}>
             <div css={calendarHeaderContainer}>
-                <Button variant="transparent" onClick={handleBackMonth}>
+                <button
+                    onClick={handleBackMonth}
+                    aria-label="이전 달"
+                    disabled={disabled}
+                    css={monthControlButton}
+                >
                     {'<'}
-                </Button>
-                <Text as="div" type="bodySemibold">
+                </button>
+                <Text as="div" type="bodySemibold" aria-label={currentDate.format('YYYY년 MM월')}>
                     {currentDate.format('YYYY년 MM월')}
                 </Text>
-                <Button variant="transparent" onClick={handleNextMonth}>
+                <button
+                    onClick={handleNextMonth}
+                    aria-label="다음 달"
+                    disabled={disabled}
+                    css={monthControlButton}
+                >
                     {'>'}
-                </Button>
+                </button>
             </div>
 
             <div css={calendarBodyContainer}>
                 <div css={weekdaysContainer}>
-                    {weekdays.map((day, index) => (
+                    {WEEKDAYS.map((day, index) => (
                         <div key={day} css={weekCell(index)}>
                             {day}
                         </div>
@@ -126,13 +78,14 @@ const Calendar = ({
                 </div>
 
                 <div css={daysContainer}>
-                    {days.map((date, index) => (
+                    {days.map((date) => (
                         <button
+                            aria-label={date.dateString}
                             disabled={disabled}
                             key={date.dateString}
                             css={dayCell(
-                                selectedDate.includes(date.dateString),
-                                index,
+                                newSelectedDate.has(date.dateString),
+                                date.weekend,
                                 date.dateString === today,
                                 date.isCurrentMonth,
                                 disabled,
