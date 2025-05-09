@@ -22,7 +22,7 @@ const meta: Meta<typeof Select> = {
 export const DefaultSelect: Story = {
     render: (args) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [value, setValue] = useState('');
+        const [value, setValue] = useState('primary2');
 
         return (
             <div style={{ height: '300px' }}>
@@ -43,7 +43,7 @@ export const DefaultSelect: Story = {
     args: {
         children: 'ReactNode',
         size: 'lg',
-        value: '',
+        value: 'primary2',
         onValueChange: () => {},
     },
 };

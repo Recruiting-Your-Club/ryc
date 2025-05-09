@@ -5,13 +5,9 @@ import type {
     ReactElement,
     ReactNode,
     Ref,
-    RefCallback} from 'react';
-import React, {
-    Children,
-    cloneElement,
-    Fragment,
-    isValidElement
+    RefCallback,
 } from 'react';
+import React, { Children, cloneElement, Fragment, isValidElement } from 'react';
 
 //------------------------------------//
 //Slot 컴포넌트
@@ -64,12 +60,17 @@ function SlotClone({ children, forwardedRef, ...slotProps }: SlotCloneProps) {
     if (isValidElement(children)) {
         const childrenRef = getElementRef(children);
         const mergedProps = mergeProps(slotProps, children.props);
+        const ref = mergeRefs(childrenRef, forwardedRef);
 
         //Fragment는 ref가 없으니 예외처리
         if (children.type !== Fragment) {
-            //mergedProps.ref =
+            mergedProps.ref = ref;
         }
+
+        return cloneElement(children, mergeProps);
     }
+
+    return Children.count(children) > 1 ? Children.only(null) : null;
 }
 
 //------------------------------------//
@@ -118,7 +119,7 @@ function mergeProps(slotProps: MergeableProps, childProps: MergeableProps) {
             }
         } else if (propName === 'style' && isObject(slotPropValue) && isObject(childPropValue)) {
             overrideProps[propName] = { ...slotPropValue, ...childPropValue };
-        } else if (propName === 'css') {
+        } else if (propName === 'sx') {
             overrideProps[propName] = Array.isArray(childPropValue)
                 ? [slotPropValue, ...childPropValue].filter(Boolean)
                 : [slotPropValue, childPropValue].filter(Boolean);
