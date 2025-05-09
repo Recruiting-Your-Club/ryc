@@ -135,7 +135,7 @@ function mergeProps(slotProps: MergeableProps, childProps: MergeableProps) {
             }
         } else if (propName === 'style' && isObject(slotPropValue) && isObject(childPropValue)) {
             overrideProps[propName] = { ...slotPropValue, ...childPropValue };
-        } else if (propName === 'sx') {
+        } else if (propName === 'css') {
             overrideProps[propName] = Array.isArray(childPropValue)
                 ? [slotPropValue, ...childPropValue].filter(Boolean)
                 : [slotPropValue, childPropValue].filter(Boolean);
