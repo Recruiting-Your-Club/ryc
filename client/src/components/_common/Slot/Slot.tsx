@@ -13,8 +13,8 @@ import React, { Children, cloneElement, Fragment, isValidElement } from 'react';
 //Slot 컴포넌트
 //------------------------------------//
 interface SlotProps extends HTMLAttributes<HTMLElement> {
-    children?: ReactNode;
-    forwardedRef?: Ref<HTMLElement>;
+    children: ReactNode;
+    forwardedRef: Ref<HTMLElement>;
 }
 
 /**
@@ -44,7 +44,21 @@ function Slot({ children, forwardedRef, ...props }: SlotProps) {
                 return child;
             }
         });
+
+        return (
+            <SlotClone {...props} forwardedRef={forwardedRef}>
+                {isValidElement(newElement)
+                    ? cloneElement(newElement, undefined, newChildren)
+                    : null}
+            </SlotClone>
+        );
     }
+
+    return (
+        <SlotClone {...props} forwardedRef={forwardedRef}>
+            {children}
+        </SlotClone>
+    );
 }
 
 //------------------------------------//
@@ -70,6 +84,8 @@ function SlotClone({ children, forwardedRef, ...slotProps }: SlotCloneProps) {
         return cloneElement(children, mergeProps);
     }
 
+    //children이 유일한 React 요소가 아니거나, children이 여러개일 경우 null 반환
+    //children이 단일요소일 때만 처리되도록 하기 위해
     return Children.count(children) > 1 ? Children.only(null) : null;
 }
 
@@ -169,3 +185,5 @@ function setRef<T>(ref: Ref<T> | undefined, value: T) {
         (ref as MutableRefObject<T>).current = value;
     }
 }
+
+export { Slot, Slottable };
