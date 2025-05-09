@@ -1,10 +1,11 @@
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import React from 'react';
 import { useDropdownContext } from './DropdownContext';
+import { Slot } from '../Slot/Slot';
 
 interface DropdownTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
-    asChild?: boolean;
+    asChild: boolean;
     forwardedRef?: Ref<HTMLButtonElement>;
 }
 
@@ -17,4 +18,13 @@ function DropdownTrigger({
     const { open, setOpen, triggerRef } = useDropdownContext();
 
     const ref = forwardedRef || triggerRef;
+
+    const Comp = asChild ? Slot : 'button';
+    return (
+        <Comp {...props} forwardedRef={ref} onClick={() => setOpen(!open)}>
+            {children}
+        </Comp>
+    );
 }
+
+export { DropdownTrigger };

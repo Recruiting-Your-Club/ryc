@@ -9,13 +9,15 @@ import {
 interface DropdownContextType {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
-    triggerRef: RefObject<HTMLElement>;
+    triggerRef: RefObject<HTMLButtonElement>;
+    contentRef: RefObject<HTMLDivElement>;
 }
 
 interface DropdownSubContextType {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
     triggerRef: RefObject<HTMLElement>;
+    contentRef: RefObject<HTMLDivElement>;
 }
 
 export const DropdownContext = createContext<DropdownContextType | undefined>(undefined);

@@ -3,6 +3,7 @@ import type { ReactNode, SetStateAction } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DropdownContext } from './DropdownContext';
 import { s_dropdown } from './Dropdown.styles';
+import { useClickOutside } from '@hooks/components/useClickOutside';
 
 interface DropdownProps {
     children: ReactNode; // 자식 노드
@@ -21,6 +22,7 @@ function DropdownRoot({
 }: DropdownProps) {
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen || false);
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const open = controlledOpen ?? uncontrolledOpen;
 
@@ -36,7 +38,9 @@ function DropdownRoot({
         [controlledOpen, onOpenChange, open],
     );
 
-    const contextValue = useMemo(() => ({ open, setOpen, triggerRef }), [open]);
+    useClickOutside([triggerRef, contentRef], () => setOpen(false));
+
+    const contextValue = useMemo(() => ({ open, setOpen, triggerRef, contentRef }), [open]);
 
     return (
         <DropdownContext.Provider value={contextValue}>
