@@ -21,7 +21,12 @@ function DropdownContent(
     const ref = forwardedRef || contentRef;
 
     return (
-        <div role="menu" css={[s_dropdownContent(offsetX, offsetY, position), sx]} {...props}>
+        <div
+            role="menu"
+            ref={ref}
+            css={[s_dropdownContent(offsetX, offsetY, position), sx]}
+            {...props}
+        >
             {children}
         </div>
     );
