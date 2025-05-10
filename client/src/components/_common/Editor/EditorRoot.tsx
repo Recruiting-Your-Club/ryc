@@ -87,23 +87,6 @@ function EditorRoot({ children, sx }: RootProps) {
     );
 
     // effects
-    useEffect(() => {
-        // textarea 내에 존재한 마지막 커서 기억을 위한 함수
-        const handleMouseDown = () => {
-            const selection = window.getSelection();
-            if (
-                selection &&
-                selection.rangeCount > 0 &&
-                editorRef.current?.contains(selection.anchorNode)
-            ) {
-                const range = selection.getRangeAt(0).cloneRange();
-                setSavedRange(range);
-            }
-        };
-
-        document.addEventListener('mousedown', handleMouseDown);
-        return () => document.removeEventListener('mousedown', handleMouseDown);
-    }, []);
 
     return (
         <EditorContext.Provider value={contextValue}>
