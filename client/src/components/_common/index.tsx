@@ -11,3 +11,4 @@ export * from './Divider';
 export * from './Calendar';
 export * from './LoadingSpinner';
 export * from './Editor';
+export * from './Checkbox';
