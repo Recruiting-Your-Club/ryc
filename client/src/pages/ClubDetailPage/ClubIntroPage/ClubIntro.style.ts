@@ -11,11 +11,11 @@ export const textContainer = css`
 export const imageListContainer = css`
     display: grid;
     justify-content: center;
-    grid-template-columns: repeat(4, 1fr); // 기본 3열
+    grid-template-columns: repeat(3, 1fr); // 기본 3열
     padding: 4rem 3rem;
     gap: 0.5rem;
-    @media (max-width: 480px) {
-        grid-template-columns: repeat(3, 1fr);
+    @media (min-width: 480px) {
+        grid-template-columns: repeat(4, 1fr);
     }
 `;
 
