@@ -32,21 +32,21 @@ function EditorRoot({ children, sx }: RootProps) {
 
     const contextValue = useMemo(
         () => ({
-            savedRange,
-            setSavedRange,
             editorRef,
+            savedRange,
             size,
             formats,
             align,
             lists,
             options,
+            setSavedRange,
             setSize,
             setFormats,
             setAlign,
             setLists,
             setOptions,
         }),
-        [size, formats, align, lists, options],
+        [savedRange, size, formats, align, lists, options],
     );
 
     // form hooks
