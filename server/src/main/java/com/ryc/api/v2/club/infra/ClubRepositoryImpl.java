@@ -36,14 +36,14 @@ public class ClubRepositoryImpl implements ClubRepository {
   @Override
   public Club save(Club club) {
     ClubEntity clubEntity = ClubMapper.toEntity(club);
-    ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
+    final ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
 
     List<ClubTagEntity> clubTagEntities =
-        club.getClubTags().stream()
-            .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, savedClubEntity))
-            .toList();
+            club.getClubTags().stream()
+                    .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, savedClubEntity))
+                    .toList();
 
-    List<ClubTag> savedClubTags =
+    final List<ClubTag> savedClubTags =
         clubTagJpaRepository.saveAll(clubTagEntities).stream()
             .map(ClubTagMapper::toDomain)
             .toList();
@@ -54,19 +54,20 @@ public class ClubRepositoryImpl implements ClubRepository {
 
   @Override
   public Club findById(String id) {
-    ClubEntity clubEntity =
+    final ClubEntity clubEntity =
         clubJpaRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
+
     List<ClubTagEntity> clubTagEntities = clubTagJpaRepository.findByClubId(id);
     List<ClubSummaryEntity> clubSummaryEntities = clubSummaryJpaRepository.findByClubId(id);
     List<ClubDetailImageEntity> clubDetailImageEntities =
         clubDetailImageJpaRepository.findByClubId(id);
 
-    List<ClubTag> clubTags = clubTagEntities.stream().map(ClubTagMapper::toDomain).toList();
-    List<ClubSummary> clubSummaries =
+    final List<ClubTag> clubTags = clubTagEntities.stream().map(ClubTagMapper::toDomain).toList();
+    final List<ClubSummary> clubSummaries =
         clubSummaryEntities.stream().map(ClubSummaryMapper::toDomain).toList();
-    List<ClubDetailImage> clubDetailImages =
+    final List<ClubDetailImage> clubDetailImages =
         clubDetailImageEntities.stream().map(ClubDetailImageMapper::toDomain).toList();
 
     return ClubMapper.toDomain(clubEntity, clubTags, clubSummaries, clubDetailImages);
@@ -74,13 +75,13 @@ public class ClubRepositoryImpl implements ClubRepository {
 
   @Override
   public List<Club> findAll() {
-    List<Club> clubs = new ArrayList<>();
-    List<ClubEntity> clubEntities = clubJpaRepository.findAll();
+    final List<Club> clubs = new ArrayList<>();
 
+    List<ClubEntity> clubEntities = clubJpaRepository.findAll();
     List<ClubTagEntity> clubTagEntities = clubTagJpaRepository.findAll();
 
     for (ClubEntity clubEntity : clubEntities) {
-      List<ClubTag> clubTags =
+      final List<ClubTag> clubTags =
           clubTagEntities.stream()
               .filter(
                   clubTagEntity -> clubTagEntity.getClubEntity().getId().equals(clubEntity.getId()))
