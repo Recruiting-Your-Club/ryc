@@ -12,19 +12,13 @@ export const clubDetailPageContainer = css`
 `;
 
 export const contentContainer = css`
-    width: 90rem;
-    height: inherit;
+    max-width: 90rem;
+    width: 100%;
+    height: 100%;
     background-color: ${theme.colors.white};
     padding: 2rem 2rem;
     border-radius: 10px;
     border: 1px solid ${theme.colors.gray[200]};
-
-    @media (max-width: 768px) {
-        width: 70rem;
-    }
-    @media (max-width: 480px) {
-        width: 100%;
-    }
 `;
 export const clubHeader = css`
     display: flex;
