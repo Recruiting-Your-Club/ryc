@@ -39,9 +39,9 @@ public class ClubRepositoryImpl implements ClubRepository {
     final ClubEntity savedClubEntity = clubJpaRepository.save(clubEntity);
 
     List<ClubTagEntity> clubTagEntities =
-            club.getClubTags().stream()
-                    .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, savedClubEntity))
-                    .toList();
+        club.getClubTags().stream()
+            .map(clubTag -> ClubTagMapper.toEntityWithClubEntity(clubTag, savedClubEntity))
+            .toList();
 
     final List<ClubTag> savedClubTags =
         clubTagJpaRepository.saveAll(clubTagEntities).stream()
