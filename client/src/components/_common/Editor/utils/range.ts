@@ -17,11 +17,9 @@ export const getTextNodes = (range: Range): Text[] => {
     });
 
     const textNodes: Text[] = [];
-    let currentNode = walker.nextNode();
-    while (currentNode) {
+    while (walker.nextNode()) {
         // commonAncestor 내부 노드 순회
-        textNodes.push(currentNode as Text);
-        currentNode = walker.nextNode();
+        textNodes.push(walker.currentNode as Text);
     }
 
     return textNodes;
