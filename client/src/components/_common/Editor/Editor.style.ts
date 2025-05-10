@@ -38,11 +38,6 @@ export const toolbarContainer = (radius: string = '4px') => css`
     display: flex;
     align-items: center;
     gap: 6px;
-
-    @media screen and (max-width: 1024px) {
-        // 태블릿 pc까지
-        width: 100%;
-    }
 `;
 
 export const buttonGroup = css`
