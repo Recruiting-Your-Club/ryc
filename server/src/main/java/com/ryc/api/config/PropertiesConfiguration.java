@@ -3,7 +3,7 @@ package com.ryc.api.config;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import com.ryc.api.v1.security.jwt.JwtProperties;
+import com.ryc.api.v2.security.jwt.JwtProperties;
 
 @Configuration
 @EnableConfigurationProperties(
