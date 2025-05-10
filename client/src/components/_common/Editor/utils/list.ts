@@ -1,4 +1,4 @@
-import type { List } from '../EditorToolbar';
+import type { List } from '../types';
 import { getClosestDiv, getEditorRoot } from './alignment';
 
 // div로 감싸지지 않은 첫 줄을 div로 감싸기

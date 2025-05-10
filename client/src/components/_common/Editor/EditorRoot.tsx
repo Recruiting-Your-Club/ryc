@@ -1,5 +1,5 @@
 import { DEFAULT_FONT_SIZE } from '@constants/Editor';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
 import { EditorHandlerContext } from './EditorHandlerContext';
@@ -11,6 +11,8 @@ function EditorRoot({ children, sx }: RootProps) {
     // initial values
 
     // state, ref, querystring hooks
+    const editorRef = useRef<HTMLDivElement>(null);
+    const [savedRange, setSavedRange] = useState<Range | null>(null);
     const [size, setSize] = useState<Size>(DEFAULT_FONT_SIZE);
     const [formats, setFormats] = useState<Record<Format, boolean>>({
         bold: false,
@@ -31,6 +33,9 @@ function EditorRoot({ children, sx }: RootProps) {
 
     const contextValue = useMemo(
         () => ({
+            savedRange,
+            setSavedRange,
+            editorRef,
             size,
             formats,
             align,
@@ -73,19 +78,33 @@ function EditorRoot({ children, sx }: RootProps) {
         });
     }, []);
 
-    const toggleOptionButton = useCallback((option: Option) => {
-        setOptions((prev) => ({
-            ...prev,
-            [option]: !prev[option],
-        }));
-    }, []);
-
     const handlerContextValue = useMemo(
-        () => ({ toggleFormatButton, toggleAlignButton, toggleListButton, toggleOptionButton }),
-        [toggleFormatButton, toggleAlignButton, toggleListButton, toggleOptionButton],
+        () => ({
+            toggleFormatButton,
+            toggleAlignButton,
+            toggleListButton,
+        }),
+        [toggleFormatButton, toggleAlignButton, toggleListButton],
     );
 
     // effects
+    useEffect(() => {
+        // textarea 내에 존재한 마지막 커서 기억을 위한 함수
+        const handleMouseDown = () => {
+            const selection = window.getSelection();
+            if (
+                selection &&
+                selection.rangeCount > 0 &&
+                editorRef.current?.contains(selection.anchorNode)
+            ) {
+                const range = selection.getRangeAt(0).cloneRange();
+                setSavedRange(range);
+            }
+        };
+
+        document.addEventListener('mousedown', handleMouseDown);
+        return () => document.removeEventListener('mousedown', handleMouseDown);
+    }, []);
 
     return (
         <EditorContext.Provider value={contextValue}>

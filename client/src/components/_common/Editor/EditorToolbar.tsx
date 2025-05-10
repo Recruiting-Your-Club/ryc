@@ -1,6 +1,6 @@
 import { Select } from '@components/Select';
 import { alignButtons, formatButtons, listButtons, optionButtons } from '@constants/Editor';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     buttonGroup,
     perButtonCss,
@@ -15,7 +15,7 @@ import { TextColorPicker } from './EditorTextColorPicker';
 import type { Align, Format, List, Option, Size, TextColor, ToolbarProps } from './types';
 import { applyAlignment } from './utils/alignment';
 import { applyList } from './utils/list';
-import { insertDivider } from './utils/options';
+import { handleImageFile, insertDivider } from './utils/options';
 import {
     getCurrentAlignment,
     getCurrentFormats,
@@ -28,6 +28,8 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
     // lib hooks
     const {
+        editorRef,
+        savedRange,
         size,
         setSize,
         formats,
@@ -37,13 +39,13 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         lists,
         setLists,
         options,
-        setOptions,
     } = useEditorContext();
-    const { toggleFormatButton, toggleAlignButton, toggleListButton, toggleOptionButton } =
-        useEditorHandlerContext();
+    const { toggleFormatButton, toggleAlignButton, toggleListButton } = useEditorHandlerContext();
 
     // initial values
     // state, ref, querystring hooks
+    const imageFileInputRef = useRef<HTMLInputElement>(null);
+
     // form hooks
     // query hooks
     // calculated values
@@ -97,12 +99,14 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     const handleOption = (option: Option) => {
         const selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) return;
-
-        const range = selection.getRangeAt(0);
-        // toggleOptionButton(option);
-
-        insertDivider(selection, range, option);
+        switch (option) {
+            case 'divider':
+                insertDivider(selection, option);
+                break;
+            case 'image':
+                imageFileInputRef.current?.click();
+                break;
+        }
     };
 
     // effects
@@ -191,6 +195,13 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                         <Svg css={svgCss(options[option as Option])} />
                     </button>
                 ))}
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={imageFileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={(e) => handleImageFile(e, editorRef, savedRange)}
+                />
             </div>
         </div>
     );

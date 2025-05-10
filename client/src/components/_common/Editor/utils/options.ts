@@ -1,3 +1,4 @@
+import type { ChangeEvent, RefObject } from 'react';
 import type { Option } from '../types';
 import { getEditorRoot } from './alignment';
 import { handleNewRange } from './range';
@@ -146,8 +147,10 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Sel
         }
     }
 };
+export const insertDivider = (selection: Selection | null, option: Option) => {
+    if (!selection || selection.rangeCount === 0) return;
+    const range = selection.getRangeAt(0);
 
-export const insertDivider = (selection: Selection, range: Range, option: Option) => {
     if (!range || option !== 'divider') return;
 
     const editor = getEditorRoot(range);
@@ -168,4 +171,43 @@ export const insertDivider = (selection: Selection, range: Range, option: Option
 
     // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
     // 추후 구현 예정
+};
+
+// 초기 상태(커서 X)에서 이미지 삽입할 때
+const insertImage = (editor: HTMLDivElement, url: string, savedRange: Range | null) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.maxWidth = '100%';
+    img.style.height = 'auto';
+
+    const selection = window.getSelection();
+    // textarea 안에 커서가 있을 때
+    if (savedRange) {
+        selection?.removeAllRanges();
+        selection?.addRange(savedRange);
+        savedRange.insertNode(img);
+    } else {
+        editor.appendChild(img);
+    }
+
+    const newRange = document.createRange();
+    newRange.setStartAfter(img);
+    newRange.collapse(true);
+    selection?.removeAllRanges();
+    selection?.addRange(newRange);
+};
+
+export const handleImageFile = (
+    e: ChangeEvent<HTMLInputElement>,
+    editorRef: RefObject<HTMLDivElement>,
+    savedRange: Range | null,
+) => {
+    const image = e.target.files?.[0];
+    if (!image || !editorRef.current) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        insertImage(editorRef.current!, reader.result as string, savedRange);
+    };
+    reader.readAsDataURL(image);
 };

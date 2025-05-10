@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import type { Dispatch, ReactNode, RefObject, SetStateAction } from 'react';
 
 export type Size = '10px' | '12px' | '14px' | '16px' | '24px' | '36px';
 export type Format = 'bold' | 'italic' | 'underline' | 'strikethrough';
@@ -9,6 +9,9 @@ export type Option = 'link' | 'image' | 'divider';
 export type TextColor = 'color' | 'background';
 
 export interface EditorContextType {
+    editorRef: RefObject<HTMLDivElement>;
+    savedRange: Range | null;
+    setSavedRange: Dispatch<SetStateAction<Range | null>>;
     size: Size;
     setSize: Dispatch<SetStateAction<Size>>;
     formats: Record<Format, boolean>;
@@ -25,7 +28,6 @@ export interface EditorHandlerContextType {
     toggleFormatButton: (format: Format) => void;
     toggleAlignButton: (align: Align) => void;
     toggleListButton: (list: List) => void;
-    toggleOptionButton: (option: Option) => void;
 }
 
 export interface EditorProps {

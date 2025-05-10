@@ -92,17 +92,24 @@ export const textColorSvgCss = (isColor: boolean, selectedColor?: string) => css
 export const textareaContainer = (height: string = '350px', radius: string = '4px') => css`
     width: 100%;
     height: ${height};
+    overflow-y: auto;
     resize: none;
     background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.gray[500]};
     border-radius: ${radius};
     padding: 8px;
+    ${theme.typography.bodyRegular}
     font-size: ${DEFAULT_FONT_SIZE};
     text-align: left;
 
     &:focus {
         border-color: ${theme.colors.black};
         outline: none;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
     }
 `;
 
