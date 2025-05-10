@@ -26,7 +26,6 @@ function EditorRoot({ children, sx }: RootProps) {
         decimal: false,
     });
     const [options, setOptions] = useState<Record<Option, boolean>>({
-        link: false,
         image: false,
         divider: false,
     });

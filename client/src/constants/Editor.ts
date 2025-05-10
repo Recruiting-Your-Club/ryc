@@ -34,10 +34,7 @@ export const listButtons = [
 ];
 
 export const optionButtons = [
-    // { option: 'link', Svg: Link },
     { option: 'image', Svg: Image },
-    // { option: 'code', Svg: Code },
-    // { option: 'quote', Svg: Quote },
     { option: 'divider', Svg: Divider },
 ];
 
@@ -50,7 +47,6 @@ export const DEFAULT_FONT_SIZE: Size = '14px';
 export const MAX_FONT_SIZE: Size = '36px';
 export const DEFAULT_TEXT_ALIGN: Align = 'inherit';
 export const DEFAULT_OPTIONS: Record<Option, boolean> = {
-    link: false,
     image: false,
     divider: false,
 };
