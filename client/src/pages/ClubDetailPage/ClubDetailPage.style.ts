@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const clubDetailPageContainer = css`
-    width: 100dvw;
+    width: 100%;
     height: 100%;
     background-color: ${theme.colors.gray[100]};
     display: flex;

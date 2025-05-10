@@ -114,6 +114,12 @@ const globalStyles = css`
         overflow-y: auto;
     }
 
+    #root {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     article,
     aside,
     details,
