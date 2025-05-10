@@ -7,7 +7,7 @@ import { s_dropdownTrigger } from './Dropdown.styles';
 
 interface DropdownTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
-    asChild: boolean;
+    asChild?: boolean;
     sx?: CSSObject;
     forwardedRef?: Ref<HTMLButtonElement>;
 }
@@ -24,12 +24,15 @@ function DropdownTrigger({
     const ref = forwardedRef || triggerRef;
 
     const Comp = asChild ? Slot : 'button';
+
     return (
         <Comp
-            css={[s_dropdownTrigger, sx]}
+            css={[sx, s_dropdownTrigger]}
             {...props}
             forwardedRef={ref}
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+                setOpen(!open);
+            }}
         >
             {children}
         </Comp>

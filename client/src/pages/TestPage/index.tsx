@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Select } from '@components/Select/Select';
+import { Dropdown } from '@components/_common/Dropdown/Dropdown';
+import { Button } from '@components';
 function TestPage() {
     const [value, setValue] = useState('');
 
@@ -26,6 +28,16 @@ function TestPage() {
                     </Select.Group>
                 </Select.Content>
             </Select>
+            <div css={{ margin: '20px' }}></div>
+            <Dropdown>
+                <Dropdown.Trigger>
+                    {/* <Button size="xl" variant="primary">
+                        hello
+                    </Button> */}
+                    hi
+                </Dropdown.Trigger>
+                <Dropdown.Content>hi</Dropdown.Content>
+            </Dropdown>
         </div>
     );
 }

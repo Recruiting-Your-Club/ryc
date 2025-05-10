@@ -81,7 +81,7 @@ function SlotClone({ children, forwardedRef, ...slotProps }: SlotCloneProps) {
             mergedProps.ref = ref;
         }
 
-        return cloneElement(children, mergeProps);
+        return cloneElement(children, mergedProps);
     }
 
     //children이 유일한 React 요소가 아니거나, children이 여러개일 경우 null 반환
@@ -137,8 +137,8 @@ function mergeProps(slotProps: MergeableProps, childProps: MergeableProps) {
             overrideProps[propName] = { ...slotPropValue, ...childPropValue };
         } else if (propName === 'css') {
             overrideProps[propName] = Array.isArray(childPropValue)
-                ? [slotPropValue, ...childPropValue].filter(Boolean)
-                : [slotPropValue, childPropValue].filter(Boolean);
+                ? [...childPropValue, slotPropValue].filter(Boolean)
+                : [childPropValue, slotPropValue].filter(Boolean);
         }
     }
 

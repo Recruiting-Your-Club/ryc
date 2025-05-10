@@ -4,6 +4,9 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DropdownContext } from './DropdownContext';
 import { s_dropdown } from './Dropdown.styles';
 import { useClickOutside } from '@hooks/components/useClickOutside';
+import { DropdownTrigger } from './DropdownTrigger';
+import { DropdownContent } from './DropdownContent';
+import { DropdownItem } from './DropdownItem';
 
 interface DropdownProps {
     children: ReactNode; // 자식 노드
@@ -49,6 +52,10 @@ function DropdownRoot({
     );
 }
 
-const Dropdown = Object.assign(DropdownRoot, {});
+const Dropdown = Object.assign(DropdownRoot, {
+    Trigger: DropdownTrigger,
+    Content: DropdownContent,
+    Item: DropdownItem,
+});
 
 export { Dropdown };

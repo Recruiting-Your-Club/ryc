@@ -10,12 +10,18 @@ interface DropdownContentProps extends HTMLAttributes<HTMLDivElement> {
     offsetX?: number;
     offsetY?: number;
     sx?: CSSObject;
+    forwardedRef?: Ref<HTMLDivElement>;
 }
 
-function DropdownContent(
-    { children, offsetX = 0, offsetY = 0, position = 'bottom', sx, ...props }: DropdownContentProps,
-    forwardedRef: Ref<HTMLDivElement>,
-) {
+function DropdownContent({
+    children,
+    offsetX = 0,
+    offsetY = 0,
+    position = 'bottom',
+    sx,
+    forwardedRef,
+    ...props
+}: DropdownContentProps) {
     const { open, contentRef } = useDropdownContext();
 
     const ref = forwardedRef || contentRef;
@@ -24,7 +30,7 @@ function DropdownContent(
         <div
             role="menu"
             ref={ref}
-            css={[s_dropdownContent(offsetX, offsetY, position), sx]}
+            css={[s_dropdownContent(offsetX, offsetY, position, open), sx]}
             {...props}
         >
             {children}

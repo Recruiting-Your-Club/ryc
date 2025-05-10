@@ -7,6 +7,7 @@ import type {
 } from 'react';
 import React from 'react';
 import { useDropdownContext } from './DropdownContext';
+import { s_dropdownItem } from './Dropdown.styles';
 
 interface DropdownItemProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
@@ -21,6 +22,7 @@ function DropdownItem({
     disabled = false,
     inset = false,
     onItemSelect,
+    sx,
     ...props
 }: DropdownItemProps) {
     const { setOpen } = useDropdownContext();
@@ -46,6 +48,7 @@ function DropdownItem({
             {...props}
             tabIndex={disabled ? -1 : 0}
             onKeyDown={handleKeyDown}
+            css={[s_dropdownItem(disabled, inset), sx]}
         >
             {children}
         </div>
