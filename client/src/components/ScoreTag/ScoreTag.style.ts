@@ -15,14 +15,15 @@ const baseScoreTag = (width: string) => css`
     align-items: center;
     width: ${width};
     padding: 0.2rem 0.4rem;
-    border-radius: 4px;
+    border-radius: 4.5px;
     gap: 0.2rem;
 `;
 
 const customPerTag = (color: string) => css`
     color: ${color};
     background-color: rgba(${hexToRgb(color)}, 0.1);
-    ${theme.typography.subCaptionRegular};
+    display: inline-flex;
+    ${theme.typography.helperTextSemibold};
 `;
 
 const getScoreColor = (score: number): string => {
@@ -37,7 +38,6 @@ export const scoreTag = (width: string, score: string) => {
 };
 
 export const svgCss = css`
-    justify-content: center;
-    align-items: center;
-    height: 1.4rem;
+    height: 1.2rem;
+    vertical-align: middle;
 `;

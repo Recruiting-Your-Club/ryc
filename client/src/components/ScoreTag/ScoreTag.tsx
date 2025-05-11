@@ -1,10 +1,19 @@
 import Star from '@assets/images/score-star.svg';
-import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { scoreTag, svgCss } from './ScoreTag.style';
 import type { ScoreTagProps } from './types';
 
-function ScoreTag({ width = '4.5rem', score, sx }: ScoreTagProps) {
+function ScoreTag({ width = '4rem', score, sx }: ScoreTagProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
+
     return (
         <div>
             <span css={[scoreTag(width, score), sx]}>
