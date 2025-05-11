@@ -15,6 +15,11 @@ export const s_dropdownTrigger = css`
     background: ${theme.colors.white};
     cursor: pointer;
     padding: 0 1.6rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: ${theme.colors.gray[200]};
+    }
 
     &:focus {
         box-shadow: 0 0 0 0.1rem ${theme.colors.blue[200]}50;
@@ -49,45 +54,101 @@ const baseContent = css`
     }
 `;
 
-export const s_dropdownContent = (
-    offsetX: number,
-    offsetY: number,
-    position: string,
-    open: boolean,
-) => {
+export const s_dropdownContent = (offsetX: number, offsetY: number, open: boolean) => {
+    const x = `${offsetX * 0.8}rem`;
+    const y = `${offsetY * 0.8}rem`;
+
     return css`
         ${baseContent}
         position: absolute;
-        margin-top: 0.5rem;
-        display: none;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) translate(${x}, ${y});
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+
         ${open &&
         css`
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
         `}
+
+        transition: opacity 0.15s ease;
     `;
 };
 
 export const s_dropdownItem = (disabled: boolean, inset: boolean) => {
-    return css``;
+    return css`
+        display: flex;
+        cursor: pointer;
+        align-items: center;
+        width: 100%;
+        padding: 0.3rem 1.2rem;
+        line-height: 1.4;
+        border-radius: 0.4rem;
+        border: none;
+        background-color: transparent;
+        font-size: 1.4rem;
+        ${theme.typography.captionRegular}
+        color: ${theme.colors.gray[900]};
+        text-align: left;
+        transition: all 0.2s;
+        user-select: none;
+
+        &:hover {
+            background-color: ${theme.colors.blue[100]};
+        }
+
+        &:focus {
+            outline: none;
+            background-color: ${theme.colors.blue[100]};
+        }
+
+        ${disabled &&
+        css`
+            opacity: 0.5;
+            cursor: not-allowed;
+            &:hover {
+                background-color: transparent;
+            }
+        `}
+
+        ${inset &&
+        css`
+            justify-content: center;
+        `}
+    `;
 };
 
 export const s_dropdownLabel = (inset: boolean) => {
-    return css``;
+    return css`
+        padding: 0.2rem 1.2rem;
+        color: ${theme.colors.gray[600]};
+        font-size: 1.2rem;
+        ${theme.typography.captionSemibold}
+        ${inset &&
+        css`
+            justify-content: center;
+        `};
+    `;
 };
 
-export const s_dropdownSeperator = css``;
+export const s_dropdownSeperator = css`
+    height: 1px;
+    margin: 0.4rem 0;
+    background-color: ${theme.colors.gray[300]};
+`;
 
-export const s_dropdownGroup = css``;
+export const s_dropdownGroup = css`
+    padding: 0.4rem 0;
+`;
 
 export const s_dropdownSubTrigger = (disabled: boolean, inset: boolean) => {
     return css``;
 };
 
-export const s_dropdownSubContent = (
-    offsetX: number,
-    offsetY: number,
-    position: string,
-    open: boolean,
-) => {
+export const s_dropdownSubContent = (offsetX: number, offsetY: number, open: boolean) => {
     return css``;
 };

@@ -6,7 +6,6 @@ import { s_dropdownContent } from './Dropdown.styles';
 
 interface DropdownContentProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
-    position?: 'right' | 'left' | 'bottom';
     offsetX?: number;
     offsetY?: number;
     sx?: CSSObject;
@@ -17,7 +16,6 @@ function DropdownContent({
     children,
     offsetX = 0,
     offsetY = 0,
-    position = 'bottom',
     sx,
     forwardedRef,
     ...props
@@ -27,12 +25,7 @@ function DropdownContent({
     const ref = forwardedRef || contentRef;
 
     return (
-        <div
-            role="menu"
-            ref={ref}
-            css={[s_dropdownContent(offsetX, offsetY, position, open), sx]}
-            {...props}
-        >
+        <div role="menu" ref={ref} css={[s_dropdownContent(offsetX, offsetY, open), sx]} {...props}>
             {children}
         </div>
     );

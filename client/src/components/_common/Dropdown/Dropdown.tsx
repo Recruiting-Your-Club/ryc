@@ -7,6 +7,9 @@ import { useClickOutside } from '@hooks/components/useClickOutside';
 import { DropdownTrigger } from './DropdownTrigger';
 import { DropdownContent } from './DropdownContent';
 import { DropdownItem } from './DropdownItem';
+import { DropdownLabel } from './DropdownLabel';
+import { DropdownGroup } from './DropdownGroup';
+import { DropdownSeperator } from './DropdownSeperator';
 
 interface DropdownProps {
     children: ReactNode; // 자식 노드
@@ -56,6 +59,9 @@ const Dropdown = Object.assign(DropdownRoot, {
     Trigger: DropdownTrigger,
     Content: DropdownContent,
     Item: DropdownItem,
+    Label: DropdownLabel,
+    Group: DropdownGroup,
+    Seperator: DropdownSeperator,
 });
 
 export { Dropdown };

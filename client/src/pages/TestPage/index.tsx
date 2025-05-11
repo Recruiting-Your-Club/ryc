@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Select } from '@components/Select/Select';
 import { Dropdown } from '@components/_common/Dropdown/Dropdown';
 import { Button } from '@components';
+import { DropdownSeperator } from '@components/_common/Dropdown/DropdownSeperator';
 function TestPage() {
     const [value, setValue] = useState('');
 
@@ -30,13 +31,26 @@ function TestPage() {
             </Select>
             <div css={{ margin: '20px' }}></div>
             <Dropdown>
-                <Dropdown.Trigger>
-                    {/* <Button size="xl" variant="primary">
+                <Dropdown.Trigger asChild>
+                    <Button size="xl" variant="primary">
                         hello
-                    </Button> */}
-                    hi
+                    </Button>
                 </Dropdown.Trigger>
-                <Dropdown.Content>hi</Dropdown.Content>
+                <Dropdown.Content offsetX={-15} offsetY={16}>
+                    <Dropdown.Label>hello</Dropdown.Label>
+                    <Dropdown.Seperator />
+                    <Dropdown.Group>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                    </Dropdown.Group>
+                    <DropdownSeperator />
+                    <Dropdown.Group>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                    </Dropdown.Group>
+                </Dropdown.Content>
             </Dropdown>
         </div>
     );
