@@ -11,3 +11,8 @@ export const UserLayoutCss = css`
     background-color: ${theme.colors.white};
     padding-top: 6rem;
 `;
+// mobileMini: '400px',
+// mobile: '480px',
+// tabletMini: '768px',
+// tablet: '1024px',
+// desktop: '1200px',

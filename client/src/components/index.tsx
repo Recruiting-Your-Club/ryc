@@ -17,3 +17,4 @@ export * from './MainCard';
 export * from './ClubNavigation';
 export * from './ClubBox';
 export * from './ImageDialog';
+export * from './MainCard';

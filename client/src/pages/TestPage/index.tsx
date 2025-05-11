@@ -11,17 +11,7 @@ function TestPage() {
     };
     return (
         <>
-            <div>
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '10rem' }}>
-                    <FileUpLoader>
-                        <FileUpLoader.Button />
-                        <FileUpLoader.HelperText>
-                            pdf,이미지 파일만 업로드 가능합니다.
-                        </FileUpLoader.HelperText>
-                        <FileUpLoader.Box />
-                    </FileUpLoader>
-                </div>
-            </div>
+            <MainCard />
         </>
     );
 }
