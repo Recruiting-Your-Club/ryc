@@ -2,12 +2,7 @@ import Star from '@assets/images/score-star.svg';
 import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { scoreTag, svgCss } from './ScoreTag.style';
-
-export interface ScoreTagProps {
-    width?: string;
-    score: string;
-    sx?: CSSObject;
-}
+import type { ScoreTagProps } from './types';
 
 function ScoreTag({ width = '4.5rem', score, sx }: ScoreTagProps) {
     return (
