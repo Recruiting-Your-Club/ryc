@@ -2,7 +2,7 @@ import TimeCircle from '@assets/images/time-circle.svg';
 import { ScoreTag } from '@components/ScoreTag';
 import { Card, Checkbox, Text } from '@components/_common';
 import { Divider } from '@components/_common/Divider';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import {
     bottomCss,
     checkboxWrapper,
@@ -21,9 +21,19 @@ interface ApplicantCardProps {
     date: string;
     score: string;
     status: string;
+    checked: boolean;
+    onChange: (email: string, checked: boolean) => void;
 }
 
-function ApplicantCard({ name, email, date, score, status }: ApplicantCardProps) {
+function ApplicantCard({
+    name,
+    email,
+    date,
+    score,
+    status,
+    checked,
+    onChange,
+}: ApplicantCardProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -32,12 +42,19 @@ function ApplicantCard({ name, email, date, score, status }: ApplicantCardProps)
     // query hooks
     // calculated values
     // handlers
+    const handleChange = (checked: boolean) => {
+        onChange(email, checked);
+    };
     // effects
 
     return (
         <Card.Root width={'23rem'} radius={'5px'} sx={rootCss}>
             <span css={checkboxWrapper}>
-                <Checkbox.Root size="xs">
+                <Checkbox.Root
+                    size="xs"
+                    isChecked={checked}
+                    onChange={(checked) => handleChange(checked)}
+                >
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />
                 </Checkbox.Root>
