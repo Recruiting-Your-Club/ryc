@@ -70,3 +70,24 @@ export const s_dropdownContent = (
 export const s_dropdownItem = (disabled: boolean, inset: boolean) => {
     return css``;
 };
+
+export const s_dropdownLabel = (inset: boolean) => {
+    return css``;
+};
+
+export const s_dropdownSeperator = css``;
+
+export const s_dropdownGroup = css``;
+
+export const s_dropdownSubTrigger = (disabled: boolean, inset: boolean) => {
+    return css``;
+};
+
+export const s_dropdownSubContent = (
+    offsetX: number,
+    offsetY: number,
+    position: string,
+    open: boolean,
+) => {
+    return css``;
+};
