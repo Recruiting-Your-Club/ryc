@@ -2,7 +2,7 @@ import TimeCircle from '@assets/images/time-circle.svg';
 import { ScoreTag } from '@components/ScoreTag';
 import { Card, Checkbox, Text } from '@components/_common';
 import { Divider } from '@components/_common/Divider';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import {
     bottomCss,
     checkboxWrapper,
@@ -14,16 +14,7 @@ import {
     rootCss,
     timeCircleSvgCss,
 } from './ApplicantCard.style';
-
-interface ApplicantCardProps {
-    name: string;
-    email: string;
-    date: string;
-    score: string;
-    status: string;
-    checked: boolean;
-    onChange: (email: string, checked: boolean) => void;
-}
+import type { ApplicantCardProps } from './types';
 
 function ApplicantCard({
     name,
