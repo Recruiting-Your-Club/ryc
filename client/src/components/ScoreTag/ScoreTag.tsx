@@ -9,7 +9,7 @@ export interface ScoreTagProps {
     sx?: CSSObject;
 }
 
-function ScoreTag({ width = '5rem', score, sx }: ScoreTagProps) {
+function ScoreTag({ width = '4.5rem', score, sx }: ScoreTagProps) {
     return (
         <div>
             <span css={[scoreTag(width, score), sx]}>
