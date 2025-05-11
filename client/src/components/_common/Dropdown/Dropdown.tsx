@@ -10,6 +10,8 @@ import { DropdownItem } from './DropdownItem';
 import { DropdownLabel } from './DropdownLabel';
 import { DropdownGroup } from './DropdownGroup';
 import { DropdownSeperator } from './DropdownSeperator';
+import { DropdownSub } from './DropdownSub';
+import { DropdownSubTrigger } from './DropdownSubTrigger';
 
 interface DropdownProps {
     children: ReactNode; // 자식 노드
@@ -62,6 +64,8 @@ const Dropdown = Object.assign(DropdownRoot, {
     Label: DropdownLabel,
     Group: DropdownGroup,
     Seperator: DropdownSeperator,
+    Sub: DropdownSub,
+    SubTrigger: DropdownSubTrigger,
 });
 
 export { Dropdown };

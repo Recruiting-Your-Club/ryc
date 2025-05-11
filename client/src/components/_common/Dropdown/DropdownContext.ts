@@ -16,7 +16,7 @@ interface DropdownContextType {
 interface DropdownSubContextType {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
-    triggerRef: RefObject<HTMLElement>;
+    triggerRef: RefObject<HTMLDivElement>;
     contentRef: RefObject<HTMLDivElement>;
 }
 

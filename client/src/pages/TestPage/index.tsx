@@ -36,7 +36,7 @@ function TestPage() {
                         hello
                     </Button>
                 </Dropdown.Trigger>
-                <Dropdown.Content offsetX={-15} offsetY={16}>
+                <Dropdown.Content offsetX={-15} offsetY={17}>
                     <Dropdown.Label>hello</Dropdown.Label>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
@@ -50,6 +50,9 @@ function TestPage() {
                         <Dropdown.Item>hi</Dropdown.Item>
                         <Dropdown.Item>hi</Dropdown.Item>
                     </Dropdown.Group>
+                    <Dropdown.Sub>
+                        <Dropdown.SubTrigger>hi</Dropdown.SubTrigger>
+                    </Dropdown.Sub>
                 </Dropdown.Content>
             </Dropdown>
         </div>

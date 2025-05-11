@@ -146,7 +146,11 @@ export const s_dropdownGroup = css`
 `;
 
 export const s_dropdownSubTrigger = (disabled: boolean, inset: boolean) => {
-    return css``;
+    return css`
+        ${s_dropdownItem(disabled, inset)}
+        position: relative;
+        justify-content: space-between;
+    `;
 };
 
 export const s_dropdownSubContent = (offsetX: number, offsetY: number, open: boolean) => {
