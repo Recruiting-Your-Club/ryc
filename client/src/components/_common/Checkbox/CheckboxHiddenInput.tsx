@@ -21,7 +21,7 @@ function CheckboxHiddenInput({ ...props }: InputHTMLAttributes<HTMLInputElement>
                 id={id}
                 type="checkbox"
                 checked={isChecked}
-                onChange={onChange}
+                onChange={(isChecked) => onChange(isChecked)}
                 defaultChecked={defaultChecked}
                 disabled={disabled}
                 css={hiddenInputCss}

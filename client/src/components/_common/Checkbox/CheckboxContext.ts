@@ -1,10 +1,11 @@
+import type { ChangeEvent} from 'react';
 import { createContext, InputHTMLAttributes, useContext } from 'react';
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
 interface CheckboxContextType {
     id?: string;
     isChecked?: boolean;
-    onChange: () => void;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     variant?: CheckboxVariant;
     size?: CheckboxSize;
     color?: CheckboxColor;

@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import React, { InputHTMLAttributes, useId, useMemo, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
 import { rootContainer } from './Checkbox.style';
 import { CheckboxContext } from './CheckboxContext';
 
@@ -12,7 +12,7 @@ interface CheckboxRootProps {
     size?: CheckboxSize;
     color?: CheckboxColor;
     children?: React.ReactNode;
-    onChange?: () => void;
+    onChange?: (checked: boolean) => void;
     isChecked?: boolean;
     defaultChecked?: boolean;
     disabled?: boolean;
@@ -29,7 +29,6 @@ function CheckboxRoot({
     defaultChecked = false,
     disabled = false,
     sx,
-    ...props
 }: CheckboxRootProps) {
     // prop destruction
     // lib hooks
@@ -45,13 +44,14 @@ function CheckboxRoot({
     // handlers
     const isChecked = externalChecked ?? checked;
 
-    const onChangeInner = () => {
-        setChecked((prev) => !prev);
+    const onChangeInner = (newChecked: boolean) => {
+        setChecked(newChecked);
     };
 
     const changeHandler = () => {
         if (disabled) return;
-        (onChange ?? onChangeInner)();
+        const newChecked = !isChecked;
+        (onChange ?? onChangeInner)(newChecked);
     };
 
     // calculated values
