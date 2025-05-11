@@ -35,7 +35,7 @@ export const s_dropdownTrigger = css`
 const baseContent = css`
     z-index: 50;
     min-width: 8rem;
-    overflow: hidden;
+
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 0.4rem;
     background: ${theme.colors.white};
@@ -148,11 +148,50 @@ export const s_dropdownGroup = css`
 export const s_dropdownSubTrigger = (disabled: boolean, inset: boolean) => {
     return css`
         ${s_dropdownItem(disabled, inset)}
-        position: relative;
         justify-content: space-between;
     `;
 };
 
-export const s_dropdownSubContent = (offsetX: number, offsetY: number, open: boolean) => {
-    return css``;
+export const s_dropdownSubContent = (align: string, open: boolean) => {
+    let yAlignStyles = css``;
+
+    switch (align) {
+        case 'center':
+            yAlignStyles = css`
+                transform: translateY(-50%);
+            `;
+            break;
+        case 'top':
+            yAlignStyles = css`
+                top: 0;
+            `;
+            break;
+        case 'bottom':
+            yAlignStyles = css`
+                bottom: 0;
+            `;
+            break;
+    }
+
+    return css`
+        ${baseContent}
+        position: absolute;
+
+        left: 100%;
+        margin-left: 0.4rem;
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+
+        ${yAlignStyles};
+
+        ${open &&
+        css`
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        `}
+
+        transition: opacity 0.15s ease;
+    `;
 };

@@ -52,6 +52,21 @@ function TestPage() {
                     </Dropdown.Group>
                     <Dropdown.Sub>
                         <Dropdown.SubTrigger>hi</Dropdown.SubTrigger>
+                        <Dropdown.SubContent align="center">
+                            <Dropdown.Label>hello</Dropdown.Label>
+                            <Dropdown.Seperator />
+                            <Dropdown.Group>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                            </Dropdown.Group>
+                            <DropdownSeperator />
+                            <Dropdown.Group>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                            </Dropdown.Group>
+                        </Dropdown.SubContent>
                     </Dropdown.Sub>
                 </Dropdown.Content>
             </Dropdown>

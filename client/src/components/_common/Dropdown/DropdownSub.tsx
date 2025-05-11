@@ -1,6 +1,6 @@
 import { CSSObject } from '@emotion/react';
 import { useClickOutside } from '@hooks/components/useClickOutside';
-import type { ReactNode, SetStateAction} from 'react';
+import type { ReactNode, SetStateAction } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DropdownSubContext } from './DropdownContext';
 
@@ -39,7 +39,9 @@ function DropdownSub({
     const contextValue = useMemo(() => ({ open, setOpen, triggerRef, contentRef }), [open]);
 
     return (
-        <DropdownSubContext.Provider value={contextValue}>{children}</DropdownSubContext.Provider>
+        <DropdownSubContext.Provider value={contextValue}>
+            <div css={{ position: 'relative' }}>{children}</div>
+        </DropdownSubContext.Provider>
     );
 }
 
