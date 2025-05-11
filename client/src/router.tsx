@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
-import { TestPage, NotFoundPage, LoginPage, RegisterPage, ClubDetailPage } from './pages';
+import { TestPage, NotFoundPage, LoginPage, RegisterPage, ClubDetailPage, MainPage } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
 
 const router = createBrowserRouter([
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <UserLayout />,
         children: [
-            { index: true, element: <TestPage /> },
+            { index: true, element: <MainPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
