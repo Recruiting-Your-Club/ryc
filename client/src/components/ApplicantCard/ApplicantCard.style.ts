@@ -1,11 +1,12 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
+import { hexToRgb } from '@utils/hexToRgb';
 
 export const rootCss = css`
     position: relative;
     padding-top: 1.3rem;
     border: 0px;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 3px 0px rgba(${hexToRgb(theme.colors.black)}, 0.15);
     :hover {
         cursor: pointer;
     }
@@ -24,7 +25,7 @@ export const emailTextCss = css`
 `;
 
 export const dividerCss = css`
-    border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
+    border-top: 0.1rem solid rgba(${hexToRgb(theme.colors.black)}, 0.1);
 `;
 
 export const bottomCss = css`
