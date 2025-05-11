@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 /** 클라이언트나 외부 서버 어플리케이션에서 Http 기반으로 접근하는 API */
 @RestController
-@RequestMapping("api/v2/club")
+@RequestMapping("api/v2/clubs")
 @RequiredArgsConstructor
 @Tag(name = "동아리")
 public class ClubHttpApi {
