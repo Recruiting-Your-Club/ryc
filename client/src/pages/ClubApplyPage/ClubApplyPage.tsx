@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import {
     clubApplyPageContainer,
+    clubApplyPageMainContainer,
+    clubApplySubmitCardContainer,
     clubApplyTabContainer,
     clubApplyTabName,
     clubLogoAndNameContainer,
     clubNameContainer,
     clubTagContainer,
     svgContainer,
+    submitButtonContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
 import { ClubApplySubmitCard } from './ClubApplySubmitCard';
 import { ClubApplyPersonalInfoPage } from './ClubApplyPersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './ClubApplyDetailQuestionPage';
+import { BREAKPOINT } from '@styles/theme/breakPoint';
 //질문 배열로 받아서 form map으로 뿌리기
 
 export const clubData = {
@@ -33,33 +37,59 @@ const applyData = [
 
 function ClubApplyPage() {
     const [idx, setIdx] = useState<number>(0);
+    const [isDesktop, setIsDesktop] = useState<boolean>(
+        window.innerWidth > parseInt(BREAKPOINT.tablet),
+    );
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth > parseInt(BREAKPOINT.tablet));
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div css={clubApplyPageContainer}>
-            <div css={clubLogoAndNameContainer}>
-                <Ryc css={svgContainer} />
-                <div css={clubNameContainer}>
-                    {clubData.clubName}
-                    <div css={clubTagContainer}>{clubData.tag}</div>
+            <div css={clubApplyPageMainContainer}>
+                <div css={clubLogoAndNameContainer}>
+                    <Ryc css={svgContainer} />
+                    <div css={clubNameContainer}>
+                        {clubData.clubName}
+                        <div css={clubTagContainer}>{clubData.tag}</div>
+                    </div>
                 </div>
+
+                <div css={clubApplyTabContainer}>
+                    {applyData.map((data) => (
+                        <Button
+                            key={data.question}
+                            variant="text"
+                            sx={clubApplyTabName}
+                            onClick={() => setIdx(data.index)}
+                        >
+                            {data.question}
+                        </Button>
+                    ))}
+                </div>
+                {/* 페이지 */}
+                {idx === 0 ? (
+                    <ClubApplyPersonalInfoPage idx={idx} />
+                ) : (
+                    <ClubApplyDetailQuestionPage idx={idx} />
+                )}
             </div>
-            <ClubApplySubmitCard />
-            <div css={clubApplyTabContainer}>
-                {applyData.map((data) => (
-                    <Button
-                        key={data.question}
-                        variant="text"
-                        sx={clubApplyTabName}
-                        onClick={() => setIdx(data.index)}
-                    >
-                        {data.question}
-                    </Button>
-                ))}
-            </div>
-            {/* 페이지 */}
-            {idx === 0 ? (
-                <ClubApplyPersonalInfoPage idx={idx} />
+            {isDesktop ? (
+                <div css={clubApplySubmitCardContainer}>
+                    <ClubApplySubmitCard />
+                </div>
             ) : (
-                <ClubApplyDetailQuestionPage idx={idx} />
+                <div css={submitButtonContainer}>
+                    <Button variant="primary" sx={{ width: '100%' }}>
+                        제출하기
+                    </Button>
+                </div>
             )}
         </div>
     );
