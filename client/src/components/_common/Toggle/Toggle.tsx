@@ -1,35 +1,20 @@
 import React from 'react';
 import type { InputHTMLAttributes } from 'react';
-import {
-    hiddenCheckbox,
-    toggleContainer,
-    leftTextContainer,
-    rightTextContainer,
-} from './Toggle.style';
+import { hiddenCheckbox, toggleContainer, toggleBackground } from './Toggle.style';
+import type { Size } from './Toggle.style';
 
-export type ToggleVariant = 'primary' | 'text' | 'secondText';
-
-interface ToggleProps extends InputHTMLAttributes<HTMLInputElement> {
-    variant?: ToggleVariant;
+interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
     leftText?: string;
     rightText?: string;
-    width?: string;
-    isChecked: boolean;
+    size?: Size;
+    isChecked?: boolean;
     handleToggle?: () => void;
 }
 
-function Toggle({
-    variant = 'primary',
-    width = '11rem',
-    leftText = '',
-    rightText = '',
-    isChecked,
-    handleToggle,
-    ...props
-}: ToggleProps) {
+function Toggle({ isChecked = false, size = 'md', handleToggle, ...props }: ToggleProps) {
     return (
         <>
-            <label css={toggleContainer(variant, width, isChecked)}>
+            <label css={toggleContainer(isChecked, size)}>
                 <input
                     type="checkbox"
                     css={hiddenCheckbox}
@@ -37,8 +22,7 @@ function Toggle({
                     onChange={handleToggle}
                     {...props}
                 />
-                <span css={leftTextContainer(variant, isChecked)}>{leftText}</span>
-                <span css={rightTextContainer(variant, isChecked)}>{rightText}</span>
+                <div css={toggleBackground(isChecked, size)} />
             </label>
         </>
     );

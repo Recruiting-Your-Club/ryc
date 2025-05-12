@@ -1,7 +1,57 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { ToggleVariant } from './Toggle';
+import type { CSSObject } from '@emotion/react';
 
+export type Size = 'sm' | 'md' | 'lg';
+
+const getToggleContainerSize = (size: Size) => {
+    switch (size) {
+        case 'sm':
+            return css`
+                width: 3.5rem;
+                height: 1.9rem;
+            `;
+        case 'md':
+            return css`
+                width: 4.5rem;
+                height: 2.4rem;
+            `;
+        case 'lg':
+            return css`
+                width: 5.6rem;
+                height: 3rem;
+            `;
+    }
+};
+const getToggleSize = (size: Size) => {
+    switch (size) {
+        case 'sm':
+            return css`
+                width: 1.5rem;
+                height: 1.5rem;
+            `;
+        case 'md':
+            return css`
+                width: 2rem;
+                height: 2rem;
+            `;
+        case 'lg':
+            return css`
+                width: 2.5rem;
+                height: 2.5rem;
+            `;
+    }
+};
+const getToggleMove = (size: Size) => {
+    switch (size) {
+        case 'sm':
+            return '4rem';
+        case 'md':
+            return '4.5rem';
+        case 'lg':
+            return '5rem';
+    }
+};
 export const hiddenCheckbox = css`
     position: absolute;
     opacity: 0;
@@ -9,142 +59,38 @@ export const hiddenCheckbox = css`
     height: 0;
 `;
 
-const toggleBase = css`
-    position: relative;
-    display: inline-flex;
+export const toggleBackground = (isChecked: boolean, size: Size) => css`
+    position: absolute;
+    top: 0.2rem;
+    left: 0.3rem;
+    ${getToggleSize(size)};
     align-items: center;
-    cursor: pointer;
-    user-select: none;
-    justify-content: space-between;
+    justify-content: start;
+    border-radius: 50%;
+    transition: all 0.2s ease-in-out;
+    transform: translateX(0);
+    ${size === 'lg' &&
+    css`
+        top: 0.3rem;
+    `}
+    ${isChecked &&
+    css`
+        transform: translateX(calc(${getToggleMove(size)} - 2.5rem));
+    `}
+
+    background-color: ${theme.colors.white};
 `;
 
-export const toggleContainer = (variant: ToggleVariant, width: string, isChecked: boolean) => {
-    switch (variant) {
-        case 'primary':
-            return css`
-                ${toggleBase}
-
-                padding: 0.2rem 0.1rem;
-                ${isChecked
-                    ? `background-color: ${theme.colors.disabled};`
-                    : `background-color: ${theme.colors.default};`}
-                border-radius: 1.1rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                width: ${width};
-            `;
-        case 'text':
-            return css`
-                ${toggleBase}
-                padding: 0.2rem;
-                background-color: white;
-                border-radius: 0.375rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                width: ${width};
-            `;
-        case 'secondText':
-            return css`
-                ${toggleBase}
-                padding: 0.2rem;
-                background-color: ${theme.colors.default};
-                border-radius: 1.2rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                width: ${width};
-            `;
-        default:
-            return css`
-                ${toggleBase}
-                padding: 0.2rem 0.1rem;
-                ${isChecked
-                    ? `background-color: ${theme.colors.disabled};`
-                    : `background-color: ${theme.colors.default};`}
-                border-radius: 1.1rem;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                width: ${width};
-            `;
-    }
-};
-
-const textBase = css`
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.5rem 1.125rem;
-    ${theme.typography.subCaptionSemibold}
-    white-space: nowrap;
-`;
-const noneTextBase = css`
-    display: flex;
-    align-items: center;
-    border-radius: 5rem;
-    padding: 1rem 1rem;
-`;
-
-export const leftTextContainer = (variant: ToggleVariant, isChecked: boolean) => {
-    switch (variant) {
-        case 'primary':
-            return css`
-                ${noneTextBase}
-                ${isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[700]}`}
-            `;
-        case 'text':
-            return css`
-                border-radius: 0.25rem;
-                ${textBase}
-                ${isChecked
-                    ? ` color: ${theme.colors.default};   background-color: #f4f7ff; `
-                    : ` color: ${theme.colors.gray[500]};`}
-            `;
-        case 'secondText':
-            return css`
-                border-radius: 1rem;
-                ${textBase}
-                ${isChecked
-                    ? `color: ${theme.colors.default}; background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.white};`}
-            `;
-        default:
-            return css`
-                ${noneTextBase}
-                ${isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[500]}`}
-            `;
-    }
-};
-
-export const rightTextContainer = (variant: ToggleVariant, isChecked: boolean) => {
-    switch (variant) {
-        case 'primary':
-            return css`
-                ${noneTextBase}
-                ${!isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[500]}`}
-            `;
-        case 'text':
-            return css`
-                border-radius: 0.25rem;
-                ${textBase}
-                ${!isChecked
-                    ? `color: ${theme.colors.default};background-color: #f4f7ff;`
-                    : `color: ${theme.colors.gray[500]};`}
-            `;
-        case 'secondText':
-            return css`
-                border-radius: 1rem;
-                ${textBase}
-                ${!isChecked
-                    ? `color: ${theme.colors.default};background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.white};`}
-            `;
-        default:
-            return css`
-                ${noneTextBase}
-                ${!isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[500]};`}
-            `;
-    }
+export const toggleContainer = (isChecked: boolean, size: Size) => {
+    return css`
+        position: relative;
+        cursor: pointer;
+        border-radius: 25px;
+        ${getToggleContainerSize(size)};
+        background-color: ${theme.colors.gray[400]};
+        ${isChecked &&
+        css`
+            background-color: ${theme.colors.default};
+        `}
+    `;
 };
