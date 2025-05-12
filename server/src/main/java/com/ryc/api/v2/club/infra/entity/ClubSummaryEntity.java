@@ -16,17 +16,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "club_tags")
+@Table(name = "club_summaries")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ClubTagEntity {
+public class ClubSummaryEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  private String name;
+  private String title;
+
+  private String value;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id")
