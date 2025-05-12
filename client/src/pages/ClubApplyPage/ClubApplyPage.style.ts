@@ -6,7 +6,7 @@ export const clubApplyPageContainer = css`
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: flex-start;
+    align-items: start;
     justify-content: space-between;
     padding: 2rem;
 
@@ -115,82 +115,6 @@ export const clubApplyFormConatiner = (index: number) => css`
         width: 100%;
         margin: 1.5rem 0;
     }
-`;
-
-export const clubApplyForm = css`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    border: 1px solid ${theme.colors.gray[300]};
-    border-radius: 5px;
-    width: 100%;
-    height: 10rem;
-    padding: 1.5rem 1.5rem;
-    margin: 2.5rem 0;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-
-    @media (max-width: ${BREAKPOINT.mobile}) {
-        padding: 1rem;
-        margin: 1rem 0;
-        height: 9rem;
-    }
-`;
-
-export const clubApplySubmitCardContainer = css`
-    width: 30%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-
-    @media (max-width: ${BREAKPOINT.tablet}) {
-        width: 100%;
-        margin-top: 2rem;
-    }
-`;
-
-export const clubApplySubmitCard = css`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 23rem;
-    height: 23rem;
-    margin-top: 2rem;
-    margin-right: 0.5rem;
-    padding: 1.5rem;
-    z-index: 1;
-    border: 1px solid ${theme.colors.gray[300]};
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-
-    @media (max-width: ${BREAKPOINT.tablet}) {
-        width: 100%;
-        height: auto;
-        margin: 0;
-    }
-`;
-export const clubApplySubmitCardLogo = css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-export const clubApplySubmitCardSubCaption = css`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 1rem;
-    margin-top: 1rem;
-
-    @media (max-width: ${BREAKPOINT.mobile}) {
-        gap: 0.5rem;
-    }
-`;
-
-export const clubApplyDetailQuestionContainer = css`
-    display: flex;
-    flex-direction: column;
-    margin-bottom: -0.5rem;
 `;
 
 export const submitButtonContainer = css`

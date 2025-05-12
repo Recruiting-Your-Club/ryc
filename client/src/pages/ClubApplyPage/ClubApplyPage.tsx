@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     clubApplyPageContainer,
     clubApplyPageMainContainer,
-    clubApplySubmitCardContainer,
     clubApplyTabContainer,
     clubApplyTabName,
     clubLogoAndNameContainer,
@@ -13,10 +12,11 @@ import {
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
-import { ClubApplySubmitCard } from './ClubApplySubmitCard';
-import { ClubApplyPersonalInfoPage } from './ClubApplyPersonalInfoPage';
-import { ClubApplyDetailQuestionPage } from './ClubApplyDetailQuestionPage';
+import { ClubSubmitCard } from '@components/ClubSubmitCard';
 import { BREAKPOINT } from '@styles/theme/breakPoint';
+import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
+import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
+
 //질문 배열로 받아서 form map으로 뿌리기
 
 export const clubData = {
@@ -41,7 +41,7 @@ function ClubApplyPage() {
         window.innerWidth > parseInt(BREAKPOINT.tablet),
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         const handleResize = () => {
             setIsDesktop(window.innerWidth > parseInt(BREAKPOINT.tablet));
         };
@@ -81,9 +81,7 @@ function ClubApplyPage() {
                 )}
             </div>
             {isDesktop ? (
-                <div css={clubApplySubmitCardContainer}>
-                    <ClubApplySubmitCard />
-                </div>
+                <ClubSubmitCard clubName={clubData.clubName} tag={clubData.tag} deadline="D-1" />
             ) : (
                 <div css={submitButtonContainer}>
                     <Button variant="primary" sx={{ width: '100%' }}>

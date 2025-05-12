@@ -1,9 +1,11 @@
 import React from 'react';
 import { Text } from '@components/_common/Text';
-import { clubApplyForm, clubApplyFormConatiner } from './ClubApplyPage.style';
+
 import { Input } from '@components';
-import { clubData } from './ClubApplyPage';
+import { clubData } from '../ClubApplyPage';
 import { Radio } from '@components/_common/Radio';
+import { clubApplyFormConatiner } from '../ClubApplyPage.style';
+import { clubApplyForm } from './ClubApplyPersonalInfoPage.style';
 interface ClubApplyDetailQuestionPageProps {
     idx: number;
 }
