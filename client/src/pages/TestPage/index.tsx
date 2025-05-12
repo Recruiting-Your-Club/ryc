@@ -10,7 +10,7 @@ function TestPage() {
     return (
         <>
             <div>
-                <Tooltip content="Tooltip 예시입니다." direction="bottomRight">
+                <Tooltip content="Tooltip 예시입니다.">
                     <Button variant="outlined">hd</Button>
                 </Tooltip>
             </div>

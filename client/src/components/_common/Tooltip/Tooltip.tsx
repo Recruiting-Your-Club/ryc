@@ -4,7 +4,7 @@ import type { TooltipProps } from './types';
 
 function Tooltip({
     content,
-    direction = 'bottomRight',
+    direction = 'bottom',
     delay = 100,
     disabled = false,
     children,

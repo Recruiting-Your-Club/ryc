@@ -40,6 +40,14 @@ export const positionStyles: Record<Direction, CSSObject> = {
         left: 50%;
         margin-top: 0.3rem;
     `,
+    top: css`
+        bottom: 100%;
+        margin-bottom: 0.3rem;
+    `,
+    bottom: css`
+        top: 100%;
+        margin-top: 0.3rem;
+    `,
     left: css`
         top: 50%;
         right: 100%;

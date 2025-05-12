@@ -1,7 +1,15 @@
 import type { CSSObject } from '@emotion/react';
 import type { ReactNode } from 'react';
 
-export type Direction = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'left' | 'right';
+export type Direction =
+    | 'topLeft'
+    | 'topRight'
+    | 'bottomLeft'
+    | 'bottomRight'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right';
 
 export interface TooltipProps {
     content: string;
