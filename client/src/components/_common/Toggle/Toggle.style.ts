@@ -9,12 +9,12 @@ const getToggleContainerSize = (size: Size) => {
         case 'sm':
             return css`
                 width: 3.5rem;
-                height: 1.9rem;
+                height: 2rem;
             `;
         case 'md':
             return css`
                 width: 4.5rem;
-                height: 2.4rem;
+                height: 2.5rem;
             `;
         case 'lg':
             return css`
@@ -29,16 +29,22 @@ const getToggleSize = (size: Size) => {
             return css`
                 width: 1.5rem;
                 height: 1.5rem;
+                top: 0.2rem;
+                left: 0.3rem;
             `;
         case 'md':
             return css`
                 width: 2rem;
                 height: 2rem;
+                top: 0.2rem;
+                left: 0.3rem;
             `;
         case 'lg':
             return css`
                 width: 2.5rem;
                 height: 2.5rem;
+                top: 0.2rem;
+                left: 0.3rem;
             `;
     }
 };
@@ -61,8 +67,6 @@ export const hiddenCheckbox = css`
 
 export const toggleCircle = (isChecked: boolean, size: Size) => css`
     position: absolute;
-    top: 0.2rem;
-    left: 0.3rem;
     ${getToggleSize(size)};
     align-items: center;
     justify-content: start;
