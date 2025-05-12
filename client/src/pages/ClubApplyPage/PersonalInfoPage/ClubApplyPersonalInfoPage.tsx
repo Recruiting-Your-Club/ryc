@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from '@components/_common/Text';
-
 import { Input } from '@components';
 import { clubData } from '../ClubApplyPage';
 import { Radio } from '@components/_common/Radio';
