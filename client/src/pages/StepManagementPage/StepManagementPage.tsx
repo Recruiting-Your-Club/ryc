@@ -4,6 +4,7 @@ import { ApplicantCard } from '@components/ApplicantCard';
 import { CardBox } from '@components/CardBox';
 import React, { useState } from 'react';
 import {
+    bottomContainer,
     cardGroup,
     inputCss,
     searchBarContainer,
@@ -11,6 +12,12 @@ import {
     stepManagementPageContainer,
     topContainer,
 } from './StepManagement.style';
+
+// 백엔드에서 받아올 임시 데이터 타입
+export type ClubNotice = {
+    document: boolean;
+    interview: boolean;
+};
 
 function StepManagementPage() {
     const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
@@ -25,6 +32,11 @@ function StepManagementPage() {
         } else {
             setSelectedEmails(applicantList.map((applicant) => applicant.email));
         }
+    };
+
+    const data: ClubNotice = {
+        document: true,
+        interview: true,
     };
 
     const applicantList = [
@@ -63,13 +75,13 @@ function StepManagementPage() {
             score: '2.4',
             status: '평가 중 (2/6)',
         },
-        // {
-        //     name: '김네림',
-        //     email: 'test1238@naver.com',
-        //     date: '2025. 05. 20',
-        //     score: '5',
-        //     status: '평가 완료 (6/6)',
-        // },
+        {
+            name: '김네림',
+            email: 'test1238@naver.com',
+            date: '2025. 05. 20',
+            score: '5',
+            status: '평가 완료 (6/6)',
+        },
     ];
 
     const applicantList2 = [
@@ -165,7 +177,7 @@ function StepManagementPage() {
                 </nav>
             </div>
             <div css={stepBoxContainer}>
-                <CardBox stepTitle="서류 평가" step="normal">
+                <CardBox stepTitle={data.document ? '서류 평가' : '지원서 접수'} step="normal">
                     {/* <Button onClick={handleSelectAll}>전체선택</Button> */}
                     <div css={cardGroup}>
                         {applicantList.map((applicant) => (
@@ -182,23 +194,25 @@ function StepManagementPage() {
                         ))}
                     </div>
                 </CardBox>
-                <CardBox stepTitle="면접" step="normal">
-                    {/* <Button onClick={handleSelectAll}>전체선택</Button> */}
-                    <div css={cardGroup}>
-                        {applicantList2.map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.email}
-                                name={applicant.name}
-                                email={applicant.email}
-                                date={applicant.date}
-                                score={applicant.score}
-                                status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)}
-                                onChange={handleToggle}
-                            />
-                        ))}
-                    </div>
-                </CardBox>
+                {data.interview && (
+                    <CardBox stepTitle="면접" step="normal">
+                        {/* <Button onClick={handleSelectAll}>전체선택</Button> */}
+                        <div css={cardGroup}>
+                            {applicantList2.map((applicant) => (
+                                <ApplicantCard
+                                    key={applicant.email}
+                                    name={applicant.name}
+                                    email={applicant.email}
+                                    date={applicant.date}
+                                    score={applicant.score}
+                                    status={applicant.status}
+                                    checked={selectedEmails.includes(applicant.email)}
+                                    onChange={handleToggle}
+                                />
+                            ))}
+                        </div>
+                    </CardBox>
+                )}
                 <CardBox stepTitle="최종 합격" step="final">
                     {/* <Button onClick={handleSelectAll}>전체선택</Button> */}
                     <div css={cardGroup}>
@@ -216,6 +230,7 @@ function StepManagementPage() {
                         ))}
                     </div>
                 </CardBox>
+                <div css={bottomContainer} />
             </div>
         </div>
     );
