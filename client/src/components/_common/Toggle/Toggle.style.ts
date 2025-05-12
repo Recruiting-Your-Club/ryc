@@ -29,21 +29,21 @@ const getToggleSize = (size: Size) => {
             return css`
                 width: 1.5rem;
                 height: 1.5rem;
-                top: 0.2rem;
+                top: 0.23rem;
                 left: 0.3rem;
             `;
         case 'md':
             return css`
                 width: 2rem;
                 height: 2rem;
-                top: 0.2rem;
+                top: 0.23rem;
                 left: 0.3rem;
             `;
         case 'lg':
             return css`
                 width: 2.5rem;
                 height: 2.5rem;
-                top: 0.2rem;
+                top: 0.25rem;
                 left: 0.3rem;
             `;
     }
