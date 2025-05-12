@@ -40,7 +40,7 @@ function EditorTextarea({ height, radius, sx }: EditorProps) {
                 suppressContentEditableWarning
                 css={[textareaContainer(height, radius), sx]}
                 ref={editorRef}
-            ></div>
+            />
         </>
     );
 }
