@@ -16,6 +16,7 @@ import type { Align, Format, List, Option, Size, TextColor, ToolbarProps } from 
 import { applyAlignment } from './utils/alignment';
 import { applyList } from './utils/list';
 import { handleImageFile, insertDivider } from './utils/options';
+import { getValidRange, getValidSelection } from './utils/range';
 import {
     getCurrentAlignment,
     getCurrentFormats,
@@ -52,56 +53,51 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     // handlers
     const handleSize = (size: Size) => {
-        const selection = window.getSelection(); // 드래그로 선택된 객체
-        if (!selection || selection.rangeCount === 0) return;
+        const { isValid, selection } = getValidSelection();
+        if (!isValid) return;
 
-        const range = selection.getRangeAt(0); // 드래그된 부분
+        const range = selection.getRangeAt(0); //선택된 부분
         applyStyle(selection, range, size);
     };
 
     const handleColor = (textColorType: TextColor, color: string) => {
-        const selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) return;
+        const { isValid, selection } = getValidSelection();
+        if (!isValid) return;
 
         const range = selection.getRangeAt(0);
         applyStyle(selection, range, textColorType, color);
     };
 
     const handleFormat = (format: Format) => {
-        const selection = window.getSelection(); // 드래그로 선택된 객체
-        if (!selection || selection.rangeCount === 0) return;
+        const { isValid, selection } = getValidSelection();
+        if (!isValid) return;
 
-        const range = selection.getRangeAt(0); // 드래그된 부분
+        const range = selection.getRangeAt(0);
         toggleFormatButton(format);
 
         applyStyle(selection, range, format);
     };
 
     const handleAlignment = (align: Align) => {
-        const selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) return;
+        const { isValid, range } = getValidRange();
+        if (!isValid) return;
 
-        const range = selection.getRangeAt(0);
         toggleAlignButton(align);
-
         applyAlignment(range, align);
     };
 
     const handleList = (list: List) => {
-        const selection = window.getSelection();
-        if (!selection || selection.rangeCount === 0) return;
+        const { isValid, range } = getValidRange();
+        if (!isValid) return;
 
-        const range = selection.getRangeAt(0);
         toggleListButton(list);
-
         applyList(range, list);
     };
 
     const handleOption = (option: Option) => {
-        const selection = window.getSelection();
         switch (option) {
             case 'divider':
-                insertDivider(selection, option);
+                insertDivider();
                 break;
             case 'image':
                 imageFileInputRef.current?.click();

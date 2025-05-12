@@ -1,7 +1,6 @@
 import type { ChangeEvent, RefObject } from 'react';
-import type { Option } from '../types';
 import { getEditorRoot } from './alignment';
-import { handleNewRange } from './range';
+import { getValidSelection, handleNewRange } from './range';
 
 const insertSplitedNodes = (
     parent: HTMLElement,
@@ -147,8 +146,10 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Sel
         }
     }
 };
-export const insertDivider = (selection: Selection | null, option: Option) => {
-    if (!selection || selection.rangeCount === 0) return;
+export const insertDivider = () => {
+    const { isValid, selection } = getValidSelection();
+    if (!isValid) return;
+
     const range = selection.getRangeAt(0);
 
     const editor = getEditorRoot(range);

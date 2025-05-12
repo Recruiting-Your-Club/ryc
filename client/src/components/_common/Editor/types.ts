@@ -8,6 +8,11 @@ export type List = 'disc' | 'decimal';
 export type Option = 'image' | 'divider';
 export type TextColor = 'color' | 'background';
 
+export type ValidRange = { isValid: true; range: Range } | { isValid: false; range: null };
+export type ValidSelection =
+    | { isValid: true; selection: Selection }
+    | { isValid: false; selection: null };
+
 export interface EditorContextType {
     editorRef: RefObject<HTMLDivElement>;
     savedRange: Range | null;
