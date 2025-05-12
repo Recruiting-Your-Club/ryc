@@ -25,7 +25,7 @@ export const clubApplyPage = css`
 `;
 
 export const clubApplyPageMainContainer = css`
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -83,7 +83,7 @@ export const clubTagContainer = css`
 `;
 
 export const clubApplyTabContainer = css`
-    width: 90%;
+    width: 77rem;
     display: flex;
     gap: 1rem;
     border-bottom: 1px solid ${theme.colors.gray[300]};
@@ -109,7 +109,7 @@ export const clubApplyTabName = css`
 export const clubApplyFormConatiner = (index: number) => css`
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 77rem;
 
     ${index === 0 &&
     css`
