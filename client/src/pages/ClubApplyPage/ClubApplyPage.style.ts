@@ -6,8 +6,16 @@ export const clubApplyPageContainer = css`
     width: 100%;
     height: 100%;
     display: flex;
+    justify-content: center;
+    background-color: ${theme.colors.gray[100]};
+`;
+
+export const clubApplyPage = css`
+    width: 70%;
+    height: inherit;
+    display: flex;
     align-items: start;
-    justify-content: space-between;
+    gap: 5rem;
     padding: 2rem;
 
     @media (max-width: ${BREAKPOINT.tablet}) {
@@ -20,8 +28,11 @@ export const clubApplyPageMainContainer = css`
     width: 60%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     padding: 2rem;
     margin-left: 10rem;
+    background-color: ${theme.colors.white};
+    border-radius: 5px;
 
     @media (max-width: ${BREAKPOINT.tablet}) {
         width: 100%;
@@ -42,11 +53,11 @@ export const svgContainer = css`
 
 export const clubLogoAndNameContainer = css`
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 1.5rem;
-    width: 20rem;
-    max-width: 30rem;
+    width: 90%;
     height: 4rem;
+    margin: 1rem 0;
 
     @media (max-width: ${BREAKPOINT.mobile}) {
         width: 100%;
@@ -62,8 +73,7 @@ export const clubNameContainer = css`
     ${theme.typography.h4Bold};
 
     @media (max-width: ${BREAKPOINT.mobile}) {
-        ${theme.typography.h4Bold};
-        font-size: 1.5rem;
+        ${theme.typography.h3Bold};
     }
 `;
 
@@ -73,9 +83,8 @@ export const clubTagContainer = css`
 `;
 
 export const clubApplyTabContainer = css`
-    width: 100%;
+    width: 90%;
     display: flex;
-    align-items: center;
     gap: 1rem;
     border-bottom: 1px solid ${theme.colors.gray[300]};
     margin-top: 2rem;
@@ -85,6 +94,7 @@ export const clubApplyTabContainer = css`
         gap: 0.5rem;
     }
 `;
+
 //active 받아서 탭 관리
 export const clubApplyTabName = css`
     ${theme.typography.subCaptionRegular};
@@ -123,7 +133,7 @@ export const submitButtonContainer = css`
     position: fixed;
     bottom: 0;
     left: 0;
-    background-color: white;
+    background-color: ${theme.colors.white};
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 
