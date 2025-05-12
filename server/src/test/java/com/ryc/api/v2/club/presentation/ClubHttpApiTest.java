@@ -64,7 +64,7 @@ class ClubHttpApiTest {
     // when
     ResultActions result =
         mockMvc.perform(
-            post("/api/v2/club/")
+            post("/api/v2/clubs/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -87,7 +87,7 @@ class ClubHttpApiTest {
     // when
     ResultActions result =
         mockMvc.perform(
-            post("/api/v2/club/")
+            post("/api/v2/clubs/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
