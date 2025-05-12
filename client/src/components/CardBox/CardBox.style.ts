@@ -19,6 +19,8 @@ export const boxContainer = (height: string = '100%', step: Step) => css`
 export const titleGroup = css`
     display: flex;
     height: 5%;
+    max-height: 5rem;
+    min-height: 4rem;
     padding: 1rem 1.5rem;
     justify-content: space-between;
     align-items: center;
@@ -26,7 +28,7 @@ export const titleGroup = css`
 
 export const cardGroupWrapper = css`
     height: 95%;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 1rem 1rem;
 `;
 
 export const svgCss = css`
