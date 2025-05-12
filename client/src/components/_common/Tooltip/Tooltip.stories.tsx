@@ -32,12 +32,29 @@ export default meta;
 
 type Story = StoryObj<typeof Tooltip>;
 
-export const Primary = () => {
-    return (
-        <Tooltip content="Tooltip 예시입니다.">
+export const Primary: Story = {
+    render: (args: TooltipProps) => (
+        <Tooltip {...args}>
             <p>안녕하세요.</p>
         </Tooltip>
-    );
+    ),
+    args: {
+        content: '툴팁 예시입니다.',
+        direction: 'bottomRight',
+        disabled: false,
+    },
+    argTypes: {
+        content: { control: 'text', description: '툴팁 텍스트' },
+        direction: {
+            control: { type: 'radio' },
+            options: ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'left', 'right'],
+            description: '툴팁 방향',
+        },
+        delay: {
+            control: { type: 'number' },
+            description: '툴팁이 나타나는 딜레이(ms)',
+        },
+    },
 };
 
 export const CustomStorybook: Story = {
