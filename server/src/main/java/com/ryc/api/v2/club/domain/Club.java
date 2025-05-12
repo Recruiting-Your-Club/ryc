@@ -8,7 +8,8 @@ import java.util.List;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder
@@ -42,8 +43,6 @@ public class Club {
         .thumbnailUrl(thumbnailUrl)
         .category(clubCreateRequest.category())
         .clubTags(clubTags)
-        .detailDescription("")
-        .deleted(false)
         .build();
   }
 }

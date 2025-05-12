@@ -53,7 +53,7 @@ class ClubHttpApiTest {
     ClubCreateRequest request =
         ClubCreateRequest.builder()
             .name("test")
-            .description("테스트입니다.")
+            .shortDescription("테스트입니다.")
             .category(Category.ACADEMIC)
             .tagNames(List.of("test"))
             .build();
@@ -79,7 +79,7 @@ class ClubHttpApiTest {
     ClubCreateRequest request =
         ClubCreateRequest.builder()
             .name(" ")
-            .description(" ")
+            .shortDescription(" ")
             .category(null)
             .tagNames(List.of())
             .build();

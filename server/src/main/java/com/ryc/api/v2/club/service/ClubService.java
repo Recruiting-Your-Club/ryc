@@ -32,7 +32,8 @@ public class ClubService {
     final String ImageUrlFromS3 = "MOCK_URL";
     final String ThumbnailUrlFromS3 = "MOCK_URL";
 
-    final List<ClubTag> clubTags = body.tagNames().stream().map(ClubTag::initialize).toList();
+    final List<ClubTag> clubTags =
+        body.tagNames().stream().map(tagName -> ClubTag.builder().name(tagName).build()).toList();
 
     final Club club = Club.initialize(body, ImageUrlFromS3, ThumbnailUrlFromS3, clubTags);
 
