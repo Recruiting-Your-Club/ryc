@@ -7,8 +7,14 @@ export const rootCss = css`
     padding-top: 1.3rem;
     border: 0px;
     box-shadow: 0px 0px 3px 0px rgba(${hexToRgb(theme.colors.black)}, 0.15);
-    :hover {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:hover {
         cursor: pointer;
+        transform: translateY(-1px);
+        box-shadow: 0px 0px 5px 0px rgba(${hexToRgb(theme.colors.black)}, 0.3);
     }
 `;
 
