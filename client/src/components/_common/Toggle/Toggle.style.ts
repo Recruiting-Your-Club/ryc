@@ -69,10 +69,6 @@ export const toggleCircle = (isChecked: boolean, size: Size) => css`
     border-radius: 50%;
     transition: all 0.2s ease-in-out;
     transform: translateX(0);
-    ${size === 'lg' &&
-    css`
-        top: 0.3rem;
-    `}
     ${isChecked &&
     css`
         transform: translateX(calc(${getToggleMove(size)} - 2.5rem));
