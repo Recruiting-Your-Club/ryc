@@ -14,7 +14,7 @@ export const clubApplyFormContainer = (index: number) => css`
     css`
         gap: 1.5rem;
     `};
-    margin: 3rem 2rem;
+    margin: 3rem 0;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%;

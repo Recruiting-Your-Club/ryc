@@ -22,6 +22,9 @@ function ClubApplyPersonalInfoPage({ idx }: ClubApplyDetailQuestionPageProps) {
                 <Input variant="lined" label={clubData.phoneNumber} inputSx={{ width: '50%' }} />
             </div>
             <div css={clubApplyForm}>
+                <Input variant="lined" label={clubData.phoneNumber} inputSx={{ width: '50%' }} />
+            </div>
+            <div css={clubApplyForm}>
                 <Text>{clubData.gender}</Text>
                 <Radio
                     name="gender"
