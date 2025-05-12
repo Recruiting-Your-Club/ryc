@@ -18,6 +18,7 @@ export interface CalendarData {
     day: number;
     isCurrentMonth: boolean;
     dateString: string;
+    weekend: number;
 }
 
 export type Size = 'sm' | 'md' | 'lg' | 'full';

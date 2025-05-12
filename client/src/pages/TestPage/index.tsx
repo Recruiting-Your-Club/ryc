@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
 import { Calendar, Button } from '@components';
 import dayjs from 'dayjs';
+import { MainCard } from '@components';
 
 function TestPage() {
-    const [selectedDate, setSelectedDate] = useState<string[]>([]);
-
-    const handleButton = () => {
-        //console.log('선택한 날짜', selectedDate);
+    const [text, setText] = useState('');
+    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setText(e.target.value);
     };
     return (
         <>
-            <div>asadasdasd</div>
-            <br />
-            <br />
-            <Calendar
-                isMultiple={true}
-                selectedDate={selectedDate}
-                onSelect={setSelectedDate}
-                size="sm"
-            />
-            <button onClick={handleButton}>선택한 날짜를 확인해보아요</button>
+            <MainCard />
         </>
     );
 }
