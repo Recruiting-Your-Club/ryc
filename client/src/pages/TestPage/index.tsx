@@ -36,11 +36,17 @@ function TestPage() {
                         hello
                     </Button>
                 </Dropdown.Trigger>
-                <Dropdown.Content offsetX={-15} offsetY={17}>
+                <Dropdown.Content
+                    offsetX={-15}
+                    offsetY={17}
+                    sx={{ width: '20rem', borderRadius: '1rem' }}
+                >
                     <Dropdown.Label>hello</Dropdown.Label>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
-                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item onItemSelect={() => alert('버튼이 클릭되었습니다')}>
+                            알림창 띄우기
+                        </Dropdown.Item>
                         <Dropdown.Item>hi</Dropdown.Item>
                         <Dropdown.Item>hi</Dropdown.Item>
                     </Dropdown.Group>
