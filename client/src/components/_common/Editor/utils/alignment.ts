@@ -60,8 +60,6 @@ const applyAlignmentToDivsInRange = (editor: HTMLElement, range: Range, align: A
 };
 
 export const applyAlignment = (range: Range, align: Align) => {
-    if (!range) return;
-
     const editor = getEditorRoot(range);
     if (!editor) return;
 

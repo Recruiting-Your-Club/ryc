@@ -151,8 +151,6 @@ export const insertDivider = (selection: Selection | null, option: Option) => {
     if (!selection || selection.rangeCount === 0) return;
     const range = selection.getRangeAt(0);
 
-    if (!range || option !== 'divider') return;
-
     const editor = getEditorRoot(range);
     if (!editor) return;
 

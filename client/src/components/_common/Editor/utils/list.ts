@@ -94,8 +94,6 @@ const applyListInSplitedText = (
 };
 
 export const applyList = (range: Range, list: List) => {
-    if (!range) return;
-
     const editor = getEditorRoot(range);
     if (!editor) return;
     if (range.startContainer === editor) return;
