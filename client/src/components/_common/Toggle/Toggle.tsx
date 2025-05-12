@@ -1,6 +1,6 @@
 import React from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { hiddenCheckbox, toggleContainer, toggleBackground } from './Toggle.style';
+import { hiddenCheckbox, toggleContainer, toggleCircle } from './Toggle.style';
 import type { Size } from './Toggle.style';
 
 interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -22,7 +22,7 @@ function Toggle({ isChecked = false, size = 'md', handleToggle, ...props }: Togg
                     onChange={handleToggle}
                     {...props}
                 />
-                <div css={toggleBackground(isChecked, size)} />
+                <div css={toggleCircle(isChecked, size)} />
             </label>
         </>
     );

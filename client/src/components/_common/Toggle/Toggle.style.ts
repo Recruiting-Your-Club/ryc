@@ -59,7 +59,7 @@ export const hiddenCheckbox = css`
     height: 0;
 `;
 
-export const toggleBackground = (isChecked: boolean, size: Size) => css`
+export const toggleCircle = (isChecked: boolean, size: Size) => css`
     position: absolute;
     top: 0.2rem;
     left: 0.3rem;
