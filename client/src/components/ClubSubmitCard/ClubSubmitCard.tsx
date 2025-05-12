@@ -37,7 +37,7 @@ function ClubSubmitCard({
                 <div css={clubSubmitCardLogo}>
                     <Ryc css={svgContainer} />
                     {deadline && (
-                        <Text type="subCaptionRegular" color="warning">
+                        <Text type="captionRegular" color="warning">
                             {deadline}
                         </Text>
                     )}
