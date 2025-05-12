@@ -7,8 +7,9 @@ import lombok.Getter;
 
 @Getter
 public class ClubTag {
+
   private final String id;
-  private String name;
+  private final String name;
 
   @Builder
   private ClubTag(String id, String name) {
@@ -18,9 +19,5 @@ public class ClubTag {
 
   public static ClubTag initialize(String name) {
     return ClubTag.builder().id(DEFAULT_INITIAL_ID).name(name).build();
-  }
-
-  public void updateName(final String name) {
-    this.name = name;
   }
 }

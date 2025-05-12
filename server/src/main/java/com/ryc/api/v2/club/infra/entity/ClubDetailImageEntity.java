@@ -1,16 +1,13 @@
 package com.ryc.api.v2.club.infra.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import com.ryc.api.v2.club.domain.Category;
-import com.ryc.api.v2.common.entity.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,30 +16,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "clubs")
+@Table(name = "club_detail_images")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ClubEntity extends BaseEntity {
-
+public class ClubDetailImageEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(unique = true)
-  private String name;
-
-  private String shortDescription;
-
-  @Column(columnDefinition = "TEXT")
-  private String detailDescription;
-
   private String imageUrl;
   private String thumbnailUrl;
 
-  @Enumerated(EnumType.STRING)
-  private Category category;
-
-  @Builder.Default private Boolean deleted = Boolean.FALSE;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_id")
+  private ClubEntity clubEntity;
 }
