@@ -8,21 +8,28 @@ interface ClubApplyDetailQuestionPageProps {
     idx: number;
 }
 
+const detailQuestions = [
+    {
+        id: 1,
+        question: 'EN#에 지원한 동기가 무엇인가요?',
+    },
+    {
+        id: 3,
+        question: 'EN#에서 가장 기대되는 활동을 작성해주세요.',
+    },
+];
+
 function ClubApplyDetailQuestionPage({ idx }: ClubApplyDetailQuestionPageProps) {
     return (
         <div css={clubApplyFormContainer(idx)}>
-            <div css={clubApplyDetailQuestionContainer}>
-                <Text textAlign="start" type="captionRegular">
-                    En#에 지원한 동기가 무엇인가요?
-                </Text>
-                <TextArea size="md" wrapperSx={{ marginTop: '1rem' }} />
-            </div>
-            <div css={clubApplyDetailQuestionContainer}>
-                <Text textAlign="start" type="captionRegular">
-                    En#에서 기대하는게 무엇인가요?
-                </Text>
-                <TextArea size="md" wrapperSx={{ marginTop: '1rem' }} />
-            </div>
+            {detailQuestions.map((data) => (
+                <div key={data.question} css={clubApplyDetailQuestionContainer}>
+                    <Text textAlign="start" type="captionRegular">
+                        {data.question}
+                    </Text>
+                    <TextArea size="md" wrapperSx={{ marginTop: '1rem' }} />
+                </div>
+            ))}
         </div>
     );
 }
