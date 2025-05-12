@@ -1,20 +1,41 @@
 import React from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { hiddenCheckbox, toggleContainer, toggleBackground } from './TextToggle.style';
-import type { Size } from './TextToggle.style';
+import {
+    hiddenCheckbox,
+    toggleContainer,
+    leftTextContainer,
+    rightTextContainer,
+} from './TextToggle.style';
+import { Text } from '@components';
 
 interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
     leftText?: string;
     rightText?: string;
-    size?: Size;
     isChecked?: boolean;
+    size?: 'sm' | 'md' | 'lg';
     handleToggle?: () => void;
 }
-
-function TextToggle({ isChecked = false, size = 'md', handleToggle, ...props }: ToggleProps) {
+const getSize = (size: 'sm' | 'md' | 'lg') => {
+    switch (size) {
+        case 'sm':
+            return 'subCaptionRegular';
+        case 'md':
+            return 'captionRegular';
+        case 'lg':
+            return 'bodyRegular';
+    }
+};
+function TextToggle({
+    isChecked = false,
+    handleToggle,
+    leftText = '지원사항',
+    rightText = '내 정보',
+    size = 'md',
+    ...props
+}: ToggleProps) {
     return (
         <>
-            <label css={toggleContainer(isChecked, size)}>
+            <label css={toggleContainer}>
                 <input
                     type="checkbox"
                     css={hiddenCheckbox}
@@ -22,7 +43,12 @@ function TextToggle({ isChecked = false, size = 'md', handleToggle, ...props }: 
                     onChange={handleToggle}
                     {...props}
                 />
-                <div css={toggleBackground(isChecked, size)} />
+                <Text as="div" type={getSize(size)} sx={leftTextContainer(isChecked)}>
+                    {leftText}
+                </Text>
+                <Text as="div" type={getSize(size)} sx={rightTextContainer(isChecked)}>
+                    {rightText}
+                </Text>
             </label>
         </>
     );
