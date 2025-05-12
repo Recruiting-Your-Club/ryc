@@ -26,7 +26,7 @@ export const titleGroup = css`
 
 export const cardGroupWrapper = css`
     height: 95%;
-    padding: 1rem 1rem;
+    padding: 0.5rem 1rem;
 `;
 
 export const svgCss = css`
