@@ -19,12 +19,21 @@ function DropdownTrigger({
     sx,
     ...props
 }: DropdownTriggerProps) {
+    // prop destruction
+    // lib hooks
     const { open, setOpen, triggerRef } = useDropdownContext();
 
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     const ref = forwardedRef || triggerRef;
 
     const Comp = asChild ? Slot : 'button';
 
+    // handlers
+    // effects
     return (
         <Comp
             css={[sx, s_dropdownTrigger]}

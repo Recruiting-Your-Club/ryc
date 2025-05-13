@@ -20,10 +20,18 @@ function DropdownContent({
     forwardedRef,
     ...props
 }: DropdownContentProps) {
+    //prop destruction
+    //lib hooks
     const { open, contentRef } = useDropdownContext();
 
+    //state, ref, querystring hooks
+    //form hooks
+    //query hooks
+    //calculated values
     const ref = forwardedRef || contentRef;
 
+    //handlers
+    //effects
     return (
         <div role="menu" ref={ref} css={[s_dropdownContent(offsetX, offsetY, open), sx]} {...props}>
             {children}

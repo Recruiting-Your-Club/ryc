@@ -21,10 +21,18 @@ function DropdownSubTrigger({
     forwardedRef,
     ...props
 }: DropdownSubTriggerProps) {
+    // prop destruction
+    // lib hooks
     const { open, setOpen, triggerRef } = useDropdownSubContext();
 
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     const ref = forwardedRef || triggerRef;
 
+    //handlers
     const handleSelect = () => {
         if (!disabled) {
             setOpen(!open);
@@ -37,6 +45,7 @@ function DropdownSubTrigger({
         }
     };
 
+    //effects
     return (
         <div
             role="menuitem"

@@ -9,6 +9,15 @@ interface DropdownGruopProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function DropdownGroup({ children, sx, ...props }: DropdownGruopProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={[s_dropdownGroup, sx]} {...props}>
             {children}

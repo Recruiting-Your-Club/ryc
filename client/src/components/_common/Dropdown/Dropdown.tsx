@@ -29,12 +29,19 @@ function DropdownRoot({
     open: controlledOpen,
     sx,
 }: DropdownProps) {
+    //prop destruction
+    //lib hooks
+    //state, ref, querystring hooks
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen || false);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
+    //form hooks
+    //query hooks
+    //calculated values
     const open = controlledOpen ?? uncontrolledOpen;
 
+    //handlers
     const setOpen = useCallback(
         (value: SetStateAction<boolean>) => {
             const newValue = typeof value === 'function' ? value(open) : value; //상태관리에 함수가 들어올 경우 생각
@@ -47,9 +54,10 @@ function DropdownRoot({
         [controlledOpen, onOpenChange, open],
     );
 
-    useClickOutside([triggerRef, contentRef], () => setOpen(false));
-
     const contextValue = useMemo(() => ({ open, setOpen, triggerRef, contentRef }), [open]);
+
+    //effects
+    useClickOutside([triggerRef, contentRef], () => setOpen(false));
 
     return (
         <DropdownContext.Provider value={contextValue}>

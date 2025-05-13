@@ -25,8 +25,16 @@ function DropdownItem({
     sx,
     ...props
 }: DropdownItemProps) {
+    // prop destruction
+    // lib hooks
     const { setOpen } = useDropdownContext();
 
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
     const handleClick = (e: ReactMouseEvent<HTMLDivElement>) => {
         if (!disabled) {
             onItemSelect?.(e);
@@ -41,6 +49,7 @@ function DropdownItem({
         }
     };
 
+    // effects
     return (
         <div
             role="menuitem"
