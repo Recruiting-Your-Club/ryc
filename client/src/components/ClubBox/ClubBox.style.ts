@@ -18,5 +18,4 @@ export const clubBoxContainer = css`
 
 export const clubBoxItem = css`
     display: flex;
-    gap: 3rem;
 `;
