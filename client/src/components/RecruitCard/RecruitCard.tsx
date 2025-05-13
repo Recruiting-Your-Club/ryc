@@ -5,7 +5,7 @@ import {
     recruitCardFooter,
     recruitCardHeader,
     deadlineText,
-} from './Recruit.style';
+} from './RecruitCard.style';
 import { Text } from '@components';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';

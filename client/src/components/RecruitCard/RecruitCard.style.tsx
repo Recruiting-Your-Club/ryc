@@ -14,10 +14,10 @@ export const recruitCardContainer = css`
     :hover {
         background-color: ${theme.colors.gray[100]};
     }
-    @media (max-width: 480px) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         width: 28rem;
     }
-    @media (max-width: 400px) {
+    @media (max-width: ${theme.breakpoint.mobileMini}) {
         width: 25rem;
     }
 `;
