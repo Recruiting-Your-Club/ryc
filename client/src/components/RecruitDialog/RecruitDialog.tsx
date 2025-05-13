@@ -44,7 +44,14 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                 <Text as="h1" type="h1Semibold">
                     모집공고
                 </Text>
-                <Button variant="text" size="xs">
+                <Button
+                    variant="text"
+                    size="xs"
+                    onClick={() => {
+                        handleClose?.();
+                        goTo('recruitment');
+                    }}
+                >
                     전체 페이지로 보기
                 </Button>
             </Dialog.Header>
