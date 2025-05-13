@@ -1,38 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text } from '@components/_common/Text';
 import { Input } from '@components';
-import { clubData, clubPersonalQuestions } from '../ClubApplyPage';
+import { clubPersonalQuestions } from '../ClubApplyPage';
 import { Radio } from '@components/_common/Radio';
 import { clubApplyFormConatiner } from '../ClubApplyPage.style';
 import { clubApplyForm } from './ClubApplyPersonalInfoPage.style';
 
-interface ClubApplyDetailQuestionPageProps {
+interface ClubApplyPersonalInfoPageProps {
     idx: number;
-    onQuestionComplete: (completed: number) => void;
+    answers: { [key: number]: string };
+    onAnswerChange: (id: number, value: string) => void;
 }
 
-function ClubApplyPersonalInfoPage({ idx, onQuestionComplete }: ClubApplyDetailQuestionPageProps) {
-    const [answers, setAnswers] = useState<{ [key: number]: string }>({});
-
-    useEffect(() => {
-        const completedCount = Object.values(answers).filter(
-            (answer) => answer.trim() !== '',
-        ).length;
-        onQuestionComplete(completedCount);
-    }, [answers, onQuestionComplete]);
-
+function ClubApplyPersonalInfoPage({
+    idx,
+    answers,
+    onAnswerChange,
+}: ClubApplyPersonalInfoPageProps) {
     const handleInputChange = (id: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [id]: value,
-        }));
+        onAnswerChange(id, value);
     };
 
     const handleRadioChange = (id: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [id]: value,
-        }));
+        onAnswerChange(id, value);
     };
 
     return (
@@ -42,12 +32,15 @@ function ClubApplyPersonalInfoPage({ idx, onQuestionComplete }: ClubApplyDetailQ
                     <div key={data.id} css={clubApplyForm}>
                         <Text>{data.question}</Text>
                         <Radio
-                            name="gender"
+                            name={`question-${data.id}`}
                             orientation="vertical"
-                            options={[
-                                { label: '남', value: 'male' },
-                                { label: '여', value: 'female' },
-                            ]}
+                            options={
+                                data.options?.map((option) => ({
+                                    label: option,
+                                    value: option,
+                                })) || []
+                            }
+                            value={answers[data.id] || ''}
                             onChange={(value) => handleRadioChange(data.id, value)}
                         />
                     </div>

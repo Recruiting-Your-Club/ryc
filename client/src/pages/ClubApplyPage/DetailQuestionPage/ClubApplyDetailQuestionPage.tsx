@@ -3,23 +3,23 @@ import { Text } from '@components/_common/Text';
 import { TextArea } from '@components/_common/TextArea';
 import { clubApplyDetailQuestionContainer } from './ClubApplyDetailQuestionPage.style';
 import { clubApplyFormContainer } from '../PersonalInfoPage/ClubApplyPersonalInfoPage.style';
+import { detailQuestions } from '../ClubApplyPage';
 
 interface ClubApplyDetailQuestionPageProps {
     idx: number;
+    answers: { [key: number]: string };
+    onAnswerChange: (id: number, value: string) => void;
 }
 
-const detailQuestions = [
-    {
-        id: 1,
-        question: 'EN#에 지원한 동기가 무엇인가요?',
-    },
-    {
-        id: 3,
-        question: 'EN#에서 가장 기대되는 활동을 작성해주세요.',
-    },
-];
+function ClubApplyDetailQuestionPage({
+    idx,
+    answers,
+    onAnswerChange,
+}: ClubApplyDetailQuestionPageProps) {
+    const handleTextAreaChange = (id: number, value: string) => {
+        onAnswerChange(id, value);
+    };
 
-function ClubApplyDetailQuestionPage({ idx }: ClubApplyDetailQuestionPageProps) {
     return (
         <div css={clubApplyFormContainer(idx)}>
             {detailQuestions.map((data) => (
@@ -27,7 +27,13 @@ function ClubApplyDetailQuestionPage({ idx }: ClubApplyDetailQuestionPageProps) 
                     <Text textAlign="start" type="captionRegular">
                         {data.question}
                     </Text>
-                    <TextArea size="md" wrapperSx={{ marginTop: '1rem' }} />
+
+                    <TextArea
+                        size="md"
+                        wrapperSx={{ marginTop: '1rem' }}
+                        value={answers[data.id] || ''}
+                        onChange={(e) => handleTextAreaChange(data.id, e.target.value)}
+                    />
                 </div>
             ))}
         </div>
