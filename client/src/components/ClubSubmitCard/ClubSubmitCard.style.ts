@@ -1,16 +1,10 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import { BREAKPOINT } from '@styles/theme/breakPoint';
 
 export const clubApplySubmitCardContainer = css`
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: center;
-
-    @media (max-width: ${BREAKPOINT.tablet}) {
-        width: 100%;
-        margin-top: 2rem;
-    }
 `;
 
 export const svgContainer = css`
@@ -31,15 +25,18 @@ export const clubSubmitCard = css`
     height: 23rem;
     margin-right: 0.5rem;
     padding: 1.5rem;
-    z-index: 1;
     border-radius: 5px;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     background-color: ${theme.colors.white};
 
     @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 100%;
-        height: auto;
+        width: 20rem;
+        height: 20rem;
         margin: 0;
+    }
+
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: none;
     }
 `;
 
@@ -56,8 +53,9 @@ export const clubSubmitCardSubCaption = css`
     gap: 1rem;
     margin-top: 1rem;
 
-    @media (max-width: ${theme.breakpoint.mobile}) {
+    @media (max-width: ${theme.breakpoint.tablet}) {
         gap: 0.5rem;
+        margin-bottom: 1rem;
     }
 `;
 
