@@ -30,6 +30,8 @@ function RecruitCard(props: RecruitCardProps) {
             return `D-${diffDay}`;
         } else if (diffDay === 0) {
             return `D-Day`;
+        } else {
+            return `마감`;
         }
     }, [formattedDeadline, today]);
     // handlers
