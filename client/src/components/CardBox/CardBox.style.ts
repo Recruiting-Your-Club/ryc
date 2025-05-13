@@ -6,7 +6,7 @@ import type { Step } from './types';
 export const boxContainer = (height: string = '100%', step: Step) => css`
     height: ${height};
     border-radius: 10px;
-    background-color: rgba(${hexToRgb(theme.colors.gray[200])}, 0.8);
+    background-color: rgba(${hexToRgb(theme.colors.gray[100])}, 1);
     justify-content: center;
     align-items: center;
 
