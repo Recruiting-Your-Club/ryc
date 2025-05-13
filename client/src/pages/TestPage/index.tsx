@@ -1,13 +1,7 @@
-import React, { useState } from 'react';
-import { Calendar, Button } from '@components';
-import dayjs from 'dayjs';
+import React, { TextareaHTMLAttributes, useState } from 'react';
 import { MainCard } from '@components';
 
 function TestPage() {
-    const [text, setText] = useState('');
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setText(e.target.value);
-    };
     return (
         <>
             <MainCard />
