@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ClubBox, Text, ImageDialog } from '@components';
+import { ClubBox, Text, ImageDialog, Image } from '@components';
 import {
     clubIntroContainer,
     imageItem,
@@ -58,13 +58,7 @@ APP서비스를 구현하여 운영하는 경험을 목표로 하고 있습니�
                                 handleImageClick(url);
                             }}
                         >
-                            <img
-                                src={url}
-                                alt="동아리 사진"
-                                width="100%"
-                                height="100%"
-                                css={{ borderRadius: '10px' }}
-                            />
+                            <Image src={url} alt="동아리 사진" />
                         </button>
                     ))}
             </div>

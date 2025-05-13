@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog } from '@components';
+import { Dialog, Image } from '@components';
 import { imageContainer, responsiveSize } from './ImageDialog.style';
 import type { ImageDialogProps } from './types';
 
@@ -9,7 +9,7 @@ function ImageDialog(props: ImageDialogProps) {
         <Dialog open={open} handleClose={handleClose} size="md" sx={responsiveSize}>
             <Dialog.Content sx={{ padding: 0, borderRadius: 0 }}>
                 <div css={imageContainer}>
-                    <img src={imageUrl} alt="clubImage" width="100%" height="100%" />
+                    <Image src={imageUrl} alt="clubImage" />
                 </div>
             </Dialog.Content>
         </Dialog>
