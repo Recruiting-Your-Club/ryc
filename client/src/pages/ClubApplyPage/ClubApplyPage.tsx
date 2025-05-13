@@ -12,6 +12,7 @@ import {
     submitButtonContainer,
     clubApplyPage,
     mobileQuestionStatus,
+    nextButtonContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
@@ -19,11 +20,8 @@ import { ClubSubmitCard } from '@components/ClubSubmitCard';
 import { BREAKPOINT } from '@styles/theme/breakPoint';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import { css } from '@emotion/react';
 import { useTheme } from '@emotion/react';
-import { useNavigate } from 'react-router-dom';
-import { Dialog } from '@components/_common';
-import { Text } from '@components/_common/Text';
+import SubmitDialog from '@components/SubmitDialog/SubmitDialog';
 
 // 임시 데이터 (서버 응답 형식에 맞춤)
 export const clubData = {
@@ -104,7 +102,7 @@ export const clubPersonalQuestions = clubData.preQuestions[0].additionalQuestion
         id: index + 1,
         question: question.title,
         type: question.category === 'MULTIPLE_CHOICE' ? 'boolean' : 'string',
-        options: question.options,
+        options: question.options ?? [],
     }),
 );
 
@@ -192,10 +190,42 @@ function ClubApplyPage() {
         setIsSubmitDialogOpen(false);
     };
 
+    // 현재 페이지의 답변만 추출
+    const getCurrentPageAnswers = () => {
+        if (idx === 0) {
+            return clubPersonalQuestions.reduce(
+                (acc, q) => {
+                    acc[q.id] = answers[q.id] || '';
+                    return acc;
+                },
+                {} as { [key: number]: string },
+            );
+        } else {
+            return detailQuestions.reduce(
+                (acc, q) => {
+                    acc[q.id] = answers[q.id] || '';
+                    return acc;
+                },
+                {} as { [key: number]: string },
+            );
+        }
+    };
+
+    // 다음 버튼 클릭 핸들러
+    const handleNext = () => {
+        // 현재 페이지 답변만 저장
+        const pageAnswers = getCurrentPageAnswers();
+        localStorage.setItem(`club-apply-answers-page-${idx}`, JSON.stringify(pageAnswers));
+        // 다음 탭으로 이동
+        if (idx < applyData.length - 1) {
+            setIdx(idx + 1);
+        }
+    };
+
     return (
         <div css={clubApplyPageContainer}>
             <div css={clubApplyPage}>
-                <div css={clubApplyPageMainContainer}>
+                <div css={clubApplyPageMainContainer} style={{ position: 'relative' }}>
                     <div css={clubLogoAndNameContainer}>
                         <Ryc css={svgContainer} />
                         <div css={clubNameContainer}>
@@ -244,8 +274,16 @@ function ClubApplyPage() {
                             onAnswerChange={handleAnswerChange}
                         />
                     )}
+                    {/* 오른쪽 하단 다음 버튼 */}
+                    {idx < applyData.length - 1 && (
+                        <div css={nextButtonContainer}>
+                            <Button variant="primary" onClick={handleNext}>
+                                다음
+                            </Button>
+                        </div>
+                    )}
                 </div>
-                {isDesktop && (
+                {isDesktop ? (
                     <ClubSubmitCard
                         clubName={clubData.title}
                         tag={clubData.tag}
@@ -256,9 +294,7 @@ function ClubApplyPage() {
                         isDesktop={isDesktop}
                         onSubmit={handleSubmit}
                     />
-                )}
-                {/* 모바일 환경에서만 하단 제출 버튼 노출 */}
-                {!isDesktop && (
+                ) : (
                     <div css={submitButtonContainer}>
                         <Button
                             variant="primary"
@@ -272,29 +308,11 @@ function ClubApplyPage() {
                 )}
             </div>
 
-            <Dialog
+            <SubmitDialog
                 open={isSubmitDialogOpen}
-                handleClose={() => setIsSubmitDialogOpen(false)}
-                size="sm"
-            >
-                <Dialog.Header border closeIcon handleClose={() => setIsSubmitDialogOpen(false)}>
-                    <Text type="h3Bold">제출하시겠습니까?</Text>
-                </Dialog.Header>
-                <Dialog.Content>
-                    <Text type="bodyRegular">제출 후엔 수정할 수 없습니다~~</Text>
-                    <Text type="bodyRegular" color="helper">
-                        제출 후 결과가 메일로 발송됩니다.
-                    </Text>
-                </Dialog.Content>
-                <Dialog.Action border>
-                    <Button variant="primary" onClick={handleConfirmSubmit}>
-                        예
-                    </Button>
-                    <Button variant="text" onClick={() => setIsSubmitDialogOpen(false)}>
-                        아니요
-                    </Button>
-                </Dialog.Action>
-            </Dialog>
+                onConfirm={handleConfirmSubmit}
+                onClose={() => setIsSubmitDialogOpen(false)}
+            />
         </div>
     );
 }

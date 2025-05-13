@@ -25,6 +25,7 @@ export const clubApplyPage = css`
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%;
+        flex-direction: column;
     }
 `;
 
@@ -136,15 +137,12 @@ export const clubApplyFormConatiner = (index: number) => css`
 
 export const submitButtonContainer = css`
     width: 100%;
-    height: 4rem;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: ${theme.colors.white};
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    background-color: ${theme.colors.gray[100]};
 
     @media (min-width: ${theme.breakpoint.mobile}) {
         display: none;
@@ -159,4 +157,11 @@ export const mobileQuestionStatus = css`
     @media (min-width: ${theme.breakpoint.tablet}) {
         display: none;
     }
+`;
+
+export const nextButtonContainer = css`
+    width: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: end;
 `;
