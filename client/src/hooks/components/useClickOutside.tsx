@@ -18,7 +18,7 @@ function useClickOutside(refs: RefObject<HTMLElement>[], callback: () => void) {
         return () => {
             document.removeEventListener('mousedown', handler);
         };
-    }, [callback, ...refs.map((ref) => ref.current)]);
+    }, [callback]);
 }
 
 export { useClickOutside };
