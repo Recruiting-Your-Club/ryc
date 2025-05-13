@@ -36,7 +36,7 @@ function ClubNavigation(props: ClubNavigationProps) {
                             </Button>
                         ))}
                 </div>
-                {navItem && navItem}
+                {navItem}
             </div>
             <Divider />
             {activeContent && activeContent.page}

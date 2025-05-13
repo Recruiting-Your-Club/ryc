@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
+
 export const recruitmentContainer = css`
     padding: 2rem;
     display: grid;
