@@ -12,8 +12,8 @@ function UserLayout() {
                 <div css={contentContainer}>
                     <Outlet />
                 </div>
+                <Footer />
             </div>
-            <Footer />
         </>
     );
 }

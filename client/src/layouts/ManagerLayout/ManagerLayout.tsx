@@ -13,8 +13,8 @@ function ManagerLayout() {
                     <SideBar />
                     <Outlet />
                 </div>
+                <Footer />
             </div>
-            <Footer />
         </>
     );
 }
