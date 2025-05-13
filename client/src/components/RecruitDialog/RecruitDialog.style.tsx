@@ -21,6 +21,7 @@ export const headerContainer = css`
     gap: 0.5rem;
 `;
 export const contentContainer = css`
+    position: relative;
     flex-direction: column;
     justify-content: start;
     height: 100%;
@@ -28,6 +29,7 @@ export const contentContainer = css`
     gap: 5rem;
     overflow-y: auto;
 `;
+
 export const textContainer = css`
     padding: 0 2rem;
 `;
@@ -35,6 +37,7 @@ export const textContainer = css`
 export const imageListContainer = css`
     display: grid;
     justify-content: center;
+    width: 100%;
     padding: 2rem 3rem;
     gap: 0.5rem;
     grid-template-columns: repeat(4, 1fr);
@@ -49,6 +52,16 @@ export const imageItem = css`
 export const actionContainer = css`
     padding-bottom: 2rem;
     padding-top: 3rem;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        position: fixed;
+        width: 100%;
+        bottom: 1rem;
+        left: 0;
+        right: 0;
+        padding: 0.5rem 4rem;
+        z-index: 100;
+        opacity: 0.9;
+    }
 `;
 export const applyButton = css`
     width: 100%;
