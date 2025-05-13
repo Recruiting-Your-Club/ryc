@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { Divider, Button } from '@components';
 import { NavigationButton, NavigationContainer } from './ClubNavigation.style';
-import type { NavigationItem } from './types';
-import type { ReactNode } from 'react';
+import type { ClubNavigationProps } from './types';
 
-function ClubNavigation({
-    navigationItem,
-    navItem,
-}: {
-    navigationItem: NavigationItem[];
-    navItem?: ReactNode;
-}) {
+function ClubNavigation(props: ClubNavigationProps) {
     // prop destruction
+    const { navigationItem, navItem } = props;
     // lib hooks
     // initial values
     // state, ref, querystring hooks
