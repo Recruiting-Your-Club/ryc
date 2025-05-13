@@ -11,10 +11,12 @@ import {
     imageListContainer,
     imageItem,
 } from './RecruitDialog.style';
+import { useRouter } from '@hooks/useRouter';
 
 function RecruitDialog(props: RecruitmentDialogProps) {
     // prop destruction
-    const { open, handleClose } = props;
+    const { open, handleClose, link = 'recruitment' } = props;
+    const { goTo } = useRouter();
     // lib hooks
     // initial values
     const images = [
@@ -38,7 +40,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
             backdrop={true}
             handleClose={handleClose}
         >
-            <Dialog.Header handleClose={handleClose} sx={headerContainer} closeIcon={true}>
+            <Dialog.Header handleClose={handleClose} sx={headerContainer}>
                 <Text as="h1" type="h1Semibold">
                     모집공고
                 </Text>
@@ -90,7 +92,10 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                 <Button
                     variant="primary"
                     size="xl"
-                    onClick={handleClose}
+                    onClick={() => {
+                        handleClose?.();
+                        goTo(link);
+                    }}
                     sx={applyButton}
                     zIndex={10}
                 >

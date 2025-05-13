@@ -1,9 +1,12 @@
 import React from 'react';
-import { RecruitCard } from '@components';
+import { RecruitCard, RecruitDialog } from '@components';
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
+import { useDialog } from '@hooks/useDialog';
+
 function RecruitmentPage() {
     // prop destruction
     // lib hooks
+    const { open, openDialog, closeDialog } = useDialog();
     // initial values
     // state, ref, querystring hooks
     // form hooks
@@ -55,20 +58,23 @@ function RecruitmentPage() {
     ];
 
     return (
-        <div css={recruitmentContainer}>
-            {recruitListData &&
-                recruitListData.map((cardData) => (
-                    <div css={recruitCell} key={cardData.title}>
-                        <RecruitCard
-                            title={cardData.title}
-                            content={cardData.content}
-                            deadline={cardData.deadline}
-                            hashtags={cardData.hashtags}
-                            link={cardData.link}
-                        />
-                    </div>
-                ))}
-        </div>
+        <>
+            <div css={recruitmentContainer}>
+                {recruitListData &&
+                    recruitListData.map((cardData) => (
+                        <div css={recruitCell} key={cardData.title}>
+                            <RecruitCard
+                                title={cardData.title}
+                                content={cardData.content}
+                                deadline={cardData.deadline}
+                                hashtags={cardData.hashtags}
+                                onClick={openDialog}
+                            />
+                        </div>
+                    ))}
+            </div>
+            {open && <RecruitDialog open={open} handleClose={closeDialog} />}
+        </>
     );
 }
 
