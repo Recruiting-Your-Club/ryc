@@ -22,6 +22,7 @@ interface ClubSubmitCardProps {
     totalQuestions: number;
     deadlineColor?: string;
     isDesktop?: boolean;
+    onSubmit?: () => void;
 }
 
 function ClubSubmitCard({
@@ -32,6 +33,7 @@ function ClubSubmitCard({
     totalQuestions,
     deadlineColor,
     isDesktop,
+    onSubmit,
 }: ClubSubmitCardProps) {
     const isAllQuestionsCompleted = completedQuestions === totalQuestions;
 
@@ -72,7 +74,7 @@ function ClubSubmitCard({
                         </div>
                     )}
                 </div>
-                <Button size="full" disabled={!isAllQuestionsCompleted}>
+                <Button size="full" disabled={!isAllQuestionsCompleted} onClick={onSubmit}>
                     제출하기
                 </Button>
             </div>

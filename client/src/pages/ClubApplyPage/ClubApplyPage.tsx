@@ -22,6 +22,8 @@ import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
 import { css } from '@emotion/react';
 import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
+import { Dialog } from '@components/_common';
+import { Text } from '@components/_common/Text';
 
 // 임시 데이터 (서버 응답 형식에 맞춤)
 export const clubData = {
@@ -135,6 +137,7 @@ function ClubApplyPage() {
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
     const totalQuestions = allQuestions.length;
+    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
 
     // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
     const today = dayjs().format('YYYY-MM-DD');
@@ -179,6 +182,15 @@ function ClubApplyPage() {
     };
 
     const theme = useTheme();
+
+    const handleSubmit = () => {
+        setIsSubmitDialogOpen(true);
+    };
+
+    const handleConfirmSubmit = () => {
+        // TODO: 실제 제출 로직 구현
+        setIsSubmitDialogOpen(false);
+    };
 
     return (
         <div css={clubApplyPageContainer}>
@@ -242,6 +254,7 @@ function ClubApplyPage() {
                         totalQuestions={totalQuestions}
                         deadlineColor={diffDay > 3 ? theme.colors.gray[300] : theme.colors.red[800]}
                         isDesktop={isDesktop}
+                        onSubmit={handleSubmit}
                     />
                 )}
                 {/* 모바일 환경에서만 하단 제출 버튼 노출 */}
@@ -251,12 +264,37 @@ function ClubApplyPage() {
                             variant="primary"
                             sx={{ width: '100%' }}
                             disabled={completedQuestions !== totalQuestions}
+                            onClick={handleSubmit}
                         >
                             제출하기
                         </Button>
                     </div>
                 )}
             </div>
+
+            <Dialog
+                open={isSubmitDialogOpen}
+                handleClose={() => setIsSubmitDialogOpen(false)}
+                size="sm"
+            >
+                <Dialog.Header border closeIcon handleClose={() => setIsSubmitDialogOpen(false)}>
+                    <Text type="h3Bold">제출하시겠습니까?</Text>
+                </Dialog.Header>
+                <Dialog.Content>
+                    <Text type="bodyRegular">제출 후엔 수정할 수 없습니다~~</Text>
+                    <Text type="bodyRegular" color="helper">
+                        제출 후 결과가 메일로 발송됩니다.
+                    </Text>
+                </Dialog.Content>
+                <Dialog.Action border>
+                    <Button variant="primary" onClick={handleConfirmSubmit}>
+                        예
+                    </Button>
+                    <Button variant="text" onClick={() => setIsSubmitDialogOpen(false)}>
+                        아니요
+                    </Button>
+                </Dialog.Action>
+            </Dialog>
         </div>
     );
 }
