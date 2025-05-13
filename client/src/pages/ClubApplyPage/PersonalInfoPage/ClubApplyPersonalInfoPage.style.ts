@@ -37,7 +37,7 @@ export const clubApplyForm = css`
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         padding: 1rem;
-        margin: 0.5rem 0;
+        margin: 2rem 0;
         min-height: 7rem;
     }
 `;

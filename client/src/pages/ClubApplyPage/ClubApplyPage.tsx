@@ -72,11 +72,6 @@ export const clubData = {
                     title: '성별',
                     options: ['남', '여'],
                 },
-                {
-                    category: 'MULTIPLE_CHOICE',
-                    title: '프로젝트 경험',
-                    options: ['예', '아니오'],
-                },
             ],
         },
     ],
