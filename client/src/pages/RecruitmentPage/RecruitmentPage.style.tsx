@@ -62,14 +62,11 @@ export const textContainer = css`
 
 export const applyButtonAtMobile = css`
     position: fixed;
-    display: flex;
-    justify-content: center;
-    width: 100%;
     bottom: 1rem;
     left: 0;
     right: 0;
     padding: 0 4rem;
-    z-index: 100;
+    //z-index: 100;
     opacity: 0.9;
     @media (min-width: ${theme.breakpoint.mobile}) {
         display: none;
@@ -81,6 +78,7 @@ export const imageListContainer = css`
     grid-template-columns: repeat(3, 1fr); // 기본 3열
     padding: 4rem 3rem;
     gap: 0.5rem;
+    width: 100%;
     @media (min-width: 480px) {
         grid-template-columns: repeat(4, 1fr);
     }
