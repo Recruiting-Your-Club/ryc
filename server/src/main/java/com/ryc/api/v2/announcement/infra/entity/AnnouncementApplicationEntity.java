@@ -1,6 +1,7 @@
 package com.ryc.api.v2.announcement.infra.entity;
 
-import com.ryc.api.v2.announcement.domain.question.PersonalInfoQuestionType;
+import com.ryc.api.v2.announcement.domain.enums.PersonalInfoQuestionType;
+import com.ryc.api.v2.announcement.infra.vo.ApplicationQuestionVO;
 import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +21,7 @@ public class AnnouncementApplicationEntity extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "application_questions")
-    private List<ApplicationQuestion> applicationQuestions;
+    private List<ApplicationQuestionVO> applicationQuestionVOS;
 
     @ElementCollection
     @CollectionTable(name = "application_personal_info_questions")
@@ -28,9 +29,10 @@ public class AnnouncementApplicationEntity extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "application_pre_questions")
-    private List<ApplicationQuestion> preQuestions;
+    private List<ApplicationQuestionVO> preQuestions;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "announcement_id")
     private AnnouncementEntity announcementEntity;
+
 }

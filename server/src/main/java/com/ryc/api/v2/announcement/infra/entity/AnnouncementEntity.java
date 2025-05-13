@@ -1,6 +1,8 @@
 package com.ryc.api.v2.announcement.infra.entity;
 
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
+import com.ryc.api.v2.announcement.infra.vo.ImageVO;
+import com.ryc.api.v2.announcement.infra.vo.TagVO;
 import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,21 +29,18 @@ public class AnnouncementEntity extends BaseEntity {
     private String target;
 
     @Embedded
-    private AnnouncementPeriod announcementPeriod;
+    AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
     @ElementCollection
     @CollectionTable(name = "announcement_images")
-    private List<String> images;
+    private List<ImageVO> imageVOS;
 
     @ElementCollection
     @CollectionTable(name = "announcement_tags")
-    private List<String> tags;
+    private List<TagVO> tagVOS;
 
     private String activityPeriod;
 
     private Boolean isDeleted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id")
-    private ClubEntity club;
 }
