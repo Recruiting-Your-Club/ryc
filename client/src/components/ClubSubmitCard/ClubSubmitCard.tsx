@@ -20,6 +20,8 @@ interface ClubSubmitCardProps {
     deadline?: string;
     completedQuestions: number;
     totalQuestions: number;
+    deadlineColor?: string;
+    isDesktop?: boolean;
 }
 
 function ClubSubmitCard({
@@ -28,6 +30,8 @@ function ClubSubmitCard({
     deadline,
     completedQuestions,
     totalQuestions,
+    deadlineColor,
+    isDesktop,
 }: ClubSubmitCardProps) {
     const isAllQuestionsCompleted = completedQuestions === totalQuestions;
 
@@ -37,7 +41,11 @@ function ClubSubmitCard({
                 <div css={clubSubmitCardLogo}>
                     <Ryc css={svgContainer} />
                     {deadline && (
-                        <Text type="captionRegular" color="warning">
+                        <Text
+                            type="captionRegular"
+                            color="warning"
+                            sx={deadlineColor ? { color: deadlineColor } : undefined}
+                        >
                             {deadline}
                         </Text>
                     )}
@@ -52,15 +60,17 @@ function ClubSubmitCard({
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
                         26기 신입기수 모집
                     </Text>
-                    <div css={questionStatusContainer}>
-                        <Text
-                            type="subCaptionRegular"
-                            sx={questionStatusTextSx(isAllQuestionsCompleted)}
-                        >
-                            작성한 항목 ({completedQuestions} / {totalQuestions})
-                        </Text>
-                        <ArrowDown css={arrowIcon} />
-                    </div>
+                    {isDesktop && (
+                        <div css={questionStatusContainer}>
+                            <Text
+                                type="subCaptionRegular"
+                                sx={questionStatusTextSx(isAllQuestionsCompleted)}
+                            >
+                                작성한 항목 ({completedQuestions} / {totalQuestions})
+                            </Text>
+                            <ArrowDown css={arrowIcon} />
+                        </div>
+                    )}
                 </div>
                 <Button size="full" disabled={!isAllQuestionsCompleted}>
                     제출하기
