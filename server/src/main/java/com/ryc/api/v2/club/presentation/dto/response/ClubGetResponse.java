@@ -18,7 +18,7 @@ public record ClubGetResponse(
     @Schema(description = "동아리 ID", example = "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d") @NotBlank
         String id,
     @Schema(description = "동아리 이름", example = "엔샵") @NotBlank String name,
-    @Schema(description = "동아리 설명", example = "엔샵 동아리로 말할 것 같으면 GOOD!") @NotNull
+    @Schema(description = "동아리 상세 설명", example = "동아리 상세 설명입니다. 원래 되게 길어요!") @NotNull
         String detailDescription,
     @Schema(description = "동아리 이미지 URL", example = "https://example.com/image.png") String imageUrl,
     @Schema(description = "동아리 썸네일 URL", example = "https://example.com/thumbnail.png")
