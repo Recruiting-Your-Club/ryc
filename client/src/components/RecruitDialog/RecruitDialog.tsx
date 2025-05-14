@@ -46,11 +46,12 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                 </Text>
                 <Button
                     variant="text"
-                    size="xs"
+                    size="s"
                     onClick={() => {
                         handleClose?.();
                         goTo('recruitment');
                     }}
+                    sx={{ paddingLeft: '0.2rem' }}
                 >
                     전체 페이지로 보기
                 </Button>
