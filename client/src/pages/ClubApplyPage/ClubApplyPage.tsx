@@ -92,7 +92,7 @@ export const clubData = {
     ],
 };
 
-// 임시로 페이지 분리하기 위해 만든거
+// 임시로 페이지 분리하기 위해 만든거 리팩토링 할 때 ClubDetailPage에 있는 Navigation 컴포넌트 가져다 써야함.
 const applyData = [
     {
         question: '사전질문',
