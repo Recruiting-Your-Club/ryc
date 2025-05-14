@@ -24,7 +24,7 @@ function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardPro
                         {name}
                     </Text>
                 </div>
-                <Rating value={score} size="lg" />
+                <Rating value={score} size="lg" type="display" />
             </div>
             <div css={contentContainer}>
                 <Text as="span" textAlign="start">
