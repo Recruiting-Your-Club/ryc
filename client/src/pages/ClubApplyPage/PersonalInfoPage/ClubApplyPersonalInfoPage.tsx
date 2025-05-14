@@ -1,18 +1,10 @@
 import React from 'react';
 import { Text } from '@components/_common/Text';
 import { Input } from '@components';
-import type { PersonalQuestion } from '../ClubApplyPage';
+
 import { Radio } from '@components/_common/Radio';
 import { clubApplyPersonalQuestionForm } from './ClubApplyPersonalInfoPage.style';
-import type { CSSObject } from '@emotion/react';
-
-interface ClubApplyPersonalInfoPageProps {
-    idx: number;
-    answers: { [key: string]: string };
-    clubPersonalQuestions: PersonalQuestion[];
-    onAnswerChange: (id: string, value: string) => void;
-    containerStyle: CSSObject;
-}
+import type { ClubApplyPersonalInfoPageProps } from '../types';
 
 function ClubApplyPersonalInfoPage({
     answers,

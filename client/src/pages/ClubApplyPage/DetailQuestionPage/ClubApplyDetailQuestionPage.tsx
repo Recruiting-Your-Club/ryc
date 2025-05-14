@@ -2,16 +2,7 @@ import React from 'react';
 import { Text } from '@components/_common/Text';
 import { TextArea } from '@components/_common/TextArea';
 import { clubApplyDetailQuestionContainer } from './ClubApplyDetailQuestionPage.style';
-import type { DetailQuestion } from '../ClubApplyPage';
-import type { CSSObject } from '@emotion/react';
-
-interface ClubApplyDetailQuestionPageProps {
-    idx: number;
-    answers: { [key: string]: string };
-    clubDetailQuestions: DetailQuestion[];
-    onAnswerChange: (id: string, value: string) => void;
-    containerStyle: CSSObject;
-}
+import type { ClubApplyDetailQuestionPageProps } from '../types';
 
 function ClubApplyDetailQuestionPage({
     answers,
@@ -39,7 +30,6 @@ function ClubApplyDetailQuestionPage({
                     <Text textAlign="start" type="captionRegular">
                         {question.questionTitle}
                     </Text>
-
                     <TextArea
                         size="md"
                         wrapperSx={{ marginTop: '1rem' }}

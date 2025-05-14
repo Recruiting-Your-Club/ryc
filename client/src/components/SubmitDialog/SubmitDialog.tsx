@@ -8,12 +8,7 @@ import {
     submitDialogContentContainer,
     submitDialogtTextContainer,
 } from './SubmiDialog.style';
-
-interface SubmitDialogProps {
-    open: boolean;
-    onConfirm: () => void;
-    onClose: () => void;
-}
+import type { SubmitDialogProps } from './types';
 
 const SubmitDialog = ({ open, onConfirm, onClose }: SubmitDialogProps) => (
     <Dialog open={open} handleClose={onClose} size="sm">

@@ -104,19 +104,6 @@ const applyData = [
     },
 ];
 
-export interface PersonalQuestion {
-    id: string;
-    questionTitle: string;
-    type: boolean | string;
-    options: string[];
-}
-
-export interface DetailQuestion {
-    id: string;
-    questionTitle: string;
-    description: string;
-}
-
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
