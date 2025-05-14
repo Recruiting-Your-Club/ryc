@@ -18,7 +18,8 @@ export const submitDialogtTextContainer = css`
 
 export const submitDialogButtonContainer = css`
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 1.5rem;
     width: 100%;
     padding: 0 2rem;
 `;
