@@ -33,11 +33,11 @@ public class AnnouncementEntity extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "announcement_images")
-    private List<ImageVO> imageVOS;
+    private List<ImageVO> images;
 
     @ElementCollection
     @CollectionTable(name = "announcement_tags")
-    private List<TagVO> tagVOS;
+    private List<TagVO> tags;
 
     private String activityPeriod;
 

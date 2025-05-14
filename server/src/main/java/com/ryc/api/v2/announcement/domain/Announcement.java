@@ -18,7 +18,7 @@ public class Announcement {
     private final String numberOfPeople;
     private final String Description;
     private final String target;
-    private final LinkedHashSet<Tag> tags;
+    private final List<Tag> tags;
     private final List<Image> images;
     private final AnnouncementStatus announcementStatus;
 

@@ -21,7 +21,7 @@ public class AnnouncementApplicationEntity extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "application_questions")
-    private List<ApplicationQuestionVO> applicationQuestionVOS;
+    private List<ApplicationQuestionVO> applicationQuestions;
 
     @ElementCollection
     @CollectionTable(name = "application_personal_info_questions")
