@@ -20,8 +20,9 @@ import { Text } from '@components/_common/Text';
 import { ClubSubmitCard } from '@components/ClubSubmitCard';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import SubmitDialog from '@components/SubmitDialog/SubmitDialog';
+
 import theme from '@styles/theme';
+import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
 
 // 임시 데이터
 export const clubData = {
