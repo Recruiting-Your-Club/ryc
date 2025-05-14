@@ -82,12 +82,10 @@ export const clubNameContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    ${theme.typography.h4Bold};
-`;
-
-export const clubTagContainer = css`
-    ${theme.typography.subCaptionLight};
-    color: ${theme.colors.gray[300]};
+    ${theme.typography.h3Bold};
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        ${theme.typography.h4Bold};
+    }
 `;
 
 export const clubApplyTabContainer = css`
@@ -108,13 +106,9 @@ export const clubApplyTabName = css`
     ${theme.typography.subCaptionRegular};
     color: ${theme.colors.gray[400]};
     padding: 0;
-
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        font-size: 0.875rem;
-    }
 `;
 
-export const clubApplyFormConatiner = (index: number) => css`
+export const applyFormContainer = (index: number) => css`
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -131,7 +125,7 @@ export const clubApplyFormConatiner = (index: number) => css`
     margin: 3rem 0;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
-        margin: 1rem 0;
+        margin: 2.5rem 0;
     }
 `;
 
@@ -150,10 +144,9 @@ export const submitButtonContainer = css`
 `;
 
 export const mobileQuestionStatus = css`
+    display: flex;
     margin-left: auto;
-    font-size: 0.95rem;
-    font-weight: 500;
-    align-self: center;
+    align-items: center;
     @media (min-width: ${theme.breakpoint.tablet}) {
         display: none;
     }

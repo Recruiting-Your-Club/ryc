@@ -21,7 +21,6 @@ interface ClubSubmitCardProps {
     completedQuestions: number;
     totalQuestions: number;
     deadlineColor?: string;
-    isDesktop?: boolean;
     onSubmit?: () => void;
 }
 
@@ -32,10 +31,18 @@ function ClubSubmitCard({
     completedQuestions,
     totalQuestions,
     deadlineColor,
-    isDesktop,
     onSubmit,
 }: ClubSubmitCardProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
     const isAllQuestionsCompleted = completedQuestions === totalQuestions;
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
 
     return (
         <div css={clubApplySubmitCardContainer}>
@@ -45,7 +52,6 @@ function ClubSubmitCard({
                     {deadline && (
                         <Text
                             type="captionRegular"
-                            color="warning"
                             sx={deadlineColor ? { color: deadlineColor } : undefined}
                         >
                             {deadline}
@@ -62,17 +68,16 @@ function ClubSubmitCard({
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
                         26기 신입기수 모집
                     </Text>
-                    {isDesktop && (
-                        <div css={questionStatusContainer}>
-                            <Text
-                                type="subCaptionRegular"
-                                sx={questionStatusTextSx(isAllQuestionsCompleted)}
-                            >
-                                작성한 항목 ({completedQuestions} / {totalQuestions})
-                            </Text>
-                            <ArrowDown css={arrowIcon} />
-                        </div>
-                    )}
+
+                    <div css={questionStatusContainer}>
+                        <Text
+                            type="subCaptionRegular"
+                            sx={questionStatusTextSx(isAllQuestionsCompleted)}
+                        >
+                            작성한 항목 ({completedQuestions} / {totalQuestions})
+                        </Text>
+                        <ArrowDown css={arrowIcon} />
+                    </div>
                 </div>
                 <Button size="full" disabled={!isAllQuestionsCompleted} onClick={onSubmit}>
                     제출하기

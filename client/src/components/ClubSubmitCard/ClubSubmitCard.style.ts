@@ -58,6 +58,9 @@ export const clubSubmitCardSubCaption = css`
         margin-bottom: 1rem;
     }
 `;
+export const deadlineText = (deadlineColor: string) => css`
+    color: ${deadlineColor};
+`;
 
 export const questionStatusContainer = css`
     display: flex;

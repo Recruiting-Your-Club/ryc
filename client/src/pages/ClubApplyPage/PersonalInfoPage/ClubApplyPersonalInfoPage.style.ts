@@ -1,28 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const clubApplyFormContainer = (index: number) => css`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 60rem;
-
-    ${index === 0 &&
-    css`
-        justify-content: space-between;
-    `}
-    ${index === 1 &&
-    css`
-        gap: 1.5rem;
-    `};
-    margin: 3rem 0;
-
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        margin: 2.5rem 0;
-    }
-`;
-
-export const clubApplyForm = css`
+export const clubApplyPersonalQuestionForm = css`
     display: flex;
     flex-direction: column;
     align-items: start;

@@ -1,57 +1,69 @@
 import React from 'react';
 import { Text } from '@components/_common/Text';
 import { Input } from '@components';
-import { clubPersonalQuestions } from '../ClubApplyPage';
+import type { PersonalQuestion } from '../ClubApplyPage';
 import { Radio } from '@components/_common/Radio';
-import { clubApplyFormConatiner } from '../ClubApplyPage.style';
-import { clubApplyForm } from './ClubApplyPersonalInfoPage.style';
+import { clubApplyPersonalQuestionForm } from './ClubApplyPersonalInfoPage.style';
+import type { CSSObject } from '@emotion/react';
 
 interface ClubApplyPersonalInfoPageProps {
     idx: number;
-    answers: { [key: number]: string };
-    onAnswerChange: (id: number, value: string) => void;
+    answers: { [key: string]: string };
+    clubPersonalQuestions: PersonalQuestion[];
+    onAnswerChange: (id: string, value: string) => void;
+    containerStyle: CSSObject;
 }
 
 function ClubApplyPersonalInfoPage({
-    idx,
     answers,
+    clubPersonalQuestions,
     onAnswerChange,
+    containerStyle,
 }: ClubApplyPersonalInfoPageProps) {
-    const handleInputChange = (id: number, value: string) => {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    const handleInputChange = (id: string, value: string) => {
         onAnswerChange(id, value);
     };
 
-    const handleRadioChange = (id: number, value: string) => {
+    const handleRadioChange = (id: string, value: string) => {
         onAnswerChange(id, value);
     };
+    // effects
 
     return (
-        <div css={clubApplyFormConatiner(idx)}>
-            {clubPersonalQuestions.map((data) =>
-                data.type === 'boolean' ? (
-                    <div key={data.id} css={clubApplyForm}>
-                        <Text>{data.question}</Text>
+        <div css={containerStyle}>
+            {clubPersonalQuestions.map((question) =>
+                question.type === 'boolean' ? (
+                    <div key={question.id} css={clubApplyPersonalQuestionForm}>
+                        <Text>{question.questionTitle}</Text>
                         <Radio
-                            name={`question-${data.id}`}
+                            name={`question-${question.id}`}
                             orientation="vertical"
                             options={
-                                data.options?.map((option) => ({
+                                question.options?.map((option) => ({
                                     label: option,
                                     value: option,
                                 })) || []
                             }
-                            value={answers[data.id] || ''}
-                            onChange={(value) => handleRadioChange(data.id, value)}
+                            value={answers[question.id] || ''}
+                            onChange={(value) => handleRadioChange(question.id, value)}
                         />
                     </div>
                 ) : (
-                    <div key={data.id} css={clubApplyForm}>
+                    <div key={question.id} css={clubApplyPersonalQuestionForm}>
                         <Input
                             variant="lined"
-                            label={data.question}
+                            label={question.questionTitle}
                             inputSx={{ width: '50%' }}
-                            value={answers[data.id] || ''}
-                            onChange={(e) => handleInputChange(data.id, e.target.value)}
+                            value={answers[question.id] || ''}
+                            onChange={(e) => handleInputChange(question.id, e.target.value)}
                         />
                     </div>
                 ),

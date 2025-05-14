@@ -7,23 +7,23 @@ import {
     clubApplyTabName,
     clubLogoAndNameContainer,
     clubNameContainer,
-    clubTagContainer,
     svgContainer,
     submitButtonContainer,
     clubApplyPage,
     mobileQuestionStatus,
     nextButtonContainer,
+    applyFormContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
+import { Text } from '@components/_common/Text';
 import { ClubSubmitCard } from '@components/ClubSubmitCard';
-import { BREAKPOINT } from '@styles/theme/breakPoint';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import { useTheme } from '@emotion/react';
 import SubmitDialog from '@components/SubmitDialog/SubmitDialog';
+import theme from '@styles/theme';
 
-// 임시 데이터 (서버 응답 형식에 맞춤)
+// 임시 데이터
 export const clubData = {
     announcementId: '213123',
     title: 'EN# (Enjoy C#)',
@@ -91,26 +91,7 @@ export const clubData = {
     ],
 };
 
-// 사전질문 데이터 변환
-export const clubPersonalQuestions = clubData.preQuestions[0].additionalQuestions.map(
-    (question, index) => ({
-        id: index + 1,
-        question: question.title,
-        type: question.category === 'MULTIPLE_CHOICE' ? 'boolean' : 'string',
-        options: question.options ?? [],
-    }),
-);
-
-// 자기소개서 질문 데이터 변환
-export const detailQuestions = clubData.questions.map((question, index) => ({
-    id: index + clubPersonalQuestions.length + 1,
-    question: question.title,
-    description: question.description,
-}));
-
-// 모든 질문을 하나의 배열로 통합
-const allQuestions = [...clubPersonalQuestions, ...detailQuestions];
-
+// 임시로 페이지 분리하기 위해 만든거
 const applyData = [
     {
         question: '사전질문',
@@ -122,15 +103,54 @@ const applyData = [
     },
 ];
 
+export interface PersonalQuestion {
+    id: string;
+    questionTitle: string;
+    type: boolean | string;
+    options: string[];
+}
+
+export interface DetailQuestion {
+    id: string;
+    questionTitle: string;
+    description: string;
+}
+
 function ClubApplyPage() {
+    // prop destruction
+    // lib hooks
+    // initial values
+
+    // 사전질문 데이터 변환
+    const clubPersonalQuestions = clubData.preQuestions[0].additionalQuestions.map((question) => ({
+        id: question.title,
+        questionTitle: question.title,
+        type: question.category === 'MULTIPLE_CHOICE' ? 'boolean' : 'string',
+        options: question.options ?? [],
+    }));
+
+    // 자기소개서 질문 데이터 변환
+    const detailQuestions = clubData.questions.map((question) => ({
+        id: question.title,
+        questionTitle: question.title,
+        description: question.description,
+    }));
+
+    const allQuestions = [...clubPersonalQuestions, ...detailQuestions];
+
+    // state, ref, querystring hooks
+
     const [idx, setIdx] = useState<number>(0);
     const [isDesktop, setIsDesktop] = useState<boolean>(
-        window.innerWidth > parseInt(BREAKPOINT.mobile),
+        window.innerWidth > parseInt(theme.breakpoint.mobile),
     );
-    const [answers, setAnswers] = useState<{ [key: number]: string }>({});
+    const [answers, setAnswers] = useState<{ [key: string]: string }>({});
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
-    const totalQuestions = allQuestions.length;
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+
+    // form hooks
+    // query hooks
+    // calculated values
 
     // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
     const today = dayjs().format('YYYY-MM-DD');
@@ -149,9 +169,32 @@ function ClubApplyPage() {
         }
     }, [formattedDeadline, today, diffDay]);
 
+    // handlers
+    const handleAnswerChange = (id: string, value: string) => {
+        setAnswers((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+
+    const handleSubmit = () => {
+        setIsSubmitDialogOpen(true);
+    };
+
+    const handleConfirmSubmit = () => {
+        setIsSubmitDialogOpen(false);
+    };
+
+    const handleNext = () => {
+        if (idx < applyData.length - 1) {
+            setIdx(idx + 1);
+        }
+    };
+
+    // effects
     useEffect(() => {
         const handleResize = () => {
-            setIsDesktop(window.innerWidth > parseInt(BREAKPOINT.mobile));
+            setIsDesktop(window.innerWidth > parseInt(theme.breakpoint.mobile));
         };
 
         window.addEventListener('resize', handleResize);
@@ -166,66 +209,17 @@ function ClubApplyPage() {
         setCompletedQuestions(completedCount);
     }, [answers]);
 
-    // 답변 변경 핸들러
-    const handleAnswerChange = (id: number, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [id]: value,
-        }));
-    };
-
-    const theme = useTheme();
-
-    const handleSubmit = () => {
-        setIsSubmitDialogOpen(true);
-    };
-
-    const handleConfirmSubmit = () => {
-        // TODO: 실제 제출 로직 구현
-        setIsSubmitDialogOpen(false);
-    };
-
-    // 현재 페이지의 답변만 추출
-    const getCurrentPageAnswers = () => {
-        if (idx === 0) {
-            return clubPersonalQuestions.reduce(
-                (acc, q) => {
-                    acc[q.id] = answers[q.id] || '';
-                    return acc;
-                },
-                {} as { [key: number]: string },
-            );
-        } else {
-            return detailQuestions.reduce(
-                (acc, q) => {
-                    acc[q.id] = answers[q.id] || '';
-                    return acc;
-                },
-                {} as { [key: number]: string },
-            );
-        }
-    };
-
-    // 다음 버튼 클릭 핸들러
-    const handleNext = () => {
-        // 현재 페이지 답변만 저장
-        const pageAnswers = getCurrentPageAnswers();
-        localStorage.setItem(`club-apply-answers-page-${idx}`, JSON.stringify(pageAnswers));
-        // 다음 탭으로 이동
-        if (idx < applyData.length - 1) {
-            setIdx(idx + 1);
-        }
-    };
-
     return (
         <div css={clubApplyPageContainer}>
             <div css={clubApplyPage}>
-                <div css={clubApplyPageMainContainer} style={{ position: 'relative' }}>
+                <div css={clubApplyPageMainContainer}>
                     <div css={clubLogoAndNameContainer}>
                         <Ryc css={svgContainer} />
                         <div css={clubNameContainer}>
                             {clubData.title}
-                            <div css={clubTagContainer}>{clubData.tag}</div>
+                            <Text type="subCaptionRegular" color="helper" textAlign="left">
+                                {clubData.tag}
+                            </Text>
                         </div>
                     </div>
 
@@ -240,19 +234,19 @@ function ClubApplyPage() {
                                 {data.question}
                             </Button>
                         ))}
-                        {/* 모바일에서만 작성한 항목 표시 */}
                         {!isDesktop && (
-                            <span
-                                css={mobileQuestionStatus}
-                                style={{
-                                    color:
-                                        completedQuestions === totalQuestions
-                                            ? theme.colors.default
-                                            : theme.colors.red[800],
-                                }}
+                            <Text
+                                type="subCaptionRegular"
+                                textAlign="right"
+                                color={
+                                    completedQuestions === allQuestions.length
+                                        ? 'primary'
+                                        : 'warning'
+                                }
+                                sx={mobileQuestionStatus}
                             >
-                                작성한 항목 ({completedQuestions} / {totalQuestions})
-                            </span>
+                                작성한 항목 ({completedQuestions} / {allQuestions.length})
+                            </Text>
                         )}
                     </div>
                     {/* 페이지 */}
@@ -260,16 +254,20 @@ function ClubApplyPage() {
                         <ClubApplyPersonalInfoPage
                             idx={idx}
                             answers={answers}
+                            clubPersonalQuestions={clubPersonalQuestions}
                             onAnswerChange={handleAnswerChange}
+                            containerStyle={applyFormContainer(idx)}
                         />
                     ) : (
                         <ClubApplyDetailQuestionPage
                             idx={idx}
                             answers={answers}
+                            clubDetailQuestions={detailQuestions}
                             onAnswerChange={handleAnswerChange}
+                            containerStyle={applyFormContainer(idx)}
                         />
                     )}
-                    {/* 오른쪽 하단 다음 버튼 */}
+
                     {idx < applyData.length - 1 && (
                         <div css={nextButtonContainer}>
                             <Button variant="primary" onClick={handleNext}>
@@ -284,9 +282,8 @@ function ClubApplyPage() {
                         tag={clubData.tag}
                         deadline={calculateDeadline}
                         completedQuestions={completedQuestions}
-                        totalQuestions={totalQuestions}
-                        deadlineColor={diffDay > 3 ? theme.colors.gray[300] : theme.colors.red[800]}
-                        isDesktop={isDesktop}
+                        totalQuestions={allQuestions.length}
+                        deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
                         onSubmit={handleSubmit}
                     />
                 ) : (
@@ -294,7 +291,7 @@ function ClubApplyPage() {
                         <Button
                             variant="primary"
                             sx={{ width: '100%' }}
-                            disabled={completedQuestions !== totalQuestions}
+                            disabled={completedQuestions !== allQuestions.length}
                             onClick={handleSubmit}
                         >
                             제출하기

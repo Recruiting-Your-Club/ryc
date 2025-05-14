@@ -2,37 +2,49 @@ import React from 'react';
 import { Text } from '@components/_common/Text';
 import { TextArea } from '@components/_common/TextArea';
 import { clubApplyDetailQuestionContainer } from './ClubApplyDetailQuestionPage.style';
-import { clubApplyFormContainer } from '../PersonalInfoPage/ClubApplyPersonalInfoPage.style';
-import { detailQuestions } from '../ClubApplyPage';
+import type { DetailQuestion } from '../ClubApplyPage';
+import type { CSSObject } from '@emotion/react';
 
 interface ClubApplyDetailQuestionPageProps {
     idx: number;
-    answers: { [key: number]: string };
-    onAnswerChange: (id: number, value: string) => void;
+    answers: { [key: string]: string };
+    clubDetailQuestions: DetailQuestion[];
+    onAnswerChange: (id: string, value: string) => void;
+    containerStyle: CSSObject;
 }
 
 function ClubApplyDetailQuestionPage({
-    idx,
     answers,
+    clubDetailQuestions,
     onAnswerChange,
+    containerStyle,
 }: ClubApplyDetailQuestionPageProps) {
-    const handleTextAreaChange = (id: number, value: string) => {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    const handleTextAreaChange = (id: string, value: string) => {
         onAnswerChange(id, value);
     };
+    // effects
 
     return (
-        <div css={clubApplyFormContainer(idx)}>
-            {detailQuestions.map((data) => (
-                <div key={data.question} css={clubApplyDetailQuestionContainer}>
+        <div css={containerStyle}>
+            {clubDetailQuestions.map((question) => (
+                <div key={question.questionTitle} css={clubApplyDetailQuestionContainer}>
                     <Text textAlign="start" type="captionRegular">
-                        {data.question}
+                        {question.questionTitle}
                     </Text>
 
                     <TextArea
                         size="md"
                         wrapperSx={{ marginTop: '1rem' }}
-                        value={answers[data.id] || ''}
-                        onChange={(e) => handleTextAreaChange(data.id, e.target.value)}
+                        value={answers[question.id] || ''}
+                        onChange={(e) => handleTextAreaChange(question.id, e.target.value)}
                     />
                 </div>
             ))}
