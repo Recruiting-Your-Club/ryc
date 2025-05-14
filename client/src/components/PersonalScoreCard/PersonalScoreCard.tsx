@@ -6,13 +6,7 @@ import {
     headerContainer,
     raterWrapper,
 } from './PersonalScoreCard.style';
-
-interface PersonalScoreCardProps {
-    image?: string;
-    name: string;
-    score: number;
-    comment: string;
-}
+import type { PersonalScoreCardProps } from './types';
 
 function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardProps) {
     return (
@@ -20,14 +14,14 @@ function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardPro
             <div css={headerContainer}>
                 <div css={raterWrapper}>
                     <Avatar shape="round" size="xs" imageURL={image} />
-                    <Text as="span" type="bodySemibold" sx={{ paddingTop: '0.2rem' }}>
+                    <Text as="span" type="captionSemibold" sx={{ paddingTop: '0.2rem' }}>
                         {name}
                     </Text>
                 </div>
                 <Rating value={score} size="lg" type="display" />
             </div>
             <div css={contentContainer}>
-                <Text as="span" textAlign="start">
+                <Text as="span" type="captionSemibold" textAlign="start">
                     {comment}
                 </Text>
             </div>
