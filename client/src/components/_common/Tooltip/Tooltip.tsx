@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { tooltipContainter, tooltipStyle } from './Tooltip.style';
 import type { TooltipProps } from './types';
 
@@ -18,10 +18,20 @@ function Tooltip({
             setVisible(true);
         }, delay);
     };
+
     const hideTooltip = () => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         setVisible(false);
     };
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
     return (
         <div css={tooltipContainter} onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
             {children}
