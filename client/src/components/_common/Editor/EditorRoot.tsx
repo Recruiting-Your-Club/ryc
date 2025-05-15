@@ -1,9 +1,7 @@
-import { DEFAULT_FONT_SIZE } from '@constants/Editor';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
-import { EditorHandlerContext } from './EditorHandlerContext';
-import type { Align, Format, List, Option, RootProps, Size } from './types';
+import type { RootProps } from './types';
 
 function EditorRoot({ children, sx }: RootProps) {
     // prop destruction
@@ -13,86 +11,25 @@ function EditorRoot({ children, sx }: RootProps) {
     // state, ref, querystring hooks
     const editorRef = useRef<HTMLDivElement>(null);
     const [savedRange, setSavedRange] = useState<Range | null>(null);
-    const [size, setSize] = useState<Size>(DEFAULT_FONT_SIZE);
-    const [formats, setFormats] = useState<Record<Format, boolean>>({
-        bold: false,
-        italic: false,
-        underline: false,
-        strikethrough: false,
-    });
-    const [align, setAlign] = useState<Align>('inherit');
-    const [lists, setLists] = useState<Record<List, boolean>>({
-        disc: false,
-        decimal: false,
-    });
-    const [options, setOptions] = useState<Record<Option, boolean>>({
-        image: false,
-        divider: false,
-    });
 
     const contextValue = useMemo(
         () => ({
             editorRef,
             savedRange,
-            size,
-            formats,
-            align,
-            lists,
-            options,
             setSavedRange,
-            setSize,
-            setFormats,
-            setAlign,
-            setLists,
-            setOptions,
         }),
-        [savedRange, size, formats, align, lists, options],
+        [savedRange],
     );
 
     // form hooks
     // query hooks
-
     // calculated values
-
     // handlers
-    const toggleFormatButton = useCallback((format: Format) => {
-        setFormats((prev) => ({
-            ...prev,
-            [format]: !prev[format],
-        }));
-    }, []);
-
-    const toggleAlignButton = useCallback((alignment: Align) => {
-        setAlign(alignment);
-    }, []);
-
-    const toggleListButton = useCallback((list: List) => {
-        setLists((prev) => {
-            if (prev[list]) return prev;
-
-            return {
-                disc: list === 'disc',
-                decimal: list === 'decimal',
-            };
-        });
-    }, []);
-
-    const handlerContextValue = useMemo(
-        () => ({
-            toggleFormatButton,
-            toggleAlignButton,
-            toggleListButton,
-        }),
-        [toggleFormatButton, toggleAlignButton, toggleListButton],
-    );
-
     // effects
 
     return (
         <EditorContext.Provider value={contextValue}>
-            <EditorHandlerContext.Provider value={handlerContextValue}>
-                <div css={[rootContainer, editorListStyle, sx]}>{children}</div>
-            </EditorHandlerContext.Provider>
+            <div css={[rootContainer, editorListStyle, sx]}>{children}</div>
         </EditorContext.Provider>
     );
 }

@@ -1,6 +1,12 @@
 import { Select } from '@components/Select';
-import { alignButtons, formatButtons, listButtons, optionButtons } from '@constants/Editor';
-import React, { useEffect, useRef } from 'react';
+import {
+    alignButtons,
+    DEFAULT_FONT_SIZE,
+    formatButtons,
+    listButtons,
+    optionButtons,
+} from '@constants/Editor';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     buttonGroup,
     perButtonCss,
@@ -10,7 +16,6 @@ import {
     toolbarContainer,
 } from './Editor.style';
 import { useEditorContext } from './EditorContext';
-import { useEditorHandlerContext } from './EditorHandlerContext';
 import { TextColorPicker } from './EditorTextColorPicker';
 import type { Align, Format, List, Option, Size, TextColor, ToolbarProps } from './types';
 import { applyAlignment } from './utils/alignment';
@@ -28,30 +33,57 @@ import { applyStyle } from './utils/textStyles';
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
     // lib hooks
-    const {
-        editorRef,
-        savedRange,
-        size,
-        setSize,
-        formats,
-        setFormats,
-        align,
-        setAlign,
-        lists,
-        setLists,
-        options,
-    } = useEditorContext();
-    const { toggleFormatButton, toggleAlignButton, toggleListButton } = useEditorHandlerContext();
+    const { editorRef, savedRange } = useEditorContext();
 
     // initial values
     // state, ref, querystring hooks
     const imageFileInputRef = useRef<HTMLInputElement>(null);
+    const [size, setSize] = useState<Size>(DEFAULT_FONT_SIZE);
+    const [formats, setFormats] = useState<Record<Format, boolean>>({
+        bold: false,
+        italic: false,
+        underline: false,
+        strikethrough: false,
+    });
+    const [align, setAlign] = useState<Align>('inherit');
+    const [lists, setLists] = useState<Record<List, boolean>>({
+        disc: false,
+        decimal: false,
+    });
+    const [options, setOptions] = useState<Record<Option, boolean>>({
+        image: false,
+        divider: false,
+    });
 
     // form hooks
     // query hooks
     // calculated values
 
     // handlers
+
+    // 버튼 클릭할 때 활성화 상태를 알려주는 toggle 함수
+    const toggleFormatButton = (format: Format) => {
+        setFormats((prev) => ({
+            ...prev,
+            [format]: !prev[format],
+        }));
+    };
+
+    const toggleAlignButton = (alignment: Align) => {
+        setAlign(alignment);
+    };
+
+    const toggleListButton = (list: List) => {
+        setLists((prev) => {
+            if (prev[list]) return prev;
+
+            return {
+                disc: list === 'disc',
+                decimal: list === 'decimal',
+            };
+        });
+    };
+
     const handleSize = (size: Size) => {
         const { isValid, selection } = getValidSelection();
         if (!isValid) return;

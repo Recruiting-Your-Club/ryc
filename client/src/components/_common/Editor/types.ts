@@ -17,22 +17,6 @@ export interface EditorContextType {
     editorRef: RefObject<HTMLDivElement>;
     savedRange: Range | null;
     setSavedRange: Dispatch<SetStateAction<Range | null>>;
-    size: Size;
-    setSize: Dispatch<SetStateAction<Size>>;
-    formats: Record<Format, boolean>;
-    setFormats: Dispatch<SetStateAction<Record<Format, boolean>>>;
-    align: Align;
-    setAlign: Dispatch<SetStateAction<Align>>;
-    lists: Record<List, boolean>;
-    setLists: Dispatch<SetStateAction<Record<List, boolean>>>;
-    options: Record<Option, boolean>;
-    setOptions: Dispatch<SetStateAction<Record<Option, boolean>>>;
-}
-
-export interface EditorHandlerContextType {
-    toggleFormatButton: (format: Format) => void;
-    toggleAlignButton: (align: Align) => void;
-    toggleListButton: (list: List) => void;
 }
 
 export interface EditorProps {
