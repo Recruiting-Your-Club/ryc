@@ -12,8 +12,27 @@ export const contentContainer = css`
     overflow-wrap: break-word;
 `;
 
-export const underScore = css`
-    width: 35rem;
+export const textWithUnderline = css`
+    padding: 0 1rem 1rem 1rem;
+    display: inline-flex;
+    position: relative;
+    min-width: 35rem;
+    width: fit-content;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-top: 3px solid rgba(${hexToRgb(theme.colors.default)}, 0.5);
+    }
+`;
+
+export const underline = css`
+    min-width: 35rem;
+    width: fit-content;
+    margin-top: 0.5rem;
     border-top: 3px solid rgba(${hexToRgb(theme.colors.default)}, 0.5);
 `;
 
