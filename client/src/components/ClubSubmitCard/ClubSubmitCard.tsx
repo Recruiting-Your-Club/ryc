@@ -13,16 +13,7 @@ import {
     questionStatusTextSx,
 } from './ClubSubmitCard.style';
 import ArrowDown from '@assets/images/downArrow.svg';
-
-interface ClubSubmitCardProps {
-    clubName: string;
-    tag: string;
-    deadline?: string;
-    completedQuestions: number;
-    totalQuestions: number;
-    deadlineColor?: string;
-    onSubmit?: () => void;
-}
+import type { ClubSubmitCardProps } from './types';
 
 function ClubSubmitCard({
     clubName,
@@ -33,17 +24,6 @@ function ClubSubmitCard({
     deadlineColor,
     onSubmit,
 }: ClubSubmitCardProps) {
-    // prop destruction
-    // lib hooks
-    // initial values
-    const isAllQuestionsCompleted = completedQuestions === totalQuestions;
-    // state, ref, querystring hooks
-    // form hooks
-    // query hooks
-    // calculated values
-    // handlers
-    // effects
-
     return (
         <div css={clubApplySubmitCardContainer}>
             <div css={clubSubmitCard}>
@@ -72,14 +52,18 @@ function ClubSubmitCard({
                     <div css={questionStatusContainer}>
                         <Text
                             type="subCaptionRegular"
-                            sx={questionStatusTextSx(isAllQuestionsCompleted)}
+                            sx={questionStatusTextSx(completedQuestions === totalQuestions)}
                         >
                             작성한 항목 ({completedQuestions} / {totalQuestions})
                         </Text>
                         <ArrowDown css={arrowIcon} />
                     </div>
                 </div>
-                <Button size="full" disabled={!isAllQuestionsCompleted} onClick={onSubmit}>
+                <Button
+                    size="full"
+                    disabled={!(completedQuestions === totalQuestions)}
+                    onClick={onSubmit}
+                >
                     제출하기
                 </Button>
             </div>
