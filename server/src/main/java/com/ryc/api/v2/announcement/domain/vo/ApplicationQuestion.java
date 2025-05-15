@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Getter
@@ -33,5 +34,23 @@ public class ApplicationQuestion {
                 .options(question.options())
                 .order(order)
                 .build();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, label, isRequired, order, options);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        ApplicationQuestion that = (ApplicationQuestion) obj;
+        return isRequired == that.isRequired &&
+               order == that.order &&
+               type == that.type &&
+               Objects.equals(label, that.label) &&
+               Objects.equals(options, that.options);
     }
 }
