@@ -132,23 +132,23 @@ export const applyFormContainer = (index: number) => css`
 export const submitButtonContainer = css`
     width: 100%;
     height: 3rem;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     background-color: ${theme.colors.gray[100]};
 
-    @media (min-width: ${theme.breakpoint.mobile}) {
-        display: none;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: flex;
     }
 `;
 
 export const mobileQuestionStatus = css`
-    display: flex;
+    display: none;
     margin-left: auto;
     align-items: center;
-    @media (min-width: ${theme.breakpoint.tablet}) {
-        display: none;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        display: flex;
     }
 `;
 

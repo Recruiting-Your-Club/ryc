@@ -21,12 +21,12 @@ function ClubApplyPersonalInfoPage({
     // query hooks
     // calculated values
     // handlers
-    const handleInputChange = (id: string, value: string) => {
-        onAnswerChange(id, value);
+    const handleInputChange = (questionTitle: string, value: string) => {
+        onAnswerChange(questionTitle, value);
     };
 
-    const handleRadioChange = (id: string, value: string) => {
-        onAnswerChange(id, value);
+    const handleRadioChange = (questionTitle: string, value: string) => {
+        onAnswerChange(questionTitle, value);
     };
 
     // effects
@@ -48,7 +48,9 @@ function ClubApplyPersonalInfoPage({
                                     })) || []
                                 }
                                 value={answers[question.id] || ''}
-                                onChange={(value) => handleRadioChange(question.id, value)}
+                                onChange={(value) =>
+                                    handleRadioChange(question.questionTitle, value)
+                                }
                             />
                         </div>
                     );
@@ -65,7 +67,9 @@ function ClubApplyPersonalInfoPage({
                                 labelSx={{ color: 'black' }}
                                 inputSx={{ width: '70%' }}
                                 value={answers[question.id] || ''}
-                                onChange={(e) => handleInputChange(question.id, e.target.value)}
+                                onChange={(e) =>
+                                    handleInputChange(question.questionTitle, e.target.value)
+                                }
                                 error={hasError}
                                 helperText={getErrorMessage(
                                     question.questionTitle,

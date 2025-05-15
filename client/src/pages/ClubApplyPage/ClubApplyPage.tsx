@@ -20,9 +20,11 @@ import { Text } from '@components/_common/Text';
 import { ClubSubmitCard } from '@components/ClubSubmitCard';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-
 import theme from '@styles/theme';
 import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
+import type { Answer } from './types';
+import type { ValidationKey } from './constants';
+import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 
 // 임시 데이터
 export const clubData = {
@@ -104,74 +106,60 @@ const applyData = [
     },
 ];
 
-// 유효성 검사를 위한 정규식 패턴
-const VALIDATION_PATTERNS = {
-    이름: /^[가-힣]{2,}$/,
-    생년월일: /^\d{6}$/,
-    전화번호: /^01\d{8,9}$/,
-} as const;
-
-// 에러 메시지
-const ERROR_MESSAGES = {
-    이름: '올바른 이름을 입력해주세요 (예: 홍길동)',
-    생년월일: '생년월일을 YYMMDD 형식으로 입력해주세요',
-    전화번호: '올바른 전화번호를 입력해주세요 (예: 01012345678)',
-} as const;
-
-type ValidationKey = keyof typeof VALIDATION_PATTERNS;
-
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
     // initial values
 
-    // 사전질문 데이터 변환
-    const clubPersonalQuestions = clubData.preQuestions[0].additionalQuestions.map((question) => ({
-        id: question.title,
-        questionTitle: question.title,
-        type: question.category === 'MULTIPLE_CHOICE' ? 'boolean' : 'string',
-        options: question.options ?? [],
-    }));
-
-    // 자기소개서 질문 데이터 변환
-    const detailQuestions = clubData.questions.map((question) => ({
-        id: question.title,
-        questionTitle: question.title,
-        description: question.description,
-    }));
-
-    const allQuestions = [...clubPersonalQuestions, ...detailQuestions];
-
     // state, ref, querystring hooks
-
-    const [idx, setIdx] = useState<number>(0);
-    const [isDesktop, setIsDesktop] = useState<boolean>(
-        window.innerWidth > parseInt(theme.breakpoint.mobile),
-    );
-    const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+    const [pageIndex, setPageIndex] = useState<number>(0);
+    const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+
+    // 사전질문 데이터
+    const clubPersonalQuestions = useMemo(
+        () =>
+            clubData.preQuestions[0].additionalQuestions.map((question) => ({
+                id: question.title,
+                questionTitle: question.title,
+                type: question.category === 'MULTIPLE_CHOICE' ? 'boolean' : 'string',
+                options: question.options ?? [],
+            })),
+        [],
+    );
+
+    // 자기소개서 질문 데이터
+    const detailQuestions = useMemo(
+        () =>
+            clubData.questions.map((question) => ({
+                id: question.title,
+                questionTitle: question.title,
+                description: question.description,
+            })),
+        [],
+    );
+
+    const allQuestions = useMemo(
+        () => [...clubPersonalQuestions, ...detailQuestions],
+        [clubPersonalQuestions, detailQuestions],
+    );
 
     // form hooks
     // query hooks
     // calculated values
 
     const getValidationError = (questionTitle: string, value: string): boolean => {
-        // 값이 비어있으면 에러를 표시하지 않음
         if (!value.trim()) return false;
-
         const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
         if (!pattern) return false;
         return !pattern.test(value);
     };
 
     const getErrorMessage = (questionTitle: string, value: string): string | undefined => {
-        // 값이 비어있으면 에러 메시지를 표시하지 않음
-        if (!value.trim()) return undefined;
-
-        const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
-        if (!pattern) return undefined;
-        return !pattern.test(value) ? ERROR_MESSAGES[questionTitle as ValidationKey] : undefined;
+        return getValidationError(questionTitle, value)
+            ? ERROR_MESSAGES[questionTitle as ValidationKey]
+            : undefined;
     };
 
     // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
@@ -192,13 +180,30 @@ function ClubApplyPage() {
     }, [formattedDeadline, today, diffDay]);
 
     // handlers
-    const handleAnswerChange = (id: string, value: string) => {
-        setAnswers((prev) => ({
-            ...prev,
-            [id]: value,
-        }));
-    };
+    const handleAnswerChange = (questionTitle: string, value: string) => {
+        setAnswers((prev) => {
+            const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
 
+            const newAnswer: Answer = {
+                id: questionTitle,
+                value,
+                questionTitle,
+                type: clubPersonalQuestions.some(
+                    (question) => question.questionTitle === questionTitle,
+                )
+                    ? 'personal'
+                    : 'detail',
+            };
+
+            if (existingAnswer) {
+                return prev.map((answer) =>
+                    answer.questionTitle === questionTitle ? newAnswer : answer,
+                );
+            }
+
+            return [...prev, newAnswer];
+        });
+    };
     const handleSubmit = () => {
         setIsSubmitDialogOpen(true);
     };
@@ -208,45 +213,25 @@ function ClubApplyPage() {
     };
 
     const handleNext = () => {
-        if (idx < applyData.length - 1) {
-            setIdx(idx + 1);
+        if (pageIndex < applyData.length - 1) {
+            setPageIndex(pageIndex + 1);
         }
     };
 
     // effects
     useEffect(() => {
-        const handleResize = () => {
-            setIsDesktop(window.innerWidth > parseInt(theme.breakpoint.mobile));
-        };
+        const completedCount = answers.filter((answer) => {
+            if (!answer.value.trim()) return false;
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // 답변 완료 상태 업데이트
-    useEffect(() => {
-        const completedCount = Object.entries(answers).filter(([id, value]) => {
-            // 해당 질문의 제목 찾기
-            const personalQuestion = clubPersonalQuestions.find((q) => q.id === id);
-            const detailQuestion = detailQuestions.find((q) => q.id === id);
-            const question = personalQuestion || detailQuestion;
-
-            if (!question) return false;
-
-            // 값이 비어있으면 완료되지 않은 것으로 처리
-            if (!value.trim()) return false;
-
-            // 유효성 검사가 필요한 필드인 경우 검사
-            if (VALIDATION_PATTERNS[question.questionTitle as ValidationKey]) {
-                return !getValidationError(question.questionTitle, value);
+            if (VALIDATION_PATTERNS[answer.questionTitle as ValidationKey]) {
+                return !getValidationError(answer.questionTitle, answer.value);
             }
 
-            // 유효성 검사가 필요없는 필드(예: 성별)는 값이 있으면 완료로 처리
             return true;
         }).length;
 
         setCompletedQuestions(completedCount);
-    }, [answers, clubPersonalQuestions, detailQuestions]);
+    }, [answers]);
 
     return (
         <div css={clubApplyPageContainer}>
@@ -268,48 +253,46 @@ function ClubApplyPage() {
                                 key={data.question}
                                 variant="text"
                                 sx={clubApplyTabName}
-                                onClick={() => setIdx(data.index)}
+                                onClick={() => setPageIndex(data.index)}
                             >
                                 {data.question}
                             </Button>
                         ))}
-                        {!isDesktop && (
-                            <Text
-                                type="subCaptionRegular"
-                                textAlign="right"
-                                color={
-                                    completedQuestions === allQuestions.length
-                                        ? 'primary'
-                                        : 'warning'
-                                }
-                                sx={mobileQuestionStatus}
-                            >
-                                작성한 항목 ({completedQuestions} / {allQuestions.length})
-                            </Text>
-                        )}
+                        <Text
+                            type="subCaptionRegular"
+                            textAlign="right"
+                            color={
+                                completedQuestions === allQuestions.length ? 'primary' : 'warning'
+                            }
+                            sx={mobileQuestionStatus}
+                        >
+                            작성한 항목 ({completedQuestions} / {allQuestions.length})
+                        </Text>
                     </div>
                     {/* 페이지 */}
-                    {idx === 0 ? (
+                    {pageIndex === 0 ? (
                         <ClubApplyPersonalInfoPage
-                            idx={idx}
-                            answers={answers}
+                            answers={Object.fromEntries(
+                                answers.map((answer) => [answer.id, answer.value]),
+                            )}
                             clubPersonalQuestions={clubPersonalQuestions}
                             onAnswerChange={handleAnswerChange}
-                            containerStyle={applyFormContainer(idx)}
+                            containerStyle={applyFormContainer(pageIndex)}
                             getValidationError={getValidationError}
                             getErrorMessage={getErrorMessage}
                         />
                     ) : (
                         <ClubApplyDetailQuestionPage
-                            idx={idx}
-                            answers={answers}
+                            answers={Object.fromEntries(
+                                answers.map((answer) => [answer.id, answer.value]),
+                            )}
                             clubDetailQuestions={detailQuestions}
                             onAnswerChange={handleAnswerChange}
-                            containerStyle={applyFormContainer(idx)}
+                            containerStyle={applyFormContainer(pageIndex)}
                         />
                     )}
 
-                    {idx < applyData.length - 1 && (
+                    {pageIndex < applyData.length - 1 && (
                         <div css={nextButtonContainer}>
                             <Button variant="primary" onClick={handleNext}>
                                 다음
@@ -317,28 +300,25 @@ function ClubApplyPage() {
                         </div>
                     )}
                 </div>
-                {isDesktop ? (
-                    <ClubSubmitCard
-                        clubName={clubData.title}
-                        tag={clubData.tag}
-                        deadline={calculateDeadline}
-                        completedQuestions={completedQuestions}
-                        totalQuestions={allQuestions.length}
-                        deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
-                        onSubmit={handleSubmit}
-                    />
-                ) : (
-                    <div css={submitButtonContainer}>
-                        <Button
-                            variant="primary"
-                            sx={{ width: '100%' }}
-                            disabled={completedQuestions !== allQuestions.length}
-                            onClick={handleSubmit}
-                        >
-                            제출하기
-                        </Button>
-                    </div>
-                )}
+                <ClubSubmitCard
+                    clubName={clubData.title}
+                    tag={clubData.tag}
+                    deadline={calculateDeadline}
+                    completedQuestions={completedQuestions}
+                    totalQuestions={allQuestions.length}
+                    deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
+                    onSubmit={handleSubmit}
+                />
+                <div css={submitButtonContainer}>
+                    <Button
+                        variant="primary"
+                        sx={{ width: '100%' }}
+                        disabled={completedQuestions !== allQuestions.length}
+                        onClick={handleSubmit}
+                    >
+                        제출하기
+                    </Button>
+                </div>
             </div>
 
             <SubmitDialog

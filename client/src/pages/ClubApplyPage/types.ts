@@ -1,5 +1,7 @@
 import type { CSSObject } from '@emotion/react';
 
+export type PageAnswer = 'personal' | 'detail';
+
 export interface PersonalQuestion {
     id: string;
     questionTitle: string;
@@ -13,20 +15,25 @@ export interface DetailQuestion {
     description: string;
 }
 
+export interface Answer {
+    id: string;
+    value: string;
+    questionTitle: string;
+    type: PageAnswer;
+}
+
 export interface ClubApplyPersonalInfoPageProps {
-    idx: number;
     answers: { [key: string]: string };
     clubPersonalQuestions: PersonalQuestion[];
-    onAnswerChange: (id: string, value: string) => void;
+    onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
 }
 
 export interface ClubApplyDetailQuestionPageProps {
-    idx: number;
     answers: { [key: string]: string };
     clubDetailQuestions: DetailQuestion[];
-    onAnswerChange: (id: string, value: string) => void;
+    onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
 }
