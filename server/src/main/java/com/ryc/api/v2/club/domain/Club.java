@@ -18,15 +18,15 @@ public class Club {
   private final String id;
   private final String name;
   private final String shortDescription;
+  private final String detailDescription;
   private final String imageUrl;
   private final String thumbnailUrl;
   private final Category category;
-  private final String detailDescription;
-  private final LocalDateTime createdAt;
-  private final LocalDateTime updatedAt;
   private final List<ClubTag> clubTags;
   private final List<ClubSummary> clubSummaries;
   private final List<ClubDetailImage> clubDetailImages;
+  private final LocalDateTime createdAt;
+  private final LocalDateTime updatedAt;
   @Builder.Default private final Boolean deleted = Boolean.FALSE;
 
   /** Club 동아리 최초 생성시에만 사용 (id가 생성되기 전에만) */

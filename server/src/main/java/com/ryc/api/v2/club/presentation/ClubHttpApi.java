@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.club.service.ClubService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,5 +43,11 @@ public class ClubHttpApi {
   @GetMapping("/all")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
     return ResponseEntity.status(HttpStatus.OK).body(clubService.getAllClub());
+  }
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<ClubUpdateResponse> updateClub(
+      @PathVariable String id, @RequestBody ClubUpdateRequest body) {
+    return ResponseEntity.status(HttpStatus.OK).body(clubService.updateClub(id, body));
   }
 }
