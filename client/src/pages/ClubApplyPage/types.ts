@@ -19,6 +19,8 @@ export interface ClubApplyPersonalInfoPageProps {
     clubPersonalQuestions: PersonalQuestion[];
     onAnswerChange: (id: string, value: string) => void;
     containerStyle: CSSObject;
+    getValidationError: (questionTitle: string, value: string) => boolean;
+    getErrorMessage: (questionTitle: string, value: string) => string | undefined;
 }
 
 export interface ClubApplyDetailQuestionPageProps {

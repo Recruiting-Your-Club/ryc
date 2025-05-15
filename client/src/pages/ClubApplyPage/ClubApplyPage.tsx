@@ -104,6 +104,22 @@ const applyData = [
     },
 ];
 
+// 유효성 검사를 위한 정규식 패턴
+const VALIDATION_PATTERNS = {
+    이름: /^[가-힣]{2,}$/,
+    생년월일: /^\d{6}$/,
+    전화번호: /^01\d{8,9}$/,
+} as const;
+
+// 에러 메시지
+const ERROR_MESSAGES = {
+    이름: '올바른 이름을 입력해주세요 (예: 홍길동)',
+    생년월일: '생년월일을 YYMMDD 형식으로 입력해주세요',
+    전화번호: '올바른 전화번호를 입력해주세요 (예: 01012345678)',
+} as const;
+
+type ValidationKey = keyof typeof VALIDATION_PATTERNS;
+
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
@@ -139,6 +155,24 @@ function ClubApplyPage() {
     // form hooks
     // query hooks
     // calculated values
+
+    const getValidationError = (questionTitle: string, value: string): boolean => {
+        // 값이 비어있으면 에러를 표시하지 않음
+        if (!value.trim()) return false;
+
+        const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
+        if (!pattern) return false;
+        return !pattern.test(value);
+    };
+
+    const getErrorMessage = (questionTitle: string, value: string): string | undefined => {
+        // 값이 비어있으면 에러 메시지를 표시하지 않음
+        if (!value.trim()) return undefined;
+
+        const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
+        if (!pattern) return undefined;
+        return !pattern.test(value) ? ERROR_MESSAGES[questionTitle as ValidationKey] : undefined;
+    };
 
     // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
     const today = dayjs().format('YYYY-MM-DD');
@@ -191,11 +225,28 @@ function ClubApplyPage() {
 
     // 답변 완료 상태 업데이트
     useEffect(() => {
-        const completedCount = Object.values(answers).filter(
-            (answer) => answer.trim() !== '',
-        ).length;
+        const completedCount = Object.entries(answers).filter(([id, value]) => {
+            // 해당 질문의 제목 찾기
+            const personalQuestion = clubPersonalQuestions.find((q) => q.id === id);
+            const detailQuestion = detailQuestions.find((q) => q.id === id);
+            const question = personalQuestion || detailQuestion;
+
+            if (!question) return false;
+
+            // 값이 비어있으면 완료되지 않은 것으로 처리
+            if (!value.trim()) return false;
+
+            // 유효성 검사가 필요한 필드인 경우 검사
+            if (VALIDATION_PATTERNS[question.questionTitle as ValidationKey]) {
+                return !getValidationError(question.questionTitle, value);
+            }
+
+            // 유효성 검사가 필요없는 필드(예: 성별)는 값이 있으면 완료로 처리
+            return true;
+        }).length;
+
         setCompletedQuestions(completedCount);
-    }, [answers]);
+    }, [answers, clubPersonalQuestions, detailQuestions]);
 
     return (
         <div css={clubApplyPageContainer}>
@@ -245,6 +296,8 @@ function ClubApplyPage() {
                             clubPersonalQuestions={clubPersonalQuestions}
                             onAnswerChange={handleAnswerChange}
                             containerStyle={applyFormContainer(idx)}
+                            getValidationError={getValidationError}
+                            getErrorMessage={getErrorMessage}
                         />
                     ) : (
                         <ClubApplyDetailQuestionPage

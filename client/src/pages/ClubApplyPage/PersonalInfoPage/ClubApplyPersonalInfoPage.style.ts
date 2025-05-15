@@ -1,12 +1,16 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const clubApplyPersonalQuestionForm = css`
+export const clubApplyPersonalQuestionForm = (hasError: boolean) => css`
     display: flex;
     flex-direction: column;
     align-items: start;
     gap: 0.5rem;
     border: 1px solid ${theme.colors.gray[300]};
+    ${hasError &&
+    css`
+        border: 1px solid ${theme.colors.red[800]};
+    `}
     border-radius: 5px;
     width: 100%;
     min-height: 8rem;
@@ -19,4 +23,8 @@ export const clubApplyPersonalQuestionForm = css`
         margin: 2rem 0;
         min-height: 7rem;
     }
+`;
+
+export const helperTextSx = css`
+    ${theme.typography.subCaptionLight};
 `;
