@@ -7,6 +7,5 @@ import lombok.Builder;
 
 @Builder
 public record ClubCreateResponse(
-    @Schema(description = "동아리 ID")
-        @NotBlank(message = "club id shouldn't be blank")
+    @Schema(description = "동아리 ID") @NotBlank(message = "club id shouldn't be blank")
         String clubId) {}
