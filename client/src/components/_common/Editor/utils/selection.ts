@@ -2,7 +2,7 @@ import { DEFAULT_FONT_SIZE, DEFAULT_TEXT_ALIGN, MAX_FONT_SIZE } from '@constants
 import type { Align, Format, List, Size } from '../types';
 import { getEditorRoot } from './alignment';
 import { getLinesInRange } from './list';
-import { getTextNodes, getValidRange } from './range';
+import { getTextNodes, getValidSelection } from './range';
 
 // format 적용 여부를 버튼으로 알려주기 위한 Record 반환 함수
 export const getCurrentFormats = (): Record<Format, boolean> => {
@@ -13,7 +13,7 @@ export const getCurrentFormats = (): Record<Format, boolean> => {
         strikethrough: false,
     };
 
-    const { isValid, range } = getValidRange();
+    const { isValid, range } = getValidSelection();
     if (!isValid) return formatMap;
 
     // 커서만 존재할 때
@@ -91,7 +91,7 @@ export const getCurrentFormats = (): Record<Format, boolean> => {
 };
 
 export const getCurrentAlignment = (): Align => {
-    const { isValid, range } = getValidRange();
+    const { isValid, range } = getValidSelection();
     if (!isValid) return DEFAULT_TEXT_ALIGN;
 
     const editor = getEditorRoot(range);
@@ -117,7 +117,7 @@ export const getCurrentLists = (): Record<List, boolean> => {
         decimal: false,
     };
 
-    const { isValid, range } = getValidRange();
+    const { isValid, range } = getValidSelection();
     if (!isValid) return listMap;
 
     const editor = getEditorRoot(range);
@@ -140,7 +140,7 @@ export const getCurrentLists = (): Record<List, boolean> => {
 // size 적용 여부를 알려주기 위한 Size 반환 함수
 // 16px과 24px text를 함께 드래그했을 경우 -> 작은 텍스트 크기인 16px로 반영됩니다.
 export const getCurrentSize = (): Size => {
-    const { isValid, range } = getValidRange();
+    const { isValid, range } = getValidSelection();
     if (!isValid) return DEFAULT_FONT_SIZE;
 
     const editor = getEditorRoot(range);

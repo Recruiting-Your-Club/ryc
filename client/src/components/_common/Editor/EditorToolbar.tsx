@@ -21,7 +21,7 @@ import type { Align, Format, List, Option, Size, TextColor, ToolbarProps } from 
 import { applyAlignment } from './utils/alignment';
 import { applyList } from './utils/list';
 import { handleImageFile, insertDivider } from './utils/options';
-import { getValidRange, getValidSelection } from './utils/range';
+import { getValidSelection } from './utils/range';
 import {
     getCurrentAlignment,
     getCurrentFormats,
@@ -111,7 +111,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     };
 
     const handleAlignment = (align: Align) => {
-        const { isValid, range } = getValidRange();
+        const { isValid, range } = getValidSelection();
         if (!isValid) return;
 
         toggleAlignButton(align);
@@ -119,7 +119,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     };
 
     const handleList = (list: List) => {
-        const { isValid, range } = getValidRange();
+        const { isValid, range } = getValidSelection();
         if (!isValid) return;
 
         toggleListButton(list);

@@ -1,19 +1,11 @@
-import type { ValidRange, ValidSelection } from '../types';
+import type { ValidSelection } from '../types';
 
 export const getValidSelection = (): ValidSelection => {
     const selection = window.getSelection(); // 커서/드래그로 선택된 객체
     if (!selection || selection.rangeCount === 0) {
-        return { isValid: false, selection: null };
+        return { isValid: false, selection: null, range: null };
     }
-    return { isValid: true, selection: selection };
-};
-
-export const getValidRange = (): ValidRange => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) {
-        return { isValid: false, range: null };
-    }
-    return { isValid: true, range: selection.getRangeAt(0) };
+    return { isValid: true, selection: selection, range: selection.getRangeAt(0) };
 };
 
 export const handleNewRange = (node: Node, selection: Selection) => {
