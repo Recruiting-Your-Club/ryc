@@ -272,9 +272,7 @@ function ClubApplyPage() {
                     {/* 페이지 */}
                     {pageIndex === 0 ? (
                         <ClubApplyPersonalInfoPage
-                            answers={Object.fromEntries(
-                                answers.map((answer) => [answer.id, answer.value]),
-                            )}
+                            answers={answers}
                             clubPersonalQuestions={clubPersonalQuestions}
                             onAnswerChange={handleAnswerChange}
                             containerStyle={applyFormContainer(pageIndex)}
@@ -283,9 +281,7 @@ function ClubApplyPage() {
                         />
                     ) : (
                         <ClubApplyDetailQuestionPage
-                            answers={Object.fromEntries(
-                                answers.map((answer) => [answer.id, answer.value]),
-                            )}
+                            answers={answers}
                             clubDetailQuestions={detailQuestions}
                             onAnswerChange={handleAnswerChange}
                             containerStyle={applyFormContainer(pageIndex)}

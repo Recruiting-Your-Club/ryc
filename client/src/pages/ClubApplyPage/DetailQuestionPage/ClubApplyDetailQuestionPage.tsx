@@ -3,6 +3,7 @@ import { Text } from '@components/_common/Text';
 import { TextArea } from '@components/_common/TextArea';
 import { clubApplyDetailQuestionContainer } from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
+import { getAnswer } from '../utils';
 
 function ClubApplyDetailQuestionPage({
     answers,
@@ -10,19 +11,6 @@ function ClubApplyDetailQuestionPage({
     onAnswerChange,
     containerStyle,
 }: ClubApplyDetailQuestionPageProps) {
-    // prop destruction
-    // lib hooks
-    // initial values
-    // state, ref, querystring hooks
-    // form hooks
-    // query hooks
-    // calculated values
-    // handlers
-    const handleTextAreaChange = (id: string, value: string) => {
-        onAnswerChange(id, value);
-    };
-    // effects
-
     return (
         <div css={containerStyle}>
             {clubDetailQuestions.map((question) => (
@@ -33,8 +21,8 @@ function ClubApplyDetailQuestionPage({
                     <TextArea
                         size="md"
                         wrapperSx={{ marginTop: '1rem' }}
-                        value={answers[question.id] || ''}
-                        onChange={(e) => handleTextAreaChange(question.id, e.target.value)}
+                        value={getAnswer(answers, question.questionTitle)}
+                        onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
                     />
                 </div>
             ))}

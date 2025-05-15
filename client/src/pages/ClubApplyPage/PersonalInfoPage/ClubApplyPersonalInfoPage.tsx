@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text } from '@components/_common/Text';
-import { Input } from '@components';
+import { Input } from '@components/_common/Input';
 import { Radio } from '@components/_common/Radio';
+import { Text } from '@components/_common/Text';
 import { clubApplyPersonalQuestionForm, helperTextSx } from './ClubApplyPersonalInfoPage.style';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
+import { getAnswer } from '../utils';
 
 function ClubApplyPersonalInfoPage({
     answers,
@@ -13,24 +14,6 @@ function ClubApplyPersonalInfoPage({
     getValidationError,
     getErrorMessage,
 }: ClubApplyPersonalInfoPageProps) {
-    // prop destruction
-    // lib hooks
-    // initial values
-    // state, ref, querystring hooks
-    // form hooks
-    // query hooks
-    // calculated values
-    // handlers
-    const handleInputChange = (questionTitle: string, value: string) => {
-        onAnswerChange(questionTitle, value);
-    };
-
-    const handleRadioChange = (questionTitle: string, value: string) => {
-        onAnswerChange(questionTitle, value);
-    };
-
-    // effects
-
     return (
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
@@ -47,39 +30,34 @@ function ClubApplyPersonalInfoPage({
                                         value: option,
                                     })) || []
                                 }
-                                value={answers[question.id] || ''}
-                                onChange={(value) =>
-                                    handleRadioChange(question.questionTitle, value)
-                                }
-                            />
-                        </div>
-                    );
-                } else {
-                    const hasError = getValidationError(
-                        question.questionTitle,
-                        answers[question.id] || '',
-                    );
-                    return (
-                        <div key={question.id} css={clubApplyPersonalQuestionForm(hasError)}>
-                            <Input
-                                variant="lined"
-                                label={question.questionTitle}
-                                labelSx={{ color: 'black' }}
-                                inputSx={{ width: '70%' }}
-                                value={answers[question.id] || ''}
-                                onChange={(e) =>
-                                    handleInputChange(question.questionTitle, e.target.value)
-                                }
-                                error={hasError}
-                                helperText={getErrorMessage(
-                                    question.questionTitle,
-                                    answers[question.id] || '',
-                                )}
-                                helperSx={helperTextSx}
+                                value={getAnswer(answers, question.questionTitle)}
+                                onChange={(value) => onAnswerChange(question.questionTitle, value)}
                             />
                         </div>
                     );
                 }
+                const hasError = getValidationError(
+                    question.questionTitle,
+                    getAnswer(answers, question.questionTitle),
+                );
+                return (
+                    <div key={question.id} css={clubApplyPersonalQuestionForm(hasError)}>
+                        <Input
+                            variant="lined"
+                            label={question.questionTitle}
+                            labelSx={{ color: 'black' }}
+                            inputSx={{ width: '70%' }}
+                            value={getAnswer(answers, question.questionTitle)}
+                            onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
+                            error={hasError}
+                            helperText={getErrorMessage(
+                                question.questionTitle,
+                                getAnswer(answers, question.questionTitle),
+                            )}
+                            helperSx={helperTextSx}
+                        />
+                    </div>
+                );
             })}
         </div>
     );

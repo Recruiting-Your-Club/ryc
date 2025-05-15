@@ -23,7 +23,7 @@ export interface Answer {
 }
 
 export interface ClubApplyPersonalInfoPageProps {
-    answers: { [key: string]: string };
+    answers: Answer[];
     clubPersonalQuestions: PersonalQuestion[];
     onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
@@ -32,7 +32,7 @@ export interface ClubApplyPersonalInfoPageProps {
 }
 
 export interface ClubApplyDetailQuestionPageProps {
-    answers: { [key: string]: string };
+    answers: Answer[];
     clubDetailQuestions: DetailQuestion[];
     onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
