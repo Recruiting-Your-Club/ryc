@@ -22,4 +22,22 @@ export const footerStyle = css`
     max-width: 75rem;
     height: 14rem;
     padding: 2.5rem 4rem;
+
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        padding: 2rem 4rem;
+        height: auto;
+        min-height: 12rem;
+    }
+
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        padding: 1.5rem 3rem;
+        gap: 0.75rem;
+        min-height: 10rem;
+    }
+
+    @media (max-width: ${theme.breakpoint.mobileMini}) {
+        padding: 1rem 2rem;
+        gap: 0.5rem;
+        min-height: 8rem;
+    }
 `;
