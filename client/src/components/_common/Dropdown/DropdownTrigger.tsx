@@ -36,7 +36,7 @@ function DropdownTrigger({
     // effects
     return (
         <Comp
-            css={[sx, s_dropdownTrigger]}
+            css={[s_dropdownTrigger, sx]}
             {...props}
             forwardedRef={ref}
             onClick={() => {
