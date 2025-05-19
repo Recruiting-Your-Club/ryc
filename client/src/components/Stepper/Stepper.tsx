@@ -4,6 +4,8 @@ import { s_stepper } from './Stepper.style';
 import { StepperContext } from './StepperContext';
 import { StepConnector } from './StepConnector';
 import type { SerializedStyles } from '@emotion/react';
+import { Step } from './Step';
+import { StepLabel } from './StepLabel';
 
 //interface
 interface StepperProps {
@@ -18,7 +20,7 @@ interface StepperProps {
 
 const defaultConnector = <StepConnector />;
 
-function Stepper({
+function StepperRoot({
     activeStep = 0,
     alternativeLabel = false,
     children,
@@ -67,5 +69,10 @@ function Stepper({
         </StepperContext.Provider>
     );
 }
+
+const Stepper = Object.assign(StepperRoot, {
+    Step: Step,
+    Label: StepLabel,
+});
 
 export { Stepper };
