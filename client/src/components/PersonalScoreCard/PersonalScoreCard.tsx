@@ -10,6 +10,15 @@ import {
 import type { PersonalScoreCardProps } from './types';
 
 function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={cardContainer}>
             <div css={headerContainer}>
