@@ -17,6 +17,7 @@ import type {
     DialogSize,
     Size,
 } from './types';
+import { useDialog } from '@hooks/useDialog';
 
 const dialogSize: Record<DialogSize, Size> = {
     sm: {
@@ -37,16 +38,10 @@ const dialogSize: Record<DialogSize, Size> = {
     },
 };
 
-function BaseDialog({
-    children,
-    open,
-    size = 'md',
-    sx,
-    backdrop = true,
-    handleClose,
-}: BaseDialogProps) {
+function BaseDialog({ children, size = 'md', sx, backdrop = true }: BaseDialogProps) {
     // prop destruction
     // lib hooks
+    const { open, closeDialog } = useDialog();
     // state, ref, querystring hooks
     // form hooks
     // query hooks
@@ -60,7 +55,7 @@ function BaseDialog({
                     <>
                         <div
                             css={backdropContainer}
-                            onClick={() => backdrop && handleClose()}
+                            onClick={() => backdrop && closeDialog()}
                             aria-hidden="true"
                         />
                         <div css={[dialogContainer, dialogSize[size], sx]}>{children}</div>
@@ -76,9 +71,17 @@ function DialogHeader({
     children,
     sx,
     position = 'start',
-    handleClose,
     closeIcon = false,
 }: DialogHeaderProps) {
+    // prop destruction
+    // lib hooks
+    const { closeDialog } = useDialog();
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // effects
+    // handlers
     return (
         <header css={[headerContainer(border, position), sx]}>
             {children}
@@ -87,7 +90,7 @@ function DialogHeader({
                     variant="transparent"
                     size="md"
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={closeDialog}
                     sx={{ position: 'absolute', right: '2rem' }}
                 >
                     <XIcon />

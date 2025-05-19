@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { DialogContext } from '@components';
 
 function useDialog() {
-    const [open, setOpen] = useState(false);
+    const dialogContext = useContext(DialogContext);
 
-    const openDialog = () => {
-        setOpen(true);
-    };
-    const closeDialog = () => {
-        setOpen(false);
-    };
+    if (!dialogContext) {
+        throw new Error('DialogContext를 사용할 수 없는 컴포넌트입니다.');
+    }
+    const { open, openDialog, closeDialog } = dialogContext;
 
     return { open, openDialog, closeDialog };
 }
