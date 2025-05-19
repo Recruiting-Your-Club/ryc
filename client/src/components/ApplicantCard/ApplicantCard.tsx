@@ -45,6 +45,7 @@ function ApplicantCard({
                     size="xs"
                     isChecked={checked}
                     onChange={(checked) => handleChange(checked)}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />

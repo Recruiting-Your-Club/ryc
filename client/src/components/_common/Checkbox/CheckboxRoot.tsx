@@ -16,6 +16,7 @@ interface CheckboxRootProps {
     isChecked?: boolean;
     defaultChecked?: boolean;
     disabled?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
     sx?: CSSObject;
 }
 
@@ -28,6 +29,7 @@ function CheckboxRoot({
     isChecked: externalChecked,
     defaultChecked = false,
     disabled = false,
+    onClick,
     sx,
 }: CheckboxRootProps) {
     // prop destruction
@@ -65,6 +67,7 @@ function CheckboxRoot({
             onChange: changeHandler,
             defaultChecked,
             disabled,
+            onClick,
         }),
         [variant, size, color, isChecked, defaultChecked, disabled],
     );

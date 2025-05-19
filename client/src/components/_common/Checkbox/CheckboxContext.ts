@@ -11,6 +11,7 @@ interface CheckboxContextType {
     color?: CheckboxColor;
     defaultChecked?: boolean;
     disabled?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const CheckboxContext = createContext<CheckboxContextType | undefined>(undefined);

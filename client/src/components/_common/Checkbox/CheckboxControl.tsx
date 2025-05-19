@@ -7,7 +7,7 @@ import { useCheckboxContext } from './CheckboxContext';
 function CheckboxControl({ sx }: CSSObject) {
     // prop destruction
     // lib hooks
-    const { isChecked, onChange, variant, size, color, defaultChecked, disabled } =
+    const { isChecked, onChange, variant, size, color, defaultChecked, disabled, onClick } =
         useCheckboxContext();
 
     // state, ref, querystring hooks
@@ -20,8 +20,12 @@ function CheckboxControl({ sx }: CSSObject) {
     // handlers
     const triggerChange = () => {
         if (disabled) return;
-
         onChange?.(!isChecked);
+    };
+
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        triggerChange();
+        onClick?.(e);
     };
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -33,7 +37,7 @@ function CheckboxControl({ sx }: CSSObject) {
 
     return (
         <div
-            onClick={triggerChange}
+            onClick={handleClick}
             css={[cssProp, sx]}
             onKeyDown={onKeyDownHandler}
             aria-checked={isChecked}
