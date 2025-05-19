@@ -11,7 +11,6 @@ export const headerContainer = css`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 `;
 
 export const contentContainer = css`
@@ -20,8 +19,17 @@ export const contentContainer = css`
     overflow-wrap: break-word;
 `;
 
-export const raterWrapper = css`
+export const evaluatorSection = css`
+    flex: 4;
     display: flex;
     align-items: center;
     gap: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+export const ratingSection = css`
+    flex: 6;
+    display: flex;
 `;
