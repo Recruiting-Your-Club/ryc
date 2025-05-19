@@ -1,6 +1,5 @@
 import Check from '@assets/images/checkbox_check.svg';
 import type { CSSObject } from '@emotion/react';
-import type { ChangeEvent } from 'react';
 import React from 'react';
 import { s_size, s_svgColor, s_variant } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
@@ -22,11 +21,7 @@ function CheckboxControl({ sx }: CSSObject) {
     const triggerChange = () => {
         if (disabled) return;
 
-        const fakeEvent = {
-            target: { checked: !isChecked },
-        } as ChangeEvent<HTMLInputElement>;
-
-        onChange?.(fakeEvent);
+        onChange?.(!isChecked);
     };
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
