@@ -2,6 +2,7 @@ import React from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { hiddenCheckbox, toggleContainer, toggleCircle } from './Toggle.style';
 import type { Size } from './Toggle.style';
+import type { CSSObject } from '@emotion/react';
 
 interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
     leftText?: string;
@@ -9,11 +10,12 @@ interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'
     size?: Size;
     isChecked?: boolean;
     handleToggle?: () => void;
+    sx?: CSSObject;
 }
 
-function Toggle({ isChecked = false, size = 'md', handleToggle, ...props }: ToggleProps) {
+function Toggle({ isChecked = false, size = 'md', sx, handleToggle, ...props }: ToggleProps) {
     return (
-        <label css={toggleContainer(isChecked, size)}>
+        <label css={[toggleContainer(isChecked, size), sx]}>
             <input
                 type="checkbox"
                 css={hiddenCheckbox}

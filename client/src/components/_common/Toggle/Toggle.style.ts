@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { CSSObject } from '@emotion/react';
 
 export type Size = 'sm' | 'md' | 'lg';
 

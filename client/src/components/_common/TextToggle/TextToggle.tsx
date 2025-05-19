@@ -7,12 +7,14 @@ import {
     rightTextContainer,
 } from './TextToggle.style';
 import { Text } from '@components';
+import type { CSSObject } from '@emotion/react';
 
 interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
     leftText?: string;
     rightText?: string;
     isChecked?: boolean;
     size?: 'sm' | 'md' | 'lg';
+    sx?: CSSObject;
     handleToggle?: () => void;
 }
 const getSize = (size: 'sm' | 'md' | 'lg') => {
@@ -31,10 +33,11 @@ function TextToggle({
     leftText = '지원사항',
     rightText = '내 정보',
     size = 'md',
+    sx,
     ...props
 }: ToggleProps) {
     return (
-        <label css={toggleContainer}>
+        <label css={[toggleContainer, sx]}>
             <input
                 type="checkbox"
                 css={hiddenCheckbox}
