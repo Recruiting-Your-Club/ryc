@@ -23,6 +23,7 @@ function ApplicantCard({
     status,
     checked,
     onChange,
+    onClick,
 }: ApplicantCardProps) {
     // prop destruction
     // lib hooks
@@ -38,7 +39,7 @@ function ApplicantCard({
     // effects
 
     return (
-        <Card.Root width={'23rem'} radius={'5px'} sx={rootCss}>
+        <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={rootCss}>
             <span css={checkboxWrapper}>
                 <Checkbox.Root
                     size="xs"

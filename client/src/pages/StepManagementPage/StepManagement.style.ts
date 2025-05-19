@@ -5,6 +5,8 @@ import { hexToRgb } from '@utils/hexToRgb';
 export const stepManagementPageContainer = css`
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const topContainer = css`
@@ -22,7 +24,6 @@ export const searchBarContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-color: olive; */
 `;
 
 export const stepBoxContainer = css`
@@ -52,6 +53,7 @@ export const inputCss = css`
 export const cardGroup = css`
     height: 100%;
     padding: 0.5rem 0.5rem;
+    overflow-x: hidden;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

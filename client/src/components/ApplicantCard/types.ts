@@ -6,4 +6,5 @@ export interface ApplicantCardProps {
     status: string;
     checked: boolean;
     onChange: (email: string, checked: boolean) => void;
+    onClick: () => void;
 }

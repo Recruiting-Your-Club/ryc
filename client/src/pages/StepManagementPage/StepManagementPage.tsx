@@ -1,5 +1,5 @@
 import Search from '@assets/images/search.svg';
-import { Button, Input } from '@components';
+import { ApplicantDialog, Button, Input } from '@components';
 import { ApplicantCard } from '@components/ApplicantCard';
 import { CardBox } from '@components/CardBox';
 import React, { useState } from 'react';
@@ -12,12 +12,7 @@ import {
     stepManagementPageContainer,
     topContainer,
 } from './StepManagement.style';
-
-// 백엔드에서 받아올 임시 데이터 타입
-export type ClubNotice = {
-    document: boolean;
-    interview: boolean;
-};
+import type { Applicant, ClubNotice } from './types';
 
 function StepManagementPage() {
     const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
@@ -159,6 +154,16 @@ function StepManagementPage() {
             status: '평가 완료 (6/6)',
         },
     ];
+    const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const handleOpen = (applicant: Applicant) => {
+        setSelectedApplicant(applicant);
+        setIsOpen(true);
+    };
+    const handleClose = () => {
+        setIsOpen(false);
+        setSelectedApplicant(null);
+    };
 
     return (
         <div css={stepManagementPageContainer}>
@@ -190,6 +195,7 @@ function StepManagementPage() {
                                 status={applicant.status}
                                 checked={selectedEmails.includes(applicant.email)}
                                 onChange={handleToggle}
+                                onClick={() => handleOpen(applicant as Applicant)}
                             />
                         ))}
                     </div>
@@ -208,6 +214,7 @@ function StepManagementPage() {
                                     status={applicant.status}
                                     checked={selectedEmails.includes(applicant.email)}
                                     onChange={handleToggle}
+                                    onClick={() => handleOpen(applicant as Applicant)}
                                 />
                             ))}
                         </div>
@@ -226,11 +233,20 @@ function StepManagementPage() {
                                 status={applicant.status}
                                 checked={selectedEmails.includes(applicant.email)}
                                 onChange={handleToggle}
+                                onClick={() => handleOpen(applicant as Applicant)}
                             />
                         ))}
                     </div>
                 </CardBox>
                 <div css={bottomContainer} />
+                {selectedApplicant && (
+                    <ApplicantDialog
+                        name={selectedApplicant.name}
+                        email={selectedApplicant.email}
+                        open={isOpen}
+                        handleClose={handleClose}
+                    />
+                )}
             </div>
         </div>
     );
