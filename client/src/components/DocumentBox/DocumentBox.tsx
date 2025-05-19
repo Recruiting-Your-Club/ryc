@@ -3,14 +3,22 @@ import React from 'react';
 import { answerWrapper, contentContainer, textWithUnderline } from './DocumentBox.style';
 import type { DocumentBoxProps } from './types';
 
-function DocumentBox({ question, answer }: DocumentBoxProps) {
+function DocumentBox({ index, question, answer }: DocumentBoxProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
-        <div css={contentContainer}>
+        <div css={contentContainer(index)}>
             <div css={textWithUnderline}>
                 <Text as="span" textAlign="start" type="captionBold">
                     {question}
                 </Text>
-                {/* <Divider sx={underline} /> */}
             </div>
             <Text as="div" textAlign="start" type="captionRegular" sx={answerWrapper}>
                 {answer}
