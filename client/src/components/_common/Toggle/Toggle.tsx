@@ -13,18 +13,16 @@ interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'
 
 function Toggle({ isChecked = false, size = 'md', handleToggle, ...props }: ToggleProps) {
     return (
-        <>
-            <label css={toggleContainer(isChecked, size)}>
-                <input
-                    type="checkbox"
-                    css={hiddenCheckbox}
-                    checked={isChecked}
-                    onChange={handleToggle}
-                    {...props}
-                />
-                <div css={toggleCircle(isChecked, size)} />
-            </label>
-        </>
+        <label css={toggleContainer(isChecked, size)}>
+            <input
+                type="checkbox"
+                css={hiddenCheckbox}
+                checked={isChecked}
+                onChange={handleToggle}
+                {...props}
+            />
+            <div css={toggleCircle(isChecked, size)} />
+        </label>
     );
 }
 

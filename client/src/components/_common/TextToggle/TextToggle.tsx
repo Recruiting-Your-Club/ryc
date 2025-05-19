@@ -34,23 +34,21 @@ function TextToggle({
     ...props
 }: ToggleProps) {
     return (
-        <>
-            <label css={toggleContainer}>
-                <input
-                    type="checkbox"
-                    css={hiddenCheckbox}
-                    checked={isChecked}
-                    onChange={handleToggle}
-                    {...props}
-                />
-                <Text as="div" type={getSize(size)} sx={leftTextContainer(isChecked)}>
-                    {leftText}
-                </Text>
-                <Text as="div" type={getSize(size)} sx={rightTextContainer(isChecked)}>
-                    {rightText}
-                </Text>
-            </label>
-        </>
+        <label css={toggleContainer}>
+            <input
+                type="checkbox"
+                css={hiddenCheckbox}
+                checked={isChecked}
+                onChange={handleToggle}
+                {...props}
+            />
+            <Text as="div" type={getSize(size)} sx={leftTextContainer(isChecked)}>
+                {leftText}
+            </Text>
+            <Text as="div" type={getSize(size)} sx={rightTextContainer(isChecked)}>
+                {rightText}
+            </Text>
+        </label>
     );
 }
 
