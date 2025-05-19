@@ -152,7 +152,7 @@ function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 function isFunction(value: unknown) {
-    return typeof value === 'function' && value !== null;
+    return typeof value === 'function';
 }
 
 //cloneElement로 자식을 복제할 때 ref를 덮어쓰면 기존 ref 사라짐
