@@ -129,12 +129,14 @@ export const chevronSvgCss = (willActive?: boolean) => css`
     color: ${theme.colors.black};
     &:hover {
         cursor: pointer;
+        pointer-events: auto;
     }
     ${!willActive &&
     css`
         color: ${theme.colors.gray[300]};
         &:hover {
             cursor: default;
+            pointer-events: none;
         }
     `}
 `;
