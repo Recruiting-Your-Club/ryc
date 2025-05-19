@@ -4,7 +4,12 @@ import XIcon from '@assets/images/xIcon.svg';
 import { DocumentBox } from '@components/DocumentBox';
 import { PersonalScoreCard } from '@components/PersonalScoreCard';
 import { Button, Dialog, Divider, Rating, Text } from '@components/_common';
-import { documentList, evaluation, evaluations } from '@constants/ApplicantDialog';
+import {
+    documentList,
+    evaluation,
+    evaluations,
+    interviewEmptyEvaluations,
+} from '@constants/ApplicantDialog';
 import React, { useState } from 'react';
 import {
     chevronSvgCss,
@@ -50,7 +55,7 @@ function ApplicantDialog({
         if (currentIndex < evaluation.length - 1) setCurrentIndex((prev) => prev + 1);
     };
 
-    const currentEvaluation = evaluations[currentIndex];
+    const currentEvaluation = interviewEmptyEvaluations[currentIndex];
     // effects
 
     return (
@@ -144,6 +149,7 @@ function ApplicantDialog({
                                         평균 평점
                                     </Text>
                                     <Rating
+                                        key={currentEvaluation.type}
                                         value={currentEvaluation.averageScore}
                                         totalStars={5}
                                         size="lg"
@@ -159,15 +165,23 @@ function ApplicantDialog({
                                     </Text>
                                 </div>
                                 <Divider />
-                                <div css={perStarScoreGroup}>
-                                    {currentEvaluation.evaluators.map((evaluator) => (
-                                        <PersonalScoreCard
-                                            key={evaluator.id}
-                                            score={evaluator.score}
-                                            name={evaluator.name}
-                                            comment={evaluator.comment}
-                                        />
-                                    ))}
+                                <div
+                                    css={perStarScoreGroup(currentEvaluation.evaluators.length > 0)}
+                                >
+                                    {currentEvaluation.evaluators.length > 0 ? (
+                                        currentEvaluation.evaluators.map((evaluator) => (
+                                            <PersonalScoreCard
+                                                key={evaluator.id}
+                                                score={evaluator.score}
+                                                name={evaluator.name}
+                                                comment={evaluator.comment}
+                                            />
+                                        ))
+                                    ) : (
+                                        <Text as="span" type="captionSemibold">
+                                            등록된 평가가 없습니다.
+                                        </Text>
+                                    )}
                                 </div>
                             </div>
                         </div>

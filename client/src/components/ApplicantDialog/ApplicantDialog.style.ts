@@ -152,7 +152,7 @@ export const starScoreWrapper = css`
     padding: 0.4rem;
 `;
 
-export const perStarScoreGroup = css`
+export const perStarScoreGroup = (empty?: boolean) => css`
     width: 100%;
     flex: 8.4;
     display: flex;
@@ -160,6 +160,12 @@ export const perStarScoreGroup = css`
     padding: 1rem 0.5rem;
     gap: 0.8rem;
     overflow-y: auto;
+
+    ${!empty &&
+    css`
+        align-items: center;
+        justify-content: center;
+    `}
 
     &::after {
         content: '';

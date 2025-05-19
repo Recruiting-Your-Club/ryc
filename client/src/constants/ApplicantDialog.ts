@@ -81,3 +81,72 @@ export const evaluations: Evaluation[] = [
         ],
     },
 ];
+export const interviewEmptyEvaluations: Evaluation[] = [
+    {
+        type: '서류 평가',
+        averageScore: 3.5,
+        evaluators: [
+            {
+                id: 1,
+                name: '조준희',
+                score: 4,
+
+                comment: '재밌네요.',
+            },
+            {
+                id: 2,
+                name: '조존희',
+                score: 2,
+
+                comment: '별론데요.',
+            },
+            {
+                id: 3,
+                name: '김영림',
+                score: 3.5,
+
+                comment: '윗 분 레전드 불편러',
+            },
+            // {
+            //     id: 4,
+            //     name: '조존희',
+            //     score: 4,
+
+            //     comment: '재밌네요.@@@@@@@@@@@@@@@@@@@@@@@@@@@',
+            // },
+            // {
+            //     id: 5,
+            //     name: '5자까지만',
+            //     score: 3,
+
+            //     comment: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇ.',
+            // },
+            // {
+            //     id: 6,
+            //     name: '김영림',
+            //     score: 3.5,
+
+            //     comment: 'ㄱㄱ',
+            // },
+            // {
+            //     id: 7,
+            //     name: '김일림',
+            //     score: 3.5,
+
+            //     comment: '스크롤',
+            // },
+            // {
+            //     id: 8,
+            //     name: '김일림',
+            //     score: 3.5,
+
+            //     comment: '언제',
+            // },
+        ],
+    },
+    {
+        type: '면접 평가',
+        averageScore: 0,
+        evaluators: [],
+    },
+];
