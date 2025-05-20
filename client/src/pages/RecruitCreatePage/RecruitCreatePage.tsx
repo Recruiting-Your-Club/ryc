@@ -2,6 +2,11 @@ import { Button, Stepper } from '@components';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useStepper } from '@hooks/useStepper';
 import React from 'react';
+import {
+    s_recruitCreatePageContainer,
+    s_stepButtonContainer,
+    s_stepWrapper,
+} from './RecruitCreatePage.style';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -33,27 +38,29 @@ function RecruitCreatePage() {
     // effects
 
     return (
-        <div>
-            <Stepper activeStep={activeStep}>
-                <Stepper.Step>
-                    <Stepper.Label>공고 상세 정보 작성</Stepper.Label>
-                </Stepper.Step>
-                <Stepper.Step>
-                    <Stepper.Label>사전 질문 설정</Stepper.Label>
-                </Stepper.Step>
-                <Stepper.Step>
-                    <Stepper.Label>자기소개서 설정</Stepper.Label>
-                </Stepper.Step>
-                <Stepper.Step>
-                    <Stepper.Label>미리보기</Stepper.Label>
-                </Stepper.Step>
-            </Stepper>
-            <div>{stepComponent(activeStep)}</div>
-            <div>
-                <Button onClick={prev} disabled={isFirst}>
-                    이전
-                </Button>
-                <Button onClick={next}>{isLast ? '완료' : '다음'}</Button>
+        <div css={s_recruitCreatePageContainer}>
+            <div css={s_stepWrapper}>
+                <Stepper activeStep={activeStep}>
+                    <Stepper.Step>
+                        <Stepper.Label>공고 상세 정보 작성</Stepper.Label>
+                    </Stepper.Step>
+                    <Stepper.Step>
+                        <Stepper.Label>사전 질문 설정</Stepper.Label>
+                    </Stepper.Step>
+                    <Stepper.Step>
+                        <Stepper.Label>자기소개서 설정</Stepper.Label>
+                    </Stepper.Step>
+                    <Stepper.Step>
+                        <Stepper.Label>미리보기</Stepper.Label>
+                    </Stepper.Step>
+                </Stepper>
+                <div>{stepComponent(activeStep)}</div>
+                <div css={s_stepButtonContainer}>
+                    <Button onClick={prev} disabled={isFirst}>
+                        이전
+                    </Button>
+                    <Button onClick={next}>{isLast ? '완료' : '다음'}</Button>
+                </div>
             </div>
         </div>
     );
