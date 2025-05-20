@@ -9,6 +9,7 @@ export * from './MainCard';
 export * from './ManagerHeader';
 export * from './PasswordInput';
 export * from './PersonalScoreCard';
+export * from './PlainEmailDialog';
 export * from './ScoreTag';
 export * from './ScrollBar';
 export * from './Select';

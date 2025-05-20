@@ -5,7 +5,6 @@ export const dialogCss = css`
     max-width: 64dvw;
     max-height: 90dvh;
     min-width: 115rem;
-    /* overflow: hidden; */
 `;
 
 export const headerCss = css`
@@ -64,7 +63,6 @@ export const contentWrapper = css`
     height: 100%;
     display: flex;
     flex-direction: column;
-    /* max-height: 65rem; */
     overflow: hidden;
 `;
 
