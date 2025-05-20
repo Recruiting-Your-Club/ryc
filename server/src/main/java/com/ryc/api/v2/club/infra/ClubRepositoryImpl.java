@@ -27,13 +27,8 @@ public class ClubRepositoryImpl implements ClubRepository {
   }
 
   @Override
-  public Club findById(String id) {
-    final ClubEntity clubEntity =
-        clubJpaRepository
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
-
-    return ClubMapper.toDomain(clubEntity);
+  public Optional<Club> findById(String id) {
+    return clubJpaRepository.findById(id).map(ClubMapper::toDomain);
   }
 
   @Override

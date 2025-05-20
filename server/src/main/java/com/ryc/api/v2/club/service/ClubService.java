@@ -47,7 +47,10 @@ public class ClubService {
 
   @Transactional
   public ClubUpdateResponse updateClub(String id, ClubUpdateRequest body) {
-    Club previousClub = clubRepository.findById(id);
+    Club previousClub =
+        clubRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
 
     String name = body.name().orElse(previousClub.getName());
     String shortDescription = body.shortDescription().orElse(previousClub.getShortDescription());
@@ -56,10 +59,9 @@ public class ClubService {
     String thumbnailUrl = body.thumbnailUrl().orElse(previousClub.getThumbnailUrl());
     Category category =
         Category.valueOf(body.category().orElse(previousClub.getCategory().toString()));
-    List<ClubTag> clubTags = body.clubTags().orElse(previousClub.getClubTags());
-    List<ClubSummary> clubSummaries = body.clubSummaries().orElse(previousClub.getClubSummaries());
-    List<ClubDetailImage> clubDetailImages =
-        body.clubDetailImages().orElse(previousClub.getClubDetailImages());
+    List<ClubTag> clubTags = body.clubTags();
+    List<ClubSummary> clubSummaries = body.clubSummaries();
+    List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
 
     Club newClub =
         Club.builder()
@@ -92,7 +94,10 @@ public class ClubService {
 
   @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
-    Club club = clubRepository.findById(clubId);
+    Club club =
+        clubRepository
+            .findById(clubId)
+            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
 
     String detailDescription = club.getDetailDescription();
     if (detailDescription.isBlank()) {
