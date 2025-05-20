@@ -18,6 +18,9 @@ function useFilteredFile(setFiles: (updater: (prev: File[]) => File[]) => void) 
             if (validFiles.length !== Array.from(newFiles).length) {
                 toast.error('pdf 또는 이미지 파일만 업로드할 수 있습니다.', {
                     duration: 2000,
+                    sx: {
+                        minWidth: '35rem',
+                    },
                 });
                 return;
             }
