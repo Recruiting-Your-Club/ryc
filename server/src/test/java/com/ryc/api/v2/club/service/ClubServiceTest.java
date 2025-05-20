@@ -2,6 +2,8 @@ package com.ryc.api.v2.club.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -75,7 +77,93 @@ class ClubServiceTest {
     ClubCreateResponse response = clubService.createClub(request);
 
     // Then
+    assertThat(response).isNotNull();
     assertThat(response.clubId()).isEqualTo(testClub.getId());
+    verify(clubRepository, times(1)).save(any(Club.class));
+  }
+
+  @Test
+  @DisplayName("ID로 클럽 조회 서비스 테스트")
+  void givenExistingClubId_whenGetClub_thenReturnClub() {
+    // Given
+    String clubId = "test-id";
+    when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
+
+    // When
+    ClubGetResponse response = clubService.getClub(clubId);
+
+    // Then
+    assertThat(response).isNotNull();
+    assertThat(response.name()).isEqualTo(testClub.getName());
+    assertThat(response.detailDescription()).isEqualTo(testClub.getDetailDescription());
+    assertThat(response.imageUrl()).isEqualTo(testClub.getImageUrl());
+    assertThat(response.thumbnailUrl()).isEqualTo(testClub.getThumbnailUrl());
+    assertThat(response.category()).isEqualTo(testClub.getCategory());
+    assertThat(response.clubTags()).isEqualTo(testClub.getClubTags());
+    verify(clubRepository, times(1)).findById(clubId);
+  }
+
+  @Test
+  @DisplayName("ID로 클럽 조회 실패 테스트")
+  void givenNonExistentClubId_whenGetClub_thenThrowException() {
+    // Given
+    String nonExistentId = "non-existent-id";
+    when(clubRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+
+    // When & Then
+    assertThatThrownBy(() -> clubService.getClub(nonExistentId))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Club not found with id: " + nonExistentId);
+    verify(clubRepository, times(1)).findById(nonExistentId);
+  }
+
+  @Test
+  @DisplayName("상세 설명이 비어있을 때 짧은 설명을 반환하는 서비스 테스트")
+  void givenClubWithEmptyDetailDescription_whenGetClub_thenReturnShortDescriptionInstead() {
+    // Given
+    String clubId = "test-id";
+    Club clubWithEmptyDetail =
+        Club.builder()
+            .id(clubId)
+            .name("Test Club")
+            .shortDescription("Short description")
+            .detailDescription("")
+            .imageUrl("http://example.com/image.jpg")
+            .thumbnailUrl("http://example.com/thumbnail.jpg")
+            .category(Category.ACADEMIC)
+            .clubTags(testTags)
+            .clubSummaries(new ArrayList<>())
+            .clubDetailImages(new ArrayList<>())
+            .build();
+
+    when(clubRepository.findById(clubId)).thenReturn(Optional.of(clubWithEmptyDetail));
+
+    // When
+    ClubGetResponse response = clubService.getClub(clubId);
+
+    // Then
+    assertThat(response).isNotNull();
+    assertThat(response.detailDescription()).isEqualTo("Short description");
+    verify(clubRepository, times(1)).findById(clubId);
+  }
+
+  @Test
+  @DisplayName("모든 클럽 조회 서비스 테스트")
+  void givenExistingClubs_whenGetAllClubs_thenReturnAllClubResponse() {
+    // Given
+    List<Club> clubs = List.of(testClub);
+    when(clubRepository.findAll()).thenReturn(clubs);
+
+    // When
+    List<AllClubGetResponse> responses = clubService.getAllClub();
+
+    // Then
+    assertThat(responses).isNotNull();
+    assertThat(responses).hasSize(1);
+    assertThat(responses.get(0).id()).isEqualTo(testClub.getId());
+    assertThat(responses.get(0).name()).isEqualTo(testClub.getName());
+    assertThat(responses.get(0).shortDescription()).isEqualTo(testClub.getShortDescription());
+    verify(clubRepository, times(1)).findAll();
   }
 
   @Test
@@ -119,75 +207,9 @@ class ClubServiceTest {
     ClubUpdateResponse response = clubService.updateClub(clubId, request);
 
     // Then
+    assertThat(response).isNotNull();
     assertThat(response.name()).isEqualTo(newName);
-  }
-
-  @Test
-  @DisplayName("ID로 클럽 조회 서비스 테스트")
-  void givenExistingClubId_whenGetClub_thenReturnClub() {
-    // Given
-    String clubId = "test-id";
-    when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
-
-    // When
-    ClubGetResponse response = clubService.getClub(clubId);
-
-    // Then
-    assertThat(response.name()).isEqualTo(testClub.getName());
-  }
-
-  @Test
-  @DisplayName("ID로 클럽 조회 실패 테스트")
-  void givenNonExistentClubId_whenGetClub_thenThrowException() {
-    // Given
-    String nonExistentId = "non-existent-id";
-    when(clubRepository.findById(nonExistentId)).thenReturn(Optional.empty());
-
-    // When & Then
-    assertThatThrownBy(() -> clubService.getClub(nonExistentId))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Club not found with id: " + nonExistentId);
-  }
-
-  @Test
-  @DisplayName("상세 설명이 비어있을 때 간단한 설명을 반환하는 서비스 테스트")
-  void givenClubWithEmptyDetailDescription_whenGetClub_thenReturnShortDescriptionInstead() {
-    // Given
-    String clubId = "test-id";
-    Club clubWithEmptyDetail =
-        Club.builder()
-            .id(clubId)
-            .name("Test Club")
-            .shortDescription("Short description")
-            .detailDescription("")
-            .imageUrl("http://example.com/image.jpg")
-            .thumbnailUrl("http://example.com/thumbnail.jpg")
-            .category(Category.ACADEMIC)
-            .clubTags(testTags)
-            .clubSummaries(new ArrayList<>())
-            .clubDetailImages(new ArrayList<>())
-            .build();
-
-    when(clubRepository.findById(clubId)).thenReturn(Optional.of(clubWithEmptyDetail));
-
-    // When
-    ClubGetResponse response = clubService.getClub(clubId);
-
-    // Then
-    assertThat(response.detailDescription()).isEqualTo("Short description");
-  }
-
-  @Test
-  @DisplayName("모든 클럽 조회 서비스 테스트")
-  void givenExistingClubs_whenGetAllClubs_thenReturnAllClubResponse() {
-    // Given
-    List<Club> clubs = List.of(testClub);
-    when(clubRepository.findAll()).thenReturn(clubs);
-
-    // When
-    List<AllClubGetResponse> responses = clubService.getAllClub();
-
-    // Then
-    assertThat(responses).hasSize(1).extracting("id").containsExactly(testClub.getId());
+    verify(clubRepository, times(1)).findById(clubId);
+    verify(clubRepository, times(1)).save(any(Club.class));
   }
 }
