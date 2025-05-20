@@ -13,10 +13,7 @@ import {
     titleInputCss,
     titleWrapper,
 } from './PlainEmailDialog.style';
-interface EmailDialogProps {
-    open: boolean;
-    handleClose: () => void;
-}
+import type { EmailDialogProps } from './type';
 function EmailDialog({ open, handleClose }: EmailDialogProps) {
     // prop destruction
     // lib hooks
