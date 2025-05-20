@@ -10,9 +10,14 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Club {
 
   private final String id;
