@@ -58,8 +58,12 @@ class ClubHttpApiTest {
   void givenValidClubCreateRequest_whenCreateClub_thenReturnCreatedResponse() throws Exception {
     // Given
     ClubCreateRequest createRequest =
-        new ClubCreateRequest(
-            "Test Club", "Short description", Category.ACADEMIC, List.of("Tag1", "Tag2"));
+        ClubCreateRequest.builder()
+            .name("Test Club")
+            .shortDescription("Short description")
+            .category(Category.ACADEMIC)
+            .tagNames(List.of("Tag1", "Tag2"))
+            .build();
     ClubCreateResponse createResponse = ClubCreateResponse.builder().clubId("test-id").build();
 
     when(clubService.createClub(any(ClubCreateRequest.class))).thenReturn(createResponse);
@@ -80,7 +84,6 @@ class ClubHttpApiTest {
     // Given
     ClubGetResponse getResponse =
         ClubGetResponse.builder()
-            .id("test-id")
             .name("Test Club")
             .detailDescription("Detailed description")
             .imageUrl("http://example.com/image.jpg")
@@ -97,7 +100,6 @@ class ClubHttpApiTest {
     mockMvc
         .perform(get("/api/v2/clubs/{id}", clubId))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(clubId))
         .andExpect(jsonPath("$.name").value("Test Club"))
         .andExpect(jsonPath("$.detailDescription").value("Detailed description"))
         .andExpect(jsonPath("$.imageUrl").value("http://example.com/image.jpg"))
@@ -157,17 +159,17 @@ class ClubHttpApiTest {
             .build();
 
     ClubUpdateResponse updateResponse =
-        new ClubUpdateResponse(
-            "test-id",
-            "Updated Club",
-            "Short description",
-            "Detailed description",
-            "http://example.com/image.jpg",
-            "http://example.com/thumbnail.jpg",
-            Category.ACADEMIC,
-            testTags,
-            List.of(),
-            List.of());
+        ClubUpdateResponse.builder()
+            .name("Updated Club")
+            .shortDescription("Short description")
+            .detailDescription("Detailed description")
+            .imageUrl("http://example.com/image.jpg")
+            .thumbnailUrl("http://example.com/thumbnail.jpg")
+            .category(Category.ACADEMIC)
+            .clubTags(testTags)
+            .clubSummaries(List.of())
+            .clubDetailImages(List.of())
+            .build();
 
     when(clubService.updateClub(eq(clubId), any(ClubUpdateRequest.class)))
         .thenReturn(updateResponse);
@@ -179,7 +181,6 @@ class ClubHttpApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(clubId))
         .andExpect(jsonPath("$.name").value("Updated Club"))
         .andExpect(jsonPath("$.shortDescription").value("Short description"))
         .andExpect(jsonPath("$.detailDescription").value("Detailed description"))

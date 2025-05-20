@@ -64,8 +64,12 @@ class ClubServiceTest {
   void givenValidClubCreateRequest_whenCreateClub_thenReturnCreatedResponse() {
     // Given
     ClubCreateRequest request =
-        new ClubCreateRequest(
-            "Test Club", "Short description", Category.ACADEMIC, List.of("Tag1", "Tag2"));
+        ClubCreateRequest.builder()
+            .name("Test Club")
+            .shortDescription("Short description")
+            .category(Category.ACADEMIC)
+            .tagNames(List.of("Tag1", "Tag2"))
+            .build();
 
     when(clubRepository.save(any(Club.class))).thenReturn(testClub);
 
@@ -90,7 +94,6 @@ class ClubServiceTest {
 
     // Then
     assertThat(response).isNotNull();
-    assertThat(response.id()).isEqualTo(clubId);
     assertThat(response.name()).isEqualTo(testClub.getName());
     assertThat(response.detailDescription()).isEqualTo(testClub.getDetailDescription());
     assertThat(response.imageUrl()).isEqualTo(testClub.getImageUrl());
@@ -205,7 +208,6 @@ class ClubServiceTest {
 
     // Then
     assertThat(response).isNotNull();
-    assertThat(response.id()).isEqualTo(clubId);
     assertThat(response.name()).isEqualTo(newName);
     verify(clubRepository, times(1)).findById(clubId);
     verify(clubRepository, times(1)).save(any(Club.class));
