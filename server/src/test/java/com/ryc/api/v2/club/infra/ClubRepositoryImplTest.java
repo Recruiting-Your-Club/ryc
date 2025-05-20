@@ -1,55 +1,152 @@
 package com.ryc.api.v2.club.infra;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ryc.api.v2.club.domain.Category;
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubTag;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.infra.mapper.ClubMapper;
-import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 
-@DataJpaTest
-@Import({ClubRepositoryImpl.class, ClubMapper.class})
+@ExtendWith(MockitoExtension.class)
 class ClubRepositoryImplTest {
 
-  @Autowired private ClubRepository clubRepository;
+  @Mock private ClubJpaRepository clubJpaRepository;
 
-  @Autowired private ClubJpaRepository clubJpaRepository;
+  @InjectMocks private ClubRepositoryImpl clubRepository;
+
+  private Club testClub;
+  private ClubEntity testClubEntity;
+
+    @BeforeEach
+  void setUp() {
+    List<ClubTag> testTags = List.of(ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
+
+    testClub =
+        Club.builder()
+            .id("test-id")
+            .name("Test Club")
+            .shortDescription("Short description")
+            .detailDescription("Detailed description")
+            .imageUrl("http://example.com/image.jpg")
+            .thumbnailUrl("http://example.com/thumbnail.jpg")
+            .category(Category.ACADEMIC)
+            .clubTags(testTags)
+            .clubSummaries(new ArrayList<>())
+            .clubDetailImages(new ArrayList<>())
+            .build();
+
+    // Create a ClubEntity using the builder pattern
+    testClubEntity =
+        ClubEntity.builder()
+            .id("test-id")
+            .name("Test Club")
+            .shortDescription("Short description")
+            .detailDescription("Detailed description")
+            .imageUrl("http://example.com/image.jpg")
+            .thumbnailUrl("http://example.com/thumbnail.jpg")
+            .category(Category.ACADEMIC)
+            .clubTags(testTags)
+            .clubSummaries(new ArrayList<>())
+            .clubDetailImages(new ArrayList<>())
+            .deleted(false)
+            .build();
+  }
 
   @Test
-  @DisplayName("ClubRepositoryImpl - Club 및 Tag 저장 테스트")
-  void saveClubWithTags() {
-    // given
-    Club club =
-        Club.initialize(
-            ClubCreateRequest.builder()
-                .name("테스트 동아리")
-                .shortDescription("설명")
-                .category(Category.ACADEMIC)
-                .tagNames(List.of("코딩"))
-                .build(),
-            "MOCK_URL",
-            "MOCK_URL",
-            List.of(ClubTag.builder().name("코딩").build()));
+  @DisplayName("클럽 저장 테스트")
+  void givenValidClub_whenSave_thenReturnSavedClub() {
+    // Given
+    when(clubJpaRepository.save(any(ClubEntity.class))).thenReturn(testClubEntity);
 
-    // when
-    Club saved = clubRepository.save(club);
+    // When
+    Club savedClub = clubRepository.save(testClub);
 
-    // then
-    assertThat(saved).isNotNull();
-    assertThat(saved.getClubTags()).hasSize(1);
-    assertThat(saved.getName()).isEqualTo("테스트 동아리");
+    // Then
+    assertThat(savedClub).isNotNull();
+    assertThat(savedClub.getId()).isEqualTo(testClubEntity.getId());
+    assertThat(savedClub.getName()).isEqualTo(testClubEntity.getName());
+    assertThat(savedClub.getShortDescription()).isEqualTo(testClubEntity.getShortDescription());
+    assertThat(savedClub.getDetailDescription()).isEqualTo(testClubEntity.getDetailDescription());
+    assertThat(savedClub.getImageUrl()).isEqualTo(testClubEntity.getImageUrl());
+    assertThat(savedClub.getThumbnailUrl()).isEqualTo(testClubEntity.getThumbnailUrl());
+    assertThat(savedClub.getCategory()).isEqualTo(testClubEntity.getCategory());
+    assertThat(savedClub.getClubTags()).isEqualTo(testClubEntity.getClubTags());
+    assertThat(savedClub.getClubSummaries()).isEqualTo(testClubEntity.getClubSummaries());
+    assertThat(savedClub.getClubDetailImages()).isEqualTo(testClubEntity.getClubDetailImages());
+    verify(clubJpaRepository, times(1)).save(any(ClubEntity.class));
+  }
 
-    assertThat(clubJpaRepository.findById(saved.getId())).isPresent();
+  @Test
+  @DisplayName("ID로 클럽 조회 테스트")
+  void givenValidClubId_whenFindById_thenReturnClub() {
+    // Given
+    String clubId = "test-id";
+    when(clubJpaRepository.findById(clubId)).thenReturn(Optional.of(testClubEntity));
+
+    // When
+    Club foundClub = clubRepository.findById(clubId);
+
+    // Then
+    assertThat(foundClub).isNotNull();
+    assertThat(foundClub.getId()).isEqualTo(testClubEntity.getId());
+    assertThat(foundClub.getName()).isEqualTo(testClubEntity.getName());
+    assertThat(foundClub.getShortDescription()).isEqualTo(testClubEntity.getShortDescription());
+    assertThat(foundClub.getDetailDescription()).isEqualTo(testClubEntity.getDetailDescription());
+    assertThat(foundClub.getImageUrl()).isEqualTo(testClubEntity.getImageUrl());
+    assertThat(foundClub.getThumbnailUrl()).isEqualTo(testClubEntity.getThumbnailUrl());
+    assertThat(foundClub.getCategory()).isEqualTo(testClubEntity.getCategory());
+    assertThat(foundClub.getClubTags()).isEqualTo(testClubEntity.getClubTags());
+    assertThat(foundClub.getClubSummaries()).isEqualTo(testClubEntity.getClubSummaries());
+    assertThat(foundClub.getClubDetailImages()).isEqualTo(testClubEntity.getClubDetailImages());
+    verify(clubJpaRepository, times(1)).findById(clubId);
+  }
+
+  @Test
+  @DisplayName("ID로 클럽 조회 실패 테스트")
+  void givenNonExistentClubId_whenFindById_thenThrowException() {
+    // Given
+    String nonExistentId = "non-existent-id";
+    when(clubJpaRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+
+    // When & Then
+    assertThatThrownBy(() -> clubRepository.findById(nonExistentId))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Club not found with id: " + nonExistentId);
+    verify(clubJpaRepository, times(1)).findById(nonExistentId);
+  }
+
+  @Test
+  @DisplayName("모든 클럽 조회 테스트")
+  void givenExistingClubs_whenFindAllClub_thenReturnAllClub() {
+    // Given
+    List<ClubEntity> clubEntities = List.of(testClubEntity);
+    when(clubJpaRepository.findAll()).thenReturn(clubEntities);
+
+    // When
+    List<Club> clubs = clubRepository.findAll();
+
+    // Then
+    assertThat(clubs).isNotNull();
+    assertThat(clubs).isNotEmpty();
+    assertThat(clubs).hasSize(1);
+    verify(clubJpaRepository, times(1)).findAll();
   }
 }
