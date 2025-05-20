@@ -15,7 +15,7 @@ interface StepperProps {
     component?: ElementType;
     connector?: ReactNode;
     orientation?: 'horizontal' | 'vertical';
-    customCSS?: SerializedStyles;
+    sx?: SerializedStyles;
 }
 
 const defaultConnector = <StepConnector />;
@@ -27,7 +27,7 @@ function StepperRoot({
     component: Component = 'div',
     connector = defaultConnector,
     orientation = 'horizontal',
-    customCSS,
+    sx,
 }: StepperProps) {
     //prop destruction
 
@@ -63,9 +63,7 @@ function StepperRoot({
 
     return (
         <StepperContext.Provider value={contextValue}>
-            <Component css={[s_stepper(orientation, alternativeLabel), customCSS]}>
-                {steps}
-            </Component>
+            <Component css={[s_stepper(orientation, alternativeLabel), sx]}>{steps}</Component>
         </StepperContext.Provider>
     );
 }
