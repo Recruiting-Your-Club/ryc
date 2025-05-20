@@ -2,7 +2,11 @@ import React from 'react';
 import { Input } from '@components/_common/Input';
 import { Radio } from '@components/_common/Radio';
 import { Text } from '@components/_common/Text';
-import { clubApplyPersonalQuestionForm, helperTextSx } from './ClubApplyPersonalInfoPage.style';
+import {
+    clubApplyPersonalQuestionForm,
+    helperTextSx,
+    labelSx,
+} from './ClubApplyPersonalInfoPage.style';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';
 
@@ -19,10 +23,13 @@ function ClubApplyPersonalInfoPage({
             {clubPersonalQuestions.map((question) => {
                 if (question.type === 'boolean') {
                     return (
-                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
-                            <Text>{question.questionTitle}</Text>
+                        <div
+                            key={question.questionTitle}
+                            css={clubApplyPersonalQuestionForm(false)}
+                        >
+                            <Text type="bodyLight">{question.questionTitle}</Text>
                             <Radio
-                                name={`question-${question.id}`}
+                                name={`question-${question.questionTitle}`}
                                 orientation="vertical"
                                 options={
                                     question.options?.map((option) => ({
@@ -45,7 +52,7 @@ function ClubApplyPersonalInfoPage({
                         <Input
                             variant="lined"
                             label={question.questionTitle}
-                            labelSx={{ color: 'black' }}
+                            labelSx={labelSx}
                             inputSx={{ width: '70%' }}
                             value={getAnswer(answers, question.questionTitle)}
                             onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}

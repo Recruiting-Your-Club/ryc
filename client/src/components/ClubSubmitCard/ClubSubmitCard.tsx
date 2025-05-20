@@ -38,7 +38,7 @@ function ClubSubmitCard({
                         </Text>
                     )}
                 </div>
-                <Text textAlign="left" type="bodyBold">
+                <Text textAlign="left" type="bodyRegular">
                     {clubName}
                 </Text>
                 <div css={clubSubmitCardSubCaption}>

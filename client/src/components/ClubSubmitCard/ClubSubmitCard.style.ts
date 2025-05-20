@@ -5,11 +5,13 @@ export const clubApplySubmitCardContainer = css`
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    height: 100%;
 `;
 
 export const svgContainer = css`
     width: 4rem;
     height: 4rem;
+    border-radius: 10px;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 3rem;
@@ -21,11 +23,11 @@ export const clubSubmitCard = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 23rem;
-    height: 23rem;
+    width: 25rem;
+    height: 25rem;
     margin-right: 0.5rem;
     padding: 1.5rem;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     background-color: ${theme.colors.white};
 

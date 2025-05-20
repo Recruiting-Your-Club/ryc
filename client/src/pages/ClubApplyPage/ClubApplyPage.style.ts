@@ -13,7 +13,7 @@ export const clubApplyPage = css`
     width: 100%;
     max-width: 120rem;
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     gap: 2rem;
     padding: 2rem;
 
@@ -31,6 +31,7 @@ export const clubApplyPage = css`
 
 export const clubApplyPageMainContainer = css`
     width: 100%;
+    min-height: 70rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,23 +40,25 @@ export const clubApplyPageMainContainer = css`
     border-radius: 5px;
 
     @media (max-width: ${theme.breakpoint.tabletMini}) {
-        width: 60%;
-        padding: 1rem;
+        width: 70%;
+        padding: 1rem 3rem;
         margin: 0;
     }
     @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 65%;
-        padding: 1rem;
+        width: 75%;
+        padding: 1rem 3rem;
         margin: 0;
     }
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%;
+        padding: 1rem 3rem;
     }
 `;
 
 export const svgContainer = css`
-    width: 4rem;
-    height: 4rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 10px;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 3rem;
@@ -68,8 +71,8 @@ export const clubLogoAndNameContainer = css`
     align-items: center;
     gap: 1.5rem;
     width: 100%;
-    max-width: 60rem;
-    height: 4rem;
+    max-width: 70rem;
+    max-height: 4.5rem;
     margin: 1rem 0;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
@@ -82,15 +85,11 @@ export const clubNameContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    ${theme.typography.h3Bold};
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        ${theme.typography.h4Bold};
-    }
 `;
 
 export const clubApplyTabContainer = css`
     width: 100%;
-    max-width: 60rem;
+    max-width: 70rem;
     display: flex;
     gap: 1rem;
     border-bottom: 1px solid ${theme.colors.gray[300]};
@@ -112,7 +111,7 @@ export const applyFormContainer = (index: number) => css`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 60rem;
+    max-width: 70rem;
 
     ${index === 0 &&
     css`
@@ -140,6 +139,10 @@ export const submitButtonContainer = css`
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
     }
 `;
 
@@ -150,11 +153,4 @@ export const mobileQuestionStatus = css`
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
     }
-`;
-
-export const nextButtonContainer = css`
-    width: 100%;
-    display: flex;
-    align-items: end;
-    justify-content: end;
 `;

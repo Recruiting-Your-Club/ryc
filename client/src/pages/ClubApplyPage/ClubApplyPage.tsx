@@ -11,7 +11,6 @@ import {
     submitButtonContainer,
     clubApplyPage,
     mobileQuestionStatus,
-    nextButtonContainer,
     applyFormContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
@@ -212,12 +211,6 @@ function ClubApplyPage() {
         setIsSubmitDialogOpen(false);
     };
 
-    const handleNext = () => {
-        if (pageIndex < applyData.length - 1) {
-            setPageIndex(pageIndex + 1);
-        }
-    };
-
     // effects
     useEffect(() => {
         const completedCount = answers.filter((answer) => {
@@ -240,7 +233,7 @@ function ClubApplyPage() {
                     <div css={clubLogoAndNameContainer}>
                         <Ryc css={svgContainer} />
                         <div css={clubNameContainer}>
-                            {clubData.title}
+                            <Text type="h3Semibold">{clubData.title}</Text>
                             <Text type="subCaptionRegular" color="helper" textAlign="left">
                                 {clubData.tag}
                             </Text>
@@ -286,14 +279,6 @@ function ClubApplyPage() {
                             onAnswerChange={handleAnswerChange}
                             containerStyle={applyFormContainer(pageIndex)}
                         />
-                    )}
-
-                    {pageIndex < applyData.length - 1 && (
-                        <div css={nextButtonContainer}>
-                            <Button variant="primary" onClick={handleNext}>
-                                다음
-                            </Button>
-                        </div>
                     )}
                 </div>
                 <ClubSubmitCard
