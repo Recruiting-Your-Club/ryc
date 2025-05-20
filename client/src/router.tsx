@@ -2,6 +2,7 @@ import React from 'react';
 import { createBrowserRouter } from 'react-router';
 import { TestPage, NotFoundPage, LoginPage, RegisterPage, MainPage, ClubDetailPage } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
+import { RecruitCreatePage } from '@pages/RecruitCreatePage/RecruitCreatePage';
 
 const router = createBrowserRouter([
     {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <TestPage /> },
             { path: 'test', element: <LoginPage /> },
-            { path: 'recruitment', element: <RegisterPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'steps', element: <LoginPage /> },
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
