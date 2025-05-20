@@ -12,6 +12,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     error?: boolean;
     errorText?: string;
     sx?: CSSObject;
+    wrapperSx?: CSSObject;
 }
 
 function TextArea({
@@ -24,12 +25,13 @@ function TextArea({
     value,
     maxLength,
     disabled,
+    wrapperSx,
     ...props
 }: TextAreaProps) {
     const currentLength = typeof value === 'string' ? value.length : 0;
 
     return (
-        <div css={s_textAreaWrapper(width)}>
+        <div css={[s_textAreaWrapper(width), wrapperSx]}>
             <textarea
                 css={[s_textArea(size, variant, error, disabled), sx]}
                 value={value}
