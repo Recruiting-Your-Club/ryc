@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const footerContainer = (isManagerRoute: boolean) => css`
-    width: 100dvw;
     height: 14rem;
     background-color: ${theme.colors.gray[100]};
     display: flex;
@@ -20,8 +19,10 @@ export const footerStyle = css`
     align-items: flex-start;
     justify-content: center;
     gap: 1rem;
-    padding: 2.5rem 0;
-    padding-left: 20rem;
+    width: 100%;
+    max-width: 120rem;
+    padding: 2.5rem 8rem;
+    margin: 0 auto;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         padding: 2rem 4rem;
