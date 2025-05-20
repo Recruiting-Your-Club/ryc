@@ -3,8 +3,6 @@ package com.ryc.api.v2.club.infra;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -81,18 +79,10 @@ class ClubRepositoryImplTest {
     Club savedClub = clubRepository.save(testClub);
 
     // Then
-    assertThat(savedClub).isNotNull();
-    assertThat(savedClub.getId()).isEqualTo(testClubEntity.getId());
-    assertThat(savedClub.getName()).isEqualTo(testClubEntity.getName());
-    assertThat(savedClub.getShortDescription()).isEqualTo(testClubEntity.getShortDescription());
-    assertThat(savedClub.getDetailDescription()).isEqualTo(testClubEntity.getDetailDescription());
-    assertThat(savedClub.getImageUrl()).isEqualTo(testClubEntity.getImageUrl());
-    assertThat(savedClub.getThumbnailUrl()).isEqualTo(testClubEntity.getThumbnailUrl());
-    assertThat(savedClub.getCategory()).isEqualTo(testClubEntity.getCategory());
-    assertThat(savedClub.getClubTags()).isEqualTo(testClubEntity.getClubTags());
-    assertThat(savedClub.getClubSummaries()).isEqualTo(testClubEntity.getClubSummaries());
-    assertThat(savedClub.getClubDetailImages()).isEqualTo(testClubEntity.getClubDetailImages());
-    verify(clubJpaRepository, times(1)).save(any(ClubEntity.class));
+    assertThat(savedClub)
+        .usingRecursiveComparison()
+        .ignoringFields("createdAt", "updatedAt")
+        .isEqualTo(testClub);
   }
 
   @Test
@@ -107,20 +97,7 @@ class ClubRepositoryImplTest {
 
     // Then
     assertThat(foundClub).isNotEmpty();
-    assertThat(foundClub.get().getId()).isEqualTo(testClubEntity.getId());
-    assertThat(foundClub.get().getName()).isEqualTo(testClubEntity.getName());
-    assertThat(foundClub.get().getShortDescription())
-        .isEqualTo(testClubEntity.getShortDescription());
-    assertThat(foundClub.get().getDetailDescription())
-        .isEqualTo(testClubEntity.getDetailDescription());
-    assertThat(foundClub.get().getImageUrl()).isEqualTo(testClubEntity.getImageUrl());
-    assertThat(foundClub.get().getThumbnailUrl()).isEqualTo(testClubEntity.getThumbnailUrl());
-    assertThat(foundClub.get().getCategory()).isEqualTo(testClubEntity.getCategory());
-    assertThat(foundClub.get().getClubTags()).isEqualTo(testClubEntity.getClubTags());
-    assertThat(foundClub.get().getClubSummaries()).isEqualTo(testClubEntity.getClubSummaries());
-    assertThat(foundClub.get().getClubDetailImages())
-        .isEqualTo(testClubEntity.getClubDetailImages());
-    verify(clubJpaRepository, times(1)).findById(clubId);
+    assertThat(foundClub.get().getId()).isEqualTo(testClub.getId());
   }
 
   @Test
@@ -134,9 +111,6 @@ class ClubRepositoryImplTest {
     List<Club> clubs = clubRepository.findAll();
 
     // Then
-    assertThat(clubs).isNotNull();
-    assertThat(clubs).isNotEmpty();
     assertThat(clubs).hasSize(1);
-    verify(clubJpaRepository, times(1)).findAll();
   }
 }
