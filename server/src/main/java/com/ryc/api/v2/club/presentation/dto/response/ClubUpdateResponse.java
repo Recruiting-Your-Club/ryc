@@ -15,7 +15,6 @@ import lombok.Builder;
 
 @Builder
 public record ClubUpdateResponse(
-    @Schema(description = "동아리 ID") @NotBlank(message = "club id shouldn't be empty") String id,
     @Schema(description = "동아리 이름") @NotBlank(message = "club name shouldn't be empty") String name,
     @Schema(description = "동아리 요약 설명")
         @NotNull(message = "club short description shouldn't be null")

@@ -15,7 +15,7 @@ import lombok.Builder;
 public record AllClubGetResponse(
     @Schema(description = "동아리 ID") @NotBlank(message = "club id shouldn't be blank") String id,
     @Schema(description = "동아리 이름") @NotBlank(message = "club name shouldn't be blank") String name,
-    @Schema(description = "동아리 간단 설명")
+    @Schema(description = "동아리 간단한 설명")
         @NotBlank(message = "club short description shouldn't be blank")
         String shortDescription,
     @Schema(description = "동아리 이미지 URL") String imageUrl,

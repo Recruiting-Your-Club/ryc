@@ -79,7 +79,6 @@ public class ClubService {
 
     Club savedClub = clubRepository.save(newClub);
     return ClubUpdateResponse.builder()
-        .id(savedClub.getId())
         .name(savedClub.getName())
         .shortDescription(savedClub.getShortDescription())
         .detailDescription(savedClub.getDetailDescription())
@@ -105,7 +104,6 @@ public class ClubService {
     }
 
     return ClubGetResponse.builder()
-        .id(club.getId())
         .name(club.getName())
         .detailDescription(detailDescription)
         .imageUrl(club.getImageUrl())
