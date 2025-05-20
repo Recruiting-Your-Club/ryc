@@ -151,9 +151,9 @@ class ClubHttpApiTest {
             .imageUrl(Optional.of("http://example.com/image.jpg"))
             .thumbnailUrl(Optional.of("http://example.com/thumbnail.jpg"))
             .category(Optional.of(Category.ACADEMIC.toString()))
-            .clubTags(Optional.of(testTags))
-            .clubSummaries(Optional.of(List.of()))
-            .clubDetailImages(Optional.of(List.of()))
+            .clubTags(testTags)
+            .clubSummaries(List.of())
+            .clubDetailImages(List.of())
             .build();
 
     ClubUpdateResponse updateResponse =

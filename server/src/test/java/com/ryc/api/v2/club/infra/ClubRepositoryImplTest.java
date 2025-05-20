@@ -35,9 +35,10 @@ class ClubRepositoryImplTest {
   private Club testClub;
   private ClubEntity testClubEntity;
 
-    @BeforeEach
+  @BeforeEach
   void setUp() {
-    List<ClubTag> testTags = List.of(ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
+    List<ClubTag> testTags =
+        List.of(ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
 
     testClub =
         Club.builder()
@@ -102,35 +103,24 @@ class ClubRepositoryImplTest {
     when(clubJpaRepository.findById(clubId)).thenReturn(Optional.of(testClubEntity));
 
     // When
-    Club foundClub = clubRepository.findById(clubId);
+    Optional<Club> foundClub = clubRepository.findById(clubId);
 
     // Then
-    assertThat(foundClub).isNotNull();
-    assertThat(foundClub.getId()).isEqualTo(testClubEntity.getId());
-    assertThat(foundClub.getName()).isEqualTo(testClubEntity.getName());
-    assertThat(foundClub.getShortDescription()).isEqualTo(testClubEntity.getShortDescription());
-    assertThat(foundClub.getDetailDescription()).isEqualTo(testClubEntity.getDetailDescription());
-    assertThat(foundClub.getImageUrl()).isEqualTo(testClubEntity.getImageUrl());
-    assertThat(foundClub.getThumbnailUrl()).isEqualTo(testClubEntity.getThumbnailUrl());
-    assertThat(foundClub.getCategory()).isEqualTo(testClubEntity.getCategory());
-    assertThat(foundClub.getClubTags()).isEqualTo(testClubEntity.getClubTags());
-    assertThat(foundClub.getClubSummaries()).isEqualTo(testClubEntity.getClubSummaries());
-    assertThat(foundClub.getClubDetailImages()).isEqualTo(testClubEntity.getClubDetailImages());
+    assertThat(foundClub).isNotEmpty();
+    assertThat(foundClub.get().getId()).isEqualTo(testClubEntity.getId());
+    assertThat(foundClub.get().getName()).isEqualTo(testClubEntity.getName());
+    assertThat(foundClub.get().getShortDescription())
+        .isEqualTo(testClubEntity.getShortDescription());
+    assertThat(foundClub.get().getDetailDescription())
+        .isEqualTo(testClubEntity.getDetailDescription());
+    assertThat(foundClub.get().getImageUrl()).isEqualTo(testClubEntity.getImageUrl());
+    assertThat(foundClub.get().getThumbnailUrl()).isEqualTo(testClubEntity.getThumbnailUrl());
+    assertThat(foundClub.get().getCategory()).isEqualTo(testClubEntity.getCategory());
+    assertThat(foundClub.get().getClubTags()).isEqualTo(testClubEntity.getClubTags());
+    assertThat(foundClub.get().getClubSummaries()).isEqualTo(testClubEntity.getClubSummaries());
+    assertThat(foundClub.get().getClubDetailImages())
+        .isEqualTo(testClubEntity.getClubDetailImages());
     verify(clubJpaRepository, times(1)).findById(clubId);
-  }
-
-  @Test
-  @DisplayName("ID로 클럽 조회 실패 테스트")
-  void givenNonExistentClubId_whenFindById_thenThrowException() {
-    // Given
-    String nonExistentId = "non-existent-id";
-    when(clubJpaRepository.findById(nonExistentId)).thenReturn(Optional.empty());
-
-    // When & Then
-    assertThatThrownBy(() -> clubRepository.findById(nonExistentId))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Club not found with id: " + nonExistentId);
-    verify(clubJpaRepository, times(1)).findById(nonExistentId);
   }
 
   @Test

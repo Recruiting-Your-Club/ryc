@@ -83,7 +83,7 @@ class ClubServiceTest {
   void givenExistingClubId_whenGetClub_thenReturnClub() {
     // Given
     String clubId = "test-id";
-    when(clubRepository.findById(clubId)).thenReturn(testClub);
+    when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
 
     // When
     ClubGetResponse response = clubService.getClub(clubId);
@@ -98,6 +98,20 @@ class ClubServiceTest {
     assertThat(response.category()).isEqualTo(testClub.getCategory());
     assertThat(response.clubTags()).isEqualTo(testClub.getClubTags());
     verify(clubRepository, times(1)).findById(clubId);
+  }
+
+  @Test
+  @DisplayName("ID로 클럽 조회 실패 테스트")
+  void givenNonExistentClubId_whenGetClub_thenThrowException() {
+    // Given
+    String nonExistentId = "non-existent-id";
+    when(clubRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+
+    // When & Then
+    assertThatThrownBy(() -> clubService.getClub(nonExistentId))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Club not found with id: " + nonExistentId);
+    verify(clubRepository, times(1)).findById(nonExistentId);
   }
 
   @Test
@@ -119,7 +133,7 @@ class ClubServiceTest {
             .clubDetailImages(new ArrayList<>())
             .build();
 
-    when(clubRepository.findById(clubId)).thenReturn(clubWithEmptyDetail);
+    when(clubRepository.findById(clubId)).thenReturn(Optional.of(clubWithEmptyDetail));
 
     // When
     ClubGetResponse response = clubService.getClub(clubId);
@@ -164,9 +178,9 @@ class ClubServiceTest {
             .imageUrl(Optional.of(testClub.getImageUrl()))
             .thumbnailUrl(Optional.of(testClub.getThumbnailUrl()))
             .category(Optional.of(testClub.getCategory().toString()))
-            .clubTags(Optional.of(testClub.getClubTags()))
-            .clubSummaries(Optional.of(testClub.getClubSummaries()))
-            .clubDetailImages(Optional.of(testClub.getClubDetailImages()))
+            .clubTags(testClub.getClubTags())
+            .clubSummaries(testClub.getClubSummaries())
+            .clubDetailImages(testClub.getClubDetailImages())
             .build();
 
     Club updatedClub =
@@ -183,7 +197,7 @@ class ClubServiceTest {
             .clubDetailImages(testClub.getClubDetailImages())
             .build();
 
-    when(clubRepository.findById(clubId)).thenReturn(testClub);
+    when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
     when(clubRepository.save(any(Club.class))).thenReturn(updatedClub);
 
     // When
