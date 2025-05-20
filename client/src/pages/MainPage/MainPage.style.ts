@@ -4,7 +4,10 @@ import theme from '@styles/theme';
 export const mainPageContainer = css`
     height: 100%;
     width: 100%;
-    padding-top: 2rem;
+    max-width: 110rem;
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        padding: 0 2rem;
+    }
 `;
 
 export const bannerContainer = css`

@@ -1,0 +1,28 @@
+import { css } from '@emotion/react';
+import theme from '@styles/theme';
+
+export const NavigationContainer = css`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    gap: 0.5rem;
+`;
+
+export const NavigationButton = (isActive: boolean) => css`
+    ${theme.typography.bodySemibold}
+    color: ${theme.colors.gray[500]};
+    margin-bottom: 0.5rem;
+    :hover {
+        color: ${theme.colors.gray[500]};
+    }
+    ${isActive &&
+    css`
+        color: ${theme.colors.black};
+        ${theme.typography.bodyBold}
+        :hover {
+            color: ${theme.colors.black};
+        }
+    `}
+    transition: color 0.1s;
+`;

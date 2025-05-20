@@ -2,9 +2,6 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const headerBarContainer = css`
-    position: fixed;
-    top: 0;
-    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +10,6 @@ export const headerBarContainer = css`
     padding: 0 1rem;
     background-color: ${theme.colors.white};
     border-bottom: 0.5px solid ${theme.colors.disabled};
-    z-index: 20;
 `;
 
 export const homeNavContainer = css`

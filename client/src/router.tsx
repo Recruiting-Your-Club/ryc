@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
-import { TestPage, NotFoundPage, LoginPage, RegisterPage, MainPage } from './pages';
+import { TestPage, NotFoundPage, LoginPage, RegisterPage, MainPage, ClubDetailPage } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
 
 const router = createBrowserRouter([
@@ -12,7 +12,9 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            { path: 'detail', element: <ClubDetailPage /> },
             { path: 'test', element: <TestPage /> },
+            { path: 'detail', element: <ClubDetailPage /> },
         ],
     },
     {
