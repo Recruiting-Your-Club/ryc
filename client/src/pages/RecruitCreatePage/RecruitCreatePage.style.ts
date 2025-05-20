@@ -13,10 +13,15 @@ export const s_recruitCreatePageContainer = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
 `;
 
 export const s_stepWrapper = css`
     width: 100%;
     max-width: 100rem;
     min-width: 60rem;
+`;
+
+export const s_stepComponent = css`
+    margin-top: 3rem;
 `;

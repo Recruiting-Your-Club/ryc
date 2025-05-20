@@ -5,8 +5,10 @@ import React from 'react';
 import {
     s_recruitCreatePageContainer,
     s_stepButtonContainer,
+    s_stepComponent,
     s_stepWrapper,
 } from './RecruitCreatePage.style';
+import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -19,7 +21,7 @@ function RecruitCreatePage() {
     const stepComponent = (step: number) => {
         switch (step) {
             case 0:
-                return <div>공고 상세 정보 작성</div>;
+                return <DescriptionStepPage />;
             case 1:
                 return <div>사전 질문 설정</div>;
             case 2:
@@ -54,7 +56,7 @@ function RecruitCreatePage() {
                         <Stepper.Label>미리보기</Stepper.Label>
                     </Stepper.Step>
                 </Stepper>
-                <div>{stepComponent(activeStep)}</div>
+                <div css={s_stepComponent}>{stepComponent(activeStep)}</div>
                 <div css={s_stepButtonContainer}>
                     <Button onClick={prev} disabled={isFirst}>
                         이전
