@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +42,7 @@ class ClubServiceTest {
   @BeforeEach
   void setUp() {
     testTags =
-        Arrays.asList(
-            ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
+        List.of(ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
 
     testClub =
         Club.builder()
@@ -67,7 +65,7 @@ class ClubServiceTest {
     // Given
     ClubCreateRequest request =
         new ClubCreateRequest(
-            "Test Club", "Short description", Category.ACADEMIC, Arrays.asList("Tag1", "Tag2"));
+            "Test Club", "Short description", Category.ACADEMIC, List.of("Tag1", "Tag2"));
 
     when(clubRepository.save(any(Club.class))).thenReturn(testClub);
 

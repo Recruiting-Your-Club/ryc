@@ -51,8 +51,7 @@ class ClubHttpApiTest {
 
     clubId = "test-id";
     testTags =
-        Arrays.asList(
-            ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
+        List.of(ClubTag.builder().name("Tag1").build(), ClubTag.builder().name("Tag2").build());
   }
 
   @Test
@@ -61,7 +60,7 @@ class ClubHttpApiTest {
     // Given
     ClubCreateRequest createRequest =
         new ClubCreateRequest(
-            "Test Club", "Short description", Category.ACADEMIC, Arrays.asList("Tag1", "Tag2"));
+            "Test Club", "Short description", Category.ACADEMIC, List.of("Tag1", "Tag2"));
     ClubCreateResponse createResponse = ClubCreateResponse.builder().clubId("test-id").build();
 
     when(clubService.createClub(any(ClubCreateRequest.class))).thenReturn(createResponse);
