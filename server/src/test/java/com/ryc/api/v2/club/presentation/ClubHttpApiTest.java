@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,7 +112,7 @@ class ClubHttpApiTest {
   void givenMultipleClubExist_whenGetAllClubs_thenReturnAllClubsList() throws Exception {
     // Given
     List<AllClubGetResponse> allClubResponses =
-        Arrays.asList(
+        List.of(
             AllClubGetResponse.builder()
                 .id("test-id")
                 .name("Test Club")
