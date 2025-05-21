@@ -33,7 +33,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
     // initial values
     // state, ref, querystring hooks
     const [inputValue, setInputValue] = useState<string>('');
-    const [unit, setUnit] = useState<string>('시간');
+    const [unit, setUnit] = useState<string>('hour');
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
     const [currentDate, setCurrentDate] = useState<string>('');
     const [selectedTimesByDate, setSelectedTimesByDate] = useState<Record<string, string[]>>({});
@@ -44,7 +44,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
     const interval = useMemo((): number => {
         const value = Number(inputValue);
         if (isNaN(value) || value <= 0) return 0;
-        return unit === '시간' ? value * 60 : value;
+        return unit === 'hour' ? value * 60 : value;
     }, [inputValue, unit]);
 
     // handler
@@ -130,8 +130,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                         <Select.Value placeholder="시간" />
                                     </Select.Trigger>
                                     <Select.Content>
-                                        <Select.Item value="시간">시간</Select.Item>
-                                        <Select.Item value="분">분</Select.Item>
+                                        <Select.Item value="hour">시간</Select.Item>
+                                        <Select.Item value="min">분</Select.Item>
                                     </Select.Content>
                                 </Select>
                             </div>
