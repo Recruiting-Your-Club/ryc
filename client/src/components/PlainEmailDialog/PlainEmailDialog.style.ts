@@ -21,6 +21,7 @@ export const contentCss = css`
 
 export const titleInputCss = css`
     border: 1px solid ${theme.colors.gray[500]};
+    border-radius: 8px;
     padding-left: 1rem;
     ${theme.typography.captionRegular}
 `;
