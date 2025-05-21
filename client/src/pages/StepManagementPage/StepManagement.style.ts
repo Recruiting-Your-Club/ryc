@@ -33,11 +33,6 @@ export const stepBoxContainer = css`
     gap: 2rem;
 `;
 
-export const bottomContainer = css`
-    height: 5%;
-    min-height: 4rem;
-`;
-
 export const inputCss = css`
     width: 100%;
     height: 3rem;

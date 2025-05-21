@@ -10,7 +10,6 @@ import { ApplicantCard } from '@components/ApplicantCard';
 import { CardBox } from '@components/CardBox';
 import React, { useState } from 'react';
 import {
-    bottomContainer,
     cardGroup,
     inputCss,
     searchBarContainer,
@@ -269,7 +268,6 @@ function StepManagementPage() {
                 <Button onClick={() => setIsEmailOpen(true)}>이메일</Button>
                 <PlainEmailDialog open={isEmailOpen} handleClose={handleEmailClose} />
             </div>
-            <div css={bottomContainer} />
         </div>
     );
 }
