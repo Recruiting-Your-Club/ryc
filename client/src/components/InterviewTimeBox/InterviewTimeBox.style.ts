@@ -6,7 +6,7 @@ export const baseBox = css`
     flex-direction: column;
     height: 100%;
     min-height: 10rem;
-    border: 1px solid ${theme.colors.gray[300]};
+    border: 1px solid ${theme.colors.gray[400]};
     border-radius: 8px;
 `;
 
@@ -24,18 +24,6 @@ export const selectedTimeSection = css`
     gap: 0.5rem;
     padding: 1rem;
     overflow-y: auto;
-`;
-
-export const selectRootCss = css`
-    width: 7rem;
-    margin: 0 0.5rem;
-`;
-
-export const selectTriggerCss = css`
-    border: 1px solid ${theme.colors.gray[400]};
-    border-radius: 8px;
-    width: 7rem;
-    height: 3rem;
 `;
 
 export const buttonCss = css`

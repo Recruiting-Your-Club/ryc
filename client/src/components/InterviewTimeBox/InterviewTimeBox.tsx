@@ -1,4 +1,5 @@
 import { Button, Divider, Text } from '@components/_common';
+import theme from '@styles/theme';
 import { generateTimeRange } from '@utils/InterviewTimeBox/generateTime';
 import React, { useEffect, useState } from 'react';
 import {
@@ -52,7 +53,7 @@ function InterviewTimeBox({
                     </Button>
                 </div>
             </div>
-            <Divider />
+            <Divider sx={{ borderTop: `1px solid ${theme.colors.gray[400]}` }} />
             <div css={selectedTimeSection}>
                 {selectedDate && (
                     <>

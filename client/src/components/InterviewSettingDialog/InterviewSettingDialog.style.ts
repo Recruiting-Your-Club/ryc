@@ -37,7 +37,7 @@ export const verticalDivider = css`
 export const emailWrapper = css`
     flex: 6;
     height: 100%;
-    padding: 3rem 2rem;
+    padding: 2rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -75,7 +75,7 @@ export const titleWrapper = css`
 `;
 
 export const contentWrapper = css`
-    flex: 8;
+    flex: 8.5;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -84,7 +84,7 @@ export const contentWrapper = css`
 `;
 
 export const submitButtonWrapper = css`
-    flex: 1;
+    flex: 0.5;
     display: flex;
     align-items: center;
     justify-content: flex-end;
