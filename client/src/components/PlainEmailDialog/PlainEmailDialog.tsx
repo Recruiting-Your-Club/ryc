@@ -13,8 +13,8 @@ import {
     titleInputCss,
     titleWrapper,
 } from './PlainEmailDialog.style';
-import type { EmailDialogProps } from './type';
-function EmailDialog({ open, handleClose }: EmailDialogProps) {
+import type { PlainEmailDialogProps } from './type';
+function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -37,7 +37,7 @@ function EmailDialog({ open, handleClose }: EmailDialogProps) {
             <Divider color="black" sx={{ borderTop: '1px solid' }} />
             <Dialog.Content sx={contentCss}>
                 <div css={titleWrapper}>
-                    <Text as="span" type="h4Semibold" textAlign="start">
+                    <Text as="span" type="h4Bold" textAlign="start">
                         제목
                     </Text>
                     <Input
@@ -48,7 +48,7 @@ function EmailDialog({ open, handleClose }: EmailDialogProps) {
                     />
                 </div>
                 <div css={contentWrapper}>
-                    <Text as="span" type="h4Semibold" textAlign="start">
+                    <Text as="span" type="h4Bold" textAlign="start">
                         내용
                     </Text>
                     <TextArea
@@ -66,4 +66,4 @@ function EmailDialog({ open, handleClose }: EmailDialogProps) {
     );
 }
 
-export { EmailDialog };
+export { PlainEmailDialog };

@@ -46,6 +46,7 @@ export const titleWrapper = css`
 export const contentWrapper = css`
     ${dialogContentWrapper}
     flex: 9;
+    min-height: 40rem;
     height: 100%;
 `;
 

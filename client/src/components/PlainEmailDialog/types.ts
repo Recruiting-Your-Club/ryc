@@ -1,4 +1,4 @@
-export interface EmailDialogProps {
+export interface PlainEmailDialogProps {
     open: boolean;
     handleClose: () => void;
 }
