@@ -208,7 +208,7 @@ function StepManagementPage() {
                                 date={applicant.date}
                                 score={applicant.score}
                                 status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)}
+                                checked={selectedEmails.includes(applicant.email)} // 임의 (추후 기능 연장)
                                 onChange={handleToggle}
                                 onClick={() => handleOpen(applicant as Applicant)}
                             />
@@ -226,7 +226,7 @@ function StepManagementPage() {
                                     date={applicant.date}
                                     score={applicant.score}
                                     status={applicant.status}
-                                    checked={selectedEmails.includes(applicant.email)}
+                                    checked={selectedEmails.includes(applicant.email)} // 임의
                                     onChange={handleToggle}
                                     onClick={() => handleOpen(applicant as Applicant)}
                                 />
@@ -244,7 +244,7 @@ function StepManagementPage() {
                                 date={applicant.date}
                                 score={applicant.score}
                                 status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)}
+                                checked={selectedEmails.includes(applicant.email)} // 임의
                                 onChange={handleToggle}
                                 onClick={() => handleOpen(applicant as Applicant)}
                             />
