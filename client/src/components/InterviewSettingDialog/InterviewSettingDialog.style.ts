@@ -29,7 +29,7 @@ export const informationContainer = css`
 `;
 
 export const verticalDivider = css`
-    border-left: 1px solid ${theme.colors.gray[300]};
+    border-left: 1px solid ${theme.colors.gray[200]};
     height: 100%;
     margin: 0 1rem;
 `;
