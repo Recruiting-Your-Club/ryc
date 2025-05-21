@@ -82,7 +82,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         <Dialog open={open} handleClose={handleSelectReset} size="full" sx={dialogCss}>
             <Dialog.Header position="start" sx={headerCss}>
                 <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
-                    면접 일정 설정
+                    면접 일정 전송
                 </Text>
                 <Button
                     variant="transparent"
@@ -101,7 +101,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                     </Text>
                     <div css={informationInput}>
                         <div css={perInformationInput}>
-                            <Text as="span" type="bodyBold" textAlign="start">
+                            <Text as="span" type="bodySemibold" textAlign="start">
                                 면접 당 최대 정원 수
                             </Text>
                             <div css={inputFormSection}>
@@ -116,7 +116,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             </div>
                         </div>
                         <div css={perInformationInput}>
-                            <Text as="span" type="bodyBold" textAlign="start">
+                            <Text as="span" type="bodySemibold" textAlign="start">
                                 면접 당 진행 시간
                             </Text>
                             <div css={inputFormSection}>
@@ -155,7 +155,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                 <div css={verticalDivider}></div>
                 <div css={emailWrapper}>
                     <div css={titleWrapper}>
-                        <Text as="span" type="h4Bold" textAlign="start">
+                        <Text as="span" type="h4Semibold" textAlign="start">
                             제목
                         </Text>
                         <Input
@@ -166,7 +166,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                         />
                     </div>
                     <div css={contentWrapper}>
-                        <Text as="span" type="h4Bold" textAlign="start">
+                        <Text as="span" type="h4Semibold" textAlign="start">
                             내용
                         </Text>
                         <TextArea

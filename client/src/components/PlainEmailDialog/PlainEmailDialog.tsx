@@ -37,7 +37,7 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
             <Divider color="black" sx={{ borderTop: '1px solid' }} />
             <Dialog.Content sx={contentCss}>
                 <div css={titleWrapper}>
-                    <Text as="span" type="h4Bold" textAlign="start">
+                    <Text as="span" type="h4Semibold" textAlign="start">
                         제목
                     </Text>
                     <Input
@@ -48,7 +48,7 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                     />
                 </div>
                 <div css={contentWrapper}>
-                    <Text as="span" type="h4Bold" textAlign="start">
+                    <Text as="span" type="h4Semibold" textAlign="start">
                         내용
                     </Text>
                     <TextArea
