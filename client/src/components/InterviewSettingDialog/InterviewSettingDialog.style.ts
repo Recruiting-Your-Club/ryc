@@ -37,7 +37,7 @@ export const verticalDivider = css`
 export const emailWrapper = css`
     flex: 6;
     height: 100%;
-    padding: 2rem 2rem;
+    padding: 1rem 1rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
