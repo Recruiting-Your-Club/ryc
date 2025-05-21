@@ -121,8 +121,6 @@ export const inputFormSection = css`
 `;
 
 export const calendarCss = css`
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     width: 100%;
-    /* background-color: ${theme.colors.blue[100]}; */
-    /* box-shadow: none; */
 `;

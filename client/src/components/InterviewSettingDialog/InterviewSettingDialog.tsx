@@ -3,6 +3,7 @@ import { InterviewTimeBox } from '@components/InterviewTimeBox';
 import { Select } from '@components/Select';
 import { Button, Calendar, Dialog, Divider, Input, Text } from '@components/_common';
 import { TextArea } from '@components/_common/TextArea';
+import { INITIAL_FORM } from '@constants/InterviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     calendarCss,
@@ -169,6 +170,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             내용
                         </Text>
                         <TextArea
+                            defaultValue={INITIAL_FORM}
                             size="md"
                             placeholder="이메일 내용을 입력해주세요."
                             sx={textareaCss}

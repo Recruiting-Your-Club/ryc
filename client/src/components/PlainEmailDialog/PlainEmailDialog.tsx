@@ -13,7 +13,7 @@ import {
     titleInputCss,
     titleWrapper,
 } from './PlainEmailDialog.style';
-import type { PlainEmailDialogProps } from './type';
+import type { PlainEmailDialogProps } from './types';
 function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
     // prop destruction
     // lib hooks

@@ -107,41 +107,41 @@ export const interviewEmptyEvaluations: Evaluation[] = [
 
                 comment: '윗 분 레전드 불편러',
             },
-            // {
-            //     id: 4,
-            //     name: '조존희',
-            //     score: 4,
+            {
+                id: 4,
+                name: '조존희',
+                score: 4,
 
-            //     comment: '재밌네요.@@@@@@@@@@@@@@@@@@@@@@@@@@@',
-            // },
-            // {
-            //     id: 5,
-            //     name: '5자까지만',
-            //     score: 3,
+                comment: '재밌네요.@@@@@@@@@@@@@@@@@@@@@@@@@@@',
+            },
+            {
+                id: 5,
+                name: '5자까지만',
+                score: 3,
 
-            //     comment: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇ.',
-            // },
-            // {
-            //     id: 6,
-            //     name: '김영림',
-            //     score: 3.5,
+                comment: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇ.',
+            },
+            {
+                id: 6,
+                name: '김영림',
+                score: 3.5,
 
-            //     comment: 'ㄱㄱ',
-            // },
-            // {
-            //     id: 7,
-            //     name: '김일림',
-            //     score: 3.5,
+                comment: 'ㄱㄱ',
+            },
+            {
+                id: 7,
+                name: '김일림',
+                score: 3.5,
 
-            //     comment: '스크롤',
-            // },
-            // {
-            //     id: 8,
-            //     name: '김일림',
-            //     score: 3.5,
+                comment: '스크롤',
+            },
+            {
+                id: 8,
+                name: '김일림',
+                score: 3.5,
 
-            //     comment: '언제',
-            // },
+                comment: '언제',
+            },
         ],
     },
     {

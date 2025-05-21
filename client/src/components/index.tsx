@@ -5,6 +5,8 @@ export * from './ClubCard';
 export * from './ConfirmDialog';
 export * from './DocumentBox';
 export * from './Header';
+export * from './InterviewSettingDialog';
+export * from './InterviewTimeBox';
 export * from './MainCard';
 export * from './ManagerHeader';
 export * from './PasswordInput';
