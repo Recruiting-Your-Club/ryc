@@ -9,6 +9,7 @@ import {
     s_inputWrapper,
 } from './DescriptionStep.style';
 import { FileUpLoader } from '@components/FileUpLoader';
+import { FieldLabel } from '@components/FieldLabel/Fieldlabel';
 
 function DescriptionStepPage() {
     return (
@@ -104,10 +105,11 @@ function DescriptionStepPage() {
                 />
             </div>
             <div css={s_inputWrapper}>
-                <span css={s_descriptionLabel}>
-                    상세 정보 <span css={s_descriptionAccent}>*</span>
-                </span>
-                <span css={s_helpTextNoneInput}>자세한 모집 공고 내용을 입력해주세요</span>
+                <FieldLabel
+                    label="상세 정보"
+                    description="자세한 모집 공고 내용을 입력해주세요"
+                    required
+                />
                 <span css={s_helpTextNoneInput}>여기는 텍스트 에디터</span>
             </div>
             <div css={s_inputWrapper}>
