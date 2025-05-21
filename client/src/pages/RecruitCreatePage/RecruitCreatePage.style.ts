@@ -11,7 +11,7 @@ export const s_recruitCreatePageContainer = css`
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding: 5rem;
     align-items: center;
     overflow-y: auto;
 `;

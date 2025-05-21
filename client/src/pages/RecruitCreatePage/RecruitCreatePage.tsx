@@ -18,6 +18,11 @@ function RecruitCreatePage() {
         INITIALRECRUITSTEP,
     );
     // initial values
+
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     const stepComponent = (step: number) => {
         switch (step) {
             case 0:
@@ -32,10 +37,6 @@ function RecruitCreatePage() {
                 <div>error</div>;
         }
     };
-    // state, ref, querystring hooks
-    // form hooks
-    // query hooks
-    // calculated values
     // handlers
     // effects
 
