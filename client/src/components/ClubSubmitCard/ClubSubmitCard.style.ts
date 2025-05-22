@@ -26,6 +26,7 @@ export const clubSubmitCard = css`
     height: 25rem;
     margin-right: 0.5rem;
     padding: 1.5rem;
+    border: 1px solid ${theme.colors.gray[200]};
     border-radius: 10px;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     background-color: ${theme.colors.white};

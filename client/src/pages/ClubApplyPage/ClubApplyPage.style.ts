@@ -40,8 +40,8 @@ export const clubApplyPageMainContainer = css`
     align-items: center;
     padding: 2rem 0;
     background-color: ${theme.colors.white};
-    border-radius: 5px;
-
+    border: 1px solid ${theme.colors.gray[200]};
+    border-radius: 10px;
     @media (max-width: ${theme.breakpoint.tablet}) {
         width: 75%;
         padding: 1rem 3rem;
@@ -74,7 +74,7 @@ export const clubLogoAndNameContainer = css`
     align-items: center;
     gap: 1rem;
     width: 100%;
-    max-width: 75rem;
+    max-width: 80rem;
     max-height: 4.5rem;
     margin: 1rem 0;
 
@@ -92,7 +92,7 @@ export const clubNameContainer = css`
 
 export const clubApplyTabContainer = css`
     width: 100%;
-    max-width: 75rem;
+    max-width: 80rem;
     display: flex;
     gap: 1rem;
     border-bottom: 1px solid ${theme.colors.gray[300]};
@@ -114,7 +114,7 @@ export const applyFormContainer = (index: number) => css`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 75rem;
+    max-width: 80rem;
 
     ${index === 0 &&
     css`
@@ -133,28 +133,32 @@ export const applyFormContainer = (index: number) => css`
 
 export const submitButtonContainer = css`
     width: 100%;
-    height: 3rem;
+    height: 4rem;
     display: none;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 4px 15px 4px rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
         align-items: center;
         justify-content: center;
         position: fixed;
-        top: 95%;
-        width: 70%;
-        padding: 1rem 0;
-        margin-bottom: 1rem;
+        top: 90%;
+        width: 65%;
+        height: 3.5rem;
+        padding: 0.75rem 0;
     }
 
     @media (max-width: ${theme.breakpoint.tabletMini}) {
-        width: 65%;
+        width: 60%;
+        height: 3rem;
+        padding: 0.7rem 0;
     }
 
     @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 85%;
-        padding: 0.75rem 0;
+        width: 80%;
+        height: 2.5rem;
+        padding: 0.5rem 0;
     }
 `;
 

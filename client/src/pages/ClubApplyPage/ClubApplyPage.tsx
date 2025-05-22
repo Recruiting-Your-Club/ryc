@@ -296,6 +296,7 @@ function ClubApplyPage() {
                         size="full"
                         disabled={completedQuestions !== allQuestions.length}
                         onClick={handleSubmit}
+                        sx={{ height: '4rem' }}
                     >
                         제출하기
                     </Button>
