@@ -9,6 +9,7 @@ import {
     s_stepWrapper,
 } from './RecruitCreatePage.style';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
+import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -28,7 +29,7 @@ function RecruitCreatePage() {
             case 0:
                 return <DescriptionStepPage />;
             case 1:
-                return <div>사전 질문 설정</div>;
+                return <BasicInfoStep />;
             case 2:
                 return <div>자기소개서 설정</div>;
             case 3:

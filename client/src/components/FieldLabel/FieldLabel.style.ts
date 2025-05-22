@@ -7,7 +7,7 @@ export const s_labelWrapper = css`
 `;
 
 export const s_fieldLabel = css`
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     ${theme.typography.captionSemibold}
 `;
 

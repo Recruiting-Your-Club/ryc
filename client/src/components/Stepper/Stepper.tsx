@@ -3,7 +3,7 @@ import React, { useMemo, Children, cloneElement, isValidElement } from 'react';
 import { s_stepper } from './Stepper.style';
 import { StepperContext } from './StepperContext';
 import { StepConnector } from './StepConnector';
-import type { SerializedStyles } from '@emotion/react';
+import type { CSSObject, SerializedStyles } from '@emotion/react';
 import { Step } from './Step';
 import { StepLabel } from './StepLabel';
 
@@ -15,7 +15,7 @@ interface StepperProps {
     component?: ElementType;
     connector?: ReactNode;
     orientation?: 'horizontal' | 'vertical';
-    sx?: SerializedStyles;
+    sx?: CSSObject;
 }
 
 const defaultConnector = <StepConnector />;
