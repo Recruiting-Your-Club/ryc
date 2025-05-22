@@ -5,7 +5,6 @@ export const clubApplySubmitCardContainer = css`
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    height: 100%;
 `;
 
 export const svgContainer = css`
@@ -32,12 +31,6 @@ export const clubSubmitCard = css`
     background-color: ${theme.colors.white};
 
     @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 20rem;
-        height: 20rem;
-        margin: 0;
-    }
-
-    @media (max-width: ${theme.breakpoint.mobile}) {
         display: none;
     }
 `;

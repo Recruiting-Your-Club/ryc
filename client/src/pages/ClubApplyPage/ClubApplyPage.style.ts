@@ -3,7 +3,7 @@ import theme from '@styles/theme';
 
 export const clubApplyPageContainer = css`
     width: 100%;
-    height: 100%;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     background-color: ${theme.colors.gray[100]};
@@ -12,13 +12,16 @@ export const clubApplyPageContainer = css`
 export const clubApplyPage = css`
     width: 100%;
     max-width: 120rem;
+    height: 100%;
     display: flex;
     align-items: flex-start;
     gap: 2rem;
     padding: 2rem;
-
+    padding-bottom: 0;
     @media (max-width: ${theme.breakpoint.tablet}) {
+        flex-direction: column;
         padding: 1rem;
+        align-items: center;
         justify-content: center;
         gap: 3rem;
     }
@@ -31,21 +34,21 @@ export const clubApplyPage = css`
 
 export const clubApplyPageMainContainer = css`
     width: 100%;
-    min-height: 70rem;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 2rem 0;
     background-color: ${theme.colors.white};
     border-radius: 5px;
 
-    @media (max-width: ${theme.breakpoint.tabletMini}) {
-        width: 70%;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        width: 75%;
         padding: 1rem 3rem;
         margin: 0;
     }
-    @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 75%;
+    @media (max-width: ${theme.breakpoint.tabletMini}) {
+        width: 70%;
         padding: 1rem 3rem;
         margin: 0;
     }
@@ -61,17 +64,17 @@ export const svgContainer = css`
     border-radius: 10px;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 3rem;
-        height: 3rem;
+        width: 4rem;
+        height: 4rem;
     }
 `;
 
 export const clubLogoAndNameContainer = css`
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
-    max-width: 70rem;
+    max-width: 75rem;
     max-height: 4.5rem;
     margin: 1rem 0;
 
@@ -89,7 +92,7 @@ export const clubNameContainer = css`
 
 export const clubApplyTabContainer = css`
     width: 100%;
-    max-width: 70rem;
+    max-width: 75rem;
     display: flex;
     gap: 1rem;
     border-bottom: 1px solid ${theme.colors.gray[300]};
@@ -111,7 +114,7 @@ export const applyFormContainer = (index: number) => css`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 70rem;
+    max-width: 75rem;
 
     ${index === 0 &&
     css`
@@ -132,17 +135,26 @@ export const submitButtonContainer = css`
     width: 100%;
     height: 3rem;
     display: none;
-    align-items: center;
-    justify-content: center;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    background-color: ${theme.colors.gray[100]};
+
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 95%;
+        width: 70%;
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: ${theme.breakpoint.tabletMini}) {
+        width: 65%;
+    }
 
     @media (max-width: ${theme.breakpoint.mobile}) {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        z-index: 100;
+        width: 85%;
+        padding: 0.75rem 0;
     }
 `;
 

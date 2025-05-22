@@ -293,7 +293,7 @@ function ClubApplyPage() {
                 <div css={submitButtonContainer}>
                     <Button
                         variant="primary"
-                        sx={{ width: '100%' }}
+                        size="full"
                         disabled={completedQuestions !== allQuestions.length}
                         onClick={handleSubmit}
                     >
