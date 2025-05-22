@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
-import React from 'react';
+import React, { isValidElement } from 'react';
 import { useDropdownContext } from './DropdownContext';
-import { Slot } from '../Slot/Slot';
+import { Slot, Slottable } from '../Slot/Slot';
 import type { CSSObject } from '@emotion/react';
 import { s_dropdownTrigger } from './Dropdown.styles';
 
@@ -32,6 +32,9 @@ function DropdownTrigger({
 
     const Comp = asChild ? Slot : 'button';
 
+    const wrappedChildren =
+        asChild && isValidElement(children) ? <Slottable>{children}</Slottable> : children;
+
     // handlers
     // effects
     return (
@@ -43,7 +46,7 @@ function DropdownTrigger({
                 setOpen(!open);
             }}
         >
-            {children}
+            {wrappedChildren}
         </Comp>
     );
 }
