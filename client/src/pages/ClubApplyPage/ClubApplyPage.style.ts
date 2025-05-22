@@ -157,6 +157,7 @@ export const submitButtonContainer = css`
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 80%;
+        top: 93%;
         height: 2.5rem;
         padding: 0.5rem 0;
     }
