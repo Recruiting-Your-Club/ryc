@@ -135,30 +135,26 @@ export const submitButtonContainer = css`
     width: 100%;
     height: 4rem;
     display: none;
-    box-shadow: 4px 4px 15px 4px rgba(0, 0, 0, 0.35);
+    box-shadow: 0px 0px 4px 2px rgba(55, 53, 47, 0.4);
     border-radius: 10px;
+    top: 90%;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
         align-items: center;
         justify-content: center;
         position: fixed;
-        top: 90%;
         width: 65%;
-        height: 3.5rem;
         padding: 0.75rem 0;
     }
 
     @media (max-width: ${theme.breakpoint.tabletMini}) {
         width: 60%;
-        height: 3rem;
         padding: 0.7rem 0;
     }
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 80%;
-        top: 93%;
-        height: 2.5rem;
         padding: 0.5rem 0;
     }
 `;
