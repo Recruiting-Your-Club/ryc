@@ -9,3 +9,6 @@ export interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
     sx?: CSSObject;
     handleToggle?: () => void;
 }
+
+export type Size = 'sm' | 'md' | 'lg';
+export type TextType = 'subCaptionRegular' | 'captionRegular' | 'bodyRegular';

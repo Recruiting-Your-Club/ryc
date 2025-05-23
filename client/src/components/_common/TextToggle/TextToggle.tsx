@@ -1,5 +1,4 @@
 import React from 'react';
-import type { InputHTMLAttributes } from 'react';
 import {
     hiddenCheckbox,
     toggleContainer,
@@ -7,25 +6,12 @@ import {
     rightTextContainer,
 } from './TextToggle.style';
 import { Text } from '@components';
-import type { CSSObject } from '@emotion/react';
+import type { ToggleProps, Size, TextType } from './types';
 
-interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
-    leftText?: string;
-    rightText?: string;
-    isChecked?: boolean;
-    size?: 'sm' | 'md' | 'lg';
-    sx?: CSSObject;
-    handleToggle?: () => void;
-}
-const getSize = (size: 'sm' | 'md' | 'lg') => {
-    switch (size) {
-        case 'sm':
-            return 'subCaptionRegular';
-        case 'md':
-            return 'captionRegular';
-        case 'lg':
-            return 'bodyRegular';
-    }
+const getTextType: Record<Size, TextType> = {
+    sm: 'subCaptionRegular',
+    md: 'captionRegular',
+    lg: 'bodyRegular',
 };
 function TextToggle({
     isChecked = false,
@@ -45,10 +31,10 @@ function TextToggle({
                 onChange={handleToggle}
                 {...props}
             />
-            <Text as="div" type={getSize(size)} sx={leftTextContainer(isChecked)}>
+            <Text as="div" type={getTextType[size]} sx={leftTextContainer(isChecked)}>
                 {leftText}
             </Text>
-            <Text as="div" type={getSize(size)} sx={rightTextContainer(isChecked)}>
+            <Text as="div" type={getTextType[size]} sx={rightTextContainer(isChecked)}>
                 {rightText}
             </Text>
         </label>
