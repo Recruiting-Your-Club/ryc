@@ -26,6 +26,10 @@ export const navigationButton = (isActive: boolean) => css`
     transition: color 0.1s;
 `;
 
+export const divider = css`
+    width: 100%;
+    background-color: ${theme.colors.gray[200]};
+`;
 export const navigationSlider = (position: number, width: string) => css`
     display: absolute;
     left: 0;

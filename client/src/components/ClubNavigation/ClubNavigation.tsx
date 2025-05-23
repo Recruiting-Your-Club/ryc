@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Divider, Button } from '@components';
-import { navigationButton, navigationContainer, navigationSlider } from './ClubNavigation.style';
+import {
+    divider,
+    navigationButton,
+    navigationContainer,
+    navigationSlider,
+} from './ClubNavigation.style';
 import type { ClubNavigationProps } from './types';
 
 function ClubNavigation(props: ClubNavigationProps) {
@@ -52,8 +57,9 @@ function ClubNavigation(props: ClubNavigationProps) {
                         </Button>
                     ))}
             </div>
-            <hr css={navigationSlider(sliderPosition, sliderWidth)} />
-            <Divider sx={{ display: 'relative' }} />
+            <div css={divider}>
+                <hr css={navigationSlider(sliderPosition, sliderWidth)} />
+            </div>
             {activeContent && activeContent.page}
         </>
     );
