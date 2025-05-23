@@ -1,9 +1,12 @@
 import React from 'react';
-import { RecruitCard } from '@components';
+import { RecruitCard, RecruitDialog } from '@components';
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
+import { useDialog } from '@hooks/useDialog';
+
 function RecruitmentPage() {
     // prop destruction
     // lib hooks
+    const { open, openDialog, closeDialog } = useDialog();
     // initial values
     // state, ref, querystring hooks
     // form hooks
@@ -33,7 +36,7 @@ function RecruitmentPage() {
             content:
                 'Flutter 또는 React Native를 이용한 크로스 플랫폼 앱 개발 프로젝트를 함께 할 팀원 모집합니다.',
             deadline: '2025-05-30',
-            hashtags: ['모바일', 'Flutter', 'React Native', '프로젝트'],
+            hashtags: ['모바일', 'Flutter', 'React Native', '프로젝트', 'React Native', '프로젝트'],
             link: '/recruitment/3',
         },
         {
@@ -55,20 +58,23 @@ function RecruitmentPage() {
     ];
 
     return (
-        <div css={recruitmentContainer}>
-            {recruitListData &&
-                recruitListData.map((cardData) => (
-                    <div css={recruitCell} key={cardData.title}>
-                        <RecruitCard
-                            title={cardData.title}
-                            content={cardData.content}
-                            deadline={cardData.deadline}
-                            hashtags={cardData.hashtags}
-                            link={cardData.link}
-                        />
-                    </div>
-                ))}
-        </div>
+        <>
+            <div css={recruitmentContainer}>
+                {recruitListData &&
+                    recruitListData.map((cardData) => (
+                        <div css={recruitCell} key={cardData.title}>
+                            <RecruitCard
+                                title={cardData.title}
+                                content={cardData.content}
+                                deadline={cardData.deadline}
+                                hashtags={cardData.hashtags}
+                                onClick={openDialog}
+                            />
+                        </div>
+                    ))}
+            </div>
+            {open && <RecruitDialog open={open} handleClose={closeDialog} />}
+        </>
     );
 }
 

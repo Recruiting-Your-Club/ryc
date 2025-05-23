@@ -11,6 +11,7 @@ export const textContainer = css`
 export const imageListContainer = css`
     display: grid;
     justify-content: center;
+    width: 100%;
     grid-template-columns: repeat(3, 1fr); // 기본 3열
     padding: 4rem 3rem;
     gap: 0.5rem;
