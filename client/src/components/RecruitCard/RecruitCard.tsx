@@ -21,6 +21,7 @@ function RecruitCard(props: RecruitCardProps) {
     // form hooks
     // query hooks
     // calculated values
+    const hashtagList = hashtags.map((tag) => `#${tag} `);
     const diffDay = formattedDeadline.diff(today, 'day');
     const calculateDeadline = useMemo(() => {
         if (diffDay > 7) {
@@ -54,11 +55,9 @@ function RecruitCard(props: RecruitCardProps) {
                     </Text>
                 </div>
                 <div css={recruitCardFooter}>
-                    {hashtags.map((tag) => (
-                        <Text key={tag} type="subCaptionRegular" color="primary" noWrap cropped>
-                            #{tag}
-                        </Text>
-                    ))}
+                    <Text type="subCaptionRegular" color="primary" noWrap cropped>
+                        {hashtagList}
+                    </Text>
                 </div>
             </button>
         </>

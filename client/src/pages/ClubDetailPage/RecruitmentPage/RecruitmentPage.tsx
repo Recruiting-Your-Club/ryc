@@ -36,7 +36,7 @@ function RecruitmentPage() {
             content:
                 'Flutter 또는 React Native를 이용한 크로스 플랫폼 앱 개발 프로젝트를 함께 할 팀원 모집합니다.',
             deadline: '2025-05-30',
-            hashtags: ['모바일', 'Flutter', 'React Native', '프로젝트'],
+            hashtags: ['모바일', 'Flutter', 'React Native', '프로젝트', 'React Native', '프로젝트'],
             link: '/recruitment/3',
         },
         {
