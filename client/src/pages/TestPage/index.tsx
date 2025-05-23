@@ -1,9 +1,6 @@
-import type { ChangeEvent } from 'react';
 import React, { useState } from 'react';
 import { Button } from '@components/_common/Button';
 import { Tooltip } from '@components/_common/Tooltip';
-import React, { TextareaHTMLAttributes, useState } from 'react';
-import { MainCard } from '@components';
 
 function TestPage() {
     return (
@@ -13,7 +10,6 @@ function TestPage() {
                     <Button variant="outlined">hd</Button>
                 </Tooltip>
             </div>
-
         </>
     );
 }
