@@ -137,7 +137,7 @@ export const submitButtonContainer = css`
     display: none;
     box-shadow: 0px 0px 4px 2px rgba(55, 53, 47, 0.4);
     border-radius: 10px;
-    top: 90%;
+    top: 93%;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
@@ -146,6 +146,7 @@ export const submitButtonContainer = css`
         position: fixed;
         width: 65%;
         padding: 0.75rem 0;
+        top: 95%;
     }
 
     @media (max-width: ${theme.breakpoint.tabletMini}) {
@@ -156,6 +157,7 @@ export const submitButtonContainer = css`
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 80%;
         padding: 0.5rem 0;
+        top: 93%;
     }
 `;
 
