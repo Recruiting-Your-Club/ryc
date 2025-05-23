@@ -36,7 +36,7 @@ export const navigationSlider = (position: number, width: string) => css`
     bottom: 0;
     margin: 0;
     z-index: 1;
-    border-radius: 50%;
+    border-radius: 25px;
     border: 0.5px solid ${theme.colors.black};
     width: ${width};
     transform: translateX(${position}rem);
