@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const recruitmentContainer = css`
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: ${theme.colors.gray[100]};
@@ -12,7 +13,6 @@ export const recruitmentContainer = css`
 `;
 
 export const contentContainer = css`
-    position: relative;
     max-width: 90rem;
     min-height: 130rem;
     width: 100%;
@@ -66,7 +66,7 @@ export const applyButtonAtMobile = css`
     left: 0;
     right: 0;
     padding: 0 4rem;
-    //z-index: 100;
+    z-index: 100;
     opacity: 0.9;
     @media (min-width: ${theme.breakpoint.mobile}) {
         display: none;

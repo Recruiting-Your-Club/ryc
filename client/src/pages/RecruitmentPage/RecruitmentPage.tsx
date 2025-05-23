@@ -107,15 +107,13 @@ function RecruitmentPage() {
                             ))}
                     </div>
                 </div>
-
-                <div css={applyButtonAtMobile}>
-                    <Button size="full">지원하기</Button>
-                </div>
-
-                {open && imageUrl && (
-                    <ImageDialog open={open} handleClose={closeDialog} imageUrl={imageUrl} />
-                )}
             </div>
+            <div css={applyButtonAtMobile}>
+                <Button size="full">지원하기</Button>
+            </div>
+            {open && imageUrl && (
+                <ImageDialog open={open} handleClose={closeDialog} imageUrl={imageUrl} />
+            )}
         </div>
     );
 }
