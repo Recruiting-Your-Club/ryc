@@ -1,0 +1,64 @@
+import type { QuestionProps, QuestionType } from '@components/QuestionForm/type';
+import React, { useState } from 'react';
+
+const DEFAULT_OPTIONS = [
+    { id: 'opt1', text: '' },
+    { id: 'opt2', text: '' },
+];
+
+export const useQuestion = () => {
+    const [questions, setQuestions] = useState<QuestionProps[]>([
+        { id: '1', type: 'short', title: '' },
+        {
+            id: '2',
+            type: 'single',
+            title: '',
+            options: [...DEFAULT_OPTIONS],
+        },
+    ]);
+
+    const addQuesttion = () => {
+        const newQuestion: QuestionProps = {
+            id: `q${Date.now()}`,
+            type: 'short',
+            title: '',
+        };
+        setQuestions((prev) => [...prev, newQuestion]);
+    };
+
+    const removeQuestion = (id: string) => {
+        setQuestions((prev) => prev.filter((q) => q.id !== id));
+    };
+
+    const updateQuestion = (id: string, updates: Partial<QuestionProps>) => {
+        setQuestions((prev) => prev.map((q) => (q.id === id ? { ...q, ...updates } : q)));
+    };
+
+    const handleQuestionTypeChange = (id: string, newQuestionType: QuestionType) => {
+        setQuestions((prev) =>
+            prev.map((q) => {
+                if (q.id !== id) return q;
+
+                const updated: QuestionProps = {
+                    ...q,
+                    type: newQuestionType,
+                };
+
+                if (newQuestionType === 'multiple' || newQuestionType === 'single') {
+                    updated.options = updated.options || [...DEFAULT_OPTIONS];
+                } else {
+                    delete updated.options;
+                }
+                return updated;
+            }),
+        );
+    };
+
+    return {
+        questions,
+        addQuesttion,
+        updateQuestion,
+        removeQuestion,
+        handleQuestionTypeChange,
+    };
+};
