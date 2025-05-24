@@ -17,6 +17,24 @@ export const handleNewRange = (node: Node, selection: Selection) => {
     selection.addRange(newRange);
 };
 
+// 커서, 드래그 보존
+export const preserveSelection = (selection: Selection, range: Range, operation: () => void) => {
+    const { startContainer, startOffset, endContainer, endOffset } = range;
+    const result = operation();
+
+    const newRange = document.createRange();
+    try {
+        newRange.setStart(startContainer, startOffset);
+        newRange.setEnd(endContainer, endOffset);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+    } catch (e) {
+        console.warn('Selection 복구에 실패하였습니다.', e);
+    }
+
+    return result;
+};
+
 export const getTextNodes = (range: Range): Text[] => {
     // 범위 내 TEXT 노드 탐색
     const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT, {

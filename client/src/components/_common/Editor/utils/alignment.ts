@@ -1,4 +1,5 @@
 import type { Align } from '../types';
+import { preserveSelection } from './range';
 
 export const getClosestDiv = (node: Node): HTMLDivElement | null => {
     const element =
@@ -59,7 +60,7 @@ const applyAlignmentToDivsInRange = (editor: HTMLElement, range: Range, align: A
     }
 };
 
-export const applyAlignment = (range: Range, align: Align) => {
+export const applyAlignment = (selection: Selection, range: Range, align: Align) => {
     const editor = getEditorRoot(range);
     if (!editor) return;
 
@@ -67,7 +68,9 @@ export const applyAlignment = (range: Range, align: Align) => {
     if (range.collapsed) {
         const div = getClosestDiv(range.startContainer)!;
         if (div === editor) {
-            wrapFirstLineInDiv(editor, align);
+            preserveSelection(selection, range, () => {
+                wrapFirstLineInDiv(editor, align);
+            });
         } else {
             div.style.textAlign = align;
         }
@@ -77,7 +80,9 @@ export const applyAlignment = (range: Range, align: Align) => {
     // 첫 줄만 존재할 경우
     const allDivs = editor.querySelectorAll('div');
     if (allDivs.length === 0) {
-        wrapFirstLineInDiv(editor, align);
+        preserveSelection(selection, range, () => {
+            wrapFirstLineInDiv(editor, align);
+        });
         return;
     }
 
@@ -87,6 +92,8 @@ export const applyAlignment = (range: Range, align: Align) => {
     // div 없는 첫 줄 처리
     const parentOfFirstLine = getClosestDiv(range.startContainer)!;
     if (parentOfFirstLine === editor) {
-        wrapFirstLineInDiv(editor, align);
+        preserveSelection(selection, range, () => {
+            wrapFirstLineInDiv(editor, align);
+        });
     }
 };

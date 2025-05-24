@@ -106,16 +106,16 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
         const range = selection.getRangeAt(0);
         toggleFormatButton(format);
-
         applyStyle(selection, range, format);
     };
 
     const handleAlignment = (align: Align) => {
-        const { isValid, range } = getValidSelection();
+        const { isValid, selection, range } = getValidSelection();
         if (!isValid) return;
 
         toggleAlignButton(align);
-        applyAlignment(range, align);
+        applyAlignment(selection, range, align);
+        editorRef.current?.focus();
     };
 
     const handleList = (list: List) => {
