@@ -2,7 +2,7 @@ import { Input } from '@components';
 import React from 'react';
 import { s_descriptionFileUploader, s_descriptionWrapper } from './DescriptionStep.style';
 import { FileUpLoader } from '@components/FileUpLoader';
-import { FieldLabel } from '@components/FieldLabel/Fieldlabel';
+import { FieldLabel } from '@components/FieldLabel/FieldLabel';
 
 function DescriptionStepPage() {
     return (
