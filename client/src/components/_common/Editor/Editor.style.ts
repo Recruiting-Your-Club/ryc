@@ -26,6 +26,7 @@ export const rootContainer = css`
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    min-width: 50rem;
 `;
 export const toolbarContainer = (radius: string = '4px') => css`
     width: 100%;
