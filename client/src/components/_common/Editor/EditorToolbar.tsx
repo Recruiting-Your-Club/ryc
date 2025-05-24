@@ -85,26 +85,23 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     };
 
     const handleSize = (size: Size) => {
-        const { isValid, selection } = getValidSelection();
+        const { isValid, selection, range } = getValidSelection();
         if (!isValid) return;
 
-        const range = selection.getRangeAt(0); //선택된 부분
         applyStyle(selection, range, size);
     };
 
     const handleColor = (textColorType: TextColor, color: string) => {
-        const { isValid, selection } = getValidSelection();
+        const { isValid, selection, range } = getValidSelection();
         if (!isValid) return;
 
-        const range = selection.getRangeAt(0);
         applyStyle(selection, range, textColorType, color);
     };
 
     const handleFormat = (format: Format) => {
-        const { isValid, selection } = getValidSelection();
+        const { isValid, selection, range } = getValidSelection();
         if (!isValid) return;
 
-        const range = selection.getRangeAt(0);
         toggleFormatButton(format);
         applyStyle(selection, range, format);
     };
