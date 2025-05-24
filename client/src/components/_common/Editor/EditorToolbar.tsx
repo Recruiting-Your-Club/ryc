@@ -6,7 +6,7 @@ import {
     listButtons,
     optionButtons,
 } from '@constants/Editor';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     buttonGroup,
     perButtonCss,
@@ -62,18 +62,18 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     // handlers
 
     // 버튼 클릭할 때 활성화 상태를 알려주는 toggle 함수
-    const toggleFormatButton = (format: Format) => {
+    const toggleFormatButton = useCallback((format: Format) => {
         setFormats((prev) => ({
             ...prev,
             [format]: !prev[format],
         }));
-    };
+    }, []);
 
-    const toggleAlignButton = (alignment: Align) => {
+    const toggleAlignButton = useCallback((alignment: Align) => {
         setAlign(alignment);
-    };
+    }, []);
 
-    const toggleListButton = (list: List) => {
+    const toggleListButton = useCallback((list: List) => {
         setLists((prev) => {
             if (prev[list]) return prev;
 
@@ -82,7 +82,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 decimal: list === 'decimal',
             };
         });
-    };
+    }, []);
 
     const handleSize = (size: Size) => {
         const { isValid, selection, range } = getValidSelection();
@@ -98,32 +98,41 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
         applyStyle(selection, range, textColorType, color);
     };
 
-    const handleFormat = (format: Format) => {
-        const { isValid, selection, range } = getValidSelection();
-        if (!isValid) return;
+    const handleFormat = useCallback(
+        (format: Format) => {
+            const { isValid, selection, range } = getValidSelection();
+            if (!isValid) return;
 
-        toggleFormatButton(format);
-        applyStyle(selection, range, format);
-    };
+            toggleFormatButton(format);
+            applyStyle(selection, range, format);
+        },
+        [toggleFormatButton],
+    );
 
-    const handleAlignment = (align: Align) => {
-        const { isValid, selection, range } = getValidSelection();
-        if (!isValid) return;
+    const handleAlignment = useCallback(
+        (align: Align) => {
+            const { isValid, selection, range } = getValidSelection();
+            if (!isValid) return;
 
-        toggleAlignButton(align);
-        applyAlignment(selection, range, align);
-        editorRef.current?.focus();
-    };
+            toggleAlignButton(align);
+            applyAlignment(selection, range, align);
+            editorRef.current?.focus();
+        },
+        [toggleAlignButton],
+    );
 
-    const handleList = (list: List) => {
-        const { isValid, range } = getValidSelection();
-        if (!isValid) return;
+    const handleList = useCallback(
+        (list: List) => {
+            const { isValid, range } = getValidSelection();
+            if (!isValid) return;
 
-        toggleListButton(list);
-        applyList(range, list);
-    };
+            toggleListButton(list);
+            applyList(range, list);
+        },
+        [toggleListButton],
+    );
 
-    const handleOption = (option: Option) => {
+    const handleOption = useCallback((option: Option) => {
         switch (option) {
             case 'divider':
                 insertDivider();
@@ -132,7 +141,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                 imageFileInputRef.current?.click();
                 break;
         }
-    };
+    }, []);
 
     // effects
     useEffect(() => {
