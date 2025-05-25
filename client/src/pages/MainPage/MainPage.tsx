@@ -10,6 +10,8 @@ import {
     progressContainer,
     svgContainer,
     emptyElement,
+    divider,
+    categorySlider,
 } from './MainPage.style';
 import { MainCard, Text, Button } from '@components';
 import type { Category } from './types';
@@ -185,6 +187,9 @@ function MainPage() {
     const [category, setCategory] = useState<number>(0);
     const [isProgress, setIsProgress] = useState<boolean>(false);
     const [filteredData, setFilteredData] = useState(clubData);
+    const [sliderPosition, setSliderPosition] = useState<number>(0);
+    const [sliderWidth, setSliderWidth] = useState<string>('');
+
     // form hooks
     // query hooks
     const getData = async () => {
@@ -198,6 +203,19 @@ function MainPage() {
     });
     // calculated values
     // handlers
+    const calculateSliderPosition = () => {
+        let position: number = 0;
+        for (const club of clubCategory) {
+            if (category === club.id) {
+                setSliderPosition(position);
+                setSliderWidth('2.8rem');
+            } else {
+                const width = parseInt('2.8rem');
+                position += width + 1.75;
+            }
+        }
+    };
+
     const handleCategory = (categoryId: number) => {
         setCategory((prev) => {
             const isAllCategory = categoryId === 0;
@@ -218,8 +236,7 @@ function MainPage() {
             return prev;
         });
     };
-    // effects
-    useEffect(() => {
+    const handleFilderedDate = () => {
         setFilteredData((prev) => {
             // 전체
             const isAll = category === 0;
@@ -234,6 +251,11 @@ function MainPage() {
             setTotalClub(prev.length);
             return prev;
         });
+    };
+    // effects
+    useEffect(() => {
+        handleFilderedDate();
+        calculateSliderPosition();
     }, [category, isProgress]);
 
     return (
@@ -269,6 +291,11 @@ function MainPage() {
                     <Check css={svgContainer} />
                     모집중인 동아리만 보기
                 </Button>
+            </div>
+            <div css={{ padding: '0 0.5rem' }}>
+                <div css={divider}>
+                    <hr css={categorySlider(sliderPosition, sliderWidth)} />
+                </div>
             </div>
 
             <div css={clubListContainer}>
