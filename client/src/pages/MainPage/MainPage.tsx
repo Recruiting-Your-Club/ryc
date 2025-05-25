@@ -14,13 +14,14 @@ import {
 import { MainCard, Text, Button } from '@components';
 import type { Category } from './types';
 import Check from '@assets/images/check.svg';
+import { useQuery } from '@tanstack/react-query';
 
 function MainPage() {
     // prop destruction
     // lib hooks
     // initial values
     const clubCategory: Category[] = [
-        { id: 1, name: '전체' },
+        { id: 0, name: '전체' },
         { id: 2, name: '공연' },
         { id: 3, name: '문화' },
         { id: 4, name: '체육' },
@@ -181,44 +182,51 @@ function MainPage() {
     ];
     // state, ref, querystring hooks
     const [totalClub, setTotalClub] = useState<number>(clubData.length);
-    const [category, setCategory] = useState<number[]>([1]);
+    const [category, setCategory] = useState<number>(0);
     const [isProgress, setIsProgress] = useState<boolean>(false);
     const [filteredData, setFilteredData] = useState(clubData);
     // form hooks
     // query hooks
+    const getData = async () => {
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+        return await response.json();
+    };
+    const { data } = useQuery({
+        queryKey: ['clubData'],
+        queryFn: getData,
+        enabled: false,
+    });
     // calculated values
     // handlers
     const handleCategory = (categoryId: number) => {
         setCategory((prev) => {
-            const isAllCategory = categoryId === 1;
-            const isSelected = prev.includes(categoryId);
-            const hasAllCategory = prev.includes(1);
+            const isAllCategory = categoryId === 0;
+            const isNewSelect = prev !== categoryId;
+            const isSelected = prev === categoryId;
             // 전체
             if (isAllCategory) {
-                return [1];
-            }
-            // 이미 선택된 카테고리 클릭 시 해제
-            if (isSelected) {
-                if (prev.length === 1) return [1];
-                return prev.filter((id) => id !== categoryId);
-            }
-            // 전체 선택되어있는 상태에서 다른 카테고리 선택
-            if (hasAllCategory) {
-                return [...prev.filter((id) => id !== 1), categoryId];
+                prev = 0;
             }
             // 다른 카테고리 선택
-            return [...prev, categoryId];
+            else if (isNewSelect) {
+                prev = categoryId;
+            }
+            // 선택한 카테고리 다시 선택
+            if (isSelected) {
+                prev = 0;
+            }
+            return prev;
         });
     };
     // effects
     useEffect(() => {
         setFilteredData((prev) => {
             // 전체
-            const isAll = category[0] === 1;
+            const isAll = category === 0;
             if (isAll) {
                 prev = clubData;
             } else {
-                prev = clubData.filter((data) => category.includes(data.id));
+                prev = clubData.filter((data) => category === data.id);
             }
             if (isProgress) {
                 prev = prev.filter((data) => data.status === 'progress');
@@ -245,7 +253,7 @@ function MainPage() {
                         variant="text"
                         size="s"
                         key={data.name}
-                        sx={categoryButton(category.includes(data.id))}
+                        sx={categoryButton(category === data.id)}
                         onClick={() => handleCategory(data.id)}
                     >
                         {data.name}
