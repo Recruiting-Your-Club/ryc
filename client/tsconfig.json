@@ -31,8 +31,7 @@
             "@styles/*": ["styles/*"],
             "@hooks/*": ["hooks/*"],
             "@contexts/*": ["contexts/*"],
-            "@api/*": ["api/*"],
-            
+            "@api/*": ["api/*"]
         }
     },
     "include": ["src"],
