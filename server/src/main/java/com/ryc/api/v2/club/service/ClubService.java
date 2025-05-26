@@ -47,6 +47,7 @@ public class ClubService {
 
   @Transactional
   public ClubUpdateResponse updateClub(String id, ClubUpdateRequest body) {
+    // TODO: 사용자 인가 확인하기
     Club previousClub =
         clubRepository
             .findById(id)
@@ -63,6 +64,7 @@ public class ClubService {
     List<ClubSummary> clubSummaries = body.clubSummaries();
     List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
 
+    // TODO: updated_at 필드 업데이트
     Club newClub =
         Club.builder()
             .id(id)
