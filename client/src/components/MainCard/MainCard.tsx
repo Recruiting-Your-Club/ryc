@@ -25,6 +25,24 @@ const getTagStatus = (status: string) => {
     }
 };
 
+const getCategory = (category: string) => {
+    switch (category) {
+        case 'PERFORMANCE_ARTS':
+            return '공연동아리';
+        case 'CULTURE':
+            return '문화동아리';
+        case 'SPORTS':
+            return '체육동아리';
+        case 'ACADEMIC':
+            return '학술동아리';
+        case 'VOLUNTEER':
+            return '봉사동아리';
+        case 'RELIGION':
+            return '종교동아리';
+        default:
+            return '미정';
+    }
+};
 function MainCard({
     title = 'En#',
     category = '학술동아리',
@@ -56,11 +74,19 @@ function MainCard({
                         imageName="logo"
                     />
                     <div css={cardTitleContainer}>
-                        <Text as="div" type="h4Semibold" color="black" noWrap cropped>
+                        <Text
+                            as="div"
+                            type="bodySemibold"
+                            color="black"
+                            textAlign="start"
+                            noWrap
+                            cropped
+                            sx={{ width: '19rem' }}
+                        >
                             {title}
                         </Text>
                         <Text as="div" type="bodyLight" color="caption" noWrap cropped>
-                            {category}
+                            {getCategory(category)}
                         </Text>
                     </div>
                 </div>
