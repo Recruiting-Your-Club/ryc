@@ -18,3 +18,8 @@ export interface QuestionProps {
     title: string;
     options?: QuestionOption[];
 }
+
+export interface QuestionFormProps {
+    question: QuestionProps;
+    updateQuestion: (id: string, updates: Partial<QuestionProps>) => void;
+}

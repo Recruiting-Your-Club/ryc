@@ -1,1 +1,1 @@
-export * from './Fieldlabel';
+export * from './FieldLabel';
