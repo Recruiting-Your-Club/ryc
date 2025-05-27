@@ -17,6 +17,7 @@ import { MainCard, Text, Button } from '@components';
 import type { Category } from './types';
 import Check from '@assets/images/check.svg';
 import { useQuery } from '@tanstack/react-query';
+import { getAllClubs } from '@api/club';
 
 function MainPage() {
     // prop destruction
@@ -189,18 +190,17 @@ function MainPage() {
     const [filteredData, setFilteredData] = useState(clubData);
     const [sliderPosition, setSliderPosition] = useState<number>(0);
     const [sliderWidth, setSliderWidth] = useState<string>('');
+    const [on, setOn] = useState<boolean>(false);
 
     // form hooks
     // query hooks
-    const getData = async () => {
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-        return await response.json();
-    };
+
     const { data } = useQuery({
         queryKey: ['clubData'],
-        queryFn: getData,
-        enabled: false,
+        queryFn: getAllClubs,
+        enabled: on,
     });
+
     // calculated values
     // handlers
     const calculateSliderPosition = () => {
@@ -260,6 +260,8 @@ function MainPage() {
 
     return (
         <div css={mainPageContainer}>
+            <button onClick={() => setOn(!on)}>테스트</button>
+            <div>{data}</div>
             <div css={bannerContainer}>
                 <img src={banner} alt="배너 이미지" width="100%" height="100%" />
             </div>
