@@ -1,8 +1,11 @@
-const BASE_URL = process.env.BASE_URL;
-const getAllClubs = async () => {
-    const res = await fetch(`${BASE_URL}/clubs/all`);
+import { httpRequest } from '../../common/httpRequest';
+import type { AllClub } from './types';
 
-    if (!res.ok) throw new Error('Failed to fetch users');
-    return res.json();
-};
+async function getAllClubs(): Promise<AllClub[]> {
+    const response = await httpRequest.get({
+        url: 'clubs/all',
+        isAuthRequire: false,
+    });
+    return response as AllClub[];
+}
 export { getAllClubs };

@@ -1,4 +1,4 @@
-import { queryOptions, useQueries } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 import { clubKeys } from '../querykeyFactory';
 import { getAllClubs } from '@api/domain/club/club';
 
@@ -9,3 +9,4 @@ const clubQueries = {
             queryFn: () => getAllClubs(),
         }),
 };
+export { clubQueries };
