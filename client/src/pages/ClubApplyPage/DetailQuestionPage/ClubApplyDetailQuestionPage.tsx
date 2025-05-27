@@ -4,6 +4,7 @@ import { TextArea } from '@components/_common/TextArea';
 import { clubApplyDetailQuestionContainer } from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
+import theme from '@styles/theme';
 
 function ClubApplyDetailQuestionPage({
     answers,
@@ -15,14 +16,17 @@ function ClubApplyDetailQuestionPage({
         <div css={containerStyle}>
             {clubDetailQuestions.map((question) => (
                 <div key={question.questionTitle} css={clubApplyDetailQuestionContainer}>
-                    <Text textAlign="start" type="captionRegular">
+                    <Text textAlign="start" type="bodyRegular" sx={{ marginLeft: '0.75rem' }}>
                         {question.questionTitle}
                     </Text>
                     <TextArea
                         size="md"
-                        wrapperSx={{ marginTop: '1rem' }}
                         value={getAnswer(answers, question.questionTitle)}
                         onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
+                        wrapperSx={{ marginTop: '1rem' }}
+                        textAreaSx={{
+                            ...theme.typography.captionRegular,
+                        }}
                     />
                 </div>
             ))}

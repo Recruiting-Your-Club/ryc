@@ -27,7 +27,7 @@ export const clubApplyPersonalQuestionForm = (hasError: boolean) => css`
 `;
 export const labelSx = css`
     color: ${theme.colors.black};
-    ${theme.typography.bodyLight};
+    ${theme.typography.bodyRegular};
 `;
 
 export const helperTextSx = css`
