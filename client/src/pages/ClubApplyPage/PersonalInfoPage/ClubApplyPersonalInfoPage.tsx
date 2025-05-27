@@ -48,7 +48,7 @@ function ClubApplyPersonalInfoPage({
                     getAnswer(answers, question.questionTitle),
                 );
                 return (
-                    <div key={question.id} css={clubApplyPersonalQuestionForm(hasError)}>
+                    <div key={question.questionTitle} css={clubApplyPersonalQuestionForm(hasError)}>
                         <Input
                             variant="lined"
                             label={question.questionTitle}
