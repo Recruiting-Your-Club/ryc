@@ -151,7 +151,6 @@ function ClubApplyPage() {
     const getValidationError = (questionTitle: string, value: string): boolean => {
         if (!value.trim()) return false;
         const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
-        if (!pattern) return false;
         return !pattern.test(value);
     };
 
