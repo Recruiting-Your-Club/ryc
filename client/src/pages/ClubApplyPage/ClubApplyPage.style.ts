@@ -138,6 +138,7 @@ export const submitButtonContainer = css`
     box-shadow: 0px 0px 4px 2px rgba(55, 53, 47, 0.4);
     border-radius: 10px;
     top: 93%;
+    opacity: 0.9;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
