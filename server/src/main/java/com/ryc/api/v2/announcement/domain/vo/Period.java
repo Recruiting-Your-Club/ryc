@@ -1,29 +1,63 @@
 package com.ryc.api.v2.announcement.domain.vo;
 
+import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
+/**
+ *
+ * @param startDate 시작 날짜
+ * @param endDate 끝 날짜
+ * @brief 기간 정보 pojo
+ */
 @Builder
-@Getter
-public class Period {
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+public record Period (
+        LocalDateTime startDate,
+        LocalDateTime endDate
+) {
+    public static Period initialize(PeriodRequest periodRequest) {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(startDate, endDate);
+        return Period.builder()
+                .startDate(periodRequest.startDate())
+                .endDate(periodRequest.endDate())
+                .build();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+    /**
+     *
+     * @param period
+     * @return 둘의 기간이 겹치는지 여부
+     */
+    public Boolean isOverlapped(Period period) {
+        return !(endDate.isBefore(period.startDate) || startDate.isAfter(period.endDate));
+    }
 
-        Period period = (Period) obj;
-        return Objects.equals(startDate, period.startDate) &&
-               Objects.equals(endDate, period.endDate);
+    /**
+     *
+     * @return 기간이 정상적인지 여부
+     */
+    public Boolean isValid() {
+        if(startDate.isBefore(endDate)) {
+            throw new IllegalArgumentException("startDate should be before endDate");
+        }
+        return true;
+    }
+
+    /**
+     * @return 이미 지난 기간인지 여부
+     */
+    public Boolean isExpired() {
+        return endDate.isBefore(LocalDateTime.now());
+    }
+
+    /**
+     *
+     * @param period
+     * @return boolean
+     * @brief period의 시작날짜이 이전인지 여부
+     */
+    public Boolean isBefore(Period period) {
+        return endDate.isBefore(period.startDate);
     }
 }

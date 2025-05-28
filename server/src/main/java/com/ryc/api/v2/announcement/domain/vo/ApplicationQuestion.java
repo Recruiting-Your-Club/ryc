@@ -1,56 +1,57 @@
 package com.ryc.api.v2.announcement.domain.vo;
 
 import com.ryc.api.v2.announcement.domain.enums.QuestionType;
-import com.ryc.api.v2.announcement.presentation.dto.request.AdditionalQuestion;
-import com.ryc.api.v2.announcement.presentation.dto.request.Question;
+import com.ryc.api.v2.announcement.presentation.dto.request.ApplicationQuestionRequest;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.util.List;
-import java.util.Objects;
 
+/**
+ *
+ * @param type
+ * @param label
+ * @param isRequired
+ * @param order
+ * @param options
+ * @brief 지원서 질문 pojo 객체
+ */
 @Builder
-@Getter
-public class ApplicationQuestion {
-    private final QuestionType type;
-    private final String label;
-    private final boolean isRequired;
-    private final int order;
-    private final List<String> options;
+public record ApplicationQuestion (
+    QuestionType type,
+    String label,
+    boolean isRequired,
+    int order,
+    List<String> options
+){
+    /**
+     * @param questionRequest requestDto
+     * @return ApplicationQuestion
+     * @brief 지원서 질문 생성(최초 생성시만)
+     */
+    public static ApplicationQuestion initialize(ApplicationQuestionRequest questionRequest){
 
-    public static ApplicationQuestion initialize(Question question, int order){
         return ApplicationQuestion.builder()
                 .type(QuestionType.LONG_ANSWER)
-                .label(question.label())
-                .isRequired(question.isRequired())
-                .order(order)
-                .build();
-    }
-    public static ApplicationQuestion initialize(AdditionalQuestion question, int order){
-        return ApplicationQuestion.builder()
-                .type(question.questionType())
-                .label(question.label())
-                .isRequired(question.isRequired())
-                .options(question.options())
-                .order(order)
+                .label(questionRequest.label())
+                .isRequired(questionRequest.isRequired())
+                .options(questionRequest.options())
                 .build();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, label, isRequired, order, options);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        ApplicationQuestion that = (ApplicationQuestion) obj;
-        return isRequired == that.isRequired &&
-               order == that.order &&
-               type == that.type &&
-               Objects.equals(label, that.label) &&
-               Objects.equals(options, that.options);
+    /**
+     * @return 주관식 - options.isEmpty()
+     * 객관식 - options.size() > 1
+     */
+    public Boolean isValid() {
+        if(type.equals(QuestionType.LONG_ANSWER) || type.equals(QuestionType.SHORT_ANSWER) || type.equals(QuestionType.FILE)){
+            if(!options.isEmpty()){
+                throw new IllegalArgumentException("LongAnswer, ShortAnswer, File type question options shouldn't be empty");
+            }
+            return true;
+        }
+        if(options.size() < 2){
+            throw new IllegalArgumentException("MultipleChoice, SingleChoice type question options shouldn't be empty");
+        }
+        return true;
     }
 }

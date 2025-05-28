@@ -1,32 +1,70 @@
 package com.ryc.api.v2.announcement.domain.vo;
 
+import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementPeriodInfoRequest;
 import lombok.Builder;
-import lombok.Getter;
 
-import java.util.Objects;
-
+/**
+ * @param applicationPeriod
+ * @param interviewPeriod
+ * @param finalResultPeriod
+ * @param documentResultPeriod
+ * @brief 공고 기간 정보 pojo
+ */
 @Builder
-@Getter
-public class AnnouncementPeriodInfo {
-    private final Period applicationPeriod;
-    private final Period interviewPeriod;
-    private final Period resultAnnouncementPeriod;
-    private final Period applicationResultPeriod;
+public record AnnouncementPeriodInfo(
+    Period applicationPeriod,
+    Period interviewPeriod,
+    Period finalResultPeriod,
+    Period documentResultPeriod
+) {
+    public static AnnouncementPeriodInfo initialize(AnnouncementPeriodInfoRequest periodInfo) {
+        Period finalResultPeriod = Period.initialize(periodInfo.finalResultPeriod());
+        Period documentResultPeriod = Period.initialize(periodInfo.documentResultPeriod());
+        Period interviewPeriod = Period.initialize(periodInfo.interviewPeriod());
+        Period applicationPeriod = Period.initialize(periodInfo.applicationPeriod());
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(applicationPeriod, interviewPeriod, resultAnnouncementPeriod, applicationResultPeriod);
+        return AnnouncementPeriodInfo.builder()
+                .applicationPeriod(applicationPeriod)
+                .interviewPeriod(interviewPeriod)
+                .finalResultPeriod(finalResultPeriod)
+                .documentResultPeriod(documentResultPeriod)
+                .build();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+    public Boolean isValid(boolean hasInterview) {
+        //인터뷰가 있을경우 4개의 기간 데이터가 모두 있어야함
+        if(hasInterview) {
+            return applicationPeriod.isValid()
+                    && interviewPeriod.isValid()
+                    && finalResultPeriod.isValid()
+                    && documentResultPeriod.isValid()
+                    && isValidSequence(hasInterview);
+        } else {
+            //아닐경우 2개값만 유효
+            return applicationPeriod.isValid()
+                    && finalResultPeriod.isValid()
+                    && isValidSequence(hasInterview);
+        }
 
-        AnnouncementPeriodInfo announcementPeriodInfo = (AnnouncementPeriodInfo) obj;
-        return Objects.equals(applicationPeriod, announcementPeriodInfo.applicationPeriod) &&
-               Objects.equals(interviewPeriod, announcementPeriodInfo.interviewPeriod) &&
-               Objects.equals(resultAnnouncementPeriod, announcementPeriodInfo.resultAnnouncementPeriod) &&
-               Objects.equals(applicationResultPeriod, announcementPeriodInfo.applicationResultPeriod);
+    }
+
+    public Boolean isValidSequence(Boolean hasInterview) {
+        if(hasInterview) {
+            if(!applicationPeriod.isBefore(interviewPeriod)) {
+                throw new IllegalArgumentException("applicationPeriod should be before interviewPeriod");
+            }
+            if(!interviewPeriod.isBefore(finalResultPeriod)) {
+                throw new IllegalArgumentException("interviewPeriod should be before finalResultPeriod");
+            }
+            if(!finalResultPeriod.isBefore(documentResultPeriod)) {
+                throw new IllegalArgumentException("finalResultPeriod should be before documentResultPeriod");
+            }
+            return true;
+        } else {
+            if(!applicationPeriod.isBefore(finalResultPeriod)) {
+                throw new IllegalArgumentException("applicationPeriod should be before finalResultPeriod");
+            }
+            return true;
+        }
     }
 }
