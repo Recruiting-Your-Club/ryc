@@ -140,12 +140,13 @@ const toggleTextStyle = (
     shouldApply: boolean,
     color?: string,
 ) => {
-    if ((style as TextColor) && color) toggleColor(elem, style as TextColor, color, shouldApply);
+    if (style && color) toggleColor(elem, style as TextColor, color, shouldApply); // TextColor
 
-    if ((style as Size).endsWith('px'))
-        elem.style.fontSize = shouldApply ? style : elem.style.fontSize;
+    if (style.endsWith('px')) elem.style.fontSize = shouldApply ? style : elem.style.fontSize; // Size
 
-    switch (style as Format) {
+    switch (
+        style // Format
+    ) {
         case 'bold':
             elem.style.fontWeight = shouldApply ? 'bold' : '';
             break;
