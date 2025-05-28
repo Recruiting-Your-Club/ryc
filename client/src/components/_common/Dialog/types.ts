@@ -14,11 +14,11 @@ export interface DialogHeaderProps {
     closeIcon?: boolean;
 }
 export interface DialogContentProps {
-    children: ReactNode;
+    children?: ReactNode;
     sx?: CSSObject;
 }
 export interface DialogActionProps {
-    children: ReactNode;
+    children?: ReactNode;
     sx?: CSSObject;
     border?: boolean;
     position?: PositionType;
@@ -30,10 +30,10 @@ export interface Size extends CSSObject {
 }
 
 export interface BaseDialogProps {
-    children: React.ReactNode;
-    open: boolean;
+    children?: React.ReactNode;
+    open?: boolean;
     backdrop?: boolean;
     size?: DialogSize;
     sx?: CSSObject;
-    handleClose: () => void;
+    handleClose?: () => void;
 }

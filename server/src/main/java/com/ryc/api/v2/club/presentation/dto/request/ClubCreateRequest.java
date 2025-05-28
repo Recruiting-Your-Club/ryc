@@ -12,8 +12,8 @@ import lombok.Builder;
 
 @Builder
 public record ClubCreateRequest(
-    @NotBlank(message = "clubName shouldn't be empty") String name,
-    @NotBlank(message = "description shouldn't be empty") String description,
+    @NotEmpty(message = "clubName shouldn't be empty") String name,
+    @NotEmpty(message = "description shouldn't be empty") String shortDescription,
     @NotNull(message = "category shouldn't be null") Category category,
     @NotEmpty(message = "tagNames shouldn't be empty")
         List<@NotBlank(message = "Each tagName shouldn't be blank") String> tagNames) {
