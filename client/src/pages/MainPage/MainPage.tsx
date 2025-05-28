@@ -48,7 +48,7 @@ function MainPage() {
         return filterdClub;
     }, [currentCategory, isProgress, clublist]);
 
-    const calculatedSliderPosition = useMemo(() => {
+    const calculatedSliderPosition = useMemo((): Slider => {
         const width = parseInt('2.8rem');
         const clubIndex = CLUB_CATEGORIES.findIndex((club) => club.name === currentCategory.name);
         const position = (width + 1.75) * clubIndex;
