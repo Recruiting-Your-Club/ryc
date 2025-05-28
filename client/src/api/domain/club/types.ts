@@ -1,3 +1,12 @@
+type summaries = {
+    title: string;
+    value: string;
+};
+type images = {
+    imageUrl: string;
+    thumbnailUrl: string;
+};
+
 export interface AllClub {
     id: string;
     name: string;
@@ -7,4 +16,14 @@ export interface AllClub {
     category: string;
     status?: string;
     clubTags: string[];
+}
+export interface Club {
+    name: string;
+    detailDescription: string;
+    imageUrl: string;
+    thumbnailUrl: string;
+    category: string;
+    clubTags: string[];
+    clubSummaries: summaries[];
+    clubDetailImages: images[];
 }
