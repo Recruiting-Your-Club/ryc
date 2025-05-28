@@ -1,33 +1,46 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
-import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
+import com.ryc.api.v2.announcement.domain.vo.Period;
+import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
+import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class AnnouncementPeriodInfoMapper {
+  private final PeriodMapper periodMapper;
 
-    private final PeriodMapper periodMapper;
+  /** VO to Domain */
+  AnnouncementPeriodInfo toDomain(AnnouncementPeriodInfoVO periodInfoVO) {
+    Period applicationPeriod = periodMapper.toDomain(periodInfoVO.getApplicationPeriodVO());
+    Period interviewPeriod = periodMapper.toDomain(periodInfoVO.getInterviewPeriodVO());
+    Period finalResultPeriod = periodMapper.toDomain(periodInfoVO.getFinalResultPeriodVO());
+    Period documentResultPeriod = periodMapper.toDomain(periodInfoVO.getDocumentResultPeriodVO());
 
-    public AnnouncementPeriodInfo toDomain(AnnouncementPeriodInfoVO periodInfoVO) {
-        
-        return AnnouncementPeriodInfo.builder()
-                .applicationPeriod(periodMapper.toEntity(periodInfoVO.getApplicationPeriodVO()))
-                .interviewPeriod(periodMapper.toEntity(periodInfoVO.getInterviewPeriodVO()))
-                .resultAnnouncementPeriod(periodMapper.toEntity(periodInfoVO.getResultAnnouncementPeriodVO()))
-                .applicationResultPeriod(periodMapper.toEntity(periodInfoVO.getApplicationResultPeriodVO()))
-                .build();
-    }
+    return AnnouncementPeriodInfo.builder()
+        .applicationPeriod(applicationPeriod)
+        .interviewPeriod(interviewPeriod)
+        .finalResultPeriod(finalResultPeriod)
+        .documentResultPeriod(documentResultPeriod)
+        .build();
+  }
 
-    public AnnouncementPeriodInfoVO toVO(AnnouncementPeriodInfo periodInfo) {
-        
-        return AnnouncementPeriodInfoVO.builder()
-                .applicationPeriodVO(periodMapper.toVO(periodInfo.getApplicationPeriod()))
-                .interviewPeriodVO(periodMapper.toVO(periodInfo.getInterviewPeriod()))
-                .resultAnnouncementPeriodVO(periodMapper.toVO(periodInfo.getResultAnnouncementPeriod()))
-                .applicationResultPeriodVO(periodMapper.toVO(periodInfo.getApplicationResultPeriod()))
-                .build();
-    }
+  /** Domain to VO */
+  AnnouncementPeriodInfoVO toVO(AnnouncementPeriodInfo periodInfo) {
+    PeriodVO applicationPeriodVO = periodMapper.toVO(periodInfo.applicationPeriod());
+    PeriodVO interviewPeriodVO = periodMapper.toVO(periodInfo.interviewPeriod());
+    PeriodVO finalResultPeriodVO = periodMapper.toVO(periodInfo.finalResultPeriod());
+    PeriodVO documentResultPeriodVO = periodMapper.toVO(periodInfo.documentResultPeriod());
+
+    return AnnouncementPeriodInfoVO.builder()
+        .applicationPeriodVO(applicationPeriodVO)
+        .interviewPeriodVO(interviewPeriodVO)
+        .finalResultPeriodVO(finalResultPeriodVO)
+        .documentResultPeriodVO(documentResultPeriodVO)
+        .build();
+  }
 }

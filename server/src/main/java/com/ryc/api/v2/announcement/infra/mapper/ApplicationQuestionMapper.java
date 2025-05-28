@@ -1,32 +1,32 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.ryc.api.v2.announcement.domain.vo.ApplicationQuestion;
 import com.ryc.api.v2.announcement.infra.vo.ApplicationQuestionVO;
-import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicationQuestionMapper {
 
-    public ApplicationQuestion toDomain(ApplicationQuestionVO question) {
+  /** VO to Domain */
+  public ApplicationQuestion toDomain(ApplicationQuestionVO question) {
 
-        return ApplicationQuestion.builder()
-                .type(question.getQuestionType())
-                .label(question.getLabel())
-                .isRequired(question.isRequired())
-                .order(question.getOrder())
-                .options(question.getOptions())
-                .build();
-    }
+    return ApplicationQuestion.builder()
+        .type(question.getQuestionType())
+        .label(question.getLabel())
+        .isRequired(question.isRequired())
+        .options(question.getOptions())
+        .build();
+  }
 
-    public ApplicationQuestionVO toVO(ApplicationQuestion questionVO) {
+  /** Domain to VO */
+  public ApplicationQuestionVO toVO(ApplicationQuestion questionVO) {
 
-        return ApplicationQuestionVO.builder()
-                .questionType(questionVO.getType())
-                .label(questionVO.getLabel())
-                .isRequired(questionVO.isRequired())
-                .order(questionVO.getOrder())
-                .options(questionVO.getOptions())
-                .build();
-    }
-
+    return ApplicationQuestionVO.builder()
+        .questionType(questionVO.type())
+        .label(questionVO.label())
+        .isRequired(questionVO.isRequired())
+        .options(questionVO.options())
+        .build();
+  }
 }

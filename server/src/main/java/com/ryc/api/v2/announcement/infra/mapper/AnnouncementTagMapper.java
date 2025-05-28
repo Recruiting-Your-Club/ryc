@@ -1,27 +1,25 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.announcement.infra.vo.TagVO;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class AnnouncementTagMapper {
 
-    public Tag toDomain(TagVO tagVO) {
+  /** VO to Domain */
+  public Tag toDomain(TagVO tagVO) {
 
-        return Tag.builder()
-                .label(tagVO.getLabel())
-                .order(tagVO.getOrder())
-                .build();
-    }
+    return Tag.builder().label(tagVO.getLabel()).build();
+  }
 
-    public TagVO toVO(Tag tag) {
+  /** Domain to VO */
+  public TagVO toVO(Tag tag) {
 
-        return TagVO.builder()
-                .label(tag.getLabel())
-                .order(tag.getOrder())
-                .build();
-    }
+    return TagVO.builder().label(tag.label()).build();
+  }
 }
