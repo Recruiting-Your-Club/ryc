@@ -1,5 +1,5 @@
 import { css, keyframes } from '@emotion/react';
-
+import theme from '@styles/theme';
 const pulse = keyframes`
   0% {
     background-color: #f0f0f0;
@@ -12,27 +12,23 @@ const pulse = keyframes`
   }
 `;
 
-// 기본 스켈레톤 요소 스타일
 export const skeletonBase = css`
     background-color: #f0f0f0;
     border-radius: 4px;
     animation: ${pulse} 1.5s infinite ease-in-out;
 `;
 
-// 스켈레톤 컨테이너 (실제 MainPage.style의 mainPageContainer와 유사하게)
 export const skeletonMainPageContainer = css`
-    padding: 0; // 실제 mainPageContainer의 패딩에 따라 조절
+    padding: 2rem;
     width: 100%;
-    max-width: 1200px; /* 예시 최대 너비 */
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 5rem;
 `;
 
-// 배너 스켈레톤
 export const skeletonBannerContainer = css`
     ${skeletonBase};
     width: 100%;
-    height: 200px; /* 실제 배너 이미지 높이에 맞춰 조절 */
+    height: 200px;
     border-radius: 8px;
     margin-bottom: 20px;
 `;
@@ -51,6 +47,9 @@ export const skeletonClubCategoryContainer = css`
     flex-wrap: wrap;
     gap: 10px; /* 실제 categoryButton 간격에 맞춰 조절 */
     margin-bottom: 20px;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
 `;
 
 // 개별 카테고리 버튼 스켈레톤
