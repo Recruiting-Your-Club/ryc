@@ -9,6 +9,7 @@ import {
 } from './ClubApplyPersonalInfoPage.style';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';
+import { Checkbox } from '@components/Checkbox';
 
 function ClubApplyPersonalInfoPage({
     answers,
@@ -21,7 +22,7 @@ function ClubApplyPersonalInfoPage({
     return (
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
-                if (question.type === 'boolean') {
+                if (question.type === 'SINGLE_CHOICE') {
                     return (
                         <div
                             key={question.questionTitle}
@@ -40,6 +41,22 @@ function ClubApplyPersonalInfoPage({
                                 value={getAnswer(answers, question.questionTitle)}
                                 onChange={(value) => onAnswerChange(question.questionTitle, value)}
                             />
+                        </div>
+                    );
+                } else if (question.type === 'MULTIPLE_CHOICE') {
+                    return (
+                        <div
+                            key={question.questionTitle}
+                            css={clubApplyPersonalQuestionForm(false)}
+                        >
+                            <Text type="bodyRegular">{question.questionTitle}</Text>
+                            {question.options.map((option) => (
+                                <Checkbox.Root key={option}>
+                                    <Checkbox.HiddenInput />
+                                    <Checkbox.Control />
+                                    <Checkbox.Label>{option}</Checkbox.Label>
+                                </Checkbox.Root>
+                            ))}
                         </div>
                     );
                 }

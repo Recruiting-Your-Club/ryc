@@ -54,7 +54,7 @@ const Template = (args: ComponentProps<typeof TextArea>) => {
             {...args}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            sx={{ margin: '1rem' }}
+            wrapperSx={{ margin: '1rem' }}
         />
     );
 };
@@ -163,7 +163,7 @@ export const EntireMode: Story = {
                     error={text.length < 10}
                     errorText="10자 이상 입력해주세요."
                     maxLength={500}
-                    sx={{ margin: '1rem' }}
+                    wrapperSx={{ margin: '1rem' }}
                 />
             );
         };

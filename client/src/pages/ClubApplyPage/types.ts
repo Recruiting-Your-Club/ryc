@@ -1,11 +1,12 @@
 import type { CSSObject } from '@emotion/react';
 
 export type PageAnswer = 'personal' | 'detail';
+export type QuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_ANSWER';
 
 export interface PersonalQuestion {
     id: string;
     questionTitle: string;
-    type: boolean | string;
+    type: QuestionType;
     options: string[];
 }
 

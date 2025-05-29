@@ -21,7 +21,7 @@ import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
 import theme from '@styles/theme';
 import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
-import type { Answer } from './types';
+import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 
@@ -70,9 +70,14 @@ export const clubData = {
                     title: '전화번호',
                 },
                 {
-                    category: 'MULTIPLE_CHOICE',
+                    category: 'SINGLE_CHOICE',
                     title: '성별',
                     options: ['남', '여'],
+                },
+                {
+                    category: 'MULTIPLE_CHOICE',
+                    title: '전공',
+                    options: ['소프트웨어학과', '컴퓨터공학과', '기타'],
                 },
             ],
         },
@@ -122,7 +127,7 @@ function ClubApplyPage() {
             clubData.preQuestions[0].additionalQuestions.map((question) => ({
                 id: question.title,
                 questionTitle: question.title,
-                type: question.category === 'MULTIPLE_CHOICE' ? 'boolean' : 'string',
+                type: question.category as QuestionType,
                 options: question.options ?? [],
             })),
         [],
