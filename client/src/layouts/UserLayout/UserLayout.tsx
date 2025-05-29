@@ -10,9 +10,7 @@ function UserLayout() {
             <div css={UserLayoutContainer}>
                 <Header />
                 <div css={contentContainer}>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Outlet />
-                    </Suspense>
+                    <Outlet />
                 </div>
                 <Footer />
             </div>
