@@ -27,7 +27,7 @@ function ClubApplyPersonalInfoPage({
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
                         >
-                            <Text type="bodyLight">{question.questionTitle}</Text>
+                            <Text type="bodyRegular">{question.questionTitle}</Text>
                             <Radio
                                 name={`question-${question.questionTitle}`}
                                 orientation="vertical"
