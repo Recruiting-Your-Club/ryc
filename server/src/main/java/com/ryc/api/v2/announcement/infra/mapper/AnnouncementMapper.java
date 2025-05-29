@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.infra.mapper;
 
 import java.util.List;
 
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
@@ -26,6 +27,10 @@ public class AnnouncementMapper {
   private final AnnouncementTagMapper tagMapper;
   private final ImageMapper imageMapper;
 
+  /**
+   *
+   *  entity to domain
+   */
   public Announcement toDomain(
       AnnouncementEntity announcementEntity, AnnouncementApplicationEntity applicationEntity) {
 
@@ -36,22 +41,25 @@ public class AnnouncementMapper {
     AnnouncementPeriodInfo periodInfo =
         periodInfoMapper.toDomain(announcementEntity.getAnnouncementPeriodInfoVO());
 
+    AnnouncementStatus announcementStatus = Announcement.getAnnouncementStatus(periodInfo);
+
     return Announcement.builder()
-        .id(announcementEntity.getId())
-        .title(announcementEntity.getTitle())
-        .numberOfPeople(announcementEntity.getNumberOfPeople())
-        .detailDescription(announcementEntity.getDetailDescription())
-        .summaryDescription(announcementEntity.getSummaryDescription())
-        .target(announcementEntity.getTarget())
-        .tags(tags)
-        .images(images)
-        .announcementPeriodInfo(periodInfo)
-        .activityPeriod(announcementEntity.getActivityPeriod())
-        .announcementApplication(application)
-        .announcementType(announcementEntity.getAnnouncementType())
-        .hasInterview(announcementEntity.getHasInterview())
-        .isDeleted(announcementEntity.getIsDeleted())
-        .build();
+            .id(announcementEntity.getId())
+            .title(announcementEntity.getTitle())
+            .numberOfPeople(announcementEntity.getNumberOfPeople())
+            .detailDescription(announcementEntity.getDetailDescription())
+            .summaryDescription(announcementEntity.getSummaryDescription())
+            .target(announcementEntity.getTarget())
+            .tags(tags)
+            .images(images)
+            .announcementPeriodInfo(periodInfo)
+            .announcementStatus(announcementStatus)
+            .activityPeriod(announcementEntity.getActivityPeriod())
+            .announcementApplication(application)
+            .announcementType(announcementEntity.getAnnouncementType())
+            .hasInterview(announcementEntity.getHasInterview())
+            .isDeleted(announcementEntity.getIsDeleted())
+            .build();
   }
 
   public Announcement toDomain(AnnouncementEntity announcementEntity) {
@@ -63,22 +71,26 @@ public class AnnouncementMapper {
         periodInfoMapper.toDomain(announcementEntity.getAnnouncementPeriodInfoVO());
 
     return Announcement.builder()
-        .id(announcementEntity.getId())
-        .title(announcementEntity.getTitle())
-        .numberOfPeople(announcementEntity.getNumberOfPeople())
-        .detailDescription(announcementEntity.getDetailDescription())
-        .summaryDescription(announcementEntity.getSummaryDescription())
-        .target(announcementEntity.getTarget())
-        .tags(tags)
-        .images(images)
-        .announcementPeriodInfo(periodInfo)
-        .activityPeriod(announcementEntity.getActivityPeriod())
-        .announcementType(announcementEntity.getAnnouncementType())
-        .hasInterview(announcementEntity.getHasInterview())
-        .isDeleted(announcementEntity.getIsDeleted())
-        .build();
+            .id(announcementEntity.getId())
+            .title(announcementEntity.getTitle())
+            .numberOfPeople(announcementEntity.getNumberOfPeople())
+            .detailDescription(announcementEntity.getDetailDescription())
+            .summaryDescription(announcementEntity.getSummaryDescription())
+            .target(announcementEntity.getTarget())
+            .tags(tags)
+            .images(images)
+            .announcementPeriodInfo(periodInfo)
+            .activityPeriod(announcementEntity.getActivityPeriod())
+            .announcementType(announcementEntity.getAnnouncementType())
+            .hasInterview(announcementEntity.getHasInterview())
+            .isDeleted(announcementEntity.getIsDeleted())
+            .build();
   }
 
+  /**
+   *
+   * Domain to Entity
+   */
   public AnnouncementEntity toEntity(Announcement announcement) {
     List<TagVO> tags = announcement.getTags().stream().map(tagMapper::toVO).toList();
     List<ImageVO> images = announcement.getImages().stream().map(imageMapper::toVO).toList();
