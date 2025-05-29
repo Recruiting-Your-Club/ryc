@@ -38,8 +38,8 @@ function MainPage() {
     // calculated values
     const filteredClubData = useMemo(() => {
         let filterdClub = clublist || [];
-        const isAll = currentCategory.name === '전체';
-        if (!isAll) {
+        const isSelected = currentCategory.name !== '전체';
+        if (isSelected) {
             filterdClub = clublist?.filter((club) => currentCategory.eng === club.category) || [];
         }
         if (isProgress) {
