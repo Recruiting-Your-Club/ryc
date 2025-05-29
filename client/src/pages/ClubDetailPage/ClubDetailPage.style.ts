@@ -13,6 +13,7 @@ export const clubDetailPageContainer = css`
 
 export const contentContainer = css`
     max-width: 90rem;
+    min-height: 130rem;
     width: 100%;
     height: 100%;
     background-color: ${theme.colors.white};

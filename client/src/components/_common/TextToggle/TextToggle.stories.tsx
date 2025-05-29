@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Toggle } from './Toggle';
+import { TextToggle } from './TextToggle';
 
-const meta: Meta<typeof Toggle> = {
-    title: 'Toggle',
-    component: Toggle,
+const meta: Meta<typeof TextToggle> = {
+    title: 'TextToggle',
+    component: TextToggle,
     parameters: {
         docs: {
             description: {
@@ -15,7 +15,7 @@ const meta: Meta<typeof Toggle> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Toggle>;
+type Story = StoryObj<typeof TextToggle>;
 
 export const Primary: Story = {
     args: {

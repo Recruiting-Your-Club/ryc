@@ -5,6 +5,7 @@ export const mainPageContainer = css`
     height: 100%;
     width: 100%;
     max-width: 110rem;
+    min-height: 130rem;
     @media (min-width: ${theme.breakpoint.mobile}) {
         padding: 0 2rem;
     }
