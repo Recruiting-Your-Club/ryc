@@ -1,7 +1,7 @@
-import type { ChangeEvent} from 'react';
-import React, { useState } from 'react';
+import type { ChangeEvent } from 'react';
+import React from 'react';
 import type { QuestionFormProps } from './type';
-import { Input } from '@components/_common';
+import { Button, Input } from '@components/_common';
 import { Checkbox } from '@components/Checkbox';
 
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
@@ -33,12 +33,35 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
 
     if (question.type === 'short') {
         return (
-            <Input placeholder="질문을 입력하세요" value={question.title} onChange={handleChange} />
+            <div>
+                <Input
+                    placeholder="질문을 입력하세요"
+                    value={question.title}
+                    onChange={handleChange}
+                />
+                <div>{question.title.length}/20</div>
+            </div>
         );
     }
 
-    // if (question.type === 'long') {
-    // }
+    if (question.type === 'long') {
+        return (
+            <div>
+                <Input
+                    placeholder="질문을 입력하세요"
+                    value={question.title}
+                    onChange={handleChange}
+                />
+                <div>{question.title.length}/20</div>
+                <Input
+                    placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"
+                    value={question.title}
+                    onChange={handleChange}
+                />
+                <div>{question.title.length}/50</div>
+            </div>
+        );
+    }
 
     return (
         <div>
@@ -48,14 +71,23 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                     value={question.title}
                     onChange={handleChange}
                 />
-                <div>{question.title.length}/50</div>
+                <div>{question.title.length}/20</div>
             </div>
             <div>
                 {question.options?.map((option) => (
                     <div key={option.id}>
-                        {question.type === 'single' ? <Checkbox disabled /> : <div></div>}
+                        {question.type === 'multiple' ? <Checkbox disabled /> : <div />}
+                        <Input
+                            placeholder="객관식 문항을 입력해주세요"
+                            value={option.text}
+                            onChange={(e) => handleOptionChange(option.id, e.target.value)}
+                        />
+                        {question.options && question.options.length > 2 && (
+                            <button onClick={() => handleRemoveOption(option.id)}>x</button>
+                        )}
                     </div>
                 ))}
+                <Button onClick={handleAddOption}>객관식 문항 추가하기</Button>
             </div>
         </div>
     );
