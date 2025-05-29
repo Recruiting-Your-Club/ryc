@@ -16,7 +16,7 @@ import {
 import { MainCard, Text, Button } from '@components';
 import type { Category, Slider } from './types';
 import Check from '@assets/images/check.svg';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory';
 import { CLUB_CATEGORIES } from '@constants/club';
 
@@ -33,7 +33,7 @@ function MainPage() {
     });
     // form hooks
     // query hooks
-    const { data: clublist } = useQuery(clubQueries.all());
+    const { data: clublist } = useSuspenseQuery(clubQueries.all());
 
     // calculated values
     const filteredClubData = useMemo(() => {
@@ -127,4 +127,4 @@ function MainPage() {
         </div>
     );
 }
-export { MainPage };
+export default MainPage;
