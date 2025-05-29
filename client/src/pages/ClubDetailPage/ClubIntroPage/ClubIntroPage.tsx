@@ -7,7 +7,7 @@ import {
     textContainer,
 } from './ClubIntro.style';
 import { useDialog } from '@hooks/useDialog';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory';
 import { useParams } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ function ClubIntroPage() {
     // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
     const { id } = useParams();
-    const { data: club } = useQuery(clubQueries.getClub(id || ''));
+    const { data: club } = useSuspenseQuery(clubQueries.getClub(id || ''));
     // initial values
     // state, ref, querystring hooks
     const [imageUrl, setImageUrl] = useState<string>();
