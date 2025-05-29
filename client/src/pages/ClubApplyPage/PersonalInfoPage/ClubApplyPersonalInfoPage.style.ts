@@ -14,7 +14,6 @@ export const clubApplyPersonalQuestionForm = (hasError: boolean) => css`
     `}
     border-radius: 5px;
     width: 100%;
-    min-height: 11.75rem;
     padding: 1.75rem;
     margin: 2rem 0;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
@@ -28,8 +27,15 @@ export const clubApplyPersonalQuestionForm = (hasError: boolean) => css`
 export const labelSx = css`
     color: ${theme.colors.black};
     ${theme.typography.bodyRegular};
+    margin-bottom: 1.5rem;
 `;
 
+export const inputSx = css`
+    width: 70%;
+    height: 2.5rem;
+    padding: 0rem 0rem;
+`;
 export const helperTextSx = css`
     ${theme.typography.subCaptionLight};
+    margin-top: 1.5rem;
 `;
