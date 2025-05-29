@@ -90,4 +90,4 @@ function ClubDetailPage() {
         </div>
     );
 }
-export { ClubDetailPage };
+export default ClubDetailPage;

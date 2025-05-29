@@ -5,13 +5,14 @@ import {
     NotFoundPage,
     LoginPage,
     RegisterPage,
-    ClubDetailPage,
     RecruitmentPage,
     MainLoadingPage,
+    DetailLoadingPage,
 } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
 
 const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
+const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'));
 
 const router = createBrowserRouter([
     {
@@ -28,7 +29,14 @@ const router = createBrowserRouter([
             },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
-            { path: ':id', element: <ClubDetailPage /> },
+            {
+                path: ':id',
+                element: (
+                    <Suspense fallback={<DetailLoadingPage />}>
+                        <LazyDetailPage />
+                    </Suspense>
+                ),
+            },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
         ],
