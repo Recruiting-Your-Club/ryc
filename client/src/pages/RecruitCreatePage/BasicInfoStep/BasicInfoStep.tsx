@@ -1,6 +1,6 @@
-import { Checkbox } from '@components';
+import { Button, Checkbox, Select } from '@components';
 import { FieldLabel } from '@components/FieldLabel';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     s_additionalInfoWrapper,
     s_checkboxLabel,
@@ -8,6 +8,10 @@ import {
     s_noticeBox,
     s_textHighlight,
 } from './BasicInfoStep.style';
+import { useQuestion } from '@hooks/useQuestion';
+import { questionTypes } from '@constants/questionType';
+import { QuestionForm } from '@components/QuestionForm';
+import type { QuestionType } from '@components/QuestionForm/type';
 
 function InfoFieldGroup() {
     return (
@@ -48,23 +52,50 @@ function InfoFieldGroup() {
     );
 }
 
-function AdditionalInfo() {
-    return (
-        <div css={s_additionalInfoWrapper}>
-            <FieldLabel
-                label="추가 정보"
-                description="지원자에게 입력 받을 추가적인 사전 질문이 있다면 작성해주세요"
-            />
-            <div></div>
-        </div>
-    );
-}
-
 function BasicInfoStep() {
+    //최상단으로 빼고 props로 넘겨야함
+    const { questions, addQuesttion, removeQuestion, updateQuestion, handleQuestionTypeChange } =
+        useQuestion();
+
     return (
         <div>
             <InfoFieldGroup />
-            <AdditionalInfo />
+            <div css={s_additionalInfoWrapper}>
+                <FieldLabel
+                    label="추가 정보"
+                    description="지원자에게 입력 받을 추가적인 사전 질문이 있다면 작성해주세요"
+                />
+            </div>
+            <div>
+                {questions.map((q) => (
+                    <div key={q.id}>
+                        <div>
+                            <Select
+                                value={q.type}
+                                onValueChange={(value) =>
+                                    handleQuestionTypeChange(q.id, value as QuestionType)
+                                }
+                            >
+                                <Select.Trigger>
+                                    <Select.Value placeholder="문제 유형 선택" />
+                                </Select.Trigger>
+                                <Select.Content>
+                                    {questionTypes.map(({ value, label }) => (
+                                        <Select.Item key={value} value={value}>
+                                            {label}
+                                        </Select.Item>
+                                    ))}
+                                </Select.Content>
+                            </Select>
+                            <button onClick={() => removeQuestion(q.id)}>x</button>
+                        </div>
+                        <div>
+                            <QuestionForm question={q} updateQuestion={updateQuestion} />
+                        </div>
+                    </div>
+                ))}
+                <Button onClick={addQuesttion}>+ 질문 추가하기</Button>
+            </div>
         </div>
     );
 }
