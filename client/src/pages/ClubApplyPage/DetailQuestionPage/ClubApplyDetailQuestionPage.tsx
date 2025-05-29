@@ -1,10 +1,9 @@
 import React from 'react';
 import { Text } from '@components/_common/Text';
 import { TextArea } from '@components/_common/TextArea';
-import { clubApplyDetailQuestionContainer } from './ClubApplyDetailQuestionPage.style';
+import { clubApplyDetailQuestionContainer, textAreaSx } from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
-import theme from '@styles/theme';
 
 function ClubApplyDetailQuestionPage({
     answers,
@@ -24,9 +23,7 @@ function ClubApplyDetailQuestionPage({
                         value={getAnswer(answers, question.questionTitle)}
                         onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
                         wrapperSx={{ marginTop: '1rem' }}
-                        textAreaSx={{
-                            ...theme.typography.captionRegular,
-                        }}
+                        textAreaSx={textAreaSx}
                     />
                 </div>
             ))}
