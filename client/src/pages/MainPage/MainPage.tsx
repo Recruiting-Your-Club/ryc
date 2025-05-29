@@ -118,7 +118,7 @@ function MainPage() {
                         category={club.category}
                         description={club.shortDescription}
                         //status={data.status}
-                        hashTag={['코딩', '프로그래밍', '자바스크립트']}
+                        clubTags={club.clubTags}
                         imageURL={club.imageUrl}
                         link={club.id}
                     />

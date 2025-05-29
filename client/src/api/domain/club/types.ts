@@ -6,7 +6,9 @@ type images = {
     imageUrl: string;
     thumbnailUrl: string;
 };
-
+interface ClubTag {
+    name: string;
+}
 export interface AllClub {
     id: string;
     name: string;
@@ -15,7 +17,7 @@ export interface AllClub {
     thumbnailUrl: string;
     category: string;
     status?: string;
-    clubTags: string[];
+    clubTags: ClubTag[];
 }
 export interface Club {
     name: string;
