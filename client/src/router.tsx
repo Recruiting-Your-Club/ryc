@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import {
     TestPage,
     NotFoundPage,
     LoginPage,
     RegisterPage,
-    MainPage,
     ClubDetailPage,
     RecruitmentPage,
+    MainLoadingPage,
 } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
+
+const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <UserLayout />,
         children: [
-            { index: true, element: <MainPage /> },
-            { path: '*', element: <NotFoundPage /> },
+            {
+                index: true,
+                element: (
+                    <Suspense fallback={<MainLoadingPage />}>
+                        <LazyMainPage />
+                    </Suspense>
+                ),
+            },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
             { path: ':id', element: <ClubDetailPage /> },
