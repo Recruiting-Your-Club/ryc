@@ -63,7 +63,11 @@ function MainCard({
     // handlers
     // effects
     return (
-        <Link to={link} css={cardContainer}>
+        <Link
+            to={link}
+            state={{ title: title, category: category, clubLogo: imageURL }}
+            css={cardContainer}
+        >
             <div css={cardHeaderContainer}>
                 <div css={logoAndTitleContainer}>
                     <Avatar

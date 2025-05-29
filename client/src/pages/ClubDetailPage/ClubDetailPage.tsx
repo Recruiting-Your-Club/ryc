@@ -10,9 +10,31 @@ import {
 } from './ClubDetailPage.style';
 import { RecruitmentPage } from './RecruitmentPage';
 import { ClubIntroPage } from './ClubIntroPage';
+import { useLocation } from 'react-router-dom';
+
+const getCategory = (category: string) => {
+    switch (category) {
+        case 'PERFORMANCE_ARTS':
+            return '공연동아리';
+        case 'CULTURE':
+            return '문화동아리';
+        case 'SPORTS':
+            return '체육동아리';
+        case 'ACADEMIC':
+            return '학술동아리';
+        case 'VOLUNTEER':
+            return '봉사동아리';
+        case 'RELIGION':
+            return '종교동아리';
+        default:
+            return '미정';
+    }
+};
 
 function ClubDetailPage() {
     // prop destruction
+    const location = useLocation();
+    const { title, category, clubLogo } = location.state;
     // lib hooks
     // initial values
     const navigationItem = [
@@ -32,9 +54,7 @@ function ClubDetailPage() {
             width: '4.6rem',
         },
     ];
-    const tempImage = 'https://cdn.pixabay.com/photo/2013/07/26/08/08/shield-167582_640.jpg';
-    const clubName = 'En#(엔샵)';
-    const clubDescription = '동아리 설명';
+
     // state, ref, querystring hooks
     // form hooks
     // query hooks
@@ -48,7 +68,7 @@ function ClubDetailPage() {
                 <div css={clubHeader}>
                     <div css={clubImage}>
                         <img
-                            src={tempImage}
+                            src={clubLogo}
                             alt="대표이미지"
                             width="100%"
                             height="100%"
@@ -57,10 +77,10 @@ function ClubDetailPage() {
                     </div>
                     <div css={clubHeaderTextContainer}>
                         <Text as="h4" type="h1Semibold" textAlign="start" sx={clubHeaderTitle}>
-                            {clubName}
+                            {title}
                         </Text>
                         <Text as="div" type="captionSemibold" color="helper" textAlign="start">
-                            {clubDescription}
+                            {getCategory(category)}
                         </Text>
                     </div>
                 </div>
