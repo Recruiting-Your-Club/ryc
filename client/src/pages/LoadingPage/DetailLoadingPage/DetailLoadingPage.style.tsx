@@ -1,22 +1,23 @@
 import React from 'react';
 import { css, keyframes } from '@emotion/react';
+import theme from '@styles/theme';
 
 // 스켈레톤 애니메이션
 export const pulse = keyframes`
   0% {
-    background-color: #f0f0f0;
+    background-color: ${theme.colors.gray[100]};
   }
   50% {
-    background-color: #e0e0e0;
+    background-color: ${theme.colors.gray[200]};
   }
   100% {
-    background-color: #f0f0f0;
+    background-color: ${theme.colors.gray[100]};
   }
 `;
 
 // 스켈레톤 기본 스타일
 const skeletonBase = css`
-    background-color: #f0f0f0;
+    background-color: ${theme.colors.gray[100]};
     border-radius: 4px;
     animation: ${pulse} 1.5s infinite ease-in-out;
 `;
@@ -24,18 +25,29 @@ const skeletonBase = css`
 // 페이지 컨테이너 스타일 (반응형 및 최소 높이 적용)
 export const skeletonPageContainer = css`
     padding: 2rem; /* 기본 패딩 */
-    max-width: 90rem; /* 최대 너비 */
-    margin: 0 auto;
-    min-height: 70rem; /* 최소 높이 설정: 실제 콘텐츠가 들어갈 높이에 맞춰 조절 */
+    width: 100%;
+    background-color: ${theme.colors.gray[100]};
+    min-height: 90rem; /* 최소 높이 설정: 실제 콘텐츠가 들어갈 높이에 맞춰 조절 */
+    display: flex;
+    justify-content: center;
 
-    @media (max-width: 768px) {
+    @media (max-width: ${theme.breakpoint.tabletMini}) {
         padding: 15px; /* 태블릿 크기에서 패딩 조절 */
     }
-    @media (max-width: 48rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         padding: 1rem; /* 모바일 크기에서 패딩 조절 */
     }
 `;
 
+export const skeletonContentContainer = css`
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid ${theme.colors.gray[200]};
+    background-color: ${theme.colors.white};
+    max-width: 80rem;
+`;
 // 동아리 헤더 섹션 (로고, 이름, 카테고리)
 export const skeletonHeaderSection = css`
     display: flex;
@@ -43,9 +55,9 @@ export const skeletonHeaderSection = css`
     gap: 2rem;
     margin-bottom: 3rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid ${theme.colors.white};
 
-    @media (max-width: 48rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         flex-direction: column; /* 모바일에서 세로로 정렬 */
         align-items: flex-start; /* 세로 정렬 후 왼쪽 정렬 */
         gap: 1rem;
@@ -58,7 +70,7 @@ export const skeletonLogo = css`
     height: 8rem;
     border-radius: 50%;
 
-    @media (max-width: 48rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         width: 6rem;
         height: 6rem;
     }
@@ -76,7 +88,7 @@ export const skeletonCategory = css`
     height: 2rem;
     margin-top: 8px;
 
-    @media (max-width: 48rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         width: 60%;
         height: 18px;
         margin-top: 5px;
@@ -92,7 +104,7 @@ export const skeletonTabsSection = css`
     padding-bottom: 5px; /* 스크롤바 때문에 추가 */
     width: 100%;
     height: 7rem;
-    @media (max-width: 48rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         justify-content: flex-start; /* 모바일에서 왼쪽 정렬 */
     }
 `;
@@ -105,7 +117,7 @@ export const skeletonTab = css`
     border-radius: 8px 8px 0 0;
     margin-right: 1rem;
 
-    @media (max-width: 48rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         width: 10rem;
         height: 35px;
     }
@@ -137,7 +149,7 @@ export const skeletonInfoGrid = css`
     gap: 2rem;
     margin-bottom: 3rem;
 
-    @media (max-width: 60rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         grid-template-columns: 1fr; /* 60rem 이하에서 1열로 변경 */
     }
 `;
@@ -159,7 +171,7 @@ export const skeletonInfoValue = css`
     width: 15rem;
     height: 2rem;
 
-    @media (max-width: 60rem) {
+    @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%; /* 모바일에서 전체 너비 */
     }
 `;
