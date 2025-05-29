@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import dayjs from 'dayjs';
 import {
     clubApplyPageContainer,
@@ -153,17 +153,20 @@ function ClubApplyPage() {
     // query hooks
     // calculated values
 
-    const getValidationError = (questionTitle: string, value: string): boolean => {
+    const getValidationError = useCallback((questionTitle: string, value: string): boolean => {
         if (!value.trim()) return false;
         const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
         return !pattern.test(value);
-    };
+    }, []);
 
-    const getErrorMessage = (questionTitle: string, value: string): string | undefined => {
-        return getValidationError(questionTitle, value)
-            ? ERROR_MESSAGES[questionTitle as ValidationKey]
-            : undefined;
-    };
+    const getErrorMessage = useCallback(
+        (questionTitle: string, value: string): string | undefined => {
+            return getValidationError(questionTitle, value)
+                ? ERROR_MESSAGES[questionTitle as ValidationKey]
+                : undefined;
+        },
+        [getValidationError],
+    );
 
     // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
     const today = dayjs().format('YYYY-MM-DD');
