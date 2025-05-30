@@ -47,6 +47,11 @@ function ClubApplyPersonalInfoPage({
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
     };
+
+    const handleFocus = (questionTitle: string) => {
+        setTouched((prev) => ({ ...prev, [questionTitle]: false }));
+    };
+
     //effects
     return (
         <div css={containerStyle}>
@@ -80,7 +85,13 @@ function ClubApplyPersonalInfoPage({
                         >
                             <Text type="bodyRegular">{question.questionTitle}</Text>
                             {question.options.map((option) => (
-                                <Checkbox.Root key={option}>
+                                <Checkbox.Root
+                                    key={option}
+                                    isChecked={getAnswer(answers, question.questionTitle)?.includes(
+                                        option,
+                                    )}
+                                    onChange={() => onAnswerChange(question.questionTitle, option)}
+                                >
                                     <Checkbox.HiddenInput />
                                     <Checkbox.Control />
                                     <Checkbox.Label>{option}</Checkbox.Label>
@@ -100,12 +111,8 @@ function ClubApplyPersonalInfoPage({
                             hasError && touched[question.questionTitle],
                         )}
                         tabIndex={-1}
-                        onFocus={() =>
-                            setTouched((prev) => ({ ...prev, [question.questionTitle]: false }))
-                        }
-                        onBlur={() =>
-                            setTouched((prev) => ({ ...prev, [question.questionTitle]: true }))
-                        }
+                        onFocus={() => handleFocus(question.questionTitle)}
+                        onBlur={() => handleBlur(question.questionTitle)}
                     >
                         <Input
                             variant="lined"
@@ -115,12 +122,8 @@ function ClubApplyPersonalInfoPage({
                             value={getAnswer(answers, question.questionTitle)}
                             onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
                             error={hasError && touched[question.questionTitle]}
-                            onFocus={() =>
-                                setTouched((prev) => ({ ...prev, [question.questionTitle]: false }))
-                            }
-                            onBlur={() =>
-                                setTouched((prev) => ({ ...prev, [question.questionTitle]: true }))
-                            }
+                            onFocus={() => handleFocus(question.questionTitle)}
+                            onBlur={() => handleBlur(question.questionTitle)}
                             helperText={
                                 touched[question.questionTitle]
                                     ? getErrorMessage(
