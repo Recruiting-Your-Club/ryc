@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { Size, SizeStyle } from './types';
-import type { CalendarProps } from './types';
+import type { Size, SizeStyle, CalendarData, CalendarProps } from './types';
 import { SATURDAY, SUNDAY } from '@constants/calendar';
 
 export const SizeMap: Record<Size, SizeStyle> = {
@@ -94,13 +93,17 @@ export const weekdaysContainer = css`
     width: 100%;
 `;
 
-export const daysContainer = css`
+export const daysContainer = (rangePicker: boolean) => css`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
     width: 100%;
     height: 100%;
-    gap: 0.5rem;
+    row-gap: 0.5rem;
+    ${!rangePicker &&
+    css`
+        gap: 0.5rem;
+    `}
 `;
 
 const weekendColor = (weekend: number) => {
@@ -140,6 +143,39 @@ const selectedColor = (isSelected: boolean, today: boolean, disabled: boolean) =
         `;
     }
 };
+const rangeSelectedColor = (selectedDate: string[], date: CalendarData, disabled: boolean) => {
+    if (selectedDate.length === 2) {
+        if (selectedDate[0] <= date.dateString && date.dateString <= selectedDate[1]) {
+            return css`
+                background-color: ${theme.colors.default};
+                color: ${theme.colors.white};
+                ${selectedDate[0] === date.dateString &&
+                css`
+                    border-top-left-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                `}
+                ${selectedDate[1] === date.dateString &&
+                css`
+                    border-top-right-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                `}
+                ${!disabled &&
+                css`
+                    &:hover {
+                        background-color: ${theme.colors.defaultHover};
+                    }
+                `}
+            `;
+        }
+    } else {
+        if (selectedDate[0] === date.dateString) {
+            return css`
+                background-color: ${theme.colors.default};
+                color: ${theme.colors.white};
+            `;
+        }
+    }
+};
 const currentMonthColor = (isCurrentMonth: boolean) => css`
     ${!isCurrentMonth &&
     css`
@@ -152,11 +188,12 @@ export const weekCell = (index: number) => {
 };
 
 export const dayCell = (
-    isSelected: boolean,
-    index: number,
+    selectedDate: string[],
+    date: CalendarData,
     today: boolean,
-    isCurrentMonth: boolean,
+    isSelected: boolean,
     disabled: boolean,
+    rangePicker: boolean,
 ) => {
     return css`
         background-color: transparent;
@@ -164,9 +201,8 @@ export const dayCell = (
         height: 100%;
         padding: 0.5rem;
         ${theme.typography.captionSemibold}
-        border-radius: 5px;
         transition: background-color 0.15s ease;
-        ${weekendColor(index)}
+        ${weekendColor(date.weekend)}
         ${!disabled &&
         css`
             &:hover {
@@ -178,7 +214,12 @@ export const dayCell = (
             opacity: 0.7;
             cursor: not-allowed;
         `}
-        ${selectedColor(isSelected, today, disabled)}
-        ${currentMonthColor(isCurrentMonth)}
+        ${!rangePicker &&
+        css`
+            border-radius: 5px;
+        `}
+        ${!rangePicker && selectedColor(isSelected, today, disabled)}
+        ${rangePicker && rangeSelectedColor(selectedDate, date, disabled)}
+        ${currentMonthColor(date.isCurrentMonth)}
     `;
 };

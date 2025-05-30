@@ -22,6 +22,7 @@ const Calendar = ({
     size = 'lg',
     border = false,
     shadow = true,
+    rangePicker = false,
     zIndex,
     sx = {},
 }: CalendarProps) => {
@@ -34,6 +35,7 @@ const Calendar = ({
         handleBackMonth,
         handleNextMonth,
         handleSelectedDate,
+        handleRangeSelect,
     } = useCalendar(selectedDate, isMultiple, onSelect);
     // lib hooks
     // initial values
@@ -42,6 +44,13 @@ const Calendar = ({
     // query hooks
     // calculated values
     // handlers
+    const handleDateRangePicker = (selectDate: string) => {
+        if (rangePicker) {
+            handleRangeSelect(selectDate);
+        } else {
+            handleSelectedDate(selectDate);
+        }
+    };
     // effects
 
     return (
@@ -77,20 +86,21 @@ const Calendar = ({
                     ))}
                 </div>
 
-                <div css={daysContainer}>
+                <div css={daysContainer(rangePicker)}>
                     {days.map((date) => (
                         <button
                             aria-label={date.dateString}
                             disabled={disabled}
                             key={date.dateString}
                             css={dayCell(
-                                newSelectedDate.has(date.dateString),
-                                date.weekend,
+                                selectedDate,
+                                date,
                                 date.dateString === today,
-                                date.isCurrentMonth,
+                                newSelectedDate.has(date.dateString),
                                 disabled,
+                                rangePicker,
                             )}
-                            onClick={() => handleSelectedDate(date.dateString)}
+                            onClick={() => handleDateRangePicker(date.dateString)}
                         >
                             {date.day}
                         </button>

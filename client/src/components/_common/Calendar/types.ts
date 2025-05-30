@@ -10,6 +10,7 @@ export interface CalendarProps {
     border?: boolean;
     shadow?: boolean;
     size?: Size;
+    rangePicker?: boolean;
     sx?: CSSObject;
     zIndex?: CSSObject['zIndex'];
 }

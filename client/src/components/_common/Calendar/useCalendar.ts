@@ -44,6 +44,23 @@ function useCalendar(
         [selectedDate, onSelect, isMultiple],
     );
 
+    const handleRangeSelect = useCallback(
+        (selectDate: string) => {
+            if (selectedDate.length === 2) {
+                onSelect([selectDate]);
+            } else if (selectedDate.length === 1) {
+                if (selectedDate[0] < selectDate) {
+                    onSelect([selectedDate[0], selectDate]);
+                } else {
+                    onSelect([selectDate]);
+                }
+            } else {
+                onSelect([selectDate]);
+            }
+        },
+        [selectedDate, onSelect, isMultiple],
+    );
+
     const generateCalendarDays = () => {
         const newDays = []; // days 업데이트를 위한 새 배열
         const daysInMonth = currentDate.daysInMonth(); // 현재 월의 총 일수
@@ -102,6 +119,7 @@ function useCalendar(
         handleBackMonth,
         handleNextMonth,
         handleSelectedDate,
+        handleRangeSelect,
     };
 }
 export { useCalendar };
