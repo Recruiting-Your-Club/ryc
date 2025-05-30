@@ -25,15 +25,6 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   private final AnnouncementApplicationMapper announcementApplicationMapper;
 
   @Override
-  public Announcement findById(String id) {
-    AnnouncementEntity announcement =
-        announcementJpaRepository
-            .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
-    return announcementMapper.toDomain(announcement);
-  }
-
-  @Override
   public List<Announcement> findAllByClubId(String clubId) {
     List<AnnouncementEntity> announcementEntities =
         announcementJpaRepository.findAllByClubId(clubId);
@@ -52,9 +43,10 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
 
+    /** todo n+1 해결 필요 */
     AnnouncementApplicationEntity applicationEntity =
         announcementApplicationJpaRepository
-            .findById(id)
+            .findByAnnouncementEntityId(announcementEntity.getId())
             .orElseThrow(() -> new EntityNotFoundException("announcementApplication not found"));
 
     return announcementMapper.toDomain(announcementEntity, applicationEntity);
@@ -64,12 +56,12 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   public Announcement save(Announcement announcement) {
     AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement);
     AnnouncementApplicationEntity announcementApplicationEntity =
-        announcementApplicationMapper.toEntity(announcement.getAnnouncementApplication());
+        announcementApplicationMapper.toEntity(
+            announcement.getAnnouncementApplication(), announcementEntity);
 
-    AnnouncementEntity savedAnnouncementEntity = announcementJpaRepository.save(announcementEntity);
     AnnouncementApplicationEntity savedAnnouncementApplicationEntity =
         announcementApplicationJpaRepository.save(announcementApplicationEntity);
 
-    return announcementMapper.toDomain(savedAnnouncementEntity, savedAnnouncementApplicationEntity);
+    return announcementMapper.toDomain(savedAnnouncementApplicationEntity.getAnnouncementEntity());
   }
 }
