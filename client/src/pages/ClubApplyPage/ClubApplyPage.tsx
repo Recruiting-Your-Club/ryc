@@ -189,6 +189,17 @@ function ClubApplyPage() {
     const handleAnswerChange = (questionTitle: string, value: string) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
+            const question = clubPersonalQuestions.find((q) => q.questionTitle === questionTitle);
+
+            // 체크박스인 경우
+            if (question?.type === 'MULTIPLE_CHOICE') {
+                const currentValues = existingAnswer?.value?.split(',') || [];
+                const isCurrentlyChecked = currentValues.includes(value);
+                const newValues = isCurrentlyChecked
+                    ? currentValues.filter((v) => v !== value)
+                    : [...currentValues, value];
+                value = newValues.join(',');
+            }
 
             const newAnswer: Answer = {
                 id: questionTitle,
@@ -210,6 +221,7 @@ function ClubApplyPage() {
             return [...prev, newAnswer];
         });
     };
+
     const handleSubmit = () => {
         setIsSubmitDialogOpen(true);
     };
