@@ -6,11 +6,13 @@ import {
     clubApplyPersonalQuestionForm,
     helperTextSx,
     inputSx,
+    labelContainer,
     labelSx,
 } from './ClubApplyPersonalInfoPage.style';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';
 import { Checkbox } from '@components/Checkbox';
+import { css } from '@emotion/react';
 
 function ClubApplyPersonalInfoPage({
     answers,
@@ -43,6 +45,7 @@ function ClubApplyPersonalInfoPage({
                 return '';
         }
     };
+
     //handlers
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
@@ -62,7 +65,20 @@ function ClubApplyPersonalInfoPage({
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
                         >
-                            <Text type="bodyRegular">{question.questionTitle}</Text>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
+                                    {question.questionTitle}
+                                </Text>
+                                {question.isRequired && (
+                                    <Text
+                                        type="bodyRegular"
+                                        color="warning"
+                                        sx={{ display: 'inline' }}
+                                    >
+                                        *
+                                    </Text>
+                                )}
+                            </div>
                             <Radio
                                 name={`question-${question.questionTitle}`}
                                 orientation="vertical"
@@ -77,13 +93,27 @@ function ClubApplyPersonalInfoPage({
                             />
                         </div>
                     );
-                } else if (question.type === 'MULTIPLE_CHOICE') {
+                }
+                if (question.type === 'MULTIPLE_CHOICE') {
                     return (
                         <div
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
                         >
-                            <Text type="bodyRegular">{question.questionTitle}</Text>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
+                                    {question.questionTitle}
+                                </Text>
+                                {question.isRequired && (
+                                    <Text
+                                        type="bodyRegular"
+                                        color="warning"
+                                        sx={{ display: 'inline' }}
+                                    >
+                                        *
+                                    </Text>
+                                )}
+                            </div>
                             {question.options.map((option) => (
                                 <Checkbox.Root
                                     key={option}
@@ -114,9 +144,18 @@ function ClubApplyPersonalInfoPage({
                         onFocus={() => handleFocus(question.questionTitle)}
                         onBlur={() => handleBlur(question.questionTitle)}
                     >
+                        <div css={labelContainer}>
+                            <Text type="bodyRegular" sx={{ display: 'inline' }}>
+                                {question.questionTitle}
+                            </Text>
+                            {question.isRequired && (
+                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                    *
+                                </Text>
+                            )}
+                        </div>
                         <Input
                             variant="lined"
-                            label={question.questionTitle}
                             labelSx={labelSx}
                             inputSx={inputSx}
                             value={getAnswer(answers, question.questionTitle)}

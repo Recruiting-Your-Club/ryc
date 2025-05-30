@@ -10,12 +10,14 @@ export const clubApplyDetailQuestionContainer = css`
         width: 100%;
     }
 `;
+
 export const textAreaSx = css`
-    border: 1px solid ${theme.colors.gray[500]};
-    transition: border-color 0.3s ease-in-out;
-    ${theme.typography.captionRegular};
-    &:focus-within {
-        border: 1.5px solid ${theme.colors.default};
-        outline: none;
-    }
+    width: 100%;
+    height: 30rem;
+`;
+
+export const labelContainer = css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 `;

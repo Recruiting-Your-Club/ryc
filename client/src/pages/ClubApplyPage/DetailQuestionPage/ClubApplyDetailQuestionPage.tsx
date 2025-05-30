@@ -1,7 +1,11 @@
-import React from 'react';
-import { Text } from '@components/_common/Text';
+import React, { useState } from 'react';
 import { TextArea } from '@components/_common/TextArea';
-import { clubApplyDetailQuestionContainer, textAreaSx } from './ClubApplyDetailQuestionPage.style';
+import { Text } from '@components/_common/Text';
+import {
+    clubApplyDetailQuestionContainer,
+    labelContainer,
+    textAreaSx,
+} from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
 
@@ -11,22 +15,60 @@ function ClubApplyDetailQuestionPage({
     onAnswerChange,
     containerStyle,
 }: ClubApplyDetailQuestionPageProps) {
+    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+
+    const handleBlur = (questionTitle: string) => {
+        setTouched((prev) => ({ ...prev, [questionTitle]: true }));
+    };
+
+    const handleFocus = (questionTitle: string) => {
+        setTouched((prev) => ({ ...prev, [questionTitle]: false }));
+    };
+
     return (
         <div css={containerStyle}>
-            {clubDetailQuestions.map((question) => (
-                <div key={question.questionTitle} css={clubApplyDetailQuestionContainer}>
-                    <Text textAlign="start" type="bodyRegular" sx={{ marginLeft: '0.75rem' }}>
-                        {question.questionTitle}
-                    </Text>
-                    <TextArea
-                        size="md"
-                        value={getAnswer(answers, question.questionTitle)}
-                        onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
-                        wrapperSx={{ marginTop: '1rem' }}
-                        textAreaSx={textAreaSx}
-                    />
-                </div>
-            ))}
+            {clubDetailQuestions.map((question) => {
+                const hasError =
+                    question.isRequired &&
+                    touched[question.questionTitle] &&
+                    !getAnswer(answers, question.questionTitle)?.trim();
+                return (
+                    <div
+                        key={question.questionTitle}
+                        css={clubApplyDetailQuestionContainer}
+                        tabIndex={-1}
+                        onFocus={() => handleFocus(question.questionTitle)}
+                        onBlur={() => handleBlur(question.questionTitle)}
+                    >
+                        <div css={labelContainer}>
+                            <Text
+                                type="bodyRegular"
+                                sx={{ display: 'inline', marginLeft: '0.5rem' }}
+                            >
+                                {question.questionTitle}
+                            </Text>
+                            {question.isRequired && (
+                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                    *
+                                </Text>
+                            )}
+                        </div>
+                        <TextArea
+                            size="lg"
+                            value={getAnswer(answers, question.questionTitle)}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                                onAnswerChange(question.questionTitle, e.target.value)
+                            }
+                            wrapperSx={{ marginTop: '1rem' }}
+                            textAreaSx={textAreaSx}
+                            error={hasError}
+                            onFocus={() => handleFocus(question.questionTitle)}
+                            onBlur={() => handleBlur(question.questionTitle)}
+                            errorText={hasError ? '필수 항목입니다.' : undefined}
+                        />
+                    </div>
+                );
+            })}
         </div>
     );
 }

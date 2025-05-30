@@ -24,6 +24,14 @@ export const clubApplyPersonalQuestionForm = (hasError: boolean) => css`
         min-height: 10.5rem;
     }
 `;
+
+export const labelContainer = css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+`;
+
 export const labelSx = css`
     color: ${theme.colors.black};
     ${theme.typography.bodyRegular};
@@ -35,6 +43,7 @@ export const inputSx = css`
     height: 2.5rem;
     padding: 0rem 0rem;
 `;
+
 export const helperTextSx = css`
     ${theme.typography.subCaptionLight};
     margin-top: 1.5rem;
