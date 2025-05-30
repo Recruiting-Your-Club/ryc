@@ -18,12 +18,14 @@ const Calendar = ({
     isMultiple = false,
     selectedDate = [],
     onSelect = () => {},
+    setClickedDate = () => {},
     disabled = false,
     size = 'lg',
     border = false,
     shadow = true,
     rangePicker = false,
     zIndex,
+    custom = false,
     sx = {},
 }: CalendarProps) => {
     // prop destruction
@@ -36,7 +38,7 @@ const Calendar = ({
         handleNextMonth,
         handleSelectedDate,
         handleRangeSelect,
-    } = useCalendar(selectedDate, isMultiple, onSelect);
+    } = useCalendar(selectedDate, isMultiple, onSelect, custom);
     // lib hooks
     // initial values
     // state, ref, querystring hooks
@@ -50,6 +52,7 @@ const Calendar = ({
         } else {
             handleSelectedDate(selectDate);
         }
+        setClickedDate(selectDate);
     };
     // effects
 
