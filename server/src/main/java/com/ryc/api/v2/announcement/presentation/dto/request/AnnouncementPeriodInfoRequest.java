@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 /**
@@ -13,7 +14,9 @@ import lombok.Builder;
  */
 @Builder
 public record AnnouncementPeriodInfoRequest(
-    @NotNull PeriodRequest applicationPeriod,
-    PeriodRequest interviewPeriod,
-    @NotNull PeriodRequest documentResultPeriod,
-    PeriodRequest finalResultPeriod) {}
+    @NotNull(message = "applicationPeriod shouldn't be null") @Schema(description = "모집 기간")
+        PeriodRequest applicationPeriod,
+    @Schema(description = "면접 기간") PeriodRequest interviewPeriod,
+    @Schema(description = "서류 결과 발표 기간") PeriodRequest documentResultPeriod,
+    @NotNull(message = "finalResultPeriod shouldn't be null") @Schema(description = "최종 결과 발표 기간")
+        PeriodRequest finalResultPeriod) {}

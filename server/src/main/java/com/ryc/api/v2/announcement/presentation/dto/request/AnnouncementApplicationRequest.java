@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.PersonalInfoQuestionType;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * @param personalInfoQuestionTypes 인적 사항
  * @param preQuestions 사전 질문
@@ -13,10 +15,13 @@ import com.ryc.api.v2.announcement.domain.enums.PersonalInfoQuestionType;
  * @brief 공고 지원서 request Dto
  */
 public record AnnouncementApplicationRequest(
-    @NotNull(message = "personalInfoQuestionTypes shouldn't be null")
+    @Schema(description = "인적 사항", defaultValue = "[NAME,EMAIL]", example = "[NAME,EMAIL]")
+        @NotNull(message = "personalInfoQuestionTypes shouldn't be null")
         List<PersonalInfoQuestionType> personalInfoQuestionTypes,
-    List<ApplicationQuestionRequest> preQuestions,
-    List<ApplicationQuestionRequest> applicationQuestions) {
+    @NotNull(message = "preQuestions shouldn't be null")
+        List<ApplicationQuestionRequest> preQuestions,
+    @NotNull(message = "applicationQuestions shouldn't be null")
+        List<ApplicationQuestionRequest> applicationQuestions) {
   public List<ApplicationQuestionRequest> preQuestions() {
     return List.copyOf(preQuestions);
   }

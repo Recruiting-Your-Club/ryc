@@ -2,13 +2,15 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import java.util.List;
 
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
+import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 /**
@@ -29,23 +31,49 @@ import lombok.Builder;
  */
 @Builder
 public record AnnouncementCreateRequest(
-        @NotNull(message = "clubRoleSecuredDto shouldn't be null")
+    @NotNull(message = "clubRoleSecuredDto shouldn't be null")
+        @Schema(description = "동아리 권한 확인 dto")
+        @Valid
         ClubRoleSecuredDto clubRoleSecuredDto,
-        @NotBlank(message = "clubId shouldn't be blank") String clubId,
-        @NotBlank(message = "title shouldn't be blank") String title,
-    @NotNull(message = "announcementPeriod shouldn't be null")
+    @NotBlank(message = "clubId shouldn't be blank")
+        @Schema(description = "동아리 ID", example = "123e4567-e89b-12d3-a456-426614174000")
+        String clubId,
+    @NotBlank(message = "title shouldn't be blank")
+        @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
+        String title,
+    @NotNull(message = "announcementPeriod shouldn't be null") @Schema(description = "기간 정보") @Valid
         AnnouncementPeriodInfoRequest periodInfo,
-    @NotNull(message = "numberOfPeople shouldn't be null") String numberOfPeople,
-    @NotBlank(message = "detailDescription shouldn't be blank") String detailDescription,
-    @NotBlank(message = "summaryDescription shouldn't be blank") String summaryDescription,
-    @NotBlank(message = "activityPeriod shouldn't be blank") String activityPeriod,
-    @NotBlank(message = "target shouldn't be blank") String target,
-    @NotEmpty(message = "announcementType shouldn't be empty") AnnouncementType announcementType,
-    @NotNull(message = "startDate shouldn't be null") Boolean hasInterview,
-    @NotEmpty(message = "tags shouldn't be empty")
+    @NotNull(message = "numberOfPeople shouldn't be null")
+        @Schema(description = "모집 인원", example = "10명 이내")
+        String numberOfPeople,
+    @NotBlank(message = "detailDescription shouldn't be blank")
+        @Schema(description = "상세 정보", example = "코딩 동아리에서 신입 qnd 모집합니다. ")
+        String detailDescription,
+    @NotBlank(message = "summaryDescription shouldn't be blank")
+        @Schema(description = "요약 소개", example = "코딩 동아리에서 신입 qnd 모집합니다.")
+        String summaryDescription,
+    @NotBlank(message = "activityPeriod shouldn't be blank")
+        @Schema(description = "활동 기간", example = "2023-01-01 ~ 2023-12-31")
+        String activityPeriod,
+    @NotBlank(message = "target shouldn't be blank")
+        @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
+        String target,
+    @NotNull(message = "announcementType shouldn't be null")
+        @Schema(description = "공고 타입", example = "LIMITED_TIME")
+        AnnouncementType announcementType,
+    @Schema(description = "면접 여부", example = "true")
+        @NotNull(message = "startDate shouldn't be null")
+        Boolean hasInterview,
+    @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
+        @NotEmpty(message = "tags shouldn't be empty")
         List<@NotNull(message = "tag shouldn't be null") String> tags,
-    @NotNull(message = "application shouldn't be null") AnnouncementApplicationRequest application,
-    List<@NotBlank(message = "image shouldn't be blank") ImageRequest> images) {
+    @Schema(description = "공고 지원서") @NotNull(message = "application shouldn't be null") @Valid
+        AnnouncementApplicationRequest application,
+    @NotNull(message = "images shouldn't be null")
+        @Schema(
+            description = "이미지 목록",
+            example = "[\"https://example.com/image1.jpg\", \"https://example.com/image2.jpg\"]")
+        List<@NotNull(message = "image shouldn't be null") ImageRequest> images) {
 
   @Override
   public List<String> tags() {
