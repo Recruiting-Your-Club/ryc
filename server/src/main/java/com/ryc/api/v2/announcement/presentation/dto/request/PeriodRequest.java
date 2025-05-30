@@ -2,7 +2,7 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -15,9 +15,9 @@ import lombok.Builder;
  */
 @Builder
 public record PeriodRequest(
-    @NotBlank(message = "stratDate shouldn't be blank")
+    @NotNull(message = "startDate shouldn't be null")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime startDate,
-    @NotBlank(message = "endDate shouldn't be blank")
+    @NotNull(message = "endDate shouldn't be null")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime endDate) {}
