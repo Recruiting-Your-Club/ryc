@@ -1,16 +1,17 @@
 package com.ryc.api.v2.announcement.infra.entity;
 
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
+import java.util.List;
+
+import jakarta.persistence.*;
+
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
 import com.ryc.api.v2.announcement.infra.vo.ImageVO;
 import com.ryc.api.v2.announcement.infra.vo.TagVO;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.common.entity.BaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
 
-import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "announcements")
@@ -19,43 +20,42 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnnouncementEntity extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id")
-    private ClubEntity clubEntity;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_id")
+  private ClubEntity clubEntity;
 
-    private String title;
+  private String title;
 
-    private String numberOfPeople;
+  private String numberOfPeople;
 
-    private String summaryDescription;
+  private String summaryDescription;
 
-    private Boolean hasInterview;
+  private Boolean hasInterview;
 
-    @Column(columnDefinition = "TEXT")
-    private String detailDescription;
-    private String target;
+  @Column(columnDefinition = "TEXT")
+  private String detailDescription;
 
-    @Embedded
-    AnnouncementPeriodInfoVO announcementPeriodInfoVO;
+  private String target;
 
-    @ElementCollection
-    @OrderColumn(name = "image_order")
-    @CollectionTable(name = "announcement_images")
-    private List<ImageVO> images;
+  @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
-    @ElementCollection
-    @OrderColumn(name = "tag_order")
-    @CollectionTable(name = "announcement_tags")
-    private List<TagVO> tags;
+  @ElementCollection
+  @OrderColumn(name = "image_order")
+  @CollectionTable(name = "announcement_images")
+  private List<ImageVO> images;
 
-    private AnnouncementType announcementType;
+  @ElementCollection
+  @OrderColumn(name = "tag_order")
+  @CollectionTable(name = "announcement_tags")
+  private List<TagVO> tags;
 
-    private String activityPeriod;
+  private AnnouncementType announcementType;
 
-    private Boolean isDeleted;
+  private String activityPeriod;
 
+  private Boolean isDeleted;
 }

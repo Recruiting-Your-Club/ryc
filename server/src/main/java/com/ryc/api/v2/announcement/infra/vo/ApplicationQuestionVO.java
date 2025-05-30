@@ -1,10 +1,13 @@
 package com.ryc.api.v2.announcement.infra.vo;
 
-import com.ryc.api.v2.announcement.domain.enums.QuestionType;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.List;
+
+import jakarta.persistence.*;
+
+import com.ryc.api.v2.announcement.domain.enums.QuestionType;
+import com.ryc.api.v2.announcement.infra.converter.StringListConverter;
+
+import lombok.*;
 
 @Embeddable
 @Getter
@@ -12,13 +15,13 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationQuestionVO {
-    @Enumerated(value = EnumType.STRING)
-    private QuestionType questionType;
-    private String label;
-    private boolean isRequired;
-    private int order;
+  @Enumerated(value = EnumType.STRING)
+  private QuestionType questionType;
 
-    @ElementCollection
-    @CollectionTable(name = "application_question_options")
-    private List<String> options;
+  private String label;
+  private boolean isRequired;
+
+  @Convert(converter = StringListConverter.class)
+  @Column(columnDefinition = "TEXT")
+  private List<String> options;
 }

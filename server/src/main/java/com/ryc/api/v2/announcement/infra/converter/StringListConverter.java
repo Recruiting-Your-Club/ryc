@@ -20,7 +20,7 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
   public String convertToDatabaseColumn(List<String> attribute) {
     try {
       return attribute != null ? objectMapper.writeValueAsString(attribute) : null;
-      //직렬화 문제 시 빈 값으로 반환
+      // 직렬화 문제 시 빈 값으로 반환
     } catch (JsonProcessingException e) {
       return "[]";
     }
@@ -33,9 +33,9 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
     }
 
     try {
-      //제네릭 명시를 위한 TypeReference 정의
+      // 제네릭 명시를 위한 TypeReference 정의
       return objectMapper.readValue(dbData, new TypeReference<List<String>>() {});
-      //빈 리스트로 반환
+      // 빈 리스트로 반환
     } catch (IOException e) {
       return new ArrayList<>();
     }

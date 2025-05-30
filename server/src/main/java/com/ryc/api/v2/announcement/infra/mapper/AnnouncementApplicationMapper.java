@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.ryc.api.v2.announcement.domain.AnnouncementApplication;
 import com.ryc.api.v2.announcement.domain.vo.ApplicationQuestion;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementApplicationEntity;
+import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.vo.ApplicationQuestionVO;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,25 @@ public class AnnouncementApplicationMapper {
   }
 
   /** Domain to entity */
-  public AnnouncementApplicationEntity toEntity(AnnouncementApplication domain) {
+  public AnnouncementApplicationEntity toEntity(AnnouncementApplication application) {
+    List<ApplicationQuestionVO> applicationQuestions =
+        application.getApplicationQuestions().stream()
+            .map(applicationQuestionMapper::toVO)
+            .toList();
+    List<ApplicationQuestionVO> preQuestions =
+        application.getPreQuestions().stream().map(applicationQuestionMapper::toVO).toList();
+
+    return AnnouncementApplicationEntity.builder()
+        .id(application.getId())
+        .applicationQuestions(applicationQuestions)
+        .personalInfoQuestions(application.getPersonalInfoQuestionTypes())
+        .preQuestions(preQuestions)
+        .build();
+  }
+
+  /** save시 announcement 주입 mapping */
+  public AnnouncementApplicationEntity toEntity(
+      AnnouncementApplication domain, AnnouncementEntity announcement) {
     List<ApplicationQuestionVO> applicationQuestions =
         domain.getApplicationQuestions().stream().map(applicationQuestionMapper::toVO).toList();
     List<ApplicationQuestionVO> preQuestions =
@@ -44,6 +63,7 @@ public class AnnouncementApplicationMapper {
         .applicationQuestions(applicationQuestions)
         .personalInfoQuestions(domain.getPersonalInfoQuestionTypes())
         .preQuestions(preQuestions)
+        .announcementEntity(announcement)
         .build();
   }
 }
