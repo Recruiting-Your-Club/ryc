@@ -54,7 +54,7 @@ function ClubSubmitCard({
                             type="subCaptionRegular"
                             sx={questionStatusTextSx(completedQuestions === totalQuestions)}
                         >
-                            작성한 항목 ({completedQuestions} / {totalQuestions})
+                            필수 항목 ({completedQuestions} / {totalQuestions})
                         </Text>
                         <ArrowDown css={arrowIcon} />
                     </div>
