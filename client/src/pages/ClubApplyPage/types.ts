@@ -8,12 +8,14 @@ export interface PersonalQuestion {
     questionTitle: string;
     type: QuestionType;
     options: string[];
+    isRequired: boolean;
 }
 
 export interface DetailQuestion {
     id: string;
     questionTitle: string;
     description: string;
+    isRequired: boolean;
 }
 
 export interface Answer {
