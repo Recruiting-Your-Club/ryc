@@ -53,49 +53,64 @@ export const clubData = {
     ],
     resultAnnouncementDate: '2025-06-30T15:00:00.000Z',
     durationDate: '한 학기',
-    preQuestions: [
-        {
-            personalInfoQuestions: ['STUDENT_ID', 'PROFILE_IMAGE'],
-            additionalQuestions: [
-                {
-                    category: 'SHORT_ANSWER',
-                    title: '이름',
-                },
-                {
-                    category: 'SHORT_ANSWER',
-                    title: '생년월일',
-                },
-                {
-                    category: 'SHORT_ANSWER',
-                    title: '전화번호',
-                },
-                {
-                    category: 'SINGLE_CHOICE',
-                    title: '성별',
-                    options: ['남', '여'],
-                },
-                {
-                    category: 'MULTIPLE_CHOICE',
-                    title: '전공',
-                    options: ['소프트웨어학과', '컴퓨터공학과', '기타'],
-                },
-            ],
-        },
-    ],
-    questions: [
-        {
-            title: 'EN#에 지원한 동기가 무엇인가요?',
-            description: 'EN#에 지원하게 된 계기와 동기를 자유롭게 작성해주세요.',
-        },
-        {
-            title: 'EN#에서 기대하는 활동을 작성해주세요.',
-            description: 'EN#에서 하고 싶은 활동이나 목표를 자유롭게 작성해주세요.',
-        },
-        {
-            title: '프로젝트 경험이 있다면 자세히 설명해주세요.',
-            description: '참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요.',
-        },
-    ],
+    application: {
+        applicationQuestions: [
+            {
+                type: 'LONG_ANSWER',
+                label: 'EN#에 지원한 동기가 무엇인가요?',
+                description: 'EN#에 지원하게 된 계기와 동기를 자유롭게 작성해주세요.',
+                isRequired: true,
+                options: [],
+            },
+            {
+                type: 'LONG_ANSWER',
+                label: 'EN#에서 기대하는 활동을 작성해주세요.',
+                description: 'EN#에서 하고 싶은 활동이나 목표를 자유롭게 작성해주세요.',
+                isRequired: true,
+                options: [],
+            },
+            {
+                type: 'LONG_ANSWER',
+                label: '프로젝트 경험이 있다면 자세히 설명해주세요.',
+                description: '참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요.',
+                isRequired: false,
+                options: [],
+            },
+        ],
+        preQuestions: [
+            {
+                type: 'SHORT_ANSWER',
+                label: '이름',
+                isRequired: true,
+                options: [],
+            },
+            {
+                type: 'SHORT_ANSWER',
+                label: '생년월일',
+                isRequired: true,
+                options: [],
+            },
+            {
+                type: 'SHORT_ANSWER',
+                label: '전화번호',
+                isRequired: true,
+                options: [],
+            },
+            {
+                type: 'SINGLE_CHOICE',
+                label: '성별',
+                isRequired: true,
+                options: ['남', '여'],
+            },
+            {
+                type: 'MULTIPLE_CHOICE',
+                label: '전공',
+                isRequired: true,
+                options: ['소프트웨어학과', '컴퓨터공학과', '기타'],
+            },
+        ],
+        personalInfoQuestions: ['STUDENT_ID', 'PROFILE_IMAGE'],
+    },
 };
 
 // 임시로 페이지 분리하기 위해 만든거 리팩토링 할 때 ClubDetailPage에 있는 Navigation 컴포넌트 가져다 써야함.
@@ -124,11 +139,12 @@ function ClubApplyPage() {
     // 사전질문 데이터
     const clubPersonalQuestions = useMemo(
         () =>
-            clubData.preQuestions[0].additionalQuestions.map((question) => ({
-                id: question.title,
-                questionTitle: question.title,
-                type: question.category as QuestionType,
+            clubData.application.preQuestions.map((question) => ({
+                id: question.label,
+                questionTitle: question.label,
+                type: question.type as QuestionType,
                 options: question.options ?? [],
+                isRequired: question.isRequired,
             })),
         [],
     );
@@ -136,10 +152,11 @@ function ClubApplyPage() {
     // 자기소개서 질문 데이터
     const detailQuestions = useMemo(
         () =>
-            clubData.questions.map((question) => ({
-                id: question.title,
-                questionTitle: question.title,
+            clubData.application.applicationQuestions.map((question) => ({
+                id: question.label,
+                questionTitle: question.label,
                 description: question.description,
+                isRequired: question.isRequired,
             })),
         [],
     );
@@ -152,6 +169,15 @@ function ClubApplyPage() {
     // form hooks
     // query hooks
     // calculated values
+
+    // 필수 질문 개수 계산
+    const requiredQuestionsCount = useMemo(() => {
+        const allQuestions = [
+            ...clubData.application.preQuestions,
+            ...clubData.application.applicationQuestions,
+        ];
+        return allQuestions.filter((question) => question.isRequired).length;
+    }, []);
 
     const getValidationError = useCallback((questionTitle: string, value: string): boolean => {
         if (!value.trim()) return false;
@@ -233,6 +259,10 @@ function ClubApplyPage() {
     // effects
     useEffect(() => {
         const completedCount = answers.filter((answer) => {
+            const question = allQuestions.find(
+                (question) => question.questionTitle === answer.questionTitle,
+            );
+            if (!question?.isRequired) return true;
             if (!answer.value.trim()) return false;
 
             if (VALIDATION_PATTERNS[answer.questionTitle as ValidationKey]) {
@@ -243,7 +273,7 @@ function ClubApplyPage() {
         }).length;
 
         setCompletedQuestions(completedCount);
-    }, [answers]);
+    }, [answers, allQuestions]);
 
     return (
         <div css={clubApplyPageContainer}>
@@ -274,11 +304,13 @@ function ClubApplyPage() {
                             type="subCaptionRegular"
                             textAlign="right"
                             color={
-                                completedQuestions === allQuestions.length ? 'primary' : 'warning'
+                                completedQuestions === requiredQuestionsCount
+                                    ? 'primary'
+                                    : 'warning'
                             }
                             sx={mobileQuestionStatus}
                         >
-                            작성한 항목 ({completedQuestions} / {allQuestions.length})
+                            필수 항목 ({completedQuestions} / {requiredQuestionsCount})
                         </Text>
                     </div>
                     {/* 페이지 */}
@@ -305,7 +337,7 @@ function ClubApplyPage() {
                     tag={clubData.tag}
                     deadline={calculateDeadline}
                     completedQuestions={completedQuestions}
-                    totalQuestions={allQuestions.length}
+                    totalQuestions={requiredQuestionsCount}
                     deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
                     onSubmit={handleSubmit}
                 />
