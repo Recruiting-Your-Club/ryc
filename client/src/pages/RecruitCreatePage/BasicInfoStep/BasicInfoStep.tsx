@@ -1,4 +1,4 @@
-import { Button, Checkbox, Select } from '@components';
+import { Button, Checkbox, Select, Toggle } from '@components';
 import { FieldLabel } from '@components/FieldLabel';
 import React, { useState } from 'react';
 import {
@@ -6,7 +6,15 @@ import {
     s_checkboxLabel,
     s_checkboxWrapper,
     s_noticeBox,
+    s_questionCard,
+    s_questionHeader,
+    s_questionSection,
+    s_removeQuestion,
+    s_selectContainer,
+    s_selectToggleContainer,
     s_textHighlight,
+    s_toggleContainer,
+    s_toggleLabel,
 } from './BasicInfoStep.style';
 import { useQuestion } from '@hooks/useQuestion';
 import { questionTypes } from '@constants/questionType';
@@ -66,35 +74,56 @@ function BasicInfoStep() {
                     description="지원자에게 입력 받을 추가적인 사전 질문이 있다면 작성해주세요"
                 />
             </div>
-            <div>
+            <div css={s_questionSection}>
                 {questions.map((q) => (
-                    <div key={q.id}>
-                        <div>
-                            <Select
-                                value={q.type}
-                                onValueChange={(value) =>
-                                    handleQuestionTypeChange(q.id, value as QuestionType)
-                                }
+                    <div key={q.id} css={s_questionCard}>
+                        <div css={s_questionHeader}>
+                            <div css={s_selectToggleContainer}>
+                                <Select
+                                    value={q.type}
+                                    onValueChange={(value) =>
+                                        handleQuestionTypeChange(q.id, value as QuestionType)
+                                    }
+                                    sx={s_selectContainer}
+                                >
+                                    <Select.Trigger>
+                                        <Select.Value placeholder="문제 유형 선택" />
+                                    </Select.Trigger>
+                                    <Select.Content>
+                                        {questionTypes.map(({ value, label }) => (
+                                            <Select.Item key={value} value={value}>
+                                                {label}
+                                            </Select.Item>
+                                        ))}
+                                    </Select.Content>
+                                </Select>
+                                <div css={s_toggleContainer}>
+                                    <div css={s_toggleLabel}>필수</div>
+                                    <Toggle
+                                        width="5rem"
+                                        isChecked={q.required}
+                                        onChange={() =>
+                                            updateQuestion(q.id, { required: !q.required })
+                                        }
+                                    />
+                                </div>
+                            </div>
+                            <Button
+                                onClick={() => removeQuestion(q.id)}
+                                sx={s_removeQuestion}
+                                size="lg"
                             >
-                                <Select.Trigger>
-                                    <Select.Value placeholder="문제 유형 선택" />
-                                </Select.Trigger>
-                                <Select.Content>
-                                    {questionTypes.map(({ value, label }) => (
-                                        <Select.Item key={value} value={value}>
-                                            {label}
-                                        </Select.Item>
-                                    ))}
-                                </Select.Content>
-                            </Select>
-                            <button onClick={() => removeQuestion(q.id)}>x</button>
+                                x
+                            </Button>
                         </div>
                         <div>
                             <QuestionForm question={q} updateQuestion={updateQuestion} />
                         </div>
                     </div>
                 ))}
-                <Button onClick={addQuesttion}>+ 질문 추가하기</Button>
+                <Button onClick={addQuesttion} size="full">
+                    + 질문 추가하기
+                </Button>
             </div>
         </div>
     );

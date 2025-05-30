@@ -17,6 +17,7 @@ export interface QuestionProps {
     type: QuestionType;
     title: string;
     options?: QuestionOption[];
+    required: boolean;
 }
 
 export interface QuestionFormProps {

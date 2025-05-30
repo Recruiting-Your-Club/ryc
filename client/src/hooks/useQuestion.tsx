@@ -8,12 +8,13 @@ const DEFAULT_OPTIONS = [
 
 export const useQuestion = () => {
     const [questions, setQuestions] = useState<QuestionProps[]>([
-        { id: '1', type: 'short', title: '' },
+        { id: '1', type: 'short', title: '', required: false },
         {
             id: '2',
             type: 'single',
             title: '',
             options: [...DEFAULT_OPTIONS],
+            required: false,
         },
     ]);
 
@@ -22,6 +23,7 @@ export const useQuestion = () => {
             id: `q${Date.now()}`,
             type: 'short',
             title: '',
+            required: false,
         };
         setQuestions((prev) => [...prev, newQuestion]);
     };
