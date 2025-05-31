@@ -1,4 +1,4 @@
-import { FileExtension } from '@components/FileUpLoader/constants';
+import { FileExtension } from '@constants/fileUpLoader';
 import { getExtension } from '@components/FileUpLoader/utills';
 import { useToast } from '@hooks/useToast';
 import { useCallback } from 'react';
