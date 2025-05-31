@@ -1,23 +1,16 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const clubApplyPageContainer = css`
+export const clubApplyPage = css`
     width: 100%;
     min-height: 100dvh;
     display: flex;
     justify-content: center;
-    background-color: ${theme.colors.gray[100]};
-`;
-
-export const clubApplyPage = css`
-    width: 100%;
-    max-width: 120rem;
-    height: 100%;
-    display: flex;
     align-items: flex-start;
     gap: 2rem;
     padding: 2rem;
     padding-bottom: 0;
+    background-color: ${theme.colors.gray[100]};
     @media (max-width: ${theme.breakpoint.tablet}) {
         flex-direction: column;
         padding: 1rem;
@@ -25,7 +18,6 @@ export const clubApplyPage = css`
         justify-content: center;
         gap: 3rem;
     }
-
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%;
         flex-direction: column;
@@ -35,6 +27,7 @@ export const clubApplyPage = css`
 export const clubApplyPageMainContainer = css`
     width: 100%;
     height: 100%;
+    max-width: 90rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,13 +36,13 @@ export const clubApplyPageMainContainer = css`
     border: 1px solid ${theme.colors.gray[200]};
     border-radius: 10px;
     @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 75%;
-        padding: 1rem 3rem;
+        width: 80%;
+        padding: 1rem 4rem;
         margin: 0;
     }
     @media (max-width: ${theme.breakpoint.tabletMini}) {
-        width: 70%;
-        padding: 1rem 3rem;
+        width: 75%;
+        padding: 1rem 4rem;
         margin: 0;
     }
     @media (max-width: ${theme.breakpoint.mobile}) {
@@ -169,4 +162,10 @@ export const mobileQuestionStatus = css`
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
     }
+`;
+
+export const submitCardContainer = css`
+    position: sticky;
+    top: 8rem;
+    align-self: flex-start;
 `;

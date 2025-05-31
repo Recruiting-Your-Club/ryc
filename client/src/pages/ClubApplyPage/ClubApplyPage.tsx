@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import dayjs from 'dayjs';
 import {
-    clubApplyPageContainer,
+    clubApplyPage,
     clubApplyPageMainContainer,
     clubApplyTabContainer,
     clubApplyTabName,
@@ -9,9 +9,9 @@ import {
     clubNameContainer,
     svgContainer,
     submitButtonContainer,
-    clubApplyPage,
     mobileQuestionStatus,
     applyFormContainer,
+    submitCardContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
@@ -289,68 +289,67 @@ function ClubApplyPage() {
     }, [answers, allQuestions, getValidationError]);
 
     return (
-        <div css={clubApplyPageContainer}>
-            <div css={clubApplyPage}>
-                <div css={clubApplyPageMainContainer}>
-                    <div css={clubLogoAndNameContainer}>
-                        <Ryc css={svgContainer} />
-                        <div css={clubNameContainer}>
-                            <Text type="h3Semibold">{clubData.title}</Text>
-                            <Text type="subCaptionRegular" color="helper" textAlign="left">
-                                {clubData.tag}
-                            </Text>
-                        </div>
-                    </div>
-
-                    <div css={clubApplyTabContainer}>
-                        {applyData.map((data) => (
-                            <Button
-                                key={data.question}
-                                variant="text"
-                                sx={clubApplyTabName}
-                                onClick={() => setPageIndex(data.index)}
-                            >
-                                {data.question}
-                            </Button>
-                        ))}
-                        <Text
-                            type="subCaptionRegular"
-                            textAlign="right"
-                            color={
-                                completedQuestions === requiredQuestionsCount
-                                    ? 'primary'
-                                    : 'warning'
-                            }
-                            sx={mobileQuestionStatus}
-                        >
-                            필수 항목 ({completedQuestions} / {requiredQuestionsCount})
+        <div css={clubApplyPage}>
+            <div css={clubApplyPageMainContainer}>
+                <div css={clubLogoAndNameContainer}>
+                    <Ryc css={svgContainer} />
+                    <div css={clubNameContainer}>
+                        <Text type="h3Semibold">{clubData.title}</Text>
+                        <Text type="subCaptionRegular" color="helper" textAlign="left">
+                            {clubData.tag}
                         </Text>
                     </div>
-                    {/* 페이지 */}
-                    {pageIndex === 0 ? (
-                        <ClubApplyPersonalInfoPage
-                            answers={answers}
-                            clubPersonalQuestions={clubPersonalQuestions}
-                            onAnswerChange={handleAnswerChange}
-                            containerStyle={applyFormContainer(pageIndex)}
-                            getValidationError={getValidationError}
-                            getErrorMessage={getErrorMessage}
-                            touched={touched}
-                            onBlur={handleBlur}
-                            onFocus={handleFocus}
-                        />
-                    ) : (
-                        <ClubApplyDetailQuestionPage
-                            answers={answers}
-                            clubDetailQuestions={detailQuestions}
-                            onAnswerChange={handleAnswerChange}
-                            containerStyle={applyFormContainer(pageIndex)}
-                            touched={touched}
-                            onBlur={handleBlur}
-                            onFocus={handleFocus}
-                        />
-                    )}
                 </div>
+
+                <div css={clubApplyTabContainer}>
+                    {applyData.map((data) => (
+                        <Button
+                            key={data.question}
+                            variant="text"
+                            sx={clubApplyTabName}
+                            onClick={() => setPageIndex(data.index)}
+                        >
+                            {data.question}
+                        </Button>
+                    ))}
+                    <Text
+                        type="subCaptionRegular"
+                        textAlign="right"
+                        color={
+                            completedQuestions === requiredQuestionsCount ? 'primary' : 'warning'
+                        }
+                        sx={mobileQuestionStatus}
+                    >
+                        필수 항목 ({completedQuestions} / {requiredQuestionsCount})
+                    </Text>
+                </div>
+                {/* 페이지 */}
+                {pageIndex === 0 ? (
+                    <ClubApplyPersonalInfoPage
+                        answers={answers}
+                        clubPersonalQuestions={clubPersonalQuestions}
+                        onAnswerChange={handleAnswerChange}
+                        containerStyle={applyFormContainer(pageIndex)}
+                        getValidationError={getValidationError}
+                        getErrorMessage={getErrorMessage}
+                        touched={touched}
+                        onBlur={handleBlur}
+                        onFocus={handleFocus}
+                    />
+                ) : (
+                    <ClubApplyDetailQuestionPage
+                        answers={answers}
+                        clubDetailQuestions={detailQuestions}
+                        onAnswerChange={handleAnswerChange}
+                        containerStyle={applyFormContainer(pageIndex)}
+                        touched={touched}
+                        onBlur={handleBlur}
+                        onFocus={handleFocus}
+                    />
+                )}
+            </div>
+
+            <div css={submitCardContainer}>
                 <ClubSubmitCard
                     clubName={clubData.title}
                     tag={clubData.tag}
@@ -360,17 +359,18 @@ function ClubApplyPage() {
                     deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
                     onSubmit={handleSubmit}
                 />
-                <div css={submitButtonContainer}>
-                    <Button
-                        variant="primary"
-                        size="full"
-                        disabled={completedQuestions !== allQuestions.length}
-                        onClick={handleSubmit}
-                        sx={{ height: '4rem' }}
-                    >
-                        제출하기
-                    </Button>
-                </div>
+            </div>
+
+            <div css={submitButtonContainer}>
+                <Button
+                    variant="primary"
+                    size="full"
+                    disabled={completedQuestions !== allQuestions.length}
+                    onClick={handleSubmit}
+                    sx={{ height: '4rem' }}
+                >
+                    제출하기
+                </Button>
             </div>
 
             <SubmitDialog
