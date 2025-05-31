@@ -26,8 +26,8 @@ export const toggleContainer = (variant: ToggleVariant, width: string, isChecked
 
                 padding: 0.2rem 0.1rem;
                 ${isChecked
-                    ? `background-color: ${theme.colors.disabled};`
-                    : `background-color: ${theme.colors.default};`}
+                    ? `background-color: ${theme.colors.default};`
+                    : `background-color: ${theme.colors.disabled};`}
                 border-radius: 1.1rem;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
                 width: ${width};
@@ -55,8 +55,8 @@ export const toggleContainer = (variant: ToggleVariant, width: string, isChecked
                 ${toggleBase}
                 padding: 0.2rem 0.1rem;
                 ${isChecked
-                    ? `background-color: ${theme.colors.disabled};`
-                    : `background-color: ${theme.colors.default};`}
+                    ? `background-color: ${theme.colors.default};`
+                    : `background-color: ${theme.colors.disabled};`}
                 border-radius: 1.1rem;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
                 width: ${width};
@@ -85,31 +85,31 @@ export const leftTextContainer = (variant: ToggleVariant, isChecked: boolean) =>
             return css`
                 ${noneTextBase}
                 ${isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[700]}`}
+                    ? `color: ${theme.colors.gray[700]}`
+                    : `background-color: ${theme.colors.white};`}
             `;
         case 'text':
             return css`
                 border-radius: 0.25rem;
                 ${textBase}
                 ${isChecked
-                    ? ` color: ${theme.colors.default};   background-color: #f4f7ff; `
-                    : ` color: ${theme.colors.gray[500]};`}
+                    ? ` color: ${theme.colors.gray[500]};`
+                    : ` color: ${theme.colors.default};   background-color: #f4f7ff; `}
             `;
         case 'secondText':
             return css`
                 border-radius: 1rem;
                 ${textBase}
                 ${isChecked
-                    ? `color: ${theme.colors.default}; background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.white};`}
+                    ? `color: ${theme.colors.white};`
+                    : `color: ${theme.colors.default}; background-color: ${theme.colors.white};`}
             `;
         default:
             return css`
                 ${noneTextBase}
                 ${isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[500]}`}
+                    ? `color: ${theme.colors.gray[500]}`
+                    : `background-color: ${theme.colors.white};`}
             `;
     }
 };
@@ -120,31 +120,31 @@ export const rightTextContainer = (variant: ToggleVariant, isChecked: boolean) =
             return css`
                 ${noneTextBase}
                 ${!isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[500]}`}
+                    ? `color: ${theme.colors.gray[500]}`
+                    : `background-color: ${theme.colors.white};`}
             `;
         case 'text':
             return css`
                 border-radius: 0.25rem;
                 ${textBase}
                 ${!isChecked
-                    ? `color: ${theme.colors.default};background-color: #f4f7ff;`
-                    : `color: ${theme.colors.gray[500]};`}
+                    ? `color: ${theme.colors.gray[500]};`
+                    : `color: ${theme.colors.default};background-color: #f4f7ff;`}
             `;
         case 'secondText':
             return css`
                 border-radius: 1rem;
                 ${textBase}
                 ${!isChecked
-                    ? `color: ${theme.colors.default};background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.white};`}
+                    ? `color: ${theme.colors.white};`
+                    : `color: ${theme.colors.default};background-color: ${theme.colors.white};`}
             `;
         default:
             return css`
                 ${noneTextBase}
                 ${!isChecked
-                    ? `background-color: ${theme.colors.white};`
-                    : `color: ${theme.colors.gray[500]};`}
+                    ? `color: ${theme.colors.gray[500]};`
+                    : `background-color: ${theme.colors.white};`}
             `;
     }
 };
