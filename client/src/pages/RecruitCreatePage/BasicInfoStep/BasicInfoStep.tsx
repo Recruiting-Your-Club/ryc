@@ -78,43 +78,44 @@ function BasicInfoStep() {
                 {questions.map((q) => (
                     <div key={q.id} css={s_questionCard}>
                         <div css={s_questionHeader}>
+                            <Select
+                                value={q.type}
+                                onValueChange={(value) =>
+                                    handleQuestionTypeChange(q.id, value as QuestionType)
+                                }
+                                sx={s_selectContainer}
+                            >
+                                <Select.Trigger>
+                                    <Select.Value placeholder="문제 유형 선택" />
+                                </Select.Trigger>
+                                <Select.Content>
+                                    {questionTypes.map(({ value, label }) => (
+                                        <Select.Item key={value} value={value}>
+                                            {label}
+                                        </Select.Item>
+                                    ))}
+                                </Select.Content>
+                            </Select>
+
                             <div css={s_selectToggleContainer}>
-                                <Select
-                                    value={q.type}
-                                    onValueChange={(value) =>
-                                        handleQuestionTypeChange(q.id, value as QuestionType)
-                                    }
-                                    sx={s_selectContainer}
-                                >
-                                    <Select.Trigger>
-                                        <Select.Value placeholder="문제 유형 선택" />
-                                    </Select.Trigger>
-                                    <Select.Content>
-                                        {questionTypes.map(({ value, label }) => (
-                                            <Select.Item key={value} value={value}>
-                                                {label}
-                                            </Select.Item>
-                                        ))}
-                                    </Select.Content>
-                                </Select>
                                 <div css={s_toggleContainer}>
                                     <div css={s_toggleLabel}>필수</div>
                                     <Toggle
-                                        width="5rem"
+                                        width="4.5rem"
                                         isChecked={q.required}
                                         onChange={() =>
                                             updateQuestion(q.id, { required: !q.required })
                                         }
                                     />
                                 </div>
+                                <Button
+                                    onClick={() => removeQuestion(q.id)}
+                                    sx={s_removeQuestion}
+                                    size="lg"
+                                >
+                                    x
+                                </Button>
                             </div>
-                            <Button
-                                onClick={() => removeQuestion(q.id)}
-                                sx={s_removeQuestion}
-                                size="lg"
-                            >
-                                x
-                            </Button>
                         </div>
                         <div>
                             <QuestionForm question={q} updateQuestion={updateQuestion} />

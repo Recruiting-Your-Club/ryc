@@ -51,6 +51,7 @@ export const s_questionHeader = css`
 export const s_removeQuestion = css`
     ${theme.typography.bodySemibold};
     background-color: ${theme.colors.blue[300]};
+    margin-left: 2rem;
 `;
 
 export const s_questionSection = css`
@@ -62,12 +63,14 @@ export const s_selectToggleContainer = css`
 `;
 
 export const s_selectContainer = css`
-    margin-right: 2rem;
+    //margin-right: 2rem;
 `;
 
 export const s_toggleContainer = css`
     display: flex;
     align-items: center;
+    padding-right: 2rem;
+    border-right: solid 1px ${theme.colors.gray[300]};
 `;
 
 export const s_toggleLabel = css`
