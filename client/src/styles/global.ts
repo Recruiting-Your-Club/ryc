@@ -96,7 +96,6 @@ const globalStyles = css`
 
     html {
         font-size: 62.5%;
-        overflow-y: auto;
     }
 
     body {
@@ -111,7 +110,6 @@ const globalStyles = css`
         font-size: 1.6rem;
 
         background-color: #fff;
-        overflow-y: auto;
     }
 
     #root {
