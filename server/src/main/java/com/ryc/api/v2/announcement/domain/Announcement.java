@@ -61,7 +61,7 @@ public class Announcement {
 
     return Announcement.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
-        .clubId(request.clubId())
+        .clubId(request.clubRoleSecuredDto().clubId())
         .announcementPeriodInfo(announcementPeriodInfo)
         .title(request.title())
         .numberOfPeople(request.numberOfPeople())
