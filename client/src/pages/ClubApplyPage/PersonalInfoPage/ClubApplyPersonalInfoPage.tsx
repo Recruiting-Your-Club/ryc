@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input } from '@components/_common/Input';
 import { Radio } from '@components/_common/Radio';
 import { Text } from '@components/_common/Text';
@@ -12,7 +12,6 @@ import {
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';
 import { Checkbox } from '@components/Checkbox';
-import { css } from '@emotion/react';
 
 function ClubApplyPersonalInfoPage({
     answers,
@@ -21,12 +20,14 @@ function ClubApplyPersonalInfoPage({
     containerStyle,
     getValidationError,
     getErrorMessage,
+    touched,
+    onBlur,
+    onFocus,
 }: ClubApplyPersonalInfoPageProps) {
     //props destruction
     //lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
 
     //calculated values
     const getPlaceholder = (label: string) => {
@@ -47,14 +48,6 @@ function ClubApplyPersonalInfoPage({
     };
 
     //handlers
-    const handleBlur = (questionTitle: string) => {
-        setTouched((prev) => ({ ...prev, [questionTitle]: true }));
-    };
-
-    const handleFocus = (questionTitle: string) => {
-        setTouched((prev) => ({ ...prev, [questionTitle]: false }));
-    };
-
     //effects
     return (
         <div css={containerStyle}>
@@ -141,8 +134,8 @@ function ClubApplyPersonalInfoPage({
                             hasError && touched[question.questionTitle],
                         )}
                         tabIndex={-1}
-                        onFocus={() => handleFocus(question.questionTitle)}
-                        onBlur={() => handleBlur(question.questionTitle)}
+                        onFocus={() => onFocus(question.questionTitle)}
+                        onBlur={() => onBlur(question.questionTitle)}
                     >
                         <div css={labelContainer}>
                             <Text type="bodyRegular" sx={{ display: 'inline' }}>
@@ -161,8 +154,8 @@ function ClubApplyPersonalInfoPage({
                             value={getAnswer(answers, question.questionTitle)}
                             onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
                             error={hasError && touched[question.questionTitle]}
-                            onFocus={() => handleFocus(question.questionTitle)}
-                            onBlur={() => handleBlur(question.questionTitle)}
+                            onFocus={() => onFocus(question.questionTitle)}
+                            onBlur={() => onBlur(question.questionTitle)}
                             helperText={
                                 touched[question.questionTitle]
                                     ? getErrorMessage(

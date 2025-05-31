@@ -32,6 +32,9 @@ export interface ClubApplyPersonalInfoPageProps {
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
+    touched: { [key: string]: boolean };
+    onBlur: (questionTitle: string) => void;
+    onFocus: (questionTitle: string) => void;
 }
 
 export interface ClubApplyDetailQuestionPageProps {
@@ -39,4 +42,7 @@ export interface ClubApplyDetailQuestionPageProps {
     clubDetailQuestions: DetailQuestion[];
     onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
+    touched: { [key: string]: boolean };
+    onBlur: (questionTitle: string) => void;
+    onFocus: (questionTitle: string) => void;
 }

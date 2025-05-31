@@ -135,6 +135,7 @@ function ClubApplyPage() {
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
 
     // 사전질문 데이터
     const clubPersonalQuestions = useMemo(
@@ -212,6 +213,14 @@ function ClubApplyPage() {
     }, [formattedDeadline, today, diffDay]);
 
     // handlers
+    const handleBlur = (questionTitle: string) => {
+        setTouched((prev) => ({ ...prev, [questionTitle]: true }));
+    };
+
+    const handleFocus = (questionTitle: string) => {
+        setTouched((prev) => ({ ...prev, [questionTitle]: false }));
+    };
+
     const handleAnswerChange = (questionTitle: string, value: string) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
@@ -262,9 +271,13 @@ function ClubApplyPage() {
             const question = allQuestions.find(
                 (question) => question.questionTitle === answer.questionTitle,
             );
-            if (!question?.isRequired) return true;
+            // 필수 항목이 아닌 경우 제외
+            if (!question?.isRequired) return false;
+
+            // 값이 비어있는 경우 제외
             if (!answer.value.trim()) return false;
 
+            // 유효성 검사가 필요한 경우
             if (VALIDATION_PATTERNS[answer.questionTitle as ValidationKey]) {
                 return !getValidationError(answer.questionTitle, answer.value);
             }
@@ -273,7 +286,7 @@ function ClubApplyPage() {
         }).length;
 
         setCompletedQuestions(completedCount);
-    }, [answers, allQuestions]);
+    }, [answers, allQuestions, getValidationError]);
 
     return (
         <div css={clubApplyPageContainer}>
@@ -322,6 +335,9 @@ function ClubApplyPage() {
                             containerStyle={applyFormContainer(pageIndex)}
                             getValidationError={getValidationError}
                             getErrorMessage={getErrorMessage}
+                            touched={touched}
+                            onBlur={handleBlur}
+                            onFocus={handleFocus}
                         />
                     ) : (
                         <ClubApplyDetailQuestionPage
@@ -329,6 +345,9 @@ function ClubApplyPage() {
                             clubDetailQuestions={detailQuestions}
                             onAnswerChange={handleAnswerChange}
                             containerStyle={applyFormContainer(pageIndex)}
+                            touched={touched}
+                            onBlur={handleBlur}
+                            onFocus={handleFocus}
                         />
                     )}
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextArea } from '@components/_common/TextArea';
 import { Text } from '@components/_common/Text';
 import {
@@ -14,17 +14,10 @@ function ClubApplyDetailQuestionPage({
     clubDetailQuestions,
     onAnswerChange,
     containerStyle,
+    touched,
+    onBlur,
+    onFocus,
 }: ClubApplyDetailQuestionPageProps) {
-    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
-
-    const handleBlur = (questionTitle: string) => {
-        setTouched((prev) => ({ ...prev, [questionTitle]: true }));
-    };
-
-    const handleFocus = (questionTitle: string) => {
-        setTouched((prev) => ({ ...prev, [questionTitle]: false }));
-    };
-
     return (
         <div css={containerStyle}>
             {clubDetailQuestions.map((question) => {
@@ -37,8 +30,8 @@ function ClubApplyDetailQuestionPage({
                         key={question.questionTitle}
                         css={clubApplyDetailQuestionContainer}
                         tabIndex={-1}
-                        onFocus={() => handleFocus(question.questionTitle)}
-                        onBlur={() => handleBlur(question.questionTitle)}
+                        onFocus={() => onFocus(question.questionTitle)}
+                        onBlur={() => onBlur(question.questionTitle)}
                     >
                         <div css={labelContainer}>
                             <Text
@@ -62,8 +55,8 @@ function ClubApplyDetailQuestionPage({
                             wrapperSx={{ marginTop: '1rem' }}
                             textAreaSx={textAreaSx}
                             error={hasError}
-                            onFocus={() => handleFocus(question.questionTitle)}
-                            onBlur={() => handleBlur(question.questionTitle)}
+                            onFocus={() => onFocus(question.questionTitle)}
+                            onBlur={() => onBlur(question.questionTitle)}
                             errorText={hasError ? '필수 항목입니다.' : undefined}
                         />
                     </div>
