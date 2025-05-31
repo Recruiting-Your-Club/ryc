@@ -161,6 +161,7 @@ export const mobileQuestionStatus = css`
     align-items: center;
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
+        gap: 0.5rem;
     }
 `;
 
@@ -168,4 +169,9 @@ export const submitCardContainer = css`
     position: sticky;
     top: 8rem;
     align-self: flex-start;
+`;
+
+export const arrowIcon = css`
+    width: 1rem;
+    height: 1rem;
 `;

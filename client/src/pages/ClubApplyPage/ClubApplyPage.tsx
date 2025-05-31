@@ -12,6 +12,7 @@ import {
     mobileQuestionStatus,
     applyFormContainer,
     submitCardContainer,
+    arrowIcon,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Button } from '@components';
@@ -24,6 +25,7 @@ import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
 import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
+import ArrowDown from '@assets/images/downArrow.svg';
 
 // 임시 데이터
 export const clubData = {
@@ -321,6 +323,7 @@ function ClubApplyPage() {
                         sx={mobileQuestionStatus}
                     >
                         필수 항목 ({completedQuestions} / {requiredQuestionsCount})
+                        <ArrowDown css={arrowIcon} />
                     </Text>
                 </div>
                 {/* 페이지 */}
