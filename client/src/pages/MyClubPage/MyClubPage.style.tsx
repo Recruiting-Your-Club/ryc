@@ -49,7 +49,7 @@ export const plusButton = css`
     padding: 0.2rem;
     background-color: ${theme.colors.blue[100]};
     color: ${theme.colors.blue[200]};
-    font-size: 2rem;
+    font-size: 2.2rem;
     height: 3.5rem;
     width: 3.5rem;
     border-radius: 15px;
