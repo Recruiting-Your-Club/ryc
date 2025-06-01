@@ -13,7 +13,6 @@ export const myClubPageContainer = css`
     display: flex;
     flex-direction: column;
     width: 38rem;
-    height: 31rem;
     padding: 1rem;
 `;
 export const myClubList = css`
@@ -23,7 +22,6 @@ export const myClubList = css`
     gap: 0.5rem;
     margin-bottom: 1rem;
     margin-top: 1rem;
-    overflow-y: auto;
 `;
 export const clubItem = css`
     display: flex;

@@ -30,6 +30,12 @@ const myClubs = [
         description: '세종대학교 중앙 연극 동아리 비상구입니다.',
         avatarSrc: 'https://example.com/avatar_bisanggu.png',
     },
+    {
+        id: 4,
+        name: '비상구',
+        description: '세종대학교 중앙 연극 동아리 비상구입니다.',
+        avatarSrc: 'https://example.com/avatar_bisanggu.png',
+    },
 ];
 
 function MyClubPage() {
