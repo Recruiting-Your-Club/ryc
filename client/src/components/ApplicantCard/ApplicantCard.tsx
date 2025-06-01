@@ -4,7 +4,7 @@ import { Card, Checkbox, Divider, Text } from '@components/_common';
 import React from 'react';
 import {
     bottomCss,
-    checkboxWrapper,
+    checkboxCss,
     dateTextCss,
     dateWrapper,
     dividerCss,
@@ -40,17 +40,16 @@ function ApplicantCard({
 
     return (
         <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={rootCss}>
-            <span css={checkboxWrapper}>
-                <Checkbox.Root
-                    size="xs"
-                    isChecked={checked}
-                    onChange={(checked) => handleChange(checked)}
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <Checkbox.HiddenInput />
-                    <Checkbox.Control />
-                </Checkbox.Root>
-            </span>
+            <Checkbox.Root
+                size="xs"
+                isChecked={checked}
+                onChange={(checked) => handleChange(checked)}
+                onClick={(e) => e.stopPropagation()}
+                sx={checkboxCss}
+            >
+                <Checkbox.HiddenInput />
+                <Checkbox.Control />
+            </Checkbox.Root>
             <Card.TopBody>
                 <Card.TitleContainer title={name} subTitle={email} subTitleSx={emailTextCss} />
             </Card.TopBody>

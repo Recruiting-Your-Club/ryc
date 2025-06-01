@@ -18,7 +18,7 @@ export const rootCss = css`
     }
 `;
 
-export const checkboxWrapper = css`
+export const checkboxCss = css`
     display: flex;
     position: absolute;
     top: 0.5rem;
