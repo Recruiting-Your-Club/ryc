@@ -20,7 +20,6 @@ export const myClubList = css`
     flex-direction: column;
     align-items: start;
     gap: 0.5rem;
-    margin-bottom: 1rem;
     margin-top: 1rem;
 `;
 export const clubItem = css`
