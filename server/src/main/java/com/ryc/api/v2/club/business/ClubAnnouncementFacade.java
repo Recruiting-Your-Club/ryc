@@ -2,7 +2,7 @@ package com.ryc.api.v2.club.business;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
@@ -12,7 +12,7 @@ import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ClubAnnouncementFacade {
 
