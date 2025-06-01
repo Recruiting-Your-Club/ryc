@@ -145,17 +145,26 @@ const data: ClubNotice = {
 };
 
 function StepManagementPage() {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
     const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
     const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
 
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
     const handleToggle = (email: string, checked: boolean) => {
         setSelectedEmails((prev) => (checked ? [...prev, email] : prev.filter((e) => e !== email)));
     };
 
     const handleSelectAll = () => {
+        // 임시 기능 (체크박스 전체선택) -> 추후 적용 예정
         if (selectedEmails.length === applicantList.length) {
             setSelectedEmails([]);
         } else {
@@ -180,6 +189,8 @@ function StepManagementPage() {
     const handleInterviewSettingClose = () => {
         setIsInterviewOpen(false);
     };
+
+    // effects
 
     return (
         <div css={stepManagementPageContainer}>
