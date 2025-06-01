@@ -29,7 +29,7 @@ import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.club.business.ClubService;
 
 @ExtendWith(MockitoExtension.class)
 class ClubHttpApiTest {

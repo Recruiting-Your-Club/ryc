@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.service;
+package com.ryc.api.v2.club.business;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.club.domain.*;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
@@ -118,22 +117,8 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public List<AllClubGetResponse> getAllClub() {
+  public List<Club> getAllClub() {
     // TODO: N + 1 문제 발생 중
-    List<Club> clubs = clubRepository.findAll();
-
-    return clubs.stream()
-        .map(
-            club ->
-                AllClubGetResponse.builder()
-                    .id(club.getId())
-                    .name(club.getName())
-                    .shortDescription(club.getShortDescription())
-                    .imageUrl(club.getImageUrl())
-                    .thumbnailUrl(club.getThumbnailUrl())
-                    .category(club.getCategory())
-                    .clubTags(club.getClubTags())
-                    .build())
-        .toList();
+    return clubRepository.findAll();
   }
 }
