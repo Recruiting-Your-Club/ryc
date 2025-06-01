@@ -1,5 +1,5 @@
 export const generateTimeItems = (interval: number): string[] => {
-    if (!interval || interval <= 0) return [];
+    if (interval <= 0) return [];
 
     const result: string[] = [];
     const totalMinutes = 24 * 60;
