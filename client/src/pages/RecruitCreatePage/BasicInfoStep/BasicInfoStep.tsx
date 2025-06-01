@@ -61,7 +61,7 @@ function InfoFieldGroup() {
 }
 
 function BasicInfoStep() {
-    //최상단으로 빼고 props로 넘겨야함
+    //최상단으로 빼고 props로 넘겨야함 or context로 관리 -> 해도 되는가?
     const { questions, addQuesttion, removeQuestion, updateQuestion, handleQuestionTypeChange } =
         useQuestion();
 

@@ -10,6 +10,7 @@ import {
 } from './RecruitCreatePage.style';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
+import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -31,7 +32,7 @@ function RecruitCreatePage() {
             case 1:
                 return <BasicInfoStep />;
             case 2:
-                return <div>자기소개서 설정</div>;
+                return <PersonalStatementStep />;
             case 3:
                 return <div>미리보기</div>;
             default:
