@@ -20,7 +20,6 @@ function useCalendar(
     // form hooks
     // query hooks
     // calculated values
-
     // handlers
     const handleBackMonth = () => {
         setCurrentDate(currentDate.subtract(1, 'month'));

@@ -25,7 +25,6 @@ const Calendar = ({
     shadow = true,
     rangePicker = false,
     zIndex,
-    custom = false,
     sx = {},
 }: CalendarProps) => {
     // prop destruction
@@ -38,7 +37,7 @@ const Calendar = ({
         handleNextMonth,
         handleSelectedDate,
         handleRangeSelect,
-    } = useCalendar(selectedDate, isMultiple, onSelect, custom);
+    } = useCalendar(selectedDate, isMultiple, onSelect);
     // lib hooks
     // initial values
     // state, ref, querystring hooks
