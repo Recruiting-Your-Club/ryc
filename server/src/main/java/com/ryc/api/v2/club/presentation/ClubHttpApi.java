@@ -2,6 +2,7 @@ package com.ryc.api.v2.club.presentation;
 
 import java.util.List;
 
+import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.club.business.ClubService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class ClubHttpApi {
 
   private final ClubService clubService;
+  private final ClubAnnouncementFacade clubAnnouncementFacade;
 
   @PostMapping
   public ResponseEntity<ClubCreateResponse> createClub(@Valid @RequestBody ClubCreateRequest body) {
@@ -42,7 +44,7 @@ public class ClubHttpApi {
 
   @GetMapping("/all")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
-    return ResponseEntity.status(HttpStatus.OK).body(clubService.getAllClub());
+    return ResponseEntity.status(HttpStatus.OK).body(clubAnnouncementFacade.getAllClubWithAnnouncementStatus());
   }
 
   @PatchMapping("/{id}")

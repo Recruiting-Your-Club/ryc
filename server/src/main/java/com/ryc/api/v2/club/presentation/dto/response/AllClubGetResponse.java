@@ -2,6 +2,7 @@ package com.ryc.api.v2.club.presentation.dto.response;
 
 import java.util.List;
 
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -23,4 +24,7 @@ public record AllClubGetResponse(
     @Schema(description = "동아리 카테고리") @NotNull(message = "club category shouldn't be null")
         Category category,
     @Schema(description = "동아리 태그 리스트") @NotNull(message = "club tag shouldn't be null")
-        List<ClubTag> clubTags) {}
+        List<ClubTag> clubTags,
+    @Schema(description = "동아리 공고 상태") @NotNull(message = "announcement status shouldn't be null")
+    AnnouncementStatus announcementStatus
+    ) {}
