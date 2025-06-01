@@ -15,12 +15,10 @@ function ScoreTag({ width = '4rem', score, sx }: ScoreTagProps) {
     // effects
 
     return (
-        <div>
-            <span css={[scoreTag(width, score), sx]}>
-                <Star css={svgCss} />
-                {score}
-            </span>
-        </div>
+        <span css={[scoreTag(width, score), sx]}>
+            <Star css={svgCss} />
+            {score}
+        </span>
     );
 }
 export { ScoreTag };
