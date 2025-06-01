@@ -8,7 +8,8 @@ import java.util.List;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder
@@ -17,15 +18,15 @@ public class Club {
   private final String id;
   private final String name;
   private final String shortDescription;
+  private final String detailDescription;
   private final String imageUrl;
   private final String thumbnailUrl;
   private final Category category;
-  private final String detailDescription;
+  private final List<ClubTag> clubTags;
+  private final List<ClubSummary> clubSummaries;
+  private final List<ClubDetailImage> clubDetailImages;
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
-  @Builder.Default private final List<ClubTag> clubTags = new ArrayList<>();
-  @Builder.Default private final List<ClubSummary> clubSummaries = new ArrayList<>();
-  @Builder.Default private final List<ClubDetailImage> clubDetailImages = new ArrayList<>();
   @Builder.Default private final Boolean deleted = Boolean.FALSE;
 
   /** Club 동아리 최초 생성시에만 사용 (id가 생성되기 전에만) */
@@ -41,8 +42,9 @@ public class Club {
         .imageUrl(imageUrl)
         .thumbnailUrl(thumbnailUrl)
         .category(clubCreateRequest.category())
+        .clubSummaries(new ArrayList<>())
+        .clubDetailImages(new ArrayList<>())
         .clubTags(clubTags)
-        .detailDescription("")
         .deleted(false)
         .build();
   }
