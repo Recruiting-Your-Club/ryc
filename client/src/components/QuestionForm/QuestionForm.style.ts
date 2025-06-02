@@ -9,6 +9,12 @@ export const s_inputLength = css`
     color: ${theme.colors.textHelper};
 `;
 
+export const s_applicationQuestion = css`
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+`;
+
 export const s_questionContainer = css`
     position: relative;
 `;

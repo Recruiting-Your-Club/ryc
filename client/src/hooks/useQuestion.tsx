@@ -18,7 +18,9 @@ export const useQuestion = () => {
         },
     ]);
 
-    const addQuesttion = () => {
+    const [applicationQuestions, setApplicationQuestions] = useState<QuestionProps[]>([]);
+
+    const addQuestion = () => {
         const newQuestion: QuestionProps = {
             id: `q${Date.now()}`,
             type: 'short',
@@ -28,12 +30,33 @@ export const useQuestion = () => {
         setQuestions((prev) => [...prev, newQuestion]);
     };
 
+    const addApplicationQuestion = () => {
+        const newQuestion: QuestionProps = {
+            id: `q${Date.now()}`,
+            type: 'long',
+            title: '',
+            subContent: '',
+            required: false,
+        };
+        setApplicationQuestions((prev) => [...prev, newQuestion]);
+    };
+
     const removeQuestion = (id: string) => {
         setQuestions((prev) => prev.filter((q) => q.id !== id));
     };
 
+    const removeApplicationQuestion = (id: string) => {
+        setApplicationQuestions((prev) => prev.filter((q) => q.id !== id));
+    };
+
     const updateQuestion = (id: string, updates: Partial<QuestionProps>) => {
         setQuestions((prev) => prev.map((q) => (q.id === id ? { ...q, ...updates } : q)));
+    };
+
+    const updateApplicationQuestion = (id: string, updates: Partial<QuestionProps>) => {
+        setApplicationQuestions((prev) =>
+            prev.map((q) => (q.id === id ? { ...q, ...updates } : q)),
+        );
     };
 
     const handleQuestionTypeChange = (id: string, newQuestionType: QuestionType) => {
@@ -58,9 +81,13 @@ export const useQuestion = () => {
 
     return {
         questions,
-        addQuesttion,
+        applicationQuestions,
+        addQuestion,
+        addApplicationQuestion,
         updateQuestion,
+        updateApplicationQuestion,
         removeQuestion,
+        removeApplicationQuestion,
         handleQuestionTypeChange,
     };
 };

@@ -4,6 +4,7 @@ import type { QuestionFormProps } from './type';
 import { Button, Input } from '@components/_common';
 import {
     s_addOptionButton,
+    s_applicationQuestion,
     s_inputLength,
     s_questionContainer,
     s_questionOptionContainer,
@@ -17,6 +18,10 @@ import { CheckboxControl } from '@components/Checkbox/CheckboxControl';
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         updateQuestion(question.id, { title: e.target.value });
+    };
+
+    const handleSubContentChange = (e: ChangeEvent<HTMLInputElement>) => {
+        updateQuestion(question.id, { subContent: e.target.value });
     };
 
     const handleOptionChange = (optionId: string, value: string) => {
@@ -56,7 +61,7 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
 
     if (question.type === 'long') {
         return (
-            <div>
+            <div css={s_applicationQuestion}>
                 <div css={s_questionContainer}>
                     <Input
                         placeholder="질문을 입력하세요"
@@ -68,10 +73,10 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                 <div css={s_questionContainer}>
                     <Input
                         placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"
-                        value={question.title}
-                        onChange={handleChange}
+                        value={question.subContent}
+                        onChange={handleSubContentChange}
                     />
-                    <div css={s_inputLength}>{question.title.length}/50</div>
+                    <div css={s_inputLength}>{question.subContent?.length}/50</div>
                 </div>
             </div>
         );

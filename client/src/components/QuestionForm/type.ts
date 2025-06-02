@@ -16,6 +16,7 @@ export interface QuestionProps {
     id: string;
     type: QuestionType;
     title: string;
+    subContent?: string;
     options?: QuestionOption[];
     required: boolean;
 }

@@ -2,10 +2,20 @@ import React from 'react';
 import { useQuestion } from '@hooks/useQuestion';
 import { FieldLabel } from '@components/FieldLabel';
 import { Button } from '@components';
-import { s_buttonContainer } from './PersonalStatementStep.style';
+import {
+    s_buttonContainer,
+    s_buttonPosition,
+    s_questionContainer,
+} from './PersonalStatementStep.style';
+import { QuestionForm } from '@components/QuestionForm';
 
 function PersonalStatementStep() {
-    const { questions, addQuesttion, removeQuestion } = useQuestion();
+    const {
+        applicationQuestions,
+        addApplicationQuestion,
+        removeApplicationQuestion,
+        updateApplicationQuestion,
+    } = useQuestion();
     return (
         <div>
             <FieldLabel
@@ -14,11 +24,20 @@ function PersonalStatementStep() {
                 required
             />
             <div css={s_buttonContainer}>
-                <Button size="full" variant="outlined">
-                    자기소개서 문항 작성하기
-                </Button>
-                <Button size="full" variant="outlined">
-                    자기소개서 없음
+                {applicationQuestions.map((q) => (
+                    <div key={q.id} css={s_questionContainer}>
+                        <Button
+                            size="lg"
+                            onClick={() => removeApplicationQuestion(q.id)}
+                            sx={s_buttonPosition}
+                        >
+                            x
+                        </Button>
+                        <QuestionForm question={q} updateQuestion={updateApplicationQuestion} />
+                    </div>
+                ))}
+                <Button size="full" variant="outlined" onClick={addApplicationQuestion}>
+                    질문 추가하기
                 </Button>
             </div>
         </div>
