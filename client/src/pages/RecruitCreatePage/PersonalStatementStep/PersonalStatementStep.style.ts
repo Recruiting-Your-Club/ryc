@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const s_buttonContainer = css`
-    margin-top: 4rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;

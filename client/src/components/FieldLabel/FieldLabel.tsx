@@ -5,10 +5,11 @@ import {
     s_labelWrapper,
     s_requiredLabel,
 } from './FieldLabel.style';
+import type { FieldLabelProps } from './typs';
 
-function FieldLabel({ label, description, required }: FieldLabelProps) {
+function FieldLabel({ label, description, required, sx }: FieldLabelProps) {
     return (
-        <div css={s_labelWrapper}>
+        <div css={[s_labelWrapper, sx]}>
             <div css={s_fieldLabel}>
                 {label} {required && <span css={s_requiredLabel}>*</span>}
             </div>

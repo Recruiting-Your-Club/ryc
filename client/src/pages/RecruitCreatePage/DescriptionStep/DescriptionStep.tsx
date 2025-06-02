@@ -1,71 +1,105 @@
 import { Input } from '@components';
 import React from 'react';
-import { s_descriptionFileUploader, s_descriptionWrapper } from './DescriptionStep.style';
+import {
+    s_customFieldLabel,
+    s_descriptionFileUploader,
+    s_descriptionWrapper,
+    s_form,
+    s_formGroup,
+    s_formRow,
+} from './DescriptionStep.style';
 import { FileUpLoader } from '@components/FileUpLoader';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
+import type { DescriptionProps } from './type';
 
-function DescriptionStepPage() {
+function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) {
     return (
         <div>
             <div css={s_descriptionWrapper}>
                 <FieldLabel label="공고 제목" description="공고 제목을 작성해주세요" required />
-                <Input placeholder="ex) En# 신입 부원 모집" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="모집 정원"
-                    description="동아리 신입 기수 모집 정원을 입력해주세요"
-                    required
+                <Input
+                    placeholder="ex) En# 신입 부원 모집"
+                    value={recruitDetailInfo.recruitmentSubject}
+                    onChange={(e) => onChange({ recruitmentSubject: e.target.value })}
                 />
-                <Input placeholder="ex) 10명 / 미정" />
             </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="활동 기간"
-                    description="동아리 신입 기수의 필수 활동 기간을 입력해주세요"
-                    required
-                />
-                <Input placeholder="ex) 1년 6개월" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="모집 분야"
-                    description="모집 직무 또는 역할을 입력해주세요"
-                    required
-                />
-                <Input placeholder="ex) 디자이너 / FE / BE / 신입 부원 / 집행부원 등" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel label="모집 대상" description="모집 대상을 입력해주세요" required />
-                <Input placeholder="ex) 대학교 재학 / 휴학생" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="서류 접수 기간"
-                    description="서류 접수 기간을 입력해주세요"
-                    required
-                />
-                <Input placeholder="ex) 여기는 calendar 들어오기는 해야될듯?" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="서류 합격 발표일"
-                    description="서류 합격 발표 일을 입력해주세요"
-                    required
-                />
-                <Input placeholder="ex) 여기는 calendar 들어오기는 해야될듯?" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel label="면접 일정" description="면접 일정을 입력해주세요" required />
-                <Input placeholder="ex) 여기는 calendar 들어오기는 해야될듯?" />
-            </div>
-            <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="최종 합격 발표일"
-                    description="최종 합격 발표 일을 입력해주세요"
-                    required
-                />
-                <Input placeholder="ex) 여기는 calendar 들어오기는 해야될듯?" />
+            <FieldLabel
+                label="공고 세부 정보"
+                description="형식에 맞게 공고 세부 정보를 기입해주세요"
+            />
+            <div css={s_form}>
+                <div css={s_formRow}>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="모집 정원" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 10명 / 미정"
+                            value={recruitDetailInfo.recruitmentNumber}
+                            onChange={(e) => onChange({ recruitmentNumber: e.target.value })}
+                        />
+                    </div>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="서류 접수 기간" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 2025.03.31 ~ 2025.04.14"
+                            value={recruitDetailInfo.documentPeriod}
+                            onChange={(e) => onChange({ documentPeriod: e.target.value })}
+                        />
+                    </div>
+                </div>
+                <div css={s_formRow}>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="모집 분야" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 디자이너 / FE / BE /신입 부원 / 집행 부원 등"
+                            value={recruitDetailInfo.recruitmentField}
+                            onChange={(e) => onChange({ recruitmentField: e.target.value })}
+                        />
+                    </div>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="서류 합격 발표" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 2025.04.17"
+                            value={recruitDetailInfo.documentResult}
+                            onChange={(e) => onChange({ documentResult: e.target.value })}
+                        />
+                    </div>
+                </div>
+                <div css={s_formRow}>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="활동 기간" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 1년 6개월"
+                            value={recruitDetailInfo.activityPeriod}
+                            onChange={(e) => onChange({ activityPeriod: e.target.value })}
+                        />
+                    </div>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="면접 일정" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 2025.04.19 ~ 2025.04.22"
+                            value={recruitDetailInfo.interviewSchedule}
+                            onChange={(e) => onChange({ interviewSchedule: e.target.value })}
+                        />
+                    </div>
+                </div>
+                <div css={s_formRow}>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="모집 대상" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 세종대 재학생 / 휴학생 등"
+                            value={recruitDetailInfo.recruitmentTarget}
+                            onChange={(e) => onChange({ recruitmentTarget: e.target.value })}
+                        />
+                    </div>
+                    <div css={s_formGroup}>
+                        <FieldLabel label="최종 합격 발표" required sx={s_customFieldLabel} />
+                        <Input
+                            placeholder="ex) 2025.04.28"
+                            value={recruitDetailInfo.finalResult}
+                            onChange={(e) => onChange({ finalResult: e.target.value })}
+                        />
+                    </div>
+                </div>
             </div>
             <div css={s_descriptionWrapper}>
                 <FieldLabel

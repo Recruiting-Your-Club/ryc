@@ -1,7 +1,7 @@
 import { Button, Stepper } from '@components';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useStepper } from '@hooks/useStepper';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     s_recruitCreatePageContainer,
     s_stepButtonContainer,
@@ -11,6 +11,7 @@ import {
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
+import type { RecruitDetailInfo } from './type';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -22,13 +23,40 @@ function RecruitCreatePage() {
     // initial values
 
     // state, ref, querystring hooks
+    const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
+        recruitmentSubject: '',
+        recruitmentNumber: '',
+        activityPeriod: '',
+        recruitmentField: '',
+        recruitmentTarget: '',
+        documentPeriod: '',
+        documentResult: '',
+        interviewSchedule: '',
+        finalResult: '',
+    });
+
     // form hooks
     // query hooks
     // calculated values
+    // handlers
+    const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
+        setRecruitDetailInfo((prev) => ({
+            ...prev,
+            ...updateFields,
+        }));
+    };
+
+    // effects
+
     const stepComponent = (step: number) => {
         switch (step) {
             case 0:
-                return <DescriptionStepPage />;
+                return (
+                    <DescriptionStepPage
+                        recruitDetailInfo={recruitDetailInfo}
+                        onChange={handleInputChange}
+                    />
+                );
             case 1:
                 return <BasicInfoStep />;
             case 2:
@@ -39,8 +67,6 @@ function RecruitCreatePage() {
                 <div>error</div>;
         }
     };
-    // handlers
-    // effects
 
     return (
         <div css={s_recruitCreatePageContainer}>
