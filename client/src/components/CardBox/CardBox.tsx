@@ -3,15 +3,7 @@ import { Divider, Text } from '@components/_common';
 import type { ReactNode } from 'react';
 import React from 'react';
 import { boxContainer, cardGroupWrapper, dividerCss, svgCss, titleGroup } from './CardBox.style';
-import type { Step } from './types';
-
-interface CardBoxProps {
-    stepTitle: string;
-    step: Step;
-    toggleDropdown?: () => void;
-    height?: string;
-    children?: ReactNode;
-}
+import type { CardBoxProps, Step } from './types';
 
 function CardBox({ stepTitle, step, toggleDropdown, height, children }: CardBoxProps) {
     return (
