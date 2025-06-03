@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const boxContainer = (height: string = '100%') => css`
+export const listContainer = (height: string = '100%') => css`
     height: ${height};
     border-radius: 10px;
     background-color: ${theme.colors.white};

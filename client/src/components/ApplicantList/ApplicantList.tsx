@@ -3,7 +3,7 @@ import { Button, Divider, Input, Text } from '@components/_common';
 import theme from '@styles/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
-import { boxContainer, inputCss, miniCardGroupSection, titleSection } from './ApplicantList.style';
+import { listContainer, inputCss, miniCardGroupSection, titleSection } from './ApplicantList.style';
 
 interface ApplicationListProps {
     height?: string;
@@ -12,7 +12,7 @@ interface ApplicationListProps {
 
 function ApplicantList({ height, children }: ApplicationListProps) {
     return (
-        <div css={boxContainer(height)}>
+        <div css={listContainer(height)}>
             <div css={titleSection}>
                 <Text as="span" type="captionSemibold" textAlign="start">
                     지원자 목록
