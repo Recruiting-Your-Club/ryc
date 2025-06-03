@@ -5,7 +5,7 @@ import {
     imageItem,
     imageListContainer,
     textContainer,
-} from './ClubIntro.style';
+} from './ClubIntroPage.style';
 import { useDialog } from '@hooks/useDialog';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory';
