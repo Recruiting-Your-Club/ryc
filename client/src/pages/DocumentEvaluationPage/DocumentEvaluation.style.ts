@@ -39,7 +39,7 @@ export const evaluationContainer = css`
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    min-width: 30rem;
+    min-width: 35rem;
     max-width: 40rem;
     min-height: 0;
 `;
