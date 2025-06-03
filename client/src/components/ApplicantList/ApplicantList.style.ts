@@ -10,16 +10,17 @@ export const boxContainer = (height: string = '100%') => css`
     display: flex;
     flex-direction: column;
     padding: 0.5rem 1rem;
+    box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
 `;
 
 export const titleSection = css`
-    flex: 1;
+    flex: 0.7;
     display: flex;
     width: 100%;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
     align-items: center;
-    justify-content: end;
-    min-height: 6rem;
+    justify-content: space-between;
+    min-height: 5rem;
 `;
 
 export const inputCss = css`
@@ -29,10 +30,9 @@ export const inputCss = css`
     background-color: ${theme.colors.gray[100]};
 `;
 
-export const dividerCss = css`
-    /* width: 95%; */
-`;
-
 export const miniCardGroupSection = css`
-    flex: 9;
+    flex: 9.3;
+    width: 100%;
+    min-height: 0;
+    padding: 0.5rem 0.2rem;
 `;

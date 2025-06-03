@@ -1,15 +1,9 @@
 import Search from '@assets/images/search.svg';
-import { Button, Divider, Input } from '@components/_common';
+import { Button, Divider, Input, Text } from '@components/_common';
 import theme from '@styles/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
-import {
-    boxContainer,
-    dividerCss,
-    inputCss,
-    miniCardGroupSection,
-    titleSection,
-} from './ApplicantList.style';
+import { boxContainer, inputCss, miniCardGroupSection, titleSection } from './ApplicantList.style';
 
 interface ApplicationListProps {
     height?: string;
@@ -20,6 +14,9 @@ function ApplicantList({ height, children }: ApplicationListProps) {
     return (
         <div css={boxContainer(height)}>
             <div css={titleSection}>
+                <Text as="span" type="captionSemibold" textAlign="start">
+                    지원자 목록
+                </Text>
                 <span>
                     <Input
                         variant="transparent"
@@ -38,7 +35,7 @@ function ApplicantList({ height, children }: ApplicationListProps) {
                     />
                 </span>
             </div>
-            <Divider sx={dividerCss} />
+            <Divider />
             <div css={miniCardGroupSection}>{children}</div>
         </div>
     );
