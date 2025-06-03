@@ -10,7 +10,7 @@ const httpRequest = {
                 headers,
                 isAuthRequire,
             })
-            .then(httpClient.handleResponse<T>);
+            .then((response) => httpClient.handleResponse<T>(response));
         return data;
     },
     post<T>({ url, headers, body, isAuthRequire }: requestOption): Promise<T> {
@@ -22,7 +22,7 @@ const httpRequest = {
                 body,
                 isAuthRequire,
             })
-            .then(httpClient.handleResponse<T>);
+            .then((response) => httpClient.handleResponse<T>(response));
         return data;
     },
     put<T>({ url, headers, body, isAuthRequire }: requestOption): Promise<T> {
@@ -34,7 +34,7 @@ const httpRequest = {
                 body,
                 isAuthRequire,
             })
-            .then(httpClient.handleResponse<T>);
+            .then((response) => httpClient.handleResponse<T>(response));
         return data;
     },
     delete<T>({ url, headers, isAuthRequire }: requestOption): Promise<T> {
@@ -45,7 +45,7 @@ const httpRequest = {
                 headers,
                 isAuthRequire,
             })
-            .then(httpClient.handleResponse<T>);
+            .then((response) => httpClient.handleResponse<T>(response));
         return data;
     },
     patch<T>({ url, headers, body, isAuthRequire }: requestOption): Promise<T> {
@@ -57,7 +57,7 @@ const httpRequest = {
                 body,
                 isAuthRequire,
             })
-            .then(httpClient.handleResponse<T>);
+            .then((response) => httpClient.handleResponse<T>(response));
         return data;
     },
 };
