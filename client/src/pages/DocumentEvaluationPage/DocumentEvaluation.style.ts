@@ -19,25 +19,29 @@ export const listContainer = css`
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    min-width: 31rem;
+    min-width: 30rem;
     max-width: 35rem;
     min-height: 0;
 `;
 
 export const informationContainer = css`
-    flex: 4.8;
-    padding: 3rem 1rem;
-    background-color: navy;
+    flex: 5;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
+    min-width: 45rem;
+    max-width: 80rem;
+    min-height: 0;
 `;
 
 export const evaluationContainer = css`
-    flex: 3;
-    padding: 3rem 1rem;
-    background-color: brown;
+    flex: 2.8;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
+    min-width: 30rem;
+    max-width: 40rem;
+    min-height: 0;
 `;
 
 export const miniCardGroup = css`

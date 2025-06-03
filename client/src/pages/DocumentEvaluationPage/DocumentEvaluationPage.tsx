@@ -1,4 +1,4 @@
-import { ApplicantList, ApplicantMiniCard } from '@components';
+import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox } from '@components';
 import React from 'react';
 import {
     documentEvaluationPageContainer,
@@ -24,8 +24,12 @@ function DocumentEvaluationPage() {
                     </div>
                 </ApplicantList>
             </div>
-            <div css={informationContainer}></div>
-            <div css={evaluationContainer}></div>
+            <div css={informationContainer}>
+                <InformationBox />
+            </div>
+            <div css={evaluationContainer}>
+                <EvaluationBox />
+            </div>
         </div>
     );
 }
