@@ -1,1 +1,56 @@
 import { css } from '@emotion/react';
+
+export const documentEvaluationPageContainer = css`
+    width: 100%;
+    height: 100%;
+    padding: 2rem 1rem;
+    display: flex;
+`;
+
+export const titleSection = css`
+    flex: 0.5;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+`;
+
+export const listContainer = css`
+    flex: 2.2;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 31rem;
+    max-width: 35rem;
+    min-height: 0;
+`;
+
+export const informationContainer = css`
+    flex: 4.8;
+    padding: 3rem 1rem;
+    background-color: navy;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const evaluationContainer = css`
+    flex: 3;
+    padding: 3rem 1rem;
+    background-color: brown;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const miniCardGroup = css`
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &::after {
+        content: '';
+        height: 0.5rem;
+        flex-shrink: 0;
+    }
+`;
