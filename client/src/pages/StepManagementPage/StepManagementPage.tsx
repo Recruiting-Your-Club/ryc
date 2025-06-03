@@ -16,7 +16,7 @@ import {
     stepBoxContainer,
     stepManagementPageContainer,
     topContainer,
-} from './StepManagement.style';
+} from './StepManagementPage.style';
 import type { Applicant, ClubNotice } from './types';
 const applicantList = [
     {
