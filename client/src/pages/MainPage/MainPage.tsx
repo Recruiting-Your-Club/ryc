@@ -37,15 +37,15 @@ function MainPage() {
 
     // calculated values
     const filteredClubData = useMemo(() => {
-        let filterdClub = clublist || [];
+        let filteredClub = clublist || [];
         const isSelected = currentCategory.name !== '전체';
         if (isSelected) {
-            filterdClub = clublist?.filter((club) => currentCategory.eng === club.category) || [];
+            filteredClub = clublist?.filter((club) => currentCategory.eng === club.category) || [];
         }
         if (isProgress) {
-            filterdClub = filterdClub?.filter((club) => club.status === 'progress') || [];
+            filteredClub = filteredClub?.filter((club) => club.status === 'progress') || [];
         }
-        return filterdClub;
+        return filteredClub;
     }, [currentCategory, isProgress, clublist]);
 
     const calculatedSliderPosition = useMemo((): Slider => {
