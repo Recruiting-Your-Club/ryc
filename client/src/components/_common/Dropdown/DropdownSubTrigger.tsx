@@ -45,7 +45,7 @@ function DropdownSubTrigger({
             ref={ref}
             onClick={handleSelect}
             onKeyDown={handleKeyDown}
-            tabIndex={0}
+            tabIndex={disabled ? 0 : -1}
             css={[s_dropdownSubTrigger(disabled, inset), sx]}
         >
             {children}
