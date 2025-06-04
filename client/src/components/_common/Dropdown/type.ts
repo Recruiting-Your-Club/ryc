@@ -55,7 +55,7 @@ export interface DropdownSubProps {
 
 export interface DropdownSubContentProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
-    align?: 'top' | 'center' | 'bottom';
+    align?: DropdownAlign;
     sx?: CSSObject;
     forwardedRef?: Ref<HTMLDivElement>;
 }
@@ -74,3 +74,5 @@ export interface DropdownTriggerProps extends ButtonHTMLAttributes<HTMLButtonEle
     sx?: CSSObject;
     forwardedRef?: Ref<HTMLButtonElement>;
 }
+
+type DropdownAlign = 'top' | 'center' | 'bottom';
