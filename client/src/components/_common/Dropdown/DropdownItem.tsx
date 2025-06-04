@@ -8,14 +8,7 @@ import type {
 import React from 'react';
 import { useDropdownContext } from './DropdownContext';
 import { s_dropdownItem } from './Dropdown.styles';
-
-interface DropdownItemProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    disabled?: boolean;
-    inset?: boolean;
-    onItemSelect?: (e: ReactMouseEvent<HTMLDivElement>) => void;
-    sx?: CSSObject;
-}
+import type { DropdownItemProps } from './type';
 
 function DropdownItem({
     children,

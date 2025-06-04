@@ -3,14 +3,7 @@ import React from 'react';
 import type { CSSObject } from '@emotion/react';
 import { useDropdownContext } from './DropdownContext';
 import { s_dropdownContent } from './Dropdown.styles';
-
-interface DropdownContentProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    offsetX?: number;
-    offsetY?: number;
-    sx?: CSSObject;
-    forwardedRef?: Ref<HTMLDivElement>;
-}
+import type { DropdownContentProps } from './type';
 
 function DropdownContent({
     children,

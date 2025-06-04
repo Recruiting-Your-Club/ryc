@@ -3,13 +3,7 @@ import { useClickOutside } from '@hooks/components/useClickOutside';
 import type { ReactNode, SetStateAction } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DropdownSubContext } from './DropdownContext';
-
-interface DropdownSubProps {
-    children: ReactNode;
-    onOpenChange?: (open: boolean) => void;
-    defaultOpen?: boolean;
-    open?: boolean;
-}
+import type { DropdownSubProps } from './type';
 
 function DropdownSub({
     children,

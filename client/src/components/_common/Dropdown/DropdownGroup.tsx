@@ -2,11 +2,7 @@ import type { CSSObject } from '@emotion/react';
 import type { HTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 import { s_dropdownGroup } from './Dropdown.styles';
-
-interface DropdownGruopProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    sx?: CSSObject;
-}
+import type { DropdownGruopProps } from './type';
 
 function DropdownGroup({ children, sx, ...props }: DropdownGruopProps) {
     // prop destruction

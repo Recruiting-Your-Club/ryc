@@ -3,13 +3,7 @@ import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import React from 'react';
 import { useDropdownSubContext } from './DropdownContext';
 import { s_dropdownSubContent } from './Dropdown.styles';
-
-interface DropdownSubContentProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    align?: 'top' | 'center' | 'bottom';
-    sx?: CSSObject;
-    forwardedRef?: Ref<HTMLDivElement>;
-}
+import type { DropdownSubContentProps } from './type';
 
 function DropdownSubContent({
     children,
