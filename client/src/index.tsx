@@ -7,19 +7,35 @@ import theme from '@styles/theme';
 import { ToastProvider } from '@components/Toast/ToastProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { browserServer } from './mocks';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 const queryClient = new QueryClient();
 dayjs.locale('ko'); // dayjs를 한국기준으로 설정
-root.render(
-    <React.StrictMode>
-        <Global styles={globalStyles} />
-        <ThemeProvider theme={theme}>
-            <QueryClientProvider client={queryClient}>
-                <ToastProvider limit={5}>
-                    <App />
-                </ToastProvider>
-            </QueryClientProvider>
-        </ThemeProvider>
-    </React.StrictMode>,
-);
+
+async function initializeApp() {
+    // 개발 환경에서 MSW 활성화
+    if (process.env.API_MOKING === 'enabled') {
+        if (typeof window === 'undefined') {
+            // 서버 환경
+        } else {
+            // 브라우저 환경
+            await browserServer.start();
+        }
+    }
+
+    root.render(
+        <React.StrictMode>
+            <Global styles={globalStyles} />
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={queryClient}>
+                    <ToastProvider limit={5}>
+                        <App />
+                    </ToastProvider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        </React.StrictMode>,
+    );
+}
+
+initializeApp();
