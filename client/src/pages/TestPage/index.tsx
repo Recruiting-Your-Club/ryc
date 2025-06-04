@@ -48,7 +48,7 @@ function TestPage() {
                             알림창 띄우기
                         </Dropdown.Item>
                         <Dropdown.Item disabled>hi</Dropdown.Item>
-                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item inset>hi</Dropdown.Item>
                     </Dropdown.Group>
                     <DropdownSeperator />
                     <Dropdown.Group>
