@@ -3,11 +3,12 @@ import theme from '@styles/theme';
 
 export const clubApplyPage = css`
     width: 100%;
-    min-height: 100dvh;
+    height: 100%;
+    min-height: 115rem;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 2rem;
+    gap: 3rem;
     padding: 2rem;
     padding-bottom: 0;
     background-color: ${theme.colors.gray[100]};
@@ -17,6 +18,7 @@ export const clubApplyPage = css`
         align-items: center;
         justify-content: center;
         gap: 3rem;
+        min-height: 100dvh;
     }
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%;
