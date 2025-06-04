@@ -368,7 +368,7 @@ function ClubApplyPage() {
                 <Button
                     variant="primary"
                     size="full"
-                    disabled={completedQuestions !== allQuestions.length}
+                    disabled={completedQuestions !== requiredQuestionsCount}
                     onClick={handleSubmit}
                     sx={{ height: '4rem' }}
                 >
