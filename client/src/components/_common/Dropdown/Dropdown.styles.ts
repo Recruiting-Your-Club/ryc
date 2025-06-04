@@ -109,10 +109,7 @@ export const s_dropdownItem = (disabled: boolean, inset: boolean) => {
         ${disabled &&
         css`
             opacity: 0.5;
-            cursor: not-allowed;
-            &:hover {
-                background-color: transparent;
-            }
+            pointer-events: none;
         `}
 
         ${inset &&

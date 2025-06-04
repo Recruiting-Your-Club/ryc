@@ -47,7 +47,7 @@ function TestPage() {
                         <Dropdown.Item onItemSelect={() => alert('버튼이 클릭되었습니다')}>
                             알림창 띄우기
                         </Dropdown.Item>
-                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item disabled>hi</Dropdown.Item>
                         <Dropdown.Item>hi</Dropdown.Item>
                     </Dropdown.Group>
                     <DropdownSeperator />
