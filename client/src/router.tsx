@@ -1,15 +1,17 @@
+import { ApplicantList } from '@components/ApplicantList';
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
+import { ManagerLayout, UserLayout } from './layouts';
 import {
-    TestPage,
-    NotFoundPage,
-    LoginPage,
-    RegisterPage,
-    MainPage,
     ClubDetailPage,
+    DocumentEvaluationPage,
+    LoginPage,
+    MainPage,
+    NotFoundPage,
     RecruitmentPage,
+    RegisterPage,
+    TestPage,
 } from './pages';
-import { UserLayout, ManagerLayout } from './layouts';
 
 const router = createBrowserRouter([
     {
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
             { path: 'time-slots', element: <RegisterPage /> },
+            { path: 'doc-evaluation', element: <DocumentEvaluationPage /> },
             { path: 'evaluation', element: <LoginPage /> },
             { path: 'questions', element: <RegisterPage /> },
             { path: 'setting', element: <LoginPage /> },
