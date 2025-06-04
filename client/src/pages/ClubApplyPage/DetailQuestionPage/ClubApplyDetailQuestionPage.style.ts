@@ -14,6 +14,7 @@ export const clubApplyDetailQuestionContainer = css`
 export const textAreaSx = css`
     width: 100%;
     height: 30rem;
+    ${theme.typography.captionRegular};
 `;
 
 export const labelContainer = css`
