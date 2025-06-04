@@ -17,7 +17,7 @@ const meta: Meta = {
         docs: {
             description: {
                 component:
-                    '다음과 같은 컴포넌트를 children으로 사용할 수 있습니다. (하단 Default Dropdown Story에 정리되어있습니다)',
+                    '다음과 같은 컴포넌트를 children으로 사용할 수 있습니다. (하단 Default Dropdown Story에 정리되어있습니다) ',
             },
         },
     },
@@ -152,6 +152,7 @@ const meta: Meta = {
  * ##### `children`으로 사용 가능한 컴포넌트
  * - `<Dropdown.Trigger>` : `<Dropdown.Content>`를 열기 위한 이벤트를 제어하는 컴포넌트입니다.
  *   - `asChild` 속성을 사용해 사용자 정의 컴포넌트를  `<Dropdown.Trigger>` 내부에 렌더링시킬 수 있습니다.
+ *   - `asChild` 속성 사용 시에는 `a` 태그 혹은 `button` 컴포넌트를 사용하는 것을 권장합니다. (onClick 이벤트 자동 적용되기 때문에)
  * - `<Dropdown.Content>` : 사용자가 선택할 수 있는 선택지의 종류를 렌더링하는 컴포넌트입니다.
  *   - `offsetX`, `offsetY` 속성을 사용해 `<Dropdown.Content> 컴포넌트의 위치를 직접 설정할 수 있습니다.
  * - `<Dropdown.Label>` : 선택지에 제목을 표시하고 싶을 때 사용하는 컴포넌트입니다.

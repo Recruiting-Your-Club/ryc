@@ -36,7 +36,7 @@ function Slot({ children, forwardedRef, ...props }: SlotProps) {
         const newChildren = childrenArray.map((child) => {
             if (child === slottable) {
                 if (Children.count(newElement) > 1) {
-                    return Children.only(null); //강제 에러 발생 장치
+                    throw new Error('Slot 하위에 Slottable 컴포넌트는 1개만 올 수 있습니다.');
                 }
 
                 return isValidElement(newElement) ? (newElement.props.children as ReactNode) : null;
@@ -71,22 +71,23 @@ interface SlotCloneProps extends HTMLAttributes<HTMLElement> {
 
 //자식 컴포넌트 클론 및 props/ref 병합해주는 컴포넌트
 function SlotClone({ children, forwardedRef, ...slotProps }: SlotCloneProps) {
-    if (isValidElement(children)) {
-        const childrenRef = getElementRef(children);
-        const mergedProps = mergeProps(slotProps, children.props);
-        const ref = mergeRefs(childrenRef, forwardedRef);
-
-        //Fragment는 ref가 없으니 예외처리
-        if (children.type !== Fragment) {
-            mergedProps.ref = ref;
+    if (!isValidElement(children)) {
+        if (Children.count(children) > 1) {
+            throw new Error('SlotClone 하위에는 단일 컴포넌트만 올 수 있습니다');
         }
-
-        return cloneElement(children, mergedProps);
+        return null;
     }
 
-    //children이 유일한 React 요소가 아니거나, children이 여러개일 경우 null 반환
-    //children이 단일요소일 때만 처리되도록 하기 위해
-    return Children.count(children) > 1 ? Children.only(null) : null;
+    const childrenRef = getElementRef(children);
+    const mergedProps = mergeProps(slotProps, children.props);
+    const ref = mergeRefs(childrenRef, forwardedRef);
+
+    //Fragment는 ref가 없으니 예외처리
+    if (children.type !== Fragment) {
+        mergedProps.ref = ref;
+    }
+
+    return cloneElement(children, mergedProps);
 }
 
 //------------------------------------//

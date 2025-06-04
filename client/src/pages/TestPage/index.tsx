@@ -32,8 +32,8 @@ function TestPage() {
             <div css={{ margin: '20px' }}></div>
             <Dropdown>
                 <Dropdown.Trigger asChild>
-                    <Button size="xl" variant="primary">
-                        hello
+                    <Button size="md" variant="primary">
+                        Hello
                     </Button>
                 </Dropdown.Trigger>
                 <Dropdown.Content

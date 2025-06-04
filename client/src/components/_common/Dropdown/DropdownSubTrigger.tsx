@@ -28,7 +28,7 @@ function DropdownSubTrigger({
     //handlers
     const handleSelect = () => {
         if (!disabled) {
-            setOpen(!open);
+            setOpen((prev) => !prev);
         }
     };
 

@@ -37,7 +37,7 @@ function DropdownTrigger({
             {...props}
             forwardedRef={ref}
             onClick={() => {
-                setOpen(!open);
+                setOpen((prev) => !prev);
             }}
         >
             {wrappedChildren}
