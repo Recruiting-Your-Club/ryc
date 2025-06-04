@@ -25,7 +25,7 @@ export interface Club {
     imageUrl: string;
     thumbnailUrl: string;
     category: string;
-    clubTags: string[];
+    clubTags: ClubTag[];
     clubSummaries: summaries[];
     clubDetailImages: images[];
 }
