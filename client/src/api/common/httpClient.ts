@@ -1,7 +1,6 @@
 import { HttpError } from './httpError';
 import type { CreateClientOptions } from './types';
-
-const BASE_URL = process.env.BASE_URL || 'http://localhost:8080/';
+import { BASE_URL } from '@constants/api';
 
 const httpClient = {
     async handleResponse<T>(response: Response): Promise<T> {
