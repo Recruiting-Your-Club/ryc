@@ -144,8 +144,12 @@ export const s_dropdownGroup = css`
 
 export const s_dropdownSubTrigger = (disabled: boolean, inset: boolean) => {
     return css`
-        ${s_dropdownItem(disabled, inset)}
         justify-content: space-between;
+        ${inset &&
+        css`
+            gap: 1rem;
+        `}
+        ${s_dropdownItem(disabled, inset)}
     `;
 };
 

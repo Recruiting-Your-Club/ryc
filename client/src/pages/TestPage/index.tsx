@@ -57,7 +57,7 @@ function TestPage() {
                         <Dropdown.Item>hi</Dropdown.Item>
                     </Dropdown.Group>
                     <Dropdown.Sub>
-                        <Dropdown.SubTrigger>hi</Dropdown.SubTrigger>
+                        <Dropdown.SubTrigger inset>hi</Dropdown.SubTrigger>
                         <Dropdown.SubContent align="center">
                             <Dropdown.Label>hello</Dropdown.Label>
                             <Dropdown.Seperator />
