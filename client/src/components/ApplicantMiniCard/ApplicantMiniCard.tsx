@@ -1,24 +1,48 @@
 import { Avatar, Text } from '@components/_common';
 import type { CSSObject } from '@emotion/react';
+import type { HTMLAttributes } from 'react';
 import React from 'react';
 import { informationSection, miniCardContainer } from './ApplicantMiniCard.style';
 
-interface ApplicationMiniCardProps {
+export interface ApplicantSummary {
+    id: number;
+    name: string;
+    email: string;
+}
+
+interface ApplicationMiniCardProps extends HTMLAttributes<HTMLDivElement> {
+    applicant: ApplicantSummary;
     isCompleted?: boolean;
+    isActivated?: boolean;
     sx?: CSSObject;
 }
 
-function ApplicantMiniCard({ isCompleted = false, sx }: ApplicationMiniCardProps) {
+function ApplicantMiniCard({
+    applicant,
+    isCompleted = false,
+    isActivated = false,
+    sx,
+    ...props
+}: ApplicationMiniCardProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
-        <div css={[miniCardContainer, sx]}>
+        <div css={[miniCardContainer(isActivated), sx]} {...props}>
             <div css={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <Avatar shape="round" size="s" />
                 <span css={informationSection}>
                     <Text as="span" type="captionSemibold" textAlign="start">
-                        김영림
+                        {applicant.name}
                     </Text>
                     <Text as="span" type="subCaptionLight" textAlign="start">
-                        nickname@example.com
+                        {applicant.email}
                     </Text>
                 </span>
             </div>

@@ -48,7 +48,6 @@ export const documentWrapper = css`
 
 export const personalDataWrapper = css`
     display: flex;
-    /* border: 1px solid ${theme.colors.gray[200]}; */
     border-radius: 10px;
     padding: 2rem;
     gap: 1.3rem;

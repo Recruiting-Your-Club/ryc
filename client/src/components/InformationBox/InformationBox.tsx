@@ -1,7 +1,6 @@
 import { TextToggle } from '@components';
 import { DocumentBox } from '@components/DocumentBox';
 import { Avatar, Text } from '@components/_common';
-import type { ReactNode } from 'react';
 import React, { useState } from 'react';
 import {
     avatarCss,
@@ -29,14 +28,37 @@ export const documentList = [
     },
 ];
 
+export interface ApplicantDetail {
+    id: number;
+    name: string;
+    email: string;
+    studentId: string;
+    phone: string;
+}
 interface InformationBoxProps {
+    applicant: ApplicantDetail | null;
     height?: string;
-    children?: ReactNode;
 }
 
-function InformationBox({ height, children }: InformationBoxProps) {
+function InformationBox({ applicant, height }: InformationBoxProps) {
+    // prop destruction
+    // lib hooks
+    // initial value
+    const textMap = [
+        { label: '이름', value: applicant?.name },
+        { label: '이메일', value: applicant?.email },
+        { label: '학번', value: applicant?.studentId },
+        { label: '전화번호', value: applicant?.phone },
+    ];
+
+    // state, ref, querystring hooks
     const [isToggle, setIsToggle] = useState(false);
 
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={boxContainer(height)}>
             <div css={titleSection}>
@@ -49,7 +71,7 @@ function InformationBox({ height, children }: InformationBoxProps) {
                     지원자 정보
                 </Text>
                 <TextToggle
-                    onClick={() => setIsToggle((prev) => !prev)}
+                    onChange={() => setIsToggle((prev) => !prev)}
                     isChecked={isToggle}
                     leftText="인적사항"
                     rightText="지원서"
@@ -57,7 +79,7 @@ function InformationBox({ height, children }: InformationBoxProps) {
                 />
             </div>
             <div css={contentSection}>
-                {isToggle && (
+                {applicant && isToggle && (
                     <div css={documentWrapper}>
                         {documentList.map((document, index) => (
                             <DocumentBox
@@ -69,36 +91,33 @@ function InformationBox({ height, children }: InformationBoxProps) {
                         ))}
                     </div>
                 )}
-                {!isToggle && (
+                {applicant && !isToggle && (
                     <div css={personalDataWrapper}>
                         <Avatar sx={avatarCss} />
                         <div css={textSection}>
-                            <Text as="span" type="captionSemibold" color="primary" textAlign="end">
-                                이름
-                            </Text>
-                            <Text as="span" type="captionSemibold" color="primary" textAlign="end">
-                                이메일
-                            </Text>
-                            <Text as="span" type="captionSemibold" color="primary" textAlign="end">
-                                학번
-                            </Text>
-                            <Text as="span" type="captionSemibold" color="primary" textAlign="end">
-                                전화번호
-                            </Text>
+                            {textMap.map((item) => (
+                                <Text
+                                    key={item.label}
+                                    as="span"
+                                    type="captionSemibold"
+                                    color="primary"
+                                    textAlign="end"
+                                >
+                                    {item.label}
+                                </Text>
+                            ))}
                         </div>
                         <div css={textSection}>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                팥붕이
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                nickname@exmaple.com
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                20010501
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                010-0000-0000
-                            </Text>
+                            {textMap.map((item) => (
+                                <Text
+                                    key={item.label}
+                                    as="span"
+                                    type="captionRegular"
+                                    textAlign="start"
+                                >
+                                    {item.value}
+                                </Text>
+                            ))}
                         </div>
                     </div>
                 )}

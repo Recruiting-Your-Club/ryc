@@ -3,7 +3,7 @@ import { Button, Divider, Input, Text } from '@components/_common';
 import theme from '@styles/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
-import { listContainer, inputCss, miniCardGroupSection, titleSection } from './ApplicantList.style';
+import { inputCss, listContainer, miniCardGroupSection, titleSection } from './ApplicantList.style';
 
 interface ApplicationListProps {
     height?: string;
@@ -11,6 +11,15 @@ interface ApplicationListProps {
 }
 
 function ApplicantList({ height, children }: ApplicationListProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={listContainer(height)}>
             <div css={titleSection}>

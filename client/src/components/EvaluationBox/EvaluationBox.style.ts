@@ -103,7 +103,6 @@ export const textareaCss = css`
 export const svgButtonGroup = css`
     display: flex;
     margin: 0.5rem 0;
-    gap: 0.5rem;
 `;
 
 export const svgButtonCss = css`

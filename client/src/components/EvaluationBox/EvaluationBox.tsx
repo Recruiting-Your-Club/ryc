@@ -16,13 +16,30 @@ import {
     userStarScore,
 } from './EvaluationBox.style';
 
+export interface Evaluation {
+    applicantId: number;
+    averageScore: number;
+    comments: { evaluator: string; comment: string }[];
+}
+
 interface EvaluationBoxProps {
+    evaluation: Evaluation | null;
     height?: string;
 }
 
-function EvaluationBox({ height }: EvaluationBoxProps) {
+function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
     const [hasUserEvaluation, setHasUserEvaluation] = useState(true); // 현재 나의 평가가 등록되어있는지
+    const [willEditEvaluation, setWillEditEvaluation] = useState(false);
 
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={boxContainer(height)}>
             <div css={savedEvaluation(hasUserEvaluation)}>
@@ -35,14 +52,19 @@ function EvaluationBox({ height }: EvaluationBoxProps) {
                     >
                         평균 평점
                     </Text>
-                    <Rating value={4} totalStars={5} size="lg" type="display" />
+                    <Rating
+                        key={evaluation?.applicantId}
+                        value={evaluation ? evaluation.averageScore : 0}
+                        size="lg"
+                        type="display"
+                    />
                     <Text
                         as="span"
                         type="captionRegular"
                         color="primary"
                         sx={{ paddingTop: '0.3rem' }}
                     >
-                        (4)
+                        ({evaluation ? evaluation.averageScore : 0})
                     </Text>
                 </div>
                 <Divider />
@@ -63,8 +85,17 @@ function EvaluationBox({ height }: EvaluationBoxProps) {
                         </Text>
                         {hasUserEvaluation && (
                             <span css={svgButtonGroup}>
-                                <EditPencil css={svgButtonCss} />
-                                <Trash css={svgButtonCss} />
+                                {/* 추후 기능 구현 확장 예정 */}
+                                <Button variant="transparent" size="xs">
+                                    <EditPencil css={svgButtonCss} />
+                                </Button>
+                                <Button
+                                    variant="transparent"
+                                    size="xs"
+                                    onClick={() => setHasUserEvaluation(false)}
+                                >
+                                    <Trash css={svgButtonCss} />
+                                </Button>
                             </span>
                         )}
                     </div>
@@ -76,7 +107,7 @@ function EvaluationBox({ height }: EvaluationBoxProps) {
                     </div>
                 </div>
             </div>
-            {!hasUserEvaluation && (
+            {(!hasUserEvaluation || willEditEvaluation) && (
                 <div css={userEvaluation}>
                     <Rating size="lg" />
                     <TextArea size="xs" placeholder="코멘트를 작성해주세요." sx={textareaCss} />

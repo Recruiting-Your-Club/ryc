@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const miniCardContainer = css`
+export const miniCardContainer = (isActivated?: boolean) => css`
     width: 100%;
     background-color: ${theme.colors.white};
     display: flex;
@@ -13,6 +13,10 @@ export const miniCardContainer = css`
     &:hover {
         background-color: ${theme.colors.gray[200]};
     }
+    ${isActivated &&
+    css`
+        background-color: ${theme.colors.gray[200]};
+    `}
 `;
 
 export const informationSection = css`
