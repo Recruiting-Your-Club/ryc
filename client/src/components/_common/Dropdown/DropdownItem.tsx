@@ -47,10 +47,10 @@ function DropdownItem({
         <div
             role="menuitem"
             onClick={handleClick}
-            {...props}
             tabIndex={disabled ? -1 : 0}
             onKeyDown={handleKeyDown}
             css={[s_dropdownItem(disabled, inset), sx]}
+            {...props}
         >
             {children}
         </div>
