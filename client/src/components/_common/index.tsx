@@ -10,3 +10,5 @@ export * from './Toggle';
 export * from './Divider';
 export * from './Calendar';
 export * from './LoadingSpinner';
+export * from './TextToggle';
+export * from './Image';

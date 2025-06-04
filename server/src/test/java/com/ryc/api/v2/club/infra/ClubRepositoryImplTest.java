@@ -38,7 +38,7 @@ class ClubRepositoryImplTest {
         Club.initialize(
             ClubCreateRequest.builder()
                 .name("테스트 동아리")
-                .description("설명")
+                .shortDescription("설명")
                 .category(Category.ACADEMIC)
                 .tagNames(List.of("코딩"))
                 .build(),

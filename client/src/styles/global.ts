@@ -111,6 +111,8 @@ const globalStyles = css`
         font-size: 1.6rem;
 
         background-color: #fff;
+        
+        overflow-x: hidden;
     }
 
     #root {
