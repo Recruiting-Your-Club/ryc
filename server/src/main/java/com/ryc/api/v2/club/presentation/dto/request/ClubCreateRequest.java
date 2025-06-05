@@ -12,5 +12,4 @@ public record ClubCreateRequest(
     @NotBlank(message = "club name shouldn't be blank") String name,
     @NotNull(message = "club category shouldn't be null") Category category,
     String imageUrl,
-    String thumbnailUrl) {
-}
+    String thumbnailUrl) {}
