@@ -48,11 +48,6 @@ function ClubDetailPage() {
             page: <RecruitmentPage />,
             width: '6.4rem',
         },
-        {
-            title: '테스트',
-            page: <RecruitmentPage />,
-            width: '4.6rem',
-        },
     ];
 
     // state, ref, querystring hooks
@@ -79,7 +74,13 @@ function ClubDetailPage() {
                         <Text as="h4" type="h1Semibold" textAlign="start" sx={clubHeaderTitle}>
                             {title}
                         </Text>
-                        <Text as="div" type="captionSemibold" color="helper" textAlign="start">
+                        <Text
+                            as="div"
+                            type="captionSemibold"
+                            color="helper"
+                            textAlign="start"
+                            sx={{ marginLeft: '0.4rem' }}
+                        >
                             {getCategory(category)}
                         </Text>
                     </div>
