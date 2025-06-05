@@ -5,11 +5,12 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementPeriodIn
 import lombok.Builder;
 
 /**
- * @param applicationPeriod
- * @param interviewPeriod
- * @param finalResultPeriod
- * @param documentResultPeriod
- * @brief 공고 기간 정보 pojo
+ * Announcement 기간 정보 Pojo객체
+ *
+ * @param applicationPeriod 지원기간
+ * @param interviewPeriod 면접기간 (면접 진행시)
+ * @param finalResultPeriod 최종발표 기간
+ * @param documentResultPeriod 서류 결과 발표 기간 (면접 진행시)
  */
 @Builder
 public record AnnouncementPeriodInfo(
@@ -31,23 +32,41 @@ public record AnnouncementPeriodInfo(
         .build();
   }
 
-  public Boolean isValid(boolean hasInterview) {
-    // 인터뷰가 있을경우 4개의 기간 데이터가 모두 있어야함
+  /**
+   * 객체 유효성 검사
+   *
+   * @param hasInterview 면접 여부
+   * @throws IllegalArgumentException
+   */
+  public void validate(boolean hasInterview) {
+    // 1. 필수 입력 값 validate
+    applicationPeriod.validate();
+    finalResultPeriod.validate();
+
+    // 2. 면접 진행 시 추가되는 기간 값들에 대한 validate
     if (hasInterview) {
-      return applicationPeriod.isValid()
-          && interviewPeriod.isValid()
-          && finalResultPeriod.isValid()
-          && documentResultPeriod.isValid()
-          && isValidSequence(hasInterview);
-    } else {
-      // 아닐경우 2개값만 유효
-      return applicationPeriod.isValid()
-          && finalResultPeriod.isValid()
-          && isValidSequence(hasInterview);
+      if (interviewPeriod == null) {
+        throw new IllegalArgumentException("interviewPeriod shouldn't be null.");
+      }
+      interviewPeriod.validate();
+
+      if (documentResultPeriod == null) {
+        throw new IllegalArgumentException("documentResultPeriod shouldn't be null.");
+      }
+      documentResultPeriod.validate();
     }
+
+    // 3. 기간들간의 validate
+    validateSequence(hasInterview);
   }
 
-  public Boolean isValidSequence(Boolean hasInterview) {
+  /**
+   * 기간 순서 검증
+   *
+   * @param hasInterview 면접 여부
+   * @throws IllegalArgumentException 기간 순서가 맞지 않을 경우
+   */
+  private void validateSequence(Boolean hasInterview) {
     if (hasInterview) {
       if (!applicationPeriod.isBefore(interviewPeriod)) {
         throw new IllegalArgumentException("applicationPeriod should be before interviewPeriod");
@@ -59,12 +78,10 @@ public record AnnouncementPeriodInfo(
         throw new IllegalArgumentException(
             "finalResultPeriod should be before documentResultPeriod");
       }
-      return true;
     } else {
       if (!applicationPeriod.isBefore(finalResultPeriod)) {
         throw new IllegalArgumentException("applicationPeriod should be before finalResultPeriod");
       }
-      return true;
     }
   }
 }

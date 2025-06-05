@@ -47,13 +47,20 @@ public class AnnouncementApplication {
   }
 
   /**
-   * @brief 유효 객체 검사
+   * @brief 유효 객체 검사.
    */
-  public Boolean isValid() {
+  public void validate() {
     validatePersonalInfoQuestionTypes();
 
-    return applicationQuestions.stream().allMatch(ApplicationQuestion::isValid)
-        && preQuestions.stream().allMatch(ApplicationQuestion::isValid);
+    // 각 ApplicationQuestion 객체의 validate
+    for (ApplicationQuestion question : applicationQuestions) {
+      question.validate();
+    }
+
+    // 각 preQuestion 객체의 validate
+    for (ApplicationQuestion question : preQuestions) {
+      question.validate();
+    }
   }
 
   /**
@@ -61,7 +68,7 @@ public class AnnouncementApplication {
    *
    * @throws IllegalArgumentException 필수 개인정보 질문 타입이 없는 경우
    */
-  public void validatePersonalInfoQuestionTypes() {
+  private void validatePersonalInfoQuestionTypes() {
     // 1. 필수 개인정보 질문 타입(이름, 이메일)
     Set<PersonalInfoQuestionType> requiredTypes =
         Set.of(PersonalInfoQuestionType.NAME, PersonalInfoQuestionType.EMAIL);

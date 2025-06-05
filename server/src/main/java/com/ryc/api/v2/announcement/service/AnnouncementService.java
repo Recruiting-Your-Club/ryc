@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.announcement.domain.*;
+import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
@@ -21,16 +22,15 @@ public class AnnouncementService {
   private final ClubService clubService;
 
   @Transactional
-  public AnnouncementCreateResponse createAnnouncement(AnnouncementCreateRequest request) {
+  public AnnouncementCreateResponse createAnnouncement(
+      String clubId, AnnouncementCreateRequest request) {
     // 1.Club 찾기
 
     // 2.Announcement 생성
-    Announcement announcement = Announcement.initialize(request);
+    Announcement announcement = Announcement.initialize(request, clubId);
 
     // 3. 비즈니스 규칙 검사
-    if (!announcement.isValid()) {
-      throw new IllegalArgumentException("announcement is not valid");
-    }
+    announcement.validate();
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
@@ -57,5 +57,18 @@ public class AnnouncementService {
 
     // 도메인 객체를 상세 응답 DTO로 변환
     return AnnouncementGetDetailResponse.from(announcement);
+  }
+
+  /**
+   * club의 announcement조회 후 status반환
+   */
+  public String getAnnouncementStatus(String clubId) {
+      //1. club조회
+
+      //2. announcement조회
+      List<Announcement> announcements = announcementRepository.findAllByClubId(clubId);
+
+      //3. status반환
+    return "";
   }
 }

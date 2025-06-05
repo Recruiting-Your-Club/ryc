@@ -8,9 +8,10 @@ import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import lombok.Builder;
 
 /**
+ * 기간정보 pojo객체
+ *
  * @param startDate 시작 날짜
  * @param endDate 끝 날짜
- * @brief 기간 정보 pojo
  */
 @Builder
 public record Period(LocalDateTime startDate, LocalDateTime endDate) {
@@ -28,30 +29,28 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
         .build();
   }
 
-  /**
-   * @return 둘의 기간이 겹치는지 여부
-   */
+  /** 둘의 기간이 겹치는지 여부 */
   public Boolean isOverlapped(Period period) {
     return endDate.isAfter(period.startDate) || startDate.isAfter(period.startDate);
   }
 
   /**
-   * @return 기간이 정상적인지 여부
+   * 기간 validate
+   *
+   * @throws IllegalArgumentException 시작날짜보다 끝 날짜가 빠른 경우
    */
-  public Boolean isValid() {
-    return startDate.isBefore(endDate);
+  public void validate() {
+    if (startDate.isAfter(endDate)) {
+      throw new IllegalArgumentException("startDate should be before endDate");
+    }
   }
 
-  /**
-   * @return 기간이 시작 날짜보다 전인지 여부
-   */
+  /** 파라미터의 Period보다 이전 Period인지 여부 */
   public Boolean isBefore(Period period) {
     return endDate.isBefore(period.startDate);
   }
 
-  /**
-   * @return 이미 지난 기간인지 여부
-   */
+  /** Period가 종료된지 여부 */
   public Boolean isExpired() {
     return endDate.isBefore(LocalDateTime.now());
   }

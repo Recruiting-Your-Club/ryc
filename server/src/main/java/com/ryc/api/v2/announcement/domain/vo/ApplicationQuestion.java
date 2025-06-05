@@ -8,19 +8,21 @@ import com.ryc.api.v2.announcement.presentation.dto.request.ApplicationQuestionR
 import lombok.Builder;
 
 /**
- * @param type
- * @param label
- * @param isRequired
- * @param options
- * @brief 지원서 질문 pojo 객체
+ * 지원서 질문 Pojo객체
+ *
+ * @param type 질문 타입
+ * @param label 질문 제목
+ * @param isRequired 질문 응답 필수 여부
+ * @param options (객관식) 보기
  */
 @Builder
 public record ApplicationQuestion(
     QuestionType type, String label, boolean isRequired, List<String> options) {
   /**
+   * 지원서 질문 생성 (create 시)
+   *
    * @param questionRequest requestDto
    * @return ApplicationQuestion
-   * @brief 지원서 질문 생성(최초 생성시만)
    */
   public static ApplicationQuestion initialize(ApplicationQuestionRequest questionRequest) {
 
@@ -33,22 +35,37 @@ public record ApplicationQuestion(
   }
 
   /**
-   * @return 주관식 - options.isEmpty() 객관식 - options.size() > 1
+   * @breif 질문 validate
    */
-  public Boolean isValid() {
-    if (type.equals(QuestionType.LONG_ANSWER)
-        || type.equals(QuestionType.SHORT_ANSWER)
-        || type.equals(QuestionType.FILE)) {
+  public void validate() {
+    switch (type) {
+      case FILE:
+      case LONG_ANSWER:
+      case SHORT_ANSWER:
+        validateOptions(false);
+        break;
+      case MULTIPLE_CHOICE:
+      case SINGLE_CHOICE:
+        validateOptions(true);
+        break;
+    }
+  }
+
+  /**
+   * @param hasOptions option필요 여부
+   * @breif 질문 options validate
+   */
+  private void validateOptions(Boolean hasOptions) {
+    if (hasOptions) {
+      if (options.size() < 2) {
+        throw new IllegalArgumentException(
+            "MultipleChoice, SingleChoice type question options shouldn't be empty");
+      }
+    } else {
       if (!options.isEmpty()) {
         throw new IllegalArgumentException(
             "LongAnswer, ShortAnswer, File type question options shouldn't be empty");
       }
-      return true;
     }
-    if (options.size() < 2) {
-      throw new IllegalArgumentException(
-          "MultipleChoice, SingleChoice type question options shouldn't be empty");
-    }
-    return true;
   }
 }
