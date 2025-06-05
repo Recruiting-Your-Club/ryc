@@ -8,13 +8,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 /**
- * @param clubRoleSecuredDto 동아리 권한 확인 dto
  * @param title 제목
  * @param periodInfo 기간 정보
  * @param numberOfPeople 모집 인원
@@ -31,10 +29,6 @@ import lombok.Builder;
  */
 @Builder
 public record AnnouncementCreateRequest(
-    @NotNull(message = "clubRoleSecuredDto shouldn't be null")
-        @Schema(description = "동아리 권한 확인 dto")
-        @Valid
-        ClubRoleSecuredDto clubRoleSecuredDto,
     @NotBlank(message = "title shouldn't be blank")
         @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
         String title,

@@ -19,38 +19,44 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/v2/announcement")
+@RequestMapping("api/v2")
 @RequiredArgsConstructor
 @Tag(name = "공고")
 public class AnnouncementHttpApi {
   private final AnnouncementService announcementService;
 
   /** todo @HasAnyRoleScured */
-  @Tag(name = "공고")
-  @PostMapping("/create")
+  @PostMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 생성")
   public ResponseEntity<AnnouncementCreateResponse> create(
-      @Valid @RequestBody AnnouncementCreateRequest body) {
-    AnnouncementCreateResponse response = announcementService.createAnnouncement(body);
+      @PathVariable("club-id") String clubId, @Valid @RequestBody AnnouncementCreateRequest body) {
+    AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @Tag(name = "공고")
-  @GetMapping("/club/{clubId}")
+  @GetMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 목록 조회")
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
-      @PathVariable("clubId") String clubId) {
+      @PathVariable("club-id") String clubId) {
     /** todo club 조회 */
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
   }
 
-  @Tag(name = "공고")
-  @GetMapping("/{announcementId}")
-  @Operation(summary = "클럽 공고 상세 조회")
+  @GetMapping("/announcements/{announcement-id}")
+  @Operation(summary = "공고 상세 조회")
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("announcementId") String announcementId) {
+      @PathVariable("announcement-id") String announcementId) {
     /** todo club 조회 */
+    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
+  }
+
+  @PutMapping("/announcements/{announcement-id}")
+  @Operation(summary = "공고 수정")
+  public ResponseEntity<AnnouncementGetDetailResponse> updateAnnouncementDetail(
+      @PathVariable("announcement-id") String announcementId,
+      @Valid @RequestBody AnnouncementCreateRequest body) {
+    /** todo club@update */
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
   }
 }
