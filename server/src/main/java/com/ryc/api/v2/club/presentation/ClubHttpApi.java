@@ -43,7 +43,7 @@ public class ClubHttpApi {
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-  @GetMapping("/all")
+  @GetMapping
   @Operation(summary = "모든 동아리 조회 API")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
     return ResponseEntity.status(HttpStatus.OK).body(clubService.getAllClub());

@@ -32,8 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       List.of(
           "/api/v2/auth/login",
           "/api/v2/auth/register",
-          "/api/v2/clubs/all",
-          "/api/v2/clubs/{id}",
+          "/api/v2/clubs",
+          "/api/v2/clubs/*",
           "/api/v2/application/form");
 
   private final JwtTokenManager jwtTokenManager;
