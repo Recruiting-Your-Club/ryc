@@ -27,15 +27,7 @@ public class ClubService {
      * 1. 이미지 저장 및 URL 받아오기 2. ClubTag 리스트 생성 및 Club 객체 생성 3. Club 갹채 및 ClubTags DB 저장 4. 생성한 유저,
      * 운영진 권한 부여 및 저장
      */
-
-    // TODO: 클라이언트에서 받은 이미지 파일 S3 저장 후 ImageUrl, ThumnailUrl 받아오는 프로세스 필요. (추후 아래, "MOCK_URL" 삭제)
-    final String ImageUrlFromS3 = "MOCK_URL";
-    final String ThumbnailUrlFromS3 = "MOCK_URL";
-
-    final List<ClubTag> clubTags =
-        body.tagNames().stream().map(tagName -> ClubTag.builder().name(tagName).build()).toList();
-
-    final Club club = Club.initialize(body, ImageUrlFromS3, ThumbnailUrlFromS3, clubTags);
+    final Club club = Club.initialize(body);
 
     final Club savedClub = clubRepository.save(club);
 
