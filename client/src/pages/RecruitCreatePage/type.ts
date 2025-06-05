@@ -9,3 +9,9 @@ export interface RecruitDetailInfo {
     interviewSchedule: string;
     finalResult: string;
 }
+
+export interface BasicInfoFields {
+    studentId: boolean;
+    phone: boolean;
+    photo: boolean;
+}

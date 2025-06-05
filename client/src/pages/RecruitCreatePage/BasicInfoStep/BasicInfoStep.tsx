@@ -20,6 +20,7 @@ import { useQuestion } from '@hooks/useQuestion';
 import { questionTypes } from '@constants/questionType';
 import { QuestionForm } from '@components/QuestionForm';
 import type { QuestionType } from '@components/QuestionForm/type';
+import type { BasicInfoStepProps } from './type';
 
 function InfoFieldGroup() {
     return (
@@ -60,11 +61,15 @@ function InfoFieldGroup() {
     );
 }
 
-function BasicInfoStep() {
-    //최상단으로 빼고 props로 넘겨야함 or context로 관리 -> 해도 되는가?
-    const { questions, addQuestion, removeQuestion, updateQuestion, handleQuestionTypeChange } =
-        useQuestion();
-
+function BasicInfoStep({
+    infoFields,
+    setInfoFields,
+    questions,
+    addQuestion,
+    removeQuestion,
+    updateQuestion,
+    handleQuestionTypeChange,
+}: BasicInfoStepProps) {
     return (
         <div>
             <InfoFieldGroup />

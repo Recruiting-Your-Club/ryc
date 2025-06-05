@@ -11,7 +11,8 @@ import {
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
-import type { RecruitDetailInfo } from './type';
+import type { BasicInfoFields, RecruitDetailInfo } from './type';
+import { useQuestion } from '@hooks/useQuestion';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -20,9 +21,23 @@ function RecruitCreatePage() {
         TOTALRECRUITSTEPS,
         INITIALRECRUITSTEP,
     );
+
+    const {
+        questions,
+        addQuestion,
+        removeQuestion,
+        updateQuestion,
+        handleQuestionTypeChange,
+        applicationQuestions,
+        addApplicationQuestion,
+        removeApplicationQuestion,
+        updateApplicationQuestion,
+    } = useQuestion();
     // initial values
 
     // state, ref, querystring hooks
+
+    //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
         recruitmentSubject: '',
         recruitmentNumber: '',
@@ -33,6 +48,13 @@ function RecruitCreatePage() {
         documentResult: '',
         interviewSchedule: '',
         finalResult: '',
+    });
+
+    //체크박스를 통한 신원 정보 상태관리
+    const [basicInfoFields, setBasicInfoFields] = useState<BasicInfoFields>({
+        studentId: false,
+        phone: false,
+        photo: false,
     });
 
     // form hooks
@@ -58,9 +80,26 @@ function RecruitCreatePage() {
                     />
                 );
             case 1:
-                return <BasicInfoStep />;
+                return (
+                    <BasicInfoStep
+                        infoFields={basicInfoFields}
+                        setInfoFields={setBasicInfoFields}
+                        questions={questions}
+                        addQuestion={addQuestion}
+                        removeQuestion={removeQuestion}
+                        updateQuestion={updateQuestion}
+                        handleQuestionTypeChange={handleQuestionTypeChange}
+                    />
+                );
             case 2:
-                return <PersonalStatementStep />;
+                return (
+                    <PersonalStatementStep
+                        applicationQuestions={applicationQuestions}
+                        addApplicationQuestion={addApplicationQuestion}
+                        removeApplicationQuestion={removeApplicationQuestion}
+                        updateApplicationQuestion={updateApplicationQuestion}
+                    />
+                );
             case 3:
                 return <div>미리보기</div>;
             default:

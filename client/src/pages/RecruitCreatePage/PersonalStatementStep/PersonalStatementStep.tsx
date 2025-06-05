@@ -8,14 +8,14 @@ import {
     s_questionContainer,
 } from './PersonalStatementStep.style';
 import { QuestionForm } from '@components/QuestionForm';
+import type { PersonalStatementStepProps } from './type';
 
-function PersonalStatementStep() {
-    const {
-        applicationQuestions,
-        addApplicationQuestion,
-        removeApplicationQuestion,
-        updateApplicationQuestion,
-    } = useQuestion();
+function PersonalStatementStep({
+    applicationQuestions,
+    removeApplicationQuestion,
+    updateApplicationQuestion,
+    addApplicationQuestion,
+}: PersonalStatementStepProps) {
     return (
         <div>
             <FieldLabel
