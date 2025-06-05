@@ -64,9 +64,8 @@ class ClubServiceTest {
     ClubCreateRequest request =
         ClubCreateRequest.builder()
             .name("Test Club")
-            .shortDescription("Short description")
             .category(Category.ACADEMIC)
-            .tagNames(List.of("Tag1", "Tag2"))
+            .imageUrl("http://example.com/image.jpg")
             .build();
 
     when(clubRepository.save(any(Club.class))).thenReturn(testClub);

@@ -60,9 +60,8 @@ class ClubHttpApiTest {
     ClubCreateRequest createRequest =
         ClubCreateRequest.builder()
             .name("Test Club")
-            .shortDescription("Short description")
             .category(Category.ACADEMIC)
-            .tagNames(List.of("Tag1", "Tag2"))
+            .imageUrl("http://example.com/image.jpg")
             .build();
     ClubCreateResponse createResponse = ClubCreateResponse.builder().clubId("test-id").build();
 
