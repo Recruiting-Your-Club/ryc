@@ -1,6 +1,7 @@
 package com.ryc.api.v2.security.filter;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -24,6 +26,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+  private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+  private static final List<String> EXCLUDE_URLS =
+      List.of(
+          "/api/v2/auth/login",
+          "/api/v2/auth/register",
+          "/api/v2/clubs/all",
+          "/api/v2/clubs/{id}",
+          "/api/v2/application/form");
+
   private final JwtTokenManager jwtTokenManager;
   private final CustomUserDetailService customUserDetailService;
 
@@ -33,11 +45,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     final String requestURI = request.getRequestURI();
-    // 로그인, 회원가입의 경우, 해당 필터 검증 Skip
-    if (requestURI.contains("api/v2/auth/login") || requestURI.contains("api/v2/auth/register")) {
+    if (isExcludedUrl(requestURI)) {
       filterChain.doFilter(request, response);
       return;
     }
+    // 로그인, 회원가입의 경우, 해당 필터 검증 Skip
+    //    if (requestURI.contains("api/v2/auth/login") ||
+    // requestURI.contains("api/v2/auth/register")) {
+    //      filterChain.doFilter(request, response);
+    //      return;
+    //    }
 
     String header = request.getHeader("Authorization");
     String emailFromToken = null;
@@ -66,5 +83,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     filterChain.doFilter(request, response);
+  }
+
+  private boolean isExcludedUrl(String requestURI) {
+    return EXCLUDE_URLS.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
   }
 }
