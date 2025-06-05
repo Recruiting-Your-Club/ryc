@@ -24,6 +24,7 @@ import type { BasicInfoStepProps, InfoFieldGroupProps } from './type';
 import type { BasicInfoFields } from '../type';
 
 function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
+    //handler
     const handleChange = (key: keyof BasicInfoFields) => {
         setInfoFields((prev) => ({
             ...prev,

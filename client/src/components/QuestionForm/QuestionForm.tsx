@@ -16,6 +16,7 @@ import { CheckboxHiddenInput } from '@components/Checkbox/CheckboxHiddenInput';
 import { CheckboxControl } from '@components/Checkbox/CheckboxControl';
 
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
+    //handler
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         updateQuestion(question.id, { title: e.target.value });
     };
