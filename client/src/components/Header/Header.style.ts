@@ -15,20 +15,8 @@ export const headerBarContainer = css`
 export const homeNavContainer = css`
     display: flex;
     justify-content: space-between;
-    width: 100rem;
-
-    // 840px ~ 1200px
-    @media (max-width: ${theme.breakpoint.desktop}) {
-        width: 90rem;
-    }
-    // 600px ~ 840px
-    @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 70rem;
-    }
-    // 0px ~ 600px
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 35rem;
-    }
+    width: 100%;
+    max-width: 100rem;
 `;
 
 export const homeImage = css`

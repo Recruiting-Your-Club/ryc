@@ -7,13 +7,12 @@ import {
     deadlineText,
 } from './RecruitCard.style';
 import { Text } from '@components';
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import type { RecruitCardProps } from './types';
 
 function RecruitCard(props: RecruitCardProps) {
-    const { title, content, deadline, link, hashtags } = props;
     // prop destruction
+    const { title, content, deadline, hashtags, onClick } = props;
     // lib hooks
     // initial values
     const today = dayjs().format('YYYY-MM-DD');
@@ -22,6 +21,7 @@ function RecruitCard(props: RecruitCardProps) {
     // form hooks
     // query hooks
     // calculated values
+    const hashtagList = hashtags.map((tag) => `#${tag} `);
     const diffDay = formattedDeadline.diff(today, 'day');
     const calculateDeadline = useMemo(() => {
         if (diffDay > 7) {
@@ -38,29 +38,29 @@ function RecruitCard(props: RecruitCardProps) {
 
     // effects
     return (
-        <Link css={recruitCardContainer} to={link}>
-            <div css={recruitCardHeader}>
-                <Text noWrap cropped>
-                    {title}
-                </Text>
-                <Text color="caption" sx={deadlineText(diffDay)} noWrap>
-                    {calculateDeadline}
-                </Text>
-            </div>
-
-            <div css={recruitCardBody}>
-                <Text noWrap cropped>
-                    {content}
-                </Text>
-            </div>
-            <div css={recruitCardFooter}>
-                {hashtags.map((tag) => (
-                    <Text key={tag} type="subCaptionRegular" color="primary" noWrap cropped>
-                        #{tag}
+        <>
+            <button css={recruitCardContainer} onClick={onClick}>
+                <div css={recruitCardHeader}>
+                    <Text noWrap cropped>
+                        {title}
                     </Text>
-                ))}
-            </div>
-        </Link>
+                    <Text color="caption" sx={deadlineText(diffDay)} noWrap>
+                        {calculateDeadline}
+                    </Text>
+                </div>
+
+                <div css={recruitCardBody}>
+                    <Text noWrap cropped>
+                        {content}
+                    </Text>
+                </div>
+                <div css={recruitCardFooter}>
+                    <Text type="subCaptionRegular" color="primary" noWrap cropped>
+                        {hashtagList}
+                    </Text>
+                </div>
+            </button>
+        </>
     );
 }
 

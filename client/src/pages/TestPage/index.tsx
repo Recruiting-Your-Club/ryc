@@ -1,6 +1,4 @@
-import type { ChangeEvent } from 'react';
-import React, { useState } from 'react';
-import { Button } from '@components/_common/Button';
+import React from 'react';
 import { Tooltip } from '@components/_common/Tooltip';
 import { MainCard, Select } from '@components';
 
@@ -15,7 +13,11 @@ function TestPage() {
         <>
             <div>
                 <Tooltip content="Tooltip 예시입니다.">
-                    <Button variant="outlined">hd</Button>
+                    <FileUpLoader>
+                        <FileUpLoader.HelperText>하이</FileUpLoader.HelperText>
+                        <FileUpLoader.Button />
+                        <FileUpLoader.Box />
+                    </FileUpLoader>
                 </Tooltip>
                 <Select value={value} onValueChange={setValue} options={options}>
                     <Select.Trigger>

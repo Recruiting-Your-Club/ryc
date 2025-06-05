@@ -19,10 +19,17 @@ function ClubDetailPage() {
         {
             title: '동아리 소개',
             page: <ClubIntroPage />,
+            width: '7.5rem',
         },
         {
             title: '모집 공고',
             page: <RecruitmentPage />,
+            width: '6.4rem',
+        },
+        {
+            title: '테스트',
+            page: <RecruitmentPage />,
+            width: '4.6rem',
         },
     ];
     const tempImage = 'https://cdn.pixabay.com/photo/2013/07/26/08/08/shield-167582_640.jpg';

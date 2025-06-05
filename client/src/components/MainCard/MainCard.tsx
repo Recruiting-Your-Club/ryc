@@ -41,6 +41,7 @@ function MainCard({
     // form hooks
     // query hooks
     // calculated values
+    const hashTagList = hashTag.map((tag) => `#${tag} `);
     // handlers
     // effects
     return (
@@ -71,11 +72,9 @@ function MainCard({
                 </Text>
             </div>
             <div css={cardFooterContainer}>
-                {hashTag.map((tag: string) => (
-                    <Text key={tag} type="captionLight" color="primary" noWrap cropped>
-                        #{tag}
-                    </Text>
-                ))}
+                <Text type="captionLight" color="primary" noWrap cropped>
+                    {hashTagList}
+                </Text>
             </div>
         </Link>
     );
