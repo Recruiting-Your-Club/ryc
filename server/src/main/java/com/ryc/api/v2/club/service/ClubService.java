@@ -53,33 +53,9 @@ public class ClubService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
 
-    String name = body.name().orElse(previousClub.getName());
-    String shortDescription = body.shortDescription().orElse(previousClub.getShortDescription());
-    String detailDescription = body.detailDescription().orElse(previousClub.getDetailDescription());
-    String imageUrl = body.imageUrl().orElse(previousClub.getImageUrl());
-    String thumbnailUrl = body.thumbnailUrl().orElse(previousClub.getThumbnailUrl());
-    Category category =
-        Category.valueOf(body.category().orElse(previousClub.getCategory().toString()));
-    List<ClubTag> clubTags = body.clubTags();
-    List<ClubSummary> clubSummaries = body.clubSummaries();
-    List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
-
-    // TODO: updated_at 필드 업데이트
-    Club newClub =
-        Club.builder()
-            .id(id)
-            .name(name)
-            .shortDescription(shortDescription)
-            .detailDescription(detailDescription)
-            .imageUrl(imageUrl)
-            .thumbnailUrl(thumbnailUrl)
-            .category(category)
-            .clubTags(clubTags)
-            .clubSummaries(clubSummaries)
-            .clubDetailImages(clubDetailImages)
-            .build();
-
+    Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
+
     return ClubUpdateResponse.builder()
         .name(savedClub.getName())
         .shortDescription(savedClub.getShortDescription())
