@@ -37,7 +37,7 @@ public class ClubHttpApi {
   }
 
   @GetMapping("/{id}")
-  @Operation(summary = "동아리 조회 API")
+  @Operation(summary = "동아리 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
   public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
     ClubGetResponse response = clubService.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -50,7 +50,7 @@ public class ClubHttpApi {
   }
 
   @PatchMapping("/{id}")
-  @Operation(summary = "동아리 수정 API")
+  @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
   public ResponseEntity<ClubUpdateResponse> updateClub(
       @PathVariable String id, @RequestBody ClubUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK).body(clubService.updateClub(id, body));
