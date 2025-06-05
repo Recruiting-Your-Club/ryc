@@ -20,4 +20,8 @@ public interface AnnouncementRepository {
    * @return 해당 announcement의 Announcement ( with Application )
    */
   public Announcement findByIdWithApplication(String id);
+
+  public boolean existsRecruitingAnnouncementByClubId(String clubId);
+
+  public boolean existsUpcomingAnnouncementByClubId(String clubId);
 }

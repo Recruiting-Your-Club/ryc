@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.Announcement;
+import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
@@ -59,16 +60,18 @@ public class AnnouncementService {
     return AnnouncementGetDetailResponse.from(announcement);
   }
 
-  /**
-   * club의 announcement조회 후 status반환
-   */
+  /** club의 announcement조회 후 status반환 */
   public String getAnnouncementStatus(String clubId) {
-      //1. club조회
+    if (announcementRepository.existsRecruitingAnnouncementByClubId(clubId)) {
+      return AnnouncementStatus.RECRUITING.name();
+    }
 
-      //2. announcement조회
-      List<Announcement> announcements = announcementRepository.findAllByClubId(clubId);
+    if (announcementRepository.existsUpcomingAnnouncementByClubId(clubId)) {
+      {
+        return AnnouncementStatus.UPCOMING.name();
+      }
+    }
 
-      //3. status반환
-    return "";
+    return AnnouncementStatus.CLOSED.name();
   }
 }

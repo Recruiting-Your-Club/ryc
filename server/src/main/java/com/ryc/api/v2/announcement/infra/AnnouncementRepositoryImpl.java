@@ -1,5 +1,6 @@
 package com.ryc.api.v2.announcement.infra;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,13 +30,14 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     List<AnnouncementEntity> announcementEntities =
         announcementJpaRepository.findAllByClubId(clubId);
 
-    if (announcementEntities.isEmpty()) {
-      throw new EntityNotFoundException("announcement not found");
-    }
-
     return announcementEntities.stream().map(announcementMapper::toDomain).toList();
   }
 
+  /**
+   * Announcement with Application
+   *
+   * @param id announcementId
+   */
   @Override
   public Announcement findByIdWithApplication(String id) {
     AnnouncementEntity announcementEntity =
@@ -54,14 +56,39 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
   @Override
   public Announcement save(Announcement announcement) {
+    // 1. domain -> entity mapping
     AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement);
     AnnouncementApplicationEntity announcementApplicationEntity =
         announcementApplicationMapper.toEntity(
             announcement.getAnnouncementApplication(), announcementEntity);
 
+    // 2. application entity save
+    /** todo FK를 가진 application에서 OneToOne mapping을 진행해서 application을 저장하는 것이 옳은 방법인지 고민 필요. */
     AnnouncementApplicationEntity savedAnnouncementApplicationEntity =
         announcementApplicationJpaRepository.save(announcementApplicationEntity);
 
     return announcementMapper.toDomain(savedAnnouncementApplicationEntity.getAnnouncementEntity());
+  }
+
+  /**
+   * 모집중인 공고가 있는지 조회
+   *
+   * @param clubId clubId
+   */
+  @Override
+  public boolean existsRecruitingAnnouncementByClubId(String clubId) {
+    return announcementJpaRepository.existsRecruitingAnnouncementByClubIdAndNow(
+        clubId, LocalDateTime.now());
+  }
+
+  /**
+   * 모집 예정인 공고가 있는지 조회
+   *
+   * @param clubId clubId
+   */
+  @Override
+  public boolean existsUpcomingAnnouncementByClubId(String clubId) {
+    return announcementJpaRepository.existsUpcomingAnnouncementByClubIdAndNow(
+        clubId, LocalDateTime.now());
   }
 }

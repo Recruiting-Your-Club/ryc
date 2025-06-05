@@ -54,7 +54,6 @@ public class AnnouncementEntity extends BaseEntity {
   private List<TagVO> tags;
 
   private AnnouncementType announcementType;
-
   private String activityPeriod;
 
   private Boolean isDeleted;
