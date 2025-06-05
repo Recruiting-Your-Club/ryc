@@ -11,24 +11,11 @@ import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
 import { useClickOutside } from '@hooks/components/useClickOutside';
-
-export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
-export interface Option {
-    value: string;
-    label: string;
-}
+import type { SelectProps } from './type';
 
 /**
  * Select 루트 컴포넌트
  */
-interface SelectProps {
-    children: ReactNode;
-    value?: string;
-    size?: SelectSize;
-    onValueChange?: (value: string) => void;
-    sx?: CSSObject;
-    options?: Option[];
-}
 
 function SelectRoot({
     children,

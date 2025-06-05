@@ -4,11 +4,7 @@ import React, { forwardRef, useMemo } from 'react';
 import { useSelectContext } from './SelectContext';
 import { s_selectTrigger } from './Select.styles';
 import DownArrow from '@assets/images/downArrow.svg';
-
-interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: ReactNode;
-    sx?: CSSObject;
-}
+import type { SelectTriggerProps } from './type';
 
 function SelectTrigger(
     { children, sx, ...props }: SelectTriggerProps,
