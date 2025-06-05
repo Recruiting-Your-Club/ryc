@@ -20,9 +20,16 @@ import { useQuestion } from '@hooks/useQuestion';
 import { questionTypes } from '@constants/questionType';
 import { QuestionForm } from '@components/QuestionForm';
 import type { QuestionType } from '@components/QuestionForm/type';
-import type { BasicInfoStepProps } from './type';
+import type { BasicInfoStepProps, InfoFieldGroupProps } from './type';
+import type { BasicInfoFields } from '../type';
 
-function InfoFieldGroup() {
+function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
+    const handleChange = (key: keyof BasicInfoFields) => {
+        setInfoFields((prev) => ({
+            ...prev,
+            [key]: !prev[key],
+        }));
+    };
     return (
         <div>
             <FieldLabel
@@ -36,21 +43,30 @@ function InfoFieldGroup() {
             </div>
             <div css={s_checkboxWrapper}>
                 <div>
-                    <Checkbox.Root>
+                    <Checkbox.Root
+                        isChecked={infoFields.studentId}
+                        onChange={() => handleChange('studentId')}
+                    >
                         <Checkbox.HiddenInput />
                         <Checkbox.Control />
                         <Checkbox.Label sx={s_checkboxLabel}>학번</Checkbox.Label>
                     </Checkbox.Root>
                 </div>
                 <div>
-                    <Checkbox.Root>
+                    <Checkbox.Root
+                        isChecked={infoFields.phone}
+                        onChange={() => handleChange('phone')}
+                    >
                         <Checkbox.HiddenInput />
                         <Checkbox.Control />
                         <Checkbox.Label sx={s_checkboxLabel}>전화번호</Checkbox.Label>
                     </Checkbox.Root>
                 </div>
                 <div>
-                    <Checkbox.Root>
+                    <Checkbox.Root
+                        isChecked={infoFields.photo}
+                        onChange={() => handleChange('photo')}
+                    >
                         <Checkbox.HiddenInput />
                         <Checkbox.Control />
                         <Checkbox.Label sx={s_checkboxLabel}>본인 사진</Checkbox.Label>
@@ -72,7 +88,7 @@ function BasicInfoStep({
 }: BasicInfoStepProps) {
     return (
         <div>
-            <InfoFieldGroup />
+            <InfoFieldGroup infoFields={infoFields} setInfoFields={setInfoFields} />
             <div css={s_additionalInfoWrapper}>
                 <FieldLabel
                     label="추가 정보"

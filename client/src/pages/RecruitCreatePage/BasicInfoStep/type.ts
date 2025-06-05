@@ -14,3 +14,8 @@ export interface QuestionHandlers {
     updateQuestion: (id: string, updates: Partial<QuestionProps>) => void;
     handleQuestionTypeChange: (id: string, newQuestionType: QuestionType) => void;
 }
+
+export interface InfoFieldGroupProps {
+    infoFields: BasicInfoFields;
+    setInfoFields: Dispatch<SetStateAction<BasicInfoFields>>;
+}
