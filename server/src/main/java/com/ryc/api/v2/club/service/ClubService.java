@@ -25,6 +25,10 @@ public class ClubService {
   public ClubCreateResponse createClub(ClubCreateRequest body) {
     final Club club = Club.initialize(body);
 
+    if (clubRepository.existsByName(club.getName())) {
+      throw new IllegalArgumentException("Club with name already exists: " + club.getName());
+    }
+
     final Club savedClub = clubRepository.save(club);
 
     // TODO: 사용자에게 MANAGER 권한 부여 (UserClubRole 구현 필요)

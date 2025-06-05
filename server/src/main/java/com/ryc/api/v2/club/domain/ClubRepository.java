@@ -8,5 +8,7 @@ public interface ClubRepository {
 
   Optional<Club> findById(String id);
 
+  boolean existsByName(String name);
+
   List<Club> findAll();
 }

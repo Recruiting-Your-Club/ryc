@@ -32,6 +32,11 @@ public class ClubRepositoryImpl implements ClubRepository {
   }
 
   @Override
+  public boolean existsByName(String name) {
+    return clubJpaRepository.existsByName(name);
+  }
+
+  @Override
   public List<Club> findAll() {
     return clubJpaRepository.findAll().stream().map(ClubMapper::toDomain).toList();
   }
