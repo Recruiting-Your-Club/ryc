@@ -17,6 +17,14 @@ export const handleNewRange = (node: Node, selection: Selection) => {
     selection.addRange(newRange);
 };
 
+export const handleRangeToNext = (node: Node, selection: Selection) => {
+    const newRange = document.createRange();
+    newRange.setStartAfter(node);
+
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+};
+
 // 커서, 드래그 보존
 export const preserveSelection = (selection: Selection, range: Range, operation: () => void) => {
     const { startContainer, startOffset, endContainer, endOffset } = range;

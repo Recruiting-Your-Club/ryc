@@ -1,12 +1,13 @@
 import type { ChangeEvent, RefObject } from 'react';
 import { getEditorRoot } from './alignment';
-import { getValidSelection, handleNewRange } from './range';
+import { getValidSelection, handleRangeToNext } from './range';
 
 const insertSplitedNodes = (
     parent: HTMLElement,
     ancestor: HTMLElement,
     beforeNode: HTMLElement,
     afterNode: HTMLElement,
+    selection: Selection,
 ) => {
     const hr = document.createElement('hr');
     ancestor.insertBefore(beforeNode, parent);
@@ -14,6 +15,7 @@ const insertSplitedNodes = (
     ancestor.insertBefore(afterNode, parent);
 
     ancestor.removeChild(parent);
+    handleRangeToNext(hr, selection);
 };
 
 // div 안에 text만 존재할 경우
@@ -22,6 +24,7 @@ const splitTextInDiv = (
     startOffset: number,
     endOffset: number,
     parent: HTMLDivElement,
+    selection: Selection,
 ) => {
     const text = currentNode.nodeType === Node.TEXT_NODE ? currentNode.nodeValue! : '';
 
@@ -35,7 +38,7 @@ const splitTextInDiv = (
     afterDiv.textContent = afterText;
 
     const ancestor = parent.parentElement?.closest('div, li') as HTMLElement;
-    insertSplitedNodes(parent, ancestor, beforeDiv, afterDiv);
+    insertSplitedNodes(parent, ancestor, beforeDiv, afterDiv, selection);
 };
 
 // div 안에 span이 존재할 경우
@@ -45,6 +48,7 @@ const splitTextInMixedNodes = (
     startOffset: number,
     endOffset: number,
     parent: HTMLSpanElement,
+    selection: Selection,
 ) => {
     const text = currentNode.nodeType === Node.TEXT_NODE ? currentNode.nodeValue! : '';
 
@@ -61,7 +65,7 @@ const splitTextInMixedNodes = (
 
     // 첫째줄에서 span 노드 있을 경우
     if (grandParent === editor) {
-        insertSplitedNodes(parent, grandParent, beforeSpan, afterSpan);
+        insertSplitedNodes(parent, grandParent, beforeSpan, afterSpan, selection);
         return;
     }
 
@@ -91,10 +95,10 @@ const splitTextInMixedNodes = (
     afterNodes.forEach((node) => afterDiv.appendChild(node));
 
     const ancestor = grandParent.parentElement?.closest('div, li') as HTMLElement;
-    insertSplitedNodes(grandParent, ancestor, beforeDiv, afterDiv);
+    insertSplitedNodes(grandParent, ancestor, beforeDiv, afterDiv, selection);
 };
 
-const insertDividerInSingleNode = (range: Range, editor: HTMLElement) => {
+const insertDividerInSingleNode = (range: Range, editor: HTMLElement, selection: Selection) => {
     const currentNode = range.startContainer;
     const startOffset = range.startOffset;
     const endOffset = range.endOffset;
@@ -103,14 +107,15 @@ const insertDividerInSingleNode = (range: Range, editor: HTMLElement) => {
     const divAncestor = currentNode.parentElement?.closest('div') as HTMLDivElement | null;
 
     if (spanAncestor) {
-        splitTextInMixedNodes(editor, currentNode, startOffset, endOffset, spanAncestor);
+        splitTextInMixedNodes(editor, currentNode, startOffset, endOffset, spanAncestor, selection);
     } else if (divAncestor && divAncestor !== editor) {
-        splitTextInDiv(currentNode, startOffset, endOffset, divAncestor);
+        splitTextInDiv(currentNode, startOffset, endOffset, divAncestor, selection);
     } else {
         // 첫째줄 span 없을 경우
         const hr = document.createElement('hr');
         range.deleteContents();
         range.insertNode(hr);
+        handleRangeToNext(hr, selection);
     }
 };
 
@@ -122,7 +127,7 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Sel
     if (currentNode === editor) {
         const hr = document.createElement('hr');
         editor.insertBefore(hr, null);
-        handleNewRange(currentNode, selection);
+        handleRangeToNext(hr, selection);
         return;
     }
 
@@ -130,9 +135,9 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Sel
     const divAncestor = currentNode.parentElement?.closest('div') as HTMLDivElement | null;
 
     if (spanAncestor) {
-        splitTextInMixedNodes(editor, currentNode, offset, offset, spanAncestor);
+        splitTextInMixedNodes(editor, currentNode, offset, offset, spanAncestor, selection);
     } else if (divAncestor && divAncestor !== editor) {
-        splitTextInDiv(currentNode, offset, offset, divAncestor);
+        splitTextInDiv(currentNode, offset, offset, divAncestor, selection);
     } else {
         // 첫째줄 span 없을 경우
         const text = range.startContainer as Text;
@@ -144,6 +149,7 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Sel
             const afterText = text.splitText(offset);
             text.parentNode?.insertBefore(hr, afterText);
         }
+        handleRangeToNext(hr, selection);
     }
 };
 export const insertDivider = () => {
@@ -165,7 +171,7 @@ export const insertDivider = () => {
         range.endContainer.nodeType === Node.TEXT_NODE &&
         range.startContainer === range.endContainer
     ) {
-        return insertDividerInSingleNode(range, editor);
+        return insertDividerInSingleNode(range, editor, selection);
     }
 
     // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우
