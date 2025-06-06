@@ -3,7 +3,7 @@ import React, { ComponentType, FunctionComponent, useState } from 'react';
 import { Stepper } from './Stepper';
 import { Step } from './Step';
 import { StepLabel } from './StepLabel';
-import { Button } from '@components/Button';
+import { Button } from '@components/_common/Button';
 import type { Meta, StoryFn } from '@storybook/react';
 
 const meta: Meta<typeof Stepper> = {

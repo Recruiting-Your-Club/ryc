@@ -4,8 +4,8 @@ import type { RadioOrientation } from './Radio';
 
 export const radioContainer = (orientation: RadioOrientation) => css`
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: start;
+    justify-content: start;
     gap: 0.5rem;
     ${orientation === 'vertical' &&
     css`
@@ -23,6 +23,7 @@ export const s_label = (disabled: boolean) => css`
     cursor: pointer;
     gap: 0.5rem;
     ${theme.typography.captionRegular};
+    min-width: 3rem;
 
     ${disabled &&
     css`

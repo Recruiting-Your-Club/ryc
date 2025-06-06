@@ -96,7 +96,6 @@ const globalStyles = css`
 
     html {
         font-size: 62.5%;
-        overflow-y: auto;
     }
 
     body {
@@ -104,13 +103,22 @@ const globalStyles = css`
         justify-content: center;
 
         width: 100%;
-        height: 100dvh;
+        min-height: 100dvh;
+        height: auto;
 
         font-family: Pretendard, sans-serif;
         font-size: 1.6rem;
 
         background-color: #fff;
+
         overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #root {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     article,
@@ -176,24 +184,28 @@ const globalStyles = css`
         text-decoration: none; /* 호버 시에도 밑줄 제거 */
     }
     /* 스크롤 바 부분 */
+    * {
+        scrollbar-color: ${theme.colors.blue[200]} ${theme.colors.gray[200]};
+        scrollbar-width: thin;
+    }
 
     &::-webkit-scrollbar {
-        width: 0.8rem;
+        width: 0.7rem;
+        height: 0.7rem;
     }
 
     &::-webkit-scrollbar-track {
         background: ${theme.colors.gray[200]};
-        border-radius: 1rem;
+        border-radius: 5px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: ${theme.colors.default};
-        border-radius: 1rem;
-        min-height: 10rem;
+        background: ${theme.colors.blue[200]};
+        border-radius: 8px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background: ${theme.colors.defaultHover};
+        background: ${theme.colors.default};
     }
 `;
 
