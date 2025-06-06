@@ -140,11 +140,6 @@ export const textareaContainer = (height: string = '350px', radius: string = '4p
     }
 
     /* 추가적으로 필요한 경우 */
-    ul,
-    ol {
-        padding-left: 40px;
-        margin: 1em 0;
-    }
     blockquote {
         margin: 1em 40px;
         font-style: italic;
