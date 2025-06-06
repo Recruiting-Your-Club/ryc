@@ -1,6 +1,6 @@
 package com.ryc.api.v2.admin.infra;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -27,10 +27,7 @@ public class AdminRepositoryImpl implements AdminRepository {
   }
 
   @Override
-  public Admin findByEmail(String email) {
-    return AdminMapper.toDomain(
-        adminJpaRepository
-            .findByEmail(email)
-            .orElseThrow(() -> new NoSuchElementException("Admin is not exist")));
+  public Optional<Admin> findByEmail(String email) {
+    return adminJpaRepository.findByEmail(email).map(AdminMapper::toDomain);
   }
 }

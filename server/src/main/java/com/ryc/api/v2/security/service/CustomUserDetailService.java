@@ -1,5 +1,7 @@
 package com.ryc.api.v2.security.service;
 
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
   @Override
   public CustomUserDetail loadUserByUsername(String email) throws UsernameNotFoundException {
-    Admin admin = adminRepository.findByEmail(email);
-    if (admin == null) {
+    Optional<Admin> admin = adminRepository.findByEmail(email);
+    if (admin.isEmpty()) {
       throw new UsernameNotFoundException("admin not found");
     }
 
-    return new CustomUserDetail(admin);
+    return new CustomUserDetail(admin.get());
   }
 }
