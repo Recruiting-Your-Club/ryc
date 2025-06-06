@@ -8,9 +8,9 @@ export const getValidSelection = (): ValidSelection => {
     return { isValid: true, selection: selection, range: selection.getRangeAt(0) };
 };
 
-export const handleNewRange = (node: Node, selection: Selection) => {
+export const handleNewRange = (node: Node, selection: Selection, startOffset: number = 1) => {
     const newRange = document.createRange();
-    newRange.setStart(node, 1);
+    newRange.setStart(node, startOffset);
     newRange.collapse(true);
 
     selection.removeAllRanges();
