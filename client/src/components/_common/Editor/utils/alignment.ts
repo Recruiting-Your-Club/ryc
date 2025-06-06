@@ -11,7 +11,7 @@ export const getEditorRoot = (range: Range): HTMLElement | null => {
     let node: Node | null = range.commonAncestorContainer;
 
     // node와 그 조상을 계속 추적하여 최상단 element인지 판단함 (contentEditable 속성 -> 최상단에 속함)
-    while (node && node.parentNode) {
+    while (node) {
         if (node instanceof HTMLElement && node.getAttribute('contenteditable') === 'true') {
             return node;
         }
