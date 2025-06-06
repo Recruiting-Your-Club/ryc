@@ -67,19 +67,22 @@ public record AnnouncementPeriodInfo(
    * @throws IllegalArgumentException 기간 순서가 맞지 않을 경우
    */
   private void validateSequence(Boolean hasInterview) {
+    // 인터뷰가 있을경우 지원 기간 -> 서류발표기간 -> 면접기간 -> 최종발표기간
     if (hasInterview) {
-      if (!applicationPeriod.isBefore(interviewPeriod)) {
-        throw new IllegalArgumentException("applicationPeriod should be before interviewPeriod");
+      if (documentResultPeriod.isBefore(applicationPeriod)) {
+        throw new IllegalArgumentException(
+            "applicationPeriod should be before documentResultPeriod");
       }
-      if (!interviewPeriod.isBefore(finalResultPeriod)) {
+      if (interviewPeriod.isBefore(documentResultPeriod)) {
+        throw new IllegalArgumentException("documentResultPeriod should be before interviewPeriod");
+      }
+      if (finalResultPeriod.isBefore(interviewPeriod)) {
         throw new IllegalArgumentException("interviewPeriod should be before finalResultPeriod");
       }
-      if (!finalResultPeriod.isBefore(documentResultPeriod)) {
-        throw new IllegalArgumentException(
-            "finalResultPeriod should be before documentResultPeriod");
-      }
-    } else {
-      if (!applicationPeriod.isBefore(finalResultPeriod)) {
+    }
+    // 없을경우 모집기간 -> 최종발표기간
+    else {
+      if (finalResultPeriod.isBefore(applicationPeriod)) {
         throw new IllegalArgumentException("applicationPeriod should be before finalResultPeriod");
       }
     }
