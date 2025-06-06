@@ -1,6 +1,7 @@
+import type { RefObject } from 'react';
 import type { List } from '../types';
 import { getClosestDiv, getEditorRoot } from './alignment';
-import { handleNewRange } from './range';
+import { applyAttributeInEmptyRange, handleNewRange } from './range';
 
 // div로 감싸지지 않은 첫 줄을 div로 감싸기
 const wrapFirstLine = (editor: HTMLElement, lines: HTMLElement[]) => {
@@ -94,6 +95,18 @@ const applyListInSplitedText = (
     return frag;
 };
 
+export const applyListInEmptyRange = (editorRef: RefObject<HTMLDivElement>, list: List) => {
+    const disc = document.createElement(list.toString());
+    const li = document.createElement('li');
+    const div = document.createElement('div');
+
+    li.appendChild(div);
+    disc.appendChild(li);
+    div.innerText = '\u200B'; // zero-width space
+
+    applyAttributeInEmptyRange(editorRef, disc);
+};
+
 export const applyList = (selection: Selection, range: Range, list: List) => {
     const editor = getEditorRoot(range);
     if (!editor) return;
@@ -116,6 +129,7 @@ export const applyList = (selection: Selection, range: Range, list: List) => {
 
         li.appendChild(div);
         disc.appendChild(li);
+        div.innerText = '\u200B'; // zero-width space
 
         range.insertNode(disc);
 

@@ -1,3 +1,4 @@
+import type { RefObject } from 'react';
 import type { ValidSelection } from '../types';
 
 export const getValidSelection = (): ValidSelection => {
@@ -6,6 +7,24 @@ export const getValidSelection = (): ValidSelection => {
         return { isValid: false, selection: null, range: null };
     }
     return { isValid: true, selection: selection, range: selection.getRangeAt(0) };
+};
+
+export const applyAttributeInEmptyRange = (
+    editorRef: RefObject<HTMLElement>,
+    element: HTMLElement,
+) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    editor.appendChild(element);
+
+    const reSelection = window.getSelection();
+    if (!reSelection) return;
+    if (element instanceof HTMLHRElement) {
+        handleRangeToNext(element, reSelection);
+    } else {
+        handleNewRange(element, reSelection, 0);
+    }
 };
 
 export const handleNewRange = (node: Node, selection: Selection, startOffset: number = 1) => {

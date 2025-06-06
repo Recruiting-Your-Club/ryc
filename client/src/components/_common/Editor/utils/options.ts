@@ -1,6 +1,6 @@
 import type { ChangeEvent, RefObject } from 'react';
 import { getEditorRoot } from './alignment';
-import { getValidSelection, handleRangeToNext } from './range';
+import { applyAttributeInEmptyRange, getValidSelection, handleRangeToNext } from './range';
 
 const insertSplitedNodes = (
     parent: HTMLElement,
@@ -152,17 +152,21 @@ const insertDividerAtCursor = (editor: HTMLElement, range: Range, selection: Sel
         handleRangeToNext(hr, selection);
     }
 };
-export const insertDivider = () => {
+export const insertDivider = (editorRef: RefObject<HTMLElement>) => {
     const { isValid, selection } = getValidSelection();
-    if (!isValid) return;
+    if (!isValid) {
+        const hr = document.createElement('hr');
+        applyAttributeInEmptyRange(editorRef, hr);
+        return;
+    }
 
-    const range = selection.getRangeAt(0);
+    const range = selection!.getRangeAt(0);
 
     const editor = getEditorRoot(range);
     if (!editor) return;
 
     if (range.collapsed) {
-        return insertDividerAtCursor(editor, range, selection);
+        return insertDividerAtCursor(editor, range, selection!);
     }
 
     // 선택된 영역이 하나의 텍스트 노드 안에서 이루어진 경우
@@ -171,7 +175,7 @@ export const insertDivider = () => {
         range.endContainer.nodeType === Node.TEXT_NODE &&
         range.startContainer === range.endContainer
     ) {
-        return insertDividerInSingleNode(range, editor, selection);
+        return insertDividerInSingleNode(range, editor, selection!);
     }
 
     // 선택 범위 안의 노드들이 여러 태그로 감싸져 나뉘었을 경우

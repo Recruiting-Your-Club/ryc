@@ -1,5 +1,6 @@
+import type { RefObject } from 'react';
 import type { Align } from '../types';
-import { preserveSelection } from './range';
+import { applyAttributeInEmptyRange, preserveSelection } from './range';
 
 export const getClosestDiv = (node: Node): HTMLDivElement | null => {
     const element =
@@ -58,6 +59,15 @@ const applyAlignmentToDivsInRange = (editor: HTMLElement, range: Range, align: A
         const div = walker.currentNode as HTMLDivElement;
         div.style.textAlign = align;
     }
+};
+
+export const applyAlignmentInEmptyRange = (editorRef: RefObject<HTMLDivElement>, align: Align) => {
+    const cssStyle = { textAlign: align.toString() };
+    const div = document.createElement('div');
+    Object.assign(div.style, cssStyle);
+    div.innerText = '\u200B'; // zero-width space
+
+    applyAttributeInEmptyRange(editorRef, div);
 };
 
 export const applyAlignment = (selection: Selection, range: Range, align: Align) => {

@@ -18,8 +18,8 @@ import {
 import { useEditorContext } from './EditorContext';
 import { TextColorPicker } from './EditorTextColorPicker';
 import type { Align, Format, List, Option, Size, TextColor, ToolbarProps } from './types';
-import { applyAlignment } from './utils/alignment';
-import { applyList } from './utils/list';
+import { applyAlignment, applyAlignmentInEmptyRange } from './utils/alignment';
+import { applyList, applyListInEmptyRange } from './utils/list';
 import { handleImageFile, insertDivider } from './utils/options';
 import { getValidSelection } from './utils/range';
 import {
@@ -28,7 +28,7 @@ import {
     getCurrentLists,
     getCurrentSize,
 } from './utils/selection';
-import { applyStyle } from './utils/textStyles';
+import { applyStyle, applyStyleInEmptyRange } from './utils/textStyles';
 
 function EditorToolbar({ radius, sx }: ToolbarProps) {
     // prop destruction
@@ -85,37 +85,57 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     }, []);
 
     const handleSize = (size: Size) => {
-        const { isValid, selection, range } = getValidSelection();
-        if (!isValid) return;
+        let { isValid, selection, range } = getValidSelection();
+        // 커서 없는 경우 -> 커서 생성
+        if (!isValid) {
+            applyStyleInEmptyRange(editorRef, size);
+            ({ isValid, selection, range } = getValidSelection());
+            if (!isValid) return;
+        }
 
-        applyStyle(selection, range, size);
+        applyStyle(selection!, range!, size);
     };
 
     const handleColor = (textColorType: TextColor, color: string) => {
-        const { isValid, selection, range } = getValidSelection();
-        if (!isValid) return;
+        let { isValid, selection, range } = getValidSelection();
+        // 커서 없는 경우 -> 커서 생성
+        if (!isValid) {
+            applyStyleInEmptyRange(editorRef, textColorType, color);
+            ({ isValid, selection, range } = getValidSelection());
+            if (!isValid) return;
+        }
 
-        applyStyle(selection, range, textColorType, color);
+        applyStyle(selection!, range!, textColorType, color);
     };
 
     const handleFormat = useCallback(
         (format: Format) => {
-            const { isValid, selection, range } = getValidSelection();
-            if (!isValid) return;
+            let { isValid, selection, range } = getValidSelection();
+            // 커서 없는 경우 -> 커서 생성
+            if (!isValid) {
+                applyStyleInEmptyRange(editorRef, format);
+                ({ isValid, selection, range } = getValidSelection());
+                if (!isValid) return;
+            }
 
             toggleFormatButton(format);
-            applyStyle(selection, range, format);
+            applyStyle(selection!, range!, format);
         },
         [toggleFormatButton],
     );
 
     const handleAlignment = useCallback(
         (align: Align) => {
-            const { isValid, selection, range } = getValidSelection();
-            if (!isValid) return;
+            let { isValid, selection, range } = getValidSelection();
+            // 커서 없는 경우 -> 커서 생성
+            if (!isValid) {
+                applyAlignmentInEmptyRange(editorRef, align);
+                ({ isValid, selection, range } = getValidSelection());
+                if (!isValid) return;
+            }
 
             toggleAlignButton(align);
-            applyAlignment(selection, range, align);
+            applyAlignment(selection!, range!, align);
             editorRef.current?.focus();
         },
         [toggleAlignButton],
@@ -123,11 +143,16 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     const handleList = useCallback(
         (list: List) => {
-            const { isValid, selection, range } = getValidSelection();
-            if (!isValid) return;
+            let { isValid, selection, range } = getValidSelection();
+            // 커서 없는 경우 -> 커서 생성
+            if (!isValid) {
+                applyListInEmptyRange(editorRef, list);
+                ({ isValid, selection, range } = getValidSelection());
+                if (!isValid) return;
+            }
 
             toggleListButton(list);
-            applyList(selection, range, list);
+            applyList(selection!, range!, list);
         },
         [toggleListButton],
     );
@@ -135,7 +160,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     const handleOption = useCallback((option: Option) => {
         switch (option) {
             case 'divider':
-                insertDivider();
+                insertDivider(editorRef);
                 break;
             case 'image':
                 imageFileInputRef.current?.click();

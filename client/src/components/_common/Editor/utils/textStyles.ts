@@ -1,7 +1,8 @@
 import theme from '@styles/theme';
+import type { RefObject } from 'react';
 import type { Format, Size, TextColor } from '../types';
 import { getEditorRoot } from './alignment';
-import { getTextNodes, handleNewRange } from './range';
+import { applyAttributeInEmptyRange, getTextNodes, handleNewRange } from './range';
 
 export const applyStyleInSelectedText = (
     text: string,
@@ -323,6 +324,44 @@ const applyTextStyleInMultipleTextNode = (
             textNode.replaceWith(span);
         }
     });
+};
+
+const getFormatStyle = (
+    style: Format | Size | TextColor,
+    color?: string,
+): Partial<CSSStyleDeclaration> => {
+    if (style && color) {
+        if (style === 'color') return { color: color };
+        if (style === 'background') return { backgroundColor: color };
+    }
+
+    if (style.endsWith('px')) return { fontSize: style.toString() };
+
+    switch (style) {
+        case 'bold':
+            return { fontWeight: 'bold' };
+        case 'italic':
+            return { fontStyle: 'italic' };
+        case 'underline':
+            return { textDecoration: 'underline' };
+        case 'strikethrough':
+            return { textDecoration: 'line-through' };
+        default:
+            return {};
+    }
+};
+
+export const applyStyleInEmptyRange = (
+    editorRef: RefObject<HTMLDivElement>,
+    style: Format | Size | TextColor,
+    color?: string,
+) => {
+    const cssStyle = getFormatStyle(style, color);
+    const span = document.createElement('span');
+    Object.assign(span.style, cssStyle);
+    span.innerText = '\u200B'; // zero-width space
+
+    applyAttributeInEmptyRange(editorRef, span);
 };
 
 export const applyStyle = (
