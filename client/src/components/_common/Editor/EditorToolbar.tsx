@@ -123,11 +123,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     const handleList = useCallback(
         (list: List) => {
-            const { isValid, range } = getValidSelection();
+            const { isValid, selection, range } = getValidSelection();
             if (!isValid) return;
 
             toggleListButton(list);
-            applyList(range, list);
+            applyList(selection, range, list);
         },
         [toggleListButton],
     );

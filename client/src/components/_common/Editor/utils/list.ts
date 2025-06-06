@@ -1,5 +1,6 @@
 import type { List } from '../types';
 import { getClosestDiv, getEditorRoot } from './alignment';
+import { handleNewRange } from './range';
 
 // div로 감싸지지 않은 첫 줄을 div로 감싸기
 const wrapFirstLine = (editor: HTMLElement, lines: HTMLElement[]) => {
@@ -93,10 +94,9 @@ const applyListInSplitedText = (
     return frag;
 };
 
-export const applyList = (range: Range, list: List) => {
+export const applyList = (selection: Selection, range: Range, list: List) => {
     const editor = getEditorRoot(range);
     if (!editor) return;
-    if (range.startContainer === editor) return;
 
     const lines = getLinesInRange(editor, range);
 
@@ -106,12 +106,25 @@ export const applyList = (range: Range, list: List) => {
         wrapFirstLine(editor, lines);
     }
 
-    if (lines.length === 0) return;
-
     const listTag = list === 'disc' ? 'ul' : 'ol';
 
+    // 첫 줄에 커서만 있을 때
+    if (range.collapsed && lines.length === 0) {
+        const disc = document.createElement(listTag);
+        const li = document.createElement('li');
+        const div = document.createElement('div');
+
+        li.appendChild(div);
+        disc.appendChild(li);
+
+        range.insertNode(disc);
+
+        handleNewRange(div, selection, 0);
+        return;
+    }
+
     const firstLine = lines[0];
-    const currentList = firstLine.closest('ul, ol');
+    const currentList = firstLine?.closest('ul, ol');
 
     // 범위 내 적용된 리스트가 있을 경우
     if (currentList) {
