@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
+import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,12 +53,13 @@ public class AnnouncementHttpApi {
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
   }
 
+  /** 공고 수정 todo hasAnyRole 어노테이션 구현 후 추가 */
   @PutMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 수정")
-  public ResponseEntity<AnnouncementGetDetailResponse> updateAnnouncementDetail(
+  public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
       @PathVariable("announcement-id") String announcementId,
-      @Valid @RequestBody AnnouncementCreateRequest body) {
-    /** todo club@update */
-    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
+      @Valid @RequestBody AnnouncementUpdateRequest body) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(announcementService.updateAnnouncement(body, announcementId));
   }
 }
