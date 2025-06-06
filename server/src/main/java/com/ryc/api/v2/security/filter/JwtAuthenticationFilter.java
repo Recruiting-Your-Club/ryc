@@ -28,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+  private final JwtTokenManager jwtTokenManager;
+  private final CustomUserDetailService customUserDetailService;
   private static final List<String> EXCLUDE_URLS =
       List.of(
           "/api/v2/auth/login",
@@ -35,9 +37,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           "/api/v2/clubs",
           "/api/v2/clubs/*",
           "/api/v2/application/form");
-
-  private final JwtTokenManager jwtTokenManager;
-  private final CustomUserDetailService customUserDetailService;
 
   @Override
   protected void doFilterInternal(
