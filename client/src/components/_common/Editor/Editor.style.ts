@@ -107,6 +107,50 @@ export const textareaContainer = (height: string = '350px', radius: string = '4p
         max-width: 100%;
         height: auto;
     }
+    h1 {
+        display: block;
+        font-size: 2em;
+        margin-block-start: 0.67em;
+        margin-block-end: 0.67em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+    h2 {
+        display: block;
+        font-size: 1.5em;
+        margin-block-start: 0.83em;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+    h3 {
+        display: block;
+        font-size: 1.17em;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+    strong {
+        font-weight: bolder;
+    }
+
+    /* 추가적으로 필요한 경우 */
+    ul,
+    ol {
+        padding-left: 40px;
+        margin: 1em 0;
+    }
+    blockquote {
+        margin: 1em 40px;
+        font-style: italic;
+        border-left: 4px solid #ccc;
+        padding-left: 16px;
+    }
 `;
 
 export const editorListStyle = css`
