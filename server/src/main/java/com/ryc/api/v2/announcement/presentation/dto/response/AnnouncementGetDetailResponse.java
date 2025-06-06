@@ -39,7 +39,7 @@ public record AnnouncementGetDetailResponse(
     @Schema(description = "상세 설명", example = "자세한 모집 내용은 다음과 같습니다...") String detailDescription,
     @Schema(description = "대상", example = "컴퓨터공학과 학생") String target,
     @Schema(description = "공고 상태", example = "RECRUITING") AnnouncementStatus announcementStatus,
-    @Schema(description = "공고 유형", example = "CLUB") AnnouncementType announcementType,
+    @Schema(description = "공고 유형", example = "ALWAYS_OPEN") AnnouncementType announcementType,
     @Schema(description = "인터뷰 여부", example = "true") Boolean hasInterview,
     @Schema(description = "활동 기간", example = "2025년 3월 ~ 12월") String activityPeriod,
     @Schema(description = "모집 인원", example = "10명") String numberOfPeople,
