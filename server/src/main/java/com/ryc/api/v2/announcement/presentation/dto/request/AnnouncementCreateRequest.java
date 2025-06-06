@@ -57,7 +57,7 @@ public record AnnouncementCreateRequest(
         Boolean hasInterview,
     @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
         @NotEmpty(message = "tags shouldn't be empty")
-        List<@NotNull(message = "tag shouldn't be null") String> tags,
+        List<@NotBlank(message = "tag shouldn't be blank") String> tags,
     @Schema(description = "공고 지원서") @NotNull(message = "application shouldn't be null") @Valid
         AnnouncementApplicationRequest application,
     @NotNull(message = "images shouldn't be null")
