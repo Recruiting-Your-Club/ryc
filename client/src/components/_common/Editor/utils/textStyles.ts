@@ -116,10 +116,10 @@ const hasTextStyle = (
     style: Format | Size | TextColor,
     color?: string,
 ): boolean => {
-    if ((style as TextColor) && color) return hasColor(elem, style as TextColor, color);
-    if ((style as Size).endsWith('px')) return elem.style.fontSize === style;
+    if (style && color) return hasColor(elem, style as TextColor, color);
+    if (style.endsWith('px')) return elem.style.fontSize === style;
 
-    switch (style as Format) {
+    switch (style) {
         case 'bold':
             return elem.style.fontWeight === 'bold';
         case 'italic':
@@ -144,9 +144,7 @@ const toggleTextStyle = (
 
     if (style.endsWith('px')) elem.style.fontSize = shouldApply ? style : elem.style.fontSize; // Size
 
-    switch (
-        style // Format
-    ) {
+    switch (style) {
         case 'bold':
             elem.style.fontWeight = shouldApply ? 'bold' : '';
             break;
@@ -197,7 +195,7 @@ const applyTextStyle = (
     color?: string,
 ) => {
     const has = hasTextStyle(span, style, color);
-    const toggledHas = !isOverallStyle && has ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
+    const toggledHas = !isOverallStyle ? !has : has; // 전체 텍스트는 format 적용 안되어있지만 해당 텍스트는 format을 가지고 있다면 toggle
 
     toggleTextStyle(span, style, !toggledHas, color);
 };
