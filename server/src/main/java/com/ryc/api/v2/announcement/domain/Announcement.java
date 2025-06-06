@@ -9,6 +9,7 @@ import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.announcement.domain.vo.Image;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
+import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 
 import lombok.Builder;
@@ -85,6 +86,47 @@ public class Announcement {
         .announcementApplication(announcementApplication)
         .activityPeriod(request.activityPeriod())
         .isDeleted(false)
+        .build();
+  }
+
+  /**
+   * 업데이트시 사용될 정적팩토리 메소드
+   *
+   * @param request Update Request
+   */
+  public Announcement update(AnnouncementUpdateRequest request) {
+
+    // 1. 각 request update
+    List<Tag> updatedTags = request.tags().stream().map(Tag::initialize).toList();
+
+    List<Image> updatedImages = request.images().stream().map(Image::initialize).toList();
+
+    AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
+        AnnouncementPeriodInfo.initialize(request.periodInfo());
+
+    AnnouncementApplication updatedAnnouncementApplication =
+        this.announcementApplication.update(request.application());
+
+    // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
+    AnnouncementStatus updatedAnnouncementStatus = getAnnouncementStatus(announcementPeriodInfo);
+
+    return Announcement.builder()
+        .id(this.id)
+        .title(request.title())
+        .clubId(request.clubRoleSecuredDto().clubId())
+        .numberOfPeople(request.numberOfPeople())
+        .detailDescription(request.detailDescription())
+        .summaryDescription(request.summaryDescription())
+        .target(request.target())
+        .hasInterview(request.hasInterview())
+        .activityPeriod(request.activityPeriod())
+        .tags(updatedTags)
+        .images(updatedImages)
+        .announcementStatus(updatedAnnouncementStatus)
+        .announcementType(request.announcementType())
+        .announcementApplication(updatedAnnouncementApplication)
+        .isDeleted(false)
+        .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
         .build();
   }
 

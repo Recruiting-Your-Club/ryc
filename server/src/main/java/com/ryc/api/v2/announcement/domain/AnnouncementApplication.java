@@ -22,26 +22,41 @@ public class AnnouncementApplication {
   private List<ApplicationQuestion> preQuestions;
 
   /**
-   * @param announcementApplicationRequest create request
+   * @param request create request
    * @return AnnouncementApplication domain
    * @brief 최초 생성시에만 사용되는 정적 팩토리 메소드
    */
-  public static AnnouncementApplication initialize(
-      AnnouncementApplicationRequest announcementApplicationRequest) {
+  public static AnnouncementApplication initialize(AnnouncementApplicationRequest request) {
     List<ApplicationQuestion> applicationQuestions =
-        announcementApplicationRequest.applicationQuestions().stream()
-            .map(ApplicationQuestion::initialize)
-            .toList();
+        request.applicationQuestions().stream().map(ApplicationQuestion::initialize).toList();
 
     List<ApplicationQuestion> preQuestions =
-        announcementApplicationRequest.preQuestions().stream()
-            .map(ApplicationQuestion::initialize)
-            .toList();
+        request.preQuestions().stream().map(ApplicationQuestion::initialize).toList();
 
     return AnnouncementApplication.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
         .applicationQuestions(List.copyOf(applicationQuestions))
-        .personalInfoQuestionTypes(announcementApplicationRequest.personalInfoQuestionTypes())
+        .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
+        .preQuestions(List.copyOf(preQuestions))
+        .build();
+  }
+
+  /**
+   * update Request를 받아 새로운 객체로 Update
+   *
+   * @param request
+   */
+  public AnnouncementApplication update(AnnouncementApplicationRequest request) {
+    List<ApplicationQuestion> applicationQuestions =
+        request.applicationQuestions().stream().map(ApplicationQuestion::initialize).toList();
+
+    List<ApplicationQuestion> preQuestions =
+        request.preQuestions().stream().map(ApplicationQuestion::initialize).toList();
+
+    return AnnouncementApplication.builder()
+        .id(this.id)
+        .applicationQuestions(List.copyOf(applicationQuestions))
+        .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
         .preQuestions(List.copyOf(preQuestions))
         .build();
   }
