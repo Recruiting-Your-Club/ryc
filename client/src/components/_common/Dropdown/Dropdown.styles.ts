@@ -121,6 +121,7 @@ export const s_dropdownItem = (disabled: boolean, inset: boolean) => {
 
 export const s_dropdownLabel = (inset: boolean) => {
     return css`
+        display: flex;
         padding: 0.2rem 1.2rem;
         color: ${theme.colors.gray[600]};
         font-size: 1.2rem;

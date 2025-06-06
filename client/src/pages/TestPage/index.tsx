@@ -7,7 +7,6 @@ import { DropdownSeperator } from '@components/_common/Dropdown/DropdownSeperato
 function TestPage() {
     const [value, setValue] = useState('');
     return (
-
         <div>
             <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
             <Select size="md">
@@ -42,7 +41,7 @@ function TestPage() {
                     offsetY={17}
                     sx={{ width: '20rem', borderRadius: '1rem' }}
                 >
-                    <Dropdown.Label>hello</Dropdown.Label>
+                    <Dropdown.Label inset>hello</Dropdown.Label>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
                         <Dropdown.Item onItemSelect={() => alert('버튼이 클릭되었습니다')}>
