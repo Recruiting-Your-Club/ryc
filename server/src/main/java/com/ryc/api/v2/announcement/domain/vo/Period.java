@@ -29,11 +29,6 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
         .build();
   }
 
-  /** 둘의 기간이 겹치는지 여부 */
-  public Boolean isOverlapped(Period period) {
-    return endDate.isAfter(period.startDate) || startDate.isAfter(period.startDate);
-  }
-
   /**
    * 기간 validate
    *
@@ -46,12 +41,7 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
   }
 
   /** 파라미터의 Period보다 이전 Period인지 여부 */
-  public Boolean isBefore(Period period) {
-    return endDate.isBefore(period.startDate);
-  }
-
-  /** Period가 종료된지 여부 */
-  public Boolean isExpired() {
-    return endDate.isBefore(LocalDateTime.now());
+  public Boolean isBefore(Period other) {
+    return endDate.isBefore(other.startDate);
   }
 }
