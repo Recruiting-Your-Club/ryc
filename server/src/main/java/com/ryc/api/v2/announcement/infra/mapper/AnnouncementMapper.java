@@ -2,6 +2,9 @@ package com.ryc.api.v2.announcement.infra.mapper;
 
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
@@ -15,6 +18,7 @@ import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
 import com.ryc.api.v2.announcement.infra.vo.ImageVO;
 import com.ryc.api.v2.announcement.infra.vo.TagVO;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +30,8 @@ public class AnnouncementMapper {
   private final AnnouncementApplicationMapper applicationMapper;
   private final AnnouncementTagMapper tagMapper;
   private final ImageMapper imageMapper;
+
+  @PersistenceContext private final EntityManager entityManager;
 
   /** entity to domain */
   public Announcement toDomain(
@@ -81,6 +87,8 @@ public class AnnouncementMapper {
         .announcementType(announcementEntity.getAnnouncementType())
         .hasInterview(announcementEntity.getHasInterview())
         .isDeleted(announcementEntity.getIsDeleted())
+        .createdAt(announcementEntity.getCreatedAt())
+        .updatedAt(announcementEntity.getUpdatedAt())
         .build();
   }
 
@@ -91,7 +99,11 @@ public class AnnouncementMapper {
     AnnouncementPeriodInfoVO periodInfoVO =
         periodInfoMapper.toVO(announcement.getAnnouncementPeriodInfo());
 
+    //proxy 객체 주입
+    ClubEntity club = entityManager.getReference(ClubEntity.class, announcement.getClubId());
+
     return AnnouncementEntity.builder()
+        .clubEntity(club)
         .id(announcement.getId())
         .title(announcement.getTitle())
         .numberOfPeople(announcement.getNumberOfPeople())

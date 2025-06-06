@@ -34,25 +34,7 @@ public class AnnouncementApplicationMapper {
   }
 
   /** Domain to entity */
-  public AnnouncementApplicationEntity toEntity(AnnouncementApplication application) {
-    List<ApplicationQuestionVO> applicationQuestions =
-        application.getApplicationQuestions().stream()
-            .map(applicationQuestionMapper::toVO)
-            .toList();
-    List<ApplicationQuestionVO> preQuestions =
-        application.getPreQuestions().stream().map(applicationQuestionMapper::toVO).toList();
-
-    return AnnouncementApplicationEntity.builder()
-        .id(application.getId())
-        .applicationQuestions(applicationQuestions)
-        .personalInfoQuestions(application.getPersonalInfoQuestionTypes())
-        .preQuestions(preQuestions)
-        .build();
-  }
-
-  /** save시 announcement 주입 mapping */
-  public AnnouncementApplicationEntity toEntity(
-      AnnouncementApplication domain, AnnouncementEntity announcement) {
+  public AnnouncementApplicationEntity toEntity(AnnouncementApplication domain) {
     List<ApplicationQuestionVO> applicationQuestions =
         domain.getApplicationQuestions().stream().map(applicationQuestionMapper::toVO).toList();
     List<ApplicationQuestionVO> preQuestions =
@@ -62,6 +44,24 @@ public class AnnouncementApplicationMapper {
         .id(domain.getId())
         .applicationQuestions(applicationQuestions)
         .personalInfoQuestions(domain.getPersonalInfoQuestionTypes())
+        .preQuestions(preQuestions)
+        .build();
+  }
+
+  /** save시 announcement 주입 mapping */
+  public AnnouncementApplicationEntity toEntity(
+      AnnouncementApplication applicationDomain, AnnouncementEntity announcement) {
+    List<ApplicationQuestionVO> applicationQuestions =
+        applicationDomain.getApplicationQuestions().stream()
+            .map(applicationQuestionMapper::toVO)
+            .toList();
+    List<ApplicationQuestionVO> preQuestions =
+        applicationDomain.getPreQuestions().stream().map(applicationQuestionMapper::toVO).toList();
+
+    return AnnouncementApplicationEntity.builder()
+        .id(applicationDomain.getId())
+        .applicationQuestions(applicationQuestions)
+        .personalInfoQuestions(applicationDomain.getPersonalInfoQuestionTypes())
         .preQuestions(preQuestions)
         .announcementEntity(announcement)
         .build();
