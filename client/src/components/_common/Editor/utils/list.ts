@@ -154,7 +154,10 @@ export const applyList = (selection: Selection, range: Range, list: List) => {
 
         parent.replaceChild(fragment, currentList);
 
-        handleRangeInList(parent.querySelector(listTag)!, selection);
+        const foundListTag = parent.querySelector(listTag);
+        if (!foundListTag) return;
+
+        handleRangeInList(foundListTag, selection);
         return;
     }
 

@@ -50,7 +50,7 @@ export const handleRangeToNext = (node: Node, selection: Selection) => {
 export const handleRangeInList = (list: HTMLElement, selection: Selection) => {
     const contentList = list.querySelector('li');
     if (contentList) {
-        const div = contentList.querySelector('div');
+        const div = contentList?.querySelector('div');
         const targetNode = div?.firstChild;
 
         if (targetNode) {
