@@ -96,7 +96,8 @@ const applyListInSplitedText = (
 };
 
 export const applyListInEmptyRange = (editorRef: RefObject<HTMLDivElement>, list: List) => {
-    const disc = document.createElement(list.toString());
+    const listTag = list === 'disc' ? 'ul' : 'ol';
+    const disc = document.createElement(listTag);
     const li = document.createElement('li');
     const div = document.createElement('div');
 
