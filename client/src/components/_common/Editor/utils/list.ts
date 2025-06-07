@@ -144,8 +144,7 @@ export const applyList = (selection: Selection, range: Range, list: List) => {
     // 범위 내 적용된 리스트가 있을 경우
     if (currentList) {
         // 같은 리스트 버튼을 누르면 종료
-        if (currentList.tagName.toLowerCase() === list) return;
-
+        if (currentList.tagName.toLowerCase() === listTag) return;
         const selectedDivs = new Set(lines);
         const parent = currentList.parentNode!;
         const fragment = applyListInSplitedText(currentList as HTMLElement, selectedDivs, listTag);
