@@ -356,12 +356,24 @@ export const applyStyleInEmptyRange = (
     style: Format | Size | TextColor,
     color?: string,
 ) => {
-    const cssStyle = getFormatStyle(style, color);
-    const span = document.createElement('span');
-    Object.assign(span.style, cssStyle);
-    span.innerText = '\u200B'; // zero-width space
+    if (!editorRef.current) return;
 
-    applyAttributeInEmptyRange(editorRef, span);
+    const cssStyle = getFormatStyle(style, color);
+
+    const existingZWSP = Array.from(editorRef.current.querySelectorAll('span')).find(
+        (span) => span.textContent === '\u200B',
+    );
+
+    if (existingZWSP) {
+        Object.assign(existingZWSP.style, cssStyle);
+        applyAttributeInEmptyRange(editorRef, existingZWSP);
+    } else {
+        const span = document.createElement('span');
+        Object.assign(span.style, cssStyle);
+        span.innerText = '\u200B'; // zero-width space
+
+        applyAttributeInEmptyRange(editorRef, span);
+    }
 };
 
 export const applyStyle = (

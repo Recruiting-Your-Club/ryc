@@ -85,24 +85,22 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
     }, []);
 
     const handleSize = (size: Size) => {
-        let { isValid, selection, range } = getValidSelection();
+        const { isValid, selection, range } = getValidSelection();
         // 커서 없는 경우 -> 커서 생성
         if (!isValid) {
             applyStyleInEmptyRange(editorRef, size);
-            ({ isValid, selection, range } = getValidSelection());
-            if (!isValid) return;
+            return;
         }
 
         applyStyle(selection!, range!, size);
     };
 
     const handleColor = (textColorType: TextColor, color: string) => {
-        let { isValid, selection, range } = getValidSelection();
+        const { isValid, selection, range } = getValidSelection();
         // 커서 없는 경우 -> 커서 생성
         if (!isValid) {
             applyStyleInEmptyRange(editorRef, textColorType, color);
-            ({ isValid, selection, range } = getValidSelection());
-            if (!isValid) return;
+            return;
         }
 
         applyStyle(selection!, range!, textColorType, color);
@@ -110,12 +108,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     const handleFormat = useCallback(
         (format: Format) => {
-            let { isValid, selection, range } = getValidSelection();
+            const { isValid, selection, range } = getValidSelection();
             // 커서 없는 경우 -> 커서 생성
             if (!isValid) {
                 applyStyleInEmptyRange(editorRef, format);
-                ({ isValid, selection, range } = getValidSelection());
-                if (!isValid) return;
+                return;
             }
 
             toggleFormatButton(format);
@@ -126,12 +123,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     const handleAlignment = useCallback(
         (align: Align) => {
-            let { isValid, selection, range } = getValidSelection();
+            const { isValid, selection, range } = getValidSelection();
             // 커서 없는 경우 -> 커서 생성
             if (!isValid) {
                 applyAlignmentInEmptyRange(editorRef, align);
-                ({ isValid, selection, range } = getValidSelection());
-                if (!isValid) return;
+                return;
             }
 
             toggleAlignButton(align);
@@ -143,12 +139,11 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
 
     const handleList = useCallback(
         (list: List) => {
-            let { isValid, selection, range } = getValidSelection();
+            const { isValid, selection, range } = getValidSelection();
             // 커서 없는 경우 -> 커서 생성
             if (!isValid) {
                 applyListInEmptyRange(editorRef, list);
-                ({ isValid, selection, range } = getValidSelection());
-                if (!isValid) return;
+                return;
             }
 
             toggleListButton(list);
