@@ -12,7 +12,7 @@ export const getValidSelection = (): ValidSelection => {
 export const applyAttributeInEmptyRange = (
     editorRef: RefObject<HTMLElement>,
     element: HTMLElement,
-) => {
+): Selection | undefined => {
     const editor = editorRef.current;
     if (!editor) return;
 
@@ -20,8 +20,11 @@ export const applyAttributeInEmptyRange = (
 
     const reSelection = window.getSelection();
     if (!reSelection) return;
+
     if (element instanceof HTMLHRElement) {
         handleRangeToNext(element, reSelection);
+    } else if (element instanceof HTMLUListElement || HTMLOListElement) {
+        return reSelection;
     } else {
         handleNewRange(element, reSelection, 0);
     }
@@ -42,6 +45,20 @@ export const handleRangeToNext = (node: Node, selection: Selection) => {
 
     selection.removeAllRanges();
     selection.addRange(newRange);
+};
+
+export const handleRangeInList = (list: HTMLElement, selection: Selection) => {
+    const contentList = list.querySelector('li');
+    if (contentList) {
+        const div = contentList.querySelector('div');
+        const targetNode = div?.firstChild;
+
+        if (targetNode) {
+            const offset =
+                targetNode.nodeType === Node.TEXT_NODE ? (targetNode.textContent?.length ?? 0) : 0;
+            handleNewRange(targetNode, selection, offset);
+        }
+    }
 };
 
 // 커서, 드래그 보존

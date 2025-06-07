@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 import type { List } from '../types';
 import { getClosestDiv, getEditorRoot } from './alignment';
-import { applyAttributeInEmptyRange, handleNewRange } from './range';
+import { applyAttributeInEmptyRange, handleNewRange, handleRangeInList } from './range';
 
 // div로 감싸지지 않은 첫 줄을 div로 감싸기
 const wrapFirstLine = (editor: HTMLElement, lines: HTMLElement[]) => {
@@ -97,15 +97,17 @@ const applyListInSplitedText = (
 
 export const applyListInEmptyRange = (editorRef: RefObject<HTMLDivElement>, list: List) => {
     const listTag = list === 'disc' ? 'ul' : 'ol';
-    const disc = document.createElement(listTag);
+
+    const tag = document.createElement(listTag);
     const li = document.createElement('li');
     const div = document.createElement('div');
 
     li.appendChild(div);
-    disc.appendChild(li);
+    tag.appendChild(li);
     div.innerText = '\u200B'; // zero-width space
 
-    applyAttributeInEmptyRange(editorRef, disc);
+    const reSelection = applyAttributeInEmptyRange(editorRef, tag)!;
+    handleNewRange(div, reSelection, 0);
 };
 
 export const applyList = (selection: Selection, range: Range, list: List) => {
@@ -124,15 +126,15 @@ export const applyList = (selection: Selection, range: Range, list: List) => {
 
     // 첫 줄에 커서만 있을 때
     if (range.collapsed && lines.length === 0) {
-        const disc = document.createElement(listTag);
+        const liParent = document.createElement(listTag);
         const li = document.createElement('li');
         const div = document.createElement('div');
 
         li.appendChild(div);
-        disc.appendChild(li);
+        liParent.appendChild(li);
         div.innerText = '\u200B'; // zero-width space
 
-        range.insertNode(disc);
+        range.insertNode(liParent);
 
         handleNewRange(div, selection, 0);
         return;
@@ -145,11 +147,14 @@ export const applyList = (selection: Selection, range: Range, list: List) => {
     if (currentList) {
         // 같은 리스트 버튼을 누르면 종료
         if (currentList.tagName.toLowerCase() === listTag) return;
+
         const selectedDivs = new Set(lines);
         const parent = currentList.parentNode!;
         const fragment = applyListInSplitedText(currentList as HTMLElement, selectedDivs, listTag);
 
         parent.replaceChild(fragment, currentList);
+
+        handleRangeInList(parent.querySelector(listTag)!, selection);
         return;
     }
 
@@ -170,4 +175,6 @@ export const applyList = (selection: Selection, range: Range, list: List) => {
             parent?.removeChild(line);
         }
     });
+
+    handleRangeInList(newList, selection);
 };
