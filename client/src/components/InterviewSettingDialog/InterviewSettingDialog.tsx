@@ -33,6 +33,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
     // initial values
     // state, ref, querystring hooks
     const [inputValue, setInputValue] = useState<string>('');
+    const [perNumber, setPerNumber] = useState<string>('');
     const [unit, setUnit] = useState<string>('hour');
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
     const [currentDate, setCurrentDate] = useState<string>('');
@@ -105,7 +106,11 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 면접 당 최대 정원 수
                             </Text>
                             <div css={inputFormSection}>
-                                <Input inputSx={informationInputCss} />
+                                <Input
+                                    value={perNumber}
+                                    onChange={(e) => setPerNumber(e.target.value)}
+                                    inputSx={informationInputCss}
+                                />
                                 <Text
                                     as="span"
                                     type="captionSemibold"
