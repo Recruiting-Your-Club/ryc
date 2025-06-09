@@ -9,6 +9,10 @@ export interface Evaluator {
     comment: string;
 }
 
+export interface Document {
+    question: string;
+    answer: string;
+}
 export interface Evaluation {
     type: EvaluationType;
     averageScore: number;
@@ -18,6 +22,8 @@ export interface Evaluation {
 export interface ApplicantDialogProps {
     open: boolean;
     handleClose: () => void;
-    name?: string;
-    email?: string;
+    name: string;
+    email: string;
+    documentList: Document[];
+    evaluations: Evaluation[];
 }

@@ -8,6 +8,7 @@ import {
 } from '@components';
 import { ApplicantCard } from '@components/ApplicantCard';
 import { CardBox } from '@components/CardBox';
+import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
 import React, { useState } from 'react';
 import {
     cardGroup,
@@ -266,6 +267,8 @@ function StepManagementPage() {
                     <ApplicantDialog
                         name={selectedApplicant.name}
                         email={selectedApplicant.email}
+                        documentList={documentList}
+                        evaluations={interviewEmptyEvaluations}
                         open={isOpen}
                         handleClose={handleClose}
                     />

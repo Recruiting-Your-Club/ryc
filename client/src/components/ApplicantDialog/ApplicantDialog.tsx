@@ -4,12 +4,7 @@ import XIcon from '@assets/images/xIcon.svg';
 import { DocumentBox } from '@components/DocumentBox';
 import { PersonalScoreCard } from '@components/PersonalScoreCard';
 import { Button, Dialog, Divider, Rating, Text } from '@components/_common';
-import {
-    documentList,
-    evaluation,
-    evaluations,
-    interviewEmptyEvaluations,
-} from '@constants/ApplicantDialog';
+import { evaluation } from '@constants/ApplicantDialog';
 import React, { useState } from 'react';
 import {
     chevronSvgCss,
@@ -34,8 +29,10 @@ import type { ApplicantDialogProps } from './types';
 function ApplicantDialog({
     open,
     handleClose,
-    name = '김민지',
-    email = 'test123@naver.com',
+    name,
+    email,
+    documentList,
+    evaluations,
 }: ApplicantDialogProps) {
     // prop destruction
     // lib hooks
@@ -55,7 +52,7 @@ function ApplicantDialog({
         if (currentIndex < evaluation.length - 1) setCurrentIndex((prev) => prev + 1);
     };
 
-    const currentEvaluation = interviewEmptyEvaluations[currentIndex];
+    const currentEvaluation = evaluations[currentIndex];
     // effects
 
     return (
