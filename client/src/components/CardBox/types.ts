@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 export type Step = 'normal' | 'final';
 
 export interface CardBoxProps {
