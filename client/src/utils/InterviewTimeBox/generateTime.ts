@@ -5,9 +5,7 @@ export const generateTimeItems = (interval: number): string[] => {
     const totalMinutes = 24 * 60;
 
     for (let i = 0; i <= totalMinutes; i += interval) {
-        const hours = String(Math.floor(i / 60)).padStart(2, '0');
-        const minutes = String(i % 60).padStart(2, '0');
-        result.push(`${hours}:${minutes}`);
+        result.push(minutesToTime(i));
     }
 
     return result;
@@ -19,9 +17,9 @@ const timeToMinutes = (time: string) => {
 };
 
 const minutesToTime = (minutes: number) => {
-    const h = String(Math.floor(minutes / 60)).padStart(2, '0');
-    const m = String(minutes % 60).padStart(2, '0');
-    return `${h}:${m}`;
+    const convertedHours = String(Math.floor(minutes / 60)).padStart(2, '0');
+    const convertedMinutes = String(minutes % 60).padStart(2, '0');
+    return `${convertedHours}:${convertedMinutes}`;
 };
 
 export const generateTimeRange = (start: string, end: string, interval: number): string[] => {
