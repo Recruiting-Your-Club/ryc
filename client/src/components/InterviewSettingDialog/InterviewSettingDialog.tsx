@@ -179,7 +179,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             size="md"
                             placeholder="이메일 내용을 입력해주세요."
                             sx={textareaCss}
-                            wrapperSx={{ height: '100%', margin: '0' }}
+                            textAreaSx={{ height: '100%', margin: '0' }}
                         />
                     </div>
                     <div css={submitButtonWrapper}>
