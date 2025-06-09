@@ -1,10 +1,11 @@
 import { Button, Divider, Text } from '@components/_common';
-import theme from '@styles/theme';
 import { generateTimeRange } from '@utils/InterviewTimeBox/generateTime';
 import React, { useEffect, useState } from 'react';
 import {
     baseBox,
     buttonCss,
+    dividerCss,
+    resetButtonWrapper,
     selectedTimeSection,
     timeButtonCss,
     timeSelectSection,
@@ -47,13 +48,13 @@ function InterviewTimeBox({
                 <Text as="span" type="captionSemibold">
                     면접 진행 시간
                 </Text>
-                <div css={{ display: 'flex', alignItems: 'center' }}>
+                <div css={resetButtonWrapper}>
                     <Button onClick={handleReset} variant="transparent" size="xl" sx={buttonCss}>
                         초기화
                     </Button>
                 </div>
             </div>
-            <Divider sx={{ borderTop: `1px solid ${theme.colors.gray[400]}` }} />
+            <Divider sx={dividerCss} />
             <div css={selectedTimeSection}>
                 {selectedDate && (
                     <>

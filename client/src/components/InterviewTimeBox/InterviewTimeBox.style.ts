@@ -17,6 +17,15 @@ export const timeSelectSection = css`
     justify-content: space-between;
 `;
 
+export const resetButtonWrapper = css`
+    display: flex;
+    align-items: center;
+`;
+
+export const dividerCss = css`
+    border-top: 1px solid ${theme.colors.gray[400]};
+`;
+
 export const selectedTimeSection = css`
     display: flex;
     min-height: 5rem;
