@@ -9,7 +9,7 @@ import {
 import { ApplicantCard } from '@components/ApplicantCard';
 import { CardBox } from '@components/CardBox';
 import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     cardGroup,
     inputCss,
@@ -111,6 +111,13 @@ const finalApplicantList = [
         status: '평가 완료 (6/6)',
     },
     {
+        name: 'Robert Lee',
+        email: 't123@naver.com',
+        date: '2025. 02. 04',
+        score: '4.0',
+        status: '평가 완료 (6/6)',
+    },
+    {
         name: '김영림',
         email: 't1234@naver.com',
         date: '2025. 02. 04',
@@ -152,6 +159,8 @@ function StepManagementPage() {
     // state, ref, querystring hooks
     const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
     const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
+    const [query, setQuery] = useState('');
+
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
@@ -159,6 +168,20 @@ function StepManagementPage() {
     // form hooks
     // query hooks
     // calculated values
+    const normalizeQuery = (name: string) => {
+        return name.toLowerCase().replace(/\s+/g, '');
+    }; // 엄밀히 말하면 util 함수에 해당
+
+    const filteredNames = useCallback(
+        (applicantList: Applicant[]) => {
+            const normalizedQuery = normalizeQuery(query);
+            return applicantList.filter((applicant) =>
+                normalizeQuery(applicant.name).includes(normalizedQuery),
+            );
+        },
+        [query],
+    );
+
     // handlers
     const handleToggle = (email: string, checked: boolean) => {
         setSelectedEmails((prev) => (checked ? [...prev, email] : prev.filter((e) => e !== email)));
@@ -206,13 +229,14 @@ function StepManagementPage() {
                         }
                         inputSx={inputCss}
                         placeholder="지원자 이름 검색"
+                        onChange={(e) => setQuery(e.target.value)}
                     />
                 </nav>
             </div>
             <div css={stepBoxContainer}>
                 <CardBox stepTitle={data.document ? '서류 평가' : '지원서 접수'} step="normal">
                     <div css={cardGroup}>
-                        {applicantList.map((applicant) => (
+                        {filteredNames(applicantList).map((applicant) => (
                             <ApplicantCard
                                 key={applicant.email}
                                 name={applicant.name}
@@ -230,7 +254,7 @@ function StepManagementPage() {
                 {data.interview && (
                     <CardBox stepTitle="면접" step="normal">
                         <div css={cardGroup}>
-                            {applicantList2.map((applicant) => (
+                            {filteredNames(applicantList2).map((applicant) => (
                                 <ApplicantCard
                                     key={applicant.email}
                                     name={applicant.name}
@@ -248,7 +272,7 @@ function StepManagementPage() {
                 )}
                 <CardBox stepTitle="최종 합격" step="final">
                     <div css={cardGroup}>
-                        {finalApplicantList.map((applicant) => (
+                        {filteredNames(finalApplicantList).map((applicant) => (
                             <ApplicantCard
                                 key={applicant.email}
                                 name={applicant.name}
