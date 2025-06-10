@@ -8,6 +8,8 @@ export const baseBox = css`
     min-height: 10rem;
     border: 1px solid ${theme.colors.gray[400]};
     border-radius: 8px;
+    z-index: 999;
+    overflow: hidden;
 `;
 
 export const timeSelectSection = css`
@@ -15,6 +17,7 @@ export const timeSelectSection = css`
     align-items: center;
     padding: 1.5rem;
     justify-content: space-between;
+    min-height: 5rem;
 `;
 
 export const resetButtonWrapper = css`
@@ -24,6 +27,7 @@ export const resetButtonWrapper = css`
 
 export const dividerCss = css`
     border-top: 1px solid ${theme.colors.gray[400]};
+    z-index: 999;
 `;
 
 export const selectedTimeSection = css`
