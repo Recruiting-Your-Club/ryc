@@ -27,7 +27,7 @@ public record ApplicationQuestion(
   public static ApplicationQuestion initialize(ApplicationQuestionRequest questionRequest) {
 
     return ApplicationQuestion.builder()
-        .type(QuestionType.LONG_ANSWER)
+        .type(questionRequest.questionType())
         .label(questionRequest.label())
         .isRequired(questionRequest.isRequired())
         .options(questionRequest.options())
