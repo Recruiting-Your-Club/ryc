@@ -8,6 +8,7 @@ import {
     MainPage,
     ClubDetailPage,
     RecruitmentPage,
+    ReservationPage,
 } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
 import { ClubApplyPage } from '@pages/ClubApplyPage';
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
             { path: 'detail', element: <ClubDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
+            { path: 'reservation', element: <ReservationPage /> },
         ],
     },
     {
