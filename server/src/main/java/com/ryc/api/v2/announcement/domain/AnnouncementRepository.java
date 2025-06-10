@@ -1,4 +1,5 @@
 package com.ryc.api.v2.announcement.domain;
+
 import java.util.List;
 
 public interface AnnouncementRepository {

@@ -44,6 +44,7 @@ public class Announcement {
 
   /**
    * 최초 생성시에만 사용하는 정적 팩토리 메서드
+   *
    * @param request create request
    * @return Announcement domain
    */
@@ -108,7 +109,8 @@ public class Announcement {
         this.announcementApplication.update(request.application());
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus updatedAnnouncementStatus = AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
+    AnnouncementStatus updatedAnnouncementStatus =
+        AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
 
     return Announcement.builder()
         .id(this.id)
@@ -132,10 +134,12 @@ public class Announcement {
 
   /**
    * status 갱신 메소드
+   *
    * @return
    */
-  public Announcement updateStatus(){
-    AnnouncementStatus updatedAnnouncementStatus = AnnouncementStatus.from(this.announcementPeriodInfo);
+  public Announcement updateStatus() {
+    AnnouncementStatus updatedAnnouncementStatus =
+        AnnouncementStatus.from(this.announcementPeriodInfo);
 
     return Announcement.builder()
         .id(this.id)

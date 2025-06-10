@@ -72,7 +72,7 @@ public class AnnouncementMapper {
 
     return Announcement.builder()
         .id(announcementEntity.getId())
-            .clubId(announcementEntity.getClubEntity().getId())
+        .clubId(announcementEntity.getClubEntity().getId())
         .title(announcementEntity.getTitle())
         .numberOfPeople(announcementEntity.getNumberOfPeople())
         .detailDescription(announcementEntity.getDetailDescription())
@@ -87,7 +87,7 @@ public class AnnouncementMapper {
         .isDeleted(announcementEntity.getIsDeleted())
         .createdAt(announcementEntity.getCreatedAt())
         .updatedAt(announcementEntity.getUpdatedAt())
-            .announcementStatus(announcementEntity.getAnnouncementStatus())
+        .announcementStatus(announcementEntity.getAnnouncementStatus())
         .build();
   }
 
@@ -110,7 +110,7 @@ public class AnnouncementMapper {
         .target(announcement.getTarget())
         .tags(tags)
         .images(images)
-            .announcementStatus(announcement.getAnnouncementStatus())
+        .announcementStatus(announcement.getAnnouncementStatus())
         .announcementPeriodInfoVO(periodInfoVO)
         .activityPeriod(announcement.getActivityPeriod())
         .announcementType(announcement.getAnnouncementType())

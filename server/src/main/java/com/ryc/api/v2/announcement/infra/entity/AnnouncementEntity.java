@@ -2,9 +2,9 @@ package com.ryc.api.v2.announcement.infra.entity;
 
 import java.util.List;
 
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import jakarta.persistence.*;
 
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
 import com.ryc.api.v2.announcement.infra.vo.ImageVO;

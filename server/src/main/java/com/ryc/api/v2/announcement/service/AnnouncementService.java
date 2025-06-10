@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
@@ -85,9 +84,9 @@ public class AnnouncementService {
   public void updateAnnouncementStatus() {
     List<Announcement> announcements = announcementRepository.findAllByIsDeleted(false);
 
-    List<Announcement> updatedAnnouncements = announcements.stream().map(Announcement::updateStatus).toList();
+    List<Announcement> updatedAnnouncements =
+        announcements.stream().map(Announcement::updateStatus).toList();
 
     announcementRepository.saveAll(updatedAnnouncements);
-
   }
 }

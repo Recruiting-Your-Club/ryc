@@ -22,6 +22,6 @@ public class ApplicationQuestionVO {
   private boolean isRequired;
 
   @Convert(converter = StringListConverter.class)
-  @Column(columnDefinition = "TEXT")
+  @Column(columnDefinition = "json")
   private List<String> options;
 }

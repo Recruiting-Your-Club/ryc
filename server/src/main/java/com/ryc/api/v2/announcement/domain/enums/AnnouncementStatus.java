@@ -1,8 +1,8 @@
 package com.ryc.api.v2.announcement.domain.enums;
 
-import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-
 import java.time.LocalDateTime;
+
+import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 
 public enum AnnouncementStatus {
   UPCOMING,
@@ -25,5 +25,4 @@ public enum AnnouncementStatus {
       return AnnouncementStatus.CLOSED;
     }
   }
-
 }
