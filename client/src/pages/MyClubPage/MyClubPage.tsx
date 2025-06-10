@@ -10,6 +10,7 @@ import {
 } from './MyClubPage.style';
 import { Text, Avatar, Button } from '@components';
 import ChevronRight from '@assets/images/chevronRight.svg';
+import { captionBold } from '@components/_common/Text/Text.stories';
 
 const myClubs = [
     {
@@ -68,9 +69,13 @@ function MyClubPage() {
                 <Button variant="transparent" size="xl" sx={searchButton}>
                     <div css={plusButton}>+</div>
                     <Text type="bodyRegular" color="primary">
-                        나의 동아리 찾기
+                        새 동아리 만들기
                     </Text>
                 </Button>
+                <Text type="captionSemibold" color="caption">
+                    참여할 다른 동아리가 있으시다면? <br />
+                    동아리 회장에게 문의하거나 초대링크를 찾아 눌러주세요.
+                </Text>
             </div>
         </div>
     );
