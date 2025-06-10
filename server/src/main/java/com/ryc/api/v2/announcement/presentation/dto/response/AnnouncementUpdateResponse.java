@@ -29,14 +29,10 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "지원서") AnnouncementApplicationResponse application,
 
     // 기간정보
-    @Schema(description = "지원 기간", example = "2025년 6월 1일 ~ 2025년 6월 5일")
-        PeriodResponse applicationPeriod,
-    @Schema(description = "면접 기간", example = "2025년 6월 8일 ~ 2025년 6월 10일")
-        PeriodResponse interviewPeriod,
-    @Schema(description = "서류 결과 기간", example = "2025년 6월 6일 ~ 2025년 6월 7일")
-        PeriodResponse documentResultPeriod,
-    @Schema(description = "최종 발표 기간", example = "2025년 6월 11일 ~ 2025년 6월 13일")
-        PeriodResponse finalResultPeriod,
+    @Schema(description = "지원 기간") PeriodResponse applicationPeriod,
+    @Schema(description = "면접 기간") PeriodResponse interviewPeriod,
+    @Schema(description = "서류 결과 기간") PeriodResponse documentResultPeriod,
+    @Schema(description = "최종 발표 기간") PeriodResponse finalResultPeriod,
 
     // 이미지
     @Schema(description = "이미지") List<ImageResponse> images,

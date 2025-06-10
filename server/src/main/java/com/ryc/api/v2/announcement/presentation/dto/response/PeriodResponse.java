@@ -14,8 +14,10 @@ import lombok.Builder;
  */
 @Builder
 public record PeriodResponse(
-    @Schema(description = "시작 일시", example = "2025-06-01T09:00") LocalDateTime startDate,
-    @Schema(description = "종료 일시", example = "2025-06-30T18:00") LocalDateTime endDate) {
+    @Schema(description = "시작 일시", example = "2025-06-01T09:00", type = "string")
+        LocalDateTime startDate,
+    @Schema(description = "종료 일시", example = "2025-06-30T18:00", type = "string")
+        LocalDateTime endDate) {
   /** 정적 팩토리 메소드 */
   public static PeriodResponse from(Period period) {
     if (period == null) {

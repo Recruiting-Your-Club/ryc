@@ -12,7 +12,7 @@ import lombok.Builder;
  */
 @Builder
 public record Image(String thumbnailUrl, String imageUrl) {
-  public static Image initialize(ImageRequest imageRequest) {
+  public static Image from(ImageRequest imageRequest) {
     return Image.builder()
         .thumbnailUrl(imageRequest.thumbnailImageUrl())
         .imageUrl(imageRequest.imageUrl())

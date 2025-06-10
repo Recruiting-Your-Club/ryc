@@ -9,7 +9,7 @@ import lombok.Builder;
  */
 @Builder
 public record Tag(String label) {
-  public static Tag initialize(String label) {
+  public static Tag from(String label) {
     return Tag.builder().label(label).build();
   }
 }

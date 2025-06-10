@@ -1,5 +1,8 @@
 package com.ryc.api.v2.announcement.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum PersonalInfoQuestionType {
   STUDENT_ID(InputType.TEXT),
   PHONE_NUMBER(InputType.TEXT),
@@ -11,9 +14,5 @@ public enum PersonalInfoQuestionType {
 
   PersonalInfoQuestionType(InputType inputType) {
     this.inputType = inputType;
-  }
-
-  public InputType getInputType() {
-    return inputType;
   }
 }

@@ -49,16 +49,26 @@ public record AnnouncementUpdateRequest(
     @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
         @NotBlank(message = "target shouldn't be blank")
         String target,
-    @Schema(description = "ㅌ공고 타입", example = "LIMITED_TIME")
+    @Schema(description = "공고 타입", example = "LIMITED_TIME")
         @NotNull(message = "announcementType shouldn't be null")
         AnnouncementType announcementType,
     @Schema(description = "면접 여부", example = "true")
         @NotNull(message = "hasInterview shouldn't be null")
         Boolean hasInterview,
-    @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
-        @NotNull(message = "tags shouldn't be null")
+    @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
     @Schema(description = "공고 지원서") @Valid @NotNull(message = "application shouldn't be null")
         AnnouncementApplicationRequest application,
     @Schema(description = "이미지 목록") @NotNull(message = "images shouldn't be null")
-        List<@Valid @NotNull(message = "image shouldn't be null") ImageRequest> images) {}
+        List<@Valid @NotNull(message = "image shouldn't be null") ImageRequest> images) {
+  @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
+  @Override
+  public List<String> tags() {
+    return List.copyOf(tags);
+  }
+
+  @Override
+  public List<ImageRequest> images() {
+    return List.copyOf(images);
+  }
+}

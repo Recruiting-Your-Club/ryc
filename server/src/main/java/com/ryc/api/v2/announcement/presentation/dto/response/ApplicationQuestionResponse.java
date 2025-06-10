@@ -20,7 +20,8 @@ public record ApplicationQuestionResponse(
     @Schema(description = "질문 유형", example = "LONG_ANSWER") QuestionType type,
     @Schema(description = "질문 내용", example = "자신의 개발 경험을 적어주세요.") String label,
     @Schema(description = "필수 여부", example = "true") Boolean isRequired,
-    @Schema(description = "선택 옵션 목록 (SELECT 유형인 경우)") List<String> options) {
+    @Schema(description = "선택 옵션 목록 (SELECT 유형인 경우)", example = "[\"보기1\",\"보기2\"]")
+        List<String> options) {
   public static ApplicationQuestionResponse from(ApplicationQuestion question) {
     if (question == null) {
       return null;

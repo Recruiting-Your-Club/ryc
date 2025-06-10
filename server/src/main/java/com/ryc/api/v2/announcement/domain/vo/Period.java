@@ -15,7 +15,7 @@ import lombok.Builder;
  */
 @Builder
 public record Period(LocalDateTime startDate, LocalDateTime endDate) {
-  public static Period initialize(PeriodRequest periodRequest) {
+  public static Period from(PeriodRequest periodRequest) {
     if (periodRequest == null) {
       return Period.builder()
           .startDate(DomainDefaultValues.DEFAULT_INITIAL_DATETIME)

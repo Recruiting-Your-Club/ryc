@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.PersonalInfoQuestionType;
@@ -14,9 +15,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @param applicationQuestions 지원서 질문
  * @brief 공고 지원서 request Dto
  */
+@Schema(description = "공고 지원서")
 public record AnnouncementApplicationRequest(
-    @Schema(description = "인적 사항", defaultValue = "[NAME,EMAIL]", example = "[NAME,EMAIL]")
-        @NotNull(message = "personalInfoQuestionTypes shouldn't be null")
+    @Schema(implementation = PersonalInfoQuestionType.class, description = "hi", example = "sdsdsd")
+        @NotEmpty(message = "personalInfoQuestionTypes shouldn't be empty")
         List<PersonalInfoQuestionType> personalInfoQuestionTypes,
     @NotNull(message = "preQuestions shouldn't be null")
         List<ApplicationQuestionRequest> preQuestions,

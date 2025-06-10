@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
@@ -25,14 +24,13 @@ import lombok.Builder;
  * @param tags 태그
  * @param images 이미지
  * @param application 공고 지원서
- * @brief 공고 생성 Request Dto
  */
 @Builder
 public record AnnouncementCreateRequest(
     @NotBlank(message = "title shouldn't be blank")
         @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
         String title,
-    @NotNull(message = "announcementPeriod shouldn't be null") @Schema(description = "기간 정보") @Valid
+    @NotNull(message = "announcementPeriod shouldn't be null") @Valid
         AnnouncementPeriodInfoRequest periodInfo,
     @NotNull(message = "numberOfPeople shouldn't be null")
         @Schema(description = "모집 인원", example = "10명 이내")
@@ -52,20 +50,18 @@ public record AnnouncementCreateRequest(
     @NotNull(message = "announcementType shouldn't be null")
         @Schema(description = "공고 타입", example = "LIMITED_TIME")
         AnnouncementType announcementType,
-    @Schema(description = "면접 여부", example = "true")
-        @NotNull(message = "startDate shouldn't be null")
+    @NotNull(message = "startDate shouldn't be null")
+        @Schema(description = "면접 여부", example = "true")
         Boolean hasInterview,
-    @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
-        @NotEmpty(message = "tags shouldn't be empty")
+    @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
-    @Schema(description = "공고 지원서") @NotNull(message = "application shouldn't be null") @Valid
+    @NotNull(message = "application shouldn't be null") @Valid @Schema(description = "공고 지원서")
         AnnouncementApplicationRequest application,
     @NotNull(message = "images shouldn't be null")
-        @Schema(
-            description = "이미지 목록",
-            example = "[\"https://example.com/image1.jpg\", \"https://example.com/image2.jpg\"]")
         List<@NotNull(message = "image shouldn't be null") ImageRequest> images) {
 
+  // @Schema는 get함수에 사용해야 작동함.
+  @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
   @Override
   public List<String> tags() {
     return List.copyOf(tags);

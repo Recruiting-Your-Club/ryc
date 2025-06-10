@@ -18,11 +18,11 @@ public record AnnouncementPeriodInfo(
     Period interviewPeriod,
     Period finalResultPeriod,
     Period documentResultPeriod) {
-  public static AnnouncementPeriodInfo initialize(AnnouncementPeriodInfoRequest periodInfo) {
-    Period finalResultPeriod = Period.initialize(periodInfo.finalResultPeriod());
-    Period documentResultPeriod = Period.initialize(periodInfo.documentResultPeriod());
-    Period interviewPeriod = Period.initialize(periodInfo.interviewPeriod());
-    Period applicationPeriod = Period.initialize(periodInfo.applicationPeriod());
+  public static AnnouncementPeriodInfo from(AnnouncementPeriodInfoRequest periodInfo) {
+    Period finalResultPeriod = Period.from(periodInfo.finalResultPeriod());
+    Period documentResultPeriod = Period.from(periodInfo.documentResultPeriod());
+    Period interviewPeriod = Period.from(periodInfo.interviewPeriod());
+    Period applicationPeriod = Period.from(periodInfo.applicationPeriod());
 
     return AnnouncementPeriodInfo.builder()
         .applicationPeriod(applicationPeriod)

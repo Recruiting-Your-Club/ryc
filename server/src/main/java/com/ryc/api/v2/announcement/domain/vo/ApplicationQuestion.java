@@ -19,12 +19,12 @@ import lombok.Builder;
 public record ApplicationQuestion(
     QuestionType type, String label, boolean isRequired, List<String> options) {
   /**
-   * 지원서 질문 생성 (create 시)
+   * 정적 팩토리 메소드
    *
    * @param questionRequest requestDto
    * @return ApplicationQuestion
    */
-  public static ApplicationQuestion initialize(ApplicationQuestionRequest questionRequest) {
+  public static ApplicationQuestion from(ApplicationQuestionRequest questionRequest) {
 
     return ApplicationQuestion.builder()
         .type(questionRequest.questionType())

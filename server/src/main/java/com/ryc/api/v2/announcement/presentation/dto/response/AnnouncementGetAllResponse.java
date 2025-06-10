@@ -32,9 +32,9 @@ public record AnnouncementGetAllResponse(
     @Schema(description = "대상", example = "컴퓨터공학과 학생") String target,
     @Schema(description = "공고 상태", example = "RECRUITING") AnnouncementStatus announcementStatus,
     @Schema(description = "공고 유형", example = "LIMITED_TIME") AnnouncementType announcementType,
-    @Schema(description = "지원 시작 날짜", example = "2025-06-01T09:00")
+    @Schema(description = "지원 시작 날짜", example = "2025-06-01T09:00", type = "string")
         LocalDateTime applicationStartDate,
-    @Schema(description = "지원 마감 날짜", example = "2025-06-30T18:00")
+    @Schema(description = "지원 마감 날짜", example = "2025-06-30T18:00", type = "string")
         LocalDateTime applicationEndDate,
     @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]") List<String> tags) {
   public static AnnouncementGetAllResponse from(Announcement announcement) {

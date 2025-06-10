@@ -2,11 +2,9 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import java.time.LocalDateTime;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 /**
@@ -15,10 +13,19 @@ import lombok.Builder;
  * @brief 기간 정보 Request Dto
  */
 @Builder
+@Schema(description = "기간 정보")
 public record PeriodRequest(
-    @NotNull(message = "startDate shouldn't be null")
-    @Schema(format = "yyyy-MM-dd'T'HH:mm", example = "2025-06-29T00:00")
+    @Schema(
+            type = "string",
+            pattern = "yyyy-MM-dd'T'HH:mm",
+            description = "시작 날짜",
+            example = "2025-06-29T00:00")
+        @NotNull(message = "startDate shouldn't be null")
         LocalDateTime startDate,
-    @NotNull(message = "endDate shouldn't be null")
-    @Schema(format = "yyyy-MM-dd'T'HH:mm", example = "2025-07-02T00:00")
-    LocalDateTime endDate) {}
+    @Schema(
+            type = "string",
+            pattern = "yyyy-MM-dd'T'HH:mm",
+            description = "끝 날짜",
+            example = "2025-07-20T00:00")
+        @NotNull(message = "endDate shouldn't be null")
+        LocalDateTime endDate) {}
