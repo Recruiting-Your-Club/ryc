@@ -51,15 +51,15 @@ public class Announcement {
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
 
     // 1. 각 request mapping
-    List<Tag> tags = request.tags().stream().map(Tag::initialize).toList();
+    List<Tag> tags = request.tags().stream().map(Tag::from).toList();
 
-    List<Image> images = request.images().stream().map(Image::initialize).toList();
+    List<Image> images = request.images().stream().map(Image::from).toList();
 
     AnnouncementApplication announcementApplication =
         AnnouncementApplication.initialize(request.application());
 
     AnnouncementPeriodInfo announcementPeriodInfo =
-        AnnouncementPeriodInfo.initialize(request.periodInfo());
+        AnnouncementPeriodInfo.from(request.periodInfo());
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
@@ -98,12 +98,12 @@ public class Announcement {
   public Announcement update(AnnouncementUpdateRequest request) {
 
     // 1. 각 request update
-    List<Tag> updatedTags = request.tags().stream().map(Tag::initialize).toList();
+    List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
 
-    List<Image> updatedImages = request.images().stream().map(Image::initialize).toList();
+    List<Image> updatedImages = request.images().stream().map(Image::from).toList();
 
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
-        AnnouncementPeriodInfo.initialize(request.periodInfo());
+        AnnouncementPeriodInfo.from(request.periodInfo());
 
     AnnouncementApplication updatedAnnouncementApplication =
         this.announcementApplication.update(request.application());

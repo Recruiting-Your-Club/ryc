@@ -28,10 +28,10 @@ public class AnnouncementApplication {
    */
   public static AnnouncementApplication initialize(AnnouncementApplicationRequest request) {
     List<ApplicationQuestion> applicationQuestions =
-        request.applicationQuestions().stream().map(ApplicationQuestion::initialize).toList();
+        request.applicationQuestions().stream().map(ApplicationQuestion::from).toList();
 
     List<ApplicationQuestion> preQuestions =
-        request.preQuestions().stream().map(ApplicationQuestion::initialize).toList();
+        request.preQuestions().stream().map(ApplicationQuestion::from).toList();
 
     return AnnouncementApplication.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
@@ -48,10 +48,10 @@ public class AnnouncementApplication {
    */
   public AnnouncementApplication update(AnnouncementApplicationRequest request) {
     List<ApplicationQuestion> applicationQuestions =
-        request.applicationQuestions().stream().map(ApplicationQuestion::initialize).toList();
+        request.applicationQuestions().stream().map(ApplicationQuestion::from).toList();
 
     List<ApplicationQuestion> preQuestions =
-        request.preQuestions().stream().map(ApplicationQuestion::initialize).toList();
+        request.preQuestions().stream().map(ApplicationQuestion::from).toList();
 
     return AnnouncementApplication.builder()
         .id(this.id)
