@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.infra.entity;
 
 import java.util.List;
 
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import jakarta.persistence.*;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
@@ -55,6 +56,8 @@ public class AnnouncementEntity extends BaseEntity {
 
   private AnnouncementType announcementType;
   private String activityPeriod;
+
+  private AnnouncementStatus announcementStatus;
 
   private Boolean isDeleted;
 }

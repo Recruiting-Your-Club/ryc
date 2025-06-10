@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementApplication;
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.announcement.domain.vo.Image;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
@@ -44,8 +43,6 @@ public class AnnouncementMapper {
     AnnouncementPeriodInfo periodInfo =
         periodInfoMapper.toDomain(announcementEntity.getAnnouncementPeriodInfoVO());
 
-    AnnouncementStatus announcementStatus = Announcement.getAnnouncementStatus(periodInfo);
-
     return Announcement.builder()
         .id(announcementEntity.getId())
         .title(announcementEntity.getTitle())
@@ -56,7 +53,7 @@ public class AnnouncementMapper {
         .tags(tags)
         .images(images)
         .announcementPeriodInfo(periodInfo)
-        .announcementStatus(announcementStatus)
+        .announcementStatus(announcementEntity.getAnnouncementStatus())
         .activityPeriod(announcementEntity.getActivityPeriod())
         .announcementApplication(application)
         .announcementType(announcementEntity.getAnnouncementType())
@@ -75,6 +72,7 @@ public class AnnouncementMapper {
 
     return Announcement.builder()
         .id(announcementEntity.getId())
+            .clubId(announcementEntity.getClubEntity().getId())
         .title(announcementEntity.getTitle())
         .numberOfPeople(announcementEntity.getNumberOfPeople())
         .detailDescription(announcementEntity.getDetailDescription())
@@ -89,6 +87,7 @@ public class AnnouncementMapper {
         .isDeleted(announcementEntity.getIsDeleted())
         .createdAt(announcementEntity.getCreatedAt())
         .updatedAt(announcementEntity.getUpdatedAt())
+            .announcementStatus(announcementEntity.getAnnouncementStatus())
         .build();
   }
 
@@ -99,7 +98,7 @@ public class AnnouncementMapper {
     AnnouncementPeriodInfoVO periodInfoVO =
         periodInfoMapper.toVO(announcement.getAnnouncementPeriodInfo());
 
-    //proxy 객체 주입
+    // proxy 객체 주입
     ClubEntity club = entityManager.getReference(ClubEntity.class, announcement.getClubId());
 
     return AnnouncementEntity.builder()
@@ -111,6 +110,7 @@ public class AnnouncementMapper {
         .target(announcement.getTarget())
         .tags(tags)
         .images(images)
+            .announcementStatus(announcement.getAnnouncementStatus())
         .announcementPeriodInfoVO(periodInfoVO)
         .activityPeriod(announcement.getActivityPeriod())
         .announcementType(announcement.getAnnouncementType())
