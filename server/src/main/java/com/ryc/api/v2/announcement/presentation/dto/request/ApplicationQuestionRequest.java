@@ -18,7 +18,9 @@ public record ApplicationQuestionRequest(
     @NotNull(message = "questionType shouldn't be null") QuestionType questionType,
     @NotBlank(message = "label shouldn't be blank") String label,
     @NotNull(message = "isRequired shouldn't be null") boolean isRequired,
-    List<@NotBlank(message = "option shouldn't be blank") String> options) {
+    @NotNull(message = "options shouldn't be null")
+        List<@NotBlank(message = "option shouldn't be blank") String> options) {
+  @Override
   public List<String> options() {
     return List.copyOf(options);
   }
