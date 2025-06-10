@@ -24,12 +24,16 @@ const clubList = [
     {
         name: 'En#(엔샵)',
         category: '학술 동아리',
-        avatar: 'Avatar 컴포넌트',
     },
     {
         name: 'CCC',
         category: '종교 동아리',
-        avatar: 'Avatar 컴포넌트',
+        avatar: 'CCC 아멘',
+    },
+    {
+        name: '농구왕',
+        category: '문화 동아리',
+        avatar: '농구가 젤 좋아',
     },
 ];
 function ClubCreatePage() {
@@ -48,8 +52,8 @@ function ClubCreatePage() {
         <div css={clubContainerLayout}>
             <div css={clubContainer}>
                 <div>
-                    <Text type="bodyBold" textAlign="start" sx={clubCreateExampleText}>
-                        <span css={{ fontSize: '3rem' }}>📝</span> 이렇게 추가될거에요
+                    <Text type="bodySemibold" textAlign="start" sx={clubCreateExampleText}>
+                        <span css={{ fontSize: '2rem' }}>📝</span> 이렇게 추가될 거예요
                     </Text>
                     <div css={clubPreviewBox}>
                         <Text type="bodyBold" textAlign="start" sx={clubCreatetitle}>
@@ -96,10 +100,10 @@ function ClubCreatePage() {
                             inputSx={createInputLabel}
                             labelSx={createInputLabel}
                         />
+                        <Button variant="primary" size="lg" sx={createSubmitButton}>
+                            제출하기
+                        </Button>
                     </div>
-                    <Button variant="primary" size="lg" sx={createSubmitButton}>
-                        제출하기
-                    </Button>
                 </div>
             </div>
         </div>

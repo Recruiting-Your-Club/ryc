@@ -42,7 +42,7 @@ export const clubContentContainer = (index: number) => css`
     border-radius: 5px;
     ${index === 0 &&
     css`
-        border: 1px solid ${theme.colors.default};
+        border: 2px solid ${theme.colors.default};
         border-radius: 10px;
     `}
 `;
@@ -57,6 +57,7 @@ export const clubCreateBox = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 5rem;
     height: 40rem;
     width: 40rem;
     padding: 0 2rem;
@@ -74,6 +75,6 @@ export const createInputLabel = css`
     margin-bottom: 0.5rem;
 `;
 export const createSubmitButton = css`
-    width: 23rem;
-    margin-left: auto;
+    width: 100%;
+    margin-top: 3rem;
 `;
