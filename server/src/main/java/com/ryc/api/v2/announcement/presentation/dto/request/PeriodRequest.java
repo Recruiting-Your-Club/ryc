@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,8 +17,8 @@ import lombok.Builder;
 @Builder
 public record PeriodRequest(
     @NotNull(message = "startDate shouldn't be null")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @Schema(format = "yyyy-MM-dd'T'HH:mm", example = "2025-06-29T00:00")
         LocalDateTime startDate,
     @NotNull(message = "endDate shouldn't be null")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
-        LocalDateTime endDate) {}
+    @Schema(format = "yyyy-MM-dd'T'HH:mm", example = "2025-07-02T00:00")
+    LocalDateTime endDate) {}
