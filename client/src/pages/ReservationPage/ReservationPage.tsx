@@ -11,7 +11,10 @@ import {
     s_timeButton,
     s_reserveButtonWrapper,
     s_descriptionWrapper,
-    s_selectedDate,
+    s_selectedDateWrapper,
+    s_selectExampleWrapper,
+    s_possibleBox,
+    s_impossibleBox,
 } from './Reservation.style';
 import { Text, Calendar, Avatar, Divider, Button } from '@components';
 
@@ -36,7 +39,7 @@ function ReservationPage() {
         <div css={s_temp}>
             <div css={s_reservationContainer}>
                 <div css={s_leftContainer}>
-                    <Text type="h3Semibold" noWrap>
+                    <Text type="h3Semibold" noWrap sx={{ marginBottom: '2rem' }}>
                         동아리 면접 예약
                     </Text>
                     <div css={s_clubInfoWrapper}>
@@ -60,8 +63,18 @@ function ReservationPage() {
                     <div css={s_calendarContainer}>
                         <Calendar size="md" shadow={false} />
                     </div>
-                    <div css={s_selectedDate}>
-                        <Text type="bodySemibold" textAlign="end">
+                    <div css={s_selectedDateWrapper}>
+                        <div css={s_selectExampleWrapper}>
+                            <div css={s_possibleBox} />
+                            <Text type="captionRegular" noWrap>
+                                선택
+                            </Text>
+                            <div css={s_impossibleBox} />
+                            <Text type="captionRegular" noWrap>
+                                불가
+                            </Text>
+                        </div>
+                        <Text type="captionSemibold" textAlign="end" noWrap>
                             2025.6.22(일) 10:00
                         </Text>
                     </div>

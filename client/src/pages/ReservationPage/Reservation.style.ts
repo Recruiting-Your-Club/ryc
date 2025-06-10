@@ -77,9 +77,27 @@ export const s_calendarContainer = css`
     flex: 3;
     height: 100%;
 `;
-export const s_selectedDate = css`
+export const s_selectedDateWrapper = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 0 2.2rem;
+    padding: 0 2rem;
+`;
+export const s_selectExampleWrapper = css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`;
+export const s_possibleBox = css`
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: ${theme.colors.blue[200]};
+`;
+export const s_impossibleBox = css`
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: ${theme.colors.gray[300]};
 `;
 export const s_timeContainer = css`
     display: grid;
