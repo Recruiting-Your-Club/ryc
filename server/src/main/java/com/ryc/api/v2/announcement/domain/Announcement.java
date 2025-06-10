@@ -43,9 +43,9 @@ public class Announcement {
   private final LocalDateTime updatedAt;
 
   /**
+   * 최초 생성시에만 사용하는 정적 팩토리 메서드
    * @param request create request
    * @return Announcement domain
-   * @brief 최초 생성시에만 사용하는 정적 팩토리 메서드
    */
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
 
@@ -61,7 +61,7 @@ public class Announcement {
         AnnouncementPeriodInfo.initialize(request.periodInfo());
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus announcementStatus = getAnnouncementStatus(announcementPeriodInfo);
+    AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
 
     // 3. 기간 값이 올바르지 않은 경우(CLOSED) Exception 발생
     if (announcementStatus == AnnouncementStatus.CLOSED) {
@@ -108,7 +108,7 @@ public class Announcement {
         this.announcementApplication.update(request.application());
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus updatedAnnouncementStatus = getAnnouncementStatus(announcementPeriodInfo);
+    AnnouncementStatus updatedAnnouncementStatus = AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
 
     return Announcement.builder()
         .id(this.id)
@@ -131,6 +131,33 @@ public class Announcement {
   }
 
   /**
+   * status 갱신 메소드
+   * @return
+   */
+  public Announcement updateStatus(){
+    AnnouncementStatus updatedAnnouncementStatus = AnnouncementStatus.from(this.announcementPeriodInfo);
+
+    return Announcement.builder()
+        .id(this.id)
+        .title(this.title)
+        .clubId(this.clubId)
+        .numberOfPeople(this.numberOfPeople)
+        .detailDescription(this.detailDescription)
+        .summaryDescription(this.summaryDescription)
+        .target(this.target)
+        .hasInterview(this.hasInterview)
+        .activityPeriod(this.activityPeriod)
+        .tags(this.tags)
+        .images(this.images)
+        .announcementStatus(updatedAnnouncementStatus)
+        .announcementType(this.announcementType)
+        .announcementApplication(this.announcementApplication)
+        .isDeleted(false)
+        .announcementPeriodInfo(this.announcementPeriodInfo)
+        .build();
+  }
+
+  /**
    * 유효 객체 검사
    *
    * @throws IllegalArgumentException 각 객체가 유효하지 않을 경우
@@ -138,23 +165,5 @@ public class Announcement {
   public void validate() {
     announcementPeriodInfo.validate(hasInterview);
     announcementApplication.validate();
-  }
-
-  /**
-   * 현재 시간과 지원 시간을 비교하여 status를 반환하는 메소드
-   *
-   * @param announcementPeriodInfo 공고 기간 정보
-   * @return AnnouncementStatus
-   */
-  public static AnnouncementStatus getAnnouncementStatus(
-      AnnouncementPeriodInfo announcementPeriodInfo) {
-    LocalDateTime now = LocalDateTime.now();
-    if (now.isBefore(announcementPeriodInfo.applicationPeriod().startDate())) {
-      return AnnouncementStatus.UPCOMING;
-    } else if (now.isBefore(announcementPeriodInfo.applicationPeriod().endDate())) {
-      return AnnouncementStatus.RECRUITING;
-    } else {
-      return AnnouncementStatus.CLOSED;
-    }
   }
 }
