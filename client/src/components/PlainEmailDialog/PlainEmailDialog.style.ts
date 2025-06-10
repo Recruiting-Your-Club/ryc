@@ -11,6 +11,14 @@ export const headerCss = css`
     padding: 1.4rem 3rem;
 `;
 
+export const s_titleText = css`
+    padding: 0.3rem 0 0 0;
+`;
+
+export const s_divider = css`
+    border-top: 1px solid;
+`;
+
 export const contentCss = css`
     display: flex;
     flex-direction: column;
@@ -51,7 +59,7 @@ export const contentWrapper = css`
     height: 100%;
 `;
 
-export const textareaCss = css`
+export const s_textareaInner = css`
     ${theme.typography.captionRegular}
     margin: -2.5rem 0;
     padding: 1rem 1.5rem;
@@ -61,6 +69,11 @@ export const textareaCss = css`
     ::placeholder {
         ${theme.typography.captionRegular}
     }
+`;
+
+export const s_textareaOutside = css`
+    height: 100%;
+    margin: 0;
 `;
 
 export const actionCss = css`
