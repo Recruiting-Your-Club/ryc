@@ -1,13 +1,12 @@
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
 import { Divider, Text } from '@components/_common';
-import type { ReactNode } from 'react';
 import React from 'react';
 import { boxContainer, cardGroupWrapper, dividerCss, svgCss, titleGroup } from './CardBox.style';
-import type { CardBoxProps, Step } from './types';
+import type { CardBoxProps } from './types';
 
-function CardBox({ stepTitle, step, toggleDropdown, height, children }: CardBoxProps) {
+function CardBox({ stepTitle, step, toggleDropdown, height, children, sx }: CardBoxProps) {
     return (
-        <div css={boxContainer(height, step)}>
+        <div css={[boxContainer(height, step), sx]}>
             <div css={titleGroup}>
                 <Text as="span" type="captionSemibold">
                     {stepTitle}

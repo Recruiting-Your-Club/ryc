@@ -3,7 +3,8 @@ import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';
 import type { Step } from './types';
 
-export const boxContainer = (height: string = '100%', step: Step) => css`
+export const boxContainer = (height: string = '100%', step: Step, width?: string) => css`
+    width: 27rem;
     height: ${height};
     border-radius: 10px;
     background-color: rgba(${hexToRgb(theme.colors.gray[100])}, 1);
