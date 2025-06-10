@@ -1,5 +1,4 @@
 package com.ryc.api.v2.announcement.domain;
-
 import java.util.List;
 
 public interface AnnouncementRepository {
@@ -21,7 +20,7 @@ public interface AnnouncementRepository {
    */
   public Announcement findByIdWithApplication(String id);
 
-  public boolean existsRecruitingAnnouncementByClubId(String clubId);
+  public List<Announcement> findAllByIsDeleted(Boolean isDeleted);
 
-  public boolean existsUpcomingAnnouncementByClubId(String clubId);
+  void saveAll(List<Announcement> announcements);
 }

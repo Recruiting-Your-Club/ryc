@@ -1,6 +1,5 @@
 package com.ryc.api.v2.announcement.infra;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -70,25 +69,16 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     return announcementMapper.toDomain(savedAnnouncementApplicationEntity.getAnnouncementEntity());
   }
 
-  /**
-   * 모집중인 공고가 있는지 조회
-   *
-   * @param clubId clubId
-   */
   @Override
-  public boolean existsRecruitingAnnouncementByClubId(String clubId) {
-    return announcementJpaRepository.existsRecruitingAnnouncementByClubIdAndNow(
-        clubId, LocalDateTime.now());
+  public List<Announcement> findAllByIsDeleted(Boolean isDeleted) {
+    return announcementJpaRepository.findAllByIsDeleted(isDeleted).stream()
+        .map(announcementMapper::toDomain)
+        .toList();
   }
 
-  /**
-   * 모집 예정인 공고가 있는지 조회
-   *
-   * @param clubId clubId
-   */
   @Override
-  public boolean existsUpcomingAnnouncementByClubId(String clubId) {
-    return announcementJpaRepository.existsUpcomingAnnouncementByClubIdAndNow(
-        clubId, LocalDateTime.now());
+  public void saveAll(List<Announcement> announcements) {
+    announcementJpaRepository.saveAll(
+        announcements.stream().map(announcementMapper::toEntity).toList());
   }
 }

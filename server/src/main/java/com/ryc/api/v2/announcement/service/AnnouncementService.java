@@ -34,7 +34,6 @@ public class AnnouncementService {
 
     // 3. 비즈니스 규칙 검사
     announcement.validate();
-
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
@@ -62,7 +61,7 @@ public class AnnouncementService {
     return AnnouncementGetDetailResponse.from(announcement);
   }
 
-  //todo club조회, @hasAnyRole,
+  // todo club조회, @hasAnyRole,
   @Transactional
   public AnnouncementUpdateResponse updateAnnouncement(
       AnnouncementUpdateRequest request, String announcementId) {
@@ -82,18 +81,13 @@ public class AnnouncementService {
     return AnnouncementUpdateResponse.from(updatedAnnouncement);
   }
 
-  /** club의 announcement조회 후 status반환 */
-  public AnnouncementStatus getAnnouncementStatus(String clubId) {
-    if (announcementRepository.existsRecruitingAnnouncementByClubId(clubId)) {
-      return AnnouncementStatus.RECRUITING;
-    }
+  @Transactional
+  public void updateAnnouncementStatus() {
+    List<Announcement> announcements = announcementRepository.findAllByIsDeleted(false);
 
-    if (announcementRepository.existsUpcomingAnnouncementByClubId(clubId)) {
-      {
-        return AnnouncementStatus.UPCOMING;
-      }
-    }
+    List<Announcement> updatedAnnouncements = announcements.stream().map(Announcement::updateStatus).toList();
 
-    return AnnouncementStatus.CLOSED;
+    announcementRepository.saveAll(updatedAnnouncements);
+
   }
 }
