@@ -22,14 +22,17 @@ public record AnnouncementApplicationRequest(
         List<ApplicationQuestionRequest> preQuestions,
     @NotNull(message = "applicationQuestions shouldn't be null")
         List<ApplicationQuestionRequest> applicationQuestions) {
+  @Override
   public List<ApplicationQuestionRequest> preQuestions() {
     return List.copyOf(preQuestions);
   }
 
+  @Override
   public List<ApplicationQuestionRequest> applicationQuestions() {
     return List.copyOf(applicationQuestions);
   }
 
+  @Override
   public List<PersonalInfoQuestionType> personalInfoQuestionTypes() {
     return List.copyOf(personalInfoQuestionTypes);
   }
