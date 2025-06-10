@@ -26,7 +26,6 @@ const router = createBrowserRouter([
             { path: 'detail', element: <ClubDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
-            { path: 'reservation', element: <ReservationPage /> },
         ],
     },
     {
@@ -44,6 +43,10 @@ const router = createBrowserRouter([
             { path: 'questions', element: <RegisterPage /> },
             { path: 'setting', element: <LoginPage /> },
         ],
+    },
+    {
+        path: '/reservation',
+        element: <ReservationPage />,
     },
 ]);
 
