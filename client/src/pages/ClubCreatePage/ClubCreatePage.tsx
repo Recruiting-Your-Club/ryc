@@ -13,7 +13,7 @@ import {
     createSubmitButton,
     createInputLabel,
 } from './ClubCreatePage.style';
-import { Text, Avatar, Input, Button } from '@components';
+import { Text, Avatar, Input, Button, ImageRegister } from '@components';
 
 const clubList = [
     {
@@ -43,6 +43,8 @@ function ClubCreatePage() {
     // state, ref, querystring hooks
     const [createClubName, setCreateClubName] = useState('동아리 이름');
     const [createClubTag, setCreateClubTag] = useState('동아리 태그입니다.');
+    const [image, setImage] = useState<string>();
+    const [croppedImage, setCroppedImage] = useState<string>();
     // form hooks
     // query hooks
     // calculated values
@@ -61,8 +63,12 @@ function ClubCreatePage() {
                         </Text>
                         <ul css={clubListContainer}>
                             {clubList.map((club, index) => (
-                                <li key={index} css={clubContentContainer(index)}>
-                                    <Avatar radius="10px" />
+                                <li key={club.name} css={clubContentContainer(index)}>
+                                    {index === 0 ? (
+                                        <Avatar radius="10px" imageURL={croppedImage} />
+                                    ) : (
+                                        <Avatar radius="10px" />
+                                    )}
                                     <div css={clubContentTextContainer}>
                                         <Text type="bodySemibold" textAlign="start" noWrap cropped>
                                             {index === 0 ? createClubName : club.name}
@@ -82,7 +88,12 @@ function ClubCreatePage() {
                 </div>
 
                 <div css={clubCreateBox}>
-                    <Avatar radius="10px" />
+                    <ImageRegister
+                        image={image}
+                        setImage={setImage}
+                        croppedImage={croppedImage}
+                        setCroppedImage={setCroppedImage}
+                    />
                     <div css={clubCreateInputBox}>
                         <Input
                             type="text"
