@@ -12,3 +12,4 @@ export * from './Calendar';
 export * from './LoadingSpinner';
 export * from './TextToggle';
 export * from './Image';
+export * from './ImageRegister';
