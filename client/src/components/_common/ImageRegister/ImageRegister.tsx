@@ -21,6 +21,7 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegister
     // state, ref, querystring hooks
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [openTrigger, setOpenTrigger] = useState<boolean>(false);
+    const [croppedImage, setCroppedImage] = useState<string>(imageSrc);
     const editorRef = useRef<HTMLDivElement>(null);
     // form hooks
     // query hooks
@@ -76,7 +77,7 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegister
                     <Upload width="70%" height="70%" />
                 </div>
                 <img
-                    src={imageSrc}
+                    src={croppedImage}
                     alt="profile"
                     width="100%"
                     height="100%"
@@ -107,7 +108,7 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegister
                 open={openDialog}
                 handleClose={() => setOpenDialog(false)}
                 imageSrc={imageSrc}
-                setImageSrc={setImageSrc}
+                setImageSrc={setCroppedImage}
             />
         </>
     );

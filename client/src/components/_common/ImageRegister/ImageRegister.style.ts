@@ -7,9 +7,6 @@ export const s_imageContainer = css`
     height: 4rem;
     border-radius: 10px;
     background-color: white;
-    :hover {
-        background-color: gray;
-    }
     cursor: pointer;
 `;
 
