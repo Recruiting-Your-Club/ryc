@@ -18,6 +18,9 @@ export const s_reservationContainer = css`
     @media (min-width: ${theme.breakpoint.tabletMini}) {
         flex-direction: row;
     }
+    @media (min-width: ${theme.breakpoint.tablet}) {
+        min-width: 70rem;
+    }
     width: 100%;
     height: 100%;
     max-width: 90rem;
