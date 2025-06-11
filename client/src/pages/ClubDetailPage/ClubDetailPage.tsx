@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ClubNavigation, Text } from '@components';
 import {
     clubDetailPageContainer,
@@ -19,18 +19,21 @@ function ClubDetailPage() {
     const { title, category, clubLogo } = location.state;
     // lib hooks
     // initial values
-    const navigationItem = [
-        {
-            title: '동아리 소개',
-            page: <ClubIntroPage />,
-            width: '7.5rem',
-        },
-        {
-            title: '모집 공고',
-            page: <RecruitmentPage />,
-            width: '6.4rem',
-        },
-    ];
+    const navigationItem = useMemo(
+        () => [
+            {
+                title: '동아리 소개',
+                page: <ClubIntroPage />,
+                width: '7.5rem',
+            },
+            {
+                title: '모집 공고',
+                page: <RecruitmentPage />,
+                width: '6.4rem',
+            },
+        ],
+        [],
+    );
 
     // state, ref, querystring hooks
     // form hooks
