@@ -19,3 +19,4 @@ export * from './ClubBox';
 export * from './ImageDialog';
 export * from './MainCard';
 export * from './RecruitDialog';
+export * from './ImageEditDialog';
