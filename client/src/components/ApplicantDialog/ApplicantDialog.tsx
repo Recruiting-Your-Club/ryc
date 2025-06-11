@@ -127,7 +127,7 @@ function ApplicantDialog({
                                         css={chevronSvgCss(currentIndex > 0)}
                                         onClick={goPrev}
                                     />
-                                    <Text as="span" type="captionBold" color="primary">
+                                    <Text as="span" type="captionBold">
                                         {currentEvaluation.type}
                                     </Text>
                                     <ChevronRight
