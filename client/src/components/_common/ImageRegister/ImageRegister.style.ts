@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const ImageEditorButton = css`
+export const s_imageContainer = css`
     position: relative;
     width: 4rem;
     height: 4rem;
@@ -13,15 +13,7 @@ export const ImageEditorButton = css`
     cursor: pointer;
 `;
 
-export const ImageEditorInput = css`
-    display: hidden;
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-`;
-
-export const EdtiorTriggerButton = css`
+export const s_imageEdtiorTriggerIcon = css`
     position: absolute;
     width: 2rem;
     height: 2rem;
@@ -31,7 +23,15 @@ export const EdtiorTriggerButton = css`
     right: -0.7rem;
 `;
 
-export const ImageEditorDialogTriggerWrapper = css`
+export const ImageEditorInput = css`
+    display: hidden;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+`;
+
+export const s_imageEditorDialogTriggerContainer = css`
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -46,7 +46,7 @@ export const ImageEditorDialogTriggerWrapper = css`
     cursor: pointer;
     bottom: 0;
 `;
-export const uploadImageButton = css`
+export const s_uploadImageWrapper = css`
     width: 100%;
     ${theme.typography.captionRegular}
     padding: 1rem;
@@ -57,7 +57,7 @@ export const uploadImageButton = css`
         background-color: ${theme.colors.gray[100]};
     }
 `;
-export const deleteImageButton = css`
+export const s_deleteImageWrapper = css`
     width: 100%;
     justify-content: start;
     padding-left: 1rem;

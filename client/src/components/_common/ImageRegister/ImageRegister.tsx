@@ -1,40 +1,41 @@
 import React, { useState, useRef } from 'react';
 import {
-    deleteImageButton,
-    EdtiorTriggerButton,
-    ImageEditorButton,
-    ImageEditorDialogTriggerWrapper,
+    s_deleteImageWrapper,
+    s_imageEdtiorTriggerIcon,
+    s_imageContainer,
+    s_imageEditorDialogTriggerContainer,
     ImageEditorInput,
-    uploadImageButton,
+    s_uploadImageWrapper,
 } from './ImageRegister.style';
 import BasicImage from '@assets/images/basicImage.png';
-import { Image, Avatar, Text, Button } from '@components';
+import { Button, ImageEditDialog } from '@components';
 import { useClickOutside } from '@hooks/components/useClickOutside';
 import type { ChangeEvent } from 'react';
+import type { ImageRegisterProps } from './types';
 
-function ImageEditor() {
+function ImageRegister({ imageSrc = BasicImage, setImageSrc }: ImageRegisterProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [imageSrc, setImageSrc] = useState<string>(BasicImage);
-    const [isOpenTrigger, setIsOpenTrigger] = useState<boolean>(false);
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
+    const [openTrigger, setOpenTrigger] = useState<boolean>(false);
     const editorRef = useRef<HTMLDivElement>(null);
     // form hooks
     // query hooks
     // calculated values
 
     // handlers
-    // FIXME 이거 위치 lib hooks오 옮기면 참조가 안되는데 어떡하죵
+    // FIXME: 이거 위치 lib hooks로 옮기면 참조가 안되는데 어떡해야 할까요 handler가 맞나?
     useClickOutside([editorRef], () => {
-        setIsOpenTrigger(false);
+        setOpenTrigger(false);
     });
+
     const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) {
             return;
         }
-
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
@@ -42,28 +43,35 @@ function ImageEditor() {
                 setImageSrc(reader.result);
             }
         };
-        setIsOpenTrigger(false);
+        setOpenTrigger(false);
+        setOpenDialog(true);
     };
 
+    const handleDeleteImage = (mouseEvent: React.MouseEvent<HTMLButtonElement>) => {
+        mouseEvent.stopPropagation(); // 부모 요소의 onClick 이벤트 방지
+        setOpenTrigger(false);
+        setImageSrc(BasicImage);
+    };
+
+    // FIXME: 이거 나중에 위치 공통 utils로 옮겨야함
     const onKeyDownHandler = (e: KeyboardEvent) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            setIsOpenTrigger(!isOpenTrigger);
+            setOpenTrigger(false);
         }
     };
     // effects
-
     return (
         <>
             <div
-                css={ImageEditorButton}
-                onClick={() => setIsOpenTrigger(true)}
+                css={s_imageContainer}
+                onClick={() => setOpenTrigger(true)}
                 onKeyDown={() => onKeyDownHandler}
                 role="button"
                 tabIndex={0}
                 ref={editorRef}
             >
-                <div css={EdtiorTriggerButton} />
+                <div css={s_imageEdtiorTriggerIcon} />
                 <img
                     src={imageSrc}
                     alt="profile"
@@ -71,9 +79,9 @@ function ImageEditor() {
                     height="100%"
                     css={{ borderRadius: '10px' }}
                 />
-                {isOpenTrigger && (
-                    <div css={ImageEditorDialogTriggerWrapper}>
-                        <label css={uploadImageButton}>
+                {openTrigger && (
+                    <div css={s_imageEditorDialogTriggerContainer}>
+                        <label css={s_uploadImageWrapper}>
                             새 이미지 업로드
                             <input
                                 type="file"
@@ -82,13 +90,23 @@ function ImageEditor() {
                                 onChange={handleImageUpload}
                             />
                         </label>
-                        <Button variant="transparent" sx={deleteImageButton}>
+                        <Button
+                            variant="transparent"
+                            sx={s_deleteImageWrapper}
+                            onClick={handleDeleteImage}
+                        >
                             이미지 삭제
                         </Button>
                     </div>
                 )}
             </div>
+            <ImageEditDialog
+                open={openDialog}
+                handleClose={() => setOpenDialog(false)}
+                imageSrc={imageSrc}
+                setImageSrc={setImageSrc}
+            />
         </>
     );
 }
-export { ImageEditor };
+export { ImageRegister };
