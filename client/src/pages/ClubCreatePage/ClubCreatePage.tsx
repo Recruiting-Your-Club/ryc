@@ -95,15 +95,15 @@ function ClubCreatePage() {
                         <Input
                             type="text"
                             label="동아리 태그"
-                            helperText="동아리의 대표적인 태그를 선택해주세요."
+                            placeholder="동아리의 대표적인 태그를 선택해주세요."
                             required
                             inputSx={createInputLabel}
                             labelSx={createInputLabel}
                         />
-                        <Button variant="primary" size="lg" sx={createSubmitButton}>
-                            제출하기
-                        </Button>
                     </div>
+                    <Button variant="primary" size="lg" sx={createSubmitButton}>
+                        제출하기
+                    </Button>
                 </div>
             </div>
         </div>

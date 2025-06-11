@@ -57,8 +57,9 @@ export const clubCreateBox = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     margin-top: 5rem;
-    height: 40rem;
+    height: 34rem;
     width: 40rem;
     padding: 0 2rem;
 `;
@@ -68,7 +69,6 @@ export const clubCreateInputBox = css`
     width: 100%;
     gap: 2rem;
     padding: 2rem 0rem;
-    flex-grow: 1;
 `;
 export const createInputLabel = css`
     ${theme.typography.bodyRegular}
