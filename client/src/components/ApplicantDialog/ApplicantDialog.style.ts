@@ -101,7 +101,7 @@ export const documentBoxGroup = css`
     }
 `;
 
-export const evalutaionWrapper = css`
+export const evaluationContainer = css`
     width: 100%;
     height: 100%;
     display: flex;
@@ -109,6 +109,7 @@ export const evalutaionWrapper = css`
     background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 8px;
+    overflow: hidden;
 `;
 
 export const evalutaionTitleWrapper = css`

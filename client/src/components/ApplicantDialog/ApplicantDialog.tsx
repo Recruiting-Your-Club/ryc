@@ -14,9 +14,9 @@ import {
     contentWrapper,
     dialogCss,
     documentBoxGroup,
+    evaluationContainer,
     evalutaionContainer,
     evalutaionTitleWrapper,
-    evalutaionWrapper,
     formContainer,
     formWrapper,
     headerCss,
@@ -121,7 +121,7 @@ function ApplicantDialog({
                             </Text>
                         </div>
                         <div css={contentWrapper}>
-                            <div css={evalutaionWrapper}>
+                            <div css={evaluationContainer}>
                                 <div css={evalutaionTitleWrapper}>
                                     <ChevronLeft
                                         css={chevronSvgCss(currentIndex > 0)}
