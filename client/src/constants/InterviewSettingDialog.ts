@@ -19,3 +19,5 @@ export const INITIAL_FORM = `--- 아래 양식은 예시입니다! ---
 고맙습니다.
 
 담당자 드림`;
+
+export const numberOnlyRegex = /^[0-9]*$/;
