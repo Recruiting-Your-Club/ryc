@@ -19,25 +19,18 @@ type Story = StoryObj<typeof Toggle>;
 
 export const Primary: Story = {
     args: {
-        width: '4.1rem',
-        variant: 'primary',
+        size: 'sm',
     },
 };
 
-export const text: Story = {
+export const mdSize: Story = {
     args: {
-        width: '12rem',
-        variant: 'text',
-        leftText: 'leftText',
-        rightText: 'rightText',
+        size: 'md',
     },
 };
 
-export const secondText: Story = {
+export const lgSize: Story = {
     args: {
-        width: '12rem',
-        variant: 'secondText',
-        leftText: 'leftText',
-        rightText: 'rightText',
+        size: 'lg',
     },
 };

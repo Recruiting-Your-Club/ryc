@@ -5,7 +5,7 @@ import XIcon from '@assets/images/gray_xicon.svg';
 import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
 import type { FileUpLoaderItemProps } from './types';
-import { FileExtension } from './constants';
+import { FileExtension } from '@constants/fileUpLoader';
 import PdfIcon from '@assets/images/PdfIcon.svg';
 import { formatDate, formatBytes, getExtension } from './utills';
 import { Button } from '@components/_common';

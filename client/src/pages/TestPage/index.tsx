@@ -1,12 +1,7 @@
-import { Editor } from '@components/_common/Editor';
-import React, { useState } from 'react';
+import React from 'react';
 function TestPage() {
     return (
-        <div>
-            <div css={{ width: '100rem', marginBottom: '20px' }}>
-                <Editor />
-            </div>
-        </div>
+        <div></div>
     );
 }
 export { TestPage };

@@ -1,4 +1,4 @@
-import type React from 'react';
+import React from 'react';
 import { createContext, useContext } from 'react';
 import type { FileUpLoaderStateContextType } from './types';
 

@@ -96,7 +96,6 @@ const globalStyles = css`
 
     html {
         font-size: 62.5%;
-        overflow-y: auto;
     }
 
     body {
@@ -104,13 +103,22 @@ const globalStyles = css`
         justify-content: center;
 
         width: 100%;
-        height: 100dvh;
+        min-height: 100dvh;
+        height: auto;
 
         font-family: Pretendard, sans-serif;
         font-size: 1.6rem;
 
         background-color: #fff;
+
         overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #root {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     article,

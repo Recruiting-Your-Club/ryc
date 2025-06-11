@@ -49,7 +49,7 @@ export const inputContainer = (error: boolean, variant: InputVariant) => {
                     border-color: ${theme.colors.default};
                     ${error &&
                     css`
-                        border: 1.5px solid ${theme.colors.red[800]};
+                        border-bottom: 1.5px solid ${theme.colors.red[800]};
                     `}
                 }
             `;

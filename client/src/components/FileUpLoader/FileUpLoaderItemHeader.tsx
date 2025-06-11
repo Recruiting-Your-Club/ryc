@@ -2,7 +2,7 @@ import React from 'react';
 import XIcon from '@assets/images/gray_xicon.svg';
 import { s_fileHeader, s_fileRow } from './FileUpLoader.style';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
-import { headerItems } from './constants';
+import { headerItems } from '@constants/fileUpLoader';
 import { Button } from '@components/_common';
 import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 

@@ -273,6 +273,7 @@ function MainPage() {
                         status={data.status}
                         hashTag={data.hashTag}
                         imageURL={data.imageURL}
+                        link={`http://localhost:3000/detail`}
                     />
                 ))}
             </div>
