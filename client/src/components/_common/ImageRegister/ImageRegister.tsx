@@ -12,8 +12,9 @@ import { Button, ImageEditDialog } from '@components';
 import { useClickOutside } from '@hooks/components/useClickOutside';
 import type { ChangeEvent } from 'react';
 import type { ImageRegisterProps } from './types';
+import Upload from '@assets/images/upload.svg';
 
-function ImageRegister({ imageSrc = BasicImage, setImageSrc }: ImageRegisterProps) {
+function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegisterProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -64,14 +65,16 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc }: ImageRegisterProp
     return (
         <>
             <div
-                css={s_imageContainer}
+                css={[s_imageContainer, sx]}
                 onClick={() => setOpenTrigger(true)}
                 onKeyDown={() => onKeyDownHandler}
                 role="button"
                 tabIndex={0}
                 ref={editorRef}
             >
-                <div css={s_imageEdtiorTriggerIcon} />
+                <div css={s_imageEdtiorTriggerIcon}>
+                    <Upload width="70%" height="70%" />
+                </div>
                 <img
                     src={imageSrc}
                     alt="profile"

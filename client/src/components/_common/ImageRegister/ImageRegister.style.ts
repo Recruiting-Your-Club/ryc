@@ -15,12 +15,15 @@ export const s_imageContainer = css`
 
 export const s_imageEdtiorTriggerIcon = css`
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    background-color: white;
-    bottom: -0.7rem;
-    right: -0.7rem;
+    background-color: ${theme.colors.white};
+    bottom: -0.9rem;
+    right: -0.8rem;
 `;
 
 export const ImageEditorInput = css`
