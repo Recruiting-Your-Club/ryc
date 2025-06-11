@@ -7,7 +7,7 @@ import { s_contentContainer } from './ImageEdit.style';
 import { getCroppedImg } from './utils';
 import theme from '@styles/theme';
 
-function ImageEditDialog({ open, handleClose, imageSrc, setImageSrc }: ImageEditDialogProps) {
+function ImageEditDialog({ open, handleClose, image, setCroppedImage }: ImageEditDialogProps) {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>();
@@ -23,8 +23,8 @@ function ImageEditDialog({ open, handleClose, imageSrc, setImageSrc }: ImageEdit
     };
 
     const handleSaveEditImage = async () => {
-        const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels, 0);
-        setImageSrc(croppedImage as string);
+        const cropped = await getCroppedImg(image, croppedAreaPixels, 0);
+        setCroppedImage(cropped as string);
         handleClose();
     };
 
@@ -39,7 +39,7 @@ function ImageEditDialog({ open, handleClose, imageSrc, setImageSrc }: ImageEdit
                 <Dialog.Content>
                     <div css={s_contentContainer}>
                         <Cropper
-                            image={imageSrc}
+                            image={image}
                             crop={crop}
                             zoom={zoom}
                             cropShape="rect"

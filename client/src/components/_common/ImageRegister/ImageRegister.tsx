@@ -14,14 +14,20 @@ import type { ChangeEvent } from 'react';
 import type { ImageRegisterProps } from './types';
 import Upload from '@assets/images/upload.svg';
 
-function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegisterProps) {
+function ImageRegister({
+    image,
+    setImage,
+    croppedImage = BasicImage,
+    setCroppedImage,
+    sx,
+}: ImageRegisterProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [openTrigger, setOpenTrigger] = useState<boolean>(false);
-    const [croppedImage, setCroppedImage] = useState<string>(imageSrc);
+    //const [croppedImage, setCroppedImage] = useState<string>(imageSrc);
     const editorRef = useRef<HTMLDivElement>(null);
     // form hooks
     // query hooks
@@ -42,7 +48,7 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegister
         reader.readAsDataURL(file);
         reader.onloadend = () => {
             if (typeof reader.result === 'string') {
-                setImageSrc(reader.result);
+                setImage(reader.result);
             }
         };
         setOpenTrigger(false);
@@ -52,7 +58,7 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegister
     const handleDeleteImage = (mouseEvent: React.MouseEvent<HTMLButtonElement>) => {
         mouseEvent.stopPropagation(); // 부모 요소의 onClick 이벤트 방지
         setOpenTrigger(false);
-        setImageSrc(BasicImage);
+        setCroppedImage(BasicImage);
     };
 
     // FIXME: 이거 나중에 위치 공통 utils로 옮겨야함
@@ -107,8 +113,8 @@ function ImageRegister({ imageSrc = BasicImage, setImageSrc, sx }: ImageRegister
             <ImageEditDialog
                 open={openDialog}
                 handleClose={() => setOpenDialog(false)}
-                imageSrc={imageSrc}
-                setImageSrc={setCroppedImage}
+                image={image}
+                setCroppedImage={setCroppedImage}
             />
         </>
     );
