@@ -56,7 +56,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
     >({});
 
     const [emailTitle, setEmailTitle] = useState<string>('');
-    const [emailContent, setEmailContent] = useState<string>('');
+    const [emailContent, setEmailContent] = useState<string>(INITIAL_FORM);
 
     // form hooks
     // query hooks
@@ -243,7 +243,6 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 내용
                             </Text>
                             <TextArea
-                                defaultValue={INITIAL_FORM}
                                 value={emailContent}
                                 onChange={(e) => setEmailContent(e.target.value)}
                                 size="md"
