@@ -19,12 +19,39 @@ export const contentCss = css`
     overflow: hidden;
 `;
 
+export const s_selectContainer = css`
+    flex: 2.5;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem 1rem 5.5rem 1rem;
+    gap: 1rem;
+`;
+
+export const s_perInformationContainer = css`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const s_emptyPlace = css`
+    height: 100%;
+`;
+
+export const s_resetButton = css`
+    /* width: 8rem; */
+    margin: 1rem 0 0 0;
+    background-color: ${theme.colors.gray[100]};
+    &:hover {
+        background-color: ${theme.colors.gray[200]};
+    }
+`;
+
 export const informationContainer = css`
     flex: 4;
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 1rem;
+    padding: 3.5rem 1rem 5.7rem 1rem;
     gap: 1rem;
 `;
 
@@ -34,8 +61,8 @@ export const verticalDivider = css`
     margin: 0 1rem;
 `;
 
-export const emailWrapper = css`
-    flex: 6;
+export const s_emailContainer = css`
+    flex: 3.5;
     height: 100%;
     padding: 1rem 1rem;
     display: flex;
@@ -89,6 +116,8 @@ export const submitButtonWrapper = css`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    height: 3rem;
+    max-height: 3rem;
 `;
 
 export const informationInput = css`
@@ -101,22 +130,32 @@ export const perInformationInput = css`
     flex-direction: column;
 `;
 
-export const informationInputCss = css`
+export const informationInputCss = (isError: boolean) => css`
     border: 1px solid ${theme.colors.gray[400]};
     border-radius: 10px;
     width: 4.5rem;
     height: 2.5rem;
+    ${isError &&
+    css`
+        border-color: ${theme.colors.red[800]};
+    `}
 `;
 
-export const timeSelectCss = css`
+export const s_select = css`
+    width: 6.5rem;
+    margin: 0.7rem 0;
+`;
+
+export const s_selectTrigger = css`
     border: 1px solid ${theme.colors.gray[400]};
-    border-radius: 8px;
-    width: 5.7rem;
+    border-radius: 6px;
+    width: 6.5rem;
     height: 2.5rem;
 `;
 
 export const inputFormSection = css`
     display: flex;
+    height: 3rem;
     align-items: center;
     margin: 0.5rem 0;
 `;
@@ -124,4 +163,15 @@ export const inputFormSection = css`
 export const calendarCss = css`
     margin: 1.5rem 0;
     width: 100%;
+    height: 60rem;
+    box-shadow: rgba(0, 27, 55, 0.1) 0px 2px 30px 0px;
+`;
+
+export const helperCss = css`
+    ${theme.typography.helperTextRegular}
+    margin: -0.3rem 0.5rem;
+`;
+
+export const numberUnitText = css`
+    margin: 0 0 0 -7.5rem;
 `;
