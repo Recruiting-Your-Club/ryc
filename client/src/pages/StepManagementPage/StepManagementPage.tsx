@@ -163,7 +163,7 @@ function StepManagementPage() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
-    const [isInterviewOpen, setIsInterviewOpen] = useState(true);
+    const [isInterviewOpen, setIsInterviewOpen] = useState(false);
 
     // form hooks
     // query hooks
