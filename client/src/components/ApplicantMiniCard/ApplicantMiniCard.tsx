@@ -3,19 +3,7 @@ import type { CSSObject } from '@emotion/react';
 import type { HTMLAttributes } from 'react';
 import React from 'react';
 import { informationSection, miniCardContainer } from './ApplicantMiniCard.style';
-
-export interface ApplicantSummary {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface ApplicationMiniCardProps extends HTMLAttributes<HTMLDivElement> {
-    applicant: ApplicantSummary;
-    isCompleted?: boolean;
-    isActivated?: boolean;
-    sx?: CSSObject;
-}
+import type { ApplicationMiniCardProps } from './types';
 
 function ApplicantMiniCard({
     applicant,

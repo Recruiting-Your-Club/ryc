@@ -1,5 +1,7 @@
-import type { ApplicantDetail, ApplicantSummary, Evaluation } from '@components';
 import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox } from '@components';
+import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
+import type { Evaluation } from '@components/EvaluationBox/types';
+import type { ApplicantDetail } from '@components/InformationBox/types';
 import React, { useState } from 'react';
 import {
     documentEvaluationPageContainer,

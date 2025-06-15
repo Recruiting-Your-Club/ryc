@@ -15,17 +15,7 @@ import {
     userSavedEvaluation,
     userStarScore,
 } from './EvaluationBox.style';
-
-export interface Evaluation {
-    applicantId: number;
-    averageScore: number;
-    comments: { evaluator: string; comment: string }[];
-}
-
-interface EvaluationBoxProps {
-    evaluation: Evaluation | null;
-    height?: string;
-}
+import type { EvaluationBoxProps } from './types';
 
 function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
     // prop destruction
