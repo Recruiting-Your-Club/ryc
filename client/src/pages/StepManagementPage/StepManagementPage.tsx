@@ -112,7 +112,7 @@ const finalApplicantList = [
     },
     {
         name: 'Robert Lee',
-        email: 't123@naver.com',
+        email: 't12355@naver.com',
         date: '2025. 02. 04',
         score: '4.0',
         status: '평가 완료 (6/6)',
@@ -163,7 +163,7 @@ function StepManagementPage() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
-    const [isInterviewOpen, setIsInterviewOpen] = useState(false);
+    const [isInterviewOpen, setIsInterviewOpen] = useState(true);
 
     // form hooks
     // query hooks
