@@ -55,6 +55,9 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         Record<string, InterviewInformation>
     >({});
 
+    const [emailTitle, setEmailTitle] = useState<string>('');
+    const [emailContent, setEmailContent] = useState<string>('');
+
     // form hooks
     // query hooks
     // calculated values
@@ -227,6 +230,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 제목
                             </Text>
                             <Input
+                                value={emailTitle}
+                                onChange={(e) => setEmailTitle(e.target.value)}
                                 height="4rem"
                                 placeholder="이메일 제목을 입력해주세요."
                                 inputSx={titleInputCss}
@@ -239,6 +244,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             </Text>
                             <TextArea
                                 defaultValue={INITIAL_FORM}
+                                value={emailContent}
+                                onChange={(e) => setEmailContent(e.target.value)}
                                 size="md"
                                 placeholder="이메일 내용을 입력해주세요."
                                 sx={textareaCss}
