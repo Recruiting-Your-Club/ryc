@@ -21,3 +21,8 @@ export const INITIAL_FORM = `--- 아래 양식은 예시입니다! ---
 담당자 드림`;
 
 export const numberOnlyRegex = /^[0-9]*$/;
+
+export const DEFAULT_START_TIME = '08:00';
+export const DEFAULT_END_TIME = '22:00';
+export const DEFAULT_TIME_VALUE = '15분';
+export const DEFAULT_NUMBER_VALUE = '1';

@@ -3,7 +3,13 @@ import { InterviewTimeBox } from '@components/InterviewTimeBox';
 import { Select } from '@components/Select';
 import { Button, Calendar, Dialog, Divider, Input, Text } from '@components/_common';
 import { TextArea } from '@components/_common/TextArea';
-import { INITIAL_FORM } from '@constants/InterviewSettingDialog';
+import {
+    DEFAULT_END_TIME,
+    DEFAULT_NUMBER_VALUE,
+    DEFAULT_START_TIME,
+    DEFAULT_TIME_VALUE,
+    INITIAL_FORM,
+} from '@constants/InterviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     calendarCss,
@@ -27,7 +33,7 @@ import {
     verticalDivider,
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './interviewSettingDialogContext';
-import type { InterviewSettingDialogProps } from './types';
+import type { InterviewInformation, InterviewSettingDialogProps } from './types';
 
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 const times = ['15분', '30분', '1시간'];
@@ -37,45 +43,53 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [timeValue, setTimeValue] = useState<string>('15분');
-    const [number, setNumber] = useState<string>('1');
+    const [numberValue, setNumberValue] = useState<string>(DEFAULT_NUMBER_VALUE);
+    const [timeValue, setTimeValue] = useState<string>(DEFAULT_TIME_VALUE);
+    const [startTime, setStartTime] = useState<string>(DEFAULT_START_TIME);
+    const [endTime, setEndTime] = useState<string>(DEFAULT_END_TIME);
+
     const [timeButtonList, setTimeButtonList] = useState<string[]>([]);
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
     const [currentDate, setCurrentDate] = useState<string>('');
-    const [selectedTimesByDate, setSelectedTimesByDate] = useState<Record<string, string[]>>({});
+    const [interviewInformation, setInterviewInformation] = useState<
+        Record<string, InterviewInformation>
+    >({});
 
     // form hooks
     // query hooks
     // calculated values
-    const contextValue = useMemo(() => ({ timeButtonList, setTimeButtonList }), [timeButtonList]);
-
-    const interval = useMemo((): number => {
-        const value = Number(timeValue.replace(/분|시간/g, ''));
-        if (value === 1) return 60;
-        return value;
-    }, [timeValue]);
+    const contextValue = useMemo(
+        () => ({
+            numberValue,
+            timeValue,
+            timeButtonList,
+            setTimeButtonList,
+            startTime,
+            setStartTime,
+            endTime,
+            setEndTime,
+            interviewInformation,
+            setInterviewInformation,
+            currentDate,
+        }),
+        [
+            numberValue,
+            timeValue,
+            timeButtonList,
+            startTime,
+            endTime,
+            interviewInformation,
+            currentDate,
+        ],
+    );
 
     // handler
-    const handleTimeClick = (time: string) => {
-        setSelectedTimesByDate((prev) => {
-            const prevSelected = prev[currentDate] || [];
-            const updated = prevSelected.includes(time)
-                ? prevSelected.filter((t) => t !== time)
-                : [...prevSelected, time];
-            return {
-                ...prev,
-                [currentDate]: updated,
-            };
-        });
-    };
-
-    const handleTimeReset = () => {
-        setSelectedTimesByDate((prev) => ({ ...prev, [currentDate]: [] }));
-    };
-
-    const handleSelectReset = () => {
-        setTimeValue('15분');
-        setNumber('1');
+    const handleReset = () => {
+        setTimeValue(DEFAULT_TIME_VALUE);
+        setNumberValue(DEFAULT_NUMBER_VALUE);
+        setStartTime(DEFAULT_START_TIME);
+        setEndTime(DEFAULT_END_TIME);
+        setInterviewInformation({});
     };
 
     // effects
@@ -84,9 +98,31 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         setTimeButtonList([]);
     }, [selectedDates]);
 
+    // 현재 날짜에 알맞은 정보를 불러옴
+    useEffect(() => {
+        const info = interviewInformation[currentDate];
+        if (!info) return;
+
+        setTimeValue(info.perTime);
+        setNumberValue(info.maxNumber);
+        setStartTime(info.startTime);
+        setEndTime(info.endTime);
+    }, [currentDate, interviewInformation]);
+
+    // 면접 당 진행 시간 변경 시 startTime과 endTime 초기화
+    useEffect(() => {
+        const info = interviewInformation[currentDate];
+
+        // 기존 값이 없거나 기존 perTime 값에서 사용자가 직접 변경하는 경우
+        if (!info || info?.perTime !== timeValue) {
+            setStartTime(DEFAULT_START_TIME);
+            setEndTime(DEFAULT_END_TIME);
+        }
+    }, [timeValue]);
+
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
-            <Dialog open={open} handleClose={handleSelectReset} size="full" sx={dialogCss}>
+            <Dialog open={open} handleClose={handleClose} size="full" sx={dialogCss}>
                 <Dialog.Header position="start" sx={headerCss}>
                     <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
                         면접 일정 보내기
@@ -114,8 +150,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 한 면접 당 최대 인원 수를 정해요.
                             </Text>
                             <Select
-                                value={number}
-                                onValueChange={setNumber}
+                                value={numberValue}
+                                onValueChange={setNumberValue}
                                 size="xs"
                                 sx={s_select}
                             >
@@ -167,7 +203,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             <Button
                                 size="md"
                                 variant="transparent"
-                                onClick={handleSelectReset}
+                                onClick={handleReset}
                                 sx={s_resetButton}
                             >
                                 초기화
@@ -182,13 +218,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             onSelect={setSelectedDates}
                             sx={calendarCss}
                         />
-                        <InterviewTimeBox
-                            interval={interval}
-                            selectedDate={currentDate}
-                            selectedTimes={selectedTimesByDate[currentDate] || []}
-                            isSelected={Boolean(currentDate)}
-                            handleClick={handleTimeClick}
-                        />
+                        <InterviewTimeBox />
                     </div>
                     <div css={verticalDivider} />
                     <div css={s_emailContainer}>

@@ -1,10 +1,5 @@
-import type { Dispatch, SetStateAction} from 'react';
 import { createContext, useContext } from 'react';
-
-interface InterviewSettingDialogContextType {
-    timeButtonList: string[];
-    setTimeButtonList: Dispatch<SetStateAction<string[]>>;
-}
+import type { InterviewSettingDialogContextType } from './types';
 
 export const InterviewSettingDialogContext = createContext<
     InterviewSettingDialogContextType | undefined
