@@ -8,7 +8,7 @@ import {
     dayCell,
     weekCell,
     monthControlButton,
-} from './CalendarStyle';
+} from './Calendar.style';
 import { Text } from '@components';
 import { useCalendar } from './useCalendar';
 import type { CalendarProps } from './types';
