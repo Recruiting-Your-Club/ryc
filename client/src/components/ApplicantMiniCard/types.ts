@@ -7,7 +7,7 @@ export interface ApplicantSummary {
     email: string;
 }
 
-export interface ApplicationMiniCardProps extends HTMLAttributes<HTMLDivElement> {
+export interface ApplicationMiniCardProps extends HTMLAttributes<HTMLButtonElement> {
     applicant: ApplicantSummary;
     isCompleted?: boolean;
     isActivated?: boolean;

@@ -1,6 +1,4 @@
 import { Avatar, Text } from '@components/_common';
-import type { CSSObject } from '@emotion/react';
-import type { HTMLAttributes } from 'react';
 import React from 'react';
 import { informationSection, miniCardContainer } from './ApplicantMiniCard.style';
 import type { ApplicationMiniCardProps } from './types';
@@ -22,7 +20,7 @@ function ApplicantMiniCard({
     // handlers
     // effects
     return (
-        <div css={[miniCardContainer(isActivated), sx]} {...props}>
+        <button css={[miniCardContainer(isActivated), sx]} {...props}>
             <div css={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                 <Avatar shape="round" size="s" />
                 <span css={informationSection}>
@@ -39,7 +37,7 @@ function ApplicantMiniCard({
                     평가 완료
                 </Text>
             )}
-        </div>
+        </button>
     );
 }
 
