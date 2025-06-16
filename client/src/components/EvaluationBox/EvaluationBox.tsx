@@ -11,6 +11,7 @@ import {
     s_averageText,
     s_boxContainer,
     s_myEvaluationText,
+    s_myEvaluationTitleContainer,
     s_savedEvaluationContainer,
     s_starScoreContainer,
     textareaCss,
@@ -57,7 +58,7 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
                     </Text>
                 </div>
                 <div css={userSavedEvaluation}>
-                    <div css={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div css={s_myEvaluationTitleContainer}>
                         <Text
                             as="span"
                             type="subCaptionBold"

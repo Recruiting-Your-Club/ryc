@@ -102,6 +102,11 @@ export const userEvaluation = css`
     min-height: 21rem;
 `;
 
+export const s_myEvaluationTitleContainer = css`
+    display: flex;
+    justify-content: space-between;
+`;
+
 export const textareaCss = css`
     margin: -1.2rem 0;
     background-color: ${theme.colors.gray[200]};
