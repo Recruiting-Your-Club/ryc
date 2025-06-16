@@ -1,6 +1,10 @@
 import { Avatar, Text } from '@components/_common';
 import React from 'react';
-import { informationSection, miniCardContainer } from './ApplicantMiniCard.style';
+import {
+    s_informationContainer,
+    s_miniCardContainer,
+    s_textInformationContainer,
+} from './ApplicantMiniCard.style';
 import type { ApplicationMiniCardProps } from './types';
 
 function ApplicantMiniCard({
@@ -20,10 +24,10 @@ function ApplicantMiniCard({
     // handlers
     // effects
     return (
-        <button css={[miniCardContainer(isActivated), sx]} {...props}>
-            <div css={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <button css={[s_miniCardContainer(isActivated), sx]} {...props}>
+            <div css={s_informationContainer}>
                 <Avatar shape="round" size="s" />
-                <span css={informationSection}>
+                <span css={s_textInformationContainer}>
                     <Text as="span" type="captionSemibold" textAlign="start">
                         {applicant.name}
                     </Text>

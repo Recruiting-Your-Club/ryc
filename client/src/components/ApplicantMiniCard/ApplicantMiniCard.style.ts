@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const miniCardContainer = (isActivated?: boolean) => css`
+export const s_miniCardContainer = (isActivated?: boolean) => css`
     width: 100%;
     background-color: ${theme.colors.white};
     display: flex;
@@ -19,7 +19,13 @@ export const miniCardContainer = (isActivated?: boolean) => css`
     `}
 `;
 
-export const informationSection = css`
+export const s_informationContainer = css`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+`;
+
+export const s_textInformationContainer = css`
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
