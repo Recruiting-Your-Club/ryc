@@ -115,7 +115,6 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
         currentDate,
         days,
         today,
-        newSelectedDate,
         handleBackMonth,
         handleNextMonth,
         handleRangeSelect,

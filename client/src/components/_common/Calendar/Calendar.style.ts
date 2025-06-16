@@ -93,14 +93,14 @@ export const weekdaysContainer = css`
     width: 100%;
 `;
 
-export const daysContainer = (rangePicker: boolean) => css`
+export const daysContainer = (mode: CalendarProps['mode']) => css`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
     width: 100%;
     height: 100%;
     row-gap: 0.5rem;
-    ${!rangePicker &&
+    ${mode !== 'range' &&
     css`
         gap: 0.5rem;
     `}
@@ -121,8 +121,8 @@ const weekendColor = (weekend: number) => {
 const selectedColor = (isSelected: boolean, today: boolean, disabled: boolean) => {
     if (isSelected) {
         return css`
-            background-color: ${theme.colors.default};
-            color: ${theme.colors.white};
+            background-color: ${theme.colors.blue[100]};
+            color: ${theme.colors.default};
             ${!disabled &&
             css`
                 &:hover {
@@ -193,7 +193,7 @@ export const dayCell = (
     today: boolean,
     isSelected: boolean,
     disabled: boolean,
-    rangePicker: boolean,
+    mode: CalendarProps['mode'],
 ) => {
     return css`
         background-color: transparent;
@@ -214,12 +214,12 @@ export const dayCell = (
             opacity: 0.7;
             cursor: not-allowed;
         `}
-        ${!rangePicker &&
+        ${mode !== 'range' &&
         css`
             border-radius: 5px;
         `}
-        ${!rangePicker && selectedColor(isSelected, today, disabled)}
-        ${rangePicker && rangeSelectedColor(selectedDate, date, disabled)}
+        ${mode !== 'range' && selectedColor(isSelected, today, disabled)}
+        ${mode === 'range' && rangeSelectedColor(selectedDate, date, disabled)}
         ${currentMonthColor(date.isCurrentMonth)}
     `;
 };

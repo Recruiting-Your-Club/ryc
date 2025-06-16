@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     calendarContainer,
     calendarBodyContainer,
@@ -10,20 +10,18 @@ import {
     monthControlButton,
 } from './Calendar.style';
 import { Text } from '@components';
-import { useCalendar } from './useCalendar';
+import { useCalendar } from './utils';
 import type { CalendarProps } from './types';
 import { WEEKDAYS } from '@constants/calendar';
 
 function Calendar({
-    isMultiple = false,
+    mode = 'single',
     selectedDate = [],
     onSelect = () => {},
-    setClickedDate = () => {},
     disabled = false,
     size = 'lg',
     border = false,
     shadow = true,
-    rangePicker = false,
     zIndex,
     sx = {},
 }: CalendarProps) {
@@ -32,12 +30,12 @@ function Calendar({
         today,
         days,
         currentDate,
-        newSelectedDate,
         handleBackMonth,
         handleNextMonth,
-        handleSelectedDate,
+        handleSingleSelect,
+        handleMultipleSelect,
         handleRangeSelect,
-    } = useCalendar(selectedDate, isMultiple, onSelect);
+    } = useCalendar(selectedDate, onSelect);
     // lib hooks
     // initial values
     // state, ref, querystring hooks
@@ -45,13 +43,18 @@ function Calendar({
     // query hooks
     // calculated values
     // handlers
-    const handleDateRangePicker = (selectDate: string) => {
-        if (rangePicker) {
-            handleRangeSelect(selectDate);
-        } else {
-            handleSelectedDate(selectDate);
+    const handleCalendarType = (selectDate: string) => {
+        switch (mode) {
+            case 'single':
+                handleSingleSelect(selectDate);
+                break;
+            case 'multiple':
+                handleMultipleSelect(selectDate);
+                break;
+            case 'range':
+                handleRangeSelect(selectDate);
+                break;
         }
-        setClickedDate(selectDate);
     };
     // effects
 
@@ -88,7 +91,7 @@ function Calendar({
                     ))}
                 </div>
 
-                <div css={daysContainer(rangePicker)}>
+                <div css={daysContainer(mode)}>
                     {days.map((date) => (
                         <button
                             aria-label={date.dateString}
@@ -98,11 +101,11 @@ function Calendar({
                                 selectedDate,
                                 date,
                                 date.dateString === today,
-                                newSelectedDate.has(date.dateString),
+                                selectedDate.includes(date.dateString),
                                 disabled,
-                                rangePicker,
+                                mode,
                             )}
-                            onClick={() => handleDateRangePicker(date.dateString)}
+                            onClick={() => handleCalendarType(date.dateString)}
                         >
                             {date.day}
                         </button>
