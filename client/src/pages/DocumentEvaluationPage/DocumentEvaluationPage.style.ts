@@ -7,13 +7,6 @@ export const documentEvaluationPageContainer = css`
     display: flex;
 `;
 
-export const titleSection = css`
-    flex: 0.5;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-`;
-
 export const listContainer = css`
     flex: 2.2;
     padding: 1rem;
