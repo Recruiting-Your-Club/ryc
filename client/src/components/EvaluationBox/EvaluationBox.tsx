@@ -4,12 +4,15 @@ import { Button, Divider, Rating, Text } from '@components/_common';
 import { TextArea } from '@components/_common/TextArea';
 import React, { useState } from 'react';
 import {
-    boxContainer,
     perStarScoreGroup,
-    savedEvaluation,
-    starScoreWrapper,
     svgButtonCss,
     svgButtonGroup,
+    s_averageNumber,
+    s_averageText,
+    s_boxContainer,
+    s_myEvaluationText,
+    s_savedEvaluationContainer,
+    s_starScoreContainer,
     textareaCss,
     userEvaluation,
     userSavedEvaluation,
@@ -31,15 +34,10 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
     // handlers
     // effects
     return (
-        <div css={boxContainer(height)}>
-            <div css={savedEvaluation(hasUserEvaluation)}>
-                <div css={starScoreWrapper}>
-                    <Text
-                        as="span"
-                        type="captionSemibold"
-                        noWrap
-                        sx={{ paddingTop: '0.3rem', marginRight: '0.4rem' }}
-                    >
+        <div css={s_boxContainer(height)}>
+            <div css={s_savedEvaluationContainer(hasUserEvaluation)}>
+                <div css={s_starScoreContainer}>
+                    <Text as="span" type="captionSemibold" noWrap sx={s_averageText}>
                         평균 평점
                     </Text>
                     <Rating
@@ -48,12 +46,7 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
                         size="lg"
                         type="display"
                     />
-                    <Text
-                        as="span"
-                        type="captionRegular"
-                        color="primary"
-                        sx={{ paddingTop: '0.3rem' }}
-                    >
+                    <Text as="span" type="captionRegular" color="primary" sx={s_averageNumber}>
                         ({evaluation ? evaluation.averageScore : 0})
                     </Text>
                 </div>
@@ -69,7 +62,7 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
                             as="span"
                             type="subCaptionBold"
                             textAlign="start"
-                            sx={{ margin: '0.5rem 0' }}
+                            sx={s_myEvaluationText}
                         >
                             나의 평가
                         </Text>

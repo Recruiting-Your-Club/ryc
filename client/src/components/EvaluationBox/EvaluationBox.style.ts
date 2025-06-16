@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const boxContainer = (height: string = '100%') => css`
+export const s_boxContainer = (height: string = '100%') => css`
     height: ${height};
     justify-content: center;
     align-items: center;
@@ -10,7 +10,7 @@ export const boxContainer = (height: string = '100%') => css`
     gap: 1.5rem;
 `;
 
-export const savedEvaluation = (hasUserEvaluation: boolean) => css`
+export const s_savedEvaluationContainer = (hasUserEvaluation: boolean) => css`
     flex: 8;
     width: 100%;
     display: flex;
@@ -26,16 +26,25 @@ export const savedEvaluation = (hasUserEvaluation: boolean) => css`
     min-height: 0;
 `;
 
-export const starScoreWrapper = css`
+export const s_starScoreContainer = css`
     width: 100%;
     flex: 0.8;
     display: flex;
     align-items: center;
-    justify-content: center; // 피그마는 왼쪽 정렬
+    justify-content: start; // 피그마는 왼쪽 정렬
     gap: 1rem;
     overflow: hidden;
-    padding: 0.5rem 0 1rem 0;
+    padding: 0.5rem 1rem 1rem 1rem;
     max-height: 5rem;
+`;
+
+export const s_averageText = css`
+    padding-top: 0.3rem;
+    margin-right: 0.4rem;
+`;
+
+export const s_averageNumber = css`
+    padding-top: 0.3rem;
 `;
 
 const scoreWrapper = (empty?: boolean) => css`
@@ -69,6 +78,10 @@ export const userSavedEvaluation = css`
     flex-direction: column;
     width: 100%;
     min-height: 0;
+`;
+
+export const s_myEvaluationText = css`
+    margin: 0.5rem 0;
 `;
 
 export const userStarScore = (empty?: boolean) => css`
