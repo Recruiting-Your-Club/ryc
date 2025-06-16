@@ -9,9 +9,10 @@ export const boxContainer = (height: string = '100%') => css`
     align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     padding: 0.5rem 1rem;
     box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
+    overflow: hidden;
 `;
 
 export const titleSection = css`
@@ -35,7 +36,7 @@ export const documentWrapper = css`
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 2rem;
+    padding: 0.5rem 2rem;
     gap: 2rem;
     align-items: center;
 
