@@ -1,4 +1,4 @@
-import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox } from '@components';
+import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox, Text } from '@components';
 import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
 import type { Evaluation } from '@components/EvaluationBox/types';
 import type { ApplicantDetail } from '@components/InformationBox/types';
@@ -8,7 +8,7 @@ import {
     evaluationContainer,
     informationContainer,
     listContainer,
-} from './DocumentEvaluation.style';
+} from './DocumentEvaluationPage.style';
 
 export const applicantList: ApplicantSummary[] = [
     { id: 1, name: '팥붕이', email: 'nickname@example.com' },
@@ -82,15 +82,21 @@ function DocumentEvaluationPage() {
     return (
         <div css={documentEvaluationPageContainer}>
             <div css={listContainer}>
-                <ApplicantList>
-                    {applicantList.map((applicant) => (
-                        <ApplicantMiniCard
-                            key={applicant.id}
-                            applicant={applicant}
-                            onClick={() => setSelectedApplicantId(applicant.id)}
-                            isActivated={selectedApplicantId === applicant.id}
-                        />
-                    ))}
+                <ApplicantList isList={applicantList.length !== 0}>
+                    {applicantList.length > 0 ? (
+                        applicantList.map((applicant) => (
+                            <ApplicantMiniCard
+                                key={applicant.id}
+                                applicant={applicant}
+                                onClick={() => setSelectedApplicantId(applicant.id)}
+                                isActivated={selectedApplicantId === applicant.id}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            지원자가 없습니다.
+                        </Text>
+                    )}
                 </ApplicantList>
             </div>
             <div css={informationContainer}>
