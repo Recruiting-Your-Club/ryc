@@ -14,7 +14,7 @@ import { useCalendar } from './useCalendar';
 import type { CalendarProps } from './types';
 import { WEEKDAYS } from '@constants/calendar';
 
-const Calendar = ({
+function Calendar({
     isMultiple = false,
     selectedDate = [],
     onSelect = () => {},
@@ -26,7 +26,7 @@ const Calendar = ({
     rangePicker = false,
     zIndex,
     sx = {},
-}: CalendarProps) => {
+}: CalendarProps) {
     // prop destruction
     const {
         today,
@@ -111,6 +111,6 @@ const Calendar = ({
             </div>
         </div>
     );
-};
+}
 
 export { Calendar };
