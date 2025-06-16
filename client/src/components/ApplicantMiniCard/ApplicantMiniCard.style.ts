@@ -8,6 +8,7 @@ export const s_miniCardContainer = (isActivated?: boolean) => css`
     justify-content: space-between;
     align-items: center;
     padding: 0.8rem 1rem;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
     &:hover {
