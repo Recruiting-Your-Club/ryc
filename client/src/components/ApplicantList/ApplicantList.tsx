@@ -1,13 +1,14 @@
 import Search from '@assets/images/search.svg';
 import { Button, Divider, Input, Text } from '@components/_common';
-import theme from '@styles/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
 import {
     s_listContainer,
     s_miniCardContainer,
     s_miniCardGroupWrapper,
+    s_searchButton,
     s_searchInput,
+    s_searchSvg,
     s_titleContainer,
 } from './ApplicantList.style';
 
@@ -37,12 +38,8 @@ function ApplicantList({ title = '지원자 목록', height, children }: Applica
                     <Input
                         variant="transparent"
                         startNode={
-                            <Button variant="text" size="s">
-                                <Search
-                                    width="1.5rem"
-                                    height="1.5rem"
-                                    css={{ color: theme.colors.gray[400] }}
-                                />
+                            <Button variant="text" size="s" sx={s_searchButton}>
+                                <Search width="1.5rem" height="1.5rem" css={s_searchSvg} />
                             </Button>
                         }
                         height="3rem"

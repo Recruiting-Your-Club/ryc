@@ -23,6 +23,14 @@ export const s_titleContainer = css`
     min-height: 5rem;
 `;
 
+export const s_searchButton = css`
+    cursor: default;
+`;
+
+export const s_searchSvg = css`
+    color: ${theme.colors.gray[400]};
+`;
+
 export const s_searchInput = css`
     width: 11rem;
     padding: 0 1rem 0 0.5rem;
