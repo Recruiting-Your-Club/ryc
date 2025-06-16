@@ -8,7 +8,6 @@ import {
     evaluationContainer,
     informationContainer,
     listContainer,
-    miniCardGroup,
 } from './DocumentEvaluation.style';
 
 export const applicantList: ApplicantSummary[] = [
@@ -84,16 +83,14 @@ function DocumentEvaluationPage() {
         <div css={documentEvaluationPageContainer}>
             <div css={listContainer}>
                 <ApplicantList>
-                    <div css={miniCardGroup}>
-                        {applicantList.map((applicant) => (
-                            <ApplicantMiniCard
-                                key={applicant.id}
-                                applicant={applicant}
-                                onClick={() => setSelectedApplicantId(applicant.id)}
-                                isActivated={selectedApplicantId === applicant.id}
-                            />
-                        ))}
-                    </div>
+                    {applicantList.map((applicant) => (
+                        <ApplicantMiniCard
+                            key={applicant.id}
+                            applicant={applicant}
+                            onClick={() => setSelectedApplicantId(applicant.id)}
+                            isActivated={selectedApplicantId === applicant.id}
+                        />
+                    ))}
                 </ApplicantList>
             </div>
             <div css={informationContainer}>

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const listContainer = (height: string = '100%') => css`
+export const s_listContainer = (height: string = '100%') => css`
     height: ${height};
     border-radius: 10px;
     background-color: ${theme.colors.white};
@@ -13,7 +13,7 @@ export const listContainer = (height: string = '100%') => css`
     box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
 `;
 
-export const titleSection = css`
+export const s_titleContainer = css`
     flex: 0.7;
     display: flex;
     width: 100%;
@@ -30,9 +30,25 @@ export const s_searchInput = css`
     background-color: ${theme.colors.gray[100]};
 `;
 
-export const miniCardGroupSection = css`
+export const s_miniCardGroupWrapper = css`
     flex: 9.3;
     width: 100%;
     min-height: 0;
     padding: 0.5rem 0.2rem;
+`;
+
+export const s_miniCardContainer = css`
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style-type: none;
+
+    &::after {
+        content: '';
+        height: 0.5rem;
+        flex-shrink: 0;
+    }
 `;

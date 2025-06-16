@@ -4,19 +4,20 @@ import theme from '@styles/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
 import {
-    inputCss,
-    listContainer,
-    miniCardGroupSection,
+    s_listContainer,
+    s_miniCardContainer,
+    s_miniCardGroupWrapper,
     s_searchInput,
-    titleSection,
+    s_titleContainer,
 } from './ApplicantList.style';
 
 interface ApplicationListProps {
+    title?: string;
     height?: string;
     children?: ReactNode;
 }
 
-function ApplicantList({ height, children }: ApplicationListProps) {
+function ApplicantList({ title = '지원자 목록', height, children }: ApplicationListProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -27,10 +28,10 @@ function ApplicantList({ height, children }: ApplicationListProps) {
     // handlers
     // effects
     return (
-        <div css={listContainer(height)}>
-            <div css={titleSection}>
+        <div css={s_listContainer(height)}>
+            <div css={s_titleContainer}>
                 <Text as="span" type="captionSemibold" textAlign="start">
-                    지원자 목록
+                    {title}
                 </Text>
                 <span>
                     <Input
@@ -51,7 +52,9 @@ function ApplicantList({ height, children }: ApplicationListProps) {
                 </span>
             </div>
             <Divider />
-            <div css={miniCardGroupSection}>{children}</div>
+            <div css={s_miniCardGroupWrapper}>
+                <div css={s_miniCardContainer}>{children}</div>
+            </div>
         </div>
     );
 }

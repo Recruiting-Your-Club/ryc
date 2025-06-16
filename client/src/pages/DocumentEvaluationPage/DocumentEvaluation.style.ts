@@ -43,18 +43,3 @@ export const evaluationContainer = css`
     max-width: 40rem;
     min-height: 0;
 `;
-
-export const miniCardGroup = css`
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    &::after {
-        content: '';
-        height: 0.5rem;
-        flex-shrink: 0;
-    }
-`;
