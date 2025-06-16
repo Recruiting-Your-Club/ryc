@@ -23,10 +23,10 @@ export const titleSection = css`
     min-height: 5rem;
 `;
 
-export const inputCss = css`
+export const s_searchInput = css`
     width: 11rem;
-    padding: 0 0 0 0.5rem;
-    border-radius: 15px;
+    padding: 0 1rem 0 0.5rem;
+    border-radius: 11px;
     background-color: ${theme.colors.gray[100]};
 `;
 

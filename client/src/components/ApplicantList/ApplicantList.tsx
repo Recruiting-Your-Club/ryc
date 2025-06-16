@@ -3,7 +3,13 @@ import { Button, Divider, Input, Text } from '@components/_common';
 import theme from '@styles/theme';
 import type { ReactNode } from 'react';
 import React from 'react';
-import { inputCss, listContainer, miniCardGroupSection, titleSection } from './ApplicantList.style';
+import {
+    inputCss,
+    listContainer,
+    miniCardGroupSection,
+    s_searchInput,
+    titleSection,
+} from './ApplicantList.style';
 
 interface ApplicationListProps {
     height?: string;
@@ -39,7 +45,7 @@ function ApplicantList({ height, children }: ApplicationListProps) {
                             </Button>
                         }
                         height="3rem"
-                        inputSx={inputCss}
+                        inputSx={s_searchInput}
                         placeholder="이름 검색"
                     />
                 </span>
