@@ -13,6 +13,7 @@ export const boxContainer = (height: string = '100%') => css`
     padding: 0.5rem 1rem;
     box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
     overflow: hidden;
+    min-height: 20rem;
 `;
 
 export const titleSection = css`

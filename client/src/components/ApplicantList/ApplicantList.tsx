@@ -16,9 +16,10 @@ interface ApplicationListProps {
     title?: string;
     height?: string;
     children?: ReactNode;
+    isList: boolean;
 }
 
-function ApplicantList({ title = '지원자 목록', height, children }: ApplicationListProps) {
+function ApplicantList({ title = '지원자 목록', height, children, isList }: ApplicationListProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -50,7 +51,7 @@ function ApplicantList({ title = '지원자 목록', height, children }: Applica
             </div>
             <Divider />
             <div css={s_miniCardGroupWrapper}>
-                <div css={s_miniCardContainer}>{children}</div>
+                <div css={s_miniCardContainer(isList)}>{children}</div>
             </div>
         </div>
     );

@@ -23,7 +23,8 @@ export const s_savedEvaluationContainer = (hasUserEvaluation: boolean) => css`
     css`
         flex: 10;
     `}
-    min-height: 0;
+    min-height: 20rem;
+    overflow: hidden;
 `;
 
 export const s_starScoreContainer = css`
@@ -70,6 +71,7 @@ export const perStarScoreGroup = (empty?: boolean) => css`
     flex: 7.2;
     gap: 0.8rem;
     ${scoreWrapper(empty)}
+    min-height: 5rem;
 `;
 
 export const userSavedEvaluation = css`
@@ -77,7 +79,8 @@ export const userSavedEvaluation = css`
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: 0;
+    min-height: 8rem;
+    overflow: hidden;
 `;
 
 export const s_myEvaluationText = css`
@@ -87,6 +90,7 @@ export const s_myEvaluationText = css`
 export const userStarScore = (empty?: boolean) => css`
     height: 100%;
     ${scoreWrapper(empty)};
+    min-height: 5rem;
 `;
 
 export const userEvaluation = css`
@@ -100,6 +104,7 @@ export const userEvaluation = css`
     align-items: center;
     padding: 1.2rem;
     min-height: 21rem;
+    overflow: hidden;
 `;
 
 export const s_myEvaluationTitleContainer = css`
