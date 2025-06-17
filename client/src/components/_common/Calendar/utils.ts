@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import dayjs from 'dayjs';
 import type { CalendarData } from './types';
 import { CALENDAR_SIZE } from '@constants/calendar';
+import { SELECTED_ENDDAY, SELECTED_STARTDAY } from '@constants/calendar';
 
 function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: string[]) => void) {
     // prop destruction
@@ -25,9 +26,13 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
 
     const handleSingleSelect = useCallback(
         (newDate: string) => {
-            onSelect([newDate]);
+            if (selectedDate.includes(newDate)) {
+                onSelect([]);
+            } else {
+                onSelect([newDate]);
+            }
         },
-        [onSelect],
+        [onSelect, selectedDate],
     );
 
     const handleMultipleSelect = useCallback(
@@ -46,10 +51,11 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
 
     const handleRangeSelect = useCallback(
         (newDate: string) => {
-            if (selectedDate.length === 2) {
+            if (selectedDate.length === SELECTED_ENDDAY) {
                 onSelect([newDate]);
-            } else if (selectedDate.length === 1) {
-                if (selectedDate[0] < newDate) {
+            } else if (selectedDate.length === SELECTED_STARTDAY) {
+                const isCorrectRange = selectedDate[0] < newDate;
+                if (isCorrectRange) {
                     onSelect([selectedDate[0], newDate]);
                 } else {
                     onSelect([newDate]);
