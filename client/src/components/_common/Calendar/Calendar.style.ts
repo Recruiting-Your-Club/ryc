@@ -177,11 +177,11 @@ const rangeSelected = (selectedDate: string[], date: CalendarData) => {
         }
     }
 };
-const selectableCalendar = (isSelected: boolean, date: CalendarData) => {
+const onlySelectedCalendar = (isSelected: boolean) => {
     return css`
         ${!isSelected &&
         css`
-            opacity: 0.7;
+            color: ${theme.colors.gray[400]};
             cursor: not-allowed;
             pointer-events: none;
         `}
@@ -191,13 +191,28 @@ const selectableCalendar = (isSelected: boolean, date: CalendarData) => {
         `}
     `;
 };
+export const highlightDate = (highlightedDate: string[], date: CalendarData) => {
+    return css`
+        ${highlightedDate.includes(date.dateString) &&
+        css`
+            background-color: ${theme.colors.blue[300]};
+            color: ${theme.colors.white};
+            &:hover {
+                background-color: ${theme.colors.blue[300]};
+                color: ${theme.colors.white};
+                opacity: 0.9;
+            }
+        `}
+    `;
+};
 export const dayCell = (
     selectedDate: string[],
     date: CalendarData,
     today: boolean,
     isSelected: boolean,
-    selectable: boolean,
+    onlySelected: boolean,
     mode: CalendarProps['mode'],
+    highlightedDate: string[],
 ) => {
     return css`
         background-color: transparent;
@@ -214,7 +229,8 @@ export const dayCell = (
         ${mode !== 'range' && SelectedColor(isSelected)}
         ${mode === 'range' && rangeSelected(selectedDate, date)}
         ${currentMonthColor(date.isCurrentMonth)}
-        ${selectable && selectableCalendar(isSelected, date)}
+        ${onlySelected && onlySelectedCalendar(isSelected)}
+        ${highlightDate(highlightedDate, date)}
         transition: background-color 0.15s ease;
     `;
 };

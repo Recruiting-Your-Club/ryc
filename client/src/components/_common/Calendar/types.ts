@@ -5,7 +5,8 @@ export interface CalendarProps {
     selectedDate?: string[];
     // useState의 오른쪽 값
     onSelect?: (selectedDate: string[]) => void;
-    selectable?: boolean;
+    highlightedDate?: string[];
+    onlySelected?: boolean;
     mode?: 'single' | 'multiple' | 'range' | 'custom';
     disabled?: boolean;
     border?: boolean;

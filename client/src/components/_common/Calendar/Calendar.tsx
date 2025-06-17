@@ -17,8 +17,9 @@ import { WEEKDAYS } from '@constants/calendar';
 function Calendar({
     mode = 'single',
     selectedDate = [],
+    highlightedDate = [],
     onSelect = () => {},
-    selectable = false,
+    onlySelected = false,
     disabled = false,
     size = 'lg',
     border = false,
@@ -107,8 +108,9 @@ function Calendar({
                                 date,
                                 date.dateString === today,
                                 selectedDate.includes(date.dateString),
-                                selectable,
+                                onlySelected,
                                 mode,
+                                highlightedDate,
                             )}
                             onClick={() => handleCalendarType(date.dateString)}
                         >

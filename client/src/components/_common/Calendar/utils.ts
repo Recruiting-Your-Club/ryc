@@ -64,7 +64,7 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
         (newDate: string) => {
             onSelect([newDate]);
         },
-        [selectedDate, onSelect],
+        [onSelect],
     );
 
     const generateCalendarDays = () => {
