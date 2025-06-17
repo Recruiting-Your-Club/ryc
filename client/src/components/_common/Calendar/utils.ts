@@ -60,6 +60,12 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
         },
         [selectedDate, onSelect],
     );
+    const handleCustomSelect = useCallback(
+        (newDate: string) => {
+            onSelect([newDate]);
+        },
+        [selectedDate, onSelect],
+    );
 
     const generateCalendarDays = () => {
         const newDays = []; // days 업데이트를 위한 새 배열
@@ -120,6 +126,7 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
         handleRangeSelect,
         handleSingleSelect,
         handleMultipleSelect,
+        handleCustomSelect,
     };
 }
 export { useCalendar };

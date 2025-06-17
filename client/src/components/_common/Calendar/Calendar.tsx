@@ -6,7 +6,7 @@ import {
     weekdaysContainer,
     daysContainer,
     dayCell,
-    weekCell,
+    weekendColor,
     monthControlButton,
 } from './Calendar.style';
 import { Text } from '@components';
@@ -18,6 +18,7 @@ function Calendar({
     mode = 'single',
     selectedDate = [],
     onSelect = () => {},
+    selectable = false,
     disabled = false,
     size = 'lg',
     border = false,
@@ -35,6 +36,7 @@ function Calendar({
         handleSingleSelect,
         handleMultipleSelect,
         handleRangeSelect,
+        handleCustomSelect,
     } = useCalendar(selectedDate, onSelect);
     // lib hooks
     // initial values
@@ -53,6 +55,9 @@ function Calendar({
                 break;
             case 'range':
                 handleRangeSelect(selectDate);
+                break;
+            case 'custom':
+                handleCustomSelect(selectDate);
                 break;
         }
     };
@@ -85,13 +90,13 @@ function Calendar({
             <div css={calendarBodyContainer}>
                 <div css={weekdaysContainer}>
                     {WEEKDAYS.map((day, index) => (
-                        <div key={day} css={weekCell(index)}>
+                        <div key={day} css={weekendColor(index)}>
                             {day}
                         </div>
                     ))}
                 </div>
 
-                <div css={daysContainer(mode)}>
+                <div css={daysContainer(mode, disabled)}>
                     {days.map((date) => (
                         <button
                             aria-label={date.dateString}
@@ -102,7 +107,7 @@ function Calendar({
                                 date,
                                 date.dateString === today,
                                 selectedDate.includes(date.dateString),
-                                disabled,
+                                selectable,
                                 mode,
                             )}
                             onClick={() => handleCalendarType(date.dateString)}

@@ -93,7 +93,7 @@ export const weekdaysContainer = css`
     width: 100%;
 `;
 
-export const daysContainer = (mode: CalendarProps['mode']) => css`
+export const daysContainer = (mode: CalendarProps['mode'], disabled: boolean) => css`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(6, 1fr);
@@ -104,9 +104,14 @@ export const daysContainer = (mode: CalendarProps['mode']) => css`
     css`
         gap: 0.5rem;
     `}
+    ${disabled &&
+    css`
+        pointer-events: none;
+        opacity: 0.6;
+    `}
 `;
 
-const weekendColor = (weekend: number) => {
+export const weekendColor = (weekend: number) => {
     if (weekend === SUNDAY) {
         return css`
             color: ${theme.colors.red[900]};
@@ -118,64 +123,6 @@ const weekendColor = (weekend: number) => {
     }
 };
 
-const selectedColor = (isSelected: boolean, today: boolean, disabled: boolean) => {
-    if (isSelected) {
-        return css`
-            background-color: ${theme.colors.blue[100]};
-            color: ${theme.colors.default};
-            ${!disabled &&
-            css`
-                &:hover {
-                    background-color: ${theme.colors.defaultHover};
-                }
-            `}
-        `;
-    } else if (today) {
-        return css`
-            background-color: ${theme.colors.gray[200]};
-            ${!disabled &&
-            css`
-                &:hover {
-                    color: ${theme.colors.white};
-                    background-color: ${theme.colors.default};
-                }
-            `}
-        `;
-    }
-};
-const rangeSelectedColor = (selectedDate: string[], date: CalendarData, disabled: boolean) => {
-    if (selectedDate.length === 2) {
-        if (selectedDate[0] <= date.dateString && date.dateString <= selectedDate[1]) {
-            return css`
-                background-color: ${theme.colors.default};
-                color: ${theme.colors.white};
-                ${selectedDate[0] === date.dateString &&
-                css`
-                    border-top-left-radius: 10px;
-                    border-bottom-left-radius: 10px;
-                `}
-                ${selectedDate[1] === date.dateString &&
-                css`
-                    border-top-right-radius: 10px;
-                    border-bottom-right-radius: 10px;
-                `}
-                ${!disabled &&
-                css`
-                    &:hover {
-                        background-color: ${theme.colors.defaultHover};
-                    }
-                `}
-            `;
-        }
-    } else {
-        if (selectedDate[0] === date.dateString) {
-            return css`
-                background-color: ${theme.colors.default};
-                color: ${theme.colors.white};
-            `;
-        }
-    }
-};
 const currentMonthColor = (isCurrentMonth: boolean) => css`
     ${!isCurrentMonth &&
     css`
@@ -183,16 +130,73 @@ const currentMonthColor = (isCurrentMonth: boolean) => css`
     `}
 `;
 
-export const weekCell = (index: number) => {
-    return weekendColor(index);
+const SelectedColor = (isSelected: boolean) => {
+    return css`
+        opacity: 0.9;
+        ${isSelected &&
+        css`
+            background-color: ${theme.colors.blue[100]};
+            color: ${theme.colors.default};
+            :hover {
+                opacity: 1;
+                color: ${theme.colors.defaultHover};
+            }
+        `}
+    `;
 };
 
+const rangeSelected = (selectedDate: string[], date: CalendarData) => {
+    if (selectedDate.length === 2) {
+        if (selectedDate[0] <= date.dateString && date.dateString <= selectedDate[1]) {
+            return css`
+                background-color: ${theme.colors.blue[100]};
+                color: ${theme.colors.default};
+                border-radius: 0;
+                ${selectedDate[0] === date.dateString &&
+                css`
+                    background-color: ${theme.colors.blue[300]};
+                    color: ${theme.colors.white};
+                    border-top-left-radius: 15px;
+                    border-bottom-left-radius: 15px;
+                `}
+                ${selectedDate[1] === date.dateString &&
+                css`
+                    background-color: ${theme.colors.blue[300]};
+                    color: ${theme.colors.white};
+                    border-top-right-radius: 15px;
+                    border-bottom-right-radius: 15px;
+                `}
+            `;
+        }
+    } else {
+        if (selectedDate[0] === date.dateString) {
+            return css`
+                background-color: ${theme.colors.blue[100]};
+                color: ${theme.colors.default};
+            `;
+        }
+    }
+};
+const selectableCalendar = (isSelected: boolean, date: CalendarData) => {
+    return css`
+        ${!isSelected &&
+        css`
+            opacity: 0.7;
+            cursor: not-allowed;
+            pointer-events: none;
+        `}
+        ${isSelected &&
+        css`
+            opacity: 1;
+        `}
+    `;
+};
 export const dayCell = (
     selectedDate: string[],
     date: CalendarData,
     today: boolean,
     isSelected: boolean,
-    disabled: boolean,
+    selectable: boolean,
     mode: CalendarProps['mode'],
 ) => {
     return css`
@@ -200,26 +204,17 @@ export const dayCell = (
         width: 100%;
         height: 100%;
         padding: 0.5rem;
+        border-radius: 10px;
         ${theme.typography.captionSemibold}
-        transition: background-color 0.15s ease;
+        ${today &&
+        css`
+            background-color: ${theme.colors.gray[200]};
+        `}
         ${weekendColor(date.weekend)}
-        ${!disabled &&
-        css`
-            &:hover {
-                background-color: ${theme.colors.gray[200]};
-            }
-        `}
-        ${disabled &&
-        css`
-            opacity: 0.7;
-            cursor: not-allowed;
-        `}
-        ${mode !== 'range' &&
-        css`
-            border-radius: 5px;
-        `}
-        ${mode !== 'range' && selectedColor(isSelected, today, disabled)}
-        ${mode === 'range' && rangeSelectedColor(selectedDate, date, disabled)}
+        ${mode !== 'range' && SelectedColor(isSelected)}
+        ${mode === 'range' && rangeSelected(selectedDate, date)}
         ${currentMonthColor(date.isCurrentMonth)}
+        ${selectable && selectableCalendar(isSelected, date)}
+        transition: background-color 0.15s ease;
     `;
 };
