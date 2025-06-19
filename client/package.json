@@ -8,7 +8,7 @@
         "build": "webpack --config webpack.prod.js",
         "lint": "eslint --fix .",
         "format": "prettier --write .",
-        "test": "jest",
+        "test": "jest --coverage ",
         "eject": "react-scripts eject",
         "prepare": "cd .. && husky client/.husky",
         "storybook": "storybook dev -p 6006",
