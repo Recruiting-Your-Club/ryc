@@ -1,4 +1,4 @@
-import { Text } from '@components/_common/Text';
+import { Text } from '@components';
 import React from 'react';
 import { titleContainer } from './Card.style';
 
