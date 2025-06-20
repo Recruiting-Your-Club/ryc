@@ -38,6 +38,9 @@ function Calendar({
         handleMultipleSelect,
         handleRangeSelect,
         handleCustomSelect,
+        isSelected,
+        isToday,
+        isDisabled,
     } = useCalendar(selectedDate, onSelect);
     // lib hooks
     // initial values
@@ -101,13 +104,13 @@ function Calendar({
                     {days.map((date) => (
                         <button
                             aria-label={date.dateString}
-                            disabled={disabled}
+                            disabled={disabled || isDisabled(date.dateString, onlySelected)}
                             key={date.dateString}
                             css={dayCell(
                                 selectedDate,
                                 date,
-                                date.dateString === today,
-                                selectedDate.includes(date.dateString),
+                                isToday(date.dateString),
+                                isSelected(date.dateString),
                                 onlySelected,
                                 mode,
                                 highlightedDate,

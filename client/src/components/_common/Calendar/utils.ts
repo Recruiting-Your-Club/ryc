@@ -17,6 +17,14 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
     // query hooks
     // calculated values
     // handlers
+    const isSelected = (date: string) => selectedDate.includes(date);
+    const isToday = (date: string) => date === today;
+    const isDisabled = (date: string, onlySelected: boolean) => {
+        if (onlySelected) {
+            return !selectedDate.includes(date);
+        }
+        return false;
+    };
     const handleBackMonth = () => {
         setCurrentDate(currentDate.subtract(1, 'month'));
     };
@@ -133,6 +141,9 @@ function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: strin
         handleSingleSelect,
         handleMultipleSelect,
         handleCustomSelect,
+        isSelected,
+        isToday,
+        isDisabled,
     };
 }
 export { useCalendar };
