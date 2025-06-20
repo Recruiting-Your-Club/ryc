@@ -19,15 +19,14 @@ module.exports = {
     coverageDirectory: 'coverage',
 
     collectCoverageFrom: [
-        'src/components/*.{ts,tsx,js,jsx}',
-        'src/pages/*.{ts,tsx,js,jsx}',
-        '!src/**/*.d.ts', // 타입 정의 파일 제외
-        '!src/**/*.test.{ts,tsx,js,jsx}', // 테스트 파일 자체 제외
-        '!src/**/*.types.{ts,tsx,js,jsx}', // 타입 파일 자체 제외
-        '!src/**/*.stories.{ts,tsx,js,jsx}', // 스토리북 파일 자체 제외
-        '!src/**/*.style.{ts,tsx,js,jsx}', // 스타일 파일 자체 제외
-        '!src/**/index.{ts,tsx,js,jsx}', // index 파일 자체 제외
-        '!src/**/__tests__/**', // __tests__ 디렉토리 아래 파일 제외
+        '<rootDir>/src/components/**/*.{js,jsx,ts,tsx}',
+        '<rootDir>/src/pages/**/*.{js,jsx,ts,tsx}',
+        '!<rootDir>/src/**/*.d.ts', // TypeScript 타입 정의 파일 제외
+        '!<rootDir>/src/index.tsx', // 엔트리 포인트 파일은 보통 제외 (선택 사항)
+        '!<rootDir>/src/**/index.{js,jsx,ts,tsx}', // 각 컴포넌트 폴더 내의 index.tsx 제외 (선택 사항)
+        '!<rootDir>/src/**/*.stories.{js,jsx,ts,tsx}', // Storybook 파일 제외
+        '!<rootDir>/src/**/*.style.{js,jsx,ts,tsx}', // 스타일 관련 파일 제외
+        '!<rootDir>/src/**/__tests__/**', // 테스트 파일 자체는 커버리지 수집 대상에서 제외
     ],
 
     // 커버리지 수집 활성화
