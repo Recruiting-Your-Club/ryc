@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.ClubTag;
+import com.ryc.api.v2.club.domain.*;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +32,8 @@ public class ClubService {
     final String ImageUrlFromS3 = "MOCK_URL";
     final String ThumbnailUrlFromS3 = "MOCK_URL";
 
-    final List<ClubTag> clubTags = body.tagNames().stream().map(ClubTag::initialize).toList();
+    final List<ClubTag> clubTags =
+        body.tagNames().stream().map(tagName -> ClubTag.builder().name(tagName).build()).toList();
 
     final Club club = Club.initialize(body, ImageUrlFromS3, ThumbnailUrlFromS3, clubTags);
 
@@ -44,9 +45,36 @@ public class ClubService {
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }
 
+  @Transactional
+  public ClubUpdateResponse updateClub(String id, ClubUpdateRequest body) {
+    // TODO: 사용자 인가 확인하기
+    Club previousClub =
+        clubRepository
+            .findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
+
+    Club newClub = previousClub.update(body);
+    Club savedClub = clubRepository.save(newClub);
+
+    return ClubUpdateResponse.builder()
+        .name(savedClub.getName())
+        .shortDescription(savedClub.getShortDescription())
+        .detailDescription(savedClub.getDetailDescription())
+        .imageUrl(savedClub.getImageUrl())
+        .thumbnailUrl(savedClub.getThumbnailUrl())
+        .category(savedClub.getCategory())
+        .clubTags(savedClub.getClubTags())
+        .clubSummaries(savedClub.getClubSummaries())
+        .clubDetailImages(savedClub.getClubDetailImages())
+        .build();
+  }
+
   @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
-    Club club = clubRepository.findById(clubId);
+    Club club =
+        clubRepository
+            .findById(clubId)
+            .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
 
     String detailDescription = club.getDetailDescription();
     if (detailDescription.isBlank()) {
@@ -54,7 +82,6 @@ public class ClubService {
     }
 
     return ClubGetResponse.builder()
-        .id(club.getId())
         .name(club.getName())
         .detailDescription(detailDescription)
         .imageUrl(club.getImageUrl())
