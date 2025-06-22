@@ -36,11 +36,7 @@ function TestPage() {
                         Hello
                     </Button>
                 </Dropdown.Trigger>
-                <Dropdown.Content
-                    offsetX={-15}
-                    offsetY={17}
-                    sx={{ width: '20rem', borderRadius: '1rem' }}
-                >
+                <Dropdown.Content offsetX={-15} offsetY={17} sx={{ width: '20rem' }}>
                     <Dropdown.Label inset>hello</Dropdown.Label>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
@@ -48,7 +44,7 @@ function TestPage() {
                             알림창 띄우기
                         </Dropdown.Item>
                         <Dropdown.Item disabled>hi</Dropdown.Item>
-                        <Dropdown.Item inset>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
                     </Dropdown.Group>
                     <DropdownSeperator />
                     <Dropdown.Group>
@@ -57,7 +53,7 @@ function TestPage() {
                         <Dropdown.Item>hi</Dropdown.Item>
                     </Dropdown.Group>
                     <Dropdown.Sub>
-                        <Dropdown.SubTrigger inset>hi</Dropdown.SubTrigger>
+                        <Dropdown.SubTrigger>hi</Dropdown.SubTrigger>
                         <Dropdown.SubContent align="center">
                             <Dropdown.Label>hello</Dropdown.Label>
                             <Dropdown.Seperator />

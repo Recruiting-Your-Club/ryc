@@ -2,7 +2,7 @@ import type { CSSObject } from '@emotion/react';
 import type { HTMLAttributes, KeyboardEvent, ReactNode, Ref } from 'react';
 import React from 'react';
 import { useDropdownSubContext } from './DropdownContext';
-import { s_dropdownSubTrigger } from './Dropdown.styles';
+import { s_dropdownSubTrigger, s_dropdownSubTriggerArrow } from './Dropdown.styles';
 import RightArrow from '@assets/images/right_arrow.svg';
 import type { DropdownSubTriggerProps } from './type';
 
@@ -49,7 +49,7 @@ function DropdownSubTrigger({
             css={[s_dropdownSubTrigger(disabled, inset), sx]}
         >
             {children}
-            <RightArrow />
+            <RightArrow css={[s_dropdownSubTriggerArrow]} />
         </div>
     );
 }

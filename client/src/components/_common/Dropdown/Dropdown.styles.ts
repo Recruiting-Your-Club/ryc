@@ -10,7 +10,7 @@ export const s_dropdownTrigger = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.4rem;
+    border-radius: 0.6rem;
     border: 1px solid ${theme.colors.gray[300]};
     background: ${theme.colors.white};
     cursor: pointer;
@@ -37,7 +37,7 @@ const baseContent = css`
     min-width: 8rem;
 
     border: 1px solid ${theme.colors.gray[300]};
-    border-radius: 0.4rem;
+    border-radius: 0.6rem;
     background: ${theme.colors.white};
     box-shadow: 0 0.6rem 0.9rem -0.2rem ${theme.colors.black}10;
     animation: dropdown_scaleIn 0.2s ease;
@@ -87,7 +87,7 @@ export const s_dropdownItem = (disabled: boolean, inset: boolean) => {
         width: 100%;
         padding: 0.3rem 1.2rem;
         line-height: 1.4;
-        border-radius: 0.4rem;
+        border-radius: 0.6rem;
         border: none;
         background-color: transparent;
         font-size: 1.4rem;
@@ -145,14 +145,16 @@ export const s_dropdownGroup = css`
 
 export const s_dropdownSubTrigger = (disabled: boolean, inset: boolean) => {
     return css`
+        position: relative;
         justify-content: space-between;
-        ${inset &&
-        css`
-            gap: 1rem;
-        `}
         ${s_dropdownItem(disabled, inset)}
     `;
 };
+
+export const s_dropdownSubTriggerArrow = css`
+    position: absolute;
+    right: 0.6rem;
+`;
 
 export const s_dropdownSubContent = (align: string, open: boolean) => {
     let yAlignStyles = css``;
