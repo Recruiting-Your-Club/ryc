@@ -4,5 +4,8 @@
   "workspaces": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  }
 }
