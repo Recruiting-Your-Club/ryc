@@ -4,17 +4,11 @@ import React, { useState } from 'react';
 import { useSelectContext } from './SelectContext';
 import { s_selectItem, s_selectItemIndicator } from './Select.styles';
 import Check from '@assets/images/select_check.svg';
+import type { SelectItemProps } from './types';
 
 /**
  * SelectItem 컴포넌트
  */
-interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    value: string;
-    disabled?: boolean;
-    highlight?: boolean;
-    sx?: CSSObject;
-}
 
 function SelectItem({
     children,
