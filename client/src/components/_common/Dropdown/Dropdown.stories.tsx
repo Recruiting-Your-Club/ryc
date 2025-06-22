@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Dropdown } from './Dropdown';
-import { Button } from '@components/Button';
+import { Button } from '../Button';
 
 type Story = StoryObj<typeof Dropdown>;
 type Trigger = StoryObj<typeof Dropdown.Trigger>;
