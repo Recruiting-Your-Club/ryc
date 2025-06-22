@@ -3,7 +3,7 @@ import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import React from 'react';
 import { useDropdownSubContext } from './DropdownContext';
 import { s_dropdownSubContent } from './Dropdown.styles';
-import type { DropdownSubContentProps } from './type';
+import type { DropdownSubContentProps } from './types';
 
 function DropdownSubContent({
     children,

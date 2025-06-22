@@ -4,7 +4,7 @@ import { useDropdownContext } from './DropdownContext';
 import { Slot, Slottable } from '../Slot/Slot';
 import type { CSSObject } from '@emotion/react';
 import { s_dropdownTrigger } from './Dropdown.styles';
-import type { DropdownTriggerProps } from './type';
+import type { DropdownTriggerProps } from './types';
 
 function DropdownTrigger({
     children,

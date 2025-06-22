@@ -3,7 +3,7 @@ import React from 'react';
 import type { CSSObject } from '@emotion/react';
 import { useDropdownContext } from './DropdownContext';
 import { s_dropdownContent } from './Dropdown.styles';
-import type { DropdownContentProps } from './type';
+import type { DropdownContentProps } from './types';
 
 function DropdownContent({
     children,

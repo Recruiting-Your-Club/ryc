@@ -4,7 +4,7 @@ import React from 'react';
 import { useDropdownSubContext } from './DropdownContext';
 import { s_dropdownSubTrigger, s_dropdownSubTriggerArrow } from './Dropdown.styles';
 import RightArrow from '@assets/images/right_arrow.svg';
-import type { DropdownSubTriggerProps } from './type';
+import type { DropdownSubTriggerProps } from './types';
 
 function DropdownSubTrigger({
     children,

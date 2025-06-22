@@ -13,7 +13,7 @@ import { DropdownSeperator } from './DropdownSeperator';
 import { DropdownSub } from './DropdownSub';
 import { DropdownSubTrigger } from './DropdownSubTrigger';
 import { DropdownSubContent } from './DropdownSubContent';
-import type { DropdownProps } from './type';
+import type { DropdownProps } from './types';
 
 function DropdownRoot({
     children,

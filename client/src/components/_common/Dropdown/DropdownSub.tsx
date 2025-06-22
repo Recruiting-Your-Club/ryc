@@ -3,7 +3,7 @@ import { useClickOutside } from '@hooks/components/useClickOutside';
 import type { ReactNode, SetStateAction } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { DropdownSubContext } from './DropdownContext';
-import type { DropdownSubProps } from './type';
+import type { DropdownSubProps } from './types';
 
 function DropdownSub({
     children,

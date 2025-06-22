@@ -8,7 +8,7 @@ import type {
 import React from 'react';
 import { useDropdownContext } from './DropdownContext';
 import { s_dropdownItem } from './Dropdown.styles';
-import type { DropdownItemProps } from './type';
+import type { DropdownItemProps } from './types';
 
 function DropdownItem({
     children,
