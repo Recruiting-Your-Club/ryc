@@ -11,7 +11,7 @@ import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
 import { useClickOutside } from '@hooks/components/useClickOutside';
-import type { SelectProps } from './type';
+import type { SelectProps } from './types';
 
 /**
  * Select 루트 컴포넌트

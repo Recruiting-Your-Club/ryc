@@ -2,7 +2,7 @@ import type { CSSObject } from '@emotion/react';
 import type { HTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 import { s_selectGroup } from './Select.styles';
-import type { SelectGroupProps } from './type';
+import type { SelectGroupProps } from './types';
 
 /**
  * SelectGroup 컴포넌트

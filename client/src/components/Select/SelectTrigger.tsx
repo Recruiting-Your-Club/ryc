@@ -4,7 +4,7 @@ import React, { forwardRef, useMemo } from 'react';
 import { useSelectContext } from './SelectContext';
 import { s_selectTrigger } from './Select.styles';
 import DownArrow from '@assets/images/downArrow.svg';
-import type { SelectTriggerProps } from './type';
+import type { SelectTriggerProps } from './types';
 
 function SelectTrigger(
     { children, sx, ...props }: SelectTriggerProps,

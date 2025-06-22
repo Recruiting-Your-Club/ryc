@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { css, CSSObject } from '@emotion/react';
 import theme from '@styles/theme';
-import type { SelectSize } from './type';
+import type { SelectSize } from './types';
 
 interface Size {
     width?: CSSProperties['width'];

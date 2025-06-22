@@ -3,7 +3,7 @@ import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import React, { forwardRef, useMemo } from 'react';
 import { useSelectContext } from './SelectContext';
 import { s_selectContent } from './Select.styles';
-import type { SelectContentProps } from './type';
+import type { SelectContentProps } from './types';
 
 /**
  * SelectContent 컴포넌트

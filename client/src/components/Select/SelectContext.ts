@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import type { SelectContextType } from './type';
+import type { SelectContextType } from './types';
 
 export const SelectContext = createContext<SelectContextType | undefined>(undefined);
 
