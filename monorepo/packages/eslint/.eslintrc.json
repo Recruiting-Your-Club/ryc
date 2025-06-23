@@ -1,0 +1,48 @@
+{
+    "settings": {
+        "react": {
+            "version": "detect" // React 버전을 자동으로 감지
+        },
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    },
+    "env": {
+        "browser": true,
+        "jest": true,
+        "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jsx-a11y/recommended",
+        "prettier"
+    ],
+    "plugins": ["react", "@typescript-eslint", "react-hooks", "jsx-a11y"],
+    "rules": {
+        "react/prop-types": "off", // 타입스크립트로 propTypes를 대체하므로 꺼줌
+        "react/react-in-jsx-scope": "error",
+        "@typescript-eslint/no-unused-vars": "warn", // 사용하지 않는 import 경고문구
+        "@typescript-eslint/consistent-type-imports": "error", // import type { sampleType } from 'module' 처럼 type을 명시해줘야함
+        "no-console": ["error", { "allow": ["warn", "error"] }], // console.log는 error로, console.warn, console.error는 허용
+        "react/no-unknown-property": [
+            "error",
+            {
+                "ignore": ["css"]
+            }
+        ]
+    },
+    "ignorePatterns": [
+        "dist",
+        "node_modules",
+        "webpack.common.js",
+        "webpack.dev.js",
+        "webpack.prod.js",
+        "tsconfig.json"
+    ]
+}
