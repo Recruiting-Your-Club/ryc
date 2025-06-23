@@ -1,5 +1,6 @@
 import XIcon from '@assets/images/xIcon.svg';
 import { InterviewTimeBox } from '@components/InterviewTimeBox';
+import { s_textareaInner } from '@components/PlainEmailDialog/PlainEmailDialog.style';
 import { Select } from '@components/Select';
 import { Button, Calendar, Dialog, Divider, Input, Text } from '@components/_common';
 import { TextArea } from '@components/_common/TextArea';
@@ -27,7 +28,7 @@ import {
     s_select,
     s_selectContainer,
     s_selectTrigger,
-    textareaCss,
+    s_textAreaOuter,
     titleInputCss,
     titleWrapper,
     verticalDivider,
@@ -247,8 +248,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onChange={(e) => setEmailContent(e.target.value)}
                                 size="md"
                                 placeholder="이메일 내용을 입력해주세요."
-                                sx={textareaCss}
-                                textAreaSx={{ height: '100%', margin: '0' }}
+                                sx={s_textareaInner}
+                                textAreaSx={s_textAreaOuter}
                             />
                         </div>
                         <div css={submitButtonWrapper}>

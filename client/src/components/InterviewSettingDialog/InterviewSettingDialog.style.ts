@@ -83,7 +83,7 @@ export const inputCss = css`
     }
 `;
 
-export const textareaCss = css`
+export const textAreaInner = css`
     ${theme.typography.captionRegular}
     margin: -2.5rem 0;
     padding: 1rem 1.5rem;
@@ -98,6 +98,11 @@ export const textareaCss = css`
         border-color: ${theme.colors.default};
         outline: none;
     }
+`;
+
+export const s_textAreaOuter = css`
+    height: 100%;
+    margin: 0;
 `;
 
 export const titleWrapper = css`
