@@ -1,0 +1,1 @@
+module.exports = require('@ryc/config/babel/babel.config');

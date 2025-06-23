@@ -6,6 +6,8 @@
     "apps/*"
   ],
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
     "turbo": "^2.5.4"
   },
   "scripts": {

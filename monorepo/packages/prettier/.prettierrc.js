@@ -7,6 +7,11 @@ module.exports = {
     bracketSpacing: true,
     arrowParens: 'always',
     endOfLine: 'auto',
-    importOrder: ['^@layouts/(.*)$'],
+    importOrder: [
+        '^@ryc/(.*)$',           // 내부 패키지들
+        '^@/(.*)$',              // 절대 경로
+        '^[./]'                  // 상대 경로
+      ],
     importOrderSortSpecifiers: true,
+    //plugins: ['@trivago/prettier-plugin-sort-imports']
 };
