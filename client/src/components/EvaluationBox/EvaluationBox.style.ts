@@ -35,7 +35,7 @@ export const s_starScoreContainer = css`
     justify-content: start; // 피그마는 왼쪽 정렬
     gap: 1rem;
     overflow: hidden;
-    padding: 0.5rem 1rem 1rem 1rem;
+    padding: 1rem;
     max-height: 5rem;
 `;
 
