@@ -31,6 +31,10 @@ export const contentSection = css`
     min-height: 0;
 `;
 
+export const s_titleText = css`
+    margin-left: 1rem;
+`;
+
 export const documentWrapper = css`
     height: 100%;
     display: flex;

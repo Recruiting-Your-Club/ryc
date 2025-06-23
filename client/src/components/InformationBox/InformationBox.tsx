@@ -8,6 +8,7 @@ import {
     contentSection,
     documentWrapper,
     personalDataWrapper,
+    s_titleText,
     textSection,
     titleSection,
 } from './InformationBox.style';
@@ -51,12 +52,7 @@ function InformationBox({ applicant, height }: InformationBoxProps) {
     return (
         <div css={boxContainer(height)}>
             <div css={titleSection}>
-                <Text
-                    as="span"
-                    type="captionSemibold"
-                    textAlign="start"
-                    sx={{ marginLeft: '1rem' }}
-                >
+                <Text as="span" type="captionSemibold" textAlign="start" sx={s_titleText}>
                     지원자 정보
                 </Text>
                 <TextToggle
