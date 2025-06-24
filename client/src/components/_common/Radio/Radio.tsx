@@ -2,6 +2,7 @@ import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { radioContainer } from './Radio.style';
 import { RadioItem } from './RadioItem';
+import type { RadioSize } from './Radio.style';
 
 export type RadioOrientation = 'horizontal' | 'vertical';
 
@@ -11,24 +12,27 @@ interface RadioOption {
 }
 
 interface RadioProps {
-    options: RadioOption[];
+    options?: RadioOption[];
     name?: string;
     value?: string;
     disabled?: boolean;
     orientation?: RadioOrientation;
     onChange?: (value: string) => void;
     sx?: CSSObject;
+    size?: RadioSize;
 }
 
 function Radio({
     options,
     name,
     value,
-    disabled = false,
+    disabled,
     orientation = 'vertical',
     onChange,
     sx,
+    size = 'md',
 }: RadioProps) {
+    if (!options) return null;
     return (
         <div css={[radioContainer(orientation), sx]}>
             {options.map(({ label, value: itemValue }, index) => (
@@ -40,6 +44,7 @@ function Radio({
                     checked={value === itemValue}
                     disabled={disabled}
                     onChange={() => onChange?.(itemValue ?? '')}
+                    size={size}
                 />
             ))}
         </div>
