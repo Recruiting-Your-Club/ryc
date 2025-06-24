@@ -7,7 +7,6 @@ const Dotenv = require('dotenv-webpack');
 const isProduction = process.env.NODE_ENV === 'production';
 const dotenvFilename = isProduction ? '.env.production' : '.env.development';
 
-console.log(process.env.NODE_ENV);
 module.exports = {
     entry: {
         app: './src/index.tsx',
@@ -64,7 +63,7 @@ module.exports = {
             template: 'public/index.html',
         }),
         new Dotenv({
-            path: path.resolve(__dirname, 'src/', dotenvFilename),
+            path: path.resolve(__dirname, './', dotenvFilename),
         }),
     ],
 };
