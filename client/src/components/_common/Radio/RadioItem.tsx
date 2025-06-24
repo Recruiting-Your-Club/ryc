@@ -4,14 +4,19 @@ import { s_radio, s_label, s_input } from './Radio.style';
 
 interface RadioItemProps extends HTMLAttributes<HTMLInputElement> {
     option?: string;
-    value: string;
-    name: string;
-    checked: boolean;
+    checked?: boolean;
     disabled?: boolean;
-    onChange: () => void;
+    value?: string;
+    name?: string;
 }
 
-function RadioItem({ option, checked, disabled = false, onChange, ...props }: RadioItemProps) {
+function RadioItem({
+    option,
+    checked = false,
+    disabled = false,
+    onChange,
+    ...props
+}: RadioItemProps) {
     return (
         <label css={s_label(disabled)}>
             <input type="radio" checked={checked} onChange={onChange} css={s_input} {...props} />
