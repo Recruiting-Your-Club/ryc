@@ -2,6 +2,7 @@ package com.ryc.api.v2.club.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.club.domain.Category;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
@@ -31,6 +33,7 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 class ClubServiceTest {
 
   @Mock private ClubRepository clubRepository;
+  @Mock private AuthService authService;
 
   @InjectMocks private ClubService clubService;
 
@@ -75,6 +78,27 @@ class ClubServiceTest {
 
     // Then
     assertThat(response.clubId()).isEqualTo(testClub.getId());
+  }
+
+  @Test
+  @DisplayName("클럽 생성 시 assignOwner가 호출되는지 테스트")
+  void givenValidClubCreateRequest_whenCreateClub_thenAssignOwnerIsCalled() {
+    // Given
+    ClubCreateRequest request =
+        ClubCreateRequest.builder()
+            .name("Test Club")
+            .category(Category.ACADEMIC)
+            .imageUrl("http://example.com/image.jpg")
+            .build();
+
+    when(clubRepository.save(any(Club.class))).thenReturn(testClub);
+    when(authService.getCurrentUser()).thenReturn(null);
+
+    // When
+    clubService.createClub(request);
+
+    // Then
+    verify(clubRepository).assignRole(any(Club.class), any(), any());
   }
 
   @Test
