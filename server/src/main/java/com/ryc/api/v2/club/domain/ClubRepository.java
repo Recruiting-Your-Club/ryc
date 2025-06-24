@@ -14,5 +14,5 @@ public interface ClubRepository {
 
   List<Club> findAll();
 
-  Role assignOwer(Club club, Admin admin);
+  Role assignOwner(Club club, Admin admin);
 }

@@ -36,7 +36,7 @@ public class ClubService {
     final Club savedClub = clubRepository.save(club);
 
     Admin currentUser = authService.getCurrentUser();
-    clubRepository.assignOwer(savedClub, currentUser);
+    clubRepository.assignOwner(savedClub, currentUser);
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }
