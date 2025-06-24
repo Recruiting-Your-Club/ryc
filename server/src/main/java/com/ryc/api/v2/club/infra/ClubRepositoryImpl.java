@@ -4,10 +4,13 @@ import java.util.*;
 
 import org.springframework.stereotype.Repository;
 
+import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
+import com.ryc.api.v2.club.infra.jpa.RoleJpaRepository;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ClubRepositoryImpl implements ClubRepository {
 
   private final ClubJpaRepository clubJpaRepository;
+  private final RoleJpaRepository roleJpaRepository;
 
   @Override
   public Club save(Club club) {
@@ -39,5 +43,10 @@ public class ClubRepositoryImpl implements ClubRepository {
   @Override
   public List<Club> findAll() {
     return clubJpaRepository.findAll().stream().map(ClubMapper::toDomain).toList();
+  }
+
+  @Override
+  public Role assignOwer(Club club, Admin admin) {
+    return null;
   }
 }

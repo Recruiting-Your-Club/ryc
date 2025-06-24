@@ -4,8 +4,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.auth.domain.AdminRepository;
 import com.ryc.api.v2.auth.presentation.request.RegisterRequest;
 import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
 
@@ -20,6 +20,7 @@ public class AuthService {
   public RegisterResponse register(RegisterRequest body) {
     final String email = body.email();
     if (adminRepository.existsByEmail(email)) {
+      // TODO: DuplicateKeyException 대신 HttpStatus.CONFLICT와 IllegalStateException 사용 고려
       throw new DuplicateKeyException("This email Already Used");
     }
 

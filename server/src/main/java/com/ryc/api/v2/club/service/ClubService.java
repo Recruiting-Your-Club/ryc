@@ -12,6 +12,7 @@ import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +32,8 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    // TODO: 사용자에게 MANAGER 권한 부여 (UserClubRole 구현 필요)
+    String userId = UserUtil.getCurrentUserId();
+    System.out.println("USER ID = " + userId);
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }

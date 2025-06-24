@@ -1,4 +1,4 @@
-package com.ryc.api.v2.admin.domain;
+package com.ryc.api.v2.auth.domain;
 
 import java.util.Optional;
 

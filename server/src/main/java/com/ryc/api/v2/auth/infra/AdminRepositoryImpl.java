@@ -1,13 +1,13 @@
-package com.ryc.api.v2.admin.infra;
+package com.ryc.api.v2.auth.infra;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.admin.domain.AdminRepository;
-import com.ryc.api.v2.admin.infra.jpa.AdminJpaRepository;
-import com.ryc.api.v2.admin.infra.mapper.AdminMapper;
+import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.auth.domain.AdminRepository;
+import com.ryc.api.v2.auth.infra.jpa.AdminJpaRepository;
+import com.ryc.api.v2.auth.infra.mapper.AdminMapper;
 
 import lombok.RequiredArgsConstructor;
 
