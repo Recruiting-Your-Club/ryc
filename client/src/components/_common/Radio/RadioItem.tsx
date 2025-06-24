@@ -1,16 +1,6 @@
-import type { HTMLAttributes } from 'react';
 import React from 'react';
-import type { RadioSize } from './Radio.style';
 import { s_radio, s_label, s_input } from './Radio.style';
-
-interface RadioItemProps extends HTMLAttributes<HTMLInputElement> {
-    option?: string;
-    checked?: boolean;
-    disabled?: boolean;
-    value?: string;
-    name?: string;
-    size?: RadioSize;
-}
+import type { RadioItemProps } from './types';
 
 function RadioItem({
     option,

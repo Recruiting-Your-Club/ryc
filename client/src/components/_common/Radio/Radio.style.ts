@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { RadioOrientation } from './Radio';
-
-export type RadioSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+import type { RadioOrientation, RadioSize } from './types';
 
 const radioSizeMap: Record<RadioSize, { outer: string; inner: string }> = {
     xs: { outer: '1rem', inner: '0.6rem' },
