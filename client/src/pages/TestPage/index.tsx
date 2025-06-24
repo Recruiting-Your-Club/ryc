@@ -3,9 +3,11 @@ import { Select } from '@components/Select/Select';
 import { Dropdown } from '@components/_common/Dropdown/Dropdown';
 import { Button } from '@components';
 import { DropdownSeperator } from '@components/_common/Dropdown/DropdownSeperator';
+import { Radio } from '@components/_common/Radio';
 
 function TestPage() {
     const [value, setValue] = useState('');
+    const [value2, setValue2] = useState('');
     return (
         <div>
             <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
@@ -72,6 +74,23 @@ function TestPage() {
                     </Dropdown.Sub>
                 </Dropdown.Content>
             </Dropdown>
+            <Radio options={[{ label: '', value: '1' }]} disabled />
+
+            <Radio options={[{ label: '', value: '1' }]} size="xs" sx={{ marginTop: '10px' }} />
+            <Radio options={[{ label: '', value: '1' }]} size="sm" sx={{ marginTop: '10px' }} />
+            <Radio
+                options={[
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ]}
+                size="md"
+                value={value2}
+                orientation="horizontal"
+                onChange={setValue2}
+                sx={{ marginTop: '10px' }}
+            />
+            <Radio options={[{ label: '', value: '1' }]} size="lg" sx={{ marginTop: '10px' }} />
+            <Radio options={[{ label: '', value: '1' }]} size="xl" sx={{ marginTop: '10px' }} />
         </div>
     );
 }
