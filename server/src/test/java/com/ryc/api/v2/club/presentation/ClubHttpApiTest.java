@@ -128,7 +128,7 @@ class ClubHttpApiTest {
 
     // When & Then
     mockMvc
-        .perform(get("/api/v2/clubs/all"))
+        .perform(get("/api/v2/clubs"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value("test-id"))
         .andExpect(jsonPath("$[0].name").value("Test Club"))
