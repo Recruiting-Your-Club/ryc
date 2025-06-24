@@ -30,9 +30,6 @@ public class AnnouncementService {
 
     // 2.Announcement 생성
     Announcement announcement = Announcement.initialize(request, clubId);
-
-    // 3. 비즈니스 규칙 검사
-    announcement.validate();
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
@@ -60,7 +57,7 @@ public class AnnouncementService {
     return AnnouncementGetDetailResponse.from(announcement);
   }
 
-  // todo club조회, @hasAnyRole,
+  // todo @hasAnyRole,
   @Transactional
   public AnnouncementUpdateResponse updateAnnouncement(
       AnnouncementUpdateRequest request, String announcementId) {
@@ -71,10 +68,7 @@ public class AnnouncementService {
     // 2. 기존 Announcement 정보를 기반으로 업데이트된 Announcement 도메인 객체 생성
     Announcement updatedAnnouncement = existingAnnouncement.update(request);
 
-    // 3. 비즈니스 규칙 검사
-    updatedAnnouncement.validate();
-
-    // 4. 업데이트된 Announcement 저장
+    // 3. 업데이트된 Announcement 저장
     announcementRepository.save(updatedAnnouncement);
 
     return AnnouncementUpdateResponse.from(updatedAnnouncement);

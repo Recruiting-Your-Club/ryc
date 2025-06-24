@@ -69,25 +69,30 @@ public class Announcement {
       throw new IllegalArgumentException("announcement shouldn't have closed status");
     }
 
-    // 4. announcement domain 생성
-    return Announcement.builder()
-        .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
-        .clubId(clubId)
-        .announcementPeriodInfo(announcementPeriodInfo)
-        .title(request.title())
-        .numberOfPeople(request.numberOfPeople())
-        .detailDescription(request.detailDescription())
-        .summaryDescription(request.summaryDescription())
-        .target(request.target())
-        .tags(tags)
-        .hasInterview(request.hasInterview())
-        .images(images)
-        .announcementStatus(announcementStatus)
-        .announcementType(request.announcementType())
-        .announcementApplication(announcementApplication)
-        .activityPeriod(request.activityPeriod())
-        .isDeleted(false)
-        .build();
+    // 4. Announcement 생성
+    Announcement announcement =
+        Announcement.builder()
+            .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
+            .clubId(clubId)
+            .announcementPeriodInfo(announcementPeriodInfo)
+            .title(request.title())
+            .numberOfPeople(request.numberOfPeople())
+            .detailDescription(request.detailDescription())
+            .summaryDescription(request.summaryDescription())
+            .target(request.target())
+            .tags(tags)
+            .hasInterview(request.hasInterview())
+            .images(images)
+            .announcementStatus(announcementStatus)
+            .announcementType(request.announcementType())
+            .announcementApplication(announcementApplication)
+            .activityPeriod(request.activityPeriod())
+            .isDeleted(false)
+            .build();
+
+    // 5. 유효성 검사
+    announcement.validate();
+    return announcement;
   }
 
   /**
@@ -112,31 +117,33 @@ public class Announcement {
     AnnouncementStatus updatedAnnouncementStatus =
         AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
 
-    return Announcement.builder()
-        .id(this.id)
-        .title(request.title())
-        .clubId(request.clubRoleSecuredDto().clubId())
-        .numberOfPeople(request.numberOfPeople())
-        .detailDescription(request.detailDescription())
-        .summaryDescription(request.summaryDescription())
-        .target(request.target())
-        .hasInterview(request.hasInterview())
-        .activityPeriod(request.activityPeriod())
-        .tags(updatedTags)
-        .images(updatedImages)
-        .announcementStatus(updatedAnnouncementStatus)
-        .announcementType(request.announcementType())
-        .announcementApplication(updatedAnnouncementApplication)
-        .isDeleted(false)
-        .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
-        .build();
+    // 3. announcement 생성
+    Announcement announcement =
+        Announcement.builder()
+            .id(this.id)
+            .title(request.title())
+            .clubId(request.clubRoleSecuredDto().clubId())
+            .numberOfPeople(request.numberOfPeople())
+            .detailDescription(request.detailDescription())
+            .summaryDescription(request.summaryDescription())
+            .target(request.target())
+            .hasInterview(request.hasInterview())
+            .activityPeriod(request.activityPeriod())
+            .tags(updatedTags)
+            .images(updatedImages)
+            .announcementStatus(updatedAnnouncementStatus)
+            .announcementType(request.announcementType())
+            .announcementApplication(updatedAnnouncementApplication)
+            .isDeleted(false)
+            .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
+            .build();
+
+    // 4. 유효성 검사
+    announcement.validate();
+    return announcement;
   }
 
-  /**
-   * status 갱신 메소드
-   *
-   * @return
-   */
+  /** status 갱신 메소드 */
   public Announcement updateStatus() {
     AnnouncementStatus updatedAnnouncementStatus =
         AnnouncementStatus.from(this.announcementPeriodInfo);
