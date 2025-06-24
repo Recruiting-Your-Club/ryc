@@ -2,6 +2,16 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { RadioOrientation } from './Radio';
 
+export type RadioSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+const radioSizeMap: Record<RadioSize, { outer: string; inner: string }> = {
+    xs: { outer: '1rem', inner: '0.6rem' },
+    sm: { outer: '1.2rem', inner: '0.8rem' },
+    md: { outer: '1.5rem', inner: '1rem' },
+    lg: { outer: '2rem', inner: '1.3rem' },
+    xl: { outer: '2.5rem', inner: '1.7rem' },
+};
+
 export const radioContainer = (orientation: RadioOrientation) => css`
     display: flex;
     align-items: start;
@@ -38,9 +48,9 @@ export const s_label = (disabled: boolean) => css`
     }
 `;
 
-export const s_radio = (checked: boolean) => css`
-    width: 1.2rem;
-    height: 1.2rem;
+export const s_radio = (checked: boolean, size: RadioSize = 'md') => css`
+    width: ${radioSizeMap[size].outer};
+    height: ${radioSizeMap[size].outer};
     border-radius: 50%;
     border: 0.1rem solid ${theme.colors.black};
     display: flex;
@@ -50,8 +60,8 @@ export const s_radio = (checked: boolean) => css`
 
     &::after {
         content: '';
-        width: 0.8rem;
-        height: 0.8rem;
+        width: ${radioSizeMap[size].inner};
+        height: ${radioSizeMap[size].inner};
         border-radius: 50%;
         ${checked &&
         css`
