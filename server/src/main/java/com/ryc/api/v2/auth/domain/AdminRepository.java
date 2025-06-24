@@ -8,4 +8,6 @@ public interface AdminRepository {
   boolean existsByEmail(String email);
 
   Optional<Admin> findByEmail(String email);
+
+  Optional<Admin> findById(String id);
 }

@@ -68,8 +68,6 @@ public class SecurityConfiguration {
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/v2/application/")
                     .permitAll()
-                    //                    .requestMatchers(HttpMethod.PATCH, "/api/v2/clubs")
-                    //                    .hasRole("OWNER")
                     .requestMatchers(
                         HttpMethod.GET,
                         "/api/v2/application/form",

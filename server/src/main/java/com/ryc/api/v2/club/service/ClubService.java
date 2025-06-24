@@ -5,14 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.club.domain.*;
+import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.auth.service.AuthService;
+import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class ClubService {
 
   private final ClubRepository clubRepository;
+  private final AuthService authService;
 
   @Transactional
   public ClubCreateResponse createClub(ClubCreateRequest body) {
@@ -32,8 +35,8 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    String userId = UserUtil.getCurrentUserId();
-    System.out.println("USER ID = " + userId);
+    Admin currentUser = authService.getCurrentUser();
+    clubRepository.assignOwer(savedClub, currentUser);
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }

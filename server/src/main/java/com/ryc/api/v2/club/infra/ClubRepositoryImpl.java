@@ -9,9 +9,11 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.club.infra.entity.RoleEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.infra.jpa.RoleJpaRepository;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
+import com.ryc.api.v2.club.infra.mapper.RoleMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +49,7 @@ public class ClubRepositoryImpl implements ClubRepository {
 
   @Override
   public Role assignOwer(Club club, Admin admin) {
-    return null;
+    RoleEntity savedRole = roleJpaRepository.save(RoleMapper.toEntity(Role.OWNER, club, admin));
+    return savedRole.getRole();
   }
 }

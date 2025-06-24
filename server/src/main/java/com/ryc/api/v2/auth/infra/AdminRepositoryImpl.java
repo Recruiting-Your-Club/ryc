@@ -30,4 +30,9 @@ public class AdminRepositoryImpl implements AdminRepository {
   public Optional<Admin> findByEmail(String email) {
     return adminJpaRepository.findByEmail(email).map(AdminMapper::toDomain);
   }
+
+  @Override
+  public Optional<Admin> findById(String id) {
+    return adminJpaRepository.findById(id).map(AdminMapper::toDomain);
+  }
 }
