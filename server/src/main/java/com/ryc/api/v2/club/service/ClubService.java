@@ -9,6 +9,7 @@ import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
@@ -36,7 +37,7 @@ public class ClubService {
     final Club savedClub = clubRepository.save(club);
 
     Admin currentUser = authService.getCurrentUser();
-    clubRepository.assignOwner(savedClub, currentUser);
+    clubRepository.assignRole(savedClub, currentUser, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
   }

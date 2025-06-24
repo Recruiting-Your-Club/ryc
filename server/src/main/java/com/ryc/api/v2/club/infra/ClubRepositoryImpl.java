@@ -48,8 +48,8 @@ public class ClubRepositoryImpl implements ClubRepository {
   }
 
   @Override
-  public Role assignOwner(Club club, Admin admin) {
-    RoleEntity savedRole = roleJpaRepository.save(RoleMapper.toEntity(Role.OWNER, club, admin));
+  public Role assignRole(Club club, Admin admin, Role role) {
+    RoleEntity savedRole = roleJpaRepository.save(RoleMapper.toEntity(role, club, admin));
     return savedRole.getRole();
   }
 }
