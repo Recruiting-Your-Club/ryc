@@ -18,7 +18,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(setFiles);
+    const { filterAndSetFiles } = useFilteredFile(setFiles, files.length);
 
     // form hooks
     // query hooks
