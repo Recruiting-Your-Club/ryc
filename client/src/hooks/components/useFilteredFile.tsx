@@ -3,7 +3,10 @@ import { getExtension } from '@components/FileUpLoader/utills';
 import { useToast } from '@hooks/useToast';
 import { useCallback } from 'react';
 
-function useFilteredFile(setFiles: (updater: (prev: File[]) => File[]) => void) {
+function useFilteredFile(
+    setFiles: (updater: (prev: File[]) => File[]) => void,
+    currentFileCount: number,
+) {
     const { toast } = useToast();
 
     const isValidFile = useCallback((file: File) => {
@@ -24,10 +27,18 @@ function useFilteredFile(setFiles: (updater: (prev: File[]) => File[]) => void) 
                 });
                 return;
             }
-
+            if (currentFileCount + validFiles.length > 5) {
+                toast.error('최대 5개의 파일만 업로드할 수 있습니다.', {
+                    duration: 2000,
+                    sx: {
+                        minWidth: '35rem',
+                    },
+                });
+                return;
+            }
             setFiles((prev) => [...prev, ...validFiles]);
         },
-        [isValidFile, setFiles],
+        [isValidFile, setFiles, toast, currentFileCount],
     );
 
     return { filterAndSetFiles };
