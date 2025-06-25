@@ -5,6 +5,8 @@ export interface FileUpLoaderProps {
     children: ReactNode;
     sx?: CSSObject;
     disabled?: boolean;
+    files?: File[];
+    setFiles?: Dispatch<SetStateAction<File[]>>;
 }
 
 export interface FileUpLoaderStateContextType {
