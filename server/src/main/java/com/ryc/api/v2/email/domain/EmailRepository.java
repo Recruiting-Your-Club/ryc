@@ -1,4 +1,8 @@
 package com.ryc.api.v2.email.domain;
 
-public class EmailRepository {
+import java.util.List;
+
+public interface EmailRepository {
+
+  List<String> saveAll(List<String> recipients, String subject, String content);
 }

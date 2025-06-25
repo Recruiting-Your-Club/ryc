@@ -112,4 +112,9 @@ public class ClubService {
                     .build())
         .toList();
   }
+
+  @Transactional(readOnly = true)
+  public boolean isAdminInClub(String userId, String clubId) {
+    return true;
+  }
 }
