@@ -3,9 +3,11 @@ import { Select } from '@components/Select/Select';
 import { Dropdown } from '@components/_common/Dropdown/Dropdown';
 import { Button } from '@components';
 import { DropdownSeperator } from '@components/_common/Dropdown/DropdownSeperator';
+import { FileUpLoader } from '@components/FileUpLoader';
 
 function TestPage() {
     const [value, setValue] = useState('');
+    const [files, setFiles] = useState<File[]>([]);
     return (
         <div>
             <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
@@ -72,6 +74,16 @@ function TestPage() {
                     </Dropdown.Sub>
                 </Dropdown.Content>
             </Dropdown>
+            <FileUpLoader files={files} setFiles={setFiles}>
+                <FileUpLoader.Button />
+                <FileUpLoader.HelperText>d</FileUpLoader.HelperText>
+                <FileUpLoader.Box />
+            </FileUpLoader>
+            <span>{files.length}</span>
+            <br />
+            {files.map((file) => {
+                return <div key={file.name}>{file.name}</div>;
+            })}
         </div>
     );
 }
