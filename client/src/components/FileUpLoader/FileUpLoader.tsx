@@ -8,17 +8,22 @@ import type { FileUpLoaderProps } from './types';
 import { useFilteredFile } from '@hooks/components/useFilteredFile';
 import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
-function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
+function FileUpLoaderRoot({
+    children,
+    sx,
+    disabled = false,
+    files = [],
+    setFiles,
+}: FileUpLoaderProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
 
-    const [files, setFiles] = useState<File[]>([]);
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(setFiles, files.length);
+    const { filterAndSetFiles } = useFilteredFile(setFiles || (() => {}), files.length);
 
     // form hooks
     // query hooks
@@ -47,17 +52,17 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
 
     const handleDelete = useCallback(
         (index: number) => {
-            if (disabled) return;
+            if (disabled || !setFiles) return;
             setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
         },
-        [disabled],
+        [disabled, setFiles],
     );
 
     const handleDeleteEntire = useCallback(() => {
-        if (disabled) return;
+        if (disabled || !setFiles) return;
         setFiles([]);
         setIsActive(false);
-    }, [disabled]);
+    }, [disabled, setFiles]);
 
     //---Drag and Drop Handler---//
 
@@ -93,12 +98,12 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
     const stateContextValue = useMemo(
         () => ({
             files,
-            setFiles,
+            setFiles: setFiles || (() => {}),
             isActive,
             setIsActive,
             disabled,
         }),
-        [files, isActive, disabled],
+        [files, setFiles, isActive, disabled],
     );
 
     const interactionContextValue = useMemo(
