@@ -44,8 +44,9 @@ public class ClubHttpApi {
 
   @GetMapping("/all")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
+    List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
     return ResponseEntity.status(HttpStatus.OK)
-        .body(clubAnnouncementFacade.getAllClubWithAnnouncementStatus());
+        .body(responses);
   }
 
   @PatchMapping("/{id}")

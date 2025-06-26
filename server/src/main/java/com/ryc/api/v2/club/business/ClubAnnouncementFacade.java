@@ -1,6 +1,8 @@
 package com.ryc.api.v2.club.business;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +23,13 @@ public class ClubAnnouncementFacade {
 
   @Transactional(readOnly = true)
   public List<AllClubGetResponse> getAllClubWithAnnouncementStatus() {
-    // TODO: N + 1 문제 발생 중
     List<Club> clubs = clubService.getAllClub();
+    Map<String, AnnouncementStatus> statuses = announcementService.getStatusesByClubIds(clubs.stream().map(Club::getId).toList());
 
     return clubs.stream()
         .map(
             club -> {
-              AnnouncementStatus status = announcementService.getStatusByClubId(club.getId());
+              AnnouncementStatus status = statuses.get(club.getId());
               return AllClubGetResponse.builder()
                   .id(club.getId())
                   .name(club.getName())
