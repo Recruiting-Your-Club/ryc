@@ -3,10 +3,7 @@ import { getExtension } from '@components/FileUpLoader/utills';
 import { useToast } from '@hooks/useToast';
 import { useCallback } from 'react';
 
-function useFilteredFile(
-    setFiles: (updater: (prev: File[]) => File[]) => void,
-    currentFileCount: number,
-) {
+function useFilteredFile(onFilesChange: (files: File[]) => void, currentFileCount: number) {
     const { toast } = useToast();
 
     const isValidFile = useCallback((file: File) => {
@@ -15,7 +12,7 @@ function useFilteredFile(
     }, []);
 
     const filterAndSetFiles = useCallback(
-        (newFiles: File[] | FileList) => {
+        (newFiles: File[] | FileList, prevFiles: File[] | FileList) => {
             const validFiles = Array.from(newFiles).filter(isValidFile);
 
             if (validFiles.length !== Array.from(newFiles).length) {
@@ -36,9 +33,9 @@ function useFilteredFile(
                 });
                 return;
             }
-            setFiles((prev) => [...prev, ...validFiles]);
+            onFilesChange([...prevFiles, ...validFiles]);
         },
-        [isValidFile, setFiles, toast, currentFileCount],
+        [isValidFile, onFilesChange, toast, currentFileCount],
     );
 
     return { filterAndSetFiles };
