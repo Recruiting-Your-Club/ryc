@@ -1,16 +1,20 @@
 package com.ryc.api.v2.email.business;
 
-import com.ryc.api.v2.email.domain.EmailStatus;
-import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
-import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ryc.api.v2.email.domain.EmailSentStatus;
+import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
+import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +35,10 @@ public class EmailSenderService {
         helper.setText(body.content(), true);
 
         mailSender.send(msg);
-        result.add(new EmailSendResponse(recipient, EmailStatus.SUCCESS));
-      } catch (Exception e) {
+        result.add(new EmailSendResponse(recipient, EmailSentStatus.SUCCESS));
+      } catch (MessagingException e) {
 
-        result.add(new EmailSendResponse(recipient, EmailStatus.FAILURE));
+        result.add(new EmailSendResponse(recipient, EmailSentStatus.FAILURE));
       }
     }
 

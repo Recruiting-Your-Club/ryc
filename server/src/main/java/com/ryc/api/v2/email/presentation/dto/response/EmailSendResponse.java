@@ -1,7 +1,5 @@
 package com.ryc.api.v2.email.presentation.dto.response;
 
-import com.ryc.api.v2.email.domain.EmailStatus;
+import com.ryc.api.v2.email.domain.EmailSentStatus;
 
-public record EmailSendResponse(String recipient, EmailStatus emailStatus) {
-
-}
+public record EmailSendResponse(String recipient, EmailSentStatus emailSentStatus) {}

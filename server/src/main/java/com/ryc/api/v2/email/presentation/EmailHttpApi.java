@@ -1,16 +1,17 @@
 package com.ryc.api.v2.email.presentation;
 
-import com.ryc.api.v2.email.business.EmailFacade;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ryc.api.v2.email.business.EmailSaverService;
+import com.ryc.api.v2.email.business.EmailFacade;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -18,8 +19,6 @@ import com.ryc.api.v2.security.dto.CustomUserDetail;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v2/emails")

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface EmailRepository {
 
-  List<String> saveAll(List<String> recipients, String subject, String content);
+  List<String> saveAll(List<Email> emails);
 }

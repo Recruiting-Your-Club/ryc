@@ -1,3 +1,22 @@
 package com.ryc.api.v2.email.infra.mapper;
 
-public class EmailMapper {}
+import com.ryc.api.v2.email.domain.Email;
+import com.ryc.api.v2.email.infra.entity.EmailEntity;
+
+public class EmailMapper {
+
+  private EmailMapper() {
+    // Private constructor to prevent instantiation
+  }
+
+  public static EmailEntity toEntity(Email email) {
+    return EmailEntity.builder()
+        .id(email.getId())
+        .recipient(email.getRecipient())
+        .subject(email.getSubject())
+        .content(email.getContent())
+        .clubId(email.getClubId())
+        .adminEmail(email.getAdminEmail())
+        .build();
+  }
+}
