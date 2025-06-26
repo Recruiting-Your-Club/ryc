@@ -13,7 +13,7 @@ function FileUpLoaderRoot({
     sx,
     disabled = false,
     files = [],
-    setFiles,
+    onFilesChange,
 }: FileUpLoaderProps) {
     // prop destruction
     // lib hooks
@@ -23,7 +23,7 @@ function FileUpLoaderRoot({
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(setFiles || (() => {}), files.length);
+    const { filterAndSetFiles } = useFilteredFile(onFilesChange || (() => {}), files.length);
 
     // form hooks
     // query hooks
@@ -42,27 +42,27 @@ function FileUpLoaderRoot({
             if (disabled) return;
             const selectedFiles = e.target.files;
             if (!selectedFiles) return;
-            filterAndSetFiles(selectedFiles);
+            filterAndSetFiles(selectedFiles, files);
             e.target.value = '';
         },
-        [disabled, filterAndSetFiles],
+        [disabled, filterAndSetFiles, files],
     );
 
     //---File delete Handler---//
 
     const handleDelete = useCallback(
         (index: number) => {
-            if (disabled || !setFiles) return;
-            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+            if (disabled || !onFilesChange) return;
+            onFilesChange(files.filter((_, i) => i !== index));
         },
-        [disabled, setFiles],
+        [disabled, onFilesChange, files],
     );
 
     const handleDeleteEntire = useCallback(() => {
-        if (disabled || !setFiles) return;
-        setFiles([]);
+        if (disabled || !onFilesChange) return;
+        onFilesChange([]);
         setIsActive(false);
-    }, [disabled, setFiles]);
+    }, [disabled, onFilesChange]);
 
     //---Drag and Drop Handler---//
 
@@ -89,21 +89,21 @@ function FileUpLoaderRoot({
         (e: React.DragEvent<HTMLDivElement>) => {
             if (disabled) return;
             e.preventDefault();
-            filterAndSetFiles(e.dataTransfer.files);
+            filterAndSetFiles(e.dataTransfer.files, files);
             setIsActive(false);
         },
-        [disabled, filterAndSetFiles],
+        [disabled, filterAndSetFiles, files],
     );
 
     const stateContextValue = useMemo(
         () => ({
             files,
-            setFiles: setFiles || (() => {}),
+            onFilesChange: onFilesChange || (() => {}),
             isActive,
             setIsActive,
             disabled,
         }),
-        [files, setFiles, isActive, disabled],
+        [files, onFilesChange, isActive, disabled],
     );
 
     const interactionContextValue = useMemo(
