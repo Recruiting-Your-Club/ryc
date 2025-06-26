@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.useToast = void 0;
-var _ToastProvider = require("./ToastProvider");
 var _react = require("react");
+var _ToastProvider = require("./ToastProvider");
 var useToast = () => {
   var toastContext = (0, _react.useContext)(_ToastProvider.ToastContext);
   if (!toastContext) {

@@ -1,1 +1,1 @@
-{"version":3,"file":"useToast.d.ts","sourceRoot":"","sources":["../../../src/Toast/useToast.tsx"],"names":[],"mappings":"AAGA,QAAA,MAAM,QAAQ;;CAYb,CAAC;AACF,OAAO,EAAE,QAAQ,EAAE,CAAC"}
+{"version":3,"file":"useToast.d.ts","sourceRoot":"","sources":["../../../src/Toast/useToast.tsx"],"names":[],"mappings":"AAIA,QAAA,MAAM,QAAQ;;CAYb,CAAC;AACF,OAAO,EAAE,QAAQ,EAAE,CAAC"}

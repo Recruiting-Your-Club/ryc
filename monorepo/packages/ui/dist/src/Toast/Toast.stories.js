@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.ToastCollection = exports.CustomDefaultToast = void 0;
 var _react = _interopRequireDefault(require("react"));
-var _Text = require("../Text");
-var _Button = require("../Button");
 var _ = require(".");
+var _Button = require("../Button");
+var _Text = require("../Text");
 var _ToastProvider = require("./ToastProvider");
 var _useToast = require("./useToast");
 var _react2 = require("@emotion/react");

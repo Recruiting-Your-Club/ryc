@@ -2317,6 +2317,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ssoc/admin@workspace:apps/admin":
+  version: 0.0.0-use.local
+  resolution: "@ssoc/admin@workspace:apps/admin"
+  dependencies:
+    "@chromatic-com/storybook": "npm:^3.2.4"
+    "@emotion/react": "npm:^11.13.0"
+    "@ssoc/config": "npm:*"
+    "@ssoc/ui": "npm:*"
+    "@storybook/addon-essentials": "npm:^8.5.4"
+    "@storybook/addon-interactions": "npm:^8.5.4"
+    "@storybook/addon-onboarding": "npm:^8.5.4"
+    "@storybook/addon-themes": "npm:^8.5.4"
+    "@storybook/addon-webpack5-compiler-babel": "npm:^3.0.5"
+    "@storybook/blocks": "npm:^8.5.4"
+    "@storybook/react": "npm:^8.5.4"
+    "@storybook/react-webpack5": "npm:^8.5.4"
+    "@storybook/test": "npm:^8.5.4"
+    "@tanstack/react-query": "npm:^5.74.7"
+    "@testing-library/jest-dom": "npm:^6.6.3"
+    "@testing-library/react": "npm:^16.3.0"
+    dayjs: "npm:^1.11.13"
+    html-webpack-plugin: "npm:^5.6.3"
+    jest: "npm:^29.7.0"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    react-router-dom: "npm:^7.1.5"
+    storybook: "npm:^8.5.4"
+    webpack: "npm:^5.97.1"
+    webpack-cli: "npm:^6.0.1"
+    webpack-dev-server: "npm:^5.2.0"
+    webpack-merge: "npm:^6.0.1"
+  languageName: unknown
+  linkType: soft
+
 "@ssoc/assets@workspace:*, @ssoc/assets@workspace:packages/assets":
   version: 0.0.0-use.local
   resolution: "@ssoc/assets@workspace:packages/assets"
@@ -4053,12 +4087,6 @@ __metadata:
   checksum: 10c0/dec73ff59b7d6628a01eebaece7f2bdb8bb62b9b5926dcad0f8931f2b8b79c2be21f6c68ac095592adb5adb15831a3635d9343e6a91d028bbe85d564875ec3ec
   languageName: node
   linkType: hard
-
-"admin-cc3da7@workspace:apps/admin":
-  version: 0.0.0-use.local
-  resolution: "admin-cc3da7@workspace:apps/admin"
-  languageName: unknown
-  linkType: soft
 
 "agent-base@npm:^7.1.0, agent-base@npm:^7.1.2":
   version: 7.1.3
