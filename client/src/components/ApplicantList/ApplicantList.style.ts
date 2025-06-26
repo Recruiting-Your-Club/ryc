@@ -47,7 +47,7 @@ export const s_miniCardGroupWrapper = css`
     padding: 0.5rem 0.2rem;
 `;
 
-export const s_miniCardContainer = (isList: boolean) => css`
+export const s_miniCardContainer = (isList: boolean = true) => css`
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;

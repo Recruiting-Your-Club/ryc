@@ -1,6 +1,5 @@
 import Search from '@assets/images/search.svg';
 import { Button, Divider, Input, Text } from '@components/_common';
-import type { ReactNode } from 'react';
 import React from 'react';
 import {
     s_listContainer,
@@ -11,13 +10,7 @@ import {
     s_searchSvg,
     s_titleContainer,
 } from './ApplicantList.style';
-
-interface ApplicationListProps {
-    title?: string;
-    height?: string;
-    children?: ReactNode;
-    isList: boolean;
-}
+import type { ApplicationListProps } from './types';
 
 function ApplicantList({ title = '지원자 목록', height, children, isList }: ApplicationListProps) {
     // prop destruction
