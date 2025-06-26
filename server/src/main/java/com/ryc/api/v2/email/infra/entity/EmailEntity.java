@@ -26,7 +26,7 @@ public class EmailEntity {
   private String content;
 
   @Column(nullable = false)
-  private String clubId;
+  private String announcementId;
 
   @Column(nullable = false)
   private String adminEmail;

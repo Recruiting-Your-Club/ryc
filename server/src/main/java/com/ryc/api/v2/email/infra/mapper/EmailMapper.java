@@ -15,7 +15,7 @@ public class EmailMapper {
         .recipient(email.getRecipient())
         .subject(email.getSubject())
         .content(email.getContent())
-        .clubId(email.getClubId())
+        .announcementId(email.getAnnouncementId())
         .adminEmail(email.getAdminEmail())
         .build();
   }

@@ -34,10 +34,10 @@ public class EmailHttpApi {
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @RequestParam String clubId,
+      @RequestParam String announcementId,
       @RequestBody EmailSendRequest body)
       throws MessagingException {
-    List<EmailSendResponse> responses = emailFacade.sendAndSaveEmails(userDetail, clubId, body);
+    List<EmailSendResponse> responses = emailFacade.sendAndSaveEmails(userDetail, announcementId, body);
     return ResponseEntity.status(201).body(responses);
   }
 
@@ -45,11 +45,11 @@ public class EmailHttpApi {
   @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @RequestParam String clubId,
+      @RequestParam String announcementId,
       @RequestBody InterviewEmailSendRequest body)
       throws MessagingException {
     List<EmailSendResponse> responses =
-        emailFacade.sendAndCreateInterviewDates(userDetail, clubId, body);
+        emailFacade.sendAndCreateInterviewDates(userDetail, announcementId, body);
     return ResponseEntity.status(201).body(responses);
   }
 }

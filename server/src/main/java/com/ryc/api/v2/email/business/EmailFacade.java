@@ -2,13 +2,11 @@ package com.ryc.api.v2.email.business;
 
 import java.util.List;
 
+import com.ryc.api.v2.email.domain.Email;
 import jakarta.mail.MessagingException;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import com.ryc.api.v2.club.service.ClubService;
-import com.ryc.api.v2.email.domain.EmailSentStatus;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
@@ -22,34 +20,26 @@ import lombok.RequiredArgsConstructor;
 public class EmailFacade {
 
   private final EmailSenderService senderService;
-  private final EmailHistoryService historyService;
-  private final ClubService clubService;
+  private final EmailService emailService;
   private final InterviewService interviewService;
 
   public List<EmailSendResponse> sendAndSaveEmails(
-      CustomUserDetail userDetail, String clubId, EmailSendRequest body) throws MessagingException {
-    if (!clubService.isAdminInClub(userDetail.getId(), clubId)) {
-      throw new AccessDeniedException("You do not have permission to send emails for this club.");
-    }
+          CustomUserDetail userDetail, String announcementId, EmailSendRequest body) throws MessagingException {
+    List<Email> emails = emailService.createEmail(userDetail.getEmail(), announcementId, body);
+    List<EmailSendResponse> responses = senderService.sendEmails(emails);
 
-    List<EmailSendResponse> responses = senderService.sendEmails(body);
-    List<String> successfulRecipients =
-        responses.stream()
-            .filter(response -> response.emailSentStatus() == EmailSentStatus.SUCCESS)
-            .map(EmailSendResponse::recipient)
-            .toList();
-
-    historyService.saveEmails(
-        successfulRecipients, body.subject(), body.content(), clubId, userDetail.getEmail());
+    emailService.saveEmails(userDetail.getEmail(), announcementId, body.subject(), body.content(), responses);
     return responses;
   }
 
   public List<EmailSendResponse> sendAndCreateInterviewDates(
-      CustomUserDetail userDetail, String clubId, InterviewEmailSendRequest body)
-      throws MessagingException {
-    List<EmailSendResponse> responses =
-        sendAndSaveEmails(userDetail, clubId, body.emailSendRequest());
-    interviewService.createInterview(body.numberOfPeopleByInterviewDates());
-    return responses;
+          CustomUserDetail userDetail, String announcementId, InterviewEmailSendRequest body)
+          throws MessagingException {
+    List<Email> emails = emailService.createEmail(userDetail.getEmail(), announcementId, body.emailSendRequest());
+    List<Email> updatedEmails = emailService.updateEachEmailContent(emails);
+    List<EmailSendResponse> responses = senderService.sendEmails(updatedEmails);
+
+//    emailService.saveEmails(updatedEmails.);
+    // 너무 중복 제거에 집중하고 있나.. 삽질을 너무 오랜시간동안 했음.. 내일 와서 다시
   }
 }
