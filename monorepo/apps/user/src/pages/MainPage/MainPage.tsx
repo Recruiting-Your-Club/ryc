@@ -1,7 +1,9 @@
-import banner from '@assets/images/banner.png';
-import Check from '@assets/images/check.svg';
-import { Button, MainCard, Text } from '@components';
+import { MainCard } from '@components';
 import React, { useEffect, useState } from 'react';
+
+import banner from '@ssoc/assets/images/banner.png';
+import Check from '@ssoc/assets/images/check.svg';
+import { Button, Text } from '@ssoc/ui';
 
 import {
     bannerContainer,

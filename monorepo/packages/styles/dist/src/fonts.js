@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import PretendardLight from '@ssoc/assets/fonts/Pretendard-Light.subset.woff2';
-import PretendardRegular from '@ssoc/assets/fonts/Pretendard-Regular.subset.woff2';
-import PretendardMedium from '@ssoc/assets/fonts/Pretendard-Medium.subset.woff2';
-import PretendardSemiBold from '@ssoc/assets/fonts/Pretendard-SemiBold.subset.woff2';
 import PretendardBold from '@ssoc/assets/fonts/Pretendard-Bold.subset.woff2';
+import PretendardLight from '@ssoc/assets/fonts/Pretendard-Light.subset.woff2';
+import PretendardMedium from '@ssoc/assets/fonts/Pretendard-Medium.subset.woff2';
+import PretendardRegular from '@ssoc/assets/fonts/Pretendard-Regular.subset.woff2';
+import PretendardSemiBold from '@ssoc/assets/fonts/Pretendard-SemiBold.subset.woff2';
 export const fontFaces = css `
     @font-face {
         font-family: Pretendard;

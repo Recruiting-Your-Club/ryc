@@ -1,6 +1,6 @@
-import { Text } from '@components/_common/Text';
-import { TextArea } from '@components/_common/TextArea';
 import React from 'react';
+
+import { Text, TextArea } from '@ssoc/ui';
 
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';

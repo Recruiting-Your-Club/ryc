@@ -1,2 +1,16 @@
-export * from './CardTest';
-//# sourceMappingURL=index.js.map
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _CardTest = require("./CardTest");
+Object.keys(_CardTest).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _CardTest[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _CardTest[key];
+    }
+  });
+});

@@ -8,8 +8,8 @@
     ],
     "private": true,
     "scripts": {
-        "build": "babel src --out-dir dist --extensions .ts,.tsx && tsc --emitDeclarationOnly",
-        "dev": "babel src --out-dir dist --extensions .ts,.tsx --watch"
+        "build": "babel src --out-dir dist/src --extensions .ts,.tsx && tsc",
+        "dev": "babel src --out-dir dist/src --extensions .ts,.tsx --watch"
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",

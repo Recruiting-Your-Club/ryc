@@ -48,6 +48,8 @@
         "**/packages/config/**",
         "**/packages/assets/**",
         "**/packages/constants/**",
+        "**/webpack.*.js",
+        "**/webpack.common.js",
         "**/docs/**",
         "**/*.d.ts"
     ]

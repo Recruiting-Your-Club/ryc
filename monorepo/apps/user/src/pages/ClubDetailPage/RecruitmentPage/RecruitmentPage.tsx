@@ -1,15 +1,14 @@
 import { RecruitCard, RecruitDialog } from '@components';
-import { useDialog } from '@hooks/useDialog';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
 
 function RecruitmentPage() {
     // prop destruction
     // lib hooks
-    const { open, openDialog, closeDialog } = useDialog();
     // initial values
     // state, ref, querystring hooks
+    const [openDialog, setOpenDialog] = useState(false);
     // form hooks
     // query hooks
     // calculated values
@@ -69,12 +68,14 @@ function RecruitmentPage() {
                                 content={cardData.content}
                                 deadline={cardData.deadline}
                                 hashtags={cardData.hashtags}
-                                onClick={openDialog}
+                                onClick={() => setOpenDialog(true)}
                             />
                         </div>
                     ))}
             </div>
-            {open && <RecruitDialog open={open} handleClose={closeDialog} />}
+            {openDialog && (
+                <RecruitDialog open={openDialog} handleClose={() => setOpenDialog(false)} />
+            )}
         </>
     );
 }

@@ -2424,11 +2424,16 @@ __metadata:
     "@testing-library/jest-dom": "npm:^6.6.3"
     "@testing-library/react": "npm:^16.3.0"
     dayjs: "npm:^1.11.13"
+    html-webpack-plugin: "npm:^5.6.3"
     jest: "npm:^29.7.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-router-dom: "npm:^7.1.5"
     storybook: "npm:^8.5.4"
+    webpack: "npm:^5.97.1"
+    webpack-cli: "npm:^6.0.1"
+    webpack-dev-server: "npm:^5.2.0"
+    webpack-merge: "npm:^6.0.1"
   languageName: unknown
   linkType: soft
 
@@ -5689,9 +5694,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.173":
-  version: 1.5.175
-  resolution: "electron-to-chromium@npm:1.5.175"
-  checksum: 10c0/771e610e7966727568ca2a8e823c4e46258717419c3fb6f697d1cb133100df118c8d365e8d32543879141ecfd9677c3876143a5222de878b425099d4f3d395f0
+  version: 1.5.176
+  resolution: "electron-to-chromium@npm:1.5.176"
+  checksum: 10c0/ab591218086d6f73d2f773756f7d277a1d176a6b83d6499864d2bc305b1ea1c7673c30f8541d0c55d40fb7f2595fe4041e72aa07351275ba04862b9bc507cc66
   languageName: node
   linkType: hard
 

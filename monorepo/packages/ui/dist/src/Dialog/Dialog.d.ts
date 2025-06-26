@@ -1,4 +1,4 @@
-import type { DialogHeaderProps, DialogContentProps, DialogActionProps, BaseDialogProps } from './types';
+import type { BaseDialogProps, DialogActionProps, DialogContentProps, DialogHeaderProps } from './types';
 declare function BaseDialog({ children, open, size, sx, backdrop, handleClose, }: BaseDialogProps): import("@emotion/react/jsx-runtime").JSX.Element;
 declare function DialogHeader({ border, children, sx, position, handleClose, closeIcon, }: DialogHeaderProps): import("@emotion/react/jsx-runtime").JSX.Element;
 declare function DialogContent({ children, sx }: DialogContentProps): import("@emotion/react/jsx-runtime").JSX.Element;

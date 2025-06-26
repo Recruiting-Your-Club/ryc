@@ -1,8 +1,4 @@
-import { Input } from '@components/_common/Input';
-import { Radio } from '@components/_common/Radio';
-import { Text } from '@components/_common/Text';
-import { Checkbox } from '@components/Checkbox';
-import React from 'react';
+import { Checkbox, Input, Radio, Text } from '@ssoc/ui';
 
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';

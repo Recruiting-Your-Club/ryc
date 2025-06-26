@@ -1,6 +1,7 @@
-import { ClubBox, Image, ImageDialog, Text } from '@components';
-import { useDialog } from '@hooks/useDialog';
+import { ClubBox, ImageDialog } from '@components';
 import React, { useState } from 'react';
+
+import { Text } from '@ssoc/ui';
 
 import {
     clubIntroContainer,
@@ -12,7 +13,6 @@ import {
 function ClubIntroPage() {
     // prop destruction
     // lib hooks
-    const { open, openDialog, closeDialog } = useDialog();
     // initial values
     const images = [
         'https://ticketimage.interpark.com/Play/image/large/24/24013437_p.gif',
@@ -33,6 +33,7 @@ APP서비스를 구현하여 운영하는 경험을 목표로 하고 있습니�
         `;
     // state, ref, querystring hooks
     const [imageUrl, setImageUrl] = useState<string>();
+    const [openDialog, setOpenDialog] = useState(false);
     // form hooks
     // query hooks
     // calculated values
@@ -55,17 +56,27 @@ APP서비스를 구현하여 운영하는 경험을 목표로 하고 있습니�
                             css={imageItem}
                             key={url}
                             onClick={() => {
-                                openDialog();
+                                setOpenDialog(true);
                                 handleImageClick(url);
                             }}
                         >
-                            <Image src={url} alt="동아리 사진" />
+                            <img
+                                src={url}
+                                alt="동아리 사진"
+                                width="100%"
+                                height="100%"
+                                css={{ borderRadius: '10px' }}
+                            />
                         </button>
                     ))}
             </div>
 
-            {open && imageUrl && (
-                <ImageDialog open={open} handleClose={closeDialog} imageUrl={imageUrl} />
+            {openDialog && imageUrl && (
+                <ImageDialog
+                    open={openDialog}
+                    handleClose={() => setOpenDialog(false)}
+                    imageUrl={imageUrl}
+                />
             )}
         </div>
     );

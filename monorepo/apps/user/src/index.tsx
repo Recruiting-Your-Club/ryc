@@ -1,10 +1,11 @@
-import { ToastProvider } from '@components/Toast/ToastProvider';
 import { Global, ThemeProvider } from '@emotion/react';
-import globalStyles from '@styles/global';
-import theme from '@styles/theme';
 import dayjs from 'dayjs';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+import { globalStyles } from '@ssoc/styles';
+import theme from '@ssoc/styles';
+import { ToastProvider } from '@ssoc/ui';
 
 import App from './App';
 

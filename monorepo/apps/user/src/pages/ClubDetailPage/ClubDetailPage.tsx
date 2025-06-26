@@ -1,5 +1,6 @@
-import { ClubNavigation, Text } from '@components';
-import React from 'react';
+import { ClubNavigation } from '@components';
+
+import { Text } from '@ssoc/ui';
 
 import {
     clubDetailPageContainer,

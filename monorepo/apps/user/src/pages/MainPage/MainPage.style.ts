@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
+
+import theme from '@ssoc/styles';
 
 export const mainPageContainer = css`
     height: 100%;

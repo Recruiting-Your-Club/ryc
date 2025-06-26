@@ -1,6 +1,6 @@
-import { TYPOGRAPHY } from './typography';
-import { COLORS } from './colors';
 import { BREAKPOINT } from './breakPoint';
+import { COLORS } from './colors';
+import { TYPOGRAPHY } from './typography';
 const theme = {
     colors: COLORS,
     typography: TYPOGRAPHY,

@@ -1,7 +1,7 @@
+import type { CSSObject } from '@emotion/react';
 import type { CSSProperties } from 'react';
 import type { ButtonSize } from './Button';
 import type { ButtonVariant } from './Button';
-import type { CSSObject } from '@emotion/react';
 interface Typography extends CSSObject {
     fontSize: CSSProperties['fontSize'];
     fontWeight: CSSProperties['fontWeight'];

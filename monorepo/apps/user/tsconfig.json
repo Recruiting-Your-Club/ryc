@@ -8,6 +8,7 @@
         "paths": {
             "@api/*": ["api/*"],
             "@assets/*": ["assets/*"],
+            "@components": ["components"],
             "@components/*": ["components/*"],
             "@constants/*": ["constants/*"],
             "@hooks/*": ["hooks/*"],
@@ -16,7 +17,6 @@
             "@types/*": ["types/*"],
             "@utils/*": ["utils/*"],
             "@styles/*": ["styles/*"],
-            "@ui/*": ["../../packages/ui/src/*"]
         }
     },
     "include": ["src"],

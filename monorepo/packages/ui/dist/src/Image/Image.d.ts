@@ -1,5 +1,5 @@
-import React from 'react';
 import type { CSSObject } from '@emotion/react';
+import React from 'react';
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     src?: string;
     radius?: CSSObject['borderRadius'];

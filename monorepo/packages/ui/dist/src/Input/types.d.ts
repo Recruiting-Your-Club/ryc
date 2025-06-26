@@ -1,5 +1,5 @@
-import type { ReactNode, InputHTMLAttributes } from 'react';
 import type { CSSObject } from '@emotion/react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 export type InputVariant = 'primary' | 'lined' | 'transparent';
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;

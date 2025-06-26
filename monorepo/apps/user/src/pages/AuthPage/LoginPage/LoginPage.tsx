@@ -1,9 +1,5 @@
-import { Button, Input } from '@components/_common';
-import { PasswordInput } from '@components/PasswordInput';
-import { css } from '@emotion/react';
-import { useRouter } from '@hooks/useRouter';
-import theme from '@styles/theme';
-import React from 'react';
+import { useRouter } from '@ssoc/hooks';
+import { Button, Input, PasswordInput } from '@ssoc/ui';
 
 import {
     buttonContainer,

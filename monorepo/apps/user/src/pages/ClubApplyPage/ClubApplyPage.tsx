@@ -1,12 +1,11 @@
-import ArrowDown from '@assets/images/downArrow.svg';
-import Ryc from '@assets/images/Ryc.svg';
-import { Button } from '@components';
-import { Text } from '@components/_common/Text';
-import { ClubSubmitCard } from '@components/ClubSubmitCard';
-import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
-import theme from '@styles/theme';
+import { ClubSubmitCard, SubmitDialog } from '@components';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import ArrowDown from '@ssoc/assets/images/downArrow.svg';
+import Ryc from '@ssoc/assets/images/Ryc.svg';
+import theme from '@ssoc/styles';
+import { Button, Text } from '@ssoc/ui';
 
 import {
     applyFormContainer,

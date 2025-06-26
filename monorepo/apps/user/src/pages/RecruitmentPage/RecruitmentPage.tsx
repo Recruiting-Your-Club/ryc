@@ -1,6 +1,7 @@
-import { Button, ClubBox, Image, ImageDialog, Tag, Text } from '@components';
-import { useDialog } from '@hooks/useDialog';
+import { ClubBox, ImageDialog } from '@components';
 import React, { useState } from 'react';
+
+import { Button, Image, Tag, Text } from '@ssoc/ui';
 
 import {
     applyButtonAtDesktop,
@@ -18,7 +19,7 @@ import {
 
 function RecruitmentPage() {
     // prop destruction
-    const { open, openDialog, closeDialog } = useDialog();
+    //const { open, openDialog, closeDialog } = useDialog();
     // lib hooks
     // initial values
     const images = [
@@ -29,6 +30,7 @@ function RecruitmentPage() {
         'https://d32gkk464bsqbe.cloudfront.net/JTI08fg3oWjuMKWf6pO94MCxv5M=/400x300/company-profiles/o/b23a5925970125281c7ad70138c1bee3d79df7ca.png',
     ];
     // state, ref, querystring hooks
+    const [openDialog, setOpenDialog] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     // form hooks
     // query hooks
@@ -99,7 +101,7 @@ function RecruitmentPage() {
                                     css={imageItem}
                                     key={url}
                                     onClick={() => {
-                                        openDialog();
+                                        setOpenDialog(true);
                                         handleImageClick(url);
                                     }}
                                 >
@@ -112,8 +114,12 @@ function RecruitmentPage() {
             <div css={applyButtonAtMobile}>
                 <Button size="full">지원하기</Button>
             </div>
-            {open && imageUrl && (
-                <ImageDialog open={open} handleClose={closeDialog} imageUrl={imageUrl} />
+            {openDialog && imageUrl && (
+                <ImageDialog
+                    open={openDialog}
+                    handleClose={() => setOpenDialog(false)}
+                    imageUrl={imageUrl}
+                />
             )}
         </div>
     );
