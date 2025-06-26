@@ -1,5 +1,6 @@
 package com.ryc.api.v2.club.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import lombok.AccessLevel;
@@ -14,6 +15,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class ClubDetailImage {
+
+  @Column(columnDefinition = "varchar(500)")
   private final String imageUrl;
+
+  @Column(columnDefinition = "varchar(500)")
   private final String thumbnailUrl;
 }
