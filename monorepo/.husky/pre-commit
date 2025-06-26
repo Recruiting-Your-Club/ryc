@@ -1,7 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# client 폴더로 이동
-cd monorepo || exit 1
-
-yarn lint-staged
+#!/usr/bin/env sh
+cd monorepo && yarn lint-staged
