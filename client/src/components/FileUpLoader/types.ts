@@ -6,12 +6,12 @@ export interface FileUpLoaderProps {
     sx?: CSSObject;
     disabled?: boolean;
     files?: File[];
-    setFiles?: Dispatch<SetStateAction<File[]>>;
+    onFilesChange?: (files: File[]) => void;
 }
 
 export interface FileUpLoaderStateContextType {
     files: File[];
-    setFiles: Dispatch<SetStateAction<File[]>>;
+    onFilesChange: (files: File[]) => void;
     isActive: boolean;
     setIsActive: Dispatch<SetStateAction<boolean>>;
     disabled: boolean;
