@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.service;
+package com.ryc.api.v2.club.business;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.club.domain.*;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
@@ -53,9 +52,33 @@ public class ClubService {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
 
-    Club newClub = previousClub.update(body);
-    Club savedClub = clubRepository.save(newClub);
+    String name = body.name().orElse(previousClub.getName());
+    String shortDescription = body.shortDescription().orElse(previousClub.getShortDescription());
+    String detailDescription = body.detailDescription().orElse(previousClub.getDetailDescription());
+    String imageUrl = body.imageUrl().orElse(previousClub.getImageUrl());
+    String thumbnailUrl = body.thumbnailUrl().orElse(previousClub.getThumbnailUrl());
+    Category category =
+        Category.valueOf(body.category().orElse(previousClub.getCategory().toString()));
+    List<ClubTag> clubTags = body.clubTags();
+    List<ClubSummary> clubSummaries = body.clubSummaries();
+    List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
 
+    // TODO: updated_at 필드 업데이트
+    Club newClub =
+        Club.builder()
+            .id(id)
+            .name(name)
+            .shortDescription(shortDescription)
+            .detailDescription(detailDescription)
+            .imageUrl(imageUrl)
+            .thumbnailUrl(thumbnailUrl)
+            .category(category)
+            .clubTags(clubTags)
+            .clubSummaries(clubSummaries)
+            .clubDetailImages(clubDetailImages)
+            .build();
+
+    Club savedClub = clubRepository.save(newClub);
     return ClubUpdateResponse.builder()
         .name(savedClub.getName())
         .shortDescription(savedClub.getShortDescription())
@@ -94,22 +117,8 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public List<AllClubGetResponse> getAllClub() {
+  public List<Club> getAllClub() {
     // TODO: N + 1 문제 발생 중
-    List<Club> clubs = clubRepository.findAll();
-
-    return clubs.stream()
-        .map(
-            club ->
-                AllClubGetResponse.builder()
-                    .id(club.getId())
-                    .name(club.getName())
-                    .shortDescription(club.getShortDescription())
-                    .imageUrl(club.getImageUrl())
-                    .thumbnailUrl(club.getThumbnailUrl())
-                    .category(club.getCategory())
-                    .clubTags(club.getClubTags())
-                    .build())
-        .toList();
+    return clubRepository.findAll();
   }
 }
