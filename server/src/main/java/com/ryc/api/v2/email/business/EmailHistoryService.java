@@ -18,7 +18,7 @@ public class EmailHistoryService {
   private final EmailRepository emailRepository;
 
   @Transactional
-  public List<String> saveEmails(
+  public void saveEmails(
       List<String> recipients, String subject, String content, String clubId, String adminEmail) {
     List<Email> emails = new ArrayList<>();
 
@@ -26,6 +26,7 @@ public class EmailHistoryService {
       Email email = Email.initialize(recipient, subject, content, clubId, adminEmail);
       emails.add(email);
     }
-    return emailRepository.saveAll(emails);
+
+    emailRepository.saveAll(emails);
   }
 }
