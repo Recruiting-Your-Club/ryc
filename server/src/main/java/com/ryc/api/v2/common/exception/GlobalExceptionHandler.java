@@ -3,9 +3,12 @@ package com.ryc.api.v2.common.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.mail.MessagingException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
@@ -29,6 +33,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+    return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(MessagingException.class)
+  public ResponseEntity<Object> handleMessagingException(MessagingException e) {
+    ErrorCode errorCode = EmailErrorCode.EMAIL_RECIPIENT_NOT_FOUND;
+    return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(MailException.class)
+  public ResponseEntity<Object> handleMailException(MailException e) {
+    ErrorCode errorCode = EmailErrorCode.EMAIL_SEND_FAILED;
     return handleExceptionInternal(errorCode, e.getMessage());
   }
 
