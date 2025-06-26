@@ -1,18 +1,20 @@
 import React from 'react';
+
+import { WEEKDAYS } from '@ssoc/constants';
+
+import { Text } from '../Text';
 import {
-    calendarContainer,
     calendarBodyContainer,
+    calendarContainer,
     calendarHeaderContainer,
-    weekdaysContainer,
-    daysContainer,
     dayCell,
-    weekCell,
+    daysContainer,
     monthControlButton,
+    weekCell,
+    weekdaysContainer,
 } from './CalendarStyle';
-import { Text } from '@components';
-import { useCalendar } from './useCalendar';
 import type { CalendarProps } from './types';
-import { WEEKDAYS } from '@constants/calendar';
+import { useCalendar } from './useCalendar';
 
 const Calendar = ({
     isMultiple = false,

@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "paths": {
+            "@ssoc/*": ["packages/*"]
+        }
+    },
+    "files": [],
+    "references": [
+        { "path": "apps/user" },
+        //{ "path": "apps/admin" },
+        { "path": "packages/ui" },
+        { "path": "packages/hooks" },
+        //{ "path": "packages/api-client" },
+        { "path": "packages/config" },
+        { "path": "packages/constants" },
+        { "path": "packages/utils" },
+        { "path": "packages/styles" }
+        //{ "path": "packages/eslint" }
+    ]
+}

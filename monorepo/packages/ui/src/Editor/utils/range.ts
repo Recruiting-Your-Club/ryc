@@ -1,4 +1,5 @@
 import type { RefObject } from 'react';
+
 import type { ValidSelection } from '../types';
 
 export const getValidSelection = (): ValidSelection => {

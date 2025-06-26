@@ -1,7 +1,8 @@
-import { Divider } from '@components/_common/Divider';
 import React from 'react';
+
 import type { AvatarShape, AvatarSize } from '../Avatar';
 import { Avatar } from '../Avatar';
+import { Divider } from '../Divider';
 import { CardBottomBody } from './CardBottomBody';
 import { CardFooter } from './CardFooter';
 import { CardRoot } from './CardRoot';

@@ -1,0 +1,1 @@
+{"version":3,"file":"CardFooter.d.ts","sourceRoot":"","sources":["../../../src/Card/CardFooter.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,UAAU,eAAe;IACrB,YAAY,CAAC,EAAE,MAAM,CAAC;IACtB,QAAQ,CAAC,EAAE,KAAK,CAAC,SAAS,CAAC;CAC9B;AAED,iBAAS,UAAU,CAAC,EAAE,YAAuB,EAAE,QAAQ,EAAE,EAAE,eAAe,oDAWzE;AAED,OAAO,EAAE,UAAU,EAAE,CAAC"}

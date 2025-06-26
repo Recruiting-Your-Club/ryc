@@ -1,11 +1,13 @@
-import type { TYPOGRAPHY } from '@styles/theme/typography';
+import type { CSSObject } from '@emotion/react';
 import type { CSSProperties, ElementType, PropsWithChildren } from 'react';
 import React from 'react';
-import { textStyle, highlightStyle } from './Text.style';
-import type { CSSObject } from '@emotion/react';
 import type { ReactNode } from 'react';
 
-export type TextType = keyof typeof TYPOGRAPHY;
+import type theme from '@ssoc/styles';
+
+import { highlightStyle, textStyle } from './Text.style';
+
+export type TextType = keyof typeof theme.typography;
 export type TextColor = 'black' | 'primary' | 'warning' | 'caption' | 'subCaption' | 'helper';
 
 interface TextProps extends PropsWithChildren {

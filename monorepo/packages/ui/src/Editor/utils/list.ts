@@ -1,4 +1,5 @@
 import type { RefObject } from 'react';
+
 import type { List } from '../types';
 import { getClosestDiv, getEditorRoot } from './alignment';
 import { applyAttributeInEmptyRange, handleNewRange, handleRangeInList } from './range';

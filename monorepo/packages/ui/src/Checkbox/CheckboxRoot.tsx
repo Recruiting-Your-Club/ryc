@@ -1,5 +1,6 @@
 import type { CSSObject } from '@emotion/react';
-import React, { InputHTMLAttributes, useId, useMemo, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
+
 import { rootContainer } from './Checkbox.style';
 import { CheckboxContext } from './CheckboxContext';
 
@@ -31,7 +32,7 @@ function CheckboxRoot({
     sx,
     ...props
 }: CheckboxRootProps) {
-    // prop destruction
+    // prop destpackages/eslintruction
     // lib hooks
     const id = useId(); // HiddenInput과 Label 연결을 위해 임의 아이디 생성
 

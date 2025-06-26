@@ -1,5 +1,6 @@
 import React from 'react';
-import { hiddenCheckbox, toggleContainer, toggleCircle } from './Toggle.style';
+
+import { hiddenCheckbox, toggleCircle, toggleContainer } from './Toggle.style';
 import type { ToggleProps } from './types';
 
 function Toggle({ isChecked = false, size = 'md', sx, handleToggle, ...props }: ToggleProps) {

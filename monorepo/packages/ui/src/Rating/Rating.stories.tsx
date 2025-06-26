@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { useState } from 'react';
+
 import { Rating } from '.';
 
 const meta: Meta<typeof Rating> = {

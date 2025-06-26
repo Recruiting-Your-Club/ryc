@@ -1,7 +1,9 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
+
+import theme from '@ssoc/styles';
+
 import type { TextColor, TextType } from './Text';
 
 const TEXT_COLORS = {

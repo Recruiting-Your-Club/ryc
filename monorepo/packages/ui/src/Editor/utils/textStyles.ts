@@ -1,5 +1,7 @@
-import theme from '@styles/theme';
 import type { RefObject } from 'react';
+
+import theme from '@ssoc/styles';
+
 import type { Format, Size, TextColor } from '../types';
 import { getEditorRoot } from './alignment';
 import { applyAttributeInEmptyRange, getTextNodes, handleNewRange } from './range';

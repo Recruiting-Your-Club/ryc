@@ -1,6 +1,8 @@
-import Check from '@assets/images/checkbox_check.svg';
 import type { CSSObject } from '@emotion/react';
 import React from 'react';
+
+import Check from '@ssoc/assets/images/checkbox_check.svg';
+
 import { s_size, s_svgColor, s_variant } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 

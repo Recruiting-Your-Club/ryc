@@ -1,10 +1,11 @@
 import React from 'react';
+
 import {
-    inputContainer,
-    helperTextStyle,
-    labelStyle,
-    inputWrapperContainer,
     baseInputStyle,
+    helperTextStyle,
+    inputContainer,
+    inputWrapperContainer,
+    labelStyle,
 } from './Input.style';
 import type { InputProps } from './types';
 

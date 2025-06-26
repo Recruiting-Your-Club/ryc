@@ -1,5 +1,6 @@
-import React from 'react';
 import type { SerializedStyles } from '@emotion/react';
+import React from 'react';
+
 import { s_halfStar, s_size, s_star } from './Rating.style';
 
 export type StarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';

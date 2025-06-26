@@ -1,16 +1,17 @@
-import React from 'react';
-import {
-    LoginContainer,
-    LoginBox,
-    inputContainer,
-    buttonContainer,
-    titleContainer,
-} from './LoginPage.style';
-import { Input, Button } from '@components/_common';
+import { Button, Input } from '@components/_common';
 import { PasswordInput } from '@components/PasswordInput';
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
 import { useRouter } from '@hooks/useRouter';
+import theme from '@styles/theme';
+import React from 'react';
+
+import {
+    buttonContainer,
+    inputContainer,
+    LoginBox,
+    LoginContainer,
+    titleContainer,
+} from './LoginPage.style';
 
 function LoginPage() {
     const { removeHistoryAndGo } = useRouter();

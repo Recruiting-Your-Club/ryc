@@ -1,19 +1,21 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
+
+import XIcon from '@ssoc/assets/images/xIcon.svg';
+
+import { Button } from '../Button';
 import {
+    actionContainer,
     backdropContainer,
+    contentContainer,
     dialogContainer,
     headerContainer,
-    contentContainer,
-    actionContainer,
 } from './Dialog.style';
-import XIcon from '@assets/images/xIcon.svg';
-import { Button } from '@components/_common/Button';
 import type {
-    DialogHeaderProps,
-    DialogContentProps,
-    DialogActionProps,
     BaseDialogProps,
+    DialogActionProps,
+    DialogContentProps,
+    DialogHeaderProps,
     DialogSize,
     Size,
 } from './types';

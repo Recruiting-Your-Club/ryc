@@ -1,5 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import React from 'react';
+
 import { baseCard } from './Card.style';
 
 interface CardRootProps {

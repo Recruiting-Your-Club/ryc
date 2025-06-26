@@ -1,5 +1,5 @@
 {
-    "name": "@ryc/user",
+    "name": "@ssoc/user",
     "version": "1.0.0",
     "private": true,
     "scripts": {
@@ -22,8 +22,8 @@
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",
-        "@ryc/config": "*",
-        "@ryc/ui": "*",
+        "@ssoc/config": "*",
+        "@ssoc/ui": "*",
         "@tanstack/react-query": "^5.74.7",
         "dayjs": "^1.11.13",
         "react": "^19.0.0",
@@ -32,8 +32,6 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
-        "@ryc/eslint": "*",
-        "@ryc/prettier": "*",
         "@storybook/addon-essentials": "^8.5.4",
         "@storybook/addon-interactions": "^8.5.4",
         "@storybook/addon-onboarding": "^8.5.4",

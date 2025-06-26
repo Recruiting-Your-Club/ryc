@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
+
 import { editorListStyle, rootContainer } from './Editor.style';
 import { EditorContext } from './EditorContext';
 import type { RootProps } from './types';

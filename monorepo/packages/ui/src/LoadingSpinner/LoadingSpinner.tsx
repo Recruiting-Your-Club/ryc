@@ -1,11 +1,13 @@
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
+
+import theme from '@ssoc/styles';
+
 import {
     loadingSpinnerContainer,
     pulseContainer,
     spinSpinnerContainer,
 } from './LoadingSpinner.style';
-import type { CSSObject } from '@emotion/react';
-import theme from '@styles/theme';
 
 export type Size = 'xs' | 's' | 'md' | 'lg' | 'xl';
 

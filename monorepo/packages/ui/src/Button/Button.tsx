@@ -1,8 +1,9 @@
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
-import { s_size, s_base, s_variant } from './Button.style';
-import type { CSSObject, SerializedStyles } from '@emotion/react';
 import type { ButtonHTMLAttributes } from 'react';
+
 import { PulseSpinner } from '../LoadingSpinner';
+import { s_base, s_size, s_variant } from './Button.style';
 
 export type ButtonSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 export type ButtonVariant = 'primary' | 'outlined' | 'transparent' | 'text';

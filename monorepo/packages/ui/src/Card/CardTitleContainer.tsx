@@ -1,5 +1,6 @@
-import { Text } from '@components/_common/Text';
 import React from 'react';
+
+import { Text } from '../Text';
 import { titleContainer } from './Card.style';
 
 interface CardTitleContainerProps {

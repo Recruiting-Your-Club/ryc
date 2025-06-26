@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+
 import { textareaContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
 import type { EditorProps } from './types';

@@ -1,0 +1,10 @@
+{
+    "extends": "@ssoc/config/src/tsconfig/tsconfig.react.json",
+    "compilerOptions": {
+        "baseUrl": "src", // 소스 코드의 기본 경로
+        "outDir": "./dist",
+        "rootDir": "src"
+    },
+    "include": ["src", "types"], // 컴파일할 소스 파일 범위
+    "exclude": ["dist", "node_modules", "src/**/*.test.tsx", "src/**/*.stories.tsx"]
+}

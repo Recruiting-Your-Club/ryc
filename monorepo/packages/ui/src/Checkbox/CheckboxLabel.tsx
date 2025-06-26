@@ -1,5 +1,6 @@
 import type { CSSObject } from '@emotion/react';
 import React from 'react';
+
 import { s_text } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 

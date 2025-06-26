@@ -1,0 +1,12 @@
+import { jsx as _jsx, jsxs as _jsxs } from "@emotion/react/jsx-runtime";
+import { s_halfStar, s_size, s_star } from './Rating.style';
+const STAR_PATH = 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z';
+const STAR_VIEWBOX = '0 0 24 24';
+function StarSVG() {
+    return (_jsx("svg", { viewBox: STAR_VIEWBOX, children: _jsx("path", { d: STAR_PATH }) }));
+}
+export function Star({ filled, partialFill, size, customCSS, onClick, onMouseEnter, onMouseLeave, }) {
+    const cssProp = [s_size(size), s_star(filled)];
+    return (_jsxs("button", { onClick: onClick, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave, css: [cssProp, customCSS], children: [_jsx(StarSVG, {}), partialFill && partialFill > 0 && partialFill < 1 ? (_jsx("div", { css: s_halfStar(partialFill * 100), children: _jsx(StarSVG, {}) })) : null] }));
+}
+//# sourceMappingURL=Star.js.map

@@ -1,12 +1,13 @@
 import React from 'react';
+
+import { Text } from '../Text';
 import {
     hiddenCheckbox,
-    toggleContainer,
     leftTextContainer,
     rightTextContainer,
+    toggleContainer,
 } from './TextToggle.style';
-import { Text } from '@components';
-import type { ToggleProps, Size, TextType } from './types';
+import type { Size, TextType, ToggleProps } from './types';
 
 const getTextType: Record<Size, TextType> = {
     sm: 'subCaptionRegular',

@@ -1,31 +1,32 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import ArrowDown from '@assets/images/downArrow.svg';
+import Ryc from '@assets/images/Ryc.svg';
+import { Button } from '@components';
+import { Text } from '@components/_common/Text';
+import { ClubSubmitCard } from '@components/ClubSubmitCard';
+import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
+import theme from '@styles/theme';
 import dayjs from 'dayjs';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import {
+    applyFormContainer,
+    arrowIcon,
     clubApplyPage,
     clubApplyPageMainContainer,
     clubApplyTabContainer,
     clubApplyTabName,
     clubLogoAndNameContainer,
     clubNameContainer,
-    svgContainer,
-    submitButtonContainer,
     mobileQuestionStatus,
-    applyFormContainer,
+    submitButtonContainer,
     submitCardContainer,
-    arrowIcon,
+    svgContainer,
 } from './ClubApplyPage.style';
-import Ryc from '@assets/images/Ryc.svg';
-import { Button } from '@components';
-import { Text } from '@components/_common/Text';
-import { ClubSubmitCard } from '@components/ClubSubmitCard';
-import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
-import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import theme from '@styles/theme';
-import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
-import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
-import ArrowDown from '@assets/images/downArrow.svg';
+import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
+import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
+import type { Answer, QuestionType } from './types';
 
 // 임시 데이터
 export const clubData = {

@@ -1,0 +1,1 @@
+{"version":3,"file":"BaseEditor.d.ts","sourceRoot":"","sources":["../../src/Editor/BaseEditor.tsx"],"names":[],"mappings":"AACA,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAC1C,OAAO,EAAE,cAAc,EAAE,MAAM,kBAAkB,CAAC;AAClD,OAAO,EAAE,aAAa,EAAE,MAAM,iBAAiB,CAAC;AAEhD,iBAAS,UAAU,qDAmBlB;AAED,QAAA,MAAM,MAAM;;;;CAIV,CAAC;AAEH,OAAO,EAAE,MAAM,EAAE,CAAC"}

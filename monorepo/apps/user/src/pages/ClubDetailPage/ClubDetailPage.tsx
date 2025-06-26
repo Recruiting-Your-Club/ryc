@@ -1,5 +1,6 @@
-import React from 'react';
 import { ClubNavigation, Text } from '@components';
+import React from 'react';
+
 import {
     clubDetailPageContainer,
     clubHeader,
@@ -8,8 +9,8 @@ import {
     clubImage,
     contentContainer,
 } from './ClubDetailPage.style';
-import { RecruitmentPage } from './RecruitmentPage';
 import { ClubIntroPage } from './ClubIntroPage';
+import { RecruitmentPage } from './RecruitmentPage';
 
 function ClubDetailPage() {
     // prop destruction

@@ -1,7 +1,8 @@
-import React from 'react';
 import { RecruitCard, RecruitDialog } from '@components';
-import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
+import React from 'react';
+
+import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
 
 function RecruitmentPage() {
     // prop destruction

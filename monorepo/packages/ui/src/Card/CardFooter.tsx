@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { footerContainer } from './Card.style';
 
 interface CardFooterProps {

@@ -1,7 +1,9 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import theme from '@styles/theme';
-import { SpinSpinner, PulseSpinner } from '.';
+import React from 'react';
+
+import theme from '@ssoc/styles';
+
+import { PulseSpinner, SpinSpinner } from '.';
 
 const meta: Meta<typeof SpinSpinner> = {
     title: '스피너',

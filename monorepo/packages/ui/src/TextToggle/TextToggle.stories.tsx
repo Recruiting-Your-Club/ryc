@@ -1,5 +1,5 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+
 import { TextToggle } from './TextToggle';
 
 const meta: Meta<typeof TextToggle> = {

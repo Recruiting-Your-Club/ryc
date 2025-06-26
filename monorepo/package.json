@@ -1,18 +1,43 @@
 {
-  "packageManager": "yarn@4.9.2",
-  "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
-  "devDependencies": {
-    "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
-    "turbo": "^2.5.4"
-  },
-  "scripts": {
-    "turbo": "turbo",
-    "check-types": "tsc --noEmit",
-    "dev": "turbo run dev"
-  }
+    "packageManager": "yarn@4.9.2",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "apps/*"
+    ],
+    "scripts": {
+        "turbo": "turbo",
+        "check-types": "tsc --noEmit",
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "lint": "eslint . --ext .ts,.tsx,.js,.jsx --config .eslintrc.json",
+        "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --config .eslintrc.json --fix",
+        "format": "prettier --write . --config .prettierrc.js",
+        "format:check": "prettier --check . --config .prettierrc.js",
+        "prepare": "husky"
+    },
+    "lint-staged": {
+        "**/*.{ts,tsx,js,jsx}": [
+            "yarn lint:fix",
+            "yarn format"
+        ],
+        "**/*.{json,md,yml,yaml}": [
+            "yarn format"
+        ]
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@typescript-eslint/eslint-plugin": "^8.22.0",
+        "@typescript-eslint/parser": "^8.22.0",
+        "eslint": "^8.19.0",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
+        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-react-hooks": "^5.1.0",
+        "eslint-plugin-storybook": "^0.11.2",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.4.3",
+        "prettier": "^3.4.2",
+        "turbo": "^2.5.4"
+    }
 }

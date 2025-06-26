@@ -1,6 +1,9 @@
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
+
+import theme from '@ssoc/styles';
+
 import type { tagVariant } from './Tag';
+
 const baseTag = css`
     display: flex;
     justify-content: center;

@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import React, { useState } from 'react';
+
 import { radioContainer } from './Radio.style';
 import { RadioItem } from './RadioItem';
 

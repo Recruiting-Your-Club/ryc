@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { tooltipContainter, tooltipStyle } from './Tooltip.style';
 import type { TooltipProps } from './types';
 

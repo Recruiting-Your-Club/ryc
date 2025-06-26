@@ -1,4 +1,5 @@
 import type { RefObject } from 'react';
+
 import type { Align } from '../types';
 import { applyAttributeInEmptyRange, preserveSelection } from './range';
 

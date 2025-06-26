@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes } from 'react';
 import React from 'react';
+
 import { hiddenInputCss } from './Checkbox.style';
 import { useCheckboxContext } from './CheckboxContext';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { cardBottomContainer } from './Card.style';
 
 interface CardBottomBodyProps {

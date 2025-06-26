@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
 import banner from '@assets/images/banner.png';
+import Check from '@assets/images/check.svg';
+import { Button, MainCard, Text } from '@components';
+import React, { useEffect, useState } from 'react';
+
 import {
     bannerContainer,
+    categoryButton,
     clubCategoryContainer,
     clubListContainer,
-    totalClubContainer,
+    emptyElement,
     mainPageContainer,
-    categoryButton,
     progressContainer,
     svgContainer,
-    emptyElement,
+    totalClubContainer,
 } from './MainPage.style';
-import { MainCard, Text, Button } from '@components';
 import type { Category } from './types';
-import Check from '@assets/images/check.svg';
 
 function MainPage() {
     // prop destruction

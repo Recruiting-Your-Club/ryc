@@ -1,16 +1,17 @@
+import { ClubApplyPage } from '@pages/ClubApplyPage';
 import React from 'react';
 import { createBrowserRouter } from 'react-router';
+
+import { ManagerLayout, UserLayout } from './layouts';
 import {
-    TestPage,
-    NotFoundPage,
-    LoginPage,
-    RegisterPage,
-    MainPage,
     ClubDetailPage,
+    LoginPage,
+    MainPage,
+    NotFoundPage,
     RecruitmentPage,
+    RegisterPage,
+    TestPage,
 } from './pages';
-import { UserLayout, ManagerLayout } from './layouts';
-import { ClubApplyPage } from '@pages/ClubApplyPage';
 
 const router = createBrowserRouter([
     {

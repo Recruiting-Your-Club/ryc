@@ -1,5 +1,7 @@
-import BasicImage from '@assets/images/basicImage.png';
 import React from 'react';
+
+import BasicImage from '@ssoc/assets/images/basicImage.png';
+
 import { s_shape, s_size } from './Avatar.style';
 
 export type AvatarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';

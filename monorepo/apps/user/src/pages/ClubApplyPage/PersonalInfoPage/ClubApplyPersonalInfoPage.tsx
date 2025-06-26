@@ -1,7 +1,11 @@
-import React from 'react';
 import { Input } from '@components/_common/Input';
 import { Radio } from '@components/_common/Radio';
 import { Text } from '@components/_common/Text';
+import { Checkbox } from '@components/Checkbox';
+import React from 'react';
+
+import type { ClubApplyPersonalInfoPageProps } from '../types';
+import { getAnswer } from '../utils';
 import {
     clubApplyPersonalQuestionForm,
     helperTextSx,
@@ -9,9 +13,6 @@ import {
     labelContainer,
     labelSx,
 } from './ClubApplyPersonalInfoPage.style';
-import type { ClubApplyPersonalInfoPageProps } from '../types';
-import { getAnswer } from '../utils';
-import { Checkbox } from '@components/Checkbox';
 
 function ClubApplyPersonalInfoPage({
     answers,

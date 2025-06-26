@@ -1,12 +1,14 @@
-import { Select } from '@components/Select';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import {
     alignButtons,
     DEFAULT_FONT_SIZE,
     formatButtons,
     listButtons,
     optionButtons,
-} from '@constants/Editor';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+} from '@ssoc/constants';
+
+import { Select } from '../Select';
 import {
     buttonGroup,
     perButtonCss,

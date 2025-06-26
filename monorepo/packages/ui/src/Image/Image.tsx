@@ -1,5 +1,6 @@
-import React from 'react';
 import type { CSSObject } from '@emotion/react';
+import React from 'react';
+
 import { imageContainer } from './Image.style';
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {

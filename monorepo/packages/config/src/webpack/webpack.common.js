@@ -46,7 +46,7 @@ module.exports = {
         },
     },
     output: {
-        filename: 'ryc.bundle.js',
+        filename: 'ssoc.bundle.js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/',
         clean: true,

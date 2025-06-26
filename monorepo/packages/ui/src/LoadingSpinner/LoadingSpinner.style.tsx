@@ -1,7 +1,8 @@
 import { keyframes } from '@emotion/react';
 import { css } from '@emotion/react';
-import type { LoadingProps, SpinnerProps, Size } from './LoadingSpinner';
 import type { CSSObject } from '@emotion/react';
+
+import type { LoadingProps, Size, SpinnerProps } from './LoadingSpinner';
 
 const loading_pulse = keyframes`
     0%{

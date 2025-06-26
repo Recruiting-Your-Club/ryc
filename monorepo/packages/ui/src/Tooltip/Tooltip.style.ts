@@ -1,7 +1,9 @@
 import { css, keyframes } from '@emotion/react';
 import type { CSSObject } from '@emotion/react';
+
+import theme from '@ssoc/styles';
+
 import type { Direction } from './types';
-import theme from '@styles/theme';
 
 export const fadeInScale = keyframes`
   0% {

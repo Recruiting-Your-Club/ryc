@@ -1,4 +1,5 @@
 import type { ChangeEvent, RefObject } from 'react';
+
 import { getEditorRoot } from './alignment';
 import { applyAttributeInEmptyRange, getValidSelection, handleRangeToNext } from './range';
 

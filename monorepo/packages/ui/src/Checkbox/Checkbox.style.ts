@@ -1,8 +1,10 @@
 import type { CSSObject } from '@emotion/react';
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
-import { hexToRgb } from '@utils/hexToRgb';
 import type { CSSProperties } from 'react';
+
+import theme from '@ssoc/styles';
+import { hexToRgb } from '@ssoc/utils';
+
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
 const CHECKBOX_COLORS = {

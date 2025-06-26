@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+
 import type { EditorContextType } from './types';
 
 export const EditorContext = createContext<EditorContextType | undefined>(undefined);

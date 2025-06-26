@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
+
+import theme from '@ssoc/styles';
 
 export type TextAreaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export type TextAreaVariant = 'outline' | 'subtle' | 'flushed';

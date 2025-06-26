@@ -1,7 +1,8 @@
-import type { StoryObj, Meta } from '@storybook/react';
-import { TextArea } from './TextArea';
+import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
 import React, { useState } from 'react';
+
+import { TextArea } from './TextArea';
 
 type Story = StoryObj<typeof TextArea>;
 

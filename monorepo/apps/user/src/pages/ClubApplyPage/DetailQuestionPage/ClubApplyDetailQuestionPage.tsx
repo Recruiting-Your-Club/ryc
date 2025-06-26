@@ -1,13 +1,14 @@
-import React from 'react';
-import { TextArea } from '@components/_common/TextArea';
 import { Text } from '@components/_common/Text';
+import { TextArea } from '@components/_common/TextArea';
+import React from 'react';
+
+import type { ClubApplyDetailQuestionPageProps } from '../types';
+import { getAnswer } from '../utils';
 import {
     clubApplyDetailQuestionContainer,
     labelContainer,
     textAreaSx,
 } from './ClubApplyDetailQuestionPage.style';
-import type { ClubApplyDetailQuestionPageProps } from '../types';
-import { getAnswer } from '../utils';
 
 function ClubApplyDetailQuestionPage({
     answers,

@@ -11,7 +11,8 @@ module.exports = {
         [
             '@babel/preset-react',
             {
-                runtime: 'automatic', // import react안해도되게함
+                runtime: 'automatic',
+                importSource: '@emotion/react', // import react안해도되게함
             },
         ],
         ['@babel/preset-typescript'], // 타입스크립트 문법 제거해줌

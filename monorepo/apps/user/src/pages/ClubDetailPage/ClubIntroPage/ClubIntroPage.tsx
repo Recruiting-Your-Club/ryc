@@ -1,12 +1,13 @@
+import { ClubBox, Image, ImageDialog, Text } from '@components';
+import { useDialog } from '@hooks/useDialog';
 import React, { useState } from 'react';
-import { ClubBox, Text, ImageDialog, Image } from '@components';
+
 import {
     clubIntroContainer,
     imageItem,
     imageListContainer,
     textContainer,
 } from './ClubIntro.style';
-import { useDialog } from '@hooks/useDialog';
 
 function ClubIntroPage() {
     // prop destruction

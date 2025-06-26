@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
+
+import theme from '@ssoc/styles';
+
 import type { Size } from './types';
 
 const getToggleContainerSize = (size: Size) => {

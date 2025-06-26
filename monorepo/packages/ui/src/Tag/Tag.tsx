@@ -1,6 +1,7 @@
-import React from 'react';
-import { tag } from './Tag.style';
 import type { CSSObject } from '@emotion/react';
+import React from 'react';
+
+import { tag } from './Tag.style';
 
 export type tagVariant = 'primary' | 'progress' | 'end';
 

@@ -1,14 +1,15 @@
-import { Avatar } from '@components/_common/Avatar';
-import { Divider } from '@components/_common/Divider';
 import type { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
+
+import { Avatar } from '../Avatar';
+import { TagList } from '../ClubCard/TagList';
+import { Divider } from '../Divider';
 import { CardBottomBody } from './CardBottomBody';
 import { CardFooter } from './CardFooter';
 import { CardRoot } from './CardRoot';
 import { Card } from './CardTest';
 import { CardTitleContainer } from './CardTitleContainer';
 import { CardTopBody } from './CardTopBody';
-import { TagList } from '../../ClubCard/TagList';
 import { DescriptionText } from './DescriptionText';
 
 const meta: Meta<typeof Card> = {

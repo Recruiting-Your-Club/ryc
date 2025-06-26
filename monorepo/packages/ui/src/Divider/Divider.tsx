@@ -1,6 +1,7 @@
 import type { CSSObject } from '@emotion/react';
 import type { HTMLAttributes } from 'react';
 import React from 'react';
+
 import { divider } from './Divider.style';
 
 export type DividerColor = 'black' | 'gray';

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { CheckboxControl } from './CheckboxControl';
 import { CheckboxHiddenInput } from './CheckboxHiddenInput';
 import { CheckboxLabel } from './CheckboxLabel';

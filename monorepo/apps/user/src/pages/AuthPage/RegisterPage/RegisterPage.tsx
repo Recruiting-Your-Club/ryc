@@ -1,16 +1,17 @@
-import React from 'react';
-import {
-    RegisterContainer,
-    RegisterBox,
-    titleContainer,
-    inputContainer,
-    buttonContainer,
-    emailContainer,
-} from './RegisterPage.style';
-import { Input, Button } from '@components/_common';
+import { Button, Input } from '@components/_common';
 import { PasswordInput } from '@components/PasswordInput';
 import { css } from '@emotion/react';
 import { useRouter } from '@hooks/useRouter';
+import React from 'react';
+
+import {
+    buttonContainer,
+    emailContainer,
+    inputContainer,
+    RegisterBox,
+    RegisterContainer,
+    titleContainer,
+} from './RegisterPage.style';
 
 function RegisterPage() {
     const { removeHistoryAndGo } = useRouter();

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import type { SerializedStyles } from '@emotion/react';
+import React, { useState } from 'react';
+
+import { ratingContainer } from './Rating.style';
 import type { StarSize } from './Star';
 import { Star } from './Star';
-import { ratingContainer } from './Rating.style';
 
 const TOTAL_STARS_DEFAULT = 5;
 

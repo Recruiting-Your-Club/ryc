@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import { Text, Button, Tag, ClubBox, Image, ImageDialog } from '@components';
-import {
-    clubNameContainer,
-    contentContainer,
-    recruitmentContainer,
-    imageListContainer,
-    imageItem,
-    contentHeader,
-    contentBody,
-    headerSubContainer,
-    applyButtonAtDesktop,
-    textContainer,
-    applyButtonAtMobile,
-} from './RecruitmentPage.style';
+import { Button, ClubBox, Image, ImageDialog, Tag, Text } from '@components';
 import { useDialog } from '@hooks/useDialog';
+import React, { useState } from 'react';
+
+import {
+    applyButtonAtDesktop,
+    applyButtonAtMobile,
+    clubNameContainer,
+    contentBody,
+    contentContainer,
+    contentHeader,
+    headerSubContainer,
+    imageItem,
+    imageListContainer,
+    recruitmentContainer,
+    textContainer,
+} from './RecruitmentPage.style';
 
 function RecruitmentPage() {
     // prop destruction

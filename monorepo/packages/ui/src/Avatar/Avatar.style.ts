@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import type { CSSProperties } from '@emotion/serialize';
+
 import type { AvatarShape, AvatarSize } from './Avatar';
 
 interface Size {

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Button } from '@components/_common/Button';
-import { Text } from '@components/_common/Text';
 import XIcon from '@assets/images/xIcon.svg';
-import { Dialog } from '.';
 import type { Meta, StoryObj } from '@storybook/react';
-import theme from '@styles/theme';
+import React, { useState } from 'react';
+
+import theme from '@ssoc/styles';
+
+import { Dialog } from '.';
+import { Button } from '../Button';
+import { Text } from '../Text';
 
 type Story = StoryObj<typeof Dialog>;
 type Header = StoryObj<typeof Dialog.Header>;

@@ -1,9 +1,10 @@
+import type { CSSObject } from '@emotion/react';
 import type { TextareaHTMLAttributes } from 'react';
 import React from 'react';
+
+import { Text } from '../Text';
 import type { TextAreaSize, TextAreaVariant } from './TextArea.style';
-import { s_textAreaWrapper, s_textArea, s_textAreaInfoWrapper } from './TextArea.style';
-import { Text } from '@components/_common/Text';
-import type { CSSObject } from '@emotion/react';
+import { s_textArea, s_textAreaInfoWrapper, s_textAreaWrapper } from './TextArea.style';
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     size?: TextAreaSize;
