@@ -74,7 +74,7 @@ function TestPage() {
                     </Dropdown.Sub>
                 </Dropdown.Content>
             </Dropdown>
-            <FileUpLoader files={files} setFiles={setFiles}>
+            <FileUpLoader files={files} onFilesChange={setFiles}>
                 <FileUpLoader.Button />
                 <FileUpLoader.HelperText>d</FileUpLoader.HelperText>
                 <FileUpLoader.Box />
