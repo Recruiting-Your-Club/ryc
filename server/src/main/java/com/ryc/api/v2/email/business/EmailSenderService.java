@@ -1,64 +1,74 @@
 package com.ryc.api.v2.email.business;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ryc.api.v2.email.domain.Email;
-import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+import com.ryc.api.v2.email.domain.EmailRepository;
+import com.ryc.api.v2.email.domain.EmailSentStatus;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmailSenderService {
 
   private final JavaMailSender mailSender;
+  private final EmailRepository emailRepository;
 
-  public List<EmailSendResponse> sendEmails(List<Email> emails) throws MessagingException {
-    //    List<EmailSendResponse> responses = new ArrayList<>();
-    //    MailException mailException = null;
-    //    MessagingException messagingException = null;
-    //
-    //    for (int i = 0; i < emails.size(); i++) {
-    //      Email mail = emails.get(i);
-    //      MimeMessage msg = mailSender.createMimeMessage();
-    //
-    //      try {
-    //        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
-    //        helper.setTo(mail.recipient());
-    //        helper.setSubject(mail.subject());
-    //        helper.setText(mail.content(), true);
-    //
-    //        mailSender.send(msg);
-    //
-    //        mail = mail.updateStatus(EmailSentStatus.SENT);
-    //        responses.add(new EmailSendResponse(mail.recipient(), EmailSentStatus.SENT));
-    //
-    //      } catch (MailException e) {
-    //        mailException = e;
-    //        mail = mail.updateStatus(EmailSentStatus.FAILURE);
-    //        responses.add(new EmailSendResponse(mail.recipient(), EmailSentStatus.FAILURE));
-    //
-    //      } catch (MessagingException e) {
-    //        messagingException = e;
-    //        mail = mail.updateStatus(EmailSentStatus.FAILURE);
-    //        responses.add(new EmailSendResponse(mail.recipient(), EmailSentStatus.FAILURE));
-    //      } finally {
-    //        // 이메일 전송 후 상태 업데이트
-    //        emails.set(i, mail);
-    //      }
-    //    }
-    //
-    //    if (!isEmailSentSuccessfully(responses)) {
-    //      // 하나라도 성공한 이메일이 없으면 예외를 던진다.
-    //      if (mailException != null) throw mailException;
-    //      if (messagingException != null) throw messagingException;
-    //    }
+  @Scheduled(fixedDelay = 10000)
+  public void sendPendingEmails() {
+    List<Email> updatedEmails = new ArrayList<>();
+    List<Email> pendingEmails =
+        emailRepository.findPendingEmails(
+            PageRequest.of(
+                0, 50, Sort.by("createdAt").descending().and(Sort.by("retryCount").descending())));
 
-    return null;
+    for (Email mail : pendingEmails) {
+      MimeMessage msg = mailSender.createMimeMessage();
+
+      try {
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+        helper.setTo(mail.recipient());
+        helper.setSubject(mail.subject());
+        helper.setText(mail.content(), true);
+
+        mailSender.send(msg);
+
+        updatedEmails.add(mail.updateStatus(EmailSentStatus.SENT));
+        log.info("이메일 전송 완료: {}", mail.recipient());
+
+      } catch (MailException e) {
+        updatedEmails.add(mail.incrementRetryCount());
+
+        if (mail.retryCount() >= 3) {
+          updatedEmails.add(mail.updateStatus(EmailSentStatus.FAILURE));
+          log.warn("이메일 재시도 초과로 실패: {}, 재시도 횟수: {}", mail.recipient(), mail.retryCount());
+
+        } else {
+          log.error("이메일 전송 실패 10초 후 재시도 예정: {}, 재시도 횟수: {}", mail.recipient(), mail.retryCount());
+        }
+
+      } catch (MessagingException e) {
+        updatedEmails.add(mail.updateStatus(EmailSentStatus.FAILURE));
+        log.error("이메일 메시지 생성 실패: {}, 오류: {}", mail.recipient(), e.getMessage());
+      }
+    }
+
+    // 이메일 전송 후 상태 업데이트
+    emailRepository.saveAll(updatedEmails);
   }
 }

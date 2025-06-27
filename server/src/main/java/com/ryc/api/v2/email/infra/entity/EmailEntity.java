@@ -1,6 +1,5 @@
 package com.ryc.api.v2.email.infra.entity;
 
-import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import com.ryc.api.v2.common.entity.BaseEntity;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
 
 import lombok.AccessLevel;

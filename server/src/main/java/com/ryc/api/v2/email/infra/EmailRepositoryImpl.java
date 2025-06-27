@@ -2,6 +2,7 @@ package com.ryc.api.v2.email.infra;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.email.domain.Email;
@@ -23,5 +24,12 @@ public class EmailRepositoryImpl implements EmailRepository {
     List<EmailEntity> emailEntities = emails.stream().map(EmailMapper::toEntity).toList();
     List<EmailEntity> savedEntities = emailJpaRepository.saveAll(emailEntities);
     return savedEntities.stream().map(EmailMapper::toDomain).toList();
+  }
+
+  @Override
+  public List<Email> findPendingEmails(Pageable pageable) {
+    return emailJpaRepository.findPendingEmails(pageable).stream()
+        .map(EmailMapper::toDomain)
+        .toList();
   }
 }

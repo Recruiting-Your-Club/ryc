@@ -32,18 +32,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode, e.getMessage());
   }
 
-  //  @ExceptionHandler(MessagingException.class)
-  //  public ResponseEntity<Object> handleMessagingException(MessagingException e) {
-  //    ErrorCode errorCode = EmailErrorCode.EMAIL_RECIPIENT_NOT_FOUND;
-  //    return handleExceptionInternal(errorCode, e.getMessage());
-  //  }
-  //
-  //  @ExceptionHandler(MailException.class)
-  //  public ResponseEntity<Object> handleMailException(MailException e) {
-  //    ErrorCode errorCode = EmailErrorCode.EMAIL_SEND_FAILED;
-  //    return handleExceptionInternal(errorCode, e.getMessage());
-  //  }
-
   @Override
   public ResponseEntity<Object> handleMethodArgumentNotValid(
       MethodArgumentNotValidException e,
