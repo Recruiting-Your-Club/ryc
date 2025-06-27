@@ -57,6 +57,7 @@ public class AnnouncementEntity extends BaseEntity {
   private AnnouncementType announcementType;
   private String activityPeriod;
 
+  @Enumerated(EnumType.STRING)
   private AnnouncementStatus announcementStatus;
 
   private Boolean isDeleted;

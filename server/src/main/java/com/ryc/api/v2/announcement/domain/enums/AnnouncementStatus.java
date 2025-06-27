@@ -7,7 +7,8 @@ import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 public enum AnnouncementStatus {
   UPCOMING,
   RECRUITING,
-  CLOSED;
+  CLOSED,
+  EMPTY;
 
   /**
    * 현재 시간과 지원 시간을 비교하여 status를 반환하는 메소드
