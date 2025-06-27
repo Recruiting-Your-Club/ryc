@@ -37,7 +37,8 @@ public class EmailHttpApi {
       @RequestParam String announcementId,
       @RequestBody EmailSendRequest body)
       throws MessagingException {
-    List<EmailSendResponse> responses = emailFacade.sendAndSaveEmails(userDetail, announcementId, body);
+    List<EmailSendResponse> responses =
+        emailFacade.sendAndSaveEmails(userDetail, announcementId, body);
     return ResponseEntity.status(201).body(responses);
   }
 

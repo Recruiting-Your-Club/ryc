@@ -1,8 +1,21 @@
 package com.ryc.api.v2.email.infra.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-import lombok.*;
+import com.ryc.api.v2.email.domain.EmailSentStatus;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "emails")
@@ -29,5 +42,9 @@ public class EmailEntity {
   private String announcementId;
 
   @Column(nullable = false)
-  private String adminEmail;
+  private String adminId;
+
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private EmailSentStatus status;
 }

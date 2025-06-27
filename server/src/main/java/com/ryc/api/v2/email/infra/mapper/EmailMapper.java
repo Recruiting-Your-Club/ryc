@@ -11,12 +11,13 @@ public class EmailMapper {
 
   public static EmailEntity toEntity(Email email) {
     return EmailEntity.builder()
-        .id(email.getId())
-        .recipient(email.getRecipient())
-        .subject(email.getSubject())
-        .content(email.getContent())
-        .announcementId(email.getAnnouncementId())
-        .adminEmail(email.getAdminEmail())
+        .id(email.id())
+        .recipient(email.recipient())
+        .subject(email.subject())
+        .content(email.content())
+        .announcementId(email.announcementId())
+        .adminId(email.adminId())
+        .status(email.status())
         .build();
   }
 }
