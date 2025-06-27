@@ -25,10 +25,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
         """)
 public record ApplicationQuestionRequest(
     @NotNull(message = "questionType shouldn't be null")
-        @Schema(description = "질문 타입", example = "LONG_ANSWER")
+        @Schema(description = "질문 타입", example = "SINGLE_CHOICE")
         QuestionType questionType,
     @NotBlank(message = "label shouldn't be blank")
-        @Schema(description = "질문", example = "동아리 지원 계기를 작성해주세요.")
+        @Schema(description = "질문", example = "동아리 접근 경로를 선택해주세요.")
         String label,
     @NotNull(message = "isRequired shouldn't be null")
         @Schema(description = "응답 필수여부", example = "true")
@@ -40,7 +40,7 @@ public record ApplicationQuestionRequest(
     options = options == null ? List.of() : options;
   }
 
-  @Schema(description = "선지", example = "[\"보기1\",\"보기2\"]", minLength = 2)
+  @Schema(description = "선지", example = "[\"지인\",\"웹 검색\"]", minLength = 2)
   @Override
   public List<String> options() {
     return List.copyOf(options);
