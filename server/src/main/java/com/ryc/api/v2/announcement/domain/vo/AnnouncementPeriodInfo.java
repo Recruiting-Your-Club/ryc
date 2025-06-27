@@ -39,24 +39,25 @@ public record AnnouncementPeriodInfo(
    * @throws IllegalArgumentException
    */
   public void validate(boolean hasInterview) {
-    // 1. 필수 입력 값 validate
-    applicationPeriod.validate();
-    finalResultPeriod.validate();
 
-    // 2. 면접 진행 시 추가되는 기간 값들에 대한 validate
+    // 1. 면접 진행 시 추가되는 기간 값들에 대한 validate
     if (hasInterview) {
       if (interviewPeriod == null) {
         throw new IllegalArgumentException("interviewPeriod shouldn't be null.");
       }
-      interviewPeriod.validate();
-
       if (documentResultPeriod == null) {
         throw new IllegalArgumentException("documentResultPeriod shouldn't be null.");
       }
-      documentResultPeriod.validate();
+    } else {
+      if (interviewPeriod != null) {
+        throw new IllegalArgumentException("interviewPeriod should be null.");
+      }
+      if (documentResultPeriod != null) {
+        throw new IllegalArgumentException("documentResultPeriod should be null.");
+      }
     }
 
-    // 3. 기간들간의 validate
+    // 2. 기간들간의 validate
     validateSequence(hasInterview);
   }
 
