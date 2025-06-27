@@ -14,3 +14,4 @@ export * from './Editor';
 export * from './Checkbox';
 export * from './TextToggle';
 export * from './Image';
+export * from './Radio';
