@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 import {
     clubApplyPage,
     clubApplyPageMainContainer,
-    clubApplyTabContainer,
-    clubApplyTabName,
     clubLogoAndNameContainer,
     clubNameContainer,
     svgContainer,
@@ -13,9 +11,10 @@ import {
     applyFormContainer,
     submitCardContainer,
     arrowIcon,
+    clubApplyTabContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
-import { Button } from '@components';
+import { Button, ClubNavigation } from '@components';
 import { Text } from '@components/_common/Text';
 import { ClubSubmitCard } from '@components/ClubSubmitCard';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
@@ -115,25 +114,11 @@ export const clubData = {
     },
 };
 
-// 임시로 페이지 분리하기 위해 만든거 리팩토링 할 때 ClubDetailPage에 있는 Navigation 컴포넌트 가져다 써야함.
-const applyData = [
-    {
-        question: '사전질문',
-        index: 0,
-    },
-    {
-        question: '자기소개서',
-        index: 1,
-    },
-];
-
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
     // initial values
-
     // state, ref, querystring hooks
-    const [pageIndex, setPageIndex] = useState<number>(0);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
@@ -267,6 +252,41 @@ function ClubApplyPage() {
         setIsSubmitDialogOpen(false);
     };
 
+    const navigationItem = [
+        {
+            title: '사전질문',
+            page: (
+                <ClubApplyPersonalInfoPage
+                    answers={answers}
+                    clubPersonalQuestions={clubPersonalQuestions}
+                    onAnswerChange={handleAnswerChange}
+                    containerStyle={applyFormContainer}
+                    getValidationError={getValidationError}
+                    getErrorMessage={getErrorMessage}
+                    touched={touched}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                />
+            ),
+            width: '6rem',
+        },
+        {
+            title: '자기소개서',
+            page: (
+                <ClubApplyDetailQuestionPage
+                    answers={answers}
+                    clubDetailQuestions={detailQuestions}
+                    onAnswerChange={handleAnswerChange}
+                    containerStyle={applyFormContainer}
+                    touched={touched}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                />
+            ),
+            width: '6.5rem',
+        },
+    ];
+
     // effects
     useEffect(() => {
         const completedCount = answers.filter((answer) => {
@@ -303,53 +323,18 @@ function ClubApplyPage() {
                     </div>
                 </div>
 
+                <Text
+                    type="subCaptionRegular"
+                    textAlign="right"
+                    color={completedQuestions === requiredQuestionsCount ? 'primary' : 'warning'}
+                    sx={mobileQuestionStatus}
+                >
+                    필수 항목 ({completedQuestions} / {requiredQuestionsCount})
+                    <ArrowDown css={arrowIcon} />
+                </Text>
                 <div css={clubApplyTabContainer}>
-                    {applyData.map((data) => (
-                        <Button
-                            key={data.question}
-                            variant="text"
-                            sx={clubApplyTabName}
-                            onClick={() => setPageIndex(data.index)}
-                        >
-                            {data.question}
-                        </Button>
-                    ))}
-                    <Text
-                        type="subCaptionRegular"
-                        textAlign="right"
-                        color={
-                            completedQuestions === requiredQuestionsCount ? 'primary' : 'warning'
-                        }
-                        sx={mobileQuestionStatus}
-                    >
-                        필수 항목 ({completedQuestions} / {requiredQuestionsCount})
-                        <ArrowDown css={arrowIcon} />
-                    </Text>
+                    <ClubNavigation navigationItem={navigationItem} />
                 </div>
-                {/* 페이지 */}
-                {pageIndex === 0 ? (
-                    <ClubApplyPersonalInfoPage
-                        answers={answers}
-                        clubPersonalQuestions={clubPersonalQuestions}
-                        onAnswerChange={handleAnswerChange}
-                        containerStyle={applyFormContainer(pageIndex)}
-                        getValidationError={getValidationError}
-                        getErrorMessage={getErrorMessage}
-                        touched={touched}
-                        onBlur={handleBlur}
-                        onFocus={handleFocus}
-                    />
-                ) : (
-                    <ClubApplyDetailQuestionPage
-                        answers={answers}
-                        clubDetailQuestions={detailQuestions}
-                        onAnswerChange={handleAnswerChange}
-                        containerStyle={applyFormContainer(pageIndex)}
-                        touched={touched}
-                        onBlur={handleBlur}
-                        onFocus={handleFocus}
-                    />
-                )}
             </div>
 
             <div css={submitCardContainer}>
