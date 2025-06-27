@@ -3,7 +3,6 @@ package com.ryc.api.v2.announcement.domain.vo;
 import java.time.LocalDateTime;
 
 import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
-import com.ryc.api.v2.common.constant.DomainDefaultValues;
 
 import lombok.Builder;
 
@@ -16,17 +15,19 @@ import lombok.Builder;
 @Builder
 public record Period(LocalDateTime startDate, LocalDateTime endDate) {
   public static Period from(PeriodRequest periodRequest) {
-    if (periodRequest == null) {
-      return Period.builder()
-          .startDate(DomainDefaultValues.DEFAULT_INITIAL_DATETIME)
-          .endDate(DomainDefaultValues.DEFAULT_INITIAL_DATETIME)
-          .build();
-    }
+    // 1. null 체크
+    if (periodRequest == null) return null;
 
-    return Period.builder()
-        .startDate(periodRequest.startDate())
-        .endDate(periodRequest.endDate())
-        .build();
+    // 2. Period로 변환
+    Period period =
+        Period.builder()
+            .startDate(periodRequest.startDate())
+            .endDate(periodRequest.endDate())
+            .build();
+
+    // 3. validate
+    period.validate();
+    return period;
   }
 
   /**
