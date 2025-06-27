@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,52 +13,47 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
-import com.ryc.api.v2.announcement.service.AnnouncementService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@RestController
-@RequestMapping("api/v2")
-@RequiredArgsConstructor
-@Tag(name = "공고")
-public class AnnouncementHttpApi {
-  private final AnnouncementService announcementService;
+public interface AnnouncementHttpApi {
 
   /** todo @HasAnyRoleScured */
   @PostMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 생성")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Created",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = AnnouncementCreateResponse.class)),
+            headers = {@Header(name = "Location", description = "생성된 리소스의 상세정보 조회 URI")})
+      })
   public ResponseEntity<AnnouncementCreateResponse> create(
-      @PathVariable("club-id") String clubId, @Valid @RequestBody AnnouncementCreateRequest body) {
-    AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-  }
+      @PathVariable("club-id") String clubId, @Valid @RequestBody AnnouncementCreateRequest body);
 
   @GetMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 목록 조회")
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
-      @PathVariable("club-id") String clubId) {
-    /** todo club 조회 */
-    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
-  }
+      @PathVariable("club-id") String clubId);
 
   @GetMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("announcement-id") String announcementId) {
-    /** todo club 조회 */
-    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
-  }
+      @PathVariable("announcement-id") String announcementId);
 
   /** 공고 수정 todo hasAnyRole 어노테이션 구현 후 추가 */
   @PutMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 수정")
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
       @PathVariable("announcement-id") String announcementId,
-      @Valid @RequestBody AnnouncementUpdateRequest body) {
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(announcementService.updateAnnouncement(body, announcementId));
-  }
+      @Valid @RequestBody AnnouncementUpdateRequest body);
 }
