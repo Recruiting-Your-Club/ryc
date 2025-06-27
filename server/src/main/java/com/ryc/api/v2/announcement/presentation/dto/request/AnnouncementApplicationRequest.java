@@ -19,11 +19,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record AnnouncementApplicationRequest(
     @Schema(implementation = PersonalInfoQuestionType.class, description = "hi", example = "sdsdsd")
         @NotEmpty(message = "personalInfoQuestionTypes shouldn't be empty")
-        List<PersonalInfoQuestionType> personalInfoQuestionTypes,
+        List<
+                @NotNull(message = "personalInfoQuestionType shouldn't be null")
+                PersonalInfoQuestionType>
+            personalInfoQuestionTypes,
     @NotNull(message = "preQuestions shouldn't be null")
-        List<ApplicationQuestionRequest> preQuestions,
+        List<@NotNull(message = "preQuestion shouldn't be null") ApplicationQuestionRequest>
+            preQuestions,
     @NotNull(message = "applicationQuestions shouldn't be null")
-        List<ApplicationQuestionRequest> applicationQuestions) {
+        List<@NotNull(message = "applicationQuestion shouldn't be null") ApplicationQuestionRequest>
+            applicationQuestions) {
   @Override
   public List<ApplicationQuestionRequest> preQuestions() {
     return List.copyOf(preQuestions);
