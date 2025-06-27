@@ -1,5 +1,6 @@
 package com.ryc.api.v2.email.infra.entity;
 
+import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class EmailEntity {
+public class EmailEntity extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -47,4 +48,8 @@ public class EmailEntity {
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private EmailSentStatus status;
+
+  @Column(nullable = false)
+  @Builder.Default
+  private Integer retryCount = 0;
 }

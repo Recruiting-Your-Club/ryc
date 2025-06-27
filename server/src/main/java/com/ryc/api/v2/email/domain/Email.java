@@ -4,6 +4,8 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record Email(
     String id,
@@ -12,7 +14,11 @@ public record Email(
     String content,
     String announcementId,
     String adminId,
-    EmailSentStatus status) {
+    EmailSentStatus status,
+    Integer retryCount,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt
+    ) {
 
   public static Email initialize(
       String recipient, String subject, String content, String announcementId, String adminId) {
@@ -24,6 +30,9 @@ public record Email(
         .announcementId(announcementId)
         .adminId(adminId)
         .status(EmailSentStatus.PENDING)
+        .retryCount(0)
+        .createdAt(LocalDateTime.now())
+        .updatedAt(null)
         .build();
   }
 

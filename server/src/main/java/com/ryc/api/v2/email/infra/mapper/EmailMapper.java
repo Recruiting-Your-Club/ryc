@@ -18,6 +18,7 @@ public class EmailMapper {
         .announcementId(email.announcementId())
         .adminId(email.adminId())
         .status(email.status())
+        .retryCount(email.retryCount())
         .build();
   }
 
@@ -30,6 +31,9 @@ public class EmailMapper {
         .announcementId(emailEntity.getAnnouncementId())
         .adminId(emailEntity.getAdminId())
         .status(emailEntity.getStatus())
+        .retryCount(emailEntity.getRetryCount())
+        .createdAt(emailEntity.getCreatedAt())
+        .updatedAt(emailEntity.getUpdatedAt())
         .build();
   }
 }
