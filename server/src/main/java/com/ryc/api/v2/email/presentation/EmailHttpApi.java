@@ -2,8 +2,6 @@ package com.ryc.api.v2.email.presentation;
 
 import java.util.List;
 
-import jakarta.mail.MessagingException;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ryc.api.v2.email.business.EmailFacade;
+import com.ryc.api.v2.email.business.EmailService;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
@@ -28,17 +26,15 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "이메일")
 public class EmailHttpApi {
 
-  private final EmailFacade emailFacade;
+  private final EmailService emailService;
 
   @PostMapping
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
-      @RequestBody EmailSendRequest body)
-      throws MessagingException {
-    List<EmailSendResponse> responses =
-        emailFacade.sendAndSaveEmails(userDetail, announcementId, body);
+      @RequestBody EmailSendRequest body) {
+    List<EmailSendResponse> responses = emailService.createEmails(userDetail, announcementId, body);
     return ResponseEntity.status(201).body(responses);
   }
 
@@ -47,10 +43,9 @@ public class EmailHttpApi {
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
-      @RequestBody InterviewEmailSendRequest body)
-      throws MessagingException {
+      @RequestBody InterviewEmailSendRequest body) {
     List<EmailSendResponse> responses =
-        emailFacade.sendAndCreateInterviewDates(userDetail, announcementId, body);
+        emailService.createInterviewDateEmails(userDetail, announcementId, body);
     return ResponseEntity.status(201).body(responses);
   }
 }

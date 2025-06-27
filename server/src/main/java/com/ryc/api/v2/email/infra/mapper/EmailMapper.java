@@ -20,4 +20,16 @@ public class EmailMapper {
         .status(email.status())
         .build();
   }
+
+  public static Email toDomain(EmailEntity emailEntity) {
+    return Email.builder()
+        .id(emailEntity.getId())
+        .recipient(emailEntity.getRecipient())
+        .subject(emailEntity.getSubject())
+        .content(emailEntity.getContent())
+        .announcementId(emailEntity.getAnnouncementId())
+        .adminId(emailEntity.getAdminId())
+        .status(emailEntity.getStatus())
+        .build();
+  }
 }

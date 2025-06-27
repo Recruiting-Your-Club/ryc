@@ -9,5 +9,8 @@ import com.ryc.api.v2.evaluation.domain.NumberOfPeopleByInterviewDate;
 @Service
 public class InterviewService {
 
-  public void createInterview(List<NumberOfPeopleByInterviewDate> numberOfPeopleByInterviewDate) {}
+  public void createInterview(
+      String adminId,
+      String announcementId,
+      List<NumberOfPeopleByInterviewDate> numberOfPeopleByInterviewDate) {}
 }

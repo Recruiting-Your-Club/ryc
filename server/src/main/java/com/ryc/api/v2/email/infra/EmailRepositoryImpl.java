@@ -1,7 +1,6 @@
 package com.ryc.api.v2.email.infra;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -20,9 +19,9 @@ public class EmailRepositoryImpl implements EmailRepository {
   private final EmailJpaRepository emailJpaRepository;
 
   @Override
-  public List<String> saveAll(List<Email> emails) {
+  public List<Email> saveAll(List<Email> emails) {
     List<EmailEntity> emailEntities = emails.stream().map(EmailMapper::toEntity).toList();
     List<EmailEntity> savedEntities = emailJpaRepository.saveAll(emailEntities);
-    return savedEntities.stream().map(EmailEntity::getId).collect(Collectors.toList());
+    return savedEntities.stream().map(EmailMapper::toDomain).toList();
   }
 }
