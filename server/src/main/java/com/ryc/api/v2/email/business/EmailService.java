@@ -1,9 +1,14 @@
 package com.ryc.api.v2.email.business;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +24,22 @@ import com.ryc.api.v2.security.dto.CustomUserDetail;
 public class EmailService {
 
   private final String baseUri;
+  private final String linkHtmlTemplate;
   private final EmailRepository emailRepository;
   private final InterviewService interviewService;
 
   public EmailService(
       @Value("${reservation.base-url}") String baseUri,
       EmailRepository emailRepository,
-      InterviewService interviewService) {
+      InterviewService interviewService,
+      ResourceLoader resourceLoader)
+      throws IOException {
     this.baseUri = baseUri;
     this.emailRepository = emailRepository;
     this.interviewService = interviewService;
+
+    Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
+    this.linkHtmlTemplate = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
   }
 
   @Transactional
@@ -86,31 +97,7 @@ public class EmailService {
           String.format(
               "%s?admin-id=%s&announcement-id=%s&recipient=%s",
               baseUri, adminId, announcementId, recipient);
-
-      String linkHtml =
-          String.format(
-              """
-      <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 10px; margin-bottom: 20px;">
-        <h2 style="color: #333;">📩 면접 일정 선택 안내</h2>
-        <p style="font-size: 14px; color: #555;">
-          아래 버튼을 클릭하여 면접 일정을 선택해주세요. 링크는 개인별로 생성된 전용 링크입니다.
-        </p>
-        <a href="%s" target="_blank" style="
-            display: inline-block;
-            padding: 12px 24px;
-            margin-top: 10px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-        ">
-          ✅ 면접 일정 선택하러 가기
-        </a>
-      </div>
-      """,
-              link);
+      String linkHtml = String.format(linkHtmlTemplate, link);
 
       emails.add(Email.initialize(recipient, subject, linkHtml + content, announcementId, adminId));
     }
