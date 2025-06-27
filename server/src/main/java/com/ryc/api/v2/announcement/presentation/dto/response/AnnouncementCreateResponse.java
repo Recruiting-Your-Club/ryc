@@ -5,4 +5,5 @@ import lombok.Builder;
 
 @Builder
 public record AnnouncementCreateResponse(
-    @Schema(description = "announcementId", example = "1") String announcementId) {}
+    @Schema(description = "announcementId", example = "123e4567-e89b-12d3-a456-426614174000")
+        String announcementId) {}
