@@ -1,6 +1,7 @@
-package com.ryc.api.v2.club.service;
+package com.ryc.api.v2.club.business;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,7 +25,6 @@ import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
@@ -204,11 +204,10 @@ class ClubServiceTest {
   @DisplayName("모든 클럽 조회 서비스 테스트")
   void givenExistingClubs_whenGetAllClubs_thenReturnAllClubResponse() {
     // Given
-    List<Club> clubs = List.of(testClub);
-    when(clubRepository.findAll()).thenReturn(clubs);
+    when(clubRepository.findAll()).thenReturn(List.of(testClub));
 
     // When
-    List<AllClubGetResponse> responses = clubService.getAllClub();
+    List<Club> responses = clubService.getAllClub();
 
     // Then
     assertThat(responses).hasSize(1);

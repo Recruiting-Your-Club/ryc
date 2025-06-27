@@ -21,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.domain.Category;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
@@ -29,12 +31,12 @@ import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.club.service.ClubService;
 
 @ExtendWith(MockitoExtension.class)
 class ClubHttpApiTest {
 
   @Mock private ClubService clubService;
+  @Mock private ClubAnnouncementFacade clubAnnouncementFacade;
   @InjectMocks private ClubHttpApi clubHttpApi;
 
   private MockMvc mockMvc;
@@ -124,7 +126,7 @@ class ClubHttpApiTest {
                 .clubTags(testTags)
                 .build());
 
-    when(clubService.getAllClub()).thenReturn(allClubResponses);
+    when(clubAnnouncementFacade.getAllClubWithAnnouncementStatus()).thenReturn(allClubResponses);
 
     // When & Then
     mockMvc
