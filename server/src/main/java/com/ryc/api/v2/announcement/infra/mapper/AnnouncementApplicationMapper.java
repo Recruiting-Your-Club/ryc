@@ -9,6 +9,7 @@ import com.ryc.api.v2.announcement.domain.vo.ApplicationQuestion;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementApplicationEntity;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.vo.ApplicationQuestionVO;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,24 +34,9 @@ public class AnnouncementApplicationMapper {
         .build();
   }
 
-  /** Domain to entity */
-  public AnnouncementApplicationEntity toEntity(AnnouncementApplication domain) {
-    List<ApplicationQuestionVO> applicationQuestions =
-        domain.getApplicationQuestions().stream().map(applicationQuestionMapper::toVO).toList();
-    List<ApplicationQuestionVO> preQuestions =
-        domain.getPreQuestions().stream().map(applicationQuestionMapper::toVO).toList();
-
-    return AnnouncementApplicationEntity.builder()
-        .id(domain.getId())
-        .applicationQuestions(applicationQuestions)
-        .personalInfoQuestions(domain.getPersonalInfoQuestionTypes())
-        .preQuestions(preQuestions)
-        .build();
-  }
-
   /** save시 announcement 주입 mapping */
   public AnnouncementApplicationEntity toEntity(
-      AnnouncementApplication applicationDomain, AnnouncementEntity announcement) {
+      AnnouncementApplication applicationDomain, AnnouncementEntity announcement, ClubEntity club) {
     List<ApplicationQuestionVO> applicationQuestions =
         applicationDomain.getApplicationQuestions().stream()
             .map(applicationQuestionMapper::toVO)

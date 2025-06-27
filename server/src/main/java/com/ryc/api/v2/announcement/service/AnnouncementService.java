@@ -1,6 +1,9 @@
 package com.ryc.api.v2.announcement.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,8 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.service.ClubService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class AnnouncementService {
   private final AnnouncementRepository announcementRepository;
   private final ClubService clubService;
+  private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
   public AnnouncementCreateResponse createAnnouncement(
@@ -30,7 +36,10 @@ public class AnnouncementService {
 
     // 2.Announcement 생성
     Announcement announcement = Announcement.initialize(request, clubId);
-    Announcement savedAnnouncement = announcementRepository.save(announcement);
+
+    ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubId);
+
+    Announcement savedAnnouncement = announcementRepository.save(announcement, clubProxy);
 
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
   }
@@ -68,8 +77,9 @@ public class AnnouncementService {
     // 2. 기존 Announcement 정보를 기반으로 업데이트된 Announcement 도메인 객체 생성
     Announcement updatedAnnouncement = existingAnnouncement.update(request);
 
+    ClubEntity clubProxy = clubJpaRepository.getReferenceById(updatedAnnouncement.getClubId());
     // 3. 업데이트된 Announcement 저장
-    announcementRepository.save(updatedAnnouncement);
+    announcementRepository.save(updatedAnnouncement, clubProxy);
 
     return AnnouncementUpdateResponse.from(updatedAnnouncement);
   }
@@ -81,6 +91,13 @@ public class AnnouncementService {
     List<Announcement> updatedAnnouncements =
         announcements.stream().map(Announcement::updateStatus).toList();
 
-    announcementRepository.saveAll(updatedAnnouncements);
+    Set<String> ids =
+        updatedAnnouncements.stream().map(Announcement::getClubId).collect(Collectors.toSet());
+
+    Map<String, ClubEntity> clubs =
+        clubJpaRepository.findAllById(ids).stream()
+            .collect(Collectors.toMap(ClubEntity::getId, club -> club));
+
+    announcementRepository.saveAll(updatedAnnouncements, clubs);
   }
 }

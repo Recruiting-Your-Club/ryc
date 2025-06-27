@@ -2,9 +2,6 @@ package com.ryc.api.v2.announcement.infra.mapper;
 
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
@@ -29,8 +26,6 @@ public class AnnouncementMapper {
   private final AnnouncementApplicationMapper applicationMapper;
   private final AnnouncementTagMapper tagMapper;
   private final ImageMapper imageMapper;
-
-  @PersistenceContext private final EntityManager entityManager;
 
   /** entity to domain */
   public Announcement toDomain(
@@ -92,14 +87,11 @@ public class AnnouncementMapper {
   }
 
   /** Domain to Entity */
-  public AnnouncementEntity toEntity(Announcement announcement) {
+  public AnnouncementEntity toEntity(Announcement announcement, ClubEntity club) {
     List<TagVO> tags = announcement.getTags().stream().map(tagMapper::toVO).toList();
     List<ImageVO> images = announcement.getImages().stream().map(imageMapper::toVO).toList();
     AnnouncementPeriodInfoVO periodInfoVO =
         periodInfoMapper.toVO(announcement.getAnnouncementPeriodInfo());
-
-    // proxy 객체 주입
-    ClubEntity club = entityManager.getReference(ClubEntity.class, announcement.getClubId());
 
     return AnnouncementEntity.builder()
         .clubEntity(club)

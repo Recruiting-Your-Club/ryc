@@ -1,6 +1,7 @@
 package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
+import java.util.Map;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -13,6 +14,8 @@ import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementApplicationMapper;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +26,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   private final AnnouncementApplicationJpaRepository announcementApplicationJpaRepository;
   private final AnnouncementMapper announcementMapper;
   private final AnnouncementApplicationMapper announcementApplicationMapper;
+  private final ClubJpaRepository clubJpaRepository;
 
   @Override
   public List<Announcement> findAllByClubId(String clubId) {
@@ -54,12 +58,12 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public Announcement save(Announcement announcement) {
+  public Announcement save(Announcement announcement, ClubEntity club) {
     // 1. domain -> entity mapping
-    AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement);
+    AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement, club);
     AnnouncementApplicationEntity announcementApplicationEntity =
         announcementApplicationMapper.toEntity(
-            announcement.getAnnouncementApplication(), announcementEntity);
+            announcement.getAnnouncementApplication(), announcementEntity, club);
 
     // 2. application entity save
     /** todo FK를 가진 application에서 OneToOne mapping을 진행해서 application을 저장하는 것이 옳은 방법인지 고민 필요. */
@@ -77,8 +81,19 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public void saveAll(List<Announcement> announcements) {
-    announcementJpaRepository.saveAll(
-        announcements.stream().map(announcementMapper::toEntity).toList());
+  public void saveAll(
+      List<Announcement> announcements,
+      Map<String, ClubEntity> clubs) { // List<ClubEntity> clubs) {
+
+    List<AnnouncementEntity> announcementEntities =
+        announcements.stream()
+            .map(
+                domain -> {
+                  ClubEntity clubProxy = clubs.get(domain.getClubId());
+                  return announcementMapper.toEntity(domain, clubProxy);
+                })
+            .toList();
+
+    announcementJpaRepository.saveAll(announcementEntities);
   }
 }
