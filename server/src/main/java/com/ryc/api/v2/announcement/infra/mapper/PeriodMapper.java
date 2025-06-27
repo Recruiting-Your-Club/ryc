@@ -13,6 +13,7 @@ public class PeriodMapper {
 
   /** PeriodVO to Domain */
   Period toDomain(PeriodVO periodVO) {
+    if (periodVO == null) return null;
 
     return Period.builder()
         .startDate(periodVO.getStartDate())
@@ -22,6 +23,7 @@ public class PeriodMapper {
 
   /** Domain to PeriodVO */
   PeriodVO toVO(Period period) {
+    if (period == null) return null;
 
     return PeriodVO.builder().startDate(period.startDate()).endDate(period.endDate()).build();
   }
