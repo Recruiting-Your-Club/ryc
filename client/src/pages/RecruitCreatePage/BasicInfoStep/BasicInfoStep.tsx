@@ -1,4 +1,4 @@
-import { Button, Checkbox, Select, Toggle } from '@components';
+import { Button, Checkbox, Select, Text, Toggle } from '@components';
 import { FieldLabel } from '@components/FieldLabel';
 import React, { useState } from 'react';
 import {
@@ -39,8 +39,11 @@ function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
                 required
             />
             <div css={s_noticeBox}>
-                지원자의 <span css={s_textHighlight}>이름</span>과{' '}
-                <span css={s_textHighlight}>이메일 주소</span>는 필수 입력 사항입니다.
+                <Text as="span" type="captionRegular" textAlign="start">
+                    지원자의 <Text.HighLight sx={s_textHighlight}>이름</Text.HighLight>과{' '}
+                    <Text.HighLight sx={s_textHighlight}>이메일 주소</Text.HighLight>는 필수 입력
+                    사항입니다.
+                </Text>
             </div>
             <div css={s_checkboxWrapper}>
                 <Checkbox.Root

@@ -7,12 +7,10 @@ export const s_noticeBox = css`
     padding: 1rem;
     padding-left: 2rem;
     border-radius: 6px;
-    ${theme.typography.captionRegular};
     margin: 1rem 0rem;
 `;
 
 export const s_textHighlight = css`
-    color: ${theme.colors.default};
     ${theme.typography.captionSemibold};
 `;
 
