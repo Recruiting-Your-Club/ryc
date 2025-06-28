@@ -9,6 +9,7 @@
 # production
 /build
 /dist
+**/dist/
 
 # misc
 .DS_Store
@@ -28,3 +29,11 @@ yarn-error.log*
 .idea/
 .vscode/
 .turbo
+
+# TypeScript build info
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Turbo cache
+.turbo/
+**/.turbo/

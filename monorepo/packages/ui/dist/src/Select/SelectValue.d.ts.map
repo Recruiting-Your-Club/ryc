@@ -1,1 +1,0 @@
-{"version":3,"file":"SelectValue.d.ts","sourceRoot":"","sources":["../../../src/Select/SelectValue.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,gBAAgB,CAAC;AAShD,UAAU,gBAAgB;IACtB,WAAW,CAAC,EAAE,MAAM,CAAC;IACrB,EAAE,CAAC,EAAE,SAAS,CAAC;CAClB;AAED,iBAAS,WAAW,CAAC,EAAE,WAAW,EAAE,EAAE,EAAE,EAAE,gBAAgB,oDAQzD;AAED,OAAO,EAAE,WAAW,EAAE,CAAC"}
