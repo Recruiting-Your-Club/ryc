@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementApplicationEntity;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
@@ -95,5 +96,10 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
             .toList();
 
     announcementJpaRepository.saveAll(announcementEntities);
+  }
+
+  @Override
+  public List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds) {
+    return announcementJpaRepository.getStatusesByClubIds(clubIds);
   }
 }

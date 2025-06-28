@@ -54,7 +54,9 @@ public class AnnouncementEntity extends BaseEntity {
   @CollectionTable(name = "announcement_tags")
   private List<TagVO> tags;
 
+  @Enumerated(EnumType.STRING)
   private AnnouncementType announcementType;
+
   private String activityPeriod;
 
   @Enumerated(EnumType.STRING)

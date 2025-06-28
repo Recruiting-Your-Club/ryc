@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
@@ -86,18 +88,48 @@ public class AnnouncementService {
 
   @Transactional
   public void updateAnnouncementStatus() {
+    // 1. 삭제되지 않은 공고 불러오기
     List<Announcement> announcements = announcementRepository.findAllByIsDeleted(false);
 
+    // 2.공고 상태 업데이트
     List<Announcement> updatedAnnouncements =
         announcements.stream().map(Announcement::updateStatus).toList();
 
+    // 3. announcement에서 clubId 불러오기
     Set<String> ids =
         updatedAnnouncements.stream().map(Announcement::getClubId).collect(Collectors.toSet());
 
+    // 4. 해당 Id로 Club조회 후 Map
     Map<String, ClubEntity> clubs =
         clubJpaRepository.findAllById(ids).stream()
             .collect(Collectors.toMap(ClubEntity::getId, club -> club));
 
+    // 5. 공고 저장
     announcementRepository.saveAll(updatedAnnouncements, clubs);
+  }
+
+  /**
+   * TODO club도메인에서 jpql로 공고 상태 조회로 최적화
+   *
+   * @param clubIds 모든 클럽 Id리스트
+   * @return 모든 클럽의 공고 상태
+   */
+  public Map<String, AnnouncementStatus> getStatusesByClubIds(List<String> clubIds) {
+    // 1. Mapping
+    Map<String, AnnouncementStatus> statuses =
+        announcementRepository.getStatusesByClubIds(clubIds).stream()
+            .collect(
+                Collectors.toMap(
+                    ClubAnnouncementStatusDto::clubId, ClubAnnouncementStatusDto::status));
+
+    // 2. 공고가 없는 경우 EMPTY 삽입
+    clubIds.forEach(
+        clubId -> {
+          if (!statuses.containsKey(clubId)) {
+            statuses.put(clubId, AnnouncementStatus.EMPTY);
+          }
+        });
+
+    return statuses;
   }
 }

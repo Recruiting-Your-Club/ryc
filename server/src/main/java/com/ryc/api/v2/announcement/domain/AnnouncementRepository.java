@@ -3,6 +3,7 @@ package com.ryc.api.v2.announcement.domain;
 import java.util.List;
 import java.util.Map;
 
+import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 public interface AnnouncementRepository {
@@ -27,4 +28,6 @@ public interface AnnouncementRepository {
   public List<Announcement> findAllByIsDeleted(Boolean isDeleted);
 
   void saveAll(List<Announcement> announcements, Map<String, ClubEntity> clubs);
+
+  List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds);
 }
