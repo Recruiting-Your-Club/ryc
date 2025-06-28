@@ -27,16 +27,20 @@ export const s_savedEvaluationContainer = (hasUserEvaluation: boolean) => css`
     overflow: hidden;
 `;
 
-export const s_starScoreContainer = css`
+export const s_evaluationTitleContainer = css`
     width: 100%;
     flex: 0.8;
     display: flex;
     align-items: center;
-    justify-content: start; // 피그마는 왼쪽 정렬
-    gap: 1rem;
+    justify-content: space-between; // 피그마는 왼쪽 정렬
     overflow: hidden;
     padding: 1rem;
     max-height: 5rem;
+`;
+
+export const s_starScoreContainer = css`
+    display: flex;
+    gap: 1rem;
 `;
 
 export const s_averageText = css`

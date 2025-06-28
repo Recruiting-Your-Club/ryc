@@ -10,6 +10,7 @@ import {
     s_averageNumber,
     s_averageText,
     s_boxContainer,
+    s_evaluationTitleContainer,
     s_myEvaluationText,
     s_myEvaluationTitleContainer,
     s_savedEvaluationContainer,
@@ -37,19 +38,21 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
     return (
         <div css={s_boxContainer(height)}>
             <div css={s_savedEvaluationContainer(hasUserEvaluation)}>
-                <div css={s_starScoreContainer}>
+                <div css={s_evaluationTitleContainer}>
                     <Text as="span" type="captionSemibold" noWrap sx={s_averageText}>
-                        평균 평점
+                        평가 목록
                     </Text>
-                    <Rating
-                        key={evaluation?.applicantId}
-                        value={evaluation ? evaluation.averageScore : 0}
-                        size="lg"
-                        type="display"
-                    />
-                    <Text as="span" type="captionRegular" color="primary" sx={s_averageNumber}>
-                        ({evaluation ? evaluation.averageScore : 0})
-                    </Text>
+                    <div css={s_starScoreContainer}>
+                        <Rating
+                            key={evaluation?.applicantId}
+                            value={evaluation ? evaluation.averageScore : 0}
+                            size="lg"
+                            type="display"
+                        />
+                        <Text as="span" type="captionRegular" color="primary" sx={s_averageNumber}>
+                            ({evaluation ? evaluation.averageScore : 0})
+                        </Text>
+                    </div>
                 </div>
                 <Divider />
                 <div css={perStarScoreGroup(false)}>
