@@ -1,5 +1,7 @@
 package com.ryc.api.v2.announcement.domain.vo;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
+import com.ryc.api.v2.announcement.common.exception.custom.BusinessException;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementPeriodInfoRequest;
 
 import lombok.Builder;
@@ -43,17 +45,17 @@ public record AnnouncementPeriodInfo(
     // 1. 면접 진행 시 추가되는 기간 값들에 대한 validate
     if (hasInterview) {
       if (interviewPeriod == null) {
-        throw new IllegalArgumentException("interviewPeriod shouldn't be null.");
+        throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_REQUIRED);
       }
       if (documentResultPeriod == null) {
-        throw new IllegalArgumentException("documentResultPeriod shouldn't be null.");
+        throw new BusinessException(AnnouncementErrorCode.DOCUMENT_RESULT_PERIOD_REQUIRED);
       }
     } else {
       if (interviewPeriod != null) {
-        throw new IllegalArgumentException("interviewPeriod should be null.");
+        throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_NOT_ALLOWED);
       }
       if (documentResultPeriod != null) {
-        throw new IllegalArgumentException("documentResultPeriod should be null.");
+        throw new BusinessException(AnnouncementErrorCode.DOCUMENT_RESULT_PERIOD_NOT_ALLOWED);
       }
     }
 
@@ -71,20 +73,22 @@ public record AnnouncementPeriodInfo(
     // 인터뷰가 있을경우 지원 기간 -> 서류발표기간 -> 면접기간 -> 최종발표기간
     if (hasInterview) {
       if (documentResultPeriod.isBefore(applicationPeriod)) {
-        throw new IllegalArgumentException(
-            "applicationPeriod should be before documentResultPeriod");
+        throw new BusinessException(
+            AnnouncementErrorCode.DOCUMENT_PERIOD_MUST_BE_AFTER_APPLICATION);
       }
       if (interviewPeriod.isBefore(documentResultPeriod)) {
-        throw new IllegalArgumentException("documentResultPeriod should be before interviewPeriod");
+        throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_MUST_BE_AFTER_DOCUMENT);
       }
       if (finalResultPeriod.isBefore(interviewPeriod)) {
-        throw new IllegalArgumentException("interviewPeriod should be before finalResultPeriod");
+        throw new BusinessException(
+            AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_INTERVIEW);
       }
     }
     // 없을경우 모집기간 -> 최종발표기간
     else {
       if (finalResultPeriod.isBefore(applicationPeriod)) {
-        throw new IllegalArgumentException("applicationPeriod should be before finalResultPeriod");
+        throw new BusinessException(
+            AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_APPLICATION);
       }
     }
   }

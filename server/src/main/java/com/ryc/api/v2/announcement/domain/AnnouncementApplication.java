@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
+import com.ryc.api.v2.announcement.common.exception.custom.BusinessException;
 import com.ryc.api.v2.announcement.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.announcement.domain.vo.ApplicationQuestion;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementApplicationRequest;
@@ -93,7 +95,7 @@ public class AnnouncementApplication {
 
     // 3. 필수 개인정보 질문 타입이 포함되어있는지 확인
     if (!providedTypes.containsAll(requiredTypes)) {
-      throw new IllegalArgumentException("personalInfoQuestionTypes must contain NAME and EMAIL");
+      throw new BusinessException(AnnouncementErrorCode.MISSING_REQUIRED_PERSONAL_INFO);
     }
   }
 }

@@ -2,6 +2,8 @@ package com.ryc.api.v2.announcement.domain.vo;
 
 import java.util.List;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
+import com.ryc.api.v2.announcement.common.exception.custom.BusinessException;
 import com.ryc.api.v2.announcement.domain.enums.QuestionType;
 import com.ryc.api.v2.announcement.presentation.dto.request.ApplicationQuestionRequest;
 
@@ -58,13 +60,11 @@ public record ApplicationQuestion(
   private void validateOptions(Boolean hasOptions) {
     if (hasOptions) {
       if (options.size() < 2) {
-        throw new IllegalArgumentException(
-            "MultipleChoice, SingleChoice type question options shouldn't be empty");
+        throw new BusinessException(AnnouncementErrorCode.INSUFFICIENT_QUESTION_OPTIONS);
       }
     } else {
       if (!options.isEmpty()) {
-        throw new IllegalArgumentException(
-            "LongAnswer, ShortAnswer, File type question options shouldn't be empty");
+        throw new BusinessException(AnnouncementErrorCode.QUESTION_OPTIONS_NOT_ALLOWED);
       }
     }
   }
