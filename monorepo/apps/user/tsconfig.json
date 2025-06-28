@@ -1,8 +1,5 @@
 {
     "extends": "@ssoc/config/src/tsconfig/tsconfig.react.json",
-    "moduleResolution": "bundler", // webpack 번들링 위해 필요
-    "noEmit": true, // tsconfig말고 webpack으로 번들링 함
-    "resolveJsonModule": false, // json import
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
@@ -17,7 +14,10 @@
             "@types/*": ["types/*"],
             "@utils/*": ["utils/*"],
             "@styles/*": ["styles/*"]
-        }
+        },
+        "moduleResolution": "bundler", // webpack 번들링 위해 필요
+        "noEmit": true, // tsconfig말고 webpack으로 번들링 함
+        "resolveJsonModule": false // json import
     },
     "include": ["src"],
     "exclude": ["node_modules", "dist", "build"]
