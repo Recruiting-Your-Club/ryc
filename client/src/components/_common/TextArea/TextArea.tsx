@@ -26,7 +26,6 @@ function TextArea({
     value,
     maxLength,
     disabled,
-    textAreaSx,
     ...props
 }: TextAreaProps) {
     const currentLength = typeof value === 'string' ? value.length : 0;
