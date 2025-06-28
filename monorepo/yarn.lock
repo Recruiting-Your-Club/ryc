@@ -2323,8 +2323,11 @@ __metadata:
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.4"
     "@emotion/react": "npm:^11.13.0"
-    "@ssoc/config": "npm:*"
-    "@ssoc/ui": "npm:*"
+    "@ssoc/constants": "workspace:*"
+    "@ssoc/hooks": "workspace:*"
+    "@ssoc/styles": "workspace:*"
+    "@ssoc/ui": "workspace:*"
+    "@ssoc/utils": "workspace:*"
     "@storybook/addon-essentials": "npm:^8.5.4"
     "@storybook/addon-interactions": "npm:^8.5.4"
     "@storybook/addon-onboarding": "npm:^8.5.4"
@@ -2357,7 +2360,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ssoc/config@npm:*, @ssoc/config@workspace:*, @ssoc/config@workspace:packages/config":
+"@ssoc/config@workspace:*, @ssoc/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@ssoc/config@workspace:packages/config"
   dependencies:
@@ -2397,6 +2400,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ssoc/hooks@workspace:packages/hooks"
   dependencies:
+    "@ssoc/ui": "workspace:*"
     "@types/react": "npm:^18.0.0"
     "@types/react-dom": "npm:^18.0.0"
     typescript: "npm:^4.4.2"
@@ -2417,7 +2421,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ssoc/ui@npm:*, @ssoc/ui@workspace:packages/ui":
+"@ssoc/ui@workspace:*, @ssoc/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@ssoc/ui@workspace:packages/ui"
   dependencies:
@@ -2425,8 +2429,6 @@ __metadata:
     "@emotion/react": "npm:^11.13.0"
     "@ssoc/assets": "workspace:*"
     "@ssoc/config": "workspace:*"
-    "@ssoc/constants": "workspace:*"
-    "@ssoc/hooks": "workspace:*"
     "@ssoc/styles": "workspace:*"
     "@ssoc/utils": "workspace:*"
     "@types/react": "npm:^18.0.0"
@@ -2443,8 +2445,11 @@ __metadata:
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.4"
     "@emotion/react": "npm:^11.13.0"
-    "@ssoc/config": "npm:*"
-    "@ssoc/ui": "npm:*"
+    "@ssoc/constants": "workspace:*"
+    "@ssoc/hooks": "workspace:*"
+    "@ssoc/styles": "workspace:*"
+    "@ssoc/ui": "workspace:*"
+    "@ssoc/utils": "workspace:*"
     "@storybook/addon-essentials": "npm:^8.5.4"
     "@storybook/addon-interactions": "npm:^8.5.4"
     "@storybook/addon-onboarding": "npm:^8.5.4"

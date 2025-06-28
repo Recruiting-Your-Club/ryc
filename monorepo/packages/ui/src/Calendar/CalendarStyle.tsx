@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 
-import { SATURDAY, SUNDAY } from '@ssoc/constants';
 import theme from '@ssoc/styles';
 
+import { SATURDAY, SUNDAY } from '../../constants';
 import type { Size, SizeStyle } from './types';
 import type { CalendarProps } from './types';
 

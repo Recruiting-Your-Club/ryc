@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { WEEKDAYS } from '@ssoc/constants';
-
+import { WEEKDAYS } from '../../constants';
 import { Text } from '../Text';
 import {
     calendarBodyContainer,

@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 
-import { DEFAULT_FONT_SIZE } from '@ssoc/constants';
 import theme from '@ssoc/styles';
 import { hexToRgb } from '@ssoc/utils';
 
+import { DEFAULT_FONT_SIZE } from '../../constants';
 import type { TextColor } from './types';
 
 export const selectCss = css`

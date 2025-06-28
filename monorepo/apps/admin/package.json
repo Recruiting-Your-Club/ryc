@@ -22,8 +22,11 @@
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",
-        "@ssoc/config": "*",
-        "@ssoc/ui": "*",
+        "@ssoc/constants": "workspace:*",
+        "@ssoc/hooks": "workspace:*",
+        "@ssoc/styles": "workspace:*",
+        "@ssoc/ui": "workspace:*",
+        "@ssoc/utils": "workspace:*",
         "@tanstack/react-query": "^5.74.7",
         "dayjs": "^1.11.13",
         "react": "^19.0.0",

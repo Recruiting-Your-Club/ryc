@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { PICKER_COLORS, textButtons } from '@ssoc/constants';
-
+import { PICKER_COLORS, textButtons } from '../../constants';
 import {
     perButtonCss,
     perColorCss,

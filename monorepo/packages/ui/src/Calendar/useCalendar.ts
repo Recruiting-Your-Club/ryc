@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { CALENDAR_SIZE } from '@ssoc/constants';
-
+import { CALENDAR_SIZE } from '../../constants';
 import type { CalendarData } from './types';
 
 function useCalendar(

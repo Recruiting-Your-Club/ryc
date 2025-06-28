@@ -6,8 +6,7 @@ import {
     formatButtons,
     listButtons,
     optionButtons,
-} from '@ssoc/constants';
-
+} from '../../constants';
 import { Select } from '../Select';
 import {
     buttonGroup,

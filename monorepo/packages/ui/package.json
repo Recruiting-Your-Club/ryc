@@ -8,14 +8,12 @@
     ],
     "private": true,
     "scripts": {
-        "build": "babel src --out-dir dist/src --extensions .ts,.tsx && tsc",
-        "dev": "babel src --out-dir dist/src --extensions .ts,.tsx --watch"
+        "build": "babel src --out-dir dist/src --extensions .ts,.tsx && babel constants --out-dir dist/constants --extensions .ts,.tsx && tsc",
+        "dev": "babel src --out-dir dist/src --extensions .ts,.tsx --watch & babel constants --out-dir dist/constants --extensions .ts,.tsx --watch"
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",
         "@ssoc/assets": "workspace:*",
-        "@ssoc/constants": "workspace:*",
-        "@ssoc/hooks": "workspace:*",
         "@ssoc/styles": "workspace:*",
         "@ssoc/utils": "workspace:*",
         "react": "^19.0.0",

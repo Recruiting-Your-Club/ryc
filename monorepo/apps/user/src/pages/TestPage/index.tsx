@@ -1,9 +1,11 @@
+import { useToast } from '@ssoc/hooks';
 import { Button } from '@ssoc/ui';
 
 function TestPage() {
+    const { toast } = useToast();
     return (
         <div>
-            <Button>테스트입니다.</Button>
+            <button onClick={() => toast('test')}>테스트입니다.</button>
         </div>
     );
 }
