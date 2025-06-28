@@ -1,5 +1,4 @@
-import type { ChangeEvent } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, MouseEvent, useContext } from 'react';
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
 interface CheckboxContextType {
@@ -11,7 +10,7 @@ interface CheckboxContextType {
     color?: CheckboxColor;
     defaultChecked?: boolean;
     disabled?: boolean;
-    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
 export const CheckboxContext = createContext<CheckboxContextType | undefined>(undefined);

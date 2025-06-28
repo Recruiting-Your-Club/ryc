@@ -2,9 +2,6 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
 export const headerBarContainer = css`
-    position: fixed;
-    top: 0;
-    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,26 +10,13 @@ export const headerBarContainer = css`
     padding: 0 1rem;
     background-color: ${theme.colors.white};
     border-bottom: 0.5px solid ${theme.colors.disabled};
-    z-index: 20;
 `;
 
 export const homeNavContainer = css`
     display: flex;
     justify-content: space-between;
-    width: 100rem;
-
-    // 840px ~ 1200px
-    @media (max-width: ${theme.breakpoint.desktop}) {
-        width: 90rem;
-    }
-    // 600px ~ 840px
-    @media (max-width: ${theme.breakpoint.tablet}) {
-        width: 70rem;
-    }
-    // 0px ~ 600px
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 35rem;
-    }
+    width: 100%;
+    max-width: 100rem;
 `;
 
 export const homeImage = css`

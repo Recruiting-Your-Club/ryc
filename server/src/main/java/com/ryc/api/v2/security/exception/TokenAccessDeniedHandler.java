@@ -1,8 +1,5 @@
 package com.ryc.api.v2.security.exception;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -23,8 +20,7 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(
       HttpServletRequest request,
       HttpServletResponse response,
-      AccessDeniedException accessDeniedException)
-      throws IOException, ServletException {
+      AccessDeniedException accessDeniedException) {
     handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
   }
 }

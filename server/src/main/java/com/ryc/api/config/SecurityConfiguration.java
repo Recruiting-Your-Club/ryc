@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -55,15 +55,9 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             request ->
                 request
-                    .requestMatchers("/")
-                    .permitAll() // health check
-                    .requestMatchers("/api/v2/auth/*")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v2/application/form")
-                    .permitAll()
                     .requestMatchers(
+                        "/",
+                        "/api/v2/auth/*",
                         "/actuator/**",
                         "/swagger-ui/*",
                         "/swagger-ui.html",
@@ -71,7 +65,15 @@ public class SecurityConfiguration {
                         "/v2/**",
                         "/v3/**",
                         "/swagger-resources/**")
-                    .permitAll() // swagger 접근 허용
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
+                    .permitAll()
+                    .requestMatchers(
+                        HttpMethod.GET,
+                        "/api/v2/application/form",
+                        "/api/v2/clubs/*",
+                        "/api/v2/clubs")
+                    .permitAll()
                     .anyRequest()
                     .authenticated());
 

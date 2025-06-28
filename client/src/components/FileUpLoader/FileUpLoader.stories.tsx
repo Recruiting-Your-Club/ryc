@@ -4,6 +4,7 @@ import { FileUpLoader } from './FileUpLoader';
 import type { FileUpLoaderInteractionContextType, FileUpLoaderStateContextType } from './types';
 import { FileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
+import { ToastProvider } from '@components/Toast/ToastProvider';
 
 const mockPdfFile = new File(['%PDF-sample'], 'document.pdf', {
     type: 'application/pdf',
@@ -54,52 +55,62 @@ export default meta;
 
 export const Default: Story = {
     render: () => (
-        <FileUpLoader>
-            <FileUpLoader.Button />
-            <FileUpLoader.HelperText sx={{ top: 0 }}>
-                pdf, 이미지 파일만 업로드 가능합니다.
-            </FileUpLoader.HelperText>
-            <FileUpLoader.Box />
-        </FileUpLoader>
+        <ToastProvider>
+            <FileUpLoader>
+                <FileUpLoader.Button />
+                <FileUpLoader.HelperText sx={{ top: 0 }}>
+                    pdf, 이미지 파일만 업로드 가능합니다.
+                </FileUpLoader.HelperText>
+                <FileUpLoader.Box />
+            </FileUpLoader>
+        </ToastProvider>
     ),
 };
 
 export const NoHelperText: Story = {
     render: () => (
-        <FileUpLoader>
-            <FileUpLoader.Button />
-            <FileUpLoader.Box />
-        </FileUpLoader>
+        <ToastProvider>
+            <FileUpLoader>
+                <FileUpLoader.Button />
+                <FileUpLoader.Box />
+            </FileUpLoader>
+        </ToastProvider>
     ),
 };
 
 export const OnlyEmptyBox: Story = {
     render: () => (
-        <FileUpLoader>
-            <FileUpLoader.Box />
-        </FileUpLoader>
+        <ToastProvider>
+            <FileUpLoader>
+                <FileUpLoader.Box />
+            </FileUpLoader>
+        </ToastProvider>
     ),
 };
 
 export const WithMockedFiles: Story = {
     render: () => (
-        <FileUpLoaderStateContext.Provider value={mockStateContext}>
-            <FileUpLoaderInteractionContext.Provider value={mockInteractionContext}>
-                <FileUpLoader.Button />
-                <FileUpLoader.HelperText sx={{ top: 0 }}>
-                    이미 업로드된 파일을 확인해보세요.
-                </FileUpLoader.HelperText>
-                <FileUpLoader.Box />
-            </FileUpLoaderInteractionContext.Provider>
-        </FileUpLoaderStateContext.Provider>
+        <ToastProvider>
+            <FileUpLoaderStateContext.Provider value={mockStateContext}>
+                <FileUpLoaderInteractionContext.Provider value={mockInteractionContext}>
+                    <FileUpLoader.Button />
+                    <FileUpLoader.HelperText sx={{ top: 0 }}>
+                        이미 업로드된 파일을 확인해보세요.
+                    </FileUpLoader.HelperText>
+                    <FileUpLoader.Box />
+                </FileUpLoaderInteractionContext.Provider>
+            </FileUpLoaderStateContext.Provider>
+        </ToastProvider>
     ),
 };
 
 export const disabledMode: Story = {
     render: () => (
-        <FileUpLoader disabled={true}>
-            <FileUpLoader.Button />
-            <FileUpLoader.Box />
-        </FileUpLoader>
+        <ToastProvider>
+            <FileUpLoader disabled={true}>
+                <FileUpLoader.Button />
+                <FileUpLoader.Box />
+            </FileUpLoader>
+        </ToastProvider>
     ),
 };
