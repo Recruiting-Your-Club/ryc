@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface EmailRepository {
 
+  Email save(Email email);
+
   List<Email> saveAll(List<Email> emails);
 
   List<Email> findPendingEmails(Pageable pageable);

@@ -20,6 +20,13 @@ public class EmailRepositoryImpl implements EmailRepository {
   private final EmailJpaRepository emailJpaRepository;
 
   @Override
+  public Email save(Email email) {
+    EmailEntity emailEntity = EmailMapper.toEntity(email);
+    EmailEntity savedEntity = emailJpaRepository.save(emailEntity);
+    return EmailMapper.toDomain(savedEntity);
+  }
+
+  @Override
   public List<Email> saveAll(List<Email> emails) {
     List<EmailEntity> emailEntities = emails.stream().map(EmailMapper::toEntity).toList();
     List<EmailEntity> savedEntities = emailJpaRepository.saveAll(emailEntities);

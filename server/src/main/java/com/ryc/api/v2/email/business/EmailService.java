@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
+import com.ryc.api.v2.email.domain.EmailSentStatus;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
@@ -83,8 +84,15 @@ public class EmailService {
   }
 
   @Transactional
-  public void saveAll(List<Email> emails) {
-    emailRepository.saveAll(emails);
+  public void updateStatus(Email email, EmailSentStatus status) {
+    Email updatedEmail = email.updateStatus(status);
+    emailRepository.save(updatedEmail);
+  }
+
+  @Transactional
+  public void incrementRetryCount(Email email) {
+    Email updatedEmail = email.incrementRetryCount();
+    emailRepository.save(updatedEmail);
   }
 
   private List<Email> createEmails(
