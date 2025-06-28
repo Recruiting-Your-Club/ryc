@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
-import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.enums.Role;
+import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
@@ -29,8 +29,8 @@ public class ClubService {
   public ClubCreateResponse createClub(ClubCreateRequest body) {
     final Club club = Club.initialize(body);
 
-    if (clubRepository.existsByName(club.getName())) {
-      throw new IllegalArgumentException("Club with name already exists: " + club.getName());
+    if (clubRepository.existsByName(club.name())) {
+      throw new IllegalArgumentException("Club with name already exists: " + club.name());
     }
 
     final Club savedClub = clubRepository.save(club);
@@ -38,7 +38,7 @@ public class ClubService {
     Admin currentUser = authService.getCurrentUser();
     clubRepository.assignRole(savedClub, currentUser, Role.OWNER);
 
-    return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
+    return ClubCreateResponse.builder().clubId(savedClub.id()).build();
   }
 
   @Transactional
@@ -51,15 +51,15 @@ public class ClubService {
     Club savedClub = clubRepository.save(newClub);
 
     return ClubUpdateResponse.builder()
-        .name(savedClub.getName())
-        .shortDescription(savedClub.getShortDescription())
-        .detailDescription(savedClub.getDetailDescription())
-        .imageUrl(savedClub.getImageUrl())
-        .thumbnailUrl(savedClub.getThumbnailUrl())
-        .category(savedClub.getCategory())
-        .clubTags(savedClub.getClubTags())
-        .clubSummaries(savedClub.getClubSummaries())
-        .clubDetailImages(savedClub.getClubDetailImages())
+        .name(savedClub.name())
+        .shortDescription(savedClub.shortDescription())
+        .detailDescription(savedClub.detailDescription())
+        .imageUrl(savedClub.imageUrl())
+        .thumbnailUrl(savedClub.thumbnailUrl())
+        .category(savedClub.category())
+        .clubTags(savedClub.clubTags())
+        .clubSummaries(savedClub.clubSummaries())
+        .clubDetailImages(savedClub.clubDetailImages())
         .build();
   }
 
@@ -70,20 +70,20 @@ public class ClubService {
             .findById(clubId)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + clubId));
 
-    String detailDescription = club.getDetailDescription();
+    String detailDescription = club.detailDescription();
     if (detailDescription.isBlank()) {
-      detailDescription = club.getShortDescription();
+      detailDescription = club.shortDescription();
     }
 
     return ClubGetResponse.builder()
-        .name(club.getName())
+        .name(club.name())
         .detailDescription(detailDescription)
-        .imageUrl(club.getImageUrl())
-        .thumbnailUrl(club.getThumbnailUrl())
-        .category(club.getCategory())
-        .clubTags(club.getClubTags())
-        .clubSummaries(club.getClubSummaries())
-        .clubDetailImages(club.getClubDetailImages())
+        .imageUrl(club.imageUrl())
+        .thumbnailUrl(club.thumbnailUrl())
+        .category(club.category())
+        .clubTags(club.clubTags())
+        .clubSummaries(club.clubSummaries())
+        .clubDetailImages(club.clubDetailImages())
         .build();
   }
 

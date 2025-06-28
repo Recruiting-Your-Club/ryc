@@ -10,17 +10,17 @@ public class ClubMapper {
 
   public static ClubEntity toEntity(Club club) {
     return ClubEntity.builder()
-        .id(club.getId())
-        .name(club.getName())
-        .shortDescription(club.getShortDescription())
-        .detailDescription(club.getDetailDescription())
-        .imageUrl(club.getImageUrl())
-        .thumbnailUrl(club.getThumbnailUrl())
-        .category(club.getCategory())
-        .clubTags(club.getClubTags())
-        .clubSummaries(club.getClubSummaries())
-        .clubDetailImages(club.getClubDetailImages())
-        .deleted(club.getDeleted())
+        .id(club.id())
+        .name(club.name())
+        .shortDescription(club.shortDescription())
+        .detailDescription(club.detailDescription())
+        .imageUrl(club.imageUrl())
+        .thumbnailUrl(club.thumbnailUrl())
+        .category(club.category())
+        .clubTags(club.clubTags())
+        .clubSummaries(club.clubSummaries())
+        .clubDetailImages(club.clubDetailImages())
+        .deleted(club.deleted())
         .build();
   }
 

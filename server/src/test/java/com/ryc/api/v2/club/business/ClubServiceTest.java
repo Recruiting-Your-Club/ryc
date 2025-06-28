@@ -19,9 +19,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ryc.api.v2.auth.service.AuthService;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.domain.vo.Club;
-import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
@@ -77,7 +77,7 @@ class ClubServiceTest {
     ClubCreateResponse response = clubService.createClub(request);
 
     // Then
-    assertThat(response.clubId()).isEqualTo(testClub.getId());
+    assertThat(response.clubId()).isEqualTo(testClub.id());
   }
 
   @Test
@@ -111,28 +111,28 @@ class ClubServiceTest {
     ClubUpdateRequest request =
         ClubUpdateRequest.builder()
             .name(Optional.of(newName))
-            .shortDescription(Optional.of(testClub.getShortDescription()))
-            .detailDescription(Optional.of(testClub.getDetailDescription()))
-            .imageUrl(Optional.of(testClub.getImageUrl()))
-            .thumbnailUrl(Optional.of(testClub.getThumbnailUrl()))
-            .category(Optional.of(testClub.getCategory().toString()))
-            .clubTags(testClub.getClubTags())
-            .clubSummaries(testClub.getClubSummaries())
-            .clubDetailImages(testClub.getClubDetailImages())
+            .shortDescription(Optional.of(testClub.shortDescription()))
+            .detailDescription(Optional.of(testClub.detailDescription()))
+            .imageUrl(Optional.of(testClub.imageUrl()))
+            .thumbnailUrl(Optional.of(testClub.thumbnailUrl()))
+            .category(Optional.of(testClub.category().toString()))
+            .clubTags(testClub.clubTags())
+            .clubSummaries(testClub.clubSummaries())
+            .clubDetailImages(testClub.clubDetailImages())
             .build();
 
     Club updatedClub =
         Club.builder()
             .id(clubId)
             .name(newName)
-            .shortDescription(testClub.getShortDescription())
-            .detailDescription(testClub.getDetailDescription())
-            .imageUrl(testClub.getImageUrl())
-            .thumbnailUrl(testClub.getThumbnailUrl())
-            .category(testClub.getCategory())
-            .clubTags(testClub.getClubTags())
-            .clubSummaries(testClub.getClubSummaries())
-            .clubDetailImages(testClub.getClubDetailImages())
+            .shortDescription(testClub.shortDescription())
+            .detailDescription(testClub.detailDescription())
+            .imageUrl(testClub.imageUrl())
+            .thumbnailUrl(testClub.thumbnailUrl())
+            .category(testClub.category())
+            .clubTags(testClub.clubTags())
+            .clubSummaries(testClub.clubSummaries())
+            .clubDetailImages(testClub.clubDetailImages())
             .build();
 
     when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
@@ -156,7 +156,7 @@ class ClubServiceTest {
     ClubGetResponse response = clubService.getClub(clubId);
 
     // Then
-    assertThat(response.name()).isEqualTo(testClub.getName());
+    assertThat(response.name()).isEqualTo(testClub.name());
   }
 
   @Test

@@ -18,9 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.enums.Category;
+import com.ryc.api.v2.club.domain.enums.Role;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
-import com.ryc.api.v2.club.domain.enums.Role;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.RoleEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
@@ -86,7 +86,7 @@ class ClubRepositoryImplTest {
     // Then
     assertThat(savedClub)
         .usingRecursiveComparison()
-        .ignoringFields("createdAt", "updatedAt")
+        .ignoringFields("createdAt", "updatedAt", "deleted")
         .isEqualTo(testClub);
   }
 
@@ -102,7 +102,7 @@ class ClubRepositoryImplTest {
 
     // Then
     assertThat(foundClub).isNotEmpty();
-    assertThat(foundClub.get().getId()).isEqualTo(testClub.getId());
+    assertThat(foundClub.get().id()).isEqualTo(testClub.id());
   }
 
   @Test
