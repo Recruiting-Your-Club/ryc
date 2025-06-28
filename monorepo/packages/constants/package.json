@@ -11,9 +11,6 @@
         "build": "tsc",
         "dev": "tsc --watch"
     },
-    "dependencies": {
-        "@ssoc/assets": "workspace:*"
-    },
     "devDependencies": {
         "typescript": "^4.4.2"
     }
