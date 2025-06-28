@@ -21,7 +21,6 @@
     },
     "devDependencies": {
         "@babel/cli": "^7.26.0",
-        "@ssoc/config": "workspace:*",
         "@types/react": "^18.0.0",
         "@types/react-dom": "^18.0.0",
         "typescript": "^4.4.2"
