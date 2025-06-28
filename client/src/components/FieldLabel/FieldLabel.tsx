@@ -7,12 +7,12 @@ import {
 } from './FieldLabel.style';
 import type { FieldLabelProps } from './typs';
 
-function FieldLabel({ label, description, required, sx }: FieldLabelProps) {
+function FieldLabel({ label, description, required, sx, htmlFor }: FieldLabelProps) {
     return (
         <div css={[s_labelWrapper, sx]}>
-            <div css={s_fieldLabel}>
+            <label htmlFor={htmlFor} css={s_fieldLabel}>
                 {label} {required && <span css={s_requiredLabel}>*</span>}
-            </div>
+            </label>
             {description && <div css={s_labelDescription}>{description}</div>}
         </div>
     );

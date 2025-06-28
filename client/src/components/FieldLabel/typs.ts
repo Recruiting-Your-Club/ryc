@@ -4,5 +4,6 @@ export interface FieldLabelProps {
     label: string;
     required?: boolean;
     description?: string;
+    htmlFor?: string;
     sx?: CSSObject;
 }
