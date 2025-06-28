@@ -1,4 +1,4 @@
-import { useToast } from '@ssoc/hooks';
+import { useToast } from '@ssoc/ui';
 import { Button } from '@ssoc/ui';
 
 function TestPage() {

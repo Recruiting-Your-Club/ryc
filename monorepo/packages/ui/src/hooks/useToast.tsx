@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { ToastContext } from '@ssoc/ui';
+import { ToastContext } from '../components/Toast/ToastProvider';
 
 const useToast = () => {
     const toastContext = useContext(ToastContext);

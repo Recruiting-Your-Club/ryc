@@ -2,9 +2,9 @@
     "extends": "@ssoc/config/src/tsconfig/tsconfig.react.json",
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": "./dist/src",
+        "outDir": "./dist",
         "emitDeclarationOnly": true
     },
-    "include": ["src", "types", "constants"],
+    "include": ["src", "types"],
     "exclude": ["dist", "node_modules", "src/**/*.test.tsx", "src/**/*.stories.tsx"]
 }

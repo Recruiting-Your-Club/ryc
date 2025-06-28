@@ -8,8 +8,8 @@
     ],
     "private": true,
     "scripts": {
-        "build": "babel src --out-dir dist/src --extensions .ts,.tsx && babel constants --out-dir dist/constants --extensions .ts,.tsx && tsc",
-        "dev": "babel src --out-dir dist/src --extensions .ts,.tsx --watch & babel constants --out-dir dist/constants --extensions .ts,.tsx --watch"
+        "build": "babel src --out-dir dist/src --extensions .ts,.tsx && tsc",
+        "dev": "yarn build:ui && yarn build:constants && yarn build:hooks && tsc --watch"
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",
