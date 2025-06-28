@@ -1,4 +1,5 @@
-import { createContext, MouseEvent, useContext } from 'react';
+import type { MouseEvent } from 'react';
+import { createContext, useContext } from 'react';
 import type { CheckboxColor, CheckboxSize, CheckboxVariant } from './CheckboxRoot';
 
 interface CheckboxContextType {
