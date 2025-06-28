@@ -43,36 +43,24 @@ function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
                 <span css={s_textHighlight}>이메일 주소</span>는 필수 입력 사항입니다.
             </div>
             <div css={s_checkboxWrapper}>
-                <div>
-                    <Checkbox.Root
-                        isChecked={infoFields.studentId}
-                        onChange={() => handleChange('studentId')}
-                    >
-                        <Checkbox.HiddenInput />
-                        <Checkbox.Control />
-                        <Checkbox.Label sx={s_checkboxLabel}>학번</Checkbox.Label>
-                    </Checkbox.Root>
-                </div>
-                <div>
-                    <Checkbox.Root
-                        isChecked={infoFields.phone}
-                        onChange={() => handleChange('phone')}
-                    >
-                        <Checkbox.HiddenInput />
-                        <Checkbox.Control />
-                        <Checkbox.Label sx={s_checkboxLabel}>전화번호</Checkbox.Label>
-                    </Checkbox.Root>
-                </div>
-                <div>
-                    <Checkbox.Root
-                        isChecked={infoFields.photo}
-                        onChange={() => handleChange('photo')}
-                    >
-                        <Checkbox.HiddenInput />
-                        <Checkbox.Control />
-                        <Checkbox.Label sx={s_checkboxLabel}>본인 사진</Checkbox.Label>
-                    </Checkbox.Root>
-                </div>
+                <Checkbox.Root
+                    isChecked={infoFields.studentId}
+                    onChange={() => handleChange('studentId')}
+                >
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                    <Checkbox.Label sx={s_checkboxLabel}>학번</Checkbox.Label>
+                </Checkbox.Root>
+                <Checkbox.Root isChecked={infoFields.phone} onChange={() => handleChange('phone')}>
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                    <Checkbox.Label sx={s_checkboxLabel}>전화번호</Checkbox.Label>
+                </Checkbox.Root>
+                <Checkbox.Root isChecked={infoFields.photo} onChange={() => handleChange('photo')}>
+                    <Checkbox.HiddenInput />
+                    <Checkbox.Control />
+                    <Checkbox.Label sx={s_checkboxLabel}>본인 사진</Checkbox.Label>
+                </Checkbox.Root>
             </div>
         </div>
     );
