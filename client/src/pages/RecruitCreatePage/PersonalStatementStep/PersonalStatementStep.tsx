@@ -17,7 +17,7 @@ function PersonalStatementStep({
     addApplicationQuestion,
 }: PersonalStatementStepProps) {
     return (
-        <div>
+        <>
             <FieldLabel
                 label="자기소개서"
                 description="지원자에게 질문하고 싶은 문항을 작성해주세요.(최대 20개의 질문까지 작성 가능합니다)"
@@ -40,7 +40,7 @@ function PersonalStatementStep({
                     질문 추가하기
                 </Button>
             </div>
-        </div>
+        </>
     );
 }
 
