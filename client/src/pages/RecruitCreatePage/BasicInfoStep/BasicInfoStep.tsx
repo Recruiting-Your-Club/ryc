@@ -132,9 +132,7 @@ function BasicInfoStep({
                                 </Button>
                             </div>
                         </div>
-                        <div>
-                            <QuestionForm question={question} updateQuestion={updateQuestion} />
-                        </div>
+                        <QuestionForm question={question} updateQuestion={updateQuestion} />
                     </div>
                 ))}
                 <Button onClick={addQuestion} size="full">
