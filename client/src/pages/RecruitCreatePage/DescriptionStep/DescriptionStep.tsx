@@ -14,7 +14,7 @@ import type { DescriptionProps } from './type';
 
 function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) {
     return (
-        <div>
+        <>
             <div css={s_descriptionWrapper}>
                 <FieldLabel label="공고 제목" description="공고 제목을 작성해주세요" required />
                 <Input
@@ -122,7 +122,7 @@ function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) 
                     <FileUpLoader.Box />
                 </FileUpLoader>
             </div>
-        </div>
+        </>
     );
 }
 
