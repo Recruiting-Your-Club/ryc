@@ -1,6 +1,6 @@
 package com.ryc.api.v2.club.infra.mapper;
 
-import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 public class ClubMapper {

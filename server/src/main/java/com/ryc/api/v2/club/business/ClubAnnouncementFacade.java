@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
-import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 
 import lombok.RequiredArgsConstructor;

@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
-import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.Role;
+import com.ryc.api.v2.club.domain.enums.Role;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;

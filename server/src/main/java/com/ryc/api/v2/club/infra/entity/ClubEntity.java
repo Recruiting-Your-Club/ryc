@@ -15,10 +15,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
-import com.ryc.api.v2.club.domain.Category;
-import com.ryc.api.v2.club.domain.ClubDetailImage;
-import com.ryc.api.v2.club.domain.ClubSummary;
-import com.ryc.api.v2.club.domain.ClubTag;
+import com.ryc.api.v2.club.domain.enums.Category;
+import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
+import com.ryc.api.v2.club.domain.vo.ClubSummary;
+import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
 import lombok.AccessLevel;

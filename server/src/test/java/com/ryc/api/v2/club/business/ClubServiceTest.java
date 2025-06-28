@@ -19,10 +19,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ryc.api.v2.auth.service.AuthService;
-import com.ryc.api.v2.club.domain.Category;
-import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.enums.Category;
+import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.ClubTag;
+import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
