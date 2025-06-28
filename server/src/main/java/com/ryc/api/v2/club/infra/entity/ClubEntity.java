@@ -39,7 +39,7 @@ public class ClubEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String name;
 
   private String shortDescription;
@@ -54,6 +54,7 @@ public class ClubEntity extends BaseEntity {
   private String thumbnailUrl;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private Category category;
 
   @Builder.Default

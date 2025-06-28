@@ -2,7 +2,6 @@ package com.ryc.api.v2.club.business;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,8 @@ public class ClubAnnouncementFacade {
   @Transactional(readOnly = true)
   public List<AllClubGetResponse> getAllClubWithAnnouncementStatus() {
     List<Club> clubs = clubService.getAllClub();
-    Map<String, AnnouncementStatus> statuses = announcementService.getStatusesByClubIds(clubs.stream().map(Club::getId).toList());
+    Map<String, AnnouncementStatus> statuses =
+        announcementService.getStatusesByClubIds(clubs.stream().map(Club::getId).toList());
 
     return clubs.stream()
         .map(

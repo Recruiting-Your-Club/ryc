@@ -1,4 +1,4 @@
-package com.ryc.api.v2.admin.domain;
+package com.ryc.api.v2.auth.domain;
 
 /**
  * 해당 ENUM은 회원가입한 회원의 경우 기본적으로 부여되는 Security에서 설정하는 ROLE을 의미한다. 따라서 비즈니스 로직에서 사용되지 않는다. 단순히, 로그인시,

@@ -1,7 +1,7 @@
-package com.ryc.api.v2.admin.infra.mapper;
+package com.ryc.api.v2.auth.infra.mapper;
 
-import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.admin.infra.entity.AdminEntity;
+import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.auth.infra.entity.AdminEntity;
 
 public class AdminMapper {
   public static AdminEntity toEntity(Admin admin) {

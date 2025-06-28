@@ -45,12 +45,11 @@ public class ClubHttpApi {
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-  @GetMapping("/all")
+  @GetMapping
   @Operation(summary = "모든 동아리 조회 API")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
     List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(responses);
+    return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
 
   @PatchMapping("/{id}")

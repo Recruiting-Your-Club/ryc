@@ -62,9 +62,8 @@ class ClubHttpApiTest {
     ClubCreateRequest createRequest =
         ClubCreateRequest.builder()
             .name("Test Club")
-            .shortDescription("Short description")
             .category(Category.ACADEMIC)
-            .tagNames(List.of("Tag1", "Tag2"))
+            .imageUrl("http://example.com/image.jpg")
             .build();
     ClubCreateResponse createResponse = ClubCreateResponse.builder().clubId("test-id").build();
 
@@ -131,7 +130,7 @@ class ClubHttpApiTest {
 
     // When & Then
     mockMvc
-        .perform(get("/api/v2/clubs/all"))
+        .perform(get("/api/v2/clubs"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value("test-id"))
         .andExpect(jsonPath("$[0].name").value("Test Club"))
