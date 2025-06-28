@@ -9,6 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +73,18 @@ public class EmailService {
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream().map(email -> new EmailSendResponse(email.id())).toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<Email> findPendingEmails() {
+    return emailRepository.findPendingEmails(
+        PageRequest.of(
+            0, 50, Sort.by("createdAt").descending().and(Sort.by("retryCount").descending())));
+  }
+
+  @Transactional
+  public void saveAll(List<Email> emails) {
+    emailRepository.saveAll(emails);
   }
 
   private List<Email> createEmails(

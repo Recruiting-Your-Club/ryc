@@ -6,8 +6,6 @@ import java.util.List;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ryc.api.v2.email.domain.Email;
-import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
 
 import lombok.RequiredArgsConstructor;
@@ -27,15 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 public class EmailSenderService {
 
   private final JavaMailSender mailSender;
-  private final EmailRepository emailRepository;
+  private final EmailService emailService;
 
   @Scheduled(fixedDelay = 10000)
   public void sendPendingEmails() {
     List<Email> updatedEmails = new ArrayList<>();
-    List<Email> pendingEmails =
-        emailRepository.findPendingEmails(
-            PageRequest.of(
-                0, 50, Sort.by("createdAt").descending().and(Sort.by("retryCount").descending())));
+    List<Email> pendingEmails = emailService.findPendingEmails();
 
     for (Email mail : pendingEmails) {
       MimeMessage msg = mailSender.createMimeMessage();
@@ -69,6 +63,6 @@ public class EmailSenderService {
     }
 
     // 이메일 전송 후 상태 업데이트
-    emailRepository.saveAll(updatedEmails);
+    emailService.saveAll(updatedEmails);
   }
 }
