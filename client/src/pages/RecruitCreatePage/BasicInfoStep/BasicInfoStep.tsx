@@ -88,13 +88,13 @@ function BasicInfoStep({
                 />
             </div>
             <div css={s_questionSection}>
-                {questions.map((q) => (
-                    <div key={q.id} css={s_questionCard}>
+                {questions.map((question) => (
+                    <div key={question.id} css={s_questionCard}>
                         <div css={s_questionHeader}>
                             <Select
-                                value={q.type}
+                                value={question.type}
                                 onValueChange={(value) =>
-                                    handleQuestionTypeChange(q.id, value as QuestionType)
+                                    handleQuestionTypeChange(question.id, value as QuestionType)
                                 }
                                 sx={s_selectContainer}
                             >
@@ -115,14 +115,16 @@ function BasicInfoStep({
                                     <div css={s_toggleLabel}>필수</div>
                                     <Toggle
                                         width="4.5rem"
-                                        isChecked={q.required}
+                                        isChecked={question.required}
                                         onChange={() =>
-                                            updateQuestion(q.id, { required: !q.required })
+                                            updateQuestion(question.id, {
+                                                required: !question.required,
+                                            })
                                         }
                                     />
                                 </div>
                                 <Button
-                                    onClick={() => removeQuestion(q.id)}
+                                    onClick={() => removeQuestion(question.id)}
                                     sx={s_removeQuestion}
                                     size="lg"
                                 >
@@ -131,7 +133,7 @@ function BasicInfoStep({
                             </div>
                         </div>
                         <div>
-                            <QuestionForm question={q} updateQuestion={updateQuestion} />
+                            <QuestionForm question={question} updateQuestion={updateQuestion} />
                         </div>
                     </div>
                 ))}
