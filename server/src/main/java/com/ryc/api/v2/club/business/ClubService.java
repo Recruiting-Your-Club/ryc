@@ -7,12 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
-import com.ryc.api.v2.club.domain.Category;
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.ClubDetailImage;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.ClubSummary;
-import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
@@ -47,39 +43,13 @@ public class ClubService {
 
   @Transactional
   public ClubUpdateResponse updateClub(String id, ClubUpdateRequest body) {
-    // TODO: 사용자 인가 확인하기
     Club previousClub =
         clubRepository
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Club not found with id: " + id));
-
-    String name = body.name().orElse(previousClub.getName());
-    String shortDescription = body.shortDescription().orElse(previousClub.getShortDescription());
-    String detailDescription = body.detailDescription().orElse(previousClub.getDetailDescription());
-    String imageUrl = body.imageUrl().orElse(previousClub.getImageUrl());
-    String thumbnailUrl = body.thumbnailUrl().orElse(previousClub.getThumbnailUrl());
-    Category category =
-        Category.valueOf(body.category().orElse(previousClub.getCategory().toString()));
-    List<ClubTag> clubTags = body.clubTags();
-    List<ClubSummary> clubSummaries = body.clubSummaries();
-    List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
-
-    // TODO: updated_at 필드 업데이트
-    Club newClub =
-        Club.builder()
-            .id(id)
-            .name(name)
-            .shortDescription(shortDescription)
-            .detailDescription(detailDescription)
-            .imageUrl(imageUrl)
-            .thumbnailUrl(thumbnailUrl)
-            .category(category)
-            .clubTags(clubTags)
-            .clubSummaries(clubSummaries)
-            .clubDetailImages(clubDetailImages)
-            .build();
-
+    Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
+
     return ClubUpdateResponse.builder()
         .name(savedClub.getName())
         .shortDescription(savedClub.getShortDescription())
@@ -119,7 +89,6 @@ public class ClubService {
 
   @Transactional(readOnly = true)
   public List<Club> getAllClub() {
-    // TODO: N + 1 문제 발생 중
     return clubRepository.findAll();
   }
 }
