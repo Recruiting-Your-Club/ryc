@@ -9,14 +9,13 @@
     "files": [],
     "references": [
         { "path": "apps/user" },
-        //{ "path": "apps/admin" },
-        { "path": "packages/ui" },
-        { "path": "packages/hooks" },
+        { "path": "apps/admin" },
         //{ "path": "packages/api-client" },
         { "path": "packages/config" },
         { "path": "packages/constants" },
-        { "path": "packages/utils" },
-        { "path": "packages/styles" }
-        //{ "path": "packages/eslint" }
+        { "path": "packages/hooks" },
+        { "path": "packages/styles" },
+        { "path": "packages/ui" },
+        { "path": "packages/utils" }
     ]
 }
