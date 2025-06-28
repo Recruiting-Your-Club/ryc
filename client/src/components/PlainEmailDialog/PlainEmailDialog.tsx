@@ -57,8 +57,8 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                     <TextArea
                         size="md"
                         placeholder="이메일 내용을 입력해주세요."
-                        sx={s_textareaInner}
-                        textAreaSx={s_textareaOutside}
+                        textAreaSx={s_textareaInner}
+                        wrapperSx={s_textareaOutside}
                     />
                 </div>
             </Dialog.Content>

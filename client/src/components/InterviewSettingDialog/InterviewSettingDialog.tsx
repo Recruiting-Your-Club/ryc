@@ -248,8 +248,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onChange={(e) => setEmailContent(e.target.value)}
                                 size="md"
                                 placeholder="이메일 내용을 입력해주세요."
-                                sx={s_textareaInner}
-                                textAreaSx={s_textAreaOuter}
+                                textAreaSx={s_textareaInner}
+                                wrapperSx={s_textAreaOuter}
                             />
                         </div>
                         <div css={submitButtonWrapper}>
