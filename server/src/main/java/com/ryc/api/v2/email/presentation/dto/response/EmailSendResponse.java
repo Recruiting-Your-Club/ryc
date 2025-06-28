@@ -1,3 +1,8 @@
 package com.ryc.api.v2.email.presentation.dto.response;
 
-public record EmailSendResponse(String emailId) {}
+import com.ryc.api.v2.email.domain.EmailSentStatus;
+
+import lombok.Builder;
+
+@Builder
+public record EmailSendResponse(String emailId, EmailSentStatus status, String statusUrl) {}

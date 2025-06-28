@@ -54,7 +54,15 @@ public class EmailService {
             userDetail.getId(), announcementId, body.recipients(), body.subject(), body.content());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream().map(email -> new EmailSendResponse(email.id())).toList();
+    return savedEmails.stream()
+        .map(
+            email ->
+                EmailSendResponse.builder()
+                    .emailId(email.id())
+                    .status(email.status())
+                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
+                    .build())
+        .toList();
   }
 
   @Transactional
@@ -73,7 +81,15 @@ public class EmailService {
         userDetail.getId(), announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream().map(email -> new EmailSendResponse(email.id())).toList();
+    return savedEmails.stream()
+        .map(
+            email ->
+                EmailSendResponse.builder()
+                    .emailId(email.id())
+                    .status(email.status())
+                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
+                    .build())
+        .toList();
   }
 
   @Transactional(readOnly = true)
