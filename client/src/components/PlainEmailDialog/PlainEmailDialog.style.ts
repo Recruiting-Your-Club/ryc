@@ -69,6 +69,10 @@ export const s_textareaInner = css`
     ::placeholder {
         ${theme.typography.captionRegular}
     }
+    &:focus {
+        border-color: ${theme.colors.default};
+        outline: none;
+    }
 `;
 
 export const s_textareaOutside = css`
