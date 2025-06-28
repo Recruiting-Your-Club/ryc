@@ -13,6 +13,8 @@ import Italic from '@ssoc/assets/images/text-italic.svg';
 import Strikethrough from '@ssoc/assets/images/text-strikethrough.svg';
 import Underline from '@ssoc/assets/images/text-underline.svg';
 
+import type { Align, Option, Size } from '../components/Editor/types';
+
 export const formatButtons = [
     { format: 'bold', Svg: Bold },
     { format: 'italic', Svg: Italic },
@@ -42,10 +44,10 @@ export const textButtons = [
     { text: 'background', Svg: BackgroundText },
 ];
 
-export const DEFAULT_FONT_SIZE = '14px';
-export const MAX_FONT_SIZE = '36px';
-export const DEFAULT_TEXT_ALIGN = 'inherit';
-export const DEFAULT_OPTIONS = {
+export const DEFAULT_FONT_SIZE: Size = '14px';
+export const MAX_FONT_SIZE: Size = '36px';
+export const DEFAULT_TEXT_ALIGN: Align = 'inherit';
+export const DEFAULT_OPTIONS: Record<Option, boolean> = {
     image: false,
     divider: false,
 };
