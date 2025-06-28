@@ -4,3 +4,7 @@ dist
 build
 *.d.ts
 yarn.lock
+**/dist/
+**/build/
+**/node_modules/
+**/public/
