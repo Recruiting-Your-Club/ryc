@@ -14,10 +14,12 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.business.RoleService;
 import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,10 +50,12 @@ public class ClubService {
   }
 
   @Transactional
-  public ClubUpdateResponse updateClub(String id, ClubUpdateRequest body) {
+  @HasRole(value = Role.MEMBER) // 동아리 멤버 권한을 확인하도록 userDetail과 clubId를 파라미터로 받습니다.
+  public ClubUpdateResponse updateClub(
+      CustomUserDetail userDetail, String clubId, ClubUpdateRequest body) {
     Club previousClub =
         clubRepository
-            .findById(id)
+            .findById(clubId)
             .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);

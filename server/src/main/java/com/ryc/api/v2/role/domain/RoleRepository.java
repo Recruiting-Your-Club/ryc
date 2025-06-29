@@ -6,4 +6,8 @@ import com.ryc.api.v2.club.domain.vo.Club;
 public interface RoleRepository {
 
   Role save(Admin admin, Club club, Role role);
+
+  boolean existsByAdminIdAndClubId(String adminId, String clubId);
+
+  boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
 }

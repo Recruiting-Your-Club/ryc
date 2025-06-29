@@ -23,4 +23,14 @@ public class RoleRepositoryImpl implements RoleRepository {
     RoleEntity roleEntity = RoleMapper.toEntity(role, club, admin);
     return roleJpaRepository.save(roleEntity).getRole();
   }
+
+  @Override
+  public boolean existsByAdminIdAndClubId(String adminId, String clubId) {
+    return roleJpaRepository.existsByAdminIdAndClubId(adminId, clubId);
+  }
+
+  @Override
+  public boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId) {
+    return roleJpaRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
+  }
 }

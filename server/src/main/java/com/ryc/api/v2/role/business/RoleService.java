@@ -20,4 +20,14 @@ public class RoleService {
   public Role assignRole(Admin admin, Club club, Role role) {
     return roleRepository.save(admin, club, role);
   }
+
+  @Transactional(readOnly = true)
+  public boolean hasRole(String adminId, String clubId) {
+    return roleRepository.existsByAdminIdAndClubId(adminId, clubId);
+  }
+
+  @Transactional(readOnly = true)
+  public boolean hasOwnerRole(String adminId, String clubId) {
+    return roleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
+  }
 }

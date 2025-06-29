@@ -172,7 +172,7 @@ class ClubHttpApiTest {
             .clubDetailImages(List.of())
             .build();
 
-    when(clubService.updateClub(eq(clubId), any(ClubUpdateRequest.class)))
+    when(clubService.updateClub(any(), eq(clubId), any(ClubUpdateRequest.class)))
         .thenReturn(updateResponse);
 
     // When & Then

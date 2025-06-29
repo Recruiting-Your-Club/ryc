@@ -31,6 +31,7 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.role.business.RoleService;
 import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceTest {
@@ -132,11 +133,16 @@ class ClubServiceTest {
             .clubDetailImages(testClub.clubDetailImages())
             .build();
 
+    CustomUserDetail userDetail = new CustomUserDetail(testAdmin);
+
+    when(authService.getCurrentUser()).thenReturn(testAdmin);
+    when(roleService.hasRole(userDetail.getId(), clubId)).thenReturn(true);
+
     when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
     when(clubRepository.save(any(Club.class))).thenReturn(updatedClub);
 
     // When
-    ClubUpdateResponse response = clubService.updateClub(clubId, request);
+    ClubUpdateResponse response = clubService.updateClub(userDetail, clubId, request);
 
     // Then
     assertThat(response.name()).isEqualTo(newName);
