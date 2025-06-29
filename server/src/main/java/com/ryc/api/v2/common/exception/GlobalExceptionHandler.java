@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(DuplicateClubException.class)
   public ResponseEntity<Object> handleDuplicateException(DuplicateClubException e) {
     ErrorCode errorCode = e.getErrorCode();
-    return handleExceptionInternal(errorCode);
+    return handleExceptionInternal(errorCode, e.getMessage());
   }
 
   @ExceptionHandler(IllegalArgumentException.class)

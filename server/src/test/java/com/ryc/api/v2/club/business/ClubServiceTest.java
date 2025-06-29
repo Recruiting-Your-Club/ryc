@@ -3,11 +3,11 @@ package com.ryc.api.v2.club.business;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.enums.Category;
@@ -28,17 +29,21 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.role.business.RoleService;
+import com.ryc.api.v2.role.domain.Role;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceTest {
 
   @Mock private ClubRepository clubRepository;
   @Mock private AuthService authService;
+  @Mock private RoleService roleService;
 
   @InjectMocks private ClubService clubService;
 
   private Club testClub;
   private List<ClubTag> testTags;
+  private Admin testAdmin;
 
   @BeforeEach
   void setUp() {
@@ -58,6 +63,16 @@ class ClubServiceTest {
             .clubSummaries(new ArrayList<>())
             .clubDetailImages(new ArrayList<>())
             .build();
+
+    testAdmin =
+        Admin.builder()
+            .id("test-id")
+            .name("Test Admin")
+            .email("test@gmail.com")
+            .password("password")
+            .imageUrl("http://example.com/admin.jpg")
+            .thumbnailUrl("http://example.com/admin_thumbnail.jpg")
+            .build();
   }
 
   @Test
@@ -72,33 +87,15 @@ class ClubServiceTest {
             .build();
 
     when(clubRepository.save(any(Club.class))).thenReturn(testClub);
+    when(authService.getCurrentUser()).thenReturn(testAdmin);
+    when(roleService.assignRole(any(Admin.class), any(Club.class), any(Role.class)))
+        .thenReturn(Role.OWNER); // Mocking role assignment
 
     // When
     ClubCreateResponse response = clubService.createClub(request);
 
     // Then
     assertThat(response.clubId()).isEqualTo(testClub.id());
-  }
-
-  @Test
-  @DisplayName("클럽 생성 시 assignOwner가 호출되는지 테스트")
-  void givenValidClubCreateRequest_whenCreateClub_thenAssignOwnerIsCalled() {
-    // Given
-    ClubCreateRequest request =
-        ClubCreateRequest.builder()
-            .name("Test Club")
-            .category(Category.ACADEMIC)
-            .imageUrl("http://example.com/image.jpg")
-            .build();
-
-    when(clubRepository.save(any(Club.class))).thenReturn(testClub);
-    when(authService.getCurrentUser()).thenReturn(null);
-
-    // When
-    clubService.createClub(request);
-
-    // Then
-    verify(clubRepository).assignRole(any(Club.class), any(), any());
   }
 
   @Test
@@ -168,7 +165,7 @@ class ClubServiceTest {
 
     // When & Then
     assertThatThrownBy(() -> clubService.getClub(nonExistentId))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("Club not found with id: " + nonExistentId);
   }
 

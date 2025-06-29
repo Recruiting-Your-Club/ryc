@@ -16,22 +16,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.role.domain.Role;
-import com.ryc.api.v2.role.infra.entity.RoleEntity;
-import com.ryc.api.v2.role.infra.jpa.RoleJpaRepository;
-import com.ryc.api.v2.role.infra.mapper.RoleMapper;
 
 @ExtendWith(MockitoExtension.class)
 class ClubRepositoryImplTest {
 
   @Mock private ClubJpaRepository clubJpaRepository;
-  @Mock private RoleJpaRepository roleJpaRepository;
 
   @InjectMocks private ClubRepositoryImpl clubRepository;
 
@@ -117,24 +111,5 @@ class ClubRepositoryImplTest {
 
     // Then
     assertThat(clubs).hasSize(1);
-  }
-
-  @Test
-  void givenValidClubAndAdmin_whenAssignRole_thenReturnAssignedRole() {
-    // Given
-    String clubId = "test-club-id";
-    String adminId = "test-admin-id";
-    Club club = Club.builder().id(clubId).build();
-    Admin admin = Admin.builder().id(adminId).build();
-    Role role = Role.OWNER;
-
-    when(roleJpaRepository.save(any(RoleEntity.class)))
-        .thenReturn(RoleMapper.toEntity(role, club, admin));
-
-    // When
-    Role assignedRole = clubRepository.assignRole(club, admin, role);
-
-    // Then
-    assertThat(assignedRole.toString()).isEqualTo("OWNER");
   }
 }
