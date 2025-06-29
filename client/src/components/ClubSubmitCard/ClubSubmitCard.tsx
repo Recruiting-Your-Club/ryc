@@ -28,12 +28,12 @@ function ClubSubmitCard({
 }: ClubSubmitCardProps) {
     // prop destruction
     // lib hooks
-    const { displayText, diffDay } = getDeadlineInfo(deadline);
     // initial values
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
+    const { displayText, diffDay } = getDeadlineInfo(deadline);
     // handlers
     // effects
     return (
