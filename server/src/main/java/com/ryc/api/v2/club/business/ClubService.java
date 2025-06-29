@@ -1,10 +1,7 @@
 package com.ryc.api.v2.club.business;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import com.ryc.api.v2.role.business.RoleService;
-import com.ryc.api.v2.role.domain.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +14,10 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.common.exception.custom.DuplicateClubException;
+import com.ryc.api.v2.common.exception.code.ClubErrorCode;
+import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.role.business.RoleService;
+import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ public class ClubService {
   private final ClubRepository clubRepository;
   private final AuthService authService;
 
-    private final RoleService roleService;
+  private final RoleService roleService;
 
   @Transactional
   public ClubCreateResponse createClub(ClubCreateRequest body) {
@@ -36,13 +36,13 @@ public class ClubService {
         Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
 
     if (clubRepository.existsByName(club.name())) {
-      throw new DuplicateClubException("Club with name already exists: " + club.name());
+      throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
     final Club savedClub = clubRepository.save(club);
 
     Admin currentUser = authService.getCurrentUser();
-        roleService.assignRole(currentUser, savedClub, Role.OWNER);
+    roleService.assignRole(currentUser, savedClub, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.id()).build();
   }
@@ -52,7 +52,7 @@ public class ClubService {
     Club previousClub =
         clubRepository
             .findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Club not found with id: " + id));
+            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
@@ -74,7 +74,7 @@ public class ClubService {
     Club club =
         clubRepository
             .findById(clubId)
-            .orElseThrow(() -> new NoSuchElementException("Club not found with id: " + clubId));
+            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
 
     String detailDescription = club.detailDescription();
     if (detailDescription.isBlank()) {

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
-import com.ryc.api.v2.common.exception.custom.DuplicateClubException;
+import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
@@ -28,8 +28,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode);
   }
 
-  @ExceptionHandler(DuplicateClubException.class)
-  public ResponseEntity<Object> handleDuplicateException(DuplicateClubException e) {
+  @ExceptionHandler(ClubException.class)
+  public ResponseEntity<Object> handleDuplicateException(ClubException e) {
     ErrorCode errorCode = e.getErrorCode();
     return handleExceptionInternal(errorCode, e.getMessage());
   }
