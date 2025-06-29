@@ -18,14 +18,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.enums.Category;
-import com.ryc.api.v2.club.domain.enums.Role;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
-import com.ryc.api.v2.club.infra.entity.RoleEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.infra.jpa.RoleJpaRepository;
-import com.ryc.api.v2.club.infra.mapper.RoleMapper;
+import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.role.infra.entity.RoleEntity;
+import com.ryc.api.v2.role.infra.jpa.RoleJpaRepository;
+import com.ryc.api.v2.role.infra.mapper.RoleMapper;
 
 @ExtendWith(MockitoExtension.class)
 class ClubRepositoryImplTest {
