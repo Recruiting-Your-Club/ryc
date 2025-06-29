@@ -16,5 +16,4 @@ module.exports = {
     importOrderSortSpecifiers: true,
     importOrderSeparation: true,
     importOrderCaseInsensitive: true,
-    //plugins: ['@trivago/prettier-plugin-sort-imports']
 };

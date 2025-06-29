@@ -51,6 +51,8 @@
         "**/webpack.*.js",
         "**/webpack.common.js",
         "**/docs/**",
-        "**/*.d.ts"
+        "**/*.d.ts",
+        "**/package.json/**",
+        "**/tsconfig.json/**"
     ]
 }
