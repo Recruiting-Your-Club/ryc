@@ -11,7 +11,7 @@ import {
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
-import type { BasicInfoFields, RecruitDetailInfo } from './type';
+import type { BasicInfoFields, RecruitDetailInfo } from './types';
 import { useQuestion } from '@hooks/useQuestion';
 
 function RecruitCreatePage() {

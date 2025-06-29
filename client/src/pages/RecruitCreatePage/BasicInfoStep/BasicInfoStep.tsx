@@ -19,9 +19,9 @@ import {
 import { useQuestion } from '@hooks/useQuestion';
 import { questionTypes } from '@constants/questionType';
 import { QuestionForm } from '@components/QuestionForm';
-import type { QuestionType } from '@components/QuestionForm/type';
-import type { BasicInfoStepProps, InfoFieldGroupProps } from './type';
-import type { BasicInfoFields } from '../type';
+import type { QuestionType } from '@components/QuestionForm/types';
+import type { BasicInfoStepProps, InfoFieldGroupProps } from './types';
+import type { BasicInfoFields } from '../types';
 
 function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
     //handler

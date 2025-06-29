@@ -5,7 +5,7 @@ import {
     s_labelWrapper,
     s_requiredLabel,
 } from './FieldLabel.style';
-import type { FieldLabelProps } from './typs';
+import type { FieldLabelProps } from './types';
 
 function FieldLabel({ label, description, required, sx, htmlFor }: FieldLabelProps) {
     return (

@@ -1,4 +1,4 @@
-import type { RecruitDetailInfo } from '../type';
+import type { RecruitDetailInfo } from '../types';
 
 export interface DescriptionProps {
     recruitDetailInfo: RecruitDetailInfo;

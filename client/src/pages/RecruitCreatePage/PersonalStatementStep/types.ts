@@ -1,5 +1,5 @@
-import type { QuestionProps } from '@components/QuestionForm/type';
-import { QuestionType } from '@components/QuestionForm/type';
+import type { QuestionProps } from '@components/QuestionForm/types';
+import { QuestionType } from '@components/QuestionForm/types';
 
 export interface PersonalStatementStepProps {
     applicationQuestions: QuestionProps[];

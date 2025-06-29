@@ -1,6 +1,6 @@
 import type { ChangeEvent } from 'react';
 import React from 'react';
-import type { QuestionFormProps } from './type';
+import type { QuestionFormProps } from './types';
 import { Button, Input } from '@components/_common';
 import {
     s_addOptionButton,

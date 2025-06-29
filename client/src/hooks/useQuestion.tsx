@@ -1,4 +1,4 @@
-import type { QuestionProps, QuestionType } from '@components/QuestionForm/type';
+import type { QuestionProps, QuestionType } from '@components/QuestionForm/types';
 import React, { useState } from 'react';
 
 const DEFAULT_OPTIONS = [

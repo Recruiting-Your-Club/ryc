@@ -10,7 +10,7 @@ import {
 } from './DescriptionStep.style';
 import { FileUpLoader } from '@components/FileUpLoader';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
-import type { DescriptionProps } from './type';
+import type { DescriptionProps } from './types';
 
 function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) {
     return (

@@ -8,7 +8,7 @@ import {
     s_questionContainer,
 } from './PersonalStatementStep.style';
 import { QuestionForm } from '@components/QuestionForm';
-import type { PersonalStatementStepProps } from './type';
+import type { PersonalStatementStepProps } from './types';
 
 function PersonalStatementStep({
     applicationQuestions,
