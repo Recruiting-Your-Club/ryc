@@ -16,7 +16,6 @@ import {
     s_toggleContainer,
     s_toggleLabel,
 } from './BasicInfoStep.style';
-import { useQuestion } from '@hooks/useQuestion';
 import { questionTypes } from '@constants/questionType';
 import { QuestionForm } from '@components/QuestionForm';
 import type { QuestionType } from '@components/QuestionForm/types';
