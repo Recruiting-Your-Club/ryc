@@ -2323,6 +2323,7 @@ __metadata:
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.4"
     "@emotion/react": "npm:^11.13.0"
+    "@ssoc/assets": "workspace:*"
     "@ssoc/constants": "workspace:*"
     "@ssoc/hooks": "workspace:*"
     "@ssoc/styles": "workspace:*"
@@ -2360,7 +2361,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ssoc/config@workspace:*, @ssoc/config@workspace:packages/config":
+"@ssoc/config@workspace:packages/config":
   version: 0.0.0-use.local
   resolution: "@ssoc/config@workspace:packages/config"
   dependencies:
@@ -2376,6 +2377,7 @@ __metadata:
     "@types/react": "npm:^18.0.0"
     "@types/react-dom": "npm:^18.0.0"
     babel-loader: "npm:^9.2.1"
+    core-js: "npm:3"
     file-loader: "npm:^6.2.0"
     html-webpack-plugin: "npm:^5.6.3"
     tsconfig-paths-webpack-plugin: "npm:^4.2.0"
@@ -2391,7 +2393,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ssoc/constants@workspace:packages/constants"
   dependencies:
-    "@ssoc/assets": "workspace:*"
     typescript: "npm:^4.4.2"
   languageName: unknown
   linkType: soft
@@ -2400,7 +2401,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ssoc/hooks@workspace:packages/hooks"
   dependencies:
-    "@ssoc/ui": "workspace:*"
     "@types/react": "npm:^18.0.0"
     "@types/react-dom": "npm:^18.0.0"
     typescript: "npm:^4.4.2"
@@ -2428,7 +2428,6 @@ __metadata:
     "@babel/cli": "npm:^7.26.0"
     "@emotion/react": "npm:^11.13.0"
     "@ssoc/assets": "workspace:*"
-    "@ssoc/config": "workspace:*"
     "@ssoc/styles": "workspace:*"
     "@ssoc/utils": "workspace:*"
     "@types/react": "npm:^18.0.0"
@@ -2445,6 +2444,7 @@ __metadata:
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.4"
     "@emotion/react": "npm:^11.13.0"
+    "@ssoc/assets": "workspace:*"
     "@ssoc/constants": "workspace:*"
     "@ssoc/hooks": "workspace:*"
     "@ssoc/styles": "workspace:*"
@@ -5178,6 +5178,13 @@ __metadata:
   dependencies:
     browserslist: "npm:^4.25.0"
   checksum: 10c0/923804c16faf91bacb747a697640a907cb2a3e63078d467a75eb7ea4187d62d36347a94e5826d1b36739012e81a2ea435922cc8bd8e228fa68efaf00a9ce94af
+  languageName: node
+  linkType: hard
+
+"core-js@npm:3":
+  version: 3.43.0
+  resolution: "core-js@npm:3.43.0"
+  checksum: 10c0/9d4ad66296e60380777de51d019b5c3e6cce023b7999750a5094f9a4b0ea53bf3600beb4ef11c56548f2c8791d43d4056e270d1cf55ba87273011aa7d4597871
   languageName: node
   linkType: hard
 

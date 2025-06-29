@@ -6,7 +6,8 @@
         "src/**/*"
     ],
     "dependencies": {
-        "@types/react-dom": "^18.0.0"
+        "@types/react-dom": "^18.0.0",
+        "core-js": "3"
     },
     "devDependencies": {
         "@babel/cli": "^7.26.0",

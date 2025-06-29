@@ -3,9 +3,9 @@ module.exports = {
         [
             '@babel/preset-env',
             {
-                targets: {
-                    esmodules: true, // 브라우저 최신 버전에 맞춰서 빌드할 수 있도록 함
-                },
+                useBuiltIns: 'usage',
+                corejs: 3,
+                modules: false,
             },
         ],
         [
