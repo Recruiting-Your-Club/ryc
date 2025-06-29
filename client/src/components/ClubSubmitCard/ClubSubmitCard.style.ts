@@ -67,6 +67,9 @@ export const questionStatusContainer = css`
     gap: 0.5rem;
 `;
 export const questionStatusTextSx = (isAllQuestionCompleted: boolean) => css`
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
     ${isAllQuestionCompleted &&
     css`
         color: ${theme.colors.default};

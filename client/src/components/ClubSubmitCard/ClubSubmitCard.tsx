@@ -15,7 +15,6 @@ import {
 } from './ClubSubmitCard.style';
 import ArrowDown from '@assets/images/downArrow.svg';
 import type { ClubSubmitCardProps } from './types';
-import dayjs from 'dayjs';
 import { getDeadlineInfo } from '@utils/compareTime';
 
 function ClubSubmitCard({
@@ -69,8 +68,8 @@ function ClubSubmitCard({
                             sx={questionStatusTextSx(completedQuestions === totalQuestions)}
                         >
                             필수 항목 ({completedQuestions} / {totalQuestions})
+                            <ArrowDown css={arrowIcon} />
                         </Text>
-                        <ArrowDown css={arrowIcon} />
                     </div>
                 </div>
                 <Button
