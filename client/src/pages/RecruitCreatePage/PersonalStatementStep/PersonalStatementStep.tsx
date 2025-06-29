@@ -1,5 +1,4 @@
 import React from 'react';
-import { useQuestion } from '@hooks/useQuestion';
 import { FieldLabel } from '@components/FieldLabel';
 import { Button } from '@components';
 import {

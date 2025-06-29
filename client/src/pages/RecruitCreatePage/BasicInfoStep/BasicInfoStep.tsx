@@ -31,7 +31,7 @@ function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
         }));
     };
     return (
-        <div>
+        <>
             <FieldLabel
                 label="인적사항"
                 description="지원자에게 입력 받을 인적사항 항목을 선택해주세요."
@@ -64,7 +64,7 @@ function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
                     <Checkbox.Label sx={s_checkboxLabel}>본인 사진</Checkbox.Label>
                 </Checkbox.Root>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -78,7 +78,7 @@ function BasicInfoStep({
     handleQuestionTypeChange,
 }: BasicInfoStepProps) {
     return (
-        <div>
+        <>
             <InfoFieldGroup infoFields={infoFields} setInfoFields={setInfoFields} />
             <div css={s_additionalInfoWrapper}>
                 <FieldLabel
@@ -138,7 +138,7 @@ function BasicInfoStep({
                     질문 추가하기
                 </Button>
             </div>
-        </div>
+        </>
     );
 }
 
