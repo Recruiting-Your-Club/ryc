@@ -136,7 +136,7 @@ function BasicInfoStep({
                     </div>
                 ))}
                 <Button onClick={addQuestion} size="full">
-                    + 질문 추가하기
+                    질문 추가하기
                 </Button>
             </div>
         </div>

@@ -36,7 +36,7 @@ function PersonalStatementStep({
                         <QuestionForm question={q} updateQuestion={updateApplicationQuestion} />
                     </div>
                 ))}
-                <Button size="full" variant="outlined" onClick={addApplicationQuestion}>
+                <Button size="full" variant="primary" onClick={addApplicationQuestion}>
                     질문 추가하기
                 </Button>
             </div>
