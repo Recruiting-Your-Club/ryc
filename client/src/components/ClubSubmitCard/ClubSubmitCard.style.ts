@@ -54,8 +54,11 @@ export const clubSubmitCardSubCaption = css`
         margin-bottom: 1rem;
     }
 `;
-export const deadlineText = (deadlineColor: string) => css`
-    color: ${deadlineColor};
+export const deadlineText = (diffDay: number) => css`
+    ${diffDay <= 3 &&
+    css`
+        color: ${theme.colors.red[800]};
+    `}
 `;
 
 export const questionStatusContainer = css`
