@@ -3,6 +3,7 @@ import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useStepper } from '@hooks/useStepper';
 import React, { useState } from 'react';
 import {
+    s_prohibitDragArea,
     s_recruitCreatePageContainer,
     s_stepButtonContainer,
     s_stepComponent,
@@ -110,7 +111,7 @@ function RecruitCreatePage() {
     return (
         <div css={s_recruitCreatePageContainer}>
             <div css={s_stepWrapper}>
-                <Stepper activeStep={activeStep}>
+                <Stepper activeStep={activeStep} sx={s_prohibitDragArea}>
                     <Stepper.Step>
                         <Stepper.Label>공고 상세 정보 작성</Stepper.Label>
                     </Stepper.Step>
@@ -124,6 +125,7 @@ function RecruitCreatePage() {
                         <Stepper.Label>미리보기</Stepper.Label>
                     </Stepper.Step>
                 </Stepper>
+
                 <div css={s_stepComponent}>{stepComponent(activeStep)}</div>
                 <div css={s_stepButtonContainer}>
                     <Button onClick={prev} disabled={isFirst}>

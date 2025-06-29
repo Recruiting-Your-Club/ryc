@@ -25,3 +25,10 @@ export const s_stepWrapper = css`
 export const s_stepComponent = css`
     margin-top: 3rem;
 `;
+
+export const s_prohibitDragArea = css`
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+`;
