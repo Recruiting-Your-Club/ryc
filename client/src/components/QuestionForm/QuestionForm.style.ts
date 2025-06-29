@@ -5,7 +5,7 @@ export const s_inputLength = css`
     position: absolute;
     right: 0.8rem;
     top: 4rem;
-    ${theme.typography.subCaptionLight};
+    ${theme.typography.helperTextRegular};
     color: ${theme.colors.textHelper};
 `;
 
