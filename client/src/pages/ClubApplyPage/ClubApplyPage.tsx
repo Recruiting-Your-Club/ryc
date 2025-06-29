@@ -14,17 +14,14 @@ import {
     clubApplyTabContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
-import { Button, ClubNavigation } from '@components';
-import { Text } from '@components/_common/Text';
-import { ClubSubmitCard } from '@components/ClubSubmitCard';
+import ArrowDown from '@assets/images/downArrow.svg';
+import { Text, Button } from '@components/_common/';
+import { ClubSubmitCard, SubmitDialog, ClubNavigation } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import theme from '@styles/theme';
-import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
 import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
-import ArrowDown from '@assets/images/downArrow.svg';
 
 // 임시 데이터
 export const clubData = {
@@ -37,7 +34,7 @@ export const clubData = {
     announcementPeriod: [
         {
             start: '2025-05-03T03:13:11.173Z',
-            end: '2025-05-23T03:13:11.173Z',
+            end: '2025-06-29T03:13:11.173Z',
         },
     ],
     applicationPeriod: [
@@ -118,6 +115,7 @@ function ClubApplyPage() {
     // prop destruction
     // lib hooks
     // initial values
+    const deadline = dayjs(clubData.announcementPeriod[0].end).format('YYYY-MM-DD');
     // state, ref, querystring hooks
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
@@ -181,24 +179,6 @@ function ClubApplyPage() {
         },
         [getValidationError],
     );
-
-    // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
-    const today = dayjs().format('YYYY-MM-DD');
-    const formattedDeadline = dayjs(clubData.announcementPeriod[0].end);
-    const diffDay = formattedDeadline.diff(today, 'day');
-
-    const calculateDeadline = useMemo(() => {
-        if (diffDay > 7) {
-            return `~${formattedDeadline.format('MM.DD')}`;
-        } else if (diffDay > 0) {
-            return `D-${diffDay}`;
-        } else if (diffDay === 0) {
-            return `D-Day`;
-        } else {
-            return `마감`;
-        }
-    }, [formattedDeadline, today, diffDay]);
-
     // handlers
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
@@ -341,10 +321,9 @@ function ClubApplyPage() {
                 <ClubSubmitCard
                     clubName={clubData.title}
                     tag={clubData.tag}
-                    deadline={calculateDeadline}
+                    deadline={deadline}
                     completedQuestions={completedQuestions}
                     totalQuestions={requiredQuestionsCount}
-                    deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
                     onSubmit={handleSubmit}
                 />
             </div>
