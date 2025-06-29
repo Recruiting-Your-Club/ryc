@@ -11,9 +11,12 @@ import {
     questionStatusContainer,
     arrowIcon,
     questionStatusTextSx,
+    deadlineText,
 } from './ClubSubmitCard.style';
 import ArrowDown from '@assets/images/downArrow.svg';
 import type { ClubSubmitCardProps } from './types';
+import dayjs from 'dayjs';
+import { getDeadlineInfo } from '@utils/compareTime';
 
 function ClubSubmitCard({
     clubName,
@@ -21,9 +24,18 @@ function ClubSubmitCard({
     deadline,
     completedQuestions,
     totalQuestions,
-    deadlineColor,
     onSubmit,
 }: ClubSubmitCardProps) {
+    // prop destruction
+    // lib hooks
+    const { displayText, diffDay } = getDeadlineInfo(deadline);
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={clubApplySubmitCardContainer}>
             <div css={clubSubmitCard}>
@@ -31,10 +43,12 @@ function ClubSubmitCard({
                     <Ryc css={svgContainer} />
                     {deadline && (
                         <Text
+                            color="caption"
                             type="captionRegular"
-                            sx={deadlineColor ? { color: deadlineColor } : undefined}
+                            sx={deadlineText(diffDay)}
+                            noWrap
                         >
-                            {deadline}
+                            {displayText}
                         </Text>
                     )}
                 </div>
