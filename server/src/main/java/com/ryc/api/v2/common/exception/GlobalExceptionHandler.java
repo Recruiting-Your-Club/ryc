@@ -1,7 +1,6 @@
 package com.ryc.api.v2.common.exception;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
-import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
@@ -28,21 +26,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode);
   }
 
-  @ExceptionHandler(ClubException.class)
-  public ResponseEntity<Object> handleDuplicateException(ClubException e) {
-    ErrorCode errorCode = e.getErrorCode();
-    return handleExceptionInternal(errorCode, e.getMessage());
-  }
-
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
-    return handleExceptionInternal(errorCode, e.getMessage());
-  }
-
-  @ExceptionHandler(NoSuchElementException.class)
-  public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e) {
-    ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
     return handleExceptionInternal(errorCode, e.getMessage());
   }
 
