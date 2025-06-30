@@ -73,11 +73,14 @@ export const clubLogoAndNameContainer = css`
     max-width: 80rem;
     max-height: 4.5rem;
     margin-bottom: 2rem;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        margin-top: 2rem;
+    }
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         gap: 1rem;
         height: 3rem;
-        margin 1rem 0;
+        margin-top: 2rem;
     }
 `;
 
