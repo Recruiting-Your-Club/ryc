@@ -1,9 +1,13 @@
+import type { DetailQuestion, PersonalQuestion } from '@pages/ClubApplyPage/types';
+
 export interface ClubSubmitCardProps {
     clubName: string;
     tag: string;
     deadline: string;
-    completedQuestions: number;
-    totalQuestions: number;
+    personalQuestions: PersonalQuestion[];
+    detailQuestions: DetailQuestion[];
+    completedQuestionsCount: number;
+    requiredQuestionsCount: number;
     deadlineColor?: string;
     onSubmit?: () => void;
 }
