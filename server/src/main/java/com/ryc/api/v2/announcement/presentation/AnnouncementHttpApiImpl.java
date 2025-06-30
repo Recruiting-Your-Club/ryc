@@ -15,6 +15,7 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,13 +26,14 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<AnnouncementCreateResponse> create(
-      String clubId, AnnouncementCreateRequest body) {
-    AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
+      CustomUserDetail userDetail, String clubId, AnnouncementCreateRequest body) {
+    AnnouncementCreateResponse response =
+        announcementService.createAnnouncement(userDetail, clubId, body);
 
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/v2/announcements/{announcement-id}")
-            .buildAndExpand(response.announcementId())
+            .path("/api/v2/clubs/{club-id}/announcements/{announcement-id}")
+            .buildAndExpand(clubId, response.announcementId())
             .toUri();
 
     return ResponseEntity.created(location).body(response);
@@ -52,7 +54,10 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      String announcementId, AnnouncementUpdateRequest body) {
+      CustomUserDetail userDetail,
+      String clubId,
+      String announcementId,
+      AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(announcementService.updateAnnouncement(body, announcementId));
   }

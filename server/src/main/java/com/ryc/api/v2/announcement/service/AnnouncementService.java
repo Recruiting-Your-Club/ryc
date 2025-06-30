@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.role.domain.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateR
 import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +35,9 @@ public class AnnouncementService {
   private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
+  @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
-      String clubId, AnnouncementCreateRequest request) {
+      CustomUserDetail userDetail, String clubId, AnnouncementCreateRequest request) {
     // 1.Club 찾기
 
     // 2.Announcement 생성
@@ -68,8 +72,8 @@ public class AnnouncementService {
     return AnnouncementGetDetailResponse.from(announcement);
   }
 
-  // todo @hasAnyRole,
   @Transactional
+  @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
       AnnouncementUpdateRequest request, String announcementId) {
     // 1. 기존 Announcement 조회
