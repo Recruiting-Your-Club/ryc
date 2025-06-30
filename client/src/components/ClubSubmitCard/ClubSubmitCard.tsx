@@ -8,21 +8,20 @@ import {
     clubSubmitCardLogo,
     clubSubmitCardSubCaption,
     svgContainer,
-    questionStatusContainer,
-    arrowIcon,
-    questionStatusTextSx,
     deadlineText,
 } from './ClubSubmitCard.style';
-import ArrowDown from '@assets/images/downArrow.svg';
 import type { ClubSubmitCardProps } from './types';
 import { getDeadlineInfo } from '@utils/compareTime';
+import { QuestionDropdown } from '@components/QuestionDropdown';
 
 function ClubSubmitCard({
     clubName,
     tag,
     deadline,
-    completedQuestions,
-    totalQuestions,
+    personalQuestions,
+    detailQuestions,
+    completedQuestionsCount,
+    requiredQuestionsCount,
     onSubmit,
 }: ClubSubmitCardProps) {
     // prop destruction
@@ -61,20 +60,16 @@ function ClubSubmitCard({
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
                         26기 신입기수 모집
                     </Text>
-
-                    <div css={questionStatusContainer}>
-                        <Text
-                            type="subCaptionRegular"
-                            sx={questionStatusTextSx(completedQuestions === totalQuestions)}
-                        >
-                            필수 항목 ({completedQuestions} / {totalQuestions})
-                            <ArrowDown css={arrowIcon} />
-                        </Text>
-                    </div>
+                    <QuestionDropdown
+                        completedQuestionsCount={completedQuestionsCount}
+                        requiredQuestionsCount={requiredQuestionsCount}
+                        personalQuestions={personalQuestions}
+                        detailQuestions={detailQuestions}
+                    />
                 </div>
                 <Button
                     size="full"
-                    disabled={!(completedQuestions === totalQuestions)}
+                    disabled={!(completedQuestionsCount === requiredQuestionsCount)}
                     onClick={onSubmit}
                 >
                     제출하기
