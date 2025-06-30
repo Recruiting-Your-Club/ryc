@@ -83,6 +83,7 @@ public record Club(
         .clubTags(newClubTags)
         .clubSummaries(newClubSummaries)
         .clubDetailImages(newClubDetailImages)
+        .deleted(this.deleted)
         .build();
   }
 }
