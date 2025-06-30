@@ -72,7 +72,7 @@ export const clubLogoAndNameContainer = css`
     width: 90%;
     max-width: 80rem;
     max-height: 4.5rem;
-    margin: 2rem 0;
+    margin-bottom: 2rem;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         gap: 1rem;
