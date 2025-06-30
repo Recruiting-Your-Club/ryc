@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { s_fileUpLoaderHelperText } from './FileUpLoader.style';
 import { Text } from '@components/_common';
 import type { FileUpLoaderHelperTextProps } from './types';

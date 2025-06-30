@@ -1,41 +1,78 @@
-import type { ChangeEvent } from 'react';
-import React, { TextareaHTMLAttributes, useState } from 'react';
-import { Button } from '@components/_common/Button';
-import { Text } from '@components/_common/Text';
-import { Input } from '@components/_common/Input';
-import { TextArea } from '@components/_common/TextArea/TextArea';
+import React, { useState } from 'react';
+import { Select } from '@components/Select/Select';
+import { Dropdown } from '@components/_common/Dropdown/Dropdown';
+import { Button } from '@components';
+import { DropdownSeperator } from '@components/_common/Dropdown/DropdownSeperator';
+
 function TestPage() {
-    const [text, setText] = useState('');
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setText(e.target.value);
-    };
+    const [value, setValue] = useState('');
     return (
-        <>
-            <div>
-                <Button variant="outlined">hd</Button>
-                <Button variant="text">hd</Button>
-                <Button variant="transparent">hd</Button>
-                <Button variant="primary">hd</Button>
-                <Text type="h1Bold">
-                    <Text.HighLight>하이</Text.HighLight>
-                    하이요
-                </Text>
-                <Input />
-                <TextArea size="xs" variant="flushed" value={text} onChange={onChange} />
-                <TextArea size="sm" variant="subtle" value={text} onChange={onChange} />
-                <TextArea size="md" variant="outline" value={text} onChange={onChange} />
-                <TextArea size="lg" maxLength={300} value={text} onChange={onChange} />
-                <TextArea
-                    size="xl"
-                    error={text.length < 10}
-                    maxLength={300}
-                    errorText="10자 이상 입력해주세요."
-                    value={text}
-                    onChange={onChange}
-                />
-                <TextArea size="full" value={text} onChange={onChange} />
-            </div>
-        </>
+        <div>
+            <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
+            <Select size="md">
+                <Select.Trigger>
+                    <Select.Value placeholder="Select a fruit" />
+                </Select.Trigger>
+                <Select.Content>
+                    <Select.Group>
+                        <Select.Label>Fruits</Select.Label>
+                        <Select.Item value="apple">안녕1</Select.Item>
+                        <Select.Item value="banana">안녕2</Select.Item>
+                        <Select.Item value="orange">안녕3</Select.Item>
+                    </Select.Group>
+                    <Select.Separator />
+                    <Select.Group>
+                        <Select.Label>Vegetables</Select.Label>
+                        <Select.Item value="carrot">Carrot</Select.Item>
+                        <Select.Item value="potato">Potato</Select.Item>
+                        <Select.Item value="broccoli">Broccoli</Select.Item>
+                    </Select.Group>
+                </Select.Content>
+            </Select>
+            <div css={{ margin: '20px' }}></div>
+            <Dropdown>
+                <Dropdown.Trigger asChild>
+                    <Button size="md" variant="primary">
+                        Hello
+                    </Button>
+                </Dropdown.Trigger>
+                <Dropdown.Content offsetX={-15} offsetY={17} sx={{ width: '20rem' }}>
+                    <Dropdown.Label inset>hello</Dropdown.Label>
+                    <Dropdown.Seperator />
+                    <Dropdown.Group>
+                        <Dropdown.Item onItemSelect={() => alert('버튼이 클릭되었습니다')}>
+                            알림창 띄우기
+                        </Dropdown.Item>
+                        <Dropdown.Item disabled>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                    </Dropdown.Group>
+                    <DropdownSeperator />
+                    <Dropdown.Group>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                        <Dropdown.Item>hi</Dropdown.Item>
+                    </Dropdown.Group>
+                    <Dropdown.Sub>
+                        <Dropdown.SubTrigger>hi</Dropdown.SubTrigger>
+                        <Dropdown.SubContent align="center">
+                            <Dropdown.Label>hello</Dropdown.Label>
+                            <Dropdown.Seperator />
+                            <Dropdown.Group>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                            </Dropdown.Group>
+                            <DropdownSeperator />
+                            <Dropdown.Group>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                                <Dropdown.Item>hi</Dropdown.Item>
+                            </Dropdown.Group>
+                        </Dropdown.SubContent>
+                    </Dropdown.Sub>
+                </Dropdown.Content>
+            </Dropdown>
+        </div>
     );
 }
 export { TestPage };
