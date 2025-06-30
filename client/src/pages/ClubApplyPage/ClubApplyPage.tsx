@@ -10,13 +10,11 @@ import {
     mobileQuestionStatus,
     applyFormContainer,
     submitCardContainer,
-    arrowIcon,
     clubApplyTabContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
-import ArrowDown from '@assets/images/downArrow.svg';
 import { Text, Button } from '@components/_common/';
-import { ClubSubmitCard, SubmitDialog, ClubNavigation } from '@components';
+import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
 import type { Answer, QuestionType } from './types';
@@ -303,15 +301,14 @@ function ClubApplyPage() {
                     </div>
                 </div>
 
-                <Text
-                    type="subCaptionRegular"
-                    textAlign="right"
-                    color={completedQuestions === requiredQuestionsCount ? 'primary' : 'warning'}
-                    sx={mobileQuestionStatus}
-                >
-                    필수 항목 ({completedQuestions} / {requiredQuestionsCount})
-                    <ArrowDown css={arrowIcon} />
-                </Text>
+                <div css={mobileQuestionStatus}>
+                    <QuestionDropdown
+                        personalQuestions={clubPersonalQuestions}
+                        detailQuestions={detailQuestions}
+                        completedQuestionsCount={completedQuestions}
+                        requiredQuestionsCount={requiredQuestionsCount}
+                    />
+                </div>
                 <div css={clubApplyTabContainer}>
                     <ClubNavigation navigationItem={navigationItem} />
                 </div>
@@ -322,8 +319,10 @@ function ClubApplyPage() {
                     clubName={clubData.title}
                     tag={clubData.tag}
                     deadline={deadline}
-                    completedQuestions={completedQuestions}
-                    totalQuestions={requiredQuestionsCount}
+                    personalQuestions={clubPersonalQuestions}
+                    detailQuestions={detailQuestions}
+                    completedQuestionsCount={completedQuestions}
+                    requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
                 />
             </div>
