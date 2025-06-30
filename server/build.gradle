@@ -14,6 +14,14 @@ java {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            exclude 'com/ryc/api/v1/**'
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -26,9 +34,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
-    testImplementation 'org.springframework.security:spring-security-test'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     //Swagger
@@ -37,9 +43,13 @@ dependencies {
     // JWT
     implementation 'com.auth0:java-jwt:4.4.0'
 
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {

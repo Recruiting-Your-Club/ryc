@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 function useDialog() {
     const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
+    const openDialog = () => {
         setOpen(true);
     };
-    const handleClose = () => {
+    const closeDialog = () => {
         setOpen(false);
     };
 
-    return { open, handleOpen, handleClose };
+    return { open, openDialog, closeDialog };
 }
 export { useDialog };

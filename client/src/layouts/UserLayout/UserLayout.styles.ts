@@ -1,11 +1,25 @@
 import { css } from '@emotion/react';
+import theme from '@styles/theme';
 
-export const UserLayoutCss = css`
+export const UserLayoutContainer = css`
     display: flex;
     flex-direction: column;
-    width: 100%;
     height: 100%;
+    width: 100%;
     min-width: 32rem;
-    background-color: #fff;
-    padding-top: 6rem; /* 헤더 높이만큼 패딩 추가 */
+    background-color: ${theme.colors.white};
 `;
+
+export const contentContainer = css`
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+// mobileMini: '400px',
+// mobile: '480px',
+// tabletMini: '768px',
+// tablet: '1024px',
+// desktop: '1200px',
