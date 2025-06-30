@@ -57,12 +57,12 @@ public class ClubService {
         clubRepository
             .findById(clubId)
             .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
-    Club newClub = previousClub.update(body);
 
-    if (clubRepository.existsByName(newClub.name())) {
+    if (body.name() != null && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
+    Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
     return ClubUpdateResponse.builder()

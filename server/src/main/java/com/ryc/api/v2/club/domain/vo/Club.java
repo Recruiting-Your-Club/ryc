@@ -44,14 +44,23 @@ public record Club(
   }
 
   public Club update(ClubUpdateRequest clubUpdateRequest) {
-    String newName = clubUpdateRequest.name().orElse(this.name);
-    String newShortDescription = clubUpdateRequest.shortDescription().orElse(this.shortDescription);
+    String newName = clubUpdateRequest.name() == null ? this.name : clubUpdateRequest.name();
+    String newShortDescription =
+        clubUpdateRequest.shortDescription() == null
+            ? this.shortDescription
+            : clubUpdateRequest.shortDescription();
     String newDetailDescription =
-        clubUpdateRequest.detailDescription().orElse(this.detailDescription);
-    String newImageUrl = clubUpdateRequest.imageUrl().orElse(this.imageUrl);
-    String newThumbnailUrl = clubUpdateRequest.thumbnailUrl().orElse(this.thumbnailUrl);
+        clubUpdateRequest.detailDescription() == null
+            ? this.detailDescription
+            : clubUpdateRequest.detailDescription();
+    String newImageUrl =
+        clubUpdateRequest.imageUrl() == null ? this.imageUrl : clubUpdateRequest.imageUrl();
+    String newThumbnailUrl =
+        clubUpdateRequest.thumbnailUrl() == null
+            ? this.thumbnailUrl
+            : clubUpdateRequest.thumbnailUrl();
     Category newCategory =
-        Category.valueOf(clubUpdateRequest.category().orElse(String.valueOf(this.category)));
+        clubUpdateRequest.category() == null ? this.category : clubUpdateRequest.category();
     List<ClubTag> newClubTags =
         clubUpdateRequest.clubTags().isEmpty() ? this.clubTags : clubUpdateRequest.clubTags();
     List<ClubSummary> newClubSummaries =
