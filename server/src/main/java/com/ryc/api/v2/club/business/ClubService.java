@@ -50,7 +50,7 @@ public class ClubService {
   }
 
   @Transactional
-  @HasRole(value = Role.MEMBER) // 동아리 멤버 권한을 확인하도록 userDetail과 clubId를 파라미터로 받습니다.
+  @HasRole(Role.MEMBER)
   public ClubUpdateResponse updateClub(
       CustomUserDetail userDetail, String clubId, ClubUpdateRequest body) {
     Club previousClub =
