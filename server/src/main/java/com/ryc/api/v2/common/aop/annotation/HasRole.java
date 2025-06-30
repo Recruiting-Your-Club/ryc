@@ -1,6 +1,5 @@
 package com.ryc.api.v2.common.aop.annotation;
 
-import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,7 +13,6 @@ import com.ryc.api.v2.role.domain.Role;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
 public @interface HasRole {
   Role value();
 }
