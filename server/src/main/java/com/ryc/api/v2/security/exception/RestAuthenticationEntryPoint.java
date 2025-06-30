@@ -2,7 +2,6 @@ package com.ryc.api.v2.security.exception;
 
 import java.io.IOException;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -20,8 +19,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
       HttpServletRequest request,
       HttpServletResponse response,
       AuthenticationException authException)
-      throws IOException, ServletException {
-    log.info("인증 실패 에러. 메시지: {}", authException.getMessage());
+      throws IOException {
+    log.info("인증 실패 에러 메시지: {}", authException.getMessage());
     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getLocalizedMessage());
   }
 }

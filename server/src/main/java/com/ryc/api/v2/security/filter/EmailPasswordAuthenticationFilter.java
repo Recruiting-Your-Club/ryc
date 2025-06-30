@@ -24,7 +24,7 @@ import com.ryc.api.v2.security.jwt.JwtTokenManager;
 
 import lombok.RequiredArgsConstructor;
 
-// TODO: 빈등록 필요성
+// Bean 객체 아님 주의
 @RequiredArgsConstructor
 public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
@@ -59,7 +59,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
       // JSON 파싱
       ObjectMapper objectMapper = new ObjectMapper();
-      return objectMapper.readValue(requestBody, new TypeReference<Map<String, String>>() {});
+      return objectMapper.readValue(requestBody, new TypeReference<>() {});
 
     } catch (Exception e) {
       throw new AuthenticationException("Failed to parse request body") {};
