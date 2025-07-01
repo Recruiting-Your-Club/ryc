@@ -11,20 +11,7 @@ import {
 import type { MainCardProps } from './types';
 import { getCategory } from '@utils/changeCategory';
 import { Link } from 'react-router-dom';
-
-// FIXME: 나중에 useMemo로 최적화 해야할듯?
-const getTagStatus = (status: string) => {
-    switch (status) {
-        case 'progress':
-            return <Tag text="모집중" variant="progress" />;
-        case 'primary':
-            return <Tag text="모집예정" variant="primary" />;
-        case 'end':
-            return <Tag text="모집마감" variant="end" />;
-        default:
-            return <Tag text="미상" variant="progress" />;
-    }
-};
+import { TagStatus } from './TagStatus';
 
 function MainCard({
     title = 'En#',
@@ -77,7 +64,7 @@ function MainCard({
                         </Text>
                     </div>
                 </div>
-                {getTagStatus(status)}
+                {TagStatus(status)}
             </div>
             <div css={cardBodyContainer}>
                 <Text textAlign="start" type="bodyLight" cropped noWrap>
