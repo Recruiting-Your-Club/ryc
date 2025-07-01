@@ -30,7 +30,7 @@ public class ClubService {
   private final AuthService authService;
 
   @Transactional
-  public ClubCreateResponse createClub(ClubCreateRequest body) {
+  public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
     final Club club = Club.initialize(body);
 
     if (clubRepository.existsByName(club.getName())) {
@@ -39,7 +39,7 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    Admin currentUser = authService.getCurrentUser();
+    Admin currentUser = authService.getAdminById(adminId);
     clubRepository.assignRole(savedClub, currentUser, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
@@ -64,7 +64,6 @@ public class ClubService {
     List<ClubSummary> clubSummaries = body.clubSummaries();
     List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
 
-    // TODO: updated_at 필드 업데이트
     Club newClub =
         Club.builder()
             .id(id)

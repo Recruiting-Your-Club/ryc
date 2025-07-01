@@ -66,8 +66,9 @@ class ClubHttpApiTest {
             .imageUrl("http://example.com/image.jpg")
             .build();
     ClubCreateResponse createResponse = ClubCreateResponse.builder().clubId("test-id").build();
+    String adminId = "admin-id";
 
-    when(clubService.createClub(any(ClubCreateRequest.class))).thenReturn(createResponse);
+    when(clubService.createClub(adminId, any(ClubCreateRequest.class))).thenReturn(createResponse);
 
     // When & Then
     mockMvc

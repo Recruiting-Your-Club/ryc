@@ -37,7 +37,8 @@ public class EmailHttpApi {
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
-    List<EmailSendResponse> responses = emailService.createEmails(userDetail, announcementId, body);
+    List<EmailSendResponse> responses =
+        emailService.createEmails(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 
@@ -48,7 +49,7 @@ public class EmailHttpApi {
       @RequestParam String announcementId,
       @Valid @RequestBody InterviewEmailSendRequest body) {
     List<EmailSendResponse> responses =
-        emailService.createInterviewDateEmails(userDetail, announcementId, body);
+        emailService.createInterviewDateEmails(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 }

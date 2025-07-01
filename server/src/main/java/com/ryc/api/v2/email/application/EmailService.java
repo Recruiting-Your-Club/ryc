@@ -21,7 +21,6 @@ import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.evaluation.bussiness.InterviewService;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 @Service
 public class EmailService {
@@ -47,11 +46,10 @@ public class EmailService {
 
   @Transactional
   public List<EmailSendResponse> createEmails(
-      CustomUserDetail userDetail, String announcementId, EmailSendRequest body) {
+      String adminId, String announcementId, EmailSendRequest body) {
 
     List<Email> emails =
-        createEmails(
-            userDetail.getId(), announcementId, body.recipients(), body.subject(), body.content());
+        createEmails(adminId, announcementId, body.recipients(), body.subject(), body.content());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()
@@ -67,18 +65,18 @@ public class EmailService {
 
   @Transactional
   public List<EmailSendResponse> createInterviewDateEmails(
-      CustomUserDetail userDetail, String announcementId, InterviewEmailSendRequest body) {
+      String adminId, String announcementId, InterviewEmailSendRequest body) {
 
     List<Email> emails =
         createEmailsWithEachLink(
-            userDetail.getId(),
+            adminId,
             announcementId,
             body.emailSendRequest().recipients(),
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
     interviewService.createInterview(
-        userDetail.getId(), announcementId, body.numberOfPeopleByInterviewDates());
+        adminId, announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()
