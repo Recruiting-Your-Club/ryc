@@ -1,11 +1,11 @@
-type httpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export interface CreateClientOptions {
     url: string;
-    method: httpMethod;
+    method: HttpMethod;
     headers?: HeadersInit;
     body?: object;
     isAuthRequire?: boolean;
 }
 
-export type requestOption = Omit<CreateClientOptions, 'method'>;
+export type RequestOption = Omit<CreateClientOptions, 'method'>;
