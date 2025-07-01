@@ -73,6 +73,7 @@ export const s_rightContainer = css`
     gap: 1rem;
     border: 1px solid ${theme.colors.gray[200]};
     padding: 1rem;
+    border-radius: 10px;
 `;
 export const s_calendarContainer = css`
     display: flex;
