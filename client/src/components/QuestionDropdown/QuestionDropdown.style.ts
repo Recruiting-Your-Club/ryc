@@ -25,12 +25,6 @@ export const s_Icon = css`
     height: 1rem;
 `;
 
-export const s_CheckIcon = css`
-    width: 1rem;
-    height: 1rem;
-    color: ${theme.colors.default};
-`;
-
 export const s_DropdownItem = css`
     display: flex;
     align-items: center;
