@@ -5,12 +5,10 @@ import ArrowDown from '@assets/images/downArrow.svg';
 import {
     questionStatusContainer,
     questionStatusTextSx,
-    s_CheckIcon,
     s_DropdownItem,
     s_Icon,
 } from './QuestionDropdown.style';
 import type { QuestionDropdownProps } from './types';
-import Check from '@assets/images/check.svg';
 import { getAnswer } from '@pages/ClubApplyPage/utils';
 
 function QuestionDropdown({
@@ -40,14 +38,14 @@ function QuestionDropdown({
                                 question.isRequired && (
                                     <Dropdown.Item
                                         key={question.questionTitle}
-                                        sx={{
-                                            marginBottom: '0.5rem',
-                                        }}
+                                        sx={{ marginBottom: '0.5rem' }}
                                     >
                                         <div css={s_DropdownItem}>
                                             {question.questionTitle}
                                             {getAnswer(answers, question.questionTitle)?.trim() && (
-                                                <Check css={s_CheckIcon} />
+                                                <Text type="subCaptionRegular" color="primary">
+                                                    [완료]
+                                                </Text>
                                             )}
                                         </div>
                                     </Dropdown.Item>
@@ -58,18 +56,18 @@ function QuestionDropdown({
                     <Dropdown.Group>
                         <Dropdown.Label>자기소개서</Dropdown.Label>
                         {detailQuestions.map(
-                            (question) =>
+                            (question, index) =>
                                 question.isRequired && (
                                     <Dropdown.Item
                                         key={question.questionTitle}
-                                        sx={{
-                                            marginBottom: '0.5rem',
-                                        }}
+                                        sx={{ marginBottom: '0.5rem' }}
                                     >
                                         <div css={s_DropdownItem}>
-                                            {question.questionTitle}
+                                            질문{index + 1}
                                             {getAnswer(answers, question.questionTitle)?.trim() && (
-                                                <Check css={s_CheckIcon} />
+                                                <Text type="subCaptionRegular" color="primary">
+                                                    [완료]
+                                                </Text>
                                             )}
                                         </div>
                                     </Dropdown.Item>
