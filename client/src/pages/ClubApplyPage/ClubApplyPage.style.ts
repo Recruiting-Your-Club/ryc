@@ -152,11 +152,12 @@ export const mobileQuestionStatus = css`
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
         right: 8rem;
+        top: 10rem;
     }
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         right: 5rem;
-        top: 8.75rem;
+        top: 8.3rem;
     }
 `;
 
