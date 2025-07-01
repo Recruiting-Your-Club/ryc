@@ -20,7 +20,21 @@ export const questionStatusTextSx = (isAllQuestionCompleted: boolean) => css`
     `};
 `;
 
-export const arrowIcon = css`
+export const s_Icon = css`
     width: 1rem;
     height: 1rem;
+`;
+
+export const s_CheckIcon = css`
+    width: 1rem;
+    height: 1rem;
+    color: ${theme.colors.default};
+`;
+
+export const s_DropdownItem = css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
 `;
