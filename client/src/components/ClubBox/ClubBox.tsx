@@ -1,14 +1,8 @@
 import React from 'react';
 import { clubBoxContainer, clubBoxItem } from './ClubBox.style';
 import { Text } from '@components';
+import type { ClubBoxProps } from './types';
 
-interface ClubBoxItem {
-    title: string;
-    value: string;
-}
-interface ClubBoxProps {
-    data?: ClubBoxItem[];
-}
 function ClubBox({ data }: ClubBoxProps) {
     // prop destruction
     // lib hooks
