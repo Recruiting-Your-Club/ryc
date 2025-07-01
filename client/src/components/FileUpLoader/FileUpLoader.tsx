@@ -18,12 +18,13 @@ function FileUpLoaderRoot({
     // prop destruction
     // lib hooks
     // initial values
+    const safeOnFilesChange = onFilesChange || (() => {});
     // state, ref, querystring hooks
 
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(onFilesChange || (() => {}), files.length);
+    const { filterAndSetFiles } = useFilteredFile(safeOnFilesChange, files.length);
 
     // form hooks
     // query hooks
@@ -98,7 +99,7 @@ function FileUpLoaderRoot({
     const stateContextValue = useMemo(
         () => ({
             files,
-            onFilesChange: onFilesChange || (() => {}),
+            onFilesChange: safeOnFilesChange,
             isActive,
             setIsActive,
             disabled,
