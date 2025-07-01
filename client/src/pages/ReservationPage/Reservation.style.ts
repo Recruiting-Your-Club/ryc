@@ -97,7 +97,7 @@ export const s_selectExampleWrapper = css`
 export const s_possibleBox = css`
     width: 1.2rem;
     height: 1.2rem;
-    background-color: ${theme.colors.blue[200]};
+    background-color: ${theme.colors.default};
 `;
 export const s_impossibleBox = css`
     width: 1.2rem;
