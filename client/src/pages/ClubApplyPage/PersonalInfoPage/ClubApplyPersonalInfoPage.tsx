@@ -56,14 +56,12 @@ function ClubApplyPersonalInfoPage({
                             css={clubApplyPersonalQuestionForm(false)}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                    {question.questionTitle}
-                                </Text>
+                                <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
                                     <Text
                                         type="bodyRegular"
                                         color="warning"
-                                        sx={{ display: 'inline' }}
+                                        sx={{ marginTop: '0.3rem' }}
                                     >
                                         *
                                     </Text>
@@ -91,14 +89,12 @@ function ClubApplyPersonalInfoPage({
                             css={clubApplyPersonalQuestionForm(false)}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                    {question.questionTitle}
-                                </Text>
+                                <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
                                     <Text
                                         type="bodyRegular"
                                         color="warning"
-                                        sx={{ display: 'inline' }}
+                                        sx={{ marginTop: '0.3rem' }}
                                     >
                                         *
                                     </Text>
@@ -135,11 +131,13 @@ function ClubApplyPersonalInfoPage({
                         onBlur={() => onBlur(question.questionTitle)}
                     >
                         <div css={labelContainer}>
-                            <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                {question.questionTitle}
-                            </Text>
+                            <Text type="bodyRegular">{question.questionTitle}</Text>
                             {question.isRequired && (
-                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                <Text
+                                    type="bodyRegular"
+                                    color="warning"
+                                    sx={{ marginTop: '0.3rem' }}
+                                >
                                     *
                                 </Text>
                             )}

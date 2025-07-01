@@ -34,14 +34,15 @@ function ClubApplyDetailQuestionPage({
                         onBlur={() => onBlur(question.questionTitle)}
                     >
                         <div css={labelContainer}>
-                            <Text
-                                type="bodyRegular"
-                                sx={{ display: 'inline', marginLeft: '0.5rem' }}
-                            >
+                            <Text type="bodyRegular" sx={{ marginLeft: '0.5rem' }}>
                                 {question.questionTitle}
                             </Text>
                             {question.isRequired && (
-                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                <Text
+                                    type="bodyRegular"
+                                    color="warning"
+                                    sx={{ marginTop: '0.5rem' }}
+                                >
                                     *
                                 </Text>
                             )}
