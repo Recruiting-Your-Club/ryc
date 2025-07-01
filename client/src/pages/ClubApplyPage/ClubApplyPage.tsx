@@ -307,6 +307,7 @@ function ClubApplyPage() {
                         detailQuestions={detailQuestions}
                         completedQuestionsCount={completedQuestions}
                         requiredQuestionsCount={requiredQuestionsCount}
+                        answers={answers}
                     />
                 </div>
                 <div css={clubApplyTabContainer}>
@@ -324,6 +325,7 @@ function ClubApplyPage() {
                     completedQuestionsCount={completedQuestions}
                     requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
+                    answers={answers}
                 />
             </div>
 
