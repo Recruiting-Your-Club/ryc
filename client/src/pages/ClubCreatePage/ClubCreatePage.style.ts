@@ -34,6 +34,7 @@ export const clubListContainer = css`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow-y: auto;
 `;
 export const clubContentContainer = (index: number) => css`
     display: flex;
