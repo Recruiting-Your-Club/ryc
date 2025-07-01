@@ -23,6 +23,7 @@ function ClubSubmitCard({
     completedQuestionsCount,
     requiredQuestionsCount,
     onSubmit,
+    answers,
 }: ClubSubmitCardProps) {
     // prop destruction
     // lib hooks
@@ -65,6 +66,7 @@ function ClubSubmitCard({
                         requiredQuestionsCount={requiredQuestionsCount}
                         personalQuestions={personalQuestions}
                         detailQuestions={detailQuestions}
+                        answers={answers}
                     />
                 </div>
                 <Button
