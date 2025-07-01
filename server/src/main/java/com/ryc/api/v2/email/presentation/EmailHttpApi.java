@@ -2,6 +2,8 @@ package com.ryc.api.v2.email.presentation;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,7 +36,7 @@ public class EmailHttpApi {
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
-      @RequestBody EmailSendRequest body) {
+      @Valid @RequestBody EmailSendRequest body) {
     List<EmailSendResponse> responses = emailService.createEmails(userDetail, announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
@@ -44,7 +46,7 @@ public class EmailHttpApi {
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
-      @RequestBody InterviewEmailSendRequest body) {
+      @Valid @RequestBody InterviewEmailSendRequest body) {
     List<EmailSendResponse> responses =
         emailService.createInterviewDateEmails(userDetail, announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
