@@ -18,9 +18,9 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.service.ClubService;
 
 import lombok.RequiredArgsConstructor;
 
