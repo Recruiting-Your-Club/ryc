@@ -1,9 +1,9 @@
 import { httpClient } from './httpClient';
-import type { RequestOption } from './types';
+import type { RequestBodyOption, RequestWithoutBodyOption } from './types';
 import type { HttpMethod } from './types';
 
 const httpRequest = {
-    request<T>(method: HttpMethod, { ...option }: RequestOption): Promise<T>{
+    request<T>(method: HttpMethod, { ...option }: RequestBodyOption): Promise<T>{
         const data = httpClient.createHttpRequest({
             method,
             ...option,
@@ -11,19 +11,19 @@ const httpRequest = {
         return data;
     },
 
-    get<T>({ url, headers, isAuthRequire }: RequestOption): Promise<T> {
+    get<T>({ url, headers, isAuthRequire }: RequestWithoutBodyOption): Promise<T> {
         return this.request('GET', { url, headers, isAuthRequire });
     },
-    post<T>({ url, headers, body, isAuthRequire }: RequestOption): Promise<T> {
+    post<T>({ url, headers, body, isAuthRequire }: RequestBodyOption): Promise<T> {
         return this.request('POST', { url, headers, body, isAuthRequire });
     },
-    put<T>({ url, headers, body, isAuthRequire }: RequestOption): Promise<T> {
+    put<T>({ url, headers, body, isAuthRequire }: RequestBodyOption): Promise<T> {
         return this.request('PUT', { url, headers, body, isAuthRequire });
     },
-    delete<T>({ url, headers, isAuthRequire }: RequestOption): Promise<T> {
+    delete<T>({ url, headers, isAuthRequire }: RequestWithoutBodyOption): Promise<T> {
         return this.request('DELETE', { url, headers, isAuthRequire });
     },
-    patch<T>({ url, headers, body, isAuthRequire }: RequestOption): Promise<T> {
+    patch<T>({ url, headers, body, isAuthRequire }: RequestBodyOption): Promise<T> {
         return this.request('PATCH', { url, headers, body, isAuthRequire });
     },
 };

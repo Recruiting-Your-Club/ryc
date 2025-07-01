@@ -8,4 +8,6 @@ export interface CreateClientOptions {
     isAuthRequire?: boolean;
 }
 
-export type RequestOption = Omit<CreateClientOptions, 'method'>;
+export type RequestBodyOption = Omit<CreateClientOptions, 'method'>;
+export type RequestWithoutBodyOption = Omit<RequestBodyOption, 'body'>;
+
