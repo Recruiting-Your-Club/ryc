@@ -23,6 +23,7 @@ export const s_reservationContainer = css`
     }
     width: 100%;
     height: 100%;
+    max-height: 70rem;
     max-width: 90rem;
     box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
     border-radius: 10px;
