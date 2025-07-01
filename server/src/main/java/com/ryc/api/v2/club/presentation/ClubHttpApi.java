@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
-import com.ryc.api.v2.club.business.ClubService;
+import com.ryc.api.v2.club.application.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.application.ClubService;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.business;
+package com.ryc.api.v2.club.application;
 
 import java.util.List;
 

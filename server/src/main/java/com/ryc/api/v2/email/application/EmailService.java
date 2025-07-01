@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.business;
+package com.ryc.api.v2.email.application;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

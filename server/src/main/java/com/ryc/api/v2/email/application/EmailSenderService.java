@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.business;
+package com.ryc.api.v2.email.application;
 
 import java.util.List;
 
