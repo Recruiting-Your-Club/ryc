@@ -29,7 +29,6 @@ function Calendar({
 }: CalendarProps) {
     // prop destruction
     const {
-        today,
         days,
         currentDate,
         handleBackMonth,
