@@ -11,7 +11,7 @@ import {
 } from './Calendar.style';
 import { Text } from '@components';
 import { useCalendar } from './utils';
-import type { CalendarProps } from './types';
+import type { CalendarProps, CalendarMode } from './types';
 import { WEEKDAYS } from '@constants/calendar';
 
 function Calendar({
@@ -48,21 +48,11 @@ function Calendar({
     // query hooks
     // calculated values
     // handlers
-    const handleCalendarType = (selectDate: string) => {
-        switch (mode) {
-            case 'single':
-                handleSingleSelect(selectDate);
-                break;
-            case 'multiple':
-                handleMultipleSelect(selectDate);
-                break;
-            case 'range':
-                handleRangeSelect(selectDate);
-                break;
-            case 'custom':
-                handleCustomSelect(selectDate);
-                break;
-        }
+    const getCalendarMode: Record<CalendarMode, (selectDate: string) => void> = {
+        single: handleSingleSelect,
+        multiple: handleMultipleSelect,
+        range: handleRangeSelect,
+        custom: handleCustomSelect,
     };
     // effects
 
@@ -114,7 +104,7 @@ function Calendar({
                                 mode,
                                 highlightedDate,
                             )}
-                            onClick={() => handleCalendarType(date.dateString)}
+                            onClick={() => getCalendarMode[mode](date.dateString)}
                         >
                             {date.day}
                         </button>

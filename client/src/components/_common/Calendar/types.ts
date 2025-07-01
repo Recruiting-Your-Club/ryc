@@ -1,5 +1,6 @@
 import type { CSSObject } from '@emotion/react';
 
+export type CalendarMode = 'single' | 'multiple' | 'range' | 'custom';
 export interface CalendarProps {
     // useState의 왼쪽 값
     selectedDate?: string[];
@@ -7,7 +8,7 @@ export interface CalendarProps {
     onSelect?: (selectedDate: string[]) => void;
     highlightedDate?: string[];
     onlySelected?: boolean;
-    mode?: 'single' | 'multiple' | 'range' | 'custom';
+    mode?: CalendarMode;
     disabled?: boolean;
     border?: boolean;
     shadow?: boolean;
