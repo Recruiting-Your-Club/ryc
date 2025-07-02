@@ -15,7 +15,7 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;

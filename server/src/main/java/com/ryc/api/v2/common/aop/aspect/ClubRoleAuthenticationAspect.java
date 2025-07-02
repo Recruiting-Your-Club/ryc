@@ -7,7 +7,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.role.business.RoleService;
@@ -24,7 +24,7 @@ public class ClubRoleAuthenticationAspect {
   @Before("@annotation(com.ryc.api.v2.common.aop.annotation.HasRole)")
   public void validateMemberRole(JoinPoint joinPoint) {
     MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-    ClubRoleSecuredDto dto = extractParameters(signature.getParameterNames(), joinPoint.getArgs());
+    ClubRoleSecuredDto dto = extractParameters(joinPoint.getArgs());
     HasRole hasRole = signature.getMethod().getAnnotation(HasRole.class);
 
     switch (hasRole.value()) {
@@ -39,22 +39,12 @@ public class ClubRoleAuthenticationAspect {
     }
   }
 
-  private ClubRoleSecuredDto extractParameters(String[] parameterNames, Object[] args) {
-    String adminId = null;
-    String clubId = null;
-
-    for (int i = 0; i < parameterNames.length; i++) {
-      if ("userDetail".equals(parameterNames[i])) {
-        adminId = (String) args[i];
-      } else if ("clubId".equals(parameterNames[i])) {
-        clubId = (String) args[i];
+  private ClubRoleSecuredDto extractParameters(Object[] args) {
+    for (Object arg : args) {
+      if (arg instanceof ClubRoleSecuredDto) {
+        return (ClubRoleSecuredDto) arg;
       }
     }
-
-    if (adminId == null || clubId == null) {
-      throw new IllegalArgumentException("필수 파라미터 누락: adminId 또는 clubId");
-    }
-
-    return new ClubRoleSecuredDto(adminId, clubId);
+    throw new IllegalArgumentException("ClubRoleSecuredDto 파라미터가 필요합니다.");
   }
 }

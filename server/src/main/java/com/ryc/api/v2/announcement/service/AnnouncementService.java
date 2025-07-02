@@ -22,7 +22,7 @@ import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;
@@ -37,13 +37,13 @@ public class AnnouncementService {
   @Transactional
   @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
-      ClubRoleSecuredDto dto, AnnouncementCreateRequest request) {
+      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
     // 1.Club 찾기
 
     // 2.Announcement 생성
-    Announcement announcement = Announcement.initialize(request, dto.clubId());
+    Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
 
-    ClubEntity clubProxy = clubJpaRepository.getReferenceById(dto.clubId());
+    ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubRoleSecuredDto.clubId());
 
     Announcement savedAnnouncement = announcementRepository.save(announcement, clubProxy);
 
@@ -75,7 +75,7 @@ public class AnnouncementService {
   @Transactional
   @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
-      ClubRoleSecuredDto dto, AnnouncementUpdateRequest request, String announcementId) {
+      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementUpdateRequest request, String announcementId) {
     // 1. 기존 Announcement 조회
     Announcement existingAnnouncement =
         announcementRepository.findByIdWithApplication(announcementId);
