@@ -18,7 +18,6 @@ function ClubApplyDetailQuestionPage({
     onBlur,
     onFocus,
     questionRefs,
-    handleQuestionFocus,
 }: ClubApplyDetailQuestionPageProps) {
     return (
         <div css={containerStyle}>

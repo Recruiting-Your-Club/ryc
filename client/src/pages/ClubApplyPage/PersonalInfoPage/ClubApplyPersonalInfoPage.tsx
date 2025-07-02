@@ -21,7 +21,6 @@ function ClubApplyPersonalInfoPage({
     onBlur,
     onFocus,
     questionRefs,
-    handleQuestionFocus,
 }: ClubApplyPersonalInfoPageProps) {
     //props destruction
     //lib hooks
