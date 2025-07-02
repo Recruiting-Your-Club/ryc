@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import type { StarSize } from './Star';
 import { Star } from './Star';
 import { ratingContainer } from './Rating.style';
+import type { RatingProps } from './types';
 
 const TOTAL_STARS_DEFAULT = 5;
-
-export interface RatingProps {
-    value?: number;
-    size?: StarSize;
-    totalStars?: number;
-    type?: 'click' | 'display';
-    onChange?: (rating: number) => void;
-    customCSS?: SerializedStyles;
-}
 
 export function Rating({
     value = 0,

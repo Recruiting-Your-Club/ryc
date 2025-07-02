@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
-import type { StarSize } from './Star';
+import type { StarSize } from './types';
 
 interface Size {
     width?: CSSProperties['width'];
