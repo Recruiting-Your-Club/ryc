@@ -3,14 +3,13 @@ import type { SerializedStyles } from '@emotion/react';
 import { Star } from './Star';
 import { ratingContainer } from './Rating.style';
 import type { RatingProps } from './types';
-
-const TOTAL_STARS_DEFAULT = 5;
+import { RATING_TYPE, STAR_SIZE, TOTAL_STARS_DEFAULT } from '@constants/rating';
 
 export function Rating({
     value = 0,
     size,
     totalStars = TOTAL_STARS_DEFAULT,
-    type = 'click',
+    type = RATING_TYPE.CLICK,
     onChange,
     customCSS,
 }: RatingProps) {
@@ -18,20 +17,20 @@ export function Rating({
     const [rating, setRating] = useState<number>(value);
 
     const handleClick = (index: number) => {
-        if (type === 'display') return;
+        if (type === RATING_TYPE.DISPLAY) return;
 
         setRating(index);
         onChange?.(index);
     };
 
     const handleMouseEnter = (index: number) => {
-        if (type === 'display') return;
+        if (type === RATING_TYPE.DISPLAY) return;
 
         setHoverRating(index);
     };
 
     const handleMouseLeave = () => {
-        if (type === 'display') return;
+        if (type === RATING_TYPE.DISPLAY) return;
 
         setHoverRating(null);
     };
@@ -48,7 +47,7 @@ export function Rating({
                         key={starIndex}
                         filled={isFilled}
                         partialFill={partialFill}
-                        size={size ?? 'md'}
+                        size={size ?? STAR_SIZE.MD}
                         onClick={() => handleClick(starIndex)}
                         onMouseEnter={() => handleMouseEnter(starIndex)}
                         onMouseLeave={handleMouseLeave}
