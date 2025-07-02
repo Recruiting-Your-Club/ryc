@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.role.domain.Role;
 
 public interface ClubRepository {
   Club save(Club club);

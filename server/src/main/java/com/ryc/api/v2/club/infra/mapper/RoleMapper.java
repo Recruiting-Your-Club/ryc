@@ -4,9 +4,9 @@ import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.infra.entity.AdminEntity;
 import com.ryc.api.v2.auth.infra.mapper.AdminMapper;
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.RoleEntity;
+import com.ryc.api.v2.role.domain.Role;
 
 public class RoleMapper {
 

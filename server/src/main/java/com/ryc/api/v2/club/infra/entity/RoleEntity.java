@@ -3,7 +3,7 @@ package com.ryc.api.v2.club.infra.entity;
 import jakarta.persistence.*;
 
 import com.ryc.api.v2.auth.infra.entity.AdminEntity;
-import com.ryc.api.v2.club.domain.Role;
+import com.ryc.api.v2.role.domain.Role;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

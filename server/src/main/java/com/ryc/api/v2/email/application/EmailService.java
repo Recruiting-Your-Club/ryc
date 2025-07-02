@@ -14,6 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.applicant.application.ApplicantService;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
@@ -21,35 +24,50 @@ import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.evaluation.bussiness.InterviewService;
+import com.ryc.api.v2.role.domain.Role;
 
 @Service
 public class EmailService {
 
   private final String baseUri;
   private final String linkHtmlTemplate;
-  private final EmailRepository emailRepository;
   private final InterviewService interviewService;
+  private final ApplicantService applicantService;
+  private final EmailRepository emailRepository;
 
   public EmailService(
       @Value("${reservation.base-url}") String baseUri,
-      EmailRepository emailRepository,
       InterviewService interviewService,
+      ApplicantService applicantService,
+      EmailRepository emailRepository,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
-    this.emailRepository = emailRepository;
     this.interviewService = interviewService;
+    this.applicantService = applicantService;
+    this.emailRepository = emailRepository;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     this.linkHtmlTemplate = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
   }
 
   @Transactional
+  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createEmails(
-      String adminId, String announcementId, EmailSendRequest body) {
+      ClubRoleSecuredDto clubRoleSecuredDto,
+      String adminId,
+      String announcementId,
+      EmailSendRequest body) {
+
+    applicantService.validateApplicantEmail(announcementId, body.recipients());
 
     List<Email> emails =
-        createEmails(adminId, announcementId, body.recipients(), body.subject(), body.content());
+        body.recipients().stream()
+            .map(
+                recipient ->
+                    Email.initialize(
+                        recipient, body.subject(), body.content(), announcementId, adminId))
+            .toList();
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()
@@ -64,19 +82,24 @@ public class EmailService {
   }
 
   @Transactional
+  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createInterviewDateEmails(
-      String adminId, String announcementId, InterviewEmailSendRequest body) {
+      ClubRoleSecuredDto clubRoleSecuredDto,
+      String announcementId,
+      InterviewEmailSendRequest body) {
+
+    applicantService.validateApplicantEmail(announcementId, body.emailSendRequest().recipients());
 
     List<Email> emails =
         createEmailsWithEachLink(
-            adminId,
+            clubRoleSecuredDto.adminId(),
             announcementId,
             body.emailSendRequest().recipients(),
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
     interviewService.createInterview(
-        adminId, announcementId, body.numberOfPeopleByInterviewDates());
+        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()
@@ -107,17 +130,6 @@ public class EmailService {
   public void incrementRetryCount(Email email) {
     Email updatedEmail = email.incrementRetryCount();
     emailRepository.save(updatedEmail);
-  }
-
-  private List<Email> createEmails(
-      String adminId,
-      String announcementId,
-      List<String> recipients,
-      String subject,
-      String content) {
-    return recipients.stream()
-        .map(recipient -> Email.initialize(recipient, subject, content, announcementId, adminId))
-        .toList();
   }
 
   private List<Email> createEmailsWithEachLink(
