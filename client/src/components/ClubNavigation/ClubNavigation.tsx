@@ -10,11 +10,12 @@ import type { ClubNavigationProps } from './types';
 
 function ClubNavigation(props: ClubNavigationProps) {
     // prop destruction
-    const { navigationItem } = props;
+    const { navigationItem, controlledActive, onChange } = props;
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [active, setActive] = useState<string>(navigationItem[0].title);
+    const [uncontrolledActive, setUncontrolledActive] = useState<string>(navigationItem[0].title);
+    const active = controlledActive !== undefined ? controlledActive : uncontrolledActive;
     const [sliderPosition, setSliderPosition] = useState<number>(0);
     const [sliderWidth, setSliderWidth] = useState<string>(navigationItem[0].width);
 
@@ -37,10 +38,17 @@ function ClubNavigation(props: ClubNavigationProps) {
     };
     // handlers
     const handlePosition = (title: string) => {
-        setActive(title);
-        calculateSliderPosition(title);
+        if (onChange) {
+            onChange(title);
+        } else {
+            setUncontrolledActive(title);
+            calculateSliderPosition(title);
+        }
     };
     // effects
+    useEffect(() => {
+        calculateSliderPosition(active);
+    }, [active]);
     return (
         <>
             <div css={navigationContainer}>
