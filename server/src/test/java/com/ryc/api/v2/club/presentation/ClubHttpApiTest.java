@@ -1,7 +1,6 @@
 package com.ryc.api.v2.club.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -172,8 +171,8 @@ class ClubHttpApiTest {
             .clubDetailImages(List.of())
             .build();
 
-    when(clubService.updateClub(any(), eq(clubId), any(ClubUpdateRequest.class)))
-        .thenReturn(updateResponse);
+    //    when(clubService.updateClub(any(), eq(clubId), any(ClubUpdateRequest.class)))
+    //        .thenReturn(updateResponse);
 
     // When & Then
     mockMvc

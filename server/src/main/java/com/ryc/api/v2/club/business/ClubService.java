@@ -15,11 +15,11 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.business.RoleService;
 import com.ryc.api.v2.role.domain.Role;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,11 +51,10 @@ public class ClubService {
 
   @Transactional
   @HasRole(Role.MEMBER)
-  public ClubUpdateResponse updateClub(
-      CustomUserDetail userDetail, String clubId, ClubUpdateRequest body) {
+  public ClubUpdateResponse updateClub(ClubRoleSecuredDto roleDto, ClubUpdateRequest body) {
     Club previousClub =
         clubRepository
-            .findById(clubId)
+            .findById(roleDto.clubId())
             .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
 
     if (body.name() != null && clubRepository.existsByName(body.name())) {

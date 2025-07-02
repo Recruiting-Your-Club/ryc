@@ -15,6 +15,7 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
+import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
@@ -27,13 +28,14 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
   @Override
   public ResponseEntity<AnnouncementCreateResponse> create(
       CustomUserDetail userDetail, String clubId, AnnouncementCreateRequest body) {
-    AnnouncementCreateResponse response =
-        announcementService.createAnnouncement(userDetail, clubId, body);
+
+    ClubRoleSecuredDto roleDto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
+    AnnouncementCreateResponse response = announcementService.createAnnouncement(roleDto, body);
 
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/api/v2/clubs/{club-id}/announcements/{announcement-id}")
-            .buildAndExpand(clubId, response.announcementId())
+            .buildAndExpand(roleDto.clubId(), response.announcementId())
             .toUri();
 
     return ResponseEntity.created(location).body(response);
@@ -58,7 +60,9 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
       String clubId,
       String announcementId,
       AnnouncementUpdateRequest body) {
+    ClubRoleSecuredDto roleDto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
+
     return ResponseEntity.status(HttpStatus.OK)
-        .body(announcementService.updateAnnouncement(body, announcementId));
+        .body(announcementService.updateAnnouncement(roleDto, body, announcementId));
   }
 }

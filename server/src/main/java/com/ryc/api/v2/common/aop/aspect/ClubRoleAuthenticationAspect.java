@@ -1,6 +1,5 @@
 package com.ryc.api.v2.common.aop.aspect;
 
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -8,10 +7,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.role.business.RoleService;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,7 @@ public class ClubRoleAuthenticationAspect {
   @Before("@annotation(com.ryc.api.v2.common.aop.annotation.HasRole)")
   public void validateMemberRole(JoinPoint joinPoint) {
     MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-    ClubRoleSecuredDto dto = extractParameters(signature, joinPoint.getArgs());
+    ClubRoleSecuredDto dto = extractParameters(signature.getParameterNames(), joinPoint.getArgs());
     HasRole hasRole = signature.getMethod().getAnnotation(HasRole.class);
 
     switch (hasRole.value()) {
@@ -40,8 +39,7 @@ public class ClubRoleAuthenticationAspect {
     }
   }
 
-  private ClubRoleSecuredDto extractParameters(MethodSignature signature, Object[] args) {
-    String[] parameterNames = signature.getParameterNames();
+  private ClubRoleSecuredDto extractParameters(String[] parameterNames, Object[] args) {
     String adminId = null;
     String clubId = null;
 

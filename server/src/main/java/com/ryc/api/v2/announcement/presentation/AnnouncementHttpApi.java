@@ -55,7 +55,6 @@ public interface AnnouncementHttpApi {
   ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
       @PathVariable("announcement-id") String announcementId);
 
-  /** 공고 수정 todo hasAnyRole 어노테이션 구현 후 추가 */
   @PutMapping("/clubs/{club-id}//announcements/{announcement-id}")
   @Operation(summary = "공고 수정")
   ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
