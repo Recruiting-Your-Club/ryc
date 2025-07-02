@@ -17,6 +17,7 @@ function QuestionDropdown({
     personalQuestions,
     detailQuestions,
     answers,
+    onQuestionFocus,
 }: QuestionDropdownProps) {
     return (
         <div css={questionStatusContainer}>
@@ -38,6 +39,7 @@ function QuestionDropdown({
                                 question.isRequired && (
                                     <Dropdown.Item
                                         key={question.questionTitle}
+                                        onItemSelect={() => onQuestionFocus(question.questionTitle)}
                                         sx={{ marginBottom: '0.5rem' }}
                                     >
                                         <div css={s_DropdownItem}>
