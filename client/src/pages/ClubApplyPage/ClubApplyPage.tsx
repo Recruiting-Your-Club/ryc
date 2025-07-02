@@ -120,6 +120,7 @@ function ClubApplyPage() {
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const [activeTab, setActiveTab] = useState<string>('사전질문');
 
     // 사전질문 데이터
     const clubPersonalQuestions = useMemo(
@@ -154,7 +155,6 @@ function ClubApplyPage() {
     // form hooks
     // query hooks
     // calculated values
-
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         const allQuestions = [
@@ -178,6 +178,14 @@ function ClubApplyPage() {
         },
         [getValidationError],
     );
+
+    const allocateFocus = (questionTitle: string) => {
+        const element = questionRefs.current[questionTitle];
+        if (element) {
+            element.focus();
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
     // handlers
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
@@ -231,11 +239,14 @@ function ClubApplyPage() {
         setIsSubmitDialogOpen(false);
     };
 
-    const handleQuestionFocus = (questionTitle: string) => {
-        const element = questionRefs.current[questionTitle];
-        if (element) {
-            element.focus();
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const handleQuestionFocus = (questionTitle: string, tab: string) => {
+        if (activeTab !== tab) {
+            setActiveTab(tab);
+            setTimeout(() => {
+                allocateFocus(questionTitle);
+            }, 50);
+        } else {
+            allocateFocus(questionTitle);
         }
     };
 
@@ -323,7 +334,11 @@ function ClubApplyPage() {
                     />
                 </div>
                 <div css={clubApplyTabContainer}>
-                    <ClubNavigation navigationItem={navigationItem} />
+                    <ClubNavigation
+                        navigationItem={navigationItem}
+                        controlledActive={activeTab}
+                        onChange={setActiveTab}
+                    />
                 </div>
             </div>
 
