@@ -21,8 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
-import com.ryc.api.v2.club.business.ClubService;
+import com.ryc.api.v2.club.application.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.application.ClubService;
 import com.ryc.api.v2.club.domain.Category;
 import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
@@ -66,8 +66,9 @@ class ClubHttpApiTest {
             .imageUrl("http://example.com/image.jpg")
             .build();
     ClubCreateResponse createResponse = ClubCreateResponse.builder().clubId("test-id").build();
+    String adminId = "admin-id";
 
-    when(clubService.createClub(any(ClubCreateRequest.class))).thenReturn(createResponse);
+    when(clubService.createClub(adminId, any(ClubCreateRequest.class))).thenReturn(createResponse);
 
     // When & Then
     mockMvc

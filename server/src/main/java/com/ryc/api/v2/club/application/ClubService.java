@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.business;
+package com.ryc.api.v2.club.application;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import com.ryc.api.v2.club.domain.ClubDetailImage;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.ClubSummary;
 import com.ryc.api.v2.club.domain.ClubTag;
-import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +30,7 @@ public class ClubService {
   private final AuthService authService;
 
   @Transactional
-  public ClubCreateResponse createClub(ClubCreateRequest body) {
+  public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
     final Club club = Club.initialize(body);
 
     if (clubRepository.existsByName(club.getName())) {
@@ -39,7 +39,7 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    Admin currentUser = authService.getCurrentUser();
+    Admin currentUser = authService.getAdminById(adminId);
     clubRepository.assignRole(savedClub, currentUser, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.getId()).build();
@@ -64,7 +64,6 @@ public class ClubService {
     List<ClubSummary> clubSummaries = body.clubSummaries();
     List<ClubDetailImage> clubDetailImages = body.clubDetailImages();
 
-    // TODO: updated_at 필드 업데이트
     Club newClub =
         Club.builder()
             .id(id)

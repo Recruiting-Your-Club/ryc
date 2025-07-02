@@ -1,6 +1,5 @@
 package com.ryc.api.v2.club.infra;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -21,12 +20,12 @@ import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.Category;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubTag;
-import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.RoleEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.infra.jpa.RoleJpaRepository;
 import com.ryc.api.v2.club.infra.mapper.RoleMapper;
+import com.ryc.api.v2.role.domain.Role;
 
 @ExtendWith(MockitoExtension.class)
 class ClubRepositoryImplTest {

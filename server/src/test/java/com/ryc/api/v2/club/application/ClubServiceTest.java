@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.business;
+package com.ryc.api.v2.club.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -70,11 +70,13 @@ class ClubServiceTest {
             .category(Category.ACADEMIC)
             .imageUrl("http://example.com/image.jpg")
             .build();
+    String adminId = "admin-id";
 
     when(clubRepository.save(any(Club.class))).thenReturn(testClub);
+    when(authService.getAdminById(adminId)).thenReturn(null);
 
     // When
-    ClubCreateResponse response = clubService.createClub(request);
+    ClubCreateResponse response = clubService.createClub(adminId, request);
 
     // Then
     assertThat(response.clubId()).isEqualTo(testClub.getId());
@@ -90,12 +92,13 @@ class ClubServiceTest {
             .category(Category.ACADEMIC)
             .imageUrl("http://example.com/image.jpg")
             .build();
+    String adminId = "admin-id";
 
     when(clubRepository.save(any(Club.class))).thenReturn(testClub);
-    when(authService.getCurrentUser()).thenReturn(null);
+    when(authService.getAdminById(adminId)).thenReturn(null);
 
     // When
-    clubService.createClub(request);
+    clubService.createClub(adminId, request);
 
     // Then
     verify(clubRepository).assignRole(any(Club.class), any(), any());

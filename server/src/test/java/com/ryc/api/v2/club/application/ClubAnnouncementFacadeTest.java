@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.business;
+package com.ryc.api.v2.club.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

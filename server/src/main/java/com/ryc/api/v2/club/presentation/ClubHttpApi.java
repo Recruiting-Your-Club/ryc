@@ -6,16 +6,18 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
-import com.ryc.api.v2.club.business.ClubService;
+import com.ryc.api.v2.club.application.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.application.ClubService;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,8 +35,10 @@ public class ClubHttpApi {
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
-  public ResponseEntity<ClubCreateResponse> createClub(@Valid @RequestBody ClubCreateRequest body) {
-    ClubCreateResponse response = clubService.createClub(body);
+  public ResponseEntity<ClubCreateResponse> createClub(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @Valid @RequestBody ClubCreateRequest body) {
+    ClubCreateResponse response = clubService.createClub(userDetail.getId(), body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 

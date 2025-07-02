@@ -9,7 +9,6 @@ import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.domain.AdminRepository;
 import com.ryc.api.v2.auth.presentation.request.RegisterRequest;
 import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
-import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,11 +35,10 @@ public class AuthService {
     return new RegisterResponse(savedAdmin.getId());
   }
 
-  public Admin getCurrentUser() {
-    String userId = UserUtil.getCurrentUserId();
+  public Admin getAdminById(String id) {
     return adminRepository
-        .findById(userId)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+        .findById(id)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
   }
 
   // TODO: Logout 구현
