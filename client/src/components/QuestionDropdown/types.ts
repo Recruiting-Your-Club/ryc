@@ -6,5 +6,5 @@ export interface QuestionDropdownProps {
     personalQuestions: PersonalQuestion[];
     detailQuestions: DetailQuestion[];
     answers: Answer[];
-    onQuestionFocus: (questionTitle: string) => void;
+    onQuestionFocus: (questionTitle: string, tab: string) => void;
 }

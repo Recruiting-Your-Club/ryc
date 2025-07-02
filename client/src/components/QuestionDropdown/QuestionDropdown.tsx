@@ -39,7 +39,9 @@ function QuestionDropdown({
                                 question.isRequired && (
                                     <Dropdown.Item
                                         key={question.questionTitle}
-                                        onItemSelect={() => onQuestionFocus(question.questionTitle)}
+                                        onItemSelect={() =>
+                                            onQuestionFocus(question.questionTitle, '사전질문')
+                                        }
                                         sx={{ marginBottom: '0.5rem' }}
                                     >
                                         <div css={s_DropdownItem}>
@@ -62,6 +64,9 @@ function QuestionDropdown({
                                 question.isRequired && (
                                     <Dropdown.Item
                                         key={question.questionTitle}
+                                        onItemSelect={() =>
+                                            onQuestionFocus(question.questionTitle, '자기소개서')
+                                        }
                                         sx={{ marginBottom: '0.5rem' }}
                                     >
                                         <div css={s_DropdownItem}>
