@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
 import {
     clubApplyPage,
@@ -119,6 +119,7 @@ function ClubApplyPage() {
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+    const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     // 사전질문 데이터
     const clubPersonalQuestions = useMemo(
@@ -230,6 +231,14 @@ function ClubApplyPage() {
         setIsSubmitDialogOpen(false);
     };
 
+    const handleQuestionFocus = (questionTitle: string) => {
+        const element = questionRefs.current[questionTitle];
+        if (element) {
+            element.focus();
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
     const navigationItem = [
         {
             title: '사전질문',
@@ -244,6 +253,7 @@ function ClubApplyPage() {
                     touched={touched}
                     onBlur={handleBlur}
                     onFocus={handleFocus}
+                    questionRefs={questionRefs}
                 />
             ),
             width: '6rem',
@@ -259,6 +269,7 @@ function ClubApplyPage() {
                     touched={touched}
                     onBlur={handleBlur}
                     onFocus={handleFocus}
+                    questionRefs={questionRefs}
                 />
             ),
             width: '6.5rem',
@@ -308,6 +319,7 @@ function ClubApplyPage() {
                         completedQuestionsCount={completedQuestions}
                         requiredQuestionsCount={requiredQuestionsCount}
                         answers={answers}
+                        onQuestionFocus={handleQuestionFocus}
                     />
                 </div>
                 <div css={clubApplyTabContainer}>
@@ -326,6 +338,7 @@ function ClubApplyPage() {
                     requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
                     answers={answers}
+                    onQuestionFocus={handleQuestionFocus}
                 />
             </div>
 
