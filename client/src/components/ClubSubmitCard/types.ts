@@ -12,4 +12,5 @@ export interface ClubSubmitCardProps {
     deadlineColor?: string;
     onSubmit?: () => void;
     answers: Answer[];
+    onQuestionFocus: (questionTitle: string) => void;
 }
