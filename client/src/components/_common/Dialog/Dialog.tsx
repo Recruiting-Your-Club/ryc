@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import {
     backdropContainer,
@@ -51,8 +51,8 @@ function BaseDialog({
     // form hooks
     // query hooks
     // calculated values
-    // effects
     // handlers
+    // effects
     return (
         <>
             {open &&
