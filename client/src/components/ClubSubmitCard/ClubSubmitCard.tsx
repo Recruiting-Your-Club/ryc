@@ -24,6 +24,7 @@ function ClubSubmitCard({
     requiredQuestionsCount,
     onSubmit,
     answers,
+    onQuestionFocus,
 }: ClubSubmitCardProps) {
     // prop destruction
     // lib hooks
@@ -67,6 +68,7 @@ function ClubSubmitCard({
                         personalQuestions={personalQuestions}
                         detailQuestions={detailQuestions}
                         answers={answers}
+                        onQuestionFocus={onQuestionFocus}
                     />
                 </div>
                 <Button
