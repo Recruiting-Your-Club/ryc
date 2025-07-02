@@ -53,6 +53,13 @@ function BaseDialog({
     // calculated values
     // handlers
     // effects
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [open]);
     return (
         <>
             {open &&
