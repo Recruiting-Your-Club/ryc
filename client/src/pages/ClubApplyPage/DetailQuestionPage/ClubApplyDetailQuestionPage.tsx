@@ -17,6 +17,8 @@ function ClubApplyDetailQuestionPage({
     touched,
     onBlur,
     onFocus,
+    questionRefs,
+    handleQuestionFocus,
 }: ClubApplyDetailQuestionPageProps) {
     return (
         <div css={containerStyle}>
@@ -32,6 +34,11 @@ function ClubApplyDetailQuestionPage({
                         tabIndex={-1}
                         onFocus={() => onFocus(question.questionTitle)}
                         onBlur={() => onBlur(question.questionTitle)}
+                        ref={(element) => {
+                            if (questionRefs.current) {
+                                questionRefs.current[question.questionTitle] = element;
+                            }
+                        }}
                     >
                         <div css={labelContainer}>
                             <Text type="bodyRegular" sx={{ marginLeft: '0.5rem' }}>
