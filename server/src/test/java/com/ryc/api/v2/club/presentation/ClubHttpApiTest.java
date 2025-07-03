@@ -19,8 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
-import com.ryc.api.v2.club.business.ClubService;
+import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;

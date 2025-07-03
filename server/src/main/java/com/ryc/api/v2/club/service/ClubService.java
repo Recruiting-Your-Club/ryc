@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.business;
+package com.ryc.api.v2.club.service;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.role.business.RoleService;
+import com.ryc.api.v2.role.service.RoleService;
 import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;

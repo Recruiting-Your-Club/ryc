@@ -10,7 +10,7 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
-import com.ryc.api.v2.role.business.RoleService;
+import com.ryc.api.v2.role.service.RoleService;
 
 import lombok.RequiredArgsConstructor;
 

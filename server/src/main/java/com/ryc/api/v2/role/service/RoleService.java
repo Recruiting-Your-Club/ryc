@@ -1,4 +1,4 @@
-package com.ryc.api.v2.role.business;
+package com.ryc.api.v2.role.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
