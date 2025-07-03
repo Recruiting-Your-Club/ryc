@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import theme from '@styles/theme';
 
 export const LoginContainer = css`
     display: flex;
@@ -29,8 +30,7 @@ export const titleContainer = css`
     justify-content: center;
     align-items: center;
     flex-grow: 0.2;
-    font-size: 2rem;
-    font-weight: 700;
+    ${theme.typography.h4Bold};
 `;
 
 export const inputContainer = css`

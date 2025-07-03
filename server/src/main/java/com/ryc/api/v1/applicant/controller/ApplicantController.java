@@ -25,12 +25,8 @@ public class ApplicantController {
   @GetMapping("/")
   public ResponseEntity<?> getAllApplicants(
       @RequestParam(required = true) String clubId, String recruitmentId) {
-    try {
-      GetAllApplicantResponse response =
-          applicantService.getAllApplicantsByRecruitmentId(recruitmentId);
-      return ResponseEntity.status(HttpStatus.OK).body(response);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    GetAllApplicantResponse response =
+        applicantService.getAllApplicantsByRecruitmentId(recruitmentId);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

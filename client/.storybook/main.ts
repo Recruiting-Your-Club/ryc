@@ -1,7 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import path from 'path';
-
 const config: StorybookConfig = {
     stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
     addons: [
@@ -39,6 +38,28 @@ const config: StorybookConfig = {
                 '@utils': path.resolve(__dirname, 'src/utils'),
             };
         }
+        // SVG 관련 설정 추가
+        if (!config.module || !config.module.rules) {
+            return config;
+        }
+
+        config.module.rules = [
+            ...config.module.rules.map((rule) => {
+                if (!rule || rule === '...') {
+                    return rule;
+                }
+
+                if (rule.test && /svg/.test(String(rule.test))) {
+                    return { ...rule, exclude: /\.svg$/i };
+                }
+                return rule;
+            }),
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack'],
+            },
+        ];
+
         return config;
     },
 };

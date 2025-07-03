@@ -1,66 +1,23 @@
+
 import React from 'react';
-import { css } from '@emotion/react';
+import { ImageRegister } from '@components';
+import { useState } from 'react';
 
 function TestPage() {
+    //imageSrc에 편집된 이미지가 들어감
+    const [image, setImage] = useState<string>();
+    const [croppedImage, setCroppedImage] = useState<string>();
     return (
         <>
-            <div
-                css={css`
-                    font-size: 3.2rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
-            <div
-                css={css`
-                    font-size: 2.8rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
-            <div
-                css={css`
-                    font-size: 2.4rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
-            <div
-                css={css`
-                    font-size: 2rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
-            <div
-                css={css`
-                    font-size: 1.6rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
-            <div
-                css={css`
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
-            <div
-                css={css`
-                    font-size: 1.2rem;
-                    font-weight: bold;
-                `}
-            >
-                Hello
-            </div>
+            <ImageRegister
+                image={image}
+                setImage={setImage}
+                croppedImage={croppedImage}
+                setCroppedImage={setCroppedImage}
+            />
         </>
     );
 }
 export { TestPage };
+
+//<Calendar selectedDate={[clicked, ...select]} setClickedDate={setClicked} />
