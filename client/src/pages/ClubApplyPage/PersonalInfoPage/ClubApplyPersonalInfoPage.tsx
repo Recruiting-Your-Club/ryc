@@ -138,8 +138,6 @@ function ClubApplyPersonalInfoPage({
                             hasError && touched[question.questionTitle],
                         )}
                         tabIndex={-1}
-                        onFocus={() => onFocus(question.questionTitle)}
-                        onBlur={() => onBlur(question.questionTitle)}
                         ref={(element) => {
                             if (questionRefs.current) {
                                 questionRefs.current[question.questionTitle] = element;
