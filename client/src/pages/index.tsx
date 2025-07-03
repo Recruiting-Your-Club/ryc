@@ -6,3 +6,4 @@ export * from './MainPage';
 export * from './ClubDetailPage';
 export * from './RecruitmentPage';
 export * from './ClubCreatePage';
+export * from './LoadingPage';

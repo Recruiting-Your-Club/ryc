@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ImageRegister } from '@components';
 import { useState } from 'react';
@@ -18,3 +19,5 @@ function TestPage() {
     );
 }
 export { TestPage };
+
+//<Calendar selectedDate={[clicked, ...select]} setClickedDate={setClicked} />
