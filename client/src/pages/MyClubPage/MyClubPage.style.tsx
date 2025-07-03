@@ -34,7 +34,6 @@ export const clubItemText = css`
     flex-direction: column;
     justify-content: space-between;
     width: 25rem;
-    gap: 0.5rem;
 `;
 
 export const searchButton = css`
