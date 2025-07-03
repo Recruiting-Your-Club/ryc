@@ -62,7 +62,7 @@ public class RoleService {
 
   @Transactional
   @HasRole(Role.OWNER)
-  public void deleteRole(ClubRoleSecuredDto dto, String roleId) {
-    roleRepository.deleteById(roleId);
+  public void deleteRole(ClubRoleSecuredDto dto, String targetUserId) {
+    roleRepository.deleteByUserId(targetUserId);
   }
 }

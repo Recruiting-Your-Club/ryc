@@ -16,4 +16,6 @@ public interface RoleJpaRepository extends JpaRepository<ClubRoleEntity, String>
       "SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END "
           + "FROM ClubRoleEntity r WHERE r.admin.id = :adminId AND r.club.id = :clubId AND r.role = 'OWNER'")
   boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
+
+  void deleteByAdminId(String adminId);
 }

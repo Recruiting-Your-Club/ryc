@@ -34,17 +34,17 @@ public class RoleHttpApi {
     return ResponseEntity.created(location).body(roleDemandResponse);
   }
 
-  @DeleteMapping("clubs/{clubId}/roles/{roleId}")
+  @DeleteMapping("clubs/{clubId}/users/{userId}")
   @Operation(
-      summary = "동아리 권한 삭제",
-      description = "해당 기능은 동아리 회장만 수행할 수 있습니다. 권한 삭제 후 roleId를 가졌던 사용자는 더이상 동아리 멤버가 아닙니다.")
+      summary = "동아리 내 사용자 삭제",
+      description = "해당 기능은 동아리 회장만 수행할 수 있습니다. userId를 가진 사용자는 더 이상 동아리에서 활동하지 못하게 됩니다.")
   public ResponseEntity<Void> deleteRole(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable String clubId,
-      @PathVariable String roleId) {
+      @PathVariable String userId) {
 
     ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    roleService.deleteRole(dto, roleId);
+    roleService.deleteRole(dto, userId);
     return ResponseEntity.noContent().build();
   }
 }

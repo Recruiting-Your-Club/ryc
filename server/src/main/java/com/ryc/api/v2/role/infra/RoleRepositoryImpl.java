@@ -34,7 +34,7 @@ public class RoleRepositoryImpl implements RoleRepository {
   }
 
   @Override
-  public void deleteById(String roleId) {
-    roleJpaRepository.deleteById(roleId);
+  public void deleteByUserId(String adminId) {
+    roleJpaRepository.deleteByAdminId(adminId);
   }
 }

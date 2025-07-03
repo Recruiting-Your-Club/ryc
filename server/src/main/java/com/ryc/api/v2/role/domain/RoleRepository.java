@@ -10,5 +10,5 @@ public interface RoleRepository {
 
   boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
 
-  void deleteById(String roleId);
+  void deleteByUserId(String adminId);
 }
