@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '@components/_common/Button';
 import PasswordShow from '@assets/images/passwordShow.svg';
 import PasswordHide from '@assets/images/passwordHide.svg';
-import { Input } from '@components/_common';
-import type { InputProps } from '@components/_common';
+import { Input, Button } from '@components';
+import type { InputProps } from '@components/_common/Input/types';
 
 function PasswordInput({ ...props }: InputProps) {
     const [isVisible, setIsVisible] = useState(false);
