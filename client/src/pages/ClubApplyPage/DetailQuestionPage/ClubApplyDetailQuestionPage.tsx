@@ -5,13 +5,16 @@ import {
     clubApplyDetailQuestionContainer,
     s_infoIcon,
     s_labelContainer,
+    s_questionStarSx,
     s_questionTitleContainer,
+    s_questionTitleSx,
     textAreaSx,
 } from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
 import InfoIcon from '@assets/images/info.svg';
 import { Tooltip } from '@components';
+import { useMediaQuery } from '@hooks/useMediaQuery';
 
 function ClubApplyDetailQuestionPage({
     answers,
@@ -23,6 +26,7 @@ function ClubApplyDetailQuestionPage({
     onFocus,
     questionRefs,
 }: ClubApplyDetailQuestionPageProps) {
+    const isTablet = useMediaQuery('tablet');
     return (
         <div css={containerStyle}>
             {clubDetailQuestions.map((question) => {
@@ -35,8 +39,6 @@ function ClubApplyDetailQuestionPage({
                         key={question.questionTitle}
                         css={clubApplyDetailQuestionContainer}
                         tabIndex={-1}
-                        onFocus={() => onFocus(question.questionTitle)}
-                        onBlur={() => onBlur(question.questionTitle)}
                         ref={(element) => {
                             if (questionRefs.current) {
                                 questionRefs.current[question.questionTitle] = element;
@@ -45,20 +47,19 @@ function ClubApplyDetailQuestionPage({
                     >
                         <div css={s_labelContainer}>
                             <div css={s_questionTitleContainer}>
-                                <Text type="bodyRegular" sx={{ marginLeft: '0.5rem' }}>
+                                <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
                                     {question.questionTitle}
                                 </Text>
                                 {question.isRequired && (
-                                    <Text
-                                        type="bodyRegular"
-                                        color="warning"
-                                        sx={{ marginTop: '0.5rem' }}
-                                    >
+                                    <Text type="bodyRegular" color="warning" sx={s_questionStarSx}>
                                         *
                                     </Text>
                                 )}
                             </div>
-                            <Tooltip content={question.description}>
+                            <Tooltip
+                                content={question.description}
+                                direction={isTablet ? 'bottomLeft' : 'bottom'}
+                            >
                                 <InfoIcon css={s_infoIcon} />
                             </Tooltip>
                         </div>
