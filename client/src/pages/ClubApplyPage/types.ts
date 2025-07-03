@@ -1,4 +1,5 @@
 import type { CSSObject } from '@emotion/react';
+import type { RefObject } from 'react';
 
 export type PageAnswer = 'personal' | 'detail';
 export type QuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_ANSWER';
@@ -35,6 +36,7 @@ export interface ClubApplyPersonalInfoPageProps {
     touched: { [key: string]: boolean };
     onBlur: (questionTitle: string) => void;
     onFocus: (questionTitle: string) => void;
+    questionRefs: RefObject<{ [key: string]: HTMLDivElement | null }>;
 }
 
 export interface ClubApplyDetailQuestionPageProps {
@@ -45,4 +47,5 @@ export interface ClubApplyDetailQuestionPageProps {
     touched: { [key: string]: boolean };
     onBlur: (questionTitle: string) => void;
     onFocus: (questionTitle: string) => void;
+    questionRefs: RefObject<{ [key: string]: HTMLDivElement | null }>;
 }

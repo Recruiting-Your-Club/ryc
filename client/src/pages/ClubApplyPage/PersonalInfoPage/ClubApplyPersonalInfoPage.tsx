@@ -1,7 +1,5 @@
 import React from 'react';
-import { Input } from '@components/_common/Input';
-import { Radio } from '@components/_common/Radio';
-import { Text } from '@components/_common/Text';
+import { Input, Text, Checkbox, Radio } from '@components/_common';
 import {
     clubApplyPersonalQuestionForm,
     helperTextSx,
@@ -11,7 +9,6 @@ import {
 } from './ClubApplyPersonalInfoPage.style';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';
-import { Checkbox } from '@components/Checkbox';
 
 function ClubApplyPersonalInfoPage({
     answers,
@@ -23,6 +20,7 @@ function ClubApplyPersonalInfoPage({
     touched,
     onBlur,
     onFocus,
+    questionRefs,
 }: ClubApplyPersonalInfoPageProps) {
     //props destruction
     //lib hooks
@@ -57,16 +55,19 @@ function ClubApplyPersonalInfoPage({
                         <div
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.questionTitle] = element;
+                                }
+                            }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                    {question.questionTitle}
-                                </Text>
+                                <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
                                     <Text
                                         type="bodyRegular"
                                         color="warning"
-                                        sx={{ display: 'inline' }}
+                                        sx={{ marginTop: '0.3rem' }}
                                     >
                                         *
                                     </Text>
@@ -92,16 +93,19 @@ function ClubApplyPersonalInfoPage({
                         <div
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.questionTitle] = element;
+                                }
+                            }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                    {question.questionTitle}
-                                </Text>
+                                <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
                                     <Text
                                         type="bodyRegular"
                                         color="warning"
-                                        sx={{ display: 'inline' }}
+                                        sx={{ marginTop: '0.3rem' }}
                                     >
                                         *
                                     </Text>
@@ -134,15 +138,20 @@ function ClubApplyPersonalInfoPage({
                             hasError && touched[question.questionTitle],
                         )}
                         tabIndex={-1}
-                        onFocus={() => onFocus(question.questionTitle)}
-                        onBlur={() => onBlur(question.questionTitle)}
+                        ref={(element) => {
+                            if (questionRefs.current) {
+                                questionRefs.current[question.questionTitle] = element;
+                            }
+                        }}
                     >
                         <div css={labelContainer}>
-                            <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                {question.questionTitle}
-                            </Text>
+                            <Text type="bodyRegular">{question.questionTitle}</Text>
                             {question.isRequired && (
-                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                <Text
+                                    type="bodyRegular"
+                                    color="warning"
+                                    sx={{ marginTop: '0.3rem' }}
+                                >
                                     *
                                 </Text>
                             )}

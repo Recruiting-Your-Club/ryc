@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import dayjs from 'dayjs';
 import {
     clubApplyPage,
     clubApplyPageMainContainer,
-    clubApplyTabContainer,
-    clubApplyTabName,
     clubLogoAndNameContainer,
     clubNameContainer,
     svgContainer,
@@ -12,20 +10,16 @@ import {
     mobileQuestionStatus,
     applyFormContainer,
     submitCardContainer,
-    arrowIcon,
+    clubApplyTabContainer,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
-import { Button } from '@components';
-import { Text } from '@components/_common/Text';
-import { ClubSubmitCard } from '@components/ClubSubmitCard';
+import { Text, Button } from '@components/_common/';
+import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import theme from '@styles/theme';
-import { SubmitDialog } from '@components/SubmitDialog/SubmitDialog';
 import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
-import ArrowDown from '@assets/images/downArrow.svg';
 
 // 임시 데이터
 export const clubData = {
@@ -38,7 +32,7 @@ export const clubData = {
     announcementPeriod: [
         {
             start: '2025-05-03T03:13:11.173Z',
-            end: '2025-05-23T03:13:11.173Z',
+            end: '2025-06-29T03:13:11.173Z',
         },
     ],
     applicationPeriod: [
@@ -115,29 +109,18 @@ export const clubData = {
     },
 };
 
-// 임시로 페이지 분리하기 위해 만든거 리팩토링 할 때 ClubDetailPage에 있는 Navigation 컴포넌트 가져다 써야함.
-const applyData = [
-    {
-        question: '사전질문',
-        index: 0,
-    },
-    {
-        question: '자기소개서',
-        index: 1,
-    },
-];
-
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
     // initial values
-
+    const deadline = dayjs(clubData.announcementPeriod[0].end).format('YYYY-MM-DD');
     // state, ref, querystring hooks
-    const [pageIndex, setPageIndex] = useState<number>(0);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
     const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+    const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const [activeTab, setActiveTab] = useState<string>('사전질문');
 
     // 사전질문 데이터
     const clubPersonalQuestions = useMemo(
@@ -172,7 +155,6 @@ function ClubApplyPage() {
     // form hooks
     // query hooks
     // calculated values
-
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         const allQuestions = [
@@ -197,23 +179,13 @@ function ClubApplyPage() {
         [getValidationError],
     );
 
-    // 마감일 계산 리팩토링할 때 유틸함수 가져다 써야함.
-    const today = dayjs().format('YYYY-MM-DD');
-    const formattedDeadline = dayjs(clubData.announcementPeriod[0].end);
-    const diffDay = formattedDeadline.diff(today, 'day');
-
-    const calculateDeadline = useMemo(() => {
-        if (diffDay > 7) {
-            return `~${formattedDeadline.format('MM.DD')}`;
-        } else if (diffDay > 0) {
-            return `D-${diffDay}`;
-        } else if (diffDay === 0) {
-            return `D-Day`;
-        } else {
-            return `마감`;
+    const allocateFocus = (questionTitle: string) => {
+        const element = questionRefs.current[questionTitle];
+        if (element) {
+            element.focus();
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    }, [formattedDeadline, today, diffDay]);
-
+    };
     // handlers
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
@@ -267,6 +239,54 @@ function ClubApplyPage() {
         setIsSubmitDialogOpen(false);
     };
 
+    const handleQuestionFocus = (questionTitle: string, tab: string) => {
+        if (activeTab !== tab) {
+            setActiveTab(tab);
+            setTimeout(() => {
+                allocateFocus(questionTitle);
+            }, 50);
+        } else {
+            allocateFocus(questionTitle);
+        }
+    };
+
+    const navigationItem = [
+        {
+            title: '사전질문',
+            page: (
+                <ClubApplyPersonalInfoPage
+                    answers={answers}
+                    clubPersonalQuestions={clubPersonalQuestions}
+                    onAnswerChange={handleAnswerChange}
+                    containerStyle={applyFormContainer}
+                    getValidationError={getValidationError}
+                    getErrorMessage={getErrorMessage}
+                    touched={touched}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                    questionRefs={questionRefs}
+                />
+            ),
+            width: '6rem',
+        },
+        {
+            title: '자기소개서',
+            page: (
+                <ClubApplyDetailQuestionPage
+                    answers={answers}
+                    clubDetailQuestions={detailQuestions}
+                    onAnswerChange={handleAnswerChange}
+                    containerStyle={applyFormContainer}
+                    touched={touched}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                    questionRefs={questionRefs}
+                />
+            ),
+            width: '6.5rem',
+        },
+    ];
+
     // effects
     useEffect(() => {
         const completedCount = answers.filter((answer) => {
@@ -303,64 +323,37 @@ function ClubApplyPage() {
                     </div>
                 </div>
 
-                <div css={clubApplyTabContainer}>
-                    {applyData.map((data) => (
-                        <Button
-                            key={data.question}
-                            variant="text"
-                            sx={clubApplyTabName}
-                            onClick={() => setPageIndex(data.index)}
-                        >
-                            {data.question}
-                        </Button>
-                    ))}
-                    <Text
-                        type="subCaptionRegular"
-                        textAlign="right"
-                        color={
-                            completedQuestions === requiredQuestionsCount ? 'primary' : 'warning'
-                        }
-                        sx={mobileQuestionStatus}
-                    >
-                        필수 항목 ({completedQuestions} / {requiredQuestionsCount})
-                        <ArrowDown css={arrowIcon} />
-                    </Text>
+                <div css={mobileQuestionStatus}>
+                    <QuestionDropdown
+                        personalQuestions={clubPersonalQuestions}
+                        detailQuestions={detailQuestions}
+                        completedQuestionsCount={completedQuestions}
+                        requiredQuestionsCount={requiredQuestionsCount}
+                        answers={answers}
+                        onQuestionFocus={handleQuestionFocus}
+                    />
                 </div>
-                {/* 페이지 */}
-                {pageIndex === 0 ? (
-                    <ClubApplyPersonalInfoPage
-                        answers={answers}
-                        clubPersonalQuestions={clubPersonalQuestions}
-                        onAnswerChange={handleAnswerChange}
-                        containerStyle={applyFormContainer(pageIndex)}
-                        getValidationError={getValidationError}
-                        getErrorMessage={getErrorMessage}
-                        touched={touched}
-                        onBlur={handleBlur}
-                        onFocus={handleFocus}
+                <div css={clubApplyTabContainer}>
+                    <ClubNavigation
+                        navigationItem={navigationItem}
+                        controlledActive={activeTab}
+                        onActiveChange={setActiveTab}
                     />
-                ) : (
-                    <ClubApplyDetailQuestionPage
-                        answers={answers}
-                        clubDetailQuestions={detailQuestions}
-                        onAnswerChange={handleAnswerChange}
-                        containerStyle={applyFormContainer(pageIndex)}
-                        touched={touched}
-                        onBlur={handleBlur}
-                        onFocus={handleFocus}
-                    />
-                )}
+                </div>
             </div>
 
             <div css={submitCardContainer}>
                 <ClubSubmitCard
                     clubName={clubData.title}
                     tag={clubData.tag}
-                    deadline={calculateDeadline}
-                    completedQuestions={completedQuestions}
-                    totalQuestions={requiredQuestionsCount}
-                    deadlineColor={diffDay > 7 ? theme.colors.gray[300] : theme.colors.red[800]}
+                    deadline={deadline}
+                    personalQuestions={clubPersonalQuestions}
+                    detailQuestions={detailQuestions}
+                    completedQuestionsCount={completedQuestions}
+                    requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
+                    answers={answers}
+                    onQuestionFocus={handleQuestionFocus}
                 />
             </div>
 

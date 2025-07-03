@@ -17,5 +17,6 @@ export interface TooltipProps {
     children: ReactNode;
     delay?: number;
     disabled?: boolean;
-    sx?: CSSObject;
+    wrapperSx?: CSSObject;
+    tooltipSx?: CSSObject;
 }

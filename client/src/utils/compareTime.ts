@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 interface GetRecruitmentStatusProps {
     startDate: string;
     endDate: string;
@@ -27,4 +29,21 @@ export const getStatus = ({ startDate, endDate }: GetRecruitmentStatusProps) => 
     if (current < start) return 'primary';
     else if (end < current) return 'end';
     else return 'progress';
+};
+
+export const getDeadlineInfo = (deadline: string) => {
+    const today = dayjs().format('YYYY-MM-DD');
+    const formattedDeadline = dayjs(deadline);
+    const diffDay = formattedDeadline.diff(today, 'day');
+
+    const displayText =
+        diffDay > 7
+            ? `~${formattedDeadline.format('MM.DD')}`
+            : diffDay > 0
+              ? `D-${diffDay}`
+              : diffDay === 0
+                ? `D-Day`
+                : `마감`;
+
+    return { displayText, diffDay };
 };
