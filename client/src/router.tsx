@@ -6,6 +6,7 @@ import {
     LoginPage,
     RegisterPage,
     RecruitmentPage,
+    ClubCreatePage,
     MainLoadingPage,
     DetailLoadingPage,
 } from './pages';
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
             { path: 'detail', element: <ClubDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
+            { path: 'club/create', element: <ClubCreatePage /> },
         ],
     },
     {

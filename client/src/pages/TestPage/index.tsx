@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
-import { Button } from '@components/_common/Button';
-import { Tooltip } from '@components/_common/Tooltip';
-import { MainCard } from '@components';
-import { MainLoadingPage, DetailLoadingPage } from '@pages/LoadingPage';
+
+import React from 'react';
+import { ImageRegister } from '@components';
+import { useState } from 'react';
 
 function TestPage() {
-    const [value, setValue] = useState('');
+    //imageSrc에 편집된 이미지가 들어감
+    const [image, setImage] = useState<string>();
+    const [croppedImage, setCroppedImage] = useState<string>();
     return (
         <>
-            <DetailLoadingPage />
+            <ImageRegister
+                image={image}
+                setImage={setImage}
+                croppedImage={croppedImage}
+                setCroppedImage={setCroppedImage}
+            />
         </>
     );
 }
