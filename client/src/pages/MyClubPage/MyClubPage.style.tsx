@@ -25,7 +25,7 @@ export const myClubList = css`
 export const clubItem = css`
     display: flex;
     align-items: center;
-    height: 5.5rem;
+    height: 5rem;
     gap: 1rem;
     padding: 0.5rem;
 `;
@@ -40,17 +40,19 @@ export const clubItemText = css`
 export const searchButton = css`
     justify-content: start;
     height: 5.5rem;
-    width: 97%;
+    width: 100%;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
 `;
 
 export const plusButton = css`
-    padding: 0.2rem;
+    padding: 0.1rem;
+    padding-left: 0.2rem;
     background-color: ${theme.colors.blue[100]};
     color: ${theme.colors.blue[200]};
-    font-size: 2.2rem;
-    height: 3.5rem;
-    width: 3.5rem;
-    border-radius: 15px;
+    font-size: 3rem;
+    height: 4.5rem;
+    width: 4.5rem;
+    border-radius: 10px;
 `;

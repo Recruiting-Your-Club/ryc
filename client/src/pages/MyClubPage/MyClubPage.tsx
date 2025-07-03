@@ -10,7 +10,6 @@ import {
 } from './MyClubPage.style';
 import { Text, Avatar, Button } from '@components';
 import ChevronRight from '@assets/images/chevronRight.svg';
-import { captionBold } from '@components/_common/Text/Text.stories';
 
 const myClubs = [
     {
@@ -43,27 +42,29 @@ function MyClubPage() {
     return (
         <div css={myClubPageLayout}>
             <div css={myClubPageContainer}>
-                <Text type="h4Bold" textAlign="start">
+                <Text type="h4Bold" textAlign="start" sx={{ marginLeft: '0.5rem' }}>
                     나의 동아리 목록
                 </Text>
                 <ul css={myClubList}>
                     {myClubs.map((club) => (
-                        <Button variant="transparent" size="xl" key={club.id} sx={clubItem}>
-                            <Avatar radius="10px" />
-                            <div css={clubItemText}>
-                                <Text textAlign="start">{club.name}</Text>
-                                <Text
-                                    textAlign="start"
-                                    type="captionRegular"
-                                    color="caption"
-                                    noWrap
-                                    cropped
-                                >
-                                    {club.description}
-                                </Text>
-                            </div>
-                            <ChevronRight width="25" height="25" strokeWidth={2} />
-                        </Button>
+                        <li key={club.id}>
+                            <Button variant="transparent" size="xl" sx={clubItem}>
+                                <Avatar radius="10px" />
+                                <div css={clubItemText}>
+                                    <Text textAlign="start">{club.name}</Text>
+                                    <Text
+                                        textAlign="start"
+                                        type="captionRegular"
+                                        color="caption"
+                                        noWrap
+                                        cropped
+                                    >
+                                        {club.description}
+                                    </Text>
+                                </div>
+                                <ChevronRight width="25" height="25" strokeWidth={2} />
+                            </Button>
+                        </li>
                     ))}
                 </ul>
                 <Button variant="transparent" size="xl" sx={searchButton}>
