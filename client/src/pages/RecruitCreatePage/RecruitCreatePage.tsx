@@ -1,7 +1,7 @@
 import { Button, Stepper } from '@components';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useStepper } from '@hooks/useStepper';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     s_prohibitDragArea,
     s_recruitCreatePageContainer,
@@ -37,6 +37,7 @@ function RecruitCreatePage() {
     // initial values
 
     // state, ref, querystring hooks
+    const containerRef = useRef<HTMLDivElement>(null);
 
     //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
@@ -70,6 +71,9 @@ function RecruitCreatePage() {
     };
 
     // effects
+    useEffect(() => {
+        containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [activeStep]);
 
     const stepComponent = (step: number) => {
         switch (step) {
@@ -109,7 +113,7 @@ function RecruitCreatePage() {
     };
 
     return (
-        <div css={s_recruitCreatePageContainer}>
+        <div css={s_recruitCreatePageContainer} ref={containerRef}>
             <div css={s_stepWrapper}>
                 <Stepper activeStep={activeStep} sx={s_prohibitDragArea}>
                     <Stepper.Step>
