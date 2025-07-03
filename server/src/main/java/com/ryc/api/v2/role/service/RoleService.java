@@ -9,6 +9,8 @@ import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.auth.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.RoleRepository;
@@ -56,5 +58,11 @@ public class RoleService {
   @Transactional(readOnly = true)
   public boolean hasOwnerRole(String adminId, String clubId) {
     return roleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
+  }
+
+  @Transactional
+  @HasRole(Role.OWNER)
+  public void deleteRole(ClubRoleSecuredDto dto, String roleId) {
+    roleRepository.deleteById(roleId);
   }
 }

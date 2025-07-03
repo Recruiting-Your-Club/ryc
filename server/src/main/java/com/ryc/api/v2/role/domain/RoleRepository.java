@@ -9,4 +9,6 @@ public interface RoleRepository {
   boolean existsByAdminIdAndClubId(String adminId, String clubId);
 
   boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
+
+  void deleteById(String roleId);
 }

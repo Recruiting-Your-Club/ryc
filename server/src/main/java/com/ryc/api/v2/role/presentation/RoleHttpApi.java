@@ -1,13 +1,12 @@
 package com.ryc.api.v2.role.presentation;
 
-import org.springframework.http.HttpStatus;
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.role.presentation.dto.response.RoleDemandResponse;
 import com.ryc.api.v2.role.service.RoleService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -28,7 +27,24 @@ public class RoleHttpApi {
   @Operation(summary = "동아리 권한 요청", description = "동아리 권한을 요청합니다. 요청 즉시 동아리 멤버가 됩니다.")
   public ResponseEntity<RoleDemandResponse> demandRole(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .body(roleService.assignRole(userDetail.getId(), clubId));
+
+    RoleDemandResponse roleDemandResponse = roleService.assignRole(userDetail.getId(), clubId);
+    URI location =
+        URI.create(String.format("api/v2/clubs/%s/roles/%s", clubId, roleDemandResponse.roleId()));
+    return ResponseEntity.created(location).body(roleDemandResponse);
+  }
+
+  @DeleteMapping("clubs/{clubId}/roles/{roleId}")
+  @Operation(
+      summary = "동아리 권한 삭제",
+      description = "해당 기능은 동아리 회장만 수행할 수 있습니다. 권한 삭제 후 roleId를 가졌던 사용자는 더이상 동아리 멤버가 아닙니다.")
+  public ResponseEntity<Void> deleteRole(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @PathVariable String clubId,
+      @PathVariable String roleId) {
+
+    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
+    roleService.deleteRole(dto, roleId);
+    return ResponseEntity.noContent().build();
   }
 }

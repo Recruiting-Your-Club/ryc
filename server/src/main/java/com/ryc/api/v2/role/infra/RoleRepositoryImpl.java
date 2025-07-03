@@ -32,4 +32,9 @@ public class RoleRepositoryImpl implements RoleRepository {
   public boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId) {
     return roleJpaRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
   }
+
+  @Override
+  public void deleteById(String roleId) {
+    roleJpaRepository.deleteById(roleId);
+  }
 }
