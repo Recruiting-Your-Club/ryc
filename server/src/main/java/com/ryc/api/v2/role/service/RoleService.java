@@ -1,14 +1,20 @@
 package com.ryc.api.v2.role.service;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.auth.domain.AdminRepository;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.common.exception.code.ClubErrorCode;
+import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.RoleRepository;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.role.domain.enums.RoleStatus;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
+import com.ryc.api.v2.role.presentation.dto.response.RoleDemandResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,10 +23,28 @@ import lombok.RequiredArgsConstructor;
 public class RoleService {
 
   private final RoleRepository roleRepository;
+  private final ClubRepository clubRepository;
+  private final AdminRepository adminRepository;
+
+  @Transactional
+  public RoleDemandResponse assignRole(String userId, String clubId) {
+    Club club =
+        clubRepository
+            .findById(clubId)
+            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+
+    Admin admin =
+        adminRepository
+            .findById(userId)
+            .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + userId));
+
+    ClubRole clubRole = assignRole(admin, club, Role.MEMBER);
+    return new RoleDemandResponse(clubRole.id());
+  }
 
   @Transactional
   public ClubRole assignRole(Admin admin, Club club, Role role) {
-    ClubRole clubRole = ClubRole.initialize(club, admin, role, RoleStatus.ACTIVE);
+    ClubRole clubRole = ClubRole.initialize(club, admin, role);
     return roleRepository.save(clubRole);
   }
 
@@ -33,7 +57,4 @@ public class RoleService {
   public boolean hasOwnerRole(String adminId, String clubId) {
     return roleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
   }
-
-  //  @Transactional
-  //  public RoleDemandResponse demandRole(String userId, String clubId) {}
 }

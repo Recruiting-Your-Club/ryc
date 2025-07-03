@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.role.domain.RoleRepository;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
-import com.ryc.api.v2.role.infra.entity.RoleEntity;
+import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 import com.ryc.api.v2.role.infra.jpa.RoleJpaRepository;
 import com.ryc.api.v2.role.infra.mapper.RoleMapper;
 
@@ -18,9 +18,9 @@ public class RoleRepositoryImpl implements RoleRepository {
 
   @Override
   public ClubRole save(ClubRole clubRole) {
-    RoleEntity roleEntity = RoleMapper.toEntity(clubRole);
-    RoleEntity savedRoleEntity = roleJpaRepository.save(roleEntity);
-    return RoleMapper.toDomain(savedRoleEntity);
+    ClubRoleEntity clubRoleEntity = RoleMapper.toEntity(clubRole);
+    ClubRoleEntity savedClubRoleEntity = roleJpaRepository.save(clubRoleEntity);
+    return RoleMapper.toDomain(savedClubRoleEntity);
   }
 
   @Override

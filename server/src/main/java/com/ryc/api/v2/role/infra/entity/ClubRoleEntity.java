@@ -6,7 +6,6 @@ import com.ryc.api.v2.auth.infra.entity.AdminEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.common.entity.BaseEntity;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.role.domain.enums.RoleStatus;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RoleEntity extends BaseEntity {
+public class ClubRoleEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
@@ -28,10 +27,6 @@ public class RoleEntity extends BaseEntity {
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Role role;
-
-  @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private RoleStatus status;
 
   @ManyToOne
   @JoinColumn(name = "club_id", nullable = false)
