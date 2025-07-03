@@ -3,6 +3,8 @@ package com.ryc.api.v2.common.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(NoPermissionException.class)
   public ResponseEntity<Object> handleNoPermissionException(NoPermissionException e) {
     ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode);
+  }
+
+  // DataIntegrityViolationException은 JPA에서 중복된 데이터 삽입 시 발생하는 예외
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+    ErrorCode errorCode = CommonErrorCode.DUPLICATE_RESOURCE;
+    return handleExceptionInternal(errorCode);
+  }
+
+  // EmptyResultDataAccessException은 JPA에서 존재하지 않는 데이터를 삭제하려고 할 때 발생하는 예외
+  @ExceptionHandler(EmptyResultDataAccessException.class)
+  public ResponseEntity<Object> handleEmptyResult(EmptyResultDataAccessException e) {
+    ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
     return handleExceptionInternal(errorCode);
   }
 
