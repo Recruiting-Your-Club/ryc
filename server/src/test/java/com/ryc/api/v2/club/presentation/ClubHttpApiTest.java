@@ -1,7 +1,6 @@
 package com.ryc.api.v2.club.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,8 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
 import com.ryc.api.v2.club.business.ClubService;
-import com.ryc.api.v2.club.domain.Category;
-import com.ryc.api.v2.club.domain.ClubTag;
+import com.ryc.api.v2.club.domain.enums.Category;
+import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
@@ -172,8 +171,8 @@ class ClubHttpApiTest {
             .clubDetailImages(List.of())
             .build();
 
-    when(clubService.updateClub(eq(clubId), any(ClubUpdateRequest.class)))
-        .thenReturn(updateResponse);
+    //    when(clubService.updateClub(any(), eq(clubId), any(ClubUpdateRequest.class)))
+    //        .thenReturn(updateResponse);
 
     // When & Then
     mockMvc

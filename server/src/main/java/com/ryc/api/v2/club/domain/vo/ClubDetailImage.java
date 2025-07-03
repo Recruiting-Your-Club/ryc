@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.domain;
+package com.ryc.api.v2.club.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

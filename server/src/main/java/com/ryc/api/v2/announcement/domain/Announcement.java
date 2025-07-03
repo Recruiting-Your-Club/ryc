@@ -122,7 +122,7 @@ public class Announcement {
         Announcement.builder()
             .id(this.id)
             .title(request.title())
-            .clubId(request.clubRoleSecuredDto().clubId())
+            .clubId(this.clubId)
             .numberOfPeople(request.numberOfPeople())
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.domain;
+package com.ryc.api.v2.club.domain.vo;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
@@ -6,38 +6,36 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
+import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class Club {
-
-  private final String id;
-  private final String name;
-  private final String shortDescription;
-  private final String detailDescription;
-  private final String imageUrl;
-  private final String thumbnailUrl;
-  private final Category category;
-  private final List<ClubTag> clubTags;
-  private final List<ClubSummary> clubSummaries;
-  private final List<ClubDetailImage> clubDetailImages;
-  private final LocalDateTime createdAt;
-  private final LocalDateTime updatedAt;
-  @Builder.Default private final Boolean deleted = Boolean.FALSE;
+public record Club(
+    String id,
+    String name,
+    String shortDescription,
+    String detailDescription,
+    String imageUrl,
+    String thumbnailUrl,
+    Category category,
+    List<ClubTag> clubTags,
+    List<ClubSummary> clubSummaries,
+    List<ClubDetailImage> clubDetailImages,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt,
+    Boolean deleted) {
 
   /** Club 동아리 최초 생성시에만 사용 (id가 생성되기 전에만) */
-  public static Club initialize(ClubCreateRequest clubCreateRequest) {
+  public static Club initialize(
+      String name, String imageUrl, String thumbnailUrl, Category category) {
     return Club.builder()
         .id(DEFAULT_INITIAL_ID) // 실제로 비즈니스 로직에서 사용되지 않음
-        .name(clubCreateRequest.name())
-        .imageUrl(clubCreateRequest.imageUrl())
-        .thumbnailUrl(clubCreateRequest.thumbnailUrl())
-        .category(clubCreateRequest.category())
+        .name(name)
+        .imageUrl(imageUrl)
+        .thumbnailUrl(thumbnailUrl)
+        .category(category)
         .clubTags(new ArrayList<>())
         .clubSummaries(new ArrayList<>())
         .clubDetailImages(new ArrayList<>())
@@ -46,14 +44,23 @@ public class Club {
   }
 
   public Club update(ClubUpdateRequest clubUpdateRequest) {
-    String newName = clubUpdateRequest.name().orElse(this.name);
-    String newShortDescription = clubUpdateRequest.shortDescription().orElse(this.shortDescription);
+    String newName = clubUpdateRequest.name() == null ? this.name : clubUpdateRequest.name();
+    String newShortDescription =
+        clubUpdateRequest.shortDescription() == null
+            ? this.shortDescription
+            : clubUpdateRequest.shortDescription();
     String newDetailDescription =
-        clubUpdateRequest.detailDescription().orElse(this.detailDescription);
-    String newImageUrl = clubUpdateRequest.imageUrl().orElse(this.imageUrl);
-    String newThumbnailUrl = clubUpdateRequest.thumbnailUrl().orElse(this.thumbnailUrl);
+        clubUpdateRequest.detailDescription() == null
+            ? this.detailDescription
+            : clubUpdateRequest.detailDescription();
+    String newImageUrl =
+        clubUpdateRequest.imageUrl() == null ? this.imageUrl : clubUpdateRequest.imageUrl();
+    String newThumbnailUrl =
+        clubUpdateRequest.thumbnailUrl() == null
+            ? this.thumbnailUrl
+            : clubUpdateRequest.thumbnailUrl();
     Category newCategory =
-        Category.valueOf(clubUpdateRequest.category().orElse(String.valueOf(this.category)));
+        clubUpdateRequest.category() == null ? this.category : clubUpdateRequest.category();
     List<ClubTag> newClubTags =
         clubUpdateRequest.clubTags().isEmpty() ? this.clubTags : clubUpdateRequest.clubTags();
     List<ClubSummary> newClubSummaries =
@@ -76,6 +83,7 @@ public class Club {
         .clubTags(newClubTags)
         .clubSummaries(newClubSummaries)
         .clubDetailImages(newClubDetailImages)
+        .deleted(this.deleted)
         .build();
   }
 }

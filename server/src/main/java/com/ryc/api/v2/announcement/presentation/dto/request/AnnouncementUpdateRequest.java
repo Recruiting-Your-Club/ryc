@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -28,7 +27,6 @@ import lombok.Builder;
  */
 @Builder
 public record AnnouncementUpdateRequest(
-    @Valid ClubRoleSecuredDto clubRoleSecuredDto,
     @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
         @NotBlank(message = "title shouldn't be blank")
         String title,

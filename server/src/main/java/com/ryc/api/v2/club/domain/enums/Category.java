@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.domain;
+package com.ryc.api.v2.club.domain.enums;
 
 /** 동아리 대분류 */
 public enum Category {
