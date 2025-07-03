@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '@components/_common/Text';
-import { Button } from '@components';
+import { Text, Button } from '@components/_common';
+import { QuestionDropdown } from '@components/QuestionDropdown';
 import Ryc from '@assets/images/Ryc.svg';
 import {
     clubApplySubmitCardContainer,
@@ -12,7 +12,6 @@ import {
 } from './ClubSubmitCard.style';
 import type { ClubSubmitCardProps } from './types';
 import { getDeadlineInfo } from '@utils/compareTime';
-import { QuestionDropdown } from '@components/QuestionDropdown';
 
 function ClubSubmitCard({
     clubName,
