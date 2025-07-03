@@ -6,10 +6,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.ryc.api.v2.security.jwt.JwtProperties;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenManager jwtTokenManager;
+  private final JwtProperties jwtProperties;
 
   {
     setFilterProcessesUrl("/api/v2/auth/login");
@@ -72,7 +76,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
       HttpServletResponse response,
       FilterChain chain,
       Authentication authentication) {
-    // JWT 토큰 발급 로직 추가
+
     CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
     String email = customUserDetail.getEmail();
 
@@ -83,7 +87,18 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
     String role = auth.getAuthority();
 
     String accessToken = jwtTokenManager.generateAccessToken(email, role);
+    String refreshToken = jwtTokenManager.generateRefreshToken(email, role);
 
+    //RT HttpOnly, Secure, SameSite=Strict 쿠키 옵션 설정
+    ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+            .httpOnly(true)
+            .secure(true)
+            .path("api/v2/auth/refresh")
+            .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
+            .sameSite("Strict")
+            .build();
+
+    response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");

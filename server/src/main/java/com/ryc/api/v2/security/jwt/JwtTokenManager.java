@@ -29,6 +29,19 @@ public class JwtTokenManager {
         .sign(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()));
   }
 
+  public String generateRefreshToken(String email, String userRole) {
+    return JWT.create()
+            .withSubject(email)
+            .withIssuer(jwtProperties.getRefreshToken().getIssuer())
+            .withClaim("role", userRole)
+            .withIssuedAt(new Date())
+            .withExpiresAt(
+                    new Date(
+                            System.currentTimeMillis()
+                                    + jwtProperties.getRefreshToken().getExpirationMinute() * 60 * 1000))
+            .sign(Algorithm.HMAC256(jwtProperties.getRefreshToken().getSecretKey().getBytes()));
+  }
+
   public String getEmailFromAccessToken(String accessToken) {
     final DecodedJWT decodedJWT = getDecodedJWT(accessToken);
     return decodedJWT.getSubject();
