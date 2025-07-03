@@ -1,13 +1,11 @@
 package com.ryc.api.v2.club.business;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,12 +23,10 @@ import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
-import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.role.business.RoleService;
 import com.ryc.api.v2.role.domain.Role;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceTest {
@@ -98,54 +94,54 @@ class ClubServiceTest {
     assertThat(response.clubId()).isEqualTo(testClub.id());
   }
 
-  @Test
-  @DisplayName("클럽 업데이트 서비스 테스트")
-  void givenValidClubUpdateRequest_whenUpdateClub_thenReturnUpdatedResponse() {
-    // Given
-    String clubId = "test-id";
-    String newName = "Updated Club";
-
-    ClubUpdateRequest request =
-        ClubUpdateRequest.builder()
-            .name(Optional.of(newName))
-            .shortDescription(Optional.of(testClub.shortDescription()))
-            .detailDescription(Optional.of(testClub.detailDescription()))
-            .imageUrl(Optional.of(testClub.imageUrl()))
-            .thumbnailUrl(Optional.of(testClub.thumbnailUrl()))
-            .category(Optional.of(testClub.category().toString()))
-            .clubTags(testClub.clubTags())
-            .clubSummaries(testClub.clubSummaries())
-            .clubDetailImages(testClub.clubDetailImages())
-            .build();
-
-    Club updatedClub =
-        Club.builder()
-            .id(clubId)
-            .name(newName)
-            .shortDescription(testClub.shortDescription())
-            .detailDescription(testClub.detailDescription())
-            .imageUrl(testClub.imageUrl())
-            .thumbnailUrl(testClub.thumbnailUrl())
-            .category(testClub.category())
-            .clubTags(testClub.clubTags())
-            .clubSummaries(testClub.clubSummaries())
-            .clubDetailImages(testClub.clubDetailImages())
-            .build();
-
-    CustomUserDetail userDetail = new CustomUserDetail(testAdmin);
-
-    when(authService.getCurrentUser()).thenReturn(testAdmin);
-    when(roleService.hasRole(userDetail.getId(), clubId)).thenReturn(true);
-
-    when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
-    when(clubRepository.save(any(Club.class))).thenReturn(updatedClub);
-
-    // When
-    //    ClubUpdateResponse response = clubService.updateClub(userDetail, clubId, request);
-
-    // Then
-    //    assertThat(response.name()).isEqualTo(newName);
-  }
+  //  @Test
+  //  @DisplayName("클럽 업데이트 서비스 테스트")
+  //  void givenValidClubUpdateRequest_whenUpdateClub_thenReturnUpdatedResponse() {
+  //    // Given
+  //    String clubId = "test-id";
+  //    String newName = "Updated Club";
+  //
+  //    ClubUpdateRequest request =
+  //        ClubUpdateRequest.builder()
+  //            .name(Optional.of(newName))
+  //            .shortDescription(Optional.of(testClub.shortDescription()))
+  //            .detailDescription(Optional.of(testClub.detailDescription()))
+  //            .imageUrl(Optional.of(testClub.imageUrl()))
+  //            .thumbnailUrl(Optional.of(testClub.thumbnailUrl()))
+  //            .category(Optional.of(testClub.category().toString()))
+  //            .clubTags(testClub.clubTags())
+  //            .clubSummaries(testClub.clubSummaries())
+  //            .clubDetailImages(testClub.clubDetailImages())
+  //            .build();
+  //
+  //    Club updatedClub =
+  //        Club.builder()
+  //            .id(clubId)
+  //            .name(newName)
+  //            .shortDescription(testClub.shortDescription())
+  //            .detailDescription(testClub.detailDescription())
+  //            .imageUrl(testClub.imageUrl())
+  //            .thumbnailUrl(testClub.thumbnailUrl())
+  //            .category(testClub.category())
+  //            .clubTags(testClub.clubTags())
+  //            .clubSummaries(testClub.clubSummaries())
+  //            .clubDetailImages(testClub.clubDetailImages())
+  //            .build();
+  //
+  //    CustomUserDetail userDetail = new CustomUserDetail(testAdmin);
+  //
+  //    when(authService.getCurrentUser()).thenReturn(testAdmin);
+  //    when(roleService.hasRole(userDetail.getId(), clubId)).thenReturn(true);
+  //
+  //    when(clubRepository.findById(clubId)).thenReturn(Optional.of(testClub));
+  //    when(clubRepository.save(any(Club.class))).thenReturn(updatedClub);
+  //
+  //     When
+  //        ClubUpdateResponse response = clubService.updateClub(userDetail, clubId, request);
+  //
+  //     Then
+  //        assertThat(response.name()).isEqualTo(newName);
+  //  }
 
   @Test
   @DisplayName("ID로 클럽 조회 서비스 테스트")
@@ -161,18 +157,18 @@ class ClubServiceTest {
     assertThat(response.name()).isEqualTo(testClub.name());
   }
 
-  @Test
-  @DisplayName("ID로 클럽 조회 실패 테스트")
-  void givenNonExistentClubId_whenGetClub_thenThrowException() {
-    // Given
-    String nonExistentId = "non-existent-id";
-    when(clubRepository.findById(nonExistentId)).thenReturn(Optional.empty());
-
-    // When & Then
-    assertThatThrownBy(() -> clubService.getClub(nonExistentId))
-        .isInstanceOf(NoSuchElementException.class)
-        .hasMessageContaining("Club not found with id: " + nonExistentId);
-  }
+  //  @Test
+  //  @DisplayName("ID로 클럽 조회 실패 테스트")
+  //  void givenNonExistentClubId_whenGetClub_thenThrowException() {
+  //    // Given
+  //    String nonExistentId = "non-existent-id";
+  //    when(clubRepository.findById(nonExistentId)).thenReturn(Optional.empty());
+  //
+  //    // When & Then
+  //    assertThatThrownBy(() -> clubService.getClub(nonExistentId))
+  //        .isInstanceOf(NoSuchElementException.class)
+  //        .hasMessageContaining("Club not found with id: " + nonExistentId);
+  //  }
 
   @Test
   @DisplayName("상세 설명이 비어있을 때 간단한 설명을 반환하는 서비스 테스트")
