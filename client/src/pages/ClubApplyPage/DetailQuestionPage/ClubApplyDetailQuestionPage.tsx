@@ -3,11 +3,15 @@ import { TextArea } from '@components/_common/TextArea';
 import { Text } from '@components/_common/Text';
 import {
     clubApplyDetailQuestionContainer,
-    labelContainer,
+    s_infoIcon,
+    s_labelContainer,
+    s_questionTitleContainer,
     textAreaSx,
 } from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
+import InfoIcon from '@assets/images/info.svg';
+import { Tooltip } from '@components';
 
 function ClubApplyDetailQuestionPage({
     answers,
@@ -39,27 +43,32 @@ function ClubApplyDetailQuestionPage({
                             }
                         }}
                     >
-                        <div css={labelContainer}>
-                            <Text type="bodyRegular" sx={{ marginLeft: '0.5rem' }}>
-                                {question.questionTitle}
-                            </Text>
-                            {question.isRequired && (
-                                <Text
-                                    type="bodyRegular"
-                                    color="warning"
-                                    sx={{ marginTop: '0.5rem' }}
-                                >
-                                    *
+                        <div css={s_labelContainer}>
+                            <div css={s_questionTitleContainer}>
+                                <Text type="bodyRegular" sx={{ marginLeft: '0.5rem' }}>
+                                    {question.questionTitle}
                                 </Text>
-                            )}
+                                {question.isRequired && (
+                                    <Text
+                                        type="bodyRegular"
+                                        color="warning"
+                                        sx={{ marginTop: '0.5rem' }}
+                                    >
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <Tooltip content={question.description}>
+                                <InfoIcon css={s_infoIcon} />
+                            </Tooltip>
                         </div>
                         <TextArea
                             size="lg"
                             value={getAnswer(answers, question.questionTitle)}
-                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                onAnswerChange(question.questionTitle, e.target.value)
+                            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                                onAnswerChange(question.questionTitle, event.target.value)
                             }
-                            wrapperSx={{ marginTop: '1rem' }}
+                            wrapperSx={{ marginTop: '0.5rem' }}
                             textAreaSx={textAreaSx}
                             error={hasError}
                             onFocus={() => onFocus(question.questionTitle)}
