@@ -11,6 +11,7 @@ import {
     ClubCreatePage,
 } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
+import { ClubApplyPage } from '@pages/ClubApplyPage';
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            { path: 'apply', element: <ClubApplyPage /> },
             { path: 'detail', element: <ClubDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
