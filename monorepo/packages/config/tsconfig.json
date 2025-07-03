@@ -1,0 +1,6 @@
+{
+    "extends": "@ssoc/config/src/tsconfig/tsconfig.base.json",
+    "compilerOptions": {
+        "noEmit": true
+    }
+}

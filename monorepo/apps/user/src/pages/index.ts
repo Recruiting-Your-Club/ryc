@@ -1,0 +1,7 @@
+export * from './AuthPage';
+export * from './ClubApplyPage';
+export * from './ClubDetailPage';
+export * from './MainPage';
+export * from './NotFoundPage';
+export * from './RecruitmentPage';
+export * from './TestPage';

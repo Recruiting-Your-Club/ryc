@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "paths": {
+            "@ssoc/*": ["packages/*"]
+        }
+    },
+    "files": [],
+    "references": [
+        { "path": "apps/user" },
+        { "path": "apps/admin" },
+        //{ "path": "packages/api-client" },
+        { "path": "packages/config" },
+        { "path": "packages/constants" },
+        { "path": "packages/hooks" },
+        { "path": "packages/styles" },
+        { "path": "packages/ui" },
+        { "path": "packages/utils" }
+    ]
+}

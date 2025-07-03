@@ -1,0 +1,17 @@
+{
+    "name": "@ssoc/constants",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch"
+    },
+    "devDependencies": {
+        "typescript": "^4.4.2"
+    }
+}

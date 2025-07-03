@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "ESNext", // 타입스크립트가 변환할 자바스크립트 버전
+        "module": "ESNext", // 번들에 최적화 위임
+        "lib": ["ESNext"],
+
+        "moduleResolution": "node",
+        "skipLibCheck": true, // .d.ts 검사 건너뜀
+        "isolatedModules": true, // 개별 컴파일 가능
+        "esModuleInterop": true, // commonjs 모듈을 es6 모듈로 변환
+        "allowJs": true, // js파일 허용
+        "strict": true, // 타입 강하게 검사
+        "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 강제
+        "resolveJsonModule": true, // json import
+        "removeComments": true, // 주석 제거
+        "noEmit": false, // tsconfig로 번들링
+        "declaration": true, // .d.ts 타입 정의 파일 생성
+        "declarationMap": true, // .d.ts.map 소스맵 파일 생성
+        "sourceMap": true, // .js.map 소스맵 파일 생성
+        "composite": true
+    },
+    "exclude": ["node_modules"]
+}
