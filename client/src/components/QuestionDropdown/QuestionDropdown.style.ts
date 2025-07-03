@@ -30,7 +30,7 @@ export const s_dropdownItem = css`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0;
 `;
 
 export const s_dropdownContent = css`
@@ -40,7 +40,7 @@ export const s_dropdownContent = css`
         transform: translateX(-11rem) translateY(1rem);
     }
     @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 10rem;
+        width: 12rem;
         transform: translateX(-9rem) translateY(1rem);
     }
 `;
