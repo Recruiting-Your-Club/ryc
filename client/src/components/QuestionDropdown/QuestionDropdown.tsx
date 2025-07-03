@@ -1,12 +1,11 @@
 import React from 'react';
-import { Text } from '@components/_common/Text';
-import { Dropdown } from '@components/_common/Dropdown';
+import { Text, Dropdown } from '@components/_common';
 import ArrowDown from '@assets/images/downArrow.svg';
 import {
     questionStatusContainer,
     questionStatusTextSx,
-    s_DropdownItem,
-    s_Icon,
+    s_dropdownItem,
+    s_arrowDown,
 } from './QuestionDropdown.style';
 import type { QuestionDropdownProps } from './types';
 import { getAnswer } from '@pages/ClubApplyPage/utils';
@@ -29,7 +28,7 @@ function QuestionDropdown({
             </Text>
             <Dropdown>
                 <Dropdown.Trigger asChild sx={{ border: 'none', padding: 0 }}>
-                    <ArrowDown css={s_Icon} />
+                    <ArrowDown css={s_arrowDown} />
                 </Dropdown.Trigger>
                 <Dropdown.Content offsetX={8} offsetY={21} sx={{ width: '15rem' }}>
                     <Dropdown.Label>사전질문</Dropdown.Label>
@@ -44,7 +43,7 @@ function QuestionDropdown({
                                         }
                                         sx={{ marginBottom: '0.5rem' }}
                                     >
-                                        <div css={s_DropdownItem}>
+                                        <div css={s_dropdownItem}>
                                             {question.questionTitle}
                                             {getAnswer(answers, question.questionTitle)?.trim() && (
                                                 <Text type="subCaptionRegular" color="primary">
@@ -69,7 +68,7 @@ function QuestionDropdown({
                                         }
                                         sx={{ marginBottom: '0.5rem' }}
                                     >
-                                        <div css={s_DropdownItem}>
+                                        <div css={s_dropdownItem}>
                                             질문{index + 1}
                                             {getAnswer(answers, question.questionTitle)?.trim() && (
                                                 <Text type="subCaptionRegular" color="primary">
