@@ -20,12 +20,12 @@ export const questionStatusTextSx = (isAllQuestionCompleted: boolean) => css`
     `};
 `;
 
-export const s_Icon = css`
+export const s_arrowDown = css`
     width: 1rem;
     height: 1rem;
 `;
 
-export const s_DropdownItem = css`
+export const s_dropdownItem = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
