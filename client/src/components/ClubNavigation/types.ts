@@ -9,5 +9,5 @@ export interface NavigationItem {
 export interface ClubNavigationProps {
     navigationItem: NavigationItem[];
     controlledActive?: string;
-    onChange?: (title: string) => void;
+    onActiveChange?: (title: string) => void;
 }

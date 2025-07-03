@@ -337,7 +337,7 @@ function ClubApplyPage() {
                     <ClubNavigation
                         navigationItem={navigationItem}
                         controlledActive={activeTab}
-                        onChange={setActiveTab}
+                        onActiveChange={setActiveTab}
                     />
                 </div>
             </div>

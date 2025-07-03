@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Divider, Button } from '@components';
+import { Button } from '@components/_common';
 import {
     divider,
     navigationButton,
@@ -10,18 +10,18 @@ import type { ClubNavigationProps } from './types';
 
 function ClubNavigation(props: ClubNavigationProps) {
     // prop destruction
-    const { navigationItem, controlledActive, onChange } = props;
+    const { navigationItem, controlledActive, onActiveChange } = props;
     // lib hooks
     // initial values
     // state, ref, querystring hooks
     const [uncontrolledActive, setUncontrolledActive] = useState<string>(navigationItem[0].title);
-    const active = controlledActive !== undefined ? controlledActive : uncontrolledActive;
     const [sliderPosition, setSliderPosition] = useState<number>(0);
     const [sliderWidth, setSliderWidth] = useState<string>(navigationItem[0].width);
 
     // form hooks
     // query hooks
     // calculated values
+    const active = controlledActive !== undefined ? controlledActive : uncontrolledActive;
     const activeContent = navigationItem.find((content) => content.title === active);
 
     const calculateSliderPosition = (title: string) => {
@@ -38,8 +38,8 @@ function ClubNavigation(props: ClubNavigationProps) {
     };
     // handlers
     const handlePosition = (title: string) => {
-        if (onChange) {
-            onChange(title);
+        if (onActiveChange) {
+            onActiveChange(title);
         } else {
             setUncontrolledActive(title);
             calculateSliderPosition(title);
