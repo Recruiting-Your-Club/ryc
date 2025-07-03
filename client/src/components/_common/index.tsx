@@ -15,3 +15,7 @@ export * from './Checkbox';
 export * from './TextToggle';
 export * from './Image';
 export * from './Radio';
+export * from './TextArea';
+export * from './Tooltip';
+export * from './Dropdown';
+export * from './Slot';
