@@ -1,6 +1,16 @@
 package com.ryc.api.v2.role.infra.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import com.ryc.api.v2.auth.infra.entity.AdminEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
@@ -13,12 +23,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "roles")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Entity
+@Table(
+    name = "roles",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"club_id", "admin_id"})})
 public class ClubRoleEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
