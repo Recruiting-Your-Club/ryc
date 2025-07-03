@@ -32,3 +32,15 @@ export const s_dropdownItem = css`
     width: 100%;
     padding: 0 1rem;
 `;
+
+export const s_dropdownContent = css`
+    width: 13rem;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        width: 12rem;
+        transform: translateX(-11rem) translateY(1rem);
+    }
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: 10rem;
+        transform: translateX(-9rem) translateY(1rem);
+    }
+`;
