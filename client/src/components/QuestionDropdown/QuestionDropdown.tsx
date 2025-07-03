@@ -6,6 +6,7 @@ import {
     questionStatusTextSx,
     s_dropdownItem,
     s_arrowDown,
+    s_dropdownContent,
 } from './QuestionDropdown.style';
 import type { QuestionDropdownProps } from './types';
 import { getAnswer } from '@pages/ClubApplyPage/utils';
@@ -18,6 +19,22 @@ function QuestionDropdown({
     answers,
     onQuestionFocus,
 }: QuestionDropdownProps) {
+    //props destruction
+    //lib hooks
+    //initial values
+    const baseOffsetX = 8;
+    const baseOffsetY = 7;
+    //state, ref, querystring hooks
+    //form hooks
+    //query hooks
+    //calculated values
+    const personalQuestionCount = personalQuestions.filter(
+        (question) => question.isRequired,
+    ).length;
+    const detailQuestionCount = detailQuestions.filter((question) => question.isRequired).length;
+    const totalQuestionCount = personalQuestionCount + detailQuestionCount;
+    const offsetY = baseOffsetY + (totalQuestionCount - 1) * 1.8;
+    //effects
     return (
         <div css={questionStatusContainer}>
             <Text
@@ -30,7 +47,7 @@ function QuestionDropdown({
                 <Dropdown.Trigger asChild sx={{ border: 'none', padding: 0 }}>
                     <ArrowDown css={s_arrowDown} />
                 </Dropdown.Trigger>
-                <Dropdown.Content offsetX={8} offsetY={21} sx={{ width: '15rem' }}>
+                <Dropdown.Content offsetX={baseOffsetX} offsetY={offsetY} sx={s_dropdownContent}>
                     <Dropdown.Label>사전질문</Dropdown.Label>
                     <Dropdown.Group>
                         {personalQuestions.map(
