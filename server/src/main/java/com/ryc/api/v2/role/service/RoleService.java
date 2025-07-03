@@ -5,8 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.vo.Club;
-import com.ryc.api.v2.role.domain.Role;
 import com.ryc.api.v2.role.domain.RoleRepository;
+import com.ryc.api.v2.role.domain.enums.Role;
+import com.ryc.api.v2.role.domain.enums.RoleStatus;
+import com.ryc.api.v2.role.domain.vo.ClubRole;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,8 +19,9 @@ public class RoleService {
   private final RoleRepository roleRepository;
 
   @Transactional
-  public Role assignRole(Admin admin, Club club, Role role) {
-    return roleRepository.save(admin, club, role);
+  public ClubRole assignRole(Admin admin, Club club, Role role) {
+    ClubRole clubRole = ClubRole.initialize(club, admin, role, RoleStatus.ACTIVE);
+    return roleRepository.save(clubRole);
   }
 
   @Transactional(readOnly = true)
@@ -30,4 +33,7 @@ public class RoleService {
   public boolean hasOwnerRole(String adminId, String clubId) {
     return roleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
   }
+
+  //  @Transactional
+  //  public RoleDemandResponse demandRole(String userId, String clubId) {}
 }

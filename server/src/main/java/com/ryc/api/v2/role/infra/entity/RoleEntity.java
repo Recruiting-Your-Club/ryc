@@ -1,18 +1,12 @@
 package com.ryc.api.v2.role.infra.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import com.ryc.api.v2.auth.infra.entity.AdminEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
-import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.common.entity.BaseEntity;
+import com.ryc.api.v2.role.domain.enums.Role;
+import com.ryc.api.v2.role.domain.enums.RoleStatus;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,13 +20,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RoleEntity {
+public class RoleEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private RoleStatus status;
 
   @ManyToOne
   @JoinColumn(name = "club_id", nullable = false)

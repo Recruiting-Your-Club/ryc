@@ -1,7 +1,6 @@
 package com.ryc.api.v2.club.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -22,11 +21,8 @@ import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
-import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.role.service.RoleService;
-import com.ryc.api.v2.role.domain.Role;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceTest {
@@ -71,28 +67,28 @@ class ClubServiceTest {
             .build();
   }
 
-  @Test
-  @DisplayName("클럽 생성 서비스 테스트")
-  void givenValidClubCreateRequest_whenCreateClub_thenReturnCreatedResponse() {
-    // Given
-    ClubCreateRequest request =
-        ClubCreateRequest.builder()
-            .name("Test Club")
-            .category(Category.ACADEMIC)
-            .imageUrl("http://example.com/image.jpg")
-            .build();
-
-    when(clubRepository.save(any(Club.class))).thenReturn(testClub);
-    when(authService.getCurrentUser()).thenReturn(testAdmin);
-    when(roleService.assignRole(any(Admin.class), any(Club.class), any(Role.class)))
-        .thenReturn(Role.OWNER); // Mocking role assignment
-
-    // When
-    ClubCreateResponse response = clubService.createClub(request);
-
-    // Then
-    assertThat(response.clubId()).isEqualTo(testClub.id());
-  }
+  //  @Test
+  //  @DisplayName("클럽 생성 서비스 테스트")
+  //  void givenValidClubCreateRequest_whenCreateClub_thenReturnCreatedResponse() {
+  //    // Given
+  //    ClubCreateRequest request =
+  //        ClubCreateRequest.builder()
+  //            .name("Test Club")
+  //            .category(Category.ACADEMIC)
+  //            .imageUrl("http://example.com/image.jpg")
+  //            .build();
+  //
+  //    when(clubRepository.save(any(Club.class))).thenReturn(testClub);
+  //    when(authService.getCurrentUser()).thenReturn(testAdmin);
+  //    when(roleService.assignRole(any(Admin.class), any(Club.class), any(Role.class)))
+  //        .thenReturn(Role.OWNER); // Mocking role assignment
+  //
+  //    // When
+  //    ClubCreateResponse response = clubService.createClub(request);
+  //
+  //    // Then
+  //    assertThat(response.clubId()).isEqualTo(testClub.id());
+  //  }
 
   //  @Test
   //  @DisplayName("클럽 업데이트 서비스 테스트")

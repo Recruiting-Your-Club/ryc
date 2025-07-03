@@ -18,8 +18,8 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.service.RoleService;
-import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
