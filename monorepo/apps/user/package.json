@@ -2,6 +2,7 @@
     "name": "@ssoc/user",
     "version": "1.0.0",
     "private": true,
+    "homepage": ".",
     "scripts": {
         "start": "webpack serve --open --config webpack.prod.js",
         "dev": "webpack serve --open --config webpack.dev.js",
