@@ -63,7 +63,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
       // JSON 파싱
       ObjectMapper objectMapper = new ObjectMapper();
-      return objectMapper.readValue(requestBody, new TypeReference<>() {});
+      return objectMapper.readValue(requestBody, new TypeReference<Map<String, String>>() {});
 
     } catch (Exception e) {
       throw new AuthenticationException("Failed to parse request body") {};
@@ -78,7 +78,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
       Authentication authentication) {
 
     CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-    String email = customUserDetail.getEmail();
+    String adminId = customUserDetail.getId();
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -86,8 +86,8 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
     String role = auth.getAuthority();
 
-    String accessToken = jwtTokenManager.generateAccessToken(email, role);
-    String refreshToken = jwtTokenManager.generateRefreshToken(email, role);
+    String accessToken = jwtTokenManager.generateAccessToken(adminId, role);
+    String refreshToken = jwtTokenManager.generateRefreshToken(adminId, role);
 
     //RT HttpOnly, Secure, SameSite=Strict 쿠키 옵션 설정
     ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
