@@ -16,7 +16,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class AnnouncementApplicationEntity extends BaseEntity {
+public class ApplicationFormEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
@@ -36,7 +36,13 @@ public class AnnouncementApplicationEntity extends BaseEntity {
   @OrderColumn(name = "pre_question_order")
   private List<ApplicationQuestionVO> preQuestions;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "announcement_id")
-  private AnnouncementEntity announcementEntity;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "announcement_id", unique = true, nullable = false)
+  private AnnouncementEntity announcement;
+
+  public void update(ApplicationFormEntity applicationForm) {
+    this.applicationQuestions = applicationForm.getApplicationQuestions();
+    this.personalInfoQuestions = applicationForm.getPersonalInfoQuestions();
+    this.preQuestions = applicationForm.getPreQuestions();
+  }
 }

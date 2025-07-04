@@ -32,8 +32,10 @@ public class Announcement {
   private final AnnouncementType announcementType;
   private final Boolean hasInterview;
   private final AnnouncementPeriodInfo announcementPeriodInfo;
-  private final AnnouncementApplication announcementApplication;
   private final String activityPeriod;
+
+  // application form
+  private final ApplicationForm applicationForm;
 
   // soft delete
   private final Boolean isDeleted;
@@ -55,8 +57,7 @@ public class Announcement {
 
     List<Image> images = request.images().stream().map(Image::from).toList();
 
-    AnnouncementApplication announcementApplication =
-        AnnouncementApplication.initialize(request.application());
+    ApplicationForm applicationForm = ApplicationForm.initialize(request.applicationForm());
 
     AnnouncementPeriodInfo announcementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
@@ -85,7 +86,7 @@ public class Announcement {
             .images(images)
             .announcementStatus(announcementStatus)
             .announcementType(request.announcementType())
-            .announcementApplication(announcementApplication)
+            .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
             .isDeleted(false)
             .build();
@@ -96,11 +97,11 @@ public class Announcement {
   }
 
   /**
-   * 업데이트시 사용될 정적팩토리 메소드
+   * update request to announcement domain
    *
    * @param request Update Request
    */
-  public Announcement update(AnnouncementUpdateRequest request) {
+  public static Announcement of(AnnouncementUpdateRequest request, String announcementId) {
 
     // 1. 각 request update
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
@@ -110,9 +111,6 @@ public class Announcement {
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
 
-    AnnouncementApplication updatedAnnouncementApplication =
-        this.announcementApplication.update(request.application());
-
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus updatedAnnouncementStatus =
         AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
@@ -120,7 +118,7 @@ public class Announcement {
     // 3. announcement 생성
     Announcement announcement =
         Announcement.builder()
-            .id(this.id)
+            .id(announcementId)
             .title(request.title())
             .clubId(this.clubId)
             .numberOfPeople(request.numberOfPeople())
@@ -133,7 +131,6 @@ public class Announcement {
             .images(updatedImages)
             .announcementStatus(updatedAnnouncementStatus)
             .announcementType(request.announcementType())
-            .announcementApplication(updatedAnnouncementApplication)
             .isDeleted(false)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
@@ -162,7 +159,6 @@ public class Announcement {
         .images(this.images)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
-        .announcementApplication(this.announcementApplication)
         .isDeleted(false)
         .announcementPeriodInfo(this.announcementPeriodInfo)
         .build();
@@ -175,6 +171,5 @@ public class Announcement {
    */
   public void validate() {
     announcementPeriodInfo.validate(hasInterview);
-    announcementApplication.validate();
   }
 }

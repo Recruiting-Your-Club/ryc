@@ -8,7 +8,7 @@ import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.common.exception.custom.BusinessException;
 import com.ryc.api.v2.announcement.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.announcement.domain.vo.ApplicationQuestion;
-import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementApplicationRequest;
+import com.ryc.api.v2.announcement.presentation.dto.request.ApplicationFormRequest;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 
 import lombok.Builder;
@@ -16,7 +16,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class AnnouncementApplication {
+public class ApplicationForm {
   private final String id;
 
   private List<ApplicationQuestion> applicationQuestions;
@@ -28,19 +28,24 @@ public class AnnouncementApplication {
    * @return AnnouncementApplication domain
    * @brief 최초 생성시에만 사용되는 정적 팩토리 메소드
    */
-  public static AnnouncementApplication initialize(AnnouncementApplicationRequest request) {
+  public static ApplicationForm initialize(ApplicationFormRequest request) {
     List<ApplicationQuestion> applicationQuestions =
         request.applicationQuestions().stream().map(ApplicationQuestion::from).toList();
 
     List<ApplicationQuestion> preQuestions =
         request.preQuestions().stream().map(ApplicationQuestion::from).toList();
 
-    return AnnouncementApplication.builder()
-        .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
-        .applicationQuestions(List.copyOf(applicationQuestions))
-        .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
-        .preQuestions(List.copyOf(preQuestions))
-        .build();
+    ApplicationForm applicationForm =
+        ApplicationForm.builder()
+            .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
+            .applicationQuestions(List.copyOf(applicationQuestions))
+            .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
+            .preQuestions(List.copyOf(preQuestions))
+            .build();
+
+    applicationForm.validate();
+
+    return applicationForm;
   }
 
   /**
@@ -48,19 +53,23 @@ public class AnnouncementApplication {
    *
    * @param request
    */
-  public AnnouncementApplication update(AnnouncementApplicationRequest request) {
+  public ApplicationForm update(ApplicationFormRequest request) {
     List<ApplicationQuestion> applicationQuestions =
         request.applicationQuestions().stream().map(ApplicationQuestion::from).toList();
 
     List<ApplicationQuestion> preQuestions =
         request.preQuestions().stream().map(ApplicationQuestion::from).toList();
 
-    return AnnouncementApplication.builder()
-        .id(this.id)
-        .applicationQuestions(List.copyOf(applicationQuestions))
-        .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
-        .preQuestions(List.copyOf(preQuestions))
-        .build();
+    ApplicationForm applicationForm =
+        ApplicationForm.builder()
+            .id(this.id)
+            .applicationQuestions(List.copyOf(applicationQuestions))
+            .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
+            .preQuestions(List.copyOf(preQuestions))
+            .build();
+
+    applicationForm.validate();
+    return applicationForm;
   }
 
   /**
@@ -83,7 +92,7 @@ public class AnnouncementApplication {
   /**
    * 필수 개인정보 질문 타입(이름, 이메일)이 포함되어 있는지 검증
    *
-   * @throws IllegalArgumentException 필수 개인정보 질문 타입이 없는 경우
+   * @throws BusinessException
    */
   private void validatePersonalInfoQuestionTypes() {
     // 1. 필수 개인정보 질문 타입(이름, 이메일)
