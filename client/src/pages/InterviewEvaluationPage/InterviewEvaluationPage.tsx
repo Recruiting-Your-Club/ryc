@@ -1,0 +1,3 @@
+function InterviewEvaluationPage() {}
+
+export { InterviewEvaluationPage };
