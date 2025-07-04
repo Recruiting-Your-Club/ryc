@@ -54,8 +54,9 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                     placeholder="질문을 입력하세요"
                     value={question.title}
                     onChange={handleChange}
+                    maxLength={50}
                 />
-                <div css={s_inputLength}>{question.title.length}/30</div>
+                <div css={s_inputLength}>{question.title.length}/50</div>
             </div>
         );
     }
@@ -68,14 +69,16 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                         placeholder="질문을 입력하세요"
                         value={question.title}
                         onChange={handleChange}
+                        maxLength={50}
                     />
-                    <div css={s_inputLength}>{question.title.length}/30</div>
+                    <div css={s_inputLength}>{question.title.length}/50</div>
                 </div>
                 <div css={s_questionContainer}>
                     <Input
                         placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"
                         value={question.subContent}
                         onChange={handleSubContentChange}
+                        maxLength={50}
                     />
                     <div css={s_inputLength}>{question.subContent?.length}/50</div>
                 </div>
@@ -90,8 +93,9 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                     placeholder="질문을 입력하세요"
                     value={question.title}
                     onChange={handleChange}
+                    maxLength={50}
                 />
-                <div css={s_inputLength}>{question.title.length}/30</div>
+                <div css={s_inputLength}>{question.title.length}/50</div>
             </div>
             <div css={s_questionOptionContainer}>
                 {question.options?.map((option) => (
