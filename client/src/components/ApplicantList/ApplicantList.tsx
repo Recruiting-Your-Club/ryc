@@ -1,5 +1,5 @@
 import Search from '@assets/images/search.svg';
-import { Button, Divider, Input, Text } from '@components/_common';
+import { Button, Divider, Input, Text } from '@components';
 import React from 'react';
 import {
     s_listContainer,

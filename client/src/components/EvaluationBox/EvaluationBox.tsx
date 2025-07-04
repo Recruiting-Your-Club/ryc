@@ -1,6 +1,6 @@
 import EditPencil from '@assets/images/edit-pencil.svg';
 import Trash from '@assets/images/trash.svg';
-import { Button, Divider, Rating, Text } from '@components/_common';
+import { Button, Divider, Rating, Text } from '@components';
 import { TextArea } from '@components/_common/TextArea';
 import React, { useState } from 'react';
 import {
@@ -97,7 +97,11 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
             {(!hasUserEvaluation || willEditEvaluation) && (
                 <div css={userEvaluation}>
                     <Rating size="lg" />
-                    <TextArea size="xs" placeholder="코멘트를 작성해주세요." sx={textareaCss} />
+                    <TextArea
+                        size="xs"
+                        placeholder="코멘트를 작성해주세요."
+                        textAreaSx={textareaCss}
+                    />
                     <Button size="full">저장하기</Button>
                 </div>
             )}

@@ -1,4 +1,4 @@
-import { Avatar, Text } from '@components/_common';
+import { Avatar, Text } from '@components';
 import React from 'react';
 import {
     s_informationContainer,

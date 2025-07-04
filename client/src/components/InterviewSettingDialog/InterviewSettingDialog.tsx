@@ -1,9 +1,16 @@
 import XIcon from '@assets/images/xIcon.svg';
-import { InterviewTimeBox } from '@components/InterviewTimeBox';
+import {
+    Button,
+    Calendar,
+    Dialog,
+    Divider,
+    Input,
+    InterviewTimeBox,
+    Select,
+    Text,
+    TextArea,
+} from '@components';
 import { s_textareaInner } from '@components/PlainEmailDialog/PlainEmailDialog.style';
-import { Select } from '@components/Select';
-import { Button, Calendar, Dialog, Divider, Input, Text } from '@components/_common';
-import { TextArea } from '@components/_common/TextArea';
 import {
     DEFAULT_END_TIME,
     DEFAULT_NUMBER_VALUE,

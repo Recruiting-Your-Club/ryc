@@ -1,9 +1,7 @@
 import ChevronLeft from '@assets/images/chevronLeft.svg';
 import ChevronRight from '@assets/images/chevronRight.svg';
 import XIcon from '@assets/images/xIcon.svg';
-import { DocumentBox } from '@components/DocumentBox';
-import { PersonalScoreCard } from '@components/PersonalScoreCard';
-import { Button, Dialog, Divider, Rating, Text } from '@components/_common';
+import { Button, Dialog, Divider, DocumentBox, PersonalScoreCard, Rating, Text } from '@components';
 import { evaluation } from '@constants/ApplicantDialog';
 import React, { useState } from 'react';
 import {

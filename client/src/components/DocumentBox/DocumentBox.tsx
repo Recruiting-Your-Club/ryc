@@ -1,4 +1,4 @@
-import { Text } from '@components/_common';
+import { Text } from '@components';
 import React from 'react';
 import { answerWrapper, contentContainer, textWithUnderline } from './DocumentBox.style';
 import type { DocumentBoxProps } from './types';

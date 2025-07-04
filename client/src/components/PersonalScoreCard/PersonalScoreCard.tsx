@@ -1,4 +1,4 @@
-import { Avatar, Rating, Text } from '@components/_common';
+import { Avatar, Rating, Text } from '@components';
 import React from 'react';
 import {
     cardContainer,
