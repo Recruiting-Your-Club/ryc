@@ -5,6 +5,7 @@ import { ManagerLayout, UserLayout } from './layouts';
 import {
     ClubCreatePage,
     DetailLoadingPage,
+    DocumentEvaluationPage,
     LoginPage,
     MainLoadingPage,
     RecruitmentPage,
