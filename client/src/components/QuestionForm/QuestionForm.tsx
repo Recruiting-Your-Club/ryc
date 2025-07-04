@@ -46,7 +46,7 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
             return;
         }
         const newOption = {
-            id: `opt${(question.options?.length || 0) + 1}`,
+            id: `opt${Date.now()}`,
             text: '',
         };
         updateQuestion(question.id, {
