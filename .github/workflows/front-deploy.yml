@@ -3,7 +3,7 @@ name: github-action
 on:
   push:
     branches:
-      - refactor/issue-220
+      - refactor/issue-220 # 참고: 실제 배포 시에는 'main' 브랜치로 변경하는 것을 권장합니다.
 
 jobs:
   build-and-deploy:
@@ -19,22 +19,21 @@ jobs:
       # 2. Node.js 환경 설정
       - name: Setup Node.js
         uses: actions/setup-node@v4
-        working-directory: ../../monorepo
         with:
           # Node.js 20.x 버전을 사용
           node-version: "20.x"
           cache: "yarn" # yarn 캐시 설정
-          cache-dependency-path: ../../monorepo/yarn.lock
+          cache-dependency-path: monorepo/yarn.lock
 
       # 3. monorepo 루트에서 의존성 패키지 설치
       - name: Install dependencies
         run: yarn install
-        working-directory: ../../monorepo
+        working-directory: ./monorepo
 
       # 4. user 앱 빌드
       - name: Build user app
         run: yarn build
-        working-directory: ../../monorepo/apps/user
+        working-directory: ./monorepo/apps/user
 
       # 5. AWS 자격 증명 설정
       - name: Configure AWS credentials
@@ -47,7 +46,7 @@ jobs:
       # 6. 빌드 파일 S3에 업로드
       - name: Upload to S3 subdirectory
         run: |
-          aws s3 sync ../../monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/ssoc/dev --delete
+          aws s3 sync ./monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/ssoc/dev --delete
 
       # 7. CloudFront 캐시 무효
       - name: Invalidate CloudFront cache
