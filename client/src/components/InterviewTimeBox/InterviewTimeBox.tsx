@@ -1,4 +1,4 @@
-import { useInterviewSettingDialogContext } from '@components/InterviewSettingDialog/interviewSettingDialogContext';
+import { useInterviewSettingDialogContext } from '@components/InterviewSettingDialog/InterviewSettingDialogContext';
 import type { InterviewInformation } from '@components/InterviewSettingDialog/types';
 import { Select } from '@components/Select';
 import { Button, Divider, Text } from '@components/_common';

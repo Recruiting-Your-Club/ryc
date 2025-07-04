@@ -33,7 +33,7 @@ import {
     titleWrapper,
     verticalDivider,
 } from './InterviewSettingDialog.style';
-import { InterviewSettingDialogContext } from './interviewSettingDialogContext';
+import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
 
 const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
