@@ -1,4 +1,5 @@
 import { Text } from '@components';
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { titleContainer } from './Card.style';
 
@@ -6,8 +7,16 @@ interface CardTitleContainerProps {
     titlePartPaddingLeft?: string;
     title: string;
     subTitle: string;
+    titleSx?: CSSObject;
+    subTitleSx?: CSSObject;
 }
-function CardTitleContainer({ titlePartPaddingLeft, title, subTitle }: CardTitleContainerProps) {
+function CardTitleContainer({
+    titlePartPaddingLeft,
+    title,
+    subTitle,
+    titleSx,
+    subTitleSx,
+}: CardTitleContainerProps) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
@@ -19,7 +28,15 @@ function CardTitleContainer({ titlePartPaddingLeft, title, subTitle }: CardTitle
 
     return (
         <div css={titleContainer(titlePartPaddingLeft)}>
-            <Text as="span" textAlign="start" type="bodyBold" color="black" noWrap cropped>
+            <Text
+                as="span"
+                textAlign="start"
+                type="bodyBold"
+                color="black"
+                noWrap
+                cropped
+                sx={titleSx}
+            >
                 {title}
             </Text>
             <Text
@@ -29,6 +46,7 @@ function CardTitleContainer({ titlePartPaddingLeft, title, subTitle }: CardTitle
                 color="helper"
                 noWrap
                 cropped
+                sx={subTitleSx}
             >
                 {subTitle}
             </Text>

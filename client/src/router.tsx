@@ -1,17 +1,17 @@
+import { ClubApplyPage } from '@pages/ClubApplyPage';
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
+import { ManagerLayout, UserLayout } from './layouts';
 import {
-    TestPage,
-    NotFoundPage,
-    LoginPage,
-    RegisterPage,
-    RecruitmentPage,
     ClubCreatePage,
-    MainLoadingPage,
     DetailLoadingPage,
+    LoginPage,
+    MainLoadingPage,
+    RecruitmentPage,
+    RegisterPage,
+    StepManagementPage,
+    TestPage,
 } from './pages';
-import { UserLayout, ManagerLayout } from './layouts';
-import { ClubApplyPage } from '@pages/ClubApplyPage';
 
 const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
 const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'));
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
                 ),
             },
             { path: 'apply', element: <ClubApplyPage /> },
-            { path: 'detail', element: <ClubDetailPage /> },
+            { path: 'detail', element: <LazyDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
             { path: 'club/create', element: <ClubCreatePage /> },
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
             { index: true, element: <TestPage /> },
             { path: 'test', element: <LoginPage /> },
             { path: 'recruitment', element: <RegisterPage /> },
-            { path: 'steps', element: <LoginPage /> },
+            { path: 'steps', element: <StepManagementPage /> },
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
             { path: 'time-slots', element: <RegisterPage /> },

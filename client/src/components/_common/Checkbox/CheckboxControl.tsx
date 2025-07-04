@@ -7,7 +7,7 @@ import { useCheckboxContext } from './CheckboxContext';
 function CheckboxControl({ sx }: CSSObject) {
     // prop destruction
     // lib hooks
-    const { isChecked, onChange, variant, size, color, defaultChecked, disabled } =
+    const { isChecked, onChange, variant, size, color, defaultChecked, disabled, onClick } =
         useCheckboxContext();
 
     // state, ref, querystring hooks
@@ -18,18 +18,28 @@ function CheckboxControl({ sx }: CSSObject) {
 
     // effects
     // handlers
-    const onKeyDownHandler = (e: KeyboardEvent) => {
+    const triggerChange = () => {
+        if (disabled) return;
+        onChange?.(!isChecked);
+    };
+
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        triggerChange();
+        onClick?.(e);
+    };
+
+    const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            onChange();
+            triggerChange();
         }
     };
 
     return (
         <div
-            onClick={onChange}
+            onClick={handleClick}
             css={[cssProp, sx]}
-            onKeyDown={() => onKeyDownHandler}
+            onKeyDown={onKeyDownHandler}
             aria-checked={isChecked}
             tabIndex={0}
             role="checkbox"
