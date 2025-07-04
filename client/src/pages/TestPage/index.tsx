@@ -1,21 +1,23 @@
-import React from 'react';
-import { Tooltip } from '@components/_common/Tooltip';
-import { FileUpLoader } from '@components/FileUpLoader';
 
+import React from 'react';
+import { ImageRegister } from '@components';
+import { useState } from 'react';
 
 function TestPage() {
+    //imageSrc에 편집된 이미지가 들어감
+    const [image, setImage] = useState<string>();
+    const [croppedImage, setCroppedImage] = useState<string>();
     return (
         <>
-            <div>
-                <Tooltip content="Tooltip 예시입니다.">
-                    <FileUpLoader>
-                        <FileUpLoader.HelperText>하이</FileUpLoader.HelperText>
-                        <FileUpLoader.Button />
-                        <FileUpLoader.Box />
-                    </FileUpLoader>
-                </Tooltip>
-            </div>
+            <ImageRegister
+                image={image}
+                setImage={setImage}
+                croppedImage={croppedImage}
+                setCroppedImage={setCroppedImage}
+            />
         </>
     );
 }
 export { TestPage };
+
+//<Calendar selectedDate={[clicked, ...select]} setClickedDate={setClicked} />

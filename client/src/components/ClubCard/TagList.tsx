@@ -1,4 +1,4 @@
-import { Tag } from '@components/_common/Tag';
+import { Tag } from '@components';
 import React, { useEffect, useRef, useState } from 'react';
 import { invisibleTag, perTag, tagDisplay } from './ClubCard.style';
 
