@@ -10,13 +10,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
+import com.ryc.api.v2.announcement.service.ApplicationFormService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,18 +20,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
   private final AnnouncementService announcementService;
+  private final ApplicationFormService applicationFormService;
 
   @Override
   public ResponseEntity<AnnouncementCreateResponse> create(
-      CustomUserDetail userDetail, String clubId, AnnouncementCreateRequest body) {
-
-    ClubRoleSecuredDto roleDto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    AnnouncementCreateResponse response = announcementService.createAnnouncement(roleDto, body);
+      String clubId, AnnouncementCreateRequest body) {
+    AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/v2/clubs/{club-id}/announcements/{announcement-id}")
-            .buildAndExpand(roleDto.clubId(), response.announcementId())
+            .path("/api/v2/announcements/{announcement-id}")
+            .buildAndExpand(response.announcementId())
             .toUri();
 
     return ResponseEntity.created(location).body(response);
@@ -56,13 +51,14 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      CustomUserDetail userDetail,
-      String clubId,
-      String announcementId,
-      AnnouncementUpdateRequest body) {
-    ClubRoleSecuredDto roleDto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-
+      String announcementId, AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(announcementService.updateAnnouncement(roleDto, body, announcementId));
+        .body(announcementService.updateAnnouncement(body, announcementId));
+  }
+
+  @Override
+  public ResponseEntity<ApplicationFormResponse> getApplicationForm(String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
   }
 }

@@ -16,9 +16,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @brief 공고 지원서 request Dto
  */
 @Schema(description = "공고 지원서")
-public record AnnouncementApplicationRequest(
-    @Schema(implementation = PersonalInfoQuestionType.class, description = "hi", example = "sdsdsd")
-        @NotEmpty(message = "personalInfoQuestionTypes shouldn't be empty")
+public record ApplicationFormRequest(
+    @NotEmpty(message = "personalInfoQuestionTypes shouldn't be empty")
         List<
                 @NotNull(message = "personalInfoQuestionType shouldn't be null")
                 PersonalInfoQuestionType>
@@ -40,6 +39,10 @@ public record AnnouncementApplicationRequest(
   }
 
   @Override
+  @Schema(
+      implementation = PersonalInfoQuestionType.class,
+      description = "개인정보 질문",
+      example = "[\"NAME\", \"EMAIL\"]")
   public List<PersonalInfoQuestionType> personalInfoQuestionTypes() {
     return List.copyOf(personalInfoQuestionTypes);
   }

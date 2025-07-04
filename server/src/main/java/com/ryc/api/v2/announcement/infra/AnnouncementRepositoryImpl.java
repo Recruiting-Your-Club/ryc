@@ -1,7 +1,6 @@
 package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
-import java.util.Map;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -10,13 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
-import com.ryc.api.v2.announcement.infra.entity.AnnouncementApplicationEntity;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
-import com.ryc.api.v2.announcement.infra.mapper.AnnouncementApplicationMapper;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
-import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
+import com.ryc.api.v2.common.constant.DomainDefaultValues;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,10 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   private final AnnouncementJpaRepository announcementJpaRepository;
-  private final AnnouncementApplicationJpaRepository announcementApplicationJpaRepository;
   private final AnnouncementMapper announcementMapper;
-  private final AnnouncementApplicationMapper announcementApplicationMapper;
-  private final ClubJpaRepository clubJpaRepository;
 
   @Override
   public List<Announcement> findAllByClubId(String clubId) {
@@ -43,35 +36,34 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
    * @param id announcementId
    */
   @Override
-  public Announcement findByIdWithApplication(String id) {
+  public Announcement findById(String id) {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
 
-    /** todo n+1 해결 필요 */
-    AnnouncementApplicationEntity applicationEntity =
-        announcementApplicationJpaRepository
-            .findByAnnouncementEntityId(announcementEntity.getId())
-            .orElseThrow(() -> new EntityNotFoundException("announcementApplication not found"));
-
-    return announcementMapper.toDomain(announcementEntity, applicationEntity);
+    return announcementMapper.toDomain(announcementEntity);
   }
 
   @Override
-  public Announcement save(Announcement announcement, ClubEntity club) {
-    // 1. domain -> entity mapping
-    AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement, club);
-    AnnouncementApplicationEntity announcementApplicationEntity =
-        announcementApplicationMapper.toEntity(
-            announcement.getAnnouncementApplication(), announcementEntity, club);
+  public Announcement save(Announcement announcement) {
+    // create
+    if (announcement.getId().equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
+      AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement);
+      AnnouncementEntity savedAnnouncement = announcementJpaRepository.save(announcementEntity);
 
-    // 2. application entity save
-    /** todo FK를 가진 application에서 OneToOne mapping을 진행해서 application을 저장하는 것이 옳은 방법인지 고민 필요. */
-    AnnouncementApplicationEntity savedAnnouncementApplicationEntity =
-        announcementApplicationJpaRepository.save(announcementApplicationEntity);
+      return announcementMapper.toDomain(savedAnnouncement);
+    }
+    // update
+    else {
+      AnnouncementEntity announcementEntity =
+          announcementJpaRepository
+              .findById(announcement.getId())
+              .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+      announcementEntity.update(announcementMapper.toEntity(announcement));
 
-    return announcementMapper.toDomain(savedAnnouncementApplicationEntity.getAnnouncementEntity());
+      return announcementMapper.toDomain(announcementEntity);
+    }
   }
 
   @Override
@@ -82,18 +74,9 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public void saveAll(
-      List<Announcement> announcements,
-      Map<String, ClubEntity> clubs) { // List<ClubEntity> clubs) {
-
+  public void saveAll(List<Announcement> announcements) { // List<ClubEntity> clubs) {
     List<AnnouncementEntity> announcementEntities =
-        announcements.stream()
-            .map(
-                domain -> {
-                  ClubEntity clubProxy = clubs.get(domain.getClubId());
-                  return announcementMapper.toEntity(domain, clubProxy);
-                })
-            .toList();
+        announcements.stream().map(announcementMapper::toEntity).toList();
 
     announcementJpaRepository.saveAll(announcementEntities);
   }

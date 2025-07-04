@@ -4,29 +4,27 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.ryc.api.v2.announcement.domain.AnnouncementApplication;
+import com.ryc.api.v2.announcement.domain.ApplicationForm;
 import com.ryc.api.v2.announcement.domain.vo.ApplicationQuestion;
-import com.ryc.api.v2.announcement.infra.entity.AnnouncementApplicationEntity;
-import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
+import com.ryc.api.v2.announcement.infra.entity.ApplicationFormEntity;
 import com.ryc.api.v2.announcement.infra.vo.ApplicationQuestionVO;
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class AnnouncementApplicationMapper {
+public class ApplicationFormMapper {
 
   private final ApplicationQuestionMapper applicationQuestionMapper;
 
   /** entity to Domain */
-  public AnnouncementApplication toDomain(AnnouncementApplicationEntity entity) {
+  public ApplicationForm toDomain(ApplicationFormEntity entity) {
     List<ApplicationQuestion> applicationQuestions =
         entity.getApplicationQuestions().stream().map(applicationQuestionMapper::toDomain).toList();
     List<ApplicationQuestion> preQuestions =
         entity.getPreQuestions().stream().map(applicationQuestionMapper::toDomain).toList();
 
-    return AnnouncementApplication.builder()
+    return ApplicationForm.builder()
         .id(entity.getId())
         .applicationQuestions(applicationQuestions)
         .personalInfoQuestionTypes(entity.getPersonalInfoQuestions())
@@ -35,21 +33,20 @@ public class AnnouncementApplicationMapper {
   }
 
   /** save시 announcement 주입 mapping */
-  public AnnouncementApplicationEntity toEntity(
-      AnnouncementApplication applicationDomain, AnnouncementEntity announcement, ClubEntity club) {
+  public ApplicationFormEntity toEntity(ApplicationForm applicationForm) {
     List<ApplicationQuestionVO> applicationQuestions =
-        applicationDomain.getApplicationQuestions().stream()
+        applicationForm.getApplicationQuestions().stream()
             .map(applicationQuestionMapper::toVO)
             .toList();
-    List<ApplicationQuestionVO> preQuestions =
-        applicationDomain.getPreQuestions().stream().map(applicationQuestionMapper::toVO).toList();
 
-    return AnnouncementApplicationEntity.builder()
-        .id(applicationDomain.getId())
+    List<ApplicationQuestionVO> preQuestions =
+        applicationForm.getPreQuestions().stream().map(applicationQuestionMapper::toVO).toList();
+
+    return ApplicationFormEntity.builder()
+        .id(applicationForm.getId())
         .applicationQuestions(applicationQuestions)
-        .personalInfoQuestions(applicationDomain.getPersonalInfoQuestionTypes())
+        .personalInfoQuestions(applicationForm.getPersonalInfoQuestionTypes())
         .preQuestions(preQuestions)
-        .announcementEntity(announcement)
         .build();
   }
 }

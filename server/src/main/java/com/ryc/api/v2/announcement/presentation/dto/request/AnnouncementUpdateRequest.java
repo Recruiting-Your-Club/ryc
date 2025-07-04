@@ -22,7 +22,7 @@ import lombok.Builder;
  * @param announcementType 공고 타입
  * @param hasInterview 면접여부
  * @param tags 태그
- * @param application 지원서
+ * @param applicationForm 지원서
  * @param images 이미지
  */
 @Builder
@@ -56,7 +56,7 @@ public record AnnouncementUpdateRequest(
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
     @Schema(description = "공고 지원서") @Valid @NotNull(message = "application shouldn't be null")
-        AnnouncementApplicationRequest application,
+        ApplicationFormRequest applicationForm,
     @Schema(description = "이미지 목록") @NotNull(message = "images shouldn't be null")
         List<@Valid @NotNull(message = "image shouldn't be null") ImageRequest> images) {
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")

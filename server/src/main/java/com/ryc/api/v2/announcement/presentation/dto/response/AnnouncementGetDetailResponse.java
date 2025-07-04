@@ -51,7 +51,7 @@ public record AnnouncementGetDetailResponse(
     @Schema(description = "최종 결과 발표 기간") PeriodResponse finalResultPeriod,
 
     // 지원서 정보
-    AnnouncementApplicationResponse application,
+    ApplicationFormResponse application,
 
     // 기타 정보
     @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]") List<String> tags,
@@ -68,8 +68,8 @@ public record AnnouncementGetDetailResponse(
     List<ImageResponse> images =
         announcement.getImages().stream().map(ImageResponse::from).toList();
 
-    AnnouncementApplicationResponse application =
-        AnnouncementApplicationResponse.from(announcement.getAnnouncementApplication());
+    ApplicationFormResponse application =
+        ApplicationFormResponse.from(announcement.getApplicationForm());
 
     PeriodResponse applicationPeriod = PeriodResponse.from(periodInfo.applicationPeriod());
     PeriodResponse interviewPeriod = PeriodResponse.from(periodInfo.interviewPeriod());
