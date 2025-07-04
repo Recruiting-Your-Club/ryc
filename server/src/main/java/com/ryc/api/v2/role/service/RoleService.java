@@ -63,6 +63,10 @@ public class RoleService {
   @Transactional
   @HasRole(Role.OWNER)
   public void deleteRole(ClubRoleSecuredDto dto, String targetUserId) {
+    if (!roleRepository.existsByAdminIdAndClubId(dto.clubId(), targetUserId)) {
+      throw new ClubException(ClubErrorCode.CLUB_MEMBER_NOT_FOUND);
+    }
+
     roleRepository.deleteByUserId(targetUserId);
   }
 }

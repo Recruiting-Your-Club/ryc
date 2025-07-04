@@ -17,14 +17,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
+import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-  @ExceptionHandler(NoPermissionException.class)
-  public ResponseEntity<Object> handleNoPermissionException(NoPermissionException e) {
-    ErrorCode errorCode = e.getErrorCode();
+  @ExceptionHandler({NoPermissionException.class, ClubException.class})
+  public ResponseEntity<Object> handleNoPermissionException(RuntimeException e) {
+    ErrorCode errorCode;
+
+    if (e instanceof NoPermissionException) {
+      errorCode = ((NoPermissionException) e).getErrorCode();
+    } else if (e instanceof ClubException) {
+      errorCode = ((ClubException) e).getErrorCode();
+    } else {
+      errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+    }
     return handleExceptionInternal(errorCode);
   }
 
