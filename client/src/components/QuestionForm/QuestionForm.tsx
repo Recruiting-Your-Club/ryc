@@ -14,8 +14,13 @@ import {
 import { CheckboxRoot } from '@components/Checkbox/CheckboxRoot';
 import { CheckboxHiddenInput } from '@components/Checkbox/CheckboxHiddenInput';
 import { CheckboxControl } from '@components/Checkbox/CheckboxControl';
+import { useToast } from '@hooks/useToast';
 
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
+    // prop destruction
+    // lib hooks
+    const { toast } = useToast();
+
     //handler
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         updateQuestion(question.id, { title: e.target.value });
@@ -33,6 +38,13 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
     };
 
     const handleAddOption = () => {
+        if ((question.options?.length || 0) >= 10) {
+            toast.error('객관식 문항 보기는 최대 10개까지 생성할 수 있습니다.', {
+                toastTheme: 'black',
+                position: 'topCenter',
+            });
+            return;
+        }
         const newOption = {
             id: `opt${(question.options?.length || 0) + 1}`,
             text: '',

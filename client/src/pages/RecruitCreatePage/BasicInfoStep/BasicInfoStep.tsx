@@ -21,6 +21,7 @@ import { QuestionForm } from '@components/QuestionForm';
 import type { QuestionType } from '@components/QuestionForm/types';
 import type { BasicInfoStepProps, InfoFieldGroupProps } from './types';
 import type { BasicInfoFields } from '../types';
+import { useToast } from '@hooks/useToast';
 
 function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
     //handler
@@ -30,6 +31,7 @@ function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
             [key]: !prev[key],
         }));
     };
+
     return (
         <>
             <FieldLabel
@@ -77,6 +79,21 @@ function BasicInfoStep({
     updateQuestion,
     handleQuestionTypeChange,
 }: BasicInfoStepProps) {
+    // prop destruction
+    // lib hooks
+    const { toast } = useToast();
+
+    //handlers
+    const handleQuestions = () => {
+        if (questions.length >= 20) {
+            toast.error('사전 질문은 최대 20개까지 생성할 수 있습니다.', {
+                toastTheme: 'black',
+                position: 'topCenter',
+            });
+            return;
+        }
+        return addQuestion();
+    };
     return (
         <>
             <InfoFieldGroup infoFields={infoFields} setInfoFields={setInfoFields} />
@@ -134,7 +151,7 @@ function BasicInfoStep({
                         <QuestionForm question={question} updateQuestion={updateQuestion} />
                     </div>
                 ))}
-                <Button onClick={addQuestion} size="full">
+                <Button onClick={handleQuestions} size="full">
                     질문 추가하기
                 </Button>
             </div>
