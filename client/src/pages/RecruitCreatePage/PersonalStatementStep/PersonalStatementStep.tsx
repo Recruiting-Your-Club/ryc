@@ -8,6 +8,7 @@ import {
 } from './PersonalStatementStep.style';
 import { QuestionForm } from '@components/QuestionForm';
 import type { PersonalStatementStepProps } from './types';
+import { useToast } from '@hooks/useToast';
 
 function PersonalStatementStep({
     applicationQuestions,
@@ -15,6 +16,20 @@ function PersonalStatementStep({
     updateApplicationQuestion,
     addApplicationQuestion,
 }: PersonalStatementStepProps) {
+    // prop destruction
+    // lib hooks
+    const { toast } = useToast();
+
+    const handleAddApplicationQuestion = () => {
+        if (applicationQuestions.length >= 20) {
+            toast.error('자기소개서 질문은 최대 20개까지 생성할 수 있습니다.', {
+                toastTheme: 'black',
+                position: 'topCenter',
+            });
+            return;
+        }
+        addApplicationQuestion();
+    };
     return (
         <>
             <FieldLabel
@@ -35,7 +50,7 @@ function PersonalStatementStep({
                         <QuestionForm question={q} updateQuestion={updateApplicationQuestion} />
                     </div>
                 ))}
-                <Button size="full" variant="primary" onClick={addApplicationQuestion}>
+                <Button size="full" variant="primary" onClick={handleAddApplicationQuestion}>
                     질문 추가하기
                 </Button>
             </div>
