@@ -240,6 +240,7 @@ function MainPage() {
                 <Text type="h4Semibold" color="black">
                     총 {totalClub}개의 동아리
                 </Text>
+                <div>테스트입니다.</div>
             </div>
 
             <div css={clubCategoryContainer}>
