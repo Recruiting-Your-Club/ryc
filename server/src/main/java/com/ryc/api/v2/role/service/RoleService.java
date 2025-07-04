@@ -1,5 +1,6 @@
 package com.ryc.api.v2.role.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.RoleRepository;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
+import com.ryc.api.v2.role.presentation.dto.response.AdminsGetResponse;
 import com.ryc.api.v2.role.presentation.dto.response.RoleDemandResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,22 @@ public class RoleService {
   public ClubRole assignRole(Admin admin, Club club, Role role) {
     ClubRole clubRole = ClubRole.initialize(club, admin, role);
     return roleRepository.save(clubRole);
+  }
+
+  @Transactional(readOnly = true)
+  @HasRole(Role.MEMBER)
+  public List<AdminsGetResponse> getAdminsInClub(ClubRoleSecuredDto dto) {
+    List<Admin> admins = roleRepository.findAdminsByClubId(dto.clubId());
+    return admins.stream()
+        .map(
+            admin ->
+                AdminsGetResponse.builder()
+                    .adminId(admin.getId())
+                    .name(admin.getName())
+                    .imageUrl(admin.getImageUrl())
+                    .thumbnailUrl(admin.getThumbnailUrl())
+                    .build())
+        .toList();
   }
 
   @Transactional(readOnly = true)

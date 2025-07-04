@@ -1,12 +1,19 @@
 package com.ryc.api.v2.role.presentation;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.role.presentation.dto.response.AdminsGetResponse;
 import com.ryc.api.v2.role.presentation.dto.response.RoleDemandResponse;
 import com.ryc.api.v2.role.service.RoleService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -23,7 +30,7 @@ public class RoleHttpApi {
 
   private final RoleService roleService;
 
-  @PostMapping("/clubs/{clubId}/roles")
+  @PostMapping("clubs/{clubId}/roles")
   @Operation(summary = "동아리 권한 요청", description = "동아리 권한을 요청합니다. 요청 즉시 동아리 멤버가 됩니다.")
   public ResponseEntity<RoleDemandResponse> demandRole(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
@@ -32,6 +39,15 @@ public class RoleHttpApi {
     URI location =
         URI.create(String.format("api/v2/clubs/%s/roles/%s", clubId, roleDemandResponse.roleId()));
     return ResponseEntity.created(location).body(roleDemandResponse);
+  }
+
+  @GetMapping("clubs/{clubId}/users")
+  @Operation(summary = "동아리 내 사용자 조회", description = "동아리 내 모든 사용자의 정보를 조회합니다.")
+  public ResponseEntity<List<AdminsGetResponse>> getAdminsInClub(
+      @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
+
+    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
+    return ResponseEntity.ok(roleService.getAdminsInClub(dto));
   }
 
   @DeleteMapping("clubs/{clubId}/users/{userId}")
