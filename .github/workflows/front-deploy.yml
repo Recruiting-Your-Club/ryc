@@ -44,9 +44,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # 6. 빌드 파일 S3에 업로드
-      - name: Upload to S3 subdirectory
+      - name: Upload to S3
         run: |
-          aws s3 sync ./monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/ssoc/dev --delete
+          aws s3 sync ./monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/dev/dist --delete
 
       # 7. CloudFront 캐시 무효
       - name: Invalidate CloudFront cache
