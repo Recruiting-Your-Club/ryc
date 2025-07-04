@@ -1,5 +1,5 @@
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
-import { Divider, Text } from '@components/_common';
+import { Divider, Text } from '@components';
 import React from 'react';
 import { boxContainer, cardGroupWrapper, dividerCss, svgCss, titleGroup } from './CardBox.style';
 import type { CardBoxProps } from './types';

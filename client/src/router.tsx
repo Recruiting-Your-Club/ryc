@@ -5,6 +5,7 @@ import { ManagerLayout, UserLayout } from './layouts';
 import {
     ClubCreatePage,
     DetailLoadingPage,
+    DocumentEvaluationPage,
     LoginPage,
     MainLoadingPage,
     RecruitmentPage,
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
             { path: 'time-slots', element: <RegisterPage /> },
+            { path: 'doc-evaluation', element: <DocumentEvaluationPage /> },
             { path: 'evaluation', element: <LoginPage /> },
             { path: 'questions', element: <RegisterPage /> },
             { path: 'setting', element: <LoginPage /> },

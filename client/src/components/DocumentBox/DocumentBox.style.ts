@@ -22,7 +22,6 @@ export const textWithUnderline = css`
     position: relative;
     min-width: 35rem;
     width: fit-content;
-
     &::after {
         content: '';
         position: absolute;

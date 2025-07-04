@@ -1,6 +1,5 @@
 import TimeCircle from '@assets/images/time-circle.svg';
-import { ScoreTag } from '@components/ScoreTag';
-import { Card, Checkbox, Divider, Text } from '@components/_common';
+import { Card, Checkbox, Divider, ScoreTag, Text } from '@components';
 import React from 'react';
 import {
     bottomCss,

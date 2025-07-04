@@ -1,13 +1,13 @@
 import Search from '@assets/images/search.svg';
 import {
+    ApplicantCard,
     ApplicantDialog,
     Button,
+    CardBox,
     Input,
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
-import { ApplicantCard } from '@components/ApplicantCard';
-import { CardBox } from '@components/CardBox';
 import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
 import React, { useCallback, useState } from 'react';
 import {
