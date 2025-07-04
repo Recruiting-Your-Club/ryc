@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     calendarContainer,
     calendarBodyContainer,
@@ -6,35 +6,41 @@ import {
     weekdaysContainer,
     daysContainer,
     dayCell,
-    weekCell,
+    weekendColor,
     monthControlButton,
-} from './CalendarStyle';
+} from './Calendar.style';
 import { Text } from '@components';
-import { useCalendar } from './useCalendar';
-import type { CalendarProps } from './types';
+import { useCalendar } from './utils';
+import type { CalendarProps, CalendarMode } from './types';
 import { WEEKDAYS } from '@constants/calendar';
 
-const Calendar = ({
-    isMultiple = false,
+function Calendar({
+    mode = 'single',
     selectedDate = [],
+    highlightedDate = [],
     onSelect = () => {},
+    onlySelected = false,
     disabled = false,
     size = 'lg',
     border = false,
     shadow = true,
     zIndex,
     sx = {},
-}: CalendarProps) => {
+}: CalendarProps) {
     // prop destruction
     const {
-        today,
         days,
         currentDate,
-        newSelectedDate,
         handleBackMonth,
         handleNextMonth,
-        handleSelectedDate,
-    } = useCalendar(selectedDate, isMultiple, onSelect);
+        handleSingleSelect,
+        handleMultipleSelect,
+        handleRangeSelect,
+        handleCustomSelect,
+        isSelected,
+        isToday,
+        isDisabled,
+    } = useCalendar(selectedDate, onSelect);
     // lib hooks
     // initial values
     // state, ref, querystring hooks
@@ -42,6 +48,12 @@ const Calendar = ({
     // query hooks
     // calculated values
     // handlers
+    const getCalendarMode: Record<CalendarMode, (selectDate: string) => void> = {
+        single: handleSingleSelect,
+        multiple: handleMultipleSelect,
+        range: handleRangeSelect,
+        custom: handleCustomSelect,
+    };
     // effects
 
     return (
@@ -71,26 +83,28 @@ const Calendar = ({
             <div css={calendarBodyContainer}>
                 <div css={weekdaysContainer}>
                     {WEEKDAYS.map((day, index) => (
-                        <div key={day} css={weekCell(index)}>
+                        <div key={day} css={weekendColor(index)}>
                             {day}
                         </div>
                     ))}
                 </div>
 
-                <div css={daysContainer}>
+                <div css={daysContainer(mode, disabled)}>
                     {days.map((date) => (
                         <button
                             aria-label={date.dateString}
-                            disabled={disabled}
+                            disabled={disabled || isDisabled(date.dateString, onlySelected)}
                             key={date.dateString}
                             css={dayCell(
-                                newSelectedDate.has(date.dateString),
-                                date.weekend,
-                                date.dateString === today,
-                                date.isCurrentMonth,
-                                disabled,
+                                selectedDate,
+                                date,
+                                isToday(date.dateString),
+                                isSelected(date.dateString),
+                                onlySelected,
+                                mode,
+                                highlightedDate,
                             )}
-                            onClick={() => handleSelectedDate(date.dateString)}
+                            onClick={() => getCalendarMode[mode](date.dateString)}
                         >
                             {date.day}
                         </button>
@@ -99,6 +113,6 @@ const Calendar = ({
             </div>
         </div>
     );
-};
+}
 
 export { Calendar };

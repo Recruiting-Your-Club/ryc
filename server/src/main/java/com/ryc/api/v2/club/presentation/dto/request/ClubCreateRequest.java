@@ -3,7 +3,7 @@ package com.ryc.api.v2.club.presentation.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import com.ryc.api.v2.club.domain.Category;
+import com.ryc.api.v2.club.domain.enums.Category;
 
 import lombok.Builder;
 

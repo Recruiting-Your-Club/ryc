@@ -1,31 +1,50 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import {
     TestPage,
     NotFoundPage,
     LoginPage,
     RegisterPage,
-    MainPage,
     StepManagementPage,
     ClubDetailPage,
     RecruitmentPage,
+    ClubCreatePage,
+    MainLoadingPage,
+    DetailLoadingPage,
 } from './pages';
 import { UserLayout, ManagerLayout } from './layouts';
 import { ClubApplyPage } from '@pages/ClubApplyPage';
 
+const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
+const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'));
+
 const router = createBrowserRouter([
-    {
         path: '/',
         element: <UserLayout />,
         children: [
-            { index: true, element: <MainPage /> },
-            { path: '*', element: <NotFoundPage /> },
+            {
+                index: true,
+                element: (
+                    <Suspense fallback={<MainLoadingPage />}>
+                        <LazyMainPage />
+                    </Suspense>
+                ),
+            },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            {
+                path: ':id',
+                element: (
+                    <Suspense fallback={<DetailLoadingPage />}>
+                        <LazyDetailPage />
+                    </Suspense>
+                ),
+            },
             { path: 'apply', element: <ClubApplyPage /> },
             { path: 'detail', element: <ClubDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
+            { path: 'club/create', element: <ClubCreatePage /> },
         ],
     },
     {

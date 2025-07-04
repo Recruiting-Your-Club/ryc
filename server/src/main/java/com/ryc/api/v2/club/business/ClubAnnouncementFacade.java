@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
-import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -24,20 +24,20 @@ public class ClubAnnouncementFacade {
   public List<AllClubGetResponse> getAllClubWithAnnouncementStatus() {
     List<Club> clubs = clubService.getAllClub();
     Map<String, AnnouncementStatus> statuses =
-        announcementService.getStatusesByClubIds(clubs.stream().map(Club::getId).toList());
+        announcementService.getStatusesByClubIds(clubs.stream().map(Club::id).toList());
 
     return clubs.stream()
         .map(
             club -> {
-              AnnouncementStatus status = statuses.get(club.getId());
+              AnnouncementStatus status = statuses.get(club.id());
               return AllClubGetResponse.builder()
-                  .id(club.getId())
-                  .name(club.getName())
-                  .shortDescription(club.getShortDescription())
-                  .imageUrl(club.getImageUrl())
-                  .thumbnailUrl(club.getThumbnailUrl())
-                  .category(club.getCategory())
-                  .clubTags(club.getClubTags())
+                  .id(club.id())
+                  .name(club.name())
+                  .shortDescription(club.shortDescription())
+                  .imageUrl(club.imageUrl())
+                  .thumbnailUrl(club.thumbnailUrl())
+                  .category(club.category())
+                  .clubTags(club.clubTags())
                   .announcementStatus(status)
                   .build();
             })

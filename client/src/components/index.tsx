@@ -28,3 +28,4 @@ export * from './ClubNavigation';
 export * from './ClubBox';
 export * from './ImageDialog';
 export * from './RecruitDialog';
+export * from './ImageEditDialog';
