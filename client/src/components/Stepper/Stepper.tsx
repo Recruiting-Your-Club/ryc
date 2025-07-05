@@ -3,7 +3,9 @@ import React, { useMemo, Children, cloneElement, isValidElement } from 'react';
 import { s_stepper } from './Stepper.style';
 import { StepperContext } from './StepperContext';
 import { StepConnector } from './StepConnector';
-import type { SerializedStyles } from '@emotion/react';
+import type { CSSObject, SerializedStyles } from '@emotion/react';
+import { Step } from './Step';
+import { StepLabel } from './StepLabel';
 
 //interface
 interface StepperProps {
@@ -13,19 +15,19 @@ interface StepperProps {
     component?: ElementType;
     connector?: ReactNode;
     orientation?: 'horizontal' | 'vertical';
-    customCSS?: SerializedStyles;
+    sx?: CSSObject;
 }
 
 const defaultConnector = <StepConnector />;
 
-function Stepper({
+function StepperRoot({
     activeStep = 0,
     alternativeLabel = false,
     children,
     component: Component = 'div',
     connector = defaultConnector,
     orientation = 'horizontal',
-    customCSS,
+    sx,
 }: StepperProps) {
     //prop destruction
 
@@ -61,11 +63,14 @@ function Stepper({
 
     return (
         <StepperContext.Provider value={contextValue}>
-            <Component css={[s_stepper(orientation, alternativeLabel), customCSS]}>
-                {steps}
-            </Component>
+            <Component css={[s_stepper(orientation, alternativeLabel), sx]}>{steps}</Component>
         </StepperContext.Provider>
     );
 }
+
+const Stepper = Object.assign(StepperRoot, {
+    Step: Step,
+    Label: StepLabel,
+});
 
 export { Stepper };

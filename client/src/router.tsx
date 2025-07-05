@@ -1,6 +1,7 @@
 import { ClubApplyPage } from '@pages/ClubApplyPage';
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
+import { RecruitCreatePage } from '@pages/RecruitCreatePage/RecruitCreatePage';
 import { ManagerLayout, UserLayout } from './layouts';
 import {
     ClubCreatePage,
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <TestPage /> },
             { path: 'test', element: <LoginPage /> },
-            { path: 'recruitment', element: <RegisterPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'steps', element: <StepManagementPage /> },
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
