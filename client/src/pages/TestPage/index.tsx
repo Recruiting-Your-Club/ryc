@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ImageRegister } from '@components';
 import { useState } from 'react';
