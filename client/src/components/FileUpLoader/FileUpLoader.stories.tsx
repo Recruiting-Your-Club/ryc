@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 import { FileUpLoader } from './FileUpLoader';
 
 import { ToastProvider } from '@components/Toast/ToastProvider';
@@ -13,8 +13,6 @@ const mockImageFile = new File([], 'image.jpg', {
     type: 'image/jpeg',
     lastModified: new Date().getTime(),
 });
-
-type Story = StoryObj<typeof FileUpLoader>;
 
 const meta: Meta<typeof FileUpLoader> = {
     title: 'FileUpLoader',
