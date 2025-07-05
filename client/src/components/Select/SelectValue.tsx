@@ -2,14 +2,11 @@ import type { CSSObject } from '@emotion/react';
 import { useSelectContext } from './SelectContext';
 import { s_selectPlaceholder, s_selectValue } from './Select.styles';
 import React from 'react';
+import type { SelectValueProps } from './types';
 
 /**
  * SelectValue 컴포넌트
  */
-interface SelectValueProps {
-    placeholder?: string;
-    sx?: CSSObject;
-}
 
 function SelectValue({ placeholder, sx }: SelectValueProps) {
     const { value, label } = useSelectContext();

@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import {
-    sideBarContainer,
-    sectionContainer,
-    contentContainer,
-    navContainer,
-    menuContainer,
-    menuTitle,
-    menuContent,
-    menuListContainer,
-    menuButton,
-    emptyContainer,
-    imageContainer,
-} from './SideBar.style';
-import { Button, Divider } from '@components';
-import { useRouter } from '@hooks/useRouter';
+import AplicantManage from '@assets/images/AplicantManage.svg';
+import ApplicationManage from '@assets/images/ApplicationManage.svg';
 import basicImage from '@assets/images/basicImage.png';
 import EditApplication from '@assets/images/EditApplication.svg';
-import ApplicationManage from '@assets/images/ApplicationManage.svg';
 import Home from '@assets/images/Home.svg';
-import AplicantManage from '@assets/images/AplicantManage.svg';
-import UserSet from '@assets/images/UserSet.svg';
 import Ryc from '@assets/images/Ryc.svg';
+import UserSet from '@assets/images/UserSet.svg';
+import { Button, Divider } from '@components';
+import { useRouter } from '@hooks/useRouter';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import {
+    contentContainer,
+    emptyContainer,
+    imageContainer,
+    menuButton,
+    menuContainer,
+    menuContent,
+    menuListContainer,
+    menuTitle,
+    navContainer,
+    sectionContainer,
+    sideBarContainer,
+} from './SideBar.style';
 
 interface MenuItem {
     id: number;
@@ -55,6 +55,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
         { parentId: 2, subMenu: '불합격자 관리', link: '/manager/rejected' },
         { parentId: 3, subMenu: '공고 편집', link: '/manager/edit' },
         { parentId: 4, subMenu: '시간대 별 지원자 편집', link: '/manager/time-slots' },
+        { parentId: 4, subMenu: '서류 평가', link: '/manager/doc-evaluation' },
         { parentId: 4, subMenu: '면접 평가 테이블', link: '/manager/evaluation' },
         { parentId: 4, subMenu: '면접 공통 질문 설정', link: '/manager/questions' },
         { parentId: 5, subMenu: '사용자 권한 설정', link: '/manager/setting' },
