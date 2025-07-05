@@ -59,7 +59,7 @@ export const s_radio = (size: RadioSize = 'md') => css`
     justify-content: center;
 `;
 
-export const s_radioInner = (size: RadioSize = 'md') => css`
+export const s_radioInner = css`
     width: 80%;
     height: 80%;
     border-radius: 50%;
