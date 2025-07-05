@@ -7,7 +7,7 @@ const radioSizeMap: Record<RadioSize, { outer: string; inner: string }> = {
     sm: { outer: '1.2rem', inner: '0.8rem' },
     md: { outer: '1.5rem', inner: '1rem' },
     lg: { outer: '2rem', inner: '1.4rem' },
-    xl: { outer: '2.5rem', inner: '1.7rem' },
+    xl: { outer: '2.5rem', inner: '1.8rem' },
 };
 
 export const radioContainer = (orientation: RadioOrientation) => css`
@@ -25,7 +25,7 @@ export const s_input = css`
     display: none;
 `;
 
-export const s_label = (disabled: boolean) => css`
+export const s_label = (checked: boolean, disabled: boolean) => css`
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -40,32 +40,29 @@ export const s_label = (disabled: boolean) => css`
     `}
 
     &:hover {
-        & span {
-            border: 1px solid ${theme.colors.default};
+        & div {
+            ${!checked &&
+            css`
+                border: 1px solid ${theme.colors.default};
+            `}
         }
     }
 `;
 
-export const s_radio = (checked: boolean, size: RadioSize = 'md') => css`
+export const s_radio = (size: RadioSize = 'md') => css`
     width: ${radioSizeMap[size].outer};
     height: ${radioSizeMap[size].outer};
     border-radius: 50%;
     border: 1px solid ${theme.colors.black};
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
 
-    &::after {
-        content: '';
-        width: ${radioSizeMap[size].inner};
-        height: ${radioSizeMap[size].inner};
-        border-radius: 50%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        ${checked &&
-        css`
-            background-color: ${theme.colors.default};
-        `};
-        transition: background-color 0.1s ease-in;
-    }
+export const s_radioInner = (size: RadioSize = 'md') => css`
+    width: ${radioSizeMap[size].inner};
+    height: ${radioSizeMap[size].inner};
+    border-radius: 50%;
+    background-color: ${theme.colors.default};
+    transition: background-color 0.1s ease-in;
 `;
