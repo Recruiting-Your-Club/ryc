@@ -9,6 +9,7 @@ import {
     LoginPage,
     MainLoadingPage,
     RecruitmentPage,
+    ReservationPage,
     MyClubPage,
     RegisterPage,
     StepManagementPage,
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
             { path: 'questions', element: <RegisterPage /> },
             { path: 'setting', element: <LoginPage /> },
         ],
+    },
+    {
+        path: '/reservation',
+        element: <ReservationPage />,
     },
 ]);
 

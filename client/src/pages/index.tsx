@@ -6,6 +6,7 @@ export * from './MainPage';
 export * from './StepManagementPage';
 export * from './ClubDetailPage';
 export * from './RecruitmentPage';
+export * from './ReservationPage';
 export * from './MyClubPage';
 export * from './DocumentEvaluationPage';
 export * from './ClubCreatePage';
