@@ -1,5 +1,8 @@
 package com.ryc.api.v2.auth.service;
 
+import com.ryc.api.v2.auth.domain.RefreshToken;
+import com.ryc.api.v2.auth.domain.RefreshTokenRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,13 +15,18 @@ import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
 import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
   private final AdminRepository adminRepository;
+  private final RefreshTokenRepository refreshTokenRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+  @Transactional
   public RegisterResponse register(RegisterRequest body) {
     final String email = body.email();
     if (adminRepository.existsByEmail(email)) {
@@ -36,6 +44,18 @@ public class AuthService {
     return new RegisterResponse(savedAdmin.getId());
   }
 
+  @Transactional
+  public String saveRefreshToken(String adminId, String tokenValue, LocalDateTime expirationTime) {
+    RefreshToken refreshToken = RefreshToken.initialize(adminId, tokenValue, expirationTime);
+
+    Admin admin = adminRepository.findById(adminId)
+            .orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + adminId));
+
+    RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken, admin);
+    return savedRefreshToken.getToken();
+  }
+
+  //TODO: Exception 수정
   public Admin getCurrentUser() {
     String userId = UserUtil.getCurrentUserId();
     return adminRepository
