@@ -18,4 +18,7 @@ export const clubBoxContainer = css`
 
 export const clubBoxItem = css`
     display: flex;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        gap: 2rem;
+    }
 `;

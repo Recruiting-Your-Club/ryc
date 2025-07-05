@@ -16,4 +16,5 @@ export const recruitCell = css`
     display: flex;
     justify-content: center;
     align-items: center;
+    background: transparent;
 `;

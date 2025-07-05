@@ -8,7 +8,7 @@ import {
     actionContainer,
 } from './Dialog.style';
 import XIcon from '@assets/images/xIcon.svg';
-import { Button } from '@components/_common/Button';
+import { Button } from '@components';
 import type {
     DialogHeaderProps,
     DialogContentProps,
@@ -60,7 +60,7 @@ function BaseDialog({
                     <>
                         <div
                             css={backdropContainer}
-                            onClick={() => backdrop && handleClose()}
+                            onClick={() => backdrop && handleClose?.()}
                             aria-hidden="true"
                         />
                         <div css={[dialogContainer, dialogSize[size], sx]}>{children}</div>

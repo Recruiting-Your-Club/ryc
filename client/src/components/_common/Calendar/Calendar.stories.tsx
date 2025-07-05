@@ -32,16 +32,16 @@ export const Default: Story = {
         );
     },
     args: {
-        isMultiple: true,
+        mode: 'single',
         size: 'lg',
         border: true,
         shadow: true,
         disabled: false,
     },
     argTypes: {
-        isMultiple: {
-            control: {
-                type: 'boolean',
+        mode: {
+            radio: {
+                options: ['single', 'multiple', 'range', 'custom'],
             },
         },
         size: {

@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.auth.domain.Admin;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

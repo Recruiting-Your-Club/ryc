@@ -1,21 +1,54 @@
-import React from 'react';
+import { ClubApplyPage } from '@pages/ClubApplyPage';
+import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
-import { TestPage, NotFoundPage, LoginPage, RegisterPage, MainPage, ClubDetailPage } from './pages';
-import { UserLayout, ManagerLayout } from './layouts';
 import { RecruitCreatePage } from '@pages/RecruitCreatePage/RecruitCreatePage';
+import { ManagerLayout, UserLayout } from './layouts';
+import {
+    ClubCreatePage,
+    DetailLoadingPage,
+    DocumentEvaluationPage,
+    LoginPage,
+    MainLoadingPage,
+    RecruitmentPage,
+    ReservationPage,
+    MyClubPage,
+    RegisterPage,
+    StepManagementPage,
+    TestPage,
+} from './pages';
+
+const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
+const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'));
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <UserLayout />,
         children: [
-            { index: true, element: <MainPage /> },
-            { path: '*', element: <NotFoundPage /> },
+            {
+                index: true,
+                element: (
+                    <Suspense fallback={<MainLoadingPage />}>
+                        <LazyMainPage />
+                    </Suspense>
+                ),
+            },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
-            { path: 'detail', element: <ClubDetailPage /> },
+            {
+                path: ':id',
+                element: (
+                    <Suspense fallback={<DetailLoadingPage />}>
+                        <LazyDetailPage />
+                    </Suspense>
+                ),
+            },
+            { path: 'apply', element: <ClubApplyPage /> },
+            { path: 'detail', element: <LazyDetailPage /> },
             { path: 'test', element: <TestPage /> },
-            { path: 'detail', element: <ClubDetailPage /> },
+            { path: 'detail/recruitment', element: <RecruitmentPage /> },
+            { path: 'myclub', element: <MyClubPage /> },
+            { path: 'club/create', element: <ClubCreatePage /> },
         ],
     },
     {
@@ -25,14 +58,19 @@ const router = createBrowserRouter([
             { index: true, element: <TestPage /> },
             { path: 'test', element: <LoginPage /> },
             { path: 'recruitment', element: <RecruitCreatePage /> },
-            { path: 'steps', element: <LoginPage /> },
+            { path: 'steps', element: <StepManagementPage /> },
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
             { path: 'time-slots', element: <RegisterPage /> },
+            { path: 'doc-evaluation', element: <DocumentEvaluationPage /> },
             { path: 'evaluation', element: <LoginPage /> },
             { path: 'questions', element: <RegisterPage /> },
             { path: 'setting', element: <LoginPage /> },
         ],
+    },
+    {
+        path: '/reservation',
+        element: <ReservationPage />,
     },
 ]);
 

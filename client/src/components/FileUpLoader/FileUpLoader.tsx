@@ -38,6 +38,7 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
             const selectedFiles = e.target.files;
             if (!selectedFiles) return;
             filterAndSetFiles(selectedFiles);
+            e.target.value = '';
         },
         [disabled, filterAndSetFiles],
     );

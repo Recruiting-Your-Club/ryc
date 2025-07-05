@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@components/_common';
 import { footerContainer, footerStyle } from './Footer.style';
 import { useLocation } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 function Footer() {
     // prop destruction
@@ -9,6 +10,7 @@ function Footer() {
     const location = useLocation();
     //initial values
     const pathSegments = location.pathname.split('/');
+    const email = 'ryc@email.com';
     // calculated values
     const isManagerRoute = pathSegments.includes('manager');
 
@@ -23,9 +25,11 @@ function Footer() {
                     <Text type="subCaptionRegular">개인정보 처리방침</Text>
                 </a>
                 <Text type="subCaptionRegular">Copyright © RYC. All rights reserved.</Text>
-                <Text type="subCaptionLight" color="helper">
-                    Email : ryc@email.com
-                </Text>
+                <a href={`mailto:${email}`} target="_blank" rel="noreferrer">
+                    <Text type="subCaptionLight" color="helper">
+                        Email : {email}
+                    </Text>
+                </a>
             </div>
         </footer>
     );
