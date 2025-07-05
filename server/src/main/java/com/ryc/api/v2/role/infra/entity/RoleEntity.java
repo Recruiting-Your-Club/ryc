@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import com.ryc.api.v2.auth.infra.entity.AdminEntity;
+import com.ryc.api.v2.admin.infra.entity.AdminEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.role.domain.Role;
 

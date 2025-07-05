@@ -1,13 +1,10 @@
 package com.ryc.api.v2.security.service;
 
-import java.util.Optional;
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ryc.api.v2.auth.domain.Admin;
-import com.ryc.api.v2.auth.domain.AdminRepository;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;

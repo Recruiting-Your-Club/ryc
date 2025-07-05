@@ -1,5 +1,6 @@
 package com.ryc.api.v2.auth.infra.entity;
 
+import com.ryc.api.v2.admin.infra.entity.AdminEntity;
 import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

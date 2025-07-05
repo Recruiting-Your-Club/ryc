@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;

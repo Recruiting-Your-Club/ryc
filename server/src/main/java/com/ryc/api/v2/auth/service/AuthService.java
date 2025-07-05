@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ryc.api.v2.auth.domain.Admin;
-import com.ryc.api.v2.auth.domain.AdminRepository;
+import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.auth.presentation.request.RegisterRequest;
 import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
 import com.ryc.api.v2.util.UserUtil;

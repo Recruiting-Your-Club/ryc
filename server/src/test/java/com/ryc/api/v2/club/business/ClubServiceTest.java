@@ -18,7 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.enums.Category;

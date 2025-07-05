@@ -2,7 +2,7 @@ package com.ryc.api.v2.role.infra;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.auth.domain.Admin;
+import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.role.domain.Role;
 import com.ryc.api.v2.role.domain.RoleRepository;
