@@ -83,7 +83,51 @@ function TestPage() {
                     { label: '1', value: '1' },
                     { label: '2', value: '2' },
                 ]}
+                size="xs"
+                value={value2}
+                orientation="horizontal"
+                onChange={setValue2}
+                sx={{ marginTop: '10px' }}
+            />
+            <Radio
+                options={[
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ]}
+                size="sm"
+                value={value2}
+                orientation="horizontal"
+                onChange={setValue2}
+                sx={{ marginTop: '10px' }}
+            />
+            <Radio
+                options={[
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ]}
                 size="md"
+                value={value2}
+                orientation="horizontal"
+                onChange={setValue2}
+                sx={{ marginTop: '10px' }}
+            />
+            <Radio
+                options={[
+                    { label: '1', value: '1' },
+                    { label: '2', value: '2' },
+                ]}
+                size="lg"
+                value={value2}
+                orientation="horizontal"
+                onChange={setValue2}
+                sx={{ marginTop: '10px' }}
+            />
+            <Radio
+                options={[
+                    { label: '122222222', value: '1' },
+                    { label: '2222222222', value: '2' },
+                ]}
+                size="xl"
                 value={value2}
                 orientation="horizontal"
                 onChange={setValue2}
