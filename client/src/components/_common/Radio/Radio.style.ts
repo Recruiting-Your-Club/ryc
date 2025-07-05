@@ -2,12 +2,12 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { RadioOrientation, RadioSize } from './types';
 
-const radioSizeMap: Record<RadioSize, { outer: string; inner: string }> = {
-    xs: { outer: '1rem', inner: '0.6rem' },
-    sm: { outer: '1.2rem', inner: '0.8rem' },
-    md: { outer: '1.5rem', inner: '1rem' },
-    lg: { outer: '2rem', inner: '1.4rem' },
-    xl: { outer: '2.5rem', inner: '1.8rem' },
+const radioSizeMap: { [key in RadioSize]: string } = {
+    xs: '1rem',
+    sm: '1.2rem',
+    md: '1.5rem',
+    lg: '2rem',
+    xl: '2.5rem',
 };
 
 export const radioContainer = (orientation: RadioOrientation) => css`
@@ -50,8 +50,8 @@ export const s_label = (checked: boolean, disabled: boolean) => css`
 `;
 
 export const s_radio = (size: RadioSize = 'md') => css`
-    width: ${radioSizeMap[size].outer};
-    height: ${radioSizeMap[size].outer};
+    width: ${radioSizeMap[size]};
+    height: ${radioSizeMap[size]};
     border-radius: 50%;
     border: 1px solid ${theme.colors.black};
     display: flex;
@@ -60,8 +60,8 @@ export const s_radio = (size: RadioSize = 'md') => css`
 `;
 
 export const s_radioInner = (size: RadioSize = 'md') => css`
-    width: ${radioSizeMap[size].inner};
-    height: ${radioSizeMap[size].inner};
+    width: 80%;
+    height: 80%;
     border-radius: 50%;
     background-color: ${theme.colors.default};
     transition: background-color 0.1s ease-in;
