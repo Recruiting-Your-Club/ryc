@@ -1,9 +1,7 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+import type { Meta } from '@storybook/react';
 import { FileUpLoader } from './FileUpLoader';
-import type { FileUpLoaderInteractionContextType, FileUpLoaderStateContextType } from './types';
-import { FileUpLoaderStateContext } from './FileUpLoaderStateContext';
-import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
+
 import { ToastProvider } from '@components/Toast/ToastProvider';
 
 const mockPdfFile = new File(['%PDF-sample'], 'document.pdf', {
@@ -15,28 +13,6 @@ const mockImageFile = new File([], 'image.jpg', {
     type: 'image/jpeg',
     lastModified: new Date().getTime(),
 });
-
-const mockStateContext: FileUpLoaderStateContextType = {
-    files: [mockPdfFile, mockImageFile],
-    setFiles: () => {},
-    isActive: false,
-    setIsActive: () => {},
-    disabled: false,
-};
-
-const mockInteractionContext: FileUpLoaderInteractionContextType = {
-    fileInputRef: { current: null },
-    handleChangeFile: () => {},
-    handleClickButton: () => {},
-    handleDelete: () => {},
-    handleDeleteEntire: () => {},
-    handleDragStart: () => {},
-    handleDragEnd: () => {},
-    handleDragOver: () => {},
-    handleDrop: () => {},
-};
-
-type Story = StoryObj<typeof FileUpLoader>;
 
 const meta: Meta<typeof FileUpLoader> = {
     title: 'FileUpLoader',
@@ -53,64 +29,66 @@ const meta: Meta<typeof FileUpLoader> = {
 
 export default meta;
 
-export const Default: Story = {
-    render: () => (
+export const Default = () => {
+    const [files, setFiles] = useState<File[]>([]);
+    return (
         <ToastProvider>
-            <FileUpLoader>
+            <FileUpLoader files={files} onFilesChange={setFiles}>
                 <FileUpLoader.Button />
-                <FileUpLoader.HelperText sx={{ top: 0 }}>
+                <FileUpLoader.HelperText>
                     pdf, 이미지 파일만 업로드 가능합니다.
                 </FileUpLoader.HelperText>
                 <FileUpLoader.Box />
             </FileUpLoader>
         </ToastProvider>
-    ),
+    );
 };
 
-export const NoHelperText: Story = {
-    render: () => (
+export const NoHelperText = () => {
+    const [files, setFiles] = useState<File[]>([]);
+    return (
         <ToastProvider>
-            <FileUpLoader>
+            <FileUpLoader files={files} onFilesChange={setFiles}>
                 <FileUpLoader.Button />
                 <FileUpLoader.Box />
             </FileUpLoader>
         </ToastProvider>
-    ),
+    );
 };
 
-export const OnlyEmptyBox: Story = {
-    render: () => (
+export const OnlyEmptyBox = () => {
+    const [files, setFiles] = useState<File[]>([]);
+    return (
         <ToastProvider>
-            <FileUpLoader>
+            <FileUpLoader files={files} onFilesChange={setFiles}>
                 <FileUpLoader.Box />
             </FileUpLoader>
         </ToastProvider>
-    ),
+    );
 };
 
-export const WithMockedFiles: Story = {
-    render: () => (
+export const WithMockedFiles = () => {
+    return (
         <ToastProvider>
-            <FileUpLoaderStateContext.Provider value={mockStateContext}>
-                <FileUpLoaderInteractionContext.Provider value={mockInteractionContext}>
-                    <FileUpLoader.Button />
-                    <FileUpLoader.HelperText sx={{ top: 0 }}>
-                        이미 업로드된 파일을 확인해보세요.
-                    </FileUpLoader.HelperText>
-                    <FileUpLoader.Box />
-                </FileUpLoaderInteractionContext.Provider>
-            </FileUpLoaderStateContext.Provider>
-        </ToastProvider>
-    ),
-};
-
-export const disabledMode: Story = {
-    render: () => (
-        <ToastProvider>
-            <FileUpLoader disabled={true}>
+            <FileUpLoader files={[mockPdfFile, mockImageFile]} onFilesChange={() => {}}>
                 <FileUpLoader.Button />
+                <FileUpLoader.HelperText>
+                    이미 업로드된 파일을 확인해보세요.
+                </FileUpLoader.HelperText>
                 <FileUpLoader.Box />
             </FileUpLoader>
         </ToastProvider>
-    ),
+    );
+};
+
+export const DisabledMode = () => {
+    return (
+        <ToastProvider>
+            <FileUpLoader disabled>
+                <FileUpLoader.Button />
+                <FileUpLoader.HelperText>disabled 모드입니다.</FileUpLoader.HelperText>
+                <FileUpLoader.Box />
+            </FileUpLoader>
+        </ToastProvider>
+    );
 };
