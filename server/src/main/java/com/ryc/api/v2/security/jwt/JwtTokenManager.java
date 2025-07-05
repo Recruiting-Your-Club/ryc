@@ -14,51 +14,74 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenManager {
-  private final JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
 
-  public String generateAccessToken(String email, String userRole) {
-    return JWT.create()
-        .withSubject(email)
-        .withIssuer(jwtProperties.getAccessToken().getIssuer())
-        .withClaim("role", userRole)
-        .withIssuedAt(new Date())
-        .withExpiresAt(
-            new Date(
-                System.currentTimeMillis()
-                    + jwtProperties.getAccessToken().getExpirationMinute() * 60 * 1000))
-        .sign(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()));
-  }
+    // RFC 7519 - JWT Registered Claims 준수
+    public String generateAccessToken(String adminId, String userRole) {
+        return JWT.create()
+                .withSubject(adminId)
+                .withIssuer(jwtProperties.getAccessToken().getIssuer())
+                .withClaim("role", userRole)
+                .withIssuedAt(new Date())
+                .withExpiresAt(
+                        new Date(
+                                System.currentTimeMillis()
+                                        + jwtProperties.getAccessToken().getExpirationMinute() * 60 * 1000))
+                .sign(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()));
+    }
 
-  public String getEmailFromAccessToken(String accessToken) {
-    final DecodedJWT decodedJWT = getDecodedJWT(accessToken);
-    return decodedJWT.getSubject();
-  }
+    public String generateRefreshToken(String adminId, String userRole) {
+        return JWT.create()
+                .withSubject(adminId)
+                .withIssuer(jwtProperties.getRefreshToken().getIssuer())
+                .withClaim("role", userRole)
+                .withIssuedAt(new Date())
+                .withExpiresAt(
+                        new Date(
+                                System.currentTimeMillis()
+                                        + jwtProperties.getRefreshToken().getExpirationMinute() * 60 * 1000))
+                .sign(Algorithm.HMAC256(jwtProperties.getRefreshToken().getSecretKey().getBytes()));
+    }
 
-  public boolean validateToken(String accessToken, String authenticatedEmail) {
-    final String emailFromToken = getEmailFromAccessToken(accessToken);
+    public String getAdminIdFromToken(TokenType tokenType, String token) {
+        final DecodedJWT decodedJWT = getDecodedJWT(tokenType, token);
+        return decodedJWT.getSubject();
+    }
 
-    final boolean emailVerified = emailFromToken.equals(authenticatedEmail);
-    final boolean tokenExpired = isTokenExpired(accessToken);
+    public boolean validateToken(TokenType tokenType, String token, String authenticatedId) {
+        final String adminIdFromToken = getAdminIdFromToken(tokenType, token);
 
-    return emailVerified && !tokenExpired;
-  }
+        final boolean emailVerified = adminIdFromToken.equals(authenticatedId);
+        final boolean tokenExpired = isTokenExpired(tokenType, token);
 
-  private boolean isTokenExpired(String accessToken) {
-    final Date expirationDateFromToken = getExpirationDateFromToken(accessToken);
-    return expirationDateFromToken.before(new Date());
-  }
+        return emailVerified && !tokenExpired;
+    }
 
-  private Date getExpirationDateFromToken(String accessToken) {
-    final DecodedJWT decodedJWT = getDecodedJWT(accessToken);
-    return decodedJWT.getExpiresAt();
-  }
+    private boolean isTokenExpired(TokenType tokenType, String token) {
+        final Date expirationDateFromToken = getExpirationDateFromToken(tokenType, token);
+        return expirationDateFromToken.before(new Date());
+    }
 
-  private DecodedJWT getDecodedJWT(String accessToken) {
-    final JWTVerifier jwtVerifier;
-    jwtVerifier =
-        JWT.require(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()))
-            .build();
+    //TODO: AT/RT 나눠서 수행
+    public Date getExpirationDateFromToken(TokenType tokenType, String token) {
+        final DecodedJWT decodedJWT = getDecodedJWT(tokenType, token);
+        return decodedJWT.getExpiresAt();
+    }
 
-    return jwtVerifier.verify(accessToken);
-  }
+    private DecodedJWT getDecodedJWT(TokenType tokenType, String token) {
+        JWTVerifier jwtVerifier;
+
+        if (TokenType.ACCESS_TOKEN == tokenType) {
+            jwtVerifier =
+                    JWT.require(Algorithm.HMAC256(jwtProperties.getAccessToken().getSecretKey().getBytes()))
+                            .build();
+            return jwtVerifier.verify(token);
+        }
+
+        jwtVerifier =
+                JWT.require(Algorithm.HMAC256(jwtProperties.getRefreshToken().getSecretKey().getBytes()))
+                        .build();
+
+        return jwtVerifier.verify(token);
+    }
 }

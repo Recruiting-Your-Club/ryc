@@ -1,4 +1,4 @@
-package com.ryc.api.v2.auth.domain;
+package com.ryc.api.v2.admin.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 

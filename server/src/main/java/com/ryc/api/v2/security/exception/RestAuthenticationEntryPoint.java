@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+  // TODO: GlobalExceptionHandler로 던저서 예외 응답 보내기
   @Override
   public void commence(
       HttpServletRequest request,

@@ -45,23 +45,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     String header = request.getHeader("Authorization");
-    String emailFromToken = null;
+    String adminIdFromToken = null;
     String authToken = null;
     if (header != null && header.startsWith("Bearer ")) {
       authToken = header.replace("Bearer ", StringUtils.EMPTY);
       try {
-        emailFromToken = jwtTokenManager.getEmailFromAccessToken(authToken);
+        adminIdFromToken = jwtTokenManager.getAdminIdFromToken(authToken);
       } catch (Exception ignored) {
       }
     }
 
     final SecurityContext securityContext = SecurityContextHolder.getContext();
 
-    if (emailFromToken != null && securityContext.getAuthentication() == null) {
+    if (adminIdFromToken != null && securityContext.getAuthentication() == null) {
       final CustomUserDetail userDetails =
-          customUserDetailService.loadUserByUsername(emailFromToken);
+          customUserDetailService.loadUserById(adminIdFromToken);
 
-      if (jwtTokenManager.validateToken(authToken, userDetails.getEmail())) {
+      if (jwtTokenManager.validateToken(authToken, userDetails.getId())) {
         final UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
