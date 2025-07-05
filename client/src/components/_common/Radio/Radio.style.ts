@@ -50,17 +50,21 @@ export const s_radio = (checked: boolean, size: RadioSize = 'md') => css`
     width: ${radioSizeMap[size].outer};
     height: ${radioSizeMap[size].outer};
     border-radius: 50%;
-    border: 0.1rem solid ${theme.colors.black};
+    border: 1px solid ${theme.colors.black};
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
 
     &::after {
         content: '';
         width: ${radioSizeMap[size].inner};
         height: ${radioSizeMap[size].inner};
         border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         ${checked &&
         css`
             background-color: ${theme.colors.default};
