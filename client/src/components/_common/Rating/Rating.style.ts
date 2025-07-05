@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
-import type { StarSize } from './Star';
+import type { StarSize } from './types';
 
 interface Size {
     width?: CSSProperties['width'];
@@ -48,11 +48,17 @@ export const s_star = (filled: boolean) => {
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.2);
+        }
 
         & > svg {
             width: 100%;
             height: 100%;
             fill: ${filled ? theme.colors.default : theme.colors.disabled};
+            transition: fill 0.2s ease;
         }
     `;
 };
@@ -77,6 +83,5 @@ export const ratingContainer = () => {
     return css`
         display: flex;
         align-items: center;
-        gap: 0.4rem;
     `;
 };
