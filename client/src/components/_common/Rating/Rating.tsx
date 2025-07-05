@@ -11,7 +11,7 @@ export function Rating({
     totalStars = TOTAL_STARS_DEFAULT,
     type = RATING_TYPE.CLICK,
     onChange,
-    customCSS,
+    sx,
 }: RatingProps) {
     const [hoverRating, setHoverRating] = useState<number | null>(value);
     const [rating, setRating] = useState<number>(value);
@@ -36,7 +36,7 @@ export function Rating({
     };
 
     return (
-        <div css={[ratingContainer, customCSS]}>
+        <div css={[ratingContainer, sx]}>
             {Array.from({ length: totalStars }, (_, index) => {
                 const starIndex = index + 1;
                 const isFilled = (hoverRating || rating) >= starIndex;

@@ -8,7 +8,7 @@ export function Star({
     filled,
     partialFill,
     size,
-    customCSS,
+    sx,
     onClick,
     onMouseEnter,
     onMouseLeave,
@@ -20,7 +20,7 @@ export function Star({
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            css={[cssProp, customCSS]}
+            css={[cssProp, sx]}
         >
             <StarSVG />
 

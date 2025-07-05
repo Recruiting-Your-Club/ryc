@@ -1,4 +1,4 @@
-import type { SerializedStyles } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 
 export interface RatingProps {
     value?: number;
@@ -6,14 +6,14 @@ export interface RatingProps {
     totalStars?: number;
     type?: 'click' | 'display';
     onChange?: (rating: number) => void;
-    customCSS?: SerializedStyles;
+    sx?: CSSObject;
 }
 
 export interface StarProps {
     filled: boolean;
     partialFill?: number;
     size: StarSize;
-    customCSS?: SerializedStyles;
+    sx?: CSSObject;
     onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
