@@ -13,7 +13,7 @@ function RadioItem({
     return (
         <label css={s_label(checked, disabled)}>
             <input type="radio" checked={checked} onChange={onChange} css={s_input} {...props} />
-            <div css={s_radio(size)}>{checked && <div css={s_radioInner(size)} />}</div>
+            <div css={s_radio(size)}>{checked && <div css={s_radioInner} />}</div>
             {option}
         </label>
     );
