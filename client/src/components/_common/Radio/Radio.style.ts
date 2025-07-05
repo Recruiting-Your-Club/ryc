@@ -4,9 +4,9 @@ import type { RadioOrientation, RadioSize } from './types';
 
 const radioSizeMap: Record<RadioSize, { size: string; padding: string }> = {
     xs: { size: '1rem', padding: '0.1rem' },
-    sm: { size: '1.5rem', padding: '0.15rem' },
+    sm: { size: '1.5rem', padding: '0.2rem' },
     md: { size: '2rem', padding: '0.2rem' },
-    lg: { size: '2.5rem', padding: '0.25rem' },
+    lg: { size: '2.5rem', padding: '0.3rem' },
     xl: { size: '3rem', padding: '0.3rem' },
 };
 
