@@ -13,10 +13,9 @@ function Radio({
     sx,
     size = 'md',
 }: RadioProps) {
-    if (!options) return null;
     return (
         <div css={[radioContainer(orientation), sx]}>
-            {options.map(({ label, value: itemValue }, index) => (
+            {options?.map(({ label, value: itemValue }, index) => (
                 <RadioItem
                     key={index}
                     option={label}
