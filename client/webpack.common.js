@@ -1,5 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+
+const isProduction = process.env.NODE_ENV === 'production';
+const dotenvFilename = isProduction ? '.env.production' : '.env.development';
 
 module.exports = {
     entry: {
@@ -43,6 +49,7 @@ module.exports = {
             '@stores': path.resolve(__dirname, 'src/stores'),
             '@hooks': path.resolve(__dirname, 'src/hooks'),
             '@contexts': path.resolve(__dirname, 'src/contexts'),
+            '@api': path.resolve(__dirname, 'src/api'),
         },
     },
     output: {
@@ -54,6 +61,9 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'public/index.html',
+        }),
+        new Dotenv({
+            path: path.resolve(__dirname, './', dotenvFilename),
         }),
     ],
 };
