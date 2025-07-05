@@ -6,7 +6,7 @@ const radioSizeMap: Record<RadioSize, { outer: string; inner: string }> = {
     xs: { outer: '1rem', inner: '0.6rem' },
     sm: { outer: '1.2rem', inner: '0.8rem' },
     md: { outer: '1.5rem', inner: '1rem' },
-    lg: { outer: '2rem', inner: '1.3rem' },
+    lg: { outer: '2rem', inner: '1.4rem' },
     xl: { outer: '2.5rem', inner: '1.7rem' },
 };
 
@@ -41,7 +41,7 @@ export const s_label = (disabled: boolean) => css`
 
     &:hover {
         & span {
-            border: 0.1rem solid ${theme.colors.default};
+            border: 1px solid ${theme.colors.default};
         }
     }
 `;
@@ -52,9 +52,6 @@ export const s_radio = (checked: boolean, size: RadioSize = 'md') => css`
     border-radius: 50%;
     border: 1px solid ${theme.colors.black};
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     &::after {
         content: '';
