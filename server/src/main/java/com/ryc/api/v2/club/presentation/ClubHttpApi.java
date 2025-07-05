@@ -6,15 +6,25 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 public class ClubHttpApi {
 
   private final ClubService clubService;
+  private final ClubAnnouncementFacade clubAnnouncementFacade;
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
@@ -43,16 +54,22 @@ public class ClubHttpApi {
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-  @GetMapping("/all")
+  @GetMapping
   @Operation(summary = "모든 동아리 조회 API")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
-    return ResponseEntity.status(HttpStatus.OK).body(clubService.getAllClub());
+    List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
+    return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
 
   @PatchMapping("/{id}")
   @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
   public ResponseEntity<ClubUpdateResponse> updateClub(
-      @PathVariable String id, @RequestBody ClubUpdateRequest body) {
-    return ResponseEntity.status(HttpStatus.OK).body(clubService.updateClub(id, body));
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @PathVariable String id,
+      @RequestBody ClubUpdateRequest body) {
+
+    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), id);
+    ClubUpdateResponse response = clubService.updateClub(dto, body);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

@@ -11,25 +11,18 @@ import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
 import { useClickOutside } from '@hooks/components/useClickOutside';
-
-export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
+import type { SelectProps } from './types';
 
 /**
  * Select 루트 컴포넌트
  */
-interface SelectProps {
-    children: ReactNode;
-    value?: string;
-    size?: SelectSize;
-    onValueChange?: (value: string) => void;
-    sx?: CSSObject;
-}
 
 function SelectRoot({
     children,
     value: controlledValue,
     onValueChange,
     size = 'md',
+    options,
     sx,
 }: SelectProps) {
     const [open, setOpen] = useState(false);
@@ -54,6 +47,15 @@ function SelectRoot({
         () => ({ open, setOpen, value, setValue, label, setLabel, triggerRef, contentRef }),
         [open, value, label],
     );
+
+    useEffect(() => {
+        if (!value) return;
+
+        const found = options?.find((option) => option.value === value);
+        if (found) {
+            setLabel(found.label);
+        }
+    }, [value, options]);
 
     return (
         <SelectContext.Provider value={contextValue}>

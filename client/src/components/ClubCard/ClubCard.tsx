@@ -1,7 +1,5 @@
-import { Avatar } from '@components/_common/Avatar/Avatar';
-import { Divider } from '@components/_common/Divider';
+import { Avatar, Divider, Tag } from '@components';
 import type { tagVariant } from '@components/_common/Tag';
-import { Tag } from '@components/_common/Tag';
 import { useRouter } from '@hooks/useRouter';
 import React from 'react';
 import type { AvatarShape, AvatarSize } from '../_common/Avatar';
