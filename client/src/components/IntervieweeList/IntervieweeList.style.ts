@@ -66,7 +66,7 @@ export const s_invervieweeCardContainer = (isList: boolean = true) => css`
     overflow-x: auto;
     overflow-y: hidden;
     align-items: center;
-    padding: 0.5rem 0;
+    padding: 1rem 0;
     gap: 0.5rem;
     ${!isList &&
     css`
