@@ -3,9 +3,15 @@ import React from 'react';
 import { s_cardContainer, s_informationContainer } from './IntervieweeCard.style';
 import type { IntervieweeCardProps } from './types';
 
-function IntervieweeCard({ name, email, imageUrl }: IntervieweeCardProps) {
+function IntervieweeCard({
+    name,
+    email,
+    imageUrl,
+    isActivated = false,
+    ...props
+}: IntervieweeCardProps) {
     return (
-        <div css={s_cardContainer}>
+        <button css={s_cardContainer(isActivated)} {...props}>
             <Avatar shape="round" size="md" imageURL={imageUrl} />
             <div css={s_informationContainer}>
                 <Text as="span" textAlign="start" type="captionRegular" cropped>
@@ -15,7 +21,7 @@ function IntervieweeCard({ name, email, imageUrl }: IntervieweeCardProps) {
                     {email}
                 </Text>
             </div>
-        </div>
+        </button>
     );
 }
 
