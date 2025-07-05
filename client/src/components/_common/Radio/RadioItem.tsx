@@ -1,5 +1,5 @@
 import React from 'react';
-import { s_radio, s_label, s_input } from './Radio.style';
+import { s_radio, s_radioInner, s_label, s_input } from './Radio.style';
 import type { RadioItemProps } from './types';
 
 function RadioItem({
@@ -11,9 +11,9 @@ function RadioItem({
     ...props
 }: RadioItemProps) {
     return (
-        <label css={s_label(disabled)}>
+        <label css={s_label(checked, disabled)}>
             <input type="radio" checked={checked} onChange={onChange} css={s_input} {...props} />
-            <span css={s_radio(checked, size)} />
+            <div css={s_radio(size)}>{checked && <div css={s_radioInner(size)} />}</div>
             {option}
         </label>
     );
