@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class ClubRoleAuthenticationAspect {
+public class ClubRoleAspect {
 
   private final RoleService roleService;
 
