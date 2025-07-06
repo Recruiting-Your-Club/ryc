@@ -59,15 +59,17 @@ public class RoleService {
   @Transactional(readOnly = true)
   @HasRole(Role.MEMBER)
   public List<AdminsGetResponse> getAdminsInClub(ClubRoleSecuredDto dto) {
-    List<Admin> admins = roleRepository.findAdminsByClubId(dto.clubId());
-    return admins.stream()
+    List<ClubRole> clubRoles = roleRepository.findRolesByClubId(dto.clubId());
+
+    return clubRoles.stream()
         .map(
-            admin ->
+            clubRole ->
                 AdminsGetResponse.builder()
-                    .adminId(admin.getId())
-                    .name(admin.getName())
-                    .imageUrl(admin.getImageUrl())
-                    .thumbnailUrl(admin.getThumbnailUrl())
+                    .adminId(clubRole.admin().getId())
+                    .name(clubRole.admin().getName())
+                    .imageUrl(clubRole.admin().getImageUrl())
+                    .thumbnailUrl(clubRole.admin().getThumbnailUrl())
+                    .role(clubRole.role().toString())
                     .build())
         .toList();
   }
