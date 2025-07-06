@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
-public interface RoleJpaRepository extends JpaRepository<ClubRoleEntity, String> {
+public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, String> {
 
   @Query("SELECT r FROM ClubRoleEntity r WHERE r.club.id = :clubId")
   List<ClubRoleEntity> findByClubId(@Param("clubId") String clubId);

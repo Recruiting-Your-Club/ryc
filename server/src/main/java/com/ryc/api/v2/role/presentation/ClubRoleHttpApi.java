@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.role.presentation.dto.response.AdminsGetResponse;
 import com.ryc.api.v2.role.presentation.dto.response.RoleDemandResponse;
-import com.ryc.api.v2.role.service.RoleService;
+import com.ryc.api.v2.role.service.ClubRoleService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +28,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("api/v2")
 @RequiredArgsConstructor
 @Tag(name = "동아리 내 권한")
-public class RoleHttpApi {
+public class ClubRoleHttpApi {
 
-  private final RoleService roleService;
+  private final ClubRoleService clubRoleService;
 
   @PostMapping("clubs/{clubId}/roles")
   @Operation(summary = "동아리 권한 요청", description = "동아리 권한을 요청합니다. 요청 즉시 동아리 멤버가 됩니다.")
@@ -42,7 +42,7 @@ public class RoleHttpApi {
   public ResponseEntity<RoleDemandResponse> demandRole(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
 
-    RoleDemandResponse roleDemandResponse = roleService.assignRole(userDetail.getId(), clubId);
+    RoleDemandResponse roleDemandResponse = clubRoleService.assignRole(userDetail.getId(), clubId);
     URI location =
         URI.create(String.format("api/v2/clubs/%s/roles/%s", clubId, roleDemandResponse.roleId()));
     return ResponseEntity.created(location).body(roleDemandResponse);
@@ -58,7 +58,7 @@ public class RoleHttpApi {
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
 
     ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    return ResponseEntity.ok(roleService.getAdminsInClub(dto));
+    return ResponseEntity.ok(clubRoleService.getAdminsInClub(dto));
   }
 
   @DeleteMapping("clubs/{clubId}/users/{userId}")
@@ -77,7 +77,7 @@ public class RoleHttpApi {
       @PathVariable String userId) {
 
     ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    roleService.deleteRole(dto, userId);
+    clubRoleService.deleteRole(dto, userId);
     return ResponseEntity.noContent().build();
   }
 }

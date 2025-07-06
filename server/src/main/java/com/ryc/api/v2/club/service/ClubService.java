@@ -19,7 +19,7 @@ import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.role.service.RoleService;
+import com.ryc.api.v2.role.service.ClubRoleService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +30,7 @@ public class ClubService {
   private final ClubRepository clubRepository;
   private final AuthService authService;
 
-  private final RoleService roleService;
+  private final ClubRoleService clubRoleService;
 
   @Transactional
   public ClubCreateResponse createClub(ClubCreateRequest body) {
@@ -44,7 +44,7 @@ public class ClubService {
     final Club savedClub = clubRepository.save(club);
 
     Admin currentUser = authService.getCurrentUser();
-    roleService.assignRole(currentUser, savedClub, Role.OWNER);
+    clubRoleService.assignRole(currentUser, savedClub, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.id()).build();
   }

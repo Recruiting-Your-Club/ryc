@@ -9,9 +9,9 @@ import com.ryc.api.v2.club.infra.mapper.ClubMapper;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
-public class RoleMapper {
+public class ClubRoleMapper {
 
-  private RoleMapper() {}
+  private ClubRoleMapper() {}
 
   public static ClubRoleEntity toEntity(ClubRole clubRole) {
     ClubEntity clubEntity = ClubMapper.toEntity(clubRole.club());

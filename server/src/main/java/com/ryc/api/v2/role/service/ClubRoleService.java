@@ -14,7 +14,7 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.role.domain.RoleRepository;
+import com.ryc.api.v2.role.domain.ClubRoleRepository;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
 import com.ryc.api.v2.role.presentation.dto.response.AdminsGetResponse;
@@ -24,9 +24,9 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService {
+public class ClubRoleService {
 
-  private final RoleRepository roleRepository;
+  private final ClubRoleRepository clubRoleRepository;
   private final ClubRepository clubRepository;
   private final AdminRepository adminRepository;
 
@@ -42,7 +42,7 @@ public class RoleService {
             .findById(userId)
             .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + userId));
 
-    if (roleRepository.existsByAdminIdAndClubId(userId, clubId)) {
+    if (clubRoleRepository.existsByAdminIdAndClubId(userId, clubId)) {
       throw new ClubException(ClubErrorCode.CLUB_MEMBER_ALREADY_EXISTS);
     }
 
@@ -53,13 +53,13 @@ public class RoleService {
   @Transactional
   public ClubRole assignRole(Admin admin, Club club, Role role) {
     ClubRole clubRole = ClubRole.initialize(club, admin, role);
-    return roleRepository.save(clubRole);
+    return clubRoleRepository.save(clubRole);
   }
 
   @Transactional(readOnly = true)
   @HasRole(Role.MEMBER)
   public List<AdminsGetResponse> getAdminsInClub(ClubRoleSecuredDto dto) {
-    List<ClubRole> clubRoles = roleRepository.findRolesByClubId(dto.clubId());
+    List<ClubRole> clubRoles = clubRoleRepository.findRolesByClubId(dto.clubId());
 
     return clubRoles.stream()
         .map(
@@ -81,20 +81,20 @@ public class RoleService {
       throw new ClubException(ClubErrorCode.CLUB_OWNER_CANNOT_BE_DELETED);
     }
 
-    if (!roleRepository.existsByAdminIdAndClubId(targetUserId, dto.clubId())) {
+    if (!clubRoleRepository.existsByAdminIdAndClubId(targetUserId, dto.clubId())) {
       throw new ClubException(ClubErrorCode.CLUB_MEMBER_NOT_FOUND);
     }
 
-    roleRepository.deleteByUserId(targetUserId);
+    clubRoleRepository.deleteByUserId(targetUserId);
   }
 
   @Transactional(readOnly = true)
   public boolean hasRole(String adminId, String clubId) {
-    return roleRepository.existsByAdminIdAndClubId(adminId, clubId);
+    return clubRoleRepository.existsByAdminIdAndClubId(adminId, clubId);
   }
 
   @Transactional(readOnly = true)
   public boolean hasOwnerRole(String adminId, String clubId) {
-    return roleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
+    return clubRoleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
   }
 }

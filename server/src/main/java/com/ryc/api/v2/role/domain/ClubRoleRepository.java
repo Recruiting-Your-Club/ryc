@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ryc.api.v2.role.domain.vo.ClubRole;
 
-public interface RoleRepository {
+public interface ClubRoleRepository {
 
   ClubRole save(ClubRole clubRole);
 

@@ -22,14 +22,14 @@ import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
-import com.ryc.api.v2.role.service.RoleService;
+import com.ryc.api.v2.role.service.ClubRoleService;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceTest {
 
   @Mock private ClubRepository clubRepository;
   @Mock private AuthService authService;
-  @Mock private RoleService roleService;
+  @Mock private ClubRoleService clubRoleService;
 
   @InjectMocks private ClubService clubService;
 

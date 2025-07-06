@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(
-    name = "roles",
+    name = "club_roles",
     uniqueConstraints = {@UniqueConstraint(columnNames = {"club_id", "admin_id"})})
 public class ClubRoleEntity extends BaseEntity {
   @Id

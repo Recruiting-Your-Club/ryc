@@ -10,7 +10,7 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
-import com.ryc.api.v2.role.service.RoleService;
+import com.ryc.api.v2.role.service.ClubRoleService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClubRoleAspect {
 
-  private final RoleService roleService;
+  private final ClubRoleService clubRoleService;
 
   @Before("@annotation(com.ryc.api.v2.common.aop.annotation.HasRole)")
   public void validateMemberRole(JoinPoint joinPoint) {
@@ -29,11 +29,11 @@ public class ClubRoleAspect {
 
     switch (hasRole.value()) {
       case OWNER:
-        if (!roleService.hasOwnerRole(dto.adminId(), dto.clubId()))
+        if (!clubRoleService.hasOwnerRole(dto.adminId(), dto.clubId()))
           throw new NoPermissionException(PermissionErrorCode.FORBIDDEN_NOT_CLUB_OWNER);
         break;
       case MEMBER:
-        if (!roleService.hasRole(dto.adminId(), dto.clubId()))
+        if (!clubRoleService.hasRole(dto.adminId(), dto.clubId()))
           throw new NoPermissionException(PermissionErrorCode.FORBIDDEN_NOT_CLUB_MEMBER);
         break;
     }
