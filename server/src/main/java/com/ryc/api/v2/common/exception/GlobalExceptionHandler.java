@@ -1,6 +1,7 @@
 package com.ryc.api.v2.common.exception;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -50,6 +51,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleEmptyResult(EmptyResultDataAccessException e) {
     ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
     return handleExceptionInternal(errorCode);
+  }
+
+  @ExceptionHandler(NoSuchElementException.class)
+  public ResponseEntity<Object> handleIllegalArgumentException(NoSuchElementException e) {
+    ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
+    return handleExceptionInternal(errorCode, e.getMessage());
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
