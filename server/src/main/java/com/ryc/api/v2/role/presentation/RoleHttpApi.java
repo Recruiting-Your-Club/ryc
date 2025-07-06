@@ -19,6 +19,8 @@ import com.ryc.api.v2.role.service.RoleService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +34,11 @@ public class RoleHttpApi {
 
   @PostMapping("clubs/{clubId}/roles")
   @Operation(summary = "동아리 권한 요청", description = "동아리 권한을 요청합니다. 요청 즉시 동아리 멤버가 됩니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "201", description = "권한 요청 성공"),
+    @ApiResponse(responseCode = "404", description = "동아리 또는 사용자 정보가 존재하지 않음"),
+    @ApiResponse(responseCode = "400", description = "이미 동아리 멤버인 경우")
+  })
   public ResponseEntity<RoleDemandResponse> demandRole(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
 
@@ -43,6 +50,10 @@ public class RoleHttpApi {
 
   @GetMapping("clubs/{clubId}/users")
   @Operation(summary = "동아리 내 사용자 조회", description = "동아리 내 모든 사용자의 정보를 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공"),
+    @ApiResponse(responseCode = "403", description = "접근 권한이 없음. 동아리 멤버가 아님"),
+  })
   public ResponseEntity<List<AdminsGetResponse>> getAdminsInClub(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
 
@@ -54,6 +65,12 @@ public class RoleHttpApi {
   @Operation(
       summary = "동아리 내 사용자 삭제",
       description = "해당 기능은 동아리 회장만 수행할 수 있습니다. userId를 가진 사용자는 더 이상 동아리에서 활동하지 못하게 됩니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "204", description = "사용자 삭제 성공"),
+    @ApiResponse(responseCode = "403", description = "접근 권한이 없음. 동아리 회장이 아님"),
+    @ApiResponse(responseCode = "404", description = "동아리 또는 사용자 정보가 존재하지 않음"),
+    @ApiResponse(responseCode = "400", description = "동아리 회장을 삭제할 수 없음")
+  })
   public ResponseEntity<Void> deleteRole(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable String clubId,
