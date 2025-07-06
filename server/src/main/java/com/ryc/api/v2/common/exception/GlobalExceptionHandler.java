@@ -24,18 +24,17 @@ import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-  @ExceptionHandler({NoPermissionException.class, ClubException.class})
-  public ResponseEntity<Object> handleNoPermissionException(RuntimeException e) {
-    ErrorCode errorCode;
 
-    if (e instanceof NoPermissionException) {
-      errorCode = ((NoPermissionException) e).getErrorCode();
-    } else if (e instanceof ClubException) {
-      errorCode = ((ClubException) e).getErrorCode();
-    } else {
-      errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
-    }
+  @ExceptionHandler(NoPermissionException.class)
+  public ResponseEntity<Object> handleNoPermissionException(NoPermissionException e) {
+    ErrorCode errorCode = e.getErrorCode();
     return handleExceptionInternal(errorCode);
+  }
+
+  @ExceptionHandler(ClubException.class)
+  public ResponseEntity<Object> handleClubException(ClubException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode, e.getMessage());
   }
 
   // DataIntegrityViolationException은 JPA에서 중복된 데이터 삽입 시 발생하는 예외
