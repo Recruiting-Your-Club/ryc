@@ -42,10 +42,6 @@ public class ClubRoleService {
             .findById(userId)
             .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + userId));
 
-    if (clubRoleRepository.existsByAdminIdAndClubId(userId, clubId)) {
-      throw new ClubException(ClubErrorCode.CLUB_MEMBER_ALREADY_EXISTS);
-    }
-
     ClubRole clubRole = assignRole(admin, club, Role.MEMBER);
     return new RoleDemandResponse(clubRole.id());
   }

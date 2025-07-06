@@ -37,7 +37,7 @@ public class ClubRoleHttpApi {
   @ApiResponses({
     @ApiResponse(responseCode = "201", description = "권한 요청 성공"),
     @ApiResponse(responseCode = "404", description = "동아리 또는 사용자 정보가 존재하지 않음"),
-    @ApiResponse(responseCode = "400", description = "이미 동아리 멤버인 경우")
+    @ApiResponse(responseCode = "409", description = "이미 동아리 멤버인 경우")
   })
   public ResponseEntity<RoleDemandResponse> demandRole(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
