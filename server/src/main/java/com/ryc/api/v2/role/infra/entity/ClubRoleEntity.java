@@ -1,16 +1,6 @@
 package com.ryc.api.v2.role.infra.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 
 import com.ryc.api.v2.auth.infra.entity.AdminEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
@@ -40,11 +30,11 @@ public class ClubRoleEntity extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id", nullable = false)
   private ClubEntity club;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "admin_id", nullable = false)
   private AdminEntity admin;
 }

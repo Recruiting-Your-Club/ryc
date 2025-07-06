@@ -74,6 +74,20 @@ public class RoleService {
         .toList();
   }
 
+  @Transactional
+  @HasRole(Role.OWNER)
+  public void deleteRole(ClubRoleSecuredDto dto, String targetUserId) {
+    if (dto.adminId().equals(targetUserId)) {
+      throw new ClubException(ClubErrorCode.CLUB_OWNER_CANNOT_BE_DELETED);
+    }
+
+    if (!roleRepository.existsByAdminIdAndClubId(targetUserId, dto.clubId())) {
+      throw new ClubException(ClubErrorCode.CLUB_MEMBER_NOT_FOUND);
+    }
+
+    roleRepository.deleteByUserId(targetUserId);
+  }
+
   @Transactional(readOnly = true)
   public boolean hasRole(String adminId, String clubId) {
     return roleRepository.existsByAdminIdAndClubId(adminId, clubId);
@@ -82,15 +96,5 @@ public class RoleService {
   @Transactional(readOnly = true)
   public boolean hasOwnerRole(String adminId, String clubId) {
     return roleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
-  }
-
-  @Transactional
-  @HasRole(Role.OWNER)
-  public void deleteRole(ClubRoleSecuredDto dto, String targetUserId) {
-    if (!roleRepository.existsByAdminIdAndClubId(dto.clubId(), targetUserId)) {
-      throw new ClubException(ClubErrorCode.CLUB_MEMBER_NOT_FOUND);
-    }
-
-    roleRepository.deleteByUserId(targetUserId);
   }
 }
