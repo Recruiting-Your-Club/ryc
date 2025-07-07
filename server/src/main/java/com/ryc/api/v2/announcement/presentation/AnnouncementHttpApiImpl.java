@@ -16,7 +16,6 @@ import com.ryc.api.v2.announcement.service.ApplicationFormService;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController

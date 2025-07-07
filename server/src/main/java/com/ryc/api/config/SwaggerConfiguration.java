@@ -65,7 +65,8 @@ public class SwaggerConfiguration {
   private Info apiInfo() {
     return new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
   }
-  //ErrorCode 예시문 작성 코드
+
+  // ErrorCode 예시문 작성 코드
   private Example createErrorExample(ErrorCode errorCode) {
     ErrorResponse errorResponse =
         ErrorResponse.builder().code(errorCode.name()).message(errorCode.getMessage()).build();

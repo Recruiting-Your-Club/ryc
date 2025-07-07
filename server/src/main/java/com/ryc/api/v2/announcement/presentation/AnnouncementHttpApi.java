@@ -2,7 +2,6 @@ package com.ryc.api.v2.announcement.presentation;
 
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping("/api/v2")
 @Tag(name = "공고")
@@ -90,4 +90,17 @@ public interface AnnouncementHttpApi {
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body);
+
+  @Operation(summary = "지원폼 조회")
+  @GetMapping("/announcements/{announcement-id}/application-form")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "announcement Not found",
+            content = @Content(schema = @Schema(hidden = true)))
+      })
+  ResponseEntity<ApplicationFormResponse> getApplicationForm(
+      @PathVariable("announcement-id") String announcementId);
 }
