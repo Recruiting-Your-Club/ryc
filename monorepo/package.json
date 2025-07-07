@@ -14,7 +14,7 @@
         "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --config .eslintrc.json --fix",
         "format": "prettier --write . --config .prettierrc.js",
         "format:check": "prettier --check . --config .prettierrc.js",
-        "prepare": "husky"
+        "postinstall": "cd .. && husky ./monorepo/.husky"
     },
     "lint-staged": {
         "**/*.{ts,tsx,js,jsx}": [

@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-cd monorepo && yarn lint-staged
+cd ./monorepo && yarn lint-staged
