@@ -18,7 +18,7 @@ public interface AnnouncementRepository {
   public List<Announcement> findAllByClubId(String clubId);
 
   /**
-   * @param id announcementId
+   * @param announcementId announcementId
    * @return 해당 announcement의 Announcement (with Application)
    */
   public Announcement findById(String announcementId);
