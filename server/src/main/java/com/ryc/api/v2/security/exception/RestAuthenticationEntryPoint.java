@@ -8,6 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
+import com.ryc.api.v2.security.exception.custom.InvalidClaimException;
+import com.ryc.api.v2.security.exception.custom.InvalidSignatureException;
+import com.ryc.api.v2.security.exception.custom.MalformedTokenException;
+import com.ryc.api.v2.security.exception.custom.TokenExpiredException;
+
 import lombok.extern.slf4j.Slf4j;
 
 /** 사용자 인증 실패 예외처리 엔트리 포인트 */
@@ -21,7 +26,42 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
       HttpServletResponse response,
       AuthenticationException authException)
       throws IOException {
+
     log.info("인증 실패 에러 메시지: {}", authException.getMessage());
-    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getLocalizedMessage());
+
+    final String code;
+    final String errorMessage;
+
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+
+    if (authException instanceof TokenExpiredException) {
+      code = "TOKEN_EXPIRED";
+      errorMessage = "Access token has expired.";
+    } else if (authException instanceof InvalidSignatureException) {
+      code = "INVALID_SIGNATURE";
+      errorMessage = "Token signature is invalid.";
+    } else if (authException instanceof MalformedTokenException) {
+      code = "MALFORMED_TOKEN";
+      errorMessage = "Token structure is malformed.";
+    } else if (authException instanceof InvalidClaimException) {
+      code = "INVALID_CLAIM";
+      errorMessage = "Token claims are invalid.";
+    } else {
+      code = "UNAUTHORIZED";
+      errorMessage = "Authentication credentials were missing or invalid.";
+    }
+
+    String jsonResponse =
+        """
+                        {
+                          "code": "%s",
+                          "message": "%s"
+                        }
+                        """
+            .formatted(code, errorMessage);
+
+    response.getWriter().write(jsonResponse);
   }
 }

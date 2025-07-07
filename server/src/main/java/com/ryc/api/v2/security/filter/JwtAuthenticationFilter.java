@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -18,7 +19,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ryc.api.v2.security.dto.CustomUserDetail;
+import com.ryc.api.v2.security.exception.RestAuthenticationEntryPoint;
 import com.ryc.api.v2.security.jwt.JwtTokenManager;
+import com.ryc.api.v2.security.jwt.TokenType;
 import com.ryc.api.v2.security.service.CustomUserDetailService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,40 +40,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
+    try {
+      final String requestURI = request.getRequestURI();
+      if (isExcludedUrl(requestURI)) {
+        filterChain.doFilter(request, response);
+        return;
+      }
 
-    final String requestURI = request.getRequestURI();
-    if (isExcludedUrl(requestURI)) {
+      String header = request.getHeader("Authorization");
+      String adminIdFromToken = null;
+      String authToken = null;
+      if (header != null && header.startsWith("Bearer ")) {
+        authToken = header.replace("Bearer ", StringUtils.EMPTY);
+        adminIdFromToken = jwtTokenManager.getAdminIdFromToken(TokenType.ACCESS_TOKEN, authToken);
+      }
+
+      final SecurityContext securityContext = SecurityContextHolder.getContext();
+
+      if (adminIdFromToken != null && securityContext.getAuthentication() == null) {
+        final CustomUserDetail userDetails = customUserDetailService.loadUserById(adminIdFromToken);
+
+        if (jwtTokenManager.validateToken(TokenType.ACCESS_TOKEN, authToken, userDetails.getId())) {
+          final UsernamePasswordAuthenticationToken authentication =
+              new UsernamePasswordAuthenticationToken(
+                  userDetails, null, userDetails.getAuthorities());
+          authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          securityContext.setAuthentication(authentication);
+        }
+      }
+
       filterChain.doFilter(request, response);
-      return;
+    } catch (AuthenticationException e) {
+      new RestAuthenticationEntryPoint().commence(request, response, e);
     }
-
-    String header = request.getHeader("Authorization");
-    String adminIdFromToken = null;
-    String authToken = null;
-    if (header != null && header.startsWith("Bearer ")) {
-      authToken = header.replace("Bearer ", StringUtils.EMPTY);
-      try {
-        adminIdFromToken = jwtTokenManager.getAdminIdFromToken(authToken);
-      } catch (Exception ignored) {
-      }
-    }
-
-    final SecurityContext securityContext = SecurityContextHolder.getContext();
-
-    if (adminIdFromToken != null && securityContext.getAuthentication() == null) {
-      final CustomUserDetail userDetails =
-          customUserDetailService.loadUserById(adminIdFromToken);
-
-      if (jwtTokenManager.validateToken(authToken, userDetails.getId())) {
-        final UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        securityContext.setAuthentication(authentication);
-      }
-    }
-
-    filterChain.doFilter(request, response);
   }
 
   private boolean isExcludedUrl(String requestURI) {
