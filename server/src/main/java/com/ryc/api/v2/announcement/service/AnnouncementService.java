@@ -19,6 +19,9 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDeta
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,12 +33,12 @@ public class AnnouncementService {
   private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
+  @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
-      String clubId, AnnouncementCreateRequest request) {
+      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
     // 1.Club 찾기
-
     // 2.Announcement 생성
-    Announcement announcement = Announcement.initialize(request, clubId);
+    Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
@@ -63,16 +66,27 @@ public class AnnouncementService {
     return AnnouncementGetDetailResponse.from(announcement);
   }
 
-  // TODO: @hasAnyRole,
   @Transactional
+  @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
-      AnnouncementUpdateRequest request, String announcementId) {
+      ClubRoleSecuredDto clubRoleSecuredDto,
+      AnnouncementUpdateRequest request,
+      String announcementId) {
+
+    Announcement existAnnouncement = announcementRepository.findById(announcementId);
+
+    if (!existAnnouncement.getClubId().equals(clubRoleSecuredDto.clubId())) {}
 
     // 1. announcement 객체로 변환
-    Announcement updateRequest = Announcement.of(request, announcementId);
+    Announcement updateAnnouncement =
+        Announcement.of(
+            request,
+            announcementId,
+            clubRoleSecuredDto.clubId(),
+            existAnnouncement.getApplicationForm().getId());
 
     // 2. 업데이트된 Announcement 저장
-    Announcement updatedAnnouncement = announcementRepository.save(updateRequest);
+    Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
 
     return AnnouncementUpdateResponse.from(updatedAnnouncement);
   }
@@ -91,7 +105,7 @@ public class AnnouncementService {
   }
 
   /**
-   * TODO club도메인에서 jpql로 공고 상태 조회로 최적화
+   * TODO: club도메인에서 jpql로 공고 상태 조회로 최적화
    *
    * @param clubIds 모든 클럽 Id리스트
    * @return 모든 클럽의 공고 상태

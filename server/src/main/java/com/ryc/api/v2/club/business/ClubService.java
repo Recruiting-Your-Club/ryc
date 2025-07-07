@@ -51,7 +51,8 @@ public class ClubService {
 
   @Transactional
   @HasRole(Role.MEMBER)
-  public ClubUpdateResponse updateClub(ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
+  public ClubUpdateResponse updateClub(
+      ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
     Club previousClub =
         clubRepository
             .findById(clubRoleSecuredDto.clubId())
