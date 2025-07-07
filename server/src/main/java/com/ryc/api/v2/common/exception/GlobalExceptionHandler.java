@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.ryc.api.v2.announcement.common.exception.custom.BusinessException;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
@@ -30,6 +31,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
     return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<Object> handleBusinessException(BusinessException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode, errorCode.getMessage());
   }
 
   @Override
