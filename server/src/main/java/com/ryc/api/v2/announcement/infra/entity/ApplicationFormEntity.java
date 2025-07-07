@@ -10,7 +10,7 @@ import com.ryc.api.v2.common.entity.BaseEntity;
 
 import lombok.*;
 
-@Table(name = "announcement_application")
+@Table(name = "application_forms")
 @Entity
 @Getter
 @Builder
@@ -29,6 +29,7 @@ public class ApplicationFormEntity extends BaseEntity {
   @ElementCollection
   @CollectionTable(name = "application_personal_info_questions")
   @OrderColumn(name = "personal_info_question_order")
+  @Enumerated(EnumType.STRING)
   private List<PersonalInfoQuestionType> personalInfoQuestions;
 
   @ElementCollection
@@ -36,6 +37,7 @@ public class ApplicationFormEntity extends BaseEntity {
   @OrderColumn(name = "pre_question_order")
   private List<ApplicationQuestionVO> preQuestions;
 
+  @Setter
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "announcement_id", unique = true, nullable = false)
   private AnnouncementEntity announcement;

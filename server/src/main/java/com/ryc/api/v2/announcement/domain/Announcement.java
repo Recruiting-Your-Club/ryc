@@ -101,7 +101,11 @@ public class Announcement {
    *
    * @param request Update Request
    */
-  public static Announcement of(AnnouncementUpdateRequest request, String announcementId) {
+  public static Announcement of(
+      AnnouncementUpdateRequest request,
+      String announcementId,
+      String clubId,
+      String applicationFormId) {
 
     // 1. 각 request update
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
@@ -115,12 +119,16 @@ public class Announcement {
     AnnouncementStatus updatedAnnouncementStatus =
         AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
 
+    ApplicationForm applicationForm =
+        ApplicationForm.of(request.applicationForm(), applicationFormId);
+
     // 3. announcement 생성
     Announcement announcement =
         Announcement.builder()
             .id(announcementId)
+            .applicationForm(applicationForm)
             .title(request.title())
-            .clubId(this.clubId)
+            .clubId(clubId)
             .numberOfPeople(request.numberOfPeople())
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
@@ -157,6 +165,7 @@ public class Announcement {
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
         .images(this.images)
+        .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
         .isDeleted(false)

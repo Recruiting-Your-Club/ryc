@@ -50,6 +50,8 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     // create
     if (announcement.getId().equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
       AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement);
+      announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
+
       AnnouncementEntity savedAnnouncement = announcementJpaRepository.save(announcementEntity);
 
       return announcementMapper.toDomain(savedAnnouncement);
@@ -61,6 +63,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
               .findById(announcement.getId())
               .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
       announcementEntity.update(announcementMapper.toEntity(announcement));
+      announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
 
       return announcementMapper.toDomain(announcementEntity);
     }
@@ -77,7 +80,10 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   public void saveAll(List<Announcement> announcements) { // List<ClubEntity> clubs) {
     List<AnnouncementEntity> announcementEntities =
         announcements.stream().map(announcementMapper::toEntity).toList();
-
+    announcementEntities.forEach(
+        announcementEntity -> {
+          announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
+        });
     announcementJpaRepository.saveAll(announcementEntities);
   }
 

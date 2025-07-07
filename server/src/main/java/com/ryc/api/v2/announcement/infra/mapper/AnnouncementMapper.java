@@ -22,10 +22,9 @@ import lombok.RequiredArgsConstructor;
 public class AnnouncementMapper {
 
   private final AnnouncementPeriodInfoMapper periodInfoMapper;
-  private final ApplicationFormMapper applicationMapper;
+  private final ApplicationFormMapper applicationFormMapper;
   private final AnnouncementTagMapper tagMapper;
   private final ImageMapper imageMapper;
-  private final ApplicationFormMapper applicationFormMapper;
 
   /** entity to domain */
   public Announcement toDomain(AnnouncementEntity announcementEntity) {
@@ -34,19 +33,21 @@ public class AnnouncementMapper {
     List<Image> images =
         announcementEntity.getImages().stream().map(imageMapper::toDomain).toList();
     ApplicationForm application =
-        applicationMapper.toDomain(announcementEntity.getApplicationForm());
+        applicationFormMapper.toDomain(announcementEntity.getApplicationForm());
     AnnouncementPeriodInfo periodInfo =
         periodInfoMapper.toDomain(announcementEntity.getAnnouncementPeriodInfoVO());
 
     return Announcement.builder()
         .id(announcementEntity.getId())
         .title(announcementEntity.getTitle())
+        .clubId(announcementEntity.getClubId())
         .numberOfPeople(announcementEntity.getNumberOfPeople())
         .detailDescription(announcementEntity.getDetailDescription())
         .summaryDescription(announcementEntity.getSummaryDescription())
         .target(announcementEntity.getTarget())
         .tags(tags)
         .images(images)
+        .applicationForm(application)
         .announcementPeriodInfo(periodInfo)
         .announcementStatus(announcementEntity.getAnnouncementStatus())
         .activityPeriod(announcementEntity.getActivityPeriod())

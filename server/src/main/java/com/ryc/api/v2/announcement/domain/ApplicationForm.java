@@ -53,7 +53,7 @@ public class ApplicationForm {
    *
    * @param request
    */
-  public ApplicationForm update(ApplicationFormRequest request) {
+  public static ApplicationForm of(ApplicationFormRequest request, String applicationFormId) {
     List<ApplicationQuestion> applicationQuestions =
         request.applicationQuestions().stream().map(ApplicationQuestion::from).toList();
 
@@ -62,7 +62,7 @@ public class ApplicationForm {
 
     ApplicationForm applicationForm =
         ApplicationForm.builder()
-            .id(this.id)
+            .id(applicationFormId)
             .applicationQuestions(List.copyOf(applicationQuestions))
             .personalInfoQuestionTypes(request.personalInfoQuestionTypes())
             .preQuestions(List.copyOf(preQuestions))
