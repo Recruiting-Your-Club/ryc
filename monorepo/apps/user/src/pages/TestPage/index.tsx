@@ -6,7 +6,6 @@ function TestPage() {
     return (
         <div>
             <button onClick={() => toast('test')}>테스트입니다.</button>
-            
         </div>
     );
 }
