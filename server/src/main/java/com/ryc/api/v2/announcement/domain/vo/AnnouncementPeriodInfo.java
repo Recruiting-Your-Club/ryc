@@ -72,21 +72,23 @@ public record AnnouncementPeriodInfo(
   private void validateSequence(Boolean hasInterview) {
     // 인터뷰가 있을경우 지원 기간 -> 서류발표기간 -> 면접기간 -> 최종발표기간
     if (hasInterview) {
-      if (documentResultPeriod.isBefore(applicationPeriod)) {
+      if (!applicationPeriod.isBefore(documentResultPeriod)) {
         throw new BusinessException(
             AnnouncementErrorCode.DOCUMENT_PERIOD_MUST_BE_AFTER_APPLICATION);
       }
-      if (interviewPeriod.isBefore(documentResultPeriod)) {
+      if (!documentResultPeriod.isBefore(interviewPeriod)) {
         throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_MUST_BE_AFTER_DOCUMENT);
       }
-      if (finalResultPeriod.isBefore(interviewPeriod)) {
+      if (!finalResultPeriod.isOverlap(interviewPeriod)
+          && finalResultPeriod.isBefore(interviewPeriod)) {
         throw new BusinessException(
             AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_INTERVIEW);
       }
     }
     // 없을경우 모집기간 -> 최종발표기간
     else {
-      if (finalResultPeriod.isBefore(applicationPeriod)) {
+      if (!finalResultPeriod.isOverlap(applicationPeriod)
+          && finalResultPeriod.isBefore(applicationPeriod)) {
         throw new BusinessException(
             AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_APPLICATION);
       }
