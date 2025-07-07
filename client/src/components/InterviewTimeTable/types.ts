@@ -11,4 +11,6 @@ export type InterviewSchedule = {
 
 export interface InterviewTimeTableProps {
     interviewSchedules: InterviewSchedule[];
+    selectedInterviewLabel: string;
+    onSelect: (label: string) => void;
 }

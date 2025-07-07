@@ -1,8 +1,19 @@
-import type { ReactNode } from 'react';
+import { ApplicantSummary } from '@components/ApplicantMiniCard/types';
+import type { InterviewSchedule } from '@components/InterviewTimeTable/types';
+
+export type IntervieweeInformation = {
+    id: number;
+    name: string;
+    email: string;
+    interviewDate: string;
+    interviewName: string;
+};
 
 export interface IntervieweeListProps {
     title?: string;
     height?: string;
-    children?: ReactNode;
-    isList?: boolean;
+    applicantList: IntervieweeInformation[];
+    interviewSchedules: InterviewSchedule[];
+    selectedApplicantId: number | null;
+    onSelectApplicant: (id: number) => void;
 }

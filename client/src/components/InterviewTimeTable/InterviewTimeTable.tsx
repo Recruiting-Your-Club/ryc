@@ -1,4 +1,5 @@
 import { Calendar, Divider, InterviewInformationButton, Text } from '@components';
+import { convertDate } from '@utils/convertDate';
 import React, { useState } from 'react';
 import {
     s_calendar,
@@ -8,25 +9,27 @@ import {
 } from './InterviewTimeTable.style';
 import type { InterviewTimeTableProps } from './types';
 
-function InterviewTimeTable({ interviewSchedules }: InterviewTimeTableProps) {
-    const [selectedDate, setSelectedDate] = useState<string[]>([
-        interviewSchedules ? interviewSchedules[0].date : '',
-    ]);
+function InterviewTimeTable({
+    interviewSchedules,
+    selectedInterviewLabel,
+    onSelect,
+}: InterviewTimeTableProps) {
+    const [date, setDate] = useState<string[]>([interviewSchedules[0].date ?? '']);
 
-    const scheduleToShow = interviewSchedules.find((schedule) => schedule.date === selectedDate[0]);
+    const scheduleToShow = interviewSchedules.find((schedule) => schedule.date === date[0]);
     const enabledDates = interviewSchedules.map((schedule) => schedule.date);
 
-    const convertDate = (date: string) => {
-        const [, month, day] = date.split('-');
-        return `${month}.${day}`;
+    const handleCalendar = (newSelected: string[]) => {
+        setDate(newSelected);
     };
     return (
         <div css={s_interviewTimeTableContainer}>
             <Calendar
                 mode="custom"
-                onSelect={(date) => setSelectedDate(date)}
-                selectedDate={selectedDate}
-                highlightedDate={enabledDates}
+                onSelect={handleCalendar}
+                selectedDate={enabledDates}
+                highlightedDate={date}
+                onlySelected
                 size="sm"
                 sx={s_calendar}
                 shadow={false}
@@ -34,17 +37,23 @@ function InterviewTimeTable({ interviewSchedules }: InterviewTimeTableProps) {
             <Divider />
             <div css={s_timeContentContainer}>
                 <Text as="span" type="bodyBold" textAlign="center">
-                    {selectedDate}
+                    {date}
                 </Text>
                 <div css={s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow))}>
                     {scheduleToShow ? (
                         scheduleToShow.interviewSets.map((schedule) => (
                             <InterviewInformationButton
                                 key={schedule.name}
-                                date={convertDate(scheduleToShow.date)}
-                                title={schedule.name}
+                                label={`${convertDate(scheduleToShow.date)} ${schedule.name}`}
                                 startTime={schedule.startTime}
                                 endTime={schedule.endTime}
+                                onClick={() =>
+                                    onSelect(`${convertDate(scheduleToShow.date)} ${schedule.name}`)
+                                }
+                                isSelected={
+                                    selectedInterviewLabel ===
+                                    `${convertDate(scheduleToShow.date)} ${schedule.name}`
+                                }
                             />
                         ))
                     ) : (

@@ -1,6 +1,6 @@
 import ChevronRight from '@assets/images/chevronRight.svg';
-import React from 'react';
 import { Text } from '@components';
+import React from 'react';
 import {
     s_chevronRight,
     s_interviewInformationButton,
@@ -10,16 +10,20 @@ import {
 import type { InterviewInformationButtonProps } from './types';
 
 function InterviewInformationButton({
-    date,
-    title,
+    // date,
+    // title,
+    label,
+    onClick,
     startTime,
     endTime,
+    isSelected = false,
 }: InterviewInformationButtonProps) {
     return (
-        <button css={s_interviewInformationButton}>
+        <button onClick={onClick} css={s_interviewInformationButton(isSelected)}>
             <div css={s_interviewInformationTextContainer}>
                 <Text as="span" type="captionSemibold" textAlign="start" sx={s_text}>
-                    {date} {title}
+                    {/* {date} {title} */}
+                    {label}
                 </Text>
                 <Text as="span" type="captionRegular" textAlign="start" sx={s_text}>
                     {startTime} - {endTime}

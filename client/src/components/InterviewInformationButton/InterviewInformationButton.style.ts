@@ -1,7 +1,15 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';
-export const s_interviewInformationButton = css`
+
+const fillButton = () => css`
+    cursor: pointer;
+    color: ${theme.colors.white};
+    background-color: ${theme.colors.default};
+    border: 0;
+    box-shadow: 0 2px 8px rgba(${hexToRgb(theme.colors.black)}, 0.15);
+`;
+export const s_interviewInformationButton = (isSelected: boolean) => css`
     display: flex;
     background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.gray[300]};
@@ -11,12 +19,9 @@ export const s_interviewInformationButton = css`
     padding: 0.8rem 0.5rem 0.8rem 1rem;
     transition: all 0.3s ease;
     &:hover {
-        cursor: pointer;
-        color: ${theme.colors.white};
-        background-color: ${theme.colors.default};
-        border: 0;
-        box-shadow: 0 2px 8px rgba(${hexToRgb(theme.colors.black)}, 0.15);
+        ${fillButton()}
     }
+    ${isSelected && fillButton()};
 `;
 
 export const s_interviewInformationTextContainer = css`

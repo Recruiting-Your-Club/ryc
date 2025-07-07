@@ -68,6 +68,7 @@ export const s_invervieweeCardContainer = (isList: boolean = true) => css`
     align-items: center;
     padding: 1rem 0;
     gap: 0.5rem;
+    height: 7rem;
     ${!isList &&
     css`
         justify-content: center;

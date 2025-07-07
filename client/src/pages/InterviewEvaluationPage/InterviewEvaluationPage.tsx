@@ -1,6 +1,9 @@
-import { EvaluationBox, InformationBox, IntervieweeCard, IntervieweeList } from '@components';
+import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
+import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
 import type { Evaluation } from '@components/EvaluationBox/types';
 import type { ApplicantDetail, Document } from '@components/InformationBox/types';
+import type { IntervieweeInformation } from '@components/IntervieweeList/types';
+import type { InterviewSchedule } from '@components/InterviewTimeTable/types';
 import React, { useState } from 'react';
 import {
     s_evaluationBoxWrapper,
@@ -9,6 +12,73 @@ import {
     s_interviewInformationPageContainer,
     s_selectionContainer,
 } from './InterviewEvaluationPage.style';
+
+export const interviewSchedules: InterviewSchedule[] = [
+    {
+        date: '2025-07-11',
+        interviewSets: [
+            {
+                name: '1차 면접',
+                startTime: '13:00',
+                endTime: '14:00',
+            },
+            {
+                name: '2차 면접',
+                startTime: '14:00',
+                endTime: '15:00',
+            },
+        ],
+    },
+    {
+        date: '2025-07-12',
+        interviewSets: [
+            {
+                name: '1차 면접',
+                startTime: '10:00',
+                endTime: '11:00',
+            },
+            {
+                name: '최종 면접',
+                startTime: '13:00',
+                endTime: '14:30',
+            },
+        ],
+    },
+    {
+        date: '2025-07-13',
+        interviewSets: [
+            {
+                name: '2차 면접',
+                startTime: '09:30',
+                endTime: '10:30',
+            },
+        ],
+    },
+];
+
+export const applicantList2: IntervieweeInformation[] = [
+    {
+        id: 1,
+        name: '팥붕이',
+        email: 'nickname@example.com',
+        interviewDate: '2025-07-12',
+        interviewName: '1차 면접',
+    },
+    {
+        id: 2,
+        name: '슈붕이',
+        email: 'test@example.com',
+        interviewDate: '2025-07-13',
+        interviewName: '2차 면접',
+    },
+    {
+        id: 3,
+        name: '붕어빵',
+        email: 'bbang@example.com',
+        interviewDate: '2025-07-11',
+        interviewName: '1차 면접',
+    },
+];
 
 export const applicantDetails2: ApplicantDetail[] = [
     {
@@ -122,16 +192,12 @@ function InterviewEvaluationPage() {
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
-                <IntervieweeList>
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                    <IntervieweeCard name="김영림" email="test@naver.coqwdqwdqwdqwdqwdm" />
-                </IntervieweeList>
+                <IntervieweeList
+                    applicantList={applicantList2}
+                    interviewSchedules={interviewSchedules}
+                    selectedApplicantId={selectedApplicantId}
+                    onSelectApplicant={setSelectedApplicantId}
+                />
             </div>
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
