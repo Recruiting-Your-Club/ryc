@@ -55,7 +55,7 @@ public record AnnouncementCreateRequest(
         Boolean hasInterview,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
-    @NotNull(message = "application shouldn't be null") @Valid @Schema(description = "공고 지원서")
+    @NotNull(message = "applicationForm shouldn't be null") @Valid @Schema(description = "공고 지원서")
         ApplicationFormRequest applicationForm,
     @NotNull(message = "images shouldn't be null")
         List<@NotNull(message = "image shouldn't be null") ImageRequest> images) {

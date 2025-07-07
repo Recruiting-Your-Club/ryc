@@ -55,7 +55,7 @@ public record AnnouncementUpdateRequest(
         Boolean hasInterview,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
-    @Schema(description = "공고 지원서") @Valid @NotNull(message = "application shouldn't be null")
+    @Schema(description = "공고 지원서") @Valid @NotNull(message = "applicationForm shouldn't be null")
         ApplicationFormRequest applicationForm,
     @Schema(description = "이미지 목록") @NotNull(message = "images shouldn't be null")
         List<@Valid @NotNull(message = "image shouldn't be null") ImageRequest> images) {

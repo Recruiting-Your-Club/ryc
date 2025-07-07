@@ -39,10 +39,7 @@ public record ApplicationFormRequest(
   }
 
   @Override
-  @Schema(
-      implementation = PersonalInfoQuestionType.class,
-      description = "개인정보 질문",
-      example = "[\"NAME\", \"EMAIL\"]")
+  @Schema(description = "개인정보 질문", example = "[\"NAME\", \"EMAIL\"]")
   public List<PersonalInfoQuestionType> personalInfoQuestionTypes() {
     return List.copyOf(personalInfoQuestionTypes);
   }

@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.presentation;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RequestMapping("/api/v2")
+@Tag(name = "공고")
 public interface AnnouncementHttpApi {
 
   @PostMapping("/clubs/{club-id}/announcements")
