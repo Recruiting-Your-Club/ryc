@@ -19,7 +19,7 @@ import { filterQuery } from './utils/searchValue';
 function IntervieweeList({
     title = '지원자 목록',
     height,
-    applicantList,
+    intervieweeList,
     interviewSchedules,
     selectedApplicantId,
     onSelectApplicant,
@@ -37,19 +37,19 @@ function IntervieweeList({
     // form hooks
     // query hooks
     // calculated values
-    const selectedApplicants = selectedInterviewLabel
-        ? applicantList.filter(
-              (applicant) =>
-                  `${convertDate(applicant.interviewDate)} ${applicant.interviewName}` ===
+    const selectedInterviewees = selectedInterviewLabel
+        ? intervieweeList.filter(
+              (interviewee) =>
+                  `${convertDate(interviewee.interviewDate)} ${interviewee.interviewName}` ===
                   selectedInterviewLabel,
           )
-        : applicantList;
+        : intervieweeList;
 
-    const filterApplicants = useCallback(
+    const filterInterviewees = useCallback(
         (applicants: IntervieweeInformation[]) => filterQuery(applicants, query),
         [query],
     );
-    const filteredApplicants: IntervieweeInformation[] = filterApplicants(selectedApplicants);
+    const filteredInterviewees: IntervieweeInformation[] = filterInterviewees(selectedInterviewees);
 
     // handlers
     // effects
@@ -91,15 +91,15 @@ function IntervieweeList({
                 </span>
             </div>
             <div css={s_intervieweeCardGroupWrapper}>
-                <div css={s_invervieweeCardContainer(filteredApplicants.length !== 0)}>
-                    {filteredApplicants.length > 0 ? (
-                        filteredApplicants.map((applicant) => (
+                <div css={s_invervieweeCardContainer(filteredInterviewees.length !== 0)}>
+                    {filteredInterviewees.length > 0 ? (
+                        filteredInterviewees.map((interviewee) => (
                             <IntervieweeCard
-                                key={applicant.id}
-                                name={applicant.name}
-                                email={applicant.email}
-                                onClick={() => onSelectApplicant(applicant.id)}
-                                isActivated={selectedApplicantId === applicant.id}
+                                key={interviewee.id}
+                                name={interviewee.name}
+                                email={interviewee.email}
+                                onClick={() => onSelectApplicant(interviewee.id)}
+                                isActivated={selectedApplicantId === interviewee.id}
                             />
                         ))
                     ) : (

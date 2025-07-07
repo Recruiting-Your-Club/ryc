@@ -10,8 +10,6 @@ import {
 import type { InterviewInformationButtonProps } from './types';
 
 function InterviewInformationButton({
-    // date,
-    // title,
     label,
     onClick,
     startTime,
@@ -22,7 +20,6 @@ function InterviewInformationButton({
         <button onClick={onClick} css={s_interviewInformationButton(isSelected)}>
             <div css={s_interviewInformationTextContainer}>
                 <Text as="span" type="captionSemibold" textAlign="start" sx={s_text}>
-                    {/* {date} {title} */}
                     {label}
                 </Text>
                 <Text as="span" type="captionRegular" textAlign="start" sx={s_text}>

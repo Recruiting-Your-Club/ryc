@@ -1,5 +1,4 @@
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
-import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
 import type { Evaluation } from '@components/EvaluationBox/types';
 import type { ApplicantDetail, Document } from '@components/InformationBox/types';
 import type { IntervieweeInformation } from '@components/IntervieweeList/types';
@@ -193,7 +192,7 @@ function InterviewEvaluationPage() {
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
                 <IntervieweeList
-                    applicantList={applicantList2}
+                    intervieweeList={applicantList2}
                     interviewSchedules={interviewSchedules}
                     selectedApplicantId={selectedApplicantId}
                     onSelectApplicant={setSelectedApplicantId}

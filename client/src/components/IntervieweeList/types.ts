@@ -12,7 +12,7 @@ export type IntervieweeInformation = {
 export interface IntervieweeListProps {
     title?: string;
     height?: string;
-    applicantList: IntervieweeInformation[];
+    intervieweeList: IntervieweeInformation[];
     interviewSchedules: InterviewSchedule[];
     selectedApplicantId: number | null;
     onSelectApplicant: (id: number) => void;

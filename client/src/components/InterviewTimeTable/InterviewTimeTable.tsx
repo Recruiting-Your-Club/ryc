@@ -41,21 +41,19 @@ function InterviewTimeTable({
                 </Text>
                 <div css={s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow))}>
                     {scheduleToShow ? (
-                        scheduleToShow.interviewSets.map((schedule) => (
-                            <InterviewInformationButton
-                                key={schedule.name}
-                                label={`${convertDate(scheduleToShow.date)} ${schedule.name}`}
-                                startTime={schedule.startTime}
-                                endTime={schedule.endTime}
-                                onClick={() =>
-                                    onSelect(`${convertDate(scheduleToShow.date)} ${schedule.name}`)
-                                }
-                                isSelected={
-                                    selectedInterviewLabel ===
-                                    `${convertDate(scheduleToShow.date)} ${schedule.name}`
-                                }
-                            />
-                        ))
+                        scheduleToShow.interviewSets.map((schedule) => {
+                            const label = `${convertDate(scheduleToShow.date)} ${schedule.name}`;
+                            return (
+                                <InterviewInformationButton
+                                    key={label}
+                                    label={label}
+                                    startTime={schedule.startTime}
+                                    endTime={schedule.endTime}
+                                    onClick={() => onSelect(label)}
+                                    isSelected={selectedInterviewLabel === label}
+                                />
+                            );
+                        })
                     ) : (
                         <Text as="span" type="captionSemibold">
                             등록된 면접 일정이 없습니다.
