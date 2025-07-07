@@ -2,11 +2,12 @@ package com.ryc.api.v2.club.business;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.auth.service.AuthService;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
@@ -20,17 +21,16 @@ import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.business.RoleService;
 import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ClubService {
-
-  private final ClubRepository clubRepository;
-  private final AuthService authService;
-
   private final RoleService roleService;
+  private final ClubRepository clubRepository;
+  private final AdminRepository adminRepository;
 
   @Transactional
   public ClubCreateResponse createClub(ClubCreateRequest body) {
@@ -43,15 +43,23 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    Admin currentUser = authService.getCurrentUser();
-    roleService.assignRole(currentUser, savedClub, Role.OWNER);
+    String currentUserId = UserUtil.getCurrentUserId();
+
+    Admin currentAdmin =
+        adminRepository
+            .findById(currentUserId)
+            .orElseThrow(
+                () -> new UsernameNotFoundException("User not found with id: " + currentUserId));
+
+    roleService.assignRole(currentAdmin, savedClub, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.id()).build();
   }
 
   @Transactional
   @HasRole(Role.MEMBER)
-  public ClubUpdateResponse updateClub(ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
+  public ClubUpdateResponse updateClub(
+      ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
     Club previousClub =
         clubRepository
             .findById(clubRoleSecuredDto.clubId())
