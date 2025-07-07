@@ -29,13 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private static final AntPathMatcher pathMatcher = new AntPathMatcher();
   private static final List<String> EXCLUDE_URLS =
-      List.of(
-          "/api/v2/auth/login",
-          "/api/v2/auth/register",
-          "/api/v2/clubs/all",
-          "/api/v2/clubs/{id}",
-          "/api/v2/application/form");
-
+      List.of("/api/v2/auth/login", "/api/v2/auth/register");
   private final JwtTokenManager jwtTokenManager;
   private final CustomUserDetailService customUserDetailService;
 
@@ -49,12 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       return;
     }
-    // 로그인, 회원가입의 경우, 해당 필터 검증 Skip
-    //    if (requestURI.contains("api/v2/auth/login") ||
-    // requestURI.contains("api/v2/auth/register")) {
-    //      filterChain.doFilter(request, response);
-    //      return;
-    //    }
 
     String header = request.getHeader("Authorization");
     String emailFromToken = null;
@@ -63,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       authToken = header.replace("Bearer ", StringUtils.EMPTY);
       try {
         emailFromToken = jwtTokenManager.getEmailFromAccessToken(authToken);
-      } catch (Exception e) {
+      } catch (Exception ignored) {
       }
     }
 
