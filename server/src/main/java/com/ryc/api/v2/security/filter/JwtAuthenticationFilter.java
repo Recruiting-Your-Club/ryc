@@ -32,7 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private static final AntPathMatcher pathMatcher = new AntPathMatcher();
   private static final List<String> EXCLUDE_URLS =
-      List.of("/api/v2/auth/login", "/api/v2/auth/register");
+      List.of(
+          "/api/v2/auth/login",
+          "/api/v2/auth/register",
+          "/api/v2/auth/refreshToken",
+          "/api/v2/auth/logout");
   private final JwtTokenManager jwtTokenManager;
   private final CustomUserDetailService customUserDetailService;
 

@@ -52,7 +52,7 @@ public class AuthController {
         ResponseCookie.from("refresh-token", refreshResult.refreshToken())
             .httpOnly(true)
             .secure(true)
-            .path("/api/v2/auth/refreshToken")
+            .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
             .sameSite("Strict")
             .build();
@@ -60,5 +60,26 @@ public class AuthController {
     return ResponseEntity.status(HttpStatus.OK)
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
         .body(response);
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout(
+      @CookieValue(value = "refresh-token", required = false) String refreshToken) {
+    if (refreshToken != null) {
+      authService.logout(refreshToken);
+    }
+
+    ResponseCookie deleteCookie =
+        ResponseCookie.from("refresh-token", "")
+            .httpOnly(true)
+            .secure(true)
+            .path("/api/v2/auth")
+            .maxAge(0)
+            .sameSite("Strict")
+            .build();
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+        .body("Logout successful"); // TODO: 성공 메시지 포멧 통일화
   }
 }

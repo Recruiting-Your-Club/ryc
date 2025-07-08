@@ -115,5 +115,12 @@ public class AuthService {
     return savedRefreshToken.getToken();
   }
 
-  // TODO: Logout 구현
+  @Transactional
+  public void logout(String refreshToken) {
+    boolean deleted = refreshTokenRepository.deleteRefreshToken(refreshToken);
+    // TODO: 삭제 실패인지, 해당 토큰이 DB에 없는 것인지 구분 필요.
+    if (!deleted) {
+      throw new EntityNotFoundException("RefreshToken not found for logout.");
+    }
+  }
 }

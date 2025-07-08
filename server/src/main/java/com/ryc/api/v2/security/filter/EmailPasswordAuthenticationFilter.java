@@ -109,7 +109,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
         ResponseCookie.from("refresh-token", refreshToken)
             .httpOnly(true)
             .secure(true)
-            .path("/api/v2/auth/refreshToken")
+            .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
             .sameSite("Strict")
             .build();
