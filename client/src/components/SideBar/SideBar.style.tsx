@@ -6,7 +6,7 @@ export const sideBarContainer = css`
     position: sticky;
     top: 0;
     left: 0;
-    height: 100%;
+    height: 100dvh;
     overflow: clip;
     border-right: 1px solid ${theme.colors.gray[100]};
 `;
