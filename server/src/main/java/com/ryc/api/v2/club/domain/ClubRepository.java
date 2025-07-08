@@ -13,4 +13,6 @@ public interface ClubRepository {
   boolean existsByName(String name);
 
   List<Club> findAll();
+
+  boolean existsById(String clubId);
 }
