@@ -22,5 +22,4 @@ public class ApplicationFormService {
         applicationFormRepository.findByAnnouncementId(announcementId));
   }
 
-  // public ApplicationForm create() {}
 }
