@@ -2,14 +2,19 @@ package com.ryc.api.v2.auth.presentation;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.auth.presentation.request.LoginRequest;
 import com.ryc.api.v2.auth.presentation.request.RegisterRequest;
 import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
+import com.ryc.api.v2.auth.presentation.response.TokenRefreshResponse;
 import com.ryc.api.v2.auth.service.AuthService;
+import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
+import com.ryc.api.v2.security.jwt.JwtProperties;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "인증/인가")
 public class AuthController {
   private final AuthService authService;
+  private final JwtProperties jwtProperties;
 
   @PostMapping("/login")
   @Operation(summary = "Login", description = "사용자 로그인 인증 후, 인증 성공시 토큰 발행")
@@ -35,5 +41,24 @@ public class AuthController {
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
     RegisterResponse response = authService.register(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
+
+  @GetMapping("/refreshToken")
+  public ResponseEntity<?> refreshToken(@CookieValue("refresh-token") String refreshToken) {
+    TokenRefreshResult refreshResult = authService.refreshToken(refreshToken);
+
+    TokenRefreshResponse response = new TokenRefreshResponse(refreshResult.accessToken());
+    ResponseCookie cookie =
+        ResponseCookie.from("refresh-token", refreshResult.refreshToken())
+            .httpOnly(true)
+            .secure(true)
+            .path("/api/v2/auth/refreshToken")
+            .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
+            .sameSite("Strict")
+            .build();
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+        .body(response);
   }
 }

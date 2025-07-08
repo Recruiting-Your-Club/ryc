@@ -106,7 +106,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
     // RT HttpOnly, Secure, SameSite=Strict 쿠키 옵션 설정
     ResponseCookie cookie =
-        ResponseCookie.from("refreshToken", refreshToken)
+        ResponseCookie.from("refresh-token", refreshToken)
             .httpOnly(true)
             .secure(true)
             .path("/api/v2/auth/refreshToken")

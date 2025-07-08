@@ -1,5 +1,7 @@
 package com.ryc.api.v2.auth.infra;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.admin.domain.Admin;
@@ -21,5 +23,23 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     return RefreshTokenMapper.toDomain(
         refreshTokenJpaRepository.save(
             RefreshTokenMapper.toEntity(refreshToken, AdminMapper.toEntity(admin))));
+  }
+
+  @Override
+  public Optional<Admin> findAdminByToken(String refreshToken) {
+    return refreshTokenJpaRepository
+        .findByToken(refreshToken)
+        .map(entity -> AdminMapper.toDomain(entity.getAdminEntity()));
+  }
+
+  @Override
+  public boolean deleteRefreshToken(String refreshToken) {
+    int deletedRows = refreshTokenJpaRepository.deleteByToken(refreshToken);
+    return deletedRows > 0;
+  }
+
+  @Override
+  public void flush() {
+    refreshTokenJpaRepository.flush();
   }
 }
