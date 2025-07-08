@@ -75,7 +75,9 @@ public class AnnouncementService {
   @Transactional
   @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
-      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementUpdateRequest request, String announcementId) {
+      ClubRoleSecuredDto clubRoleSecuredDto,
+      AnnouncementUpdateRequest request,
+      String announcementId) {
     // 1. 기존 Announcement 조회
     Announcement existingAnnouncement =
         announcementRepository.findByIdWithApplication(announcementId);

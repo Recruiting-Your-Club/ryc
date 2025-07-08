@@ -27,10 +27,11 @@ import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-/** 클라이언트나 외부 서버 어플리케이션에서 Http 기반으로 접근하는 API */
 @RestController
 @RequestMapping("api/v2/clubs")
 @RequiredArgsConstructor
@@ -42,20 +43,30 @@ public class ClubHttpApi {
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
+  @ApiResponses({
+    @ApiResponse(responseCode = "201", description = "동아리 생성 성공"),
+    @ApiResponse(responseCode = "400", description = "동아리 이름이 중복된 요청",
+        content = @io.swagger.v3.oas.annotations.media.Content)
+  })
   public ResponseEntity<ClubCreateResponse> createClub(@Valid @RequestBody ClubCreateRequest body) {
     ClubCreateResponse response = clubService.createClub(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @GetMapping("/{id}")
-  @Operation(summary = "동아리 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
+  @Operation(summary = "동아리 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다. 동아리의 모든 정보가 포함됩니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "동아리 조회 성공"),
+    @ApiResponse(responseCode = "404", description = "동아리 ID에 해당하는 동아리가 존재하지 않는 경우")
+  })
   public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
     ClubGetResponse response = clubService.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping
-  @Operation(summary = "모든 동아리 조회 API")
+  @Operation(summary = "모든 동아리 조회 API", description = "모든 동아리를 조회합니다.")
+  @ApiResponse(responseCode = "200", description = "모든 동아리 조회 성공")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
     List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
     return ResponseEntity.status(HttpStatus.OK).body(responses);
@@ -63,6 +74,11 @@ public class ClubHttpApi {
 
   @PatchMapping("/{id}")
   @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "동아리 수정 성공"),
+    @ApiResponse(responseCode = "400", description = "수정하려는 동아리 이름이 이미 존재하는 경우"),
+    @ApiResponse(responseCode = "404", description = "동아리 ID에 해당하는 동아리가 존재하지 않는 경우")
+  })
   public ResponseEntity<ClubUpdateResponse> updateClub(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable String id,

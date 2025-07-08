@@ -51,12 +51,14 @@ public class ClubService {
 
   @Transactional
   @HasRole(Role.MEMBER)
-  public ClubUpdateResponse updateClub(ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
+  public ClubUpdateResponse updateClub(
+      ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
     Club previousClub =
         clubRepository
             .findById(clubRoleSecuredDto.clubId())
             .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
 
+    // 수정하려는 동아리 이름이 이미 존재하는 동아리 이름인지 확인
     if (body.name() != null && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
