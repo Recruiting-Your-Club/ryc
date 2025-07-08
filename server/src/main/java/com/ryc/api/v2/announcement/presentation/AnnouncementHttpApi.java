@@ -26,7 +26,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/api/v2")
 public interface AnnouncementHttpApi {
 
-  /** todo @HasAnyRoleScured */
   @PostMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 생성")
   @ApiResponses(
@@ -50,9 +49,10 @@ public interface AnnouncementHttpApi {
   ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
       @PathVariable("club-id") String clubId);
 
-  @GetMapping("/announcements/{announcement-id}")
+  @GetMapping("/clubs/{club-id}/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
   ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
+      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId);
 
   @PutMapping("/clubs/{club-id}//announcements/{announcement-id}")

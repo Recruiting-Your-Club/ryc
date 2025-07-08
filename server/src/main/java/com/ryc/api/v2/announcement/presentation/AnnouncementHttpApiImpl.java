@@ -43,15 +43,14 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(String clubId) {
-    /** todo club 조회 */
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
   }
 
   @Override
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      String announcementId) {
-    /** todo club 조회 */
-    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
+      String clubId, String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(announcementService.findById(clubId, announcementId));
   }
 
   @Override
