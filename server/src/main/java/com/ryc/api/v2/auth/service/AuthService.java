@@ -73,7 +73,7 @@ public class AuthService {
         jwtTokenManager.generateAccessToken(admin.getId(), AdminDefaultRole.USER.name());
 
     // 4. 기존 rt db삭제
-    if (!refreshTokenRepository.deleteRefreshToken(refreshToken)) {
+    if (!refreshTokenRepository.deleteRefreshTokenByToken(refreshToken)) {
       throw new EntityNotFoundException("RefreshToken not found");
     }
 
@@ -104,20 +104,22 @@ public class AuthService {
 
   @Transactional
   public String saveRefreshToken(String adminId, String tokenValue, LocalDateTime expirationTime) {
-    RefreshToken refreshToken = RefreshToken.initialize(adminId, tokenValue, expirationTime);
-
     Admin admin =
         adminRepository
             .findById(adminId)
             .orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + adminId));
 
+    refreshTokenRepository.deleteRefreshTokenByAdmin(admin);
+    refreshTokenRepository.flush();
+
+    RefreshToken refreshToken = RefreshToken.initialize(adminId, tokenValue, expirationTime);
     RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken, admin);
     return savedRefreshToken.getToken();
   }
 
   @Transactional
   public void logout(String refreshToken) {
-    boolean deleted = refreshTokenRepository.deleteRefreshToken(refreshToken);
+    boolean deleted = refreshTokenRepository.deleteRefreshTokenByToken(refreshToken);
     // TODO: 삭제 실패인지, 해당 토큰이 DB에 없는 것인지 구분 필요.
     if (!deleted) {
       throw new EntityNotFoundException("RefreshToken not found for logout.");

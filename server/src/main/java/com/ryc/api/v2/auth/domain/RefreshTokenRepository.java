@@ -9,7 +9,9 @@ public interface RefreshTokenRepository {
 
   Optional<Admin> findAdminByToken(String refreshToken);
 
-  boolean deleteRefreshToken(String refreshToken);
+  boolean deleteRefreshTokenByToken(String refreshToken);
+
+  boolean deleteRefreshTokenByAdmin(Admin admin);
 
   void flush();
 }

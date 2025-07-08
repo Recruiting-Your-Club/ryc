@@ -33,8 +33,14 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
   }
 
   @Override
-  public boolean deleteRefreshToken(String refreshToken) {
+  public boolean deleteRefreshTokenByToken(String refreshToken) {
     int deletedRows = refreshTokenJpaRepository.deleteByToken(refreshToken);
+    return deletedRows > 0;
+  }
+
+  @Override
+  public boolean deleteRefreshTokenByAdmin(Admin admin) {
+    int deletedRows = refreshTokenJpaRepository.deleteByAdminEntity(AdminMapper.toEntity(admin));
     return deletedRows > 0;
   }
 
