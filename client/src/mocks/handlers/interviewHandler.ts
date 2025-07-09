@@ -1,10 +1,10 @@
 import { BASE_URL } from '@constants/api';
-import type { IntervieweeInformation, InterviewSchedule } from 'api/domain/applicant/types';
+import type { IntervieweeInformation, InterviewSchedule } from '@api/domain/interview/types';
 import { http, HttpResponse } from 'msw';
-import intervieweeList from '../data/applicant/intervieweeList.json';
-import interviewScheduleList from '../data/applicant/interviewScheduleList.json';
+import intervieweeList from '../data/interview/intervieweeList.json';
+import interviewScheduleList from '../data/interview/interviewScheduleList.json';
 
-const applicantHandler = [
+const interviewHandler = [
     http.get(`${BASE_URL}interviewschedules/all`, () => {
         return HttpResponse.json(interviewScheduleList as InterviewSchedule[], { status: 200 });
     }),
@@ -13,4 +13,4 @@ const applicantHandler = [
     }),
 ];
 
-export { applicantHandler };
+export { interviewHandler };
