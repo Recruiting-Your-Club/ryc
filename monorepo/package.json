@@ -19,11 +19,11 @@
     },
     "lint-staged": {
         "**/*.{ts,tsx,js,jsx}": [
-            "yarn lint:fix",
-            "yarn format"
+            "eslint --fix --config .eslintrc.json",
+            "prettier --write --config .prettierrc.js"
         ],
         "**/*.{json,md,yml,yaml}": [
-            "yarn format"
+            "prettier --write --config .prettierrc.js"
         ]
     },
     "devDependencies": {

@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
+
 import theme from '@ssoc/styles';
-import type { Size, SizeStyle, CalendarData, CalendarProps } from './types';
+
 import { SATURDAY, SUNDAY } from '../../constants/calendar';
+import type { CalendarData, CalendarProps, Size, SizeStyle } from './types';
 
 export const SizeMap: Record<Size, SizeStyle> = {
     sm: {

@@ -1,11 +1,13 @@
 // src/components/Calendar/Calendar.test.tsx
-
-import React from 'react';
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Calendar } from '../Calendar';
+import { fireEvent, render, screen } from '@testing-library/react';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ko'; // 한글 locale import
+import 'dayjs/locale/ko';
+import React from 'react';
+
+import { Calendar } from '../Calendar';
+
+// 한글 locale import
 
 // dayjs에 한글 locale 설정
 dayjs.locale('ko');

@@ -1,5 +1,6 @@
-import { Tag } from '../Tag';
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Tag } from '../Tag';
 import { invisibleTag, perTag, tagDisplay } from './ClubCard.style';
 
 interface CardFooterProps {

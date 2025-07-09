@@ -1,12 +1,13 @@
-import React from 'react';
-import { Dialog} from '../Dialog';
-import { Text } from '../Text';
-import { Button } from '../Button';
 import Alert from '@assets/images/alert.svg';
 import Check from '@assets/images/check.svg';
+import React from 'react';
+
+import { Button } from '../Button';
+import type { ButtonSize } from '../Button';
+import { Dialog } from '../Dialog';
+import { Text } from '../Text';
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
 import type { DialogProps } from './types';
-import type { ButtonSize } from '../Button';
 
 function ConfirmDialog({
     type = 'text',
@@ -41,8 +42,12 @@ function ConfirmDialog({
                     handleClose={handleClose}
                 >
                     <div css={confirmDialogHeaderContainer(titlePosition, type)}>
-                        {type === 'confirm' && <Check css={{ width: '3rem', height: '3rem', color: 'green' }} />}
-                        {type === 'warning' && <Alert css={{ width: '3rem', height: '3rem', color: 'red' }} />}
+                        {type === 'confirm' && (
+                            <Check css={{ width: '3rem', height: '3rem', color: 'green' }} />
+                        )}
+                        {type === 'warning' && (
+                            <Alert css={{ width: '3rem', height: '3rem', color: 'red' }} />
+                        )}
                         <Text as="h4" type="h4Semibold">
                             {title}
                         </Text>

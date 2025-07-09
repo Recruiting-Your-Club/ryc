@@ -10,7 +10,9 @@
     "scripts": {
         "build": "babel src --out-dir dist/src --extensions .ts,.tsx && tsc",
         "dev": "yarn build:ui && yarn build:constants && yarn build:hooks && tsc --watch",
-        "test": "jest --coverage "
+        "test": "jest --coverage ",
+        "lint": "eslint --fix .",
+        "format": "prettier --write ."
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",
