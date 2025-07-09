@@ -5,8 +5,8 @@
     "homepage": ".",
     "scripts": {
         "start": "webpack serve --open --config webpack.prod.js",
-        "dev": "webpack serve --open --config webpack.dev.js",
-        "build": "webpack --config webpack.prod.js",
+        "dev": "NODE_ENV=development webpack serve --open --config webpack.dev.js",
+        "build": "NODE_ENV=production webpack --config webpack.prod.js",
         "lint": "eslint --fix .",
         "format": "prettier --write .",
         "test": "jest --coverage ",
@@ -30,6 +30,7 @@
         "@ssoc/utils": "workspace:*",
         "@tanstack/react-query": "^5.74.7",
         "dayjs": "^1.11.13",
+        "dotenv-webpack": "^8.1.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-router-dom": "^7.1.5",
@@ -70,5 +71,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "msw": {
+        "workerDirectory": "./public"
     }
 }

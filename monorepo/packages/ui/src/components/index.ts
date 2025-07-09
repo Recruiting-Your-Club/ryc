@@ -18,3 +18,4 @@ export * from './Radio';
 export * from './TextArea';
 export * from './PasswordInput';
 export * from './Toast';
+export * from './ImageDialog';

@@ -2615,6 +2615,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@types/jest": "npm:^27.0.1"
     dayjs: "npm:^1.11.13"
+    dotenv-webpack: "npm:^8.1.0"
     html-webpack-plugin: "npm:^5.6.3"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29"
@@ -6021,6 +6022,33 @@ __metadata:
     no-case: "npm:^3.0.4"
     tslib: "npm:^2.0.3"
   checksum: 10c0/5b859ea65097a7ea870e2c91b5768b72ddf7fa947223fd29e167bcdff58fe731d941c48e47a38ec8aa8e43044c8fbd15cd8fa21689a526bc34b6548197cd5b05
+  languageName: node
+  linkType: hard
+
+"dotenv-defaults@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "dotenv-defaults@npm:2.0.2"
+  dependencies:
+    dotenv: "npm:^8.2.0"
+  checksum: 10c0/14b7b8f6c21a30404106384398728746e63405bfeabe47ef7aadd0e81de49986d5896a612e5b1acddf655af6472a24947b7b113aa3ef3270a2877afa9c5bd287
+  languageName: node
+  linkType: hard
+
+"dotenv-webpack@npm:^8.1.0":
+  version: 8.1.1
+  resolution: "dotenv-webpack@npm:8.1.1"
+  dependencies:
+    dotenv-defaults: "npm:^2.0.2"
+  peerDependencies:
+    webpack: ^4 || ^5
+  checksum: 10c0/6eec6e89e7e972941b0ac2ce9e2c27ecf3d32880215e5c4c2e429d6be437508819643d34988859c13e07c0f18958443fd37fb609cbfb532eb037f0c4c38c600c
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^8.2.0":
+  version: 8.6.0
+  resolution: "dotenv@npm:8.6.0"
+  checksum: 10c0/6750431dea8efbd54b9f2d9681b04e1ccc7989486461dcf058bb708d9e3d63b04115fcdf8840e38ad1e24a4a2e1e7c1560626c5e3ac7bc09371b127c49e2d45f
   languageName: node
   linkType: hard
 
