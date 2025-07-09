@@ -1,8 +1,8 @@
-package com.ryc.api.v2.auth.infra.entity;
+package com.ryc.api.v2.admin.infra.entity;
 
 import jakarta.persistence.*;
 
-import com.ryc.api.v2.auth.domain.AdminDefaultRole;
+import com.ryc.api.v2.admin.domain.AdminDefaultRole;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
 import lombok.*;
