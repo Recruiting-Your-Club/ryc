@@ -1,6 +1,7 @@
 import EditPencil from '@assets/images/edit-pencil.svg';
 import Trash from '@assets/images/trash.svg';
 import { Button, Divider, Rating, Text } from '@components';
+import { PersonalScoreCard } from '@components/PersonalScoreCard';
 import { TextArea } from '@components/_common/TextArea';
 import React, { useState } from 'react';
 import {
@@ -55,10 +56,23 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
                     </div>
                 </div>
                 <Divider />
-                <div css={perStarScoreGroup(false)}>
-                    <Text as="span" type="captionSemibold">
-                        등록된 평가가 없습니다.
-                    </Text>
+                <div css={perStarScoreGroup(evaluation?.comments.length !== 0)}>
+                    {/* 이 아래 부분을 Page에서 따로 넣어줄지 아니면 지금처럼 유지할지 */}
+                    {evaluation && evaluation.comments.length > 0 ? (
+                        evaluation.comments.map((evaluator) => (
+                            <PersonalScoreCard
+                                key={evaluator.id}
+                                id={evaluator.id}
+                                score={evaluator.score}
+                                name={evaluator.name}
+                                comment={evaluator.comment}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            등록된 평가가 없습니다.
+                        </Text>
+                    )}
                 </div>
                 <div css={userSavedEvaluation}>
                     <div css={s_myEvaluationTitleContainer}>

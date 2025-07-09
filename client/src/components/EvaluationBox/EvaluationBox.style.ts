@@ -76,6 +76,22 @@ export const perStarScoreGroup = (empty?: boolean) => css`
     gap: 0.8rem;
     ${scoreWrapper(empty)}
     min-height: 5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+    overflow-y: auto;
+
+    ${!empty &&
+    css`
+        align-items: center;
+        justify-content: center;
+    `}
+    &::after {
+        content: '';
+        height: 0.5rem;
+        flex-shrink: 0;
+    }
 `;
 
 export const userSavedEvaluation = css`
