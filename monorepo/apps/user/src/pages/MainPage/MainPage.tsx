@@ -46,7 +46,8 @@ function MainPage() {
             filteredClub = clublist?.filter((club) => currentCategory.eng === club.category) || [];
         }
         if (isProgress) {
-            filteredClub = filteredClub?.filter((club) => club.status === 'progress') || [];
+            filteredClub =
+                filteredClub?.filter((club) => club.announcementStatus === 'RECRUITING') || [];
         }
         return filteredClub;
     }, [currentCategory, isProgress, clublist]);
@@ -120,7 +121,7 @@ function MainPage() {
                         title={club.name}
                         category={club.category}
                         description={club.shortDescription}
-                        //status={data.status}
+                        status={club.announcementStatus}
                         clubTags={club.clubTags}
                         imageURL={club.imageUrl}
                         link={club.id}

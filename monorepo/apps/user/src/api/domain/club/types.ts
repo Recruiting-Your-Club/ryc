@@ -6,6 +6,8 @@ type images = {
     imageUrl: string;
     thumbnailUrl: string;
 };
+type announcementStatus = 'RECRUITING' | 'UPCOMING' | 'CLOSED' | 'EMPTY';
+
 interface ClubTag {
     name: string;
 }
@@ -16,7 +18,7 @@ export interface AllClub {
     imageUrl: string;
     thumbnailUrl: string;
     category: string;
-    status?: string;
+    announcementStatus?: announcementStatus;
     clubTags: ClubTag[];
 }
 export interface Club {
