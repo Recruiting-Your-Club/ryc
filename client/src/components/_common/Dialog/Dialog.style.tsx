@@ -78,6 +78,7 @@ export const contentContainer = css`
     justify-content: center;
     align-items: center;
     padding: 1.5rem 2.5rem;
+    overflow-y: auto;
 `;
 
 export const actionContainer = (border: boolean, position: PositionType) => css`
