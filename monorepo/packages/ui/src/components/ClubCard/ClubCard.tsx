@@ -1,17 +1,15 @@
-import React from 'react';
-
+import { Avatar } from '../Avatar';
+import { Divider } from '../Divider';
+import { Tag } from '../Tag';
+import type { tagVariant } from '../Tag';
 import { useRouter } from '@ssoc/hooks';
-
+import React from 'react';
 import type { AvatarShape, AvatarSize } from '../Avatar';
-import { Avatar } from '../Avatar/Avatar';
 import { CardBottomBody } from '../Card/CardBottomBody';
 import { CardFooter } from '../Card/CardFooter';
 import { CardRoot } from '../Card/CardRoot';
 import { CardTitleContainer } from '../Card/CardTitleContainer';
 import { CardTopBody } from '../Card/CardTopBody';
-import { Divider } from '../Divider';
-import type { tagVariant } from '../Tag';
-import { Tag } from '../Tag';
 import { statusTag } from './ClubCard.style';
 import { TagList } from './TagList';
 

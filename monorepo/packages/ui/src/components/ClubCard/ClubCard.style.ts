@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+
 const centerDisplay = css`
     display: flex;
     align-items: center;
