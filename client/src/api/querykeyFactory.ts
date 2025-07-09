@@ -29,6 +29,7 @@ const clubKeys = {
 };
 
 const applicantKeys = {
+    allInterviewSchedules: ['interviewschedules'] as const,
     allInterviewees: ['interviewees'] as const,
 };
 

@@ -1,0 +1,42 @@
+[
+    {
+        "date": "2025-07-11",
+        "interviewSets": [
+            {
+                "name": "1차 면접",
+                "startTime": "13:00",
+                "endTime": "14:00"
+            },
+            {
+                "name": "2차 면접",
+                "startTime": "14:00",
+                "endTime": "15:00"
+            }
+        ]
+    },
+    {
+        "date": "2025-07-12",
+        "interviewSets": [
+            {
+                "name": "1차 면접",
+                "startTime": "10:00",
+                "endTime": "11:00"
+            },
+            {
+                "name": "최종 면접",
+                "startTime": "13:00",
+                "endTime": "14:30"
+            }
+        ]
+    },
+    {
+        "date": "2025-07-13",
+        "interviewSets": [
+            {
+                "name": "2차 면접",
+                "startTime": "09:30",
+                "endTime": "10:30"
+            }
+        ]
+    }
+]

@@ -1,4 +1,4 @@
-import { getAllInterviewees } from '@api/domain/applicant/applicant';
+import { getAllInterviewees, getAllInterviewSchedules } from '@api/domain/applicant/applicant';
 import { queryOptions } from '@tanstack/react-query';
 import { applicantKeys } from '../querykeyFactory';
 
@@ -7,6 +7,11 @@ const applicantQueries = {
         queryOptions({
             queryKey: applicantKeys.allInterviewees,
             queryFn: () => getAllInterviewees(),
+        }),
+    allInterviewSchedules: () =>
+        queryOptions({
+            queryKey: applicantKeys.allInterviewSchedules,
+            queryFn: () => getAllInterviewSchedules(),
         }),
 };
 

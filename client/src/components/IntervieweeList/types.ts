@@ -1,5 +1,4 @@
-import type { InterviewSchedule } from '@components/InterviewTimeTable/types';
-import type { IntervieweeInformation } from 'api/domain/applicant/types';
+import type { IntervieweeInformation, InterviewSchedule } from '@api/domain/applicant/types';
 
 export interface IntervieweeListProps {
     title?: string;

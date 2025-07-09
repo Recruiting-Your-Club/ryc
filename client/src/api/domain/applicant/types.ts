@@ -4,7 +4,7 @@ type InterviewSet = {
     endTime: string;
 };
 
-type InterviewSchedule = {
+export type InterviewSchedule = {
     date: string;
     interviewSets: InterviewSet[];
 };

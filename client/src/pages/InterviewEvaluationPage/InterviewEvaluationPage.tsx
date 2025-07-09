@@ -1,10 +1,8 @@
 import { applicantQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { Evaluation } from '@components/EvaluationBox/types';
-import type { ApplicantDetail, Document } from '@components/InformationBox/types';
-import type { InterviewSchedule } from '@components/InterviewTimeTable/types';
-import { useQuery } from '@tanstack/react-query';
-import type { IntervieweeInformation } from 'api/domain/applicant/types';
+import type { Document } from '@components/InformationBox/types';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import {
     s_evaluationBoxWrapper,
@@ -13,73 +11,6 @@ import {
     s_interviewInformationPageContainer,
     s_selectionContainer,
 } from './InterviewEvaluationPage.style';
-
-export const interviewSchedules: InterviewSchedule[] = [
-    {
-        date: '2025-07-11',
-        interviewSets: [
-            {
-                name: '1차 면접',
-                startTime: '13:00',
-                endTime: '14:00',
-            },
-            {
-                name: '2차 면접',
-                startTime: '14:00',
-                endTime: '15:00',
-            },
-        ],
-    },
-    {
-        date: '2025-07-12',
-        interviewSets: [
-            {
-                name: '1차 면접',
-                startTime: '10:00',
-                endTime: '11:00',
-            },
-            {
-                name: '최종 면접',
-                startTime: '13:00',
-                endTime: '14:30',
-            },
-        ],
-    },
-    {
-        date: '2025-07-13',
-        interviewSets: [
-            {
-                name: '2차 면접',
-                startTime: '09:30',
-                endTime: '10:30',
-            },
-        ],
-    },
-];
-
-export const applicantDetails2: ApplicantDetail[] = [
-    {
-        id: 1,
-        name: '팥붕이',
-        email: 'nickname@example.com',
-        studentId: '23000000',
-        phone: '010-1234-5678',
-    },
-    {
-        id: 2,
-        name: '슈붕이',
-        email: 'test@example.com',
-        studentId: '20010501',
-        phone: '010-2345-6789',
-    },
-    {
-        id: 3,
-        name: '붕어빵',
-        email: 'bbang@example.com',
-        studentId: '24000000',
-        phone: '010-3456-7890',
-    },
-];
 
 export const documents2: Document[] = [
     {
@@ -164,8 +95,9 @@ export const evaluations2: Evaluation[] = [
 ];
 
 function InterviewEvaluationPage() {
-    const { data: intervieweelist = [] } = useQuery<IntervieweeInformation[]>(
-        applicantQueries.allInterviewees(),
+    const { data: intervieweelist = [] } = useSuspenseQuery(applicantQueries.allInterviewees());
+    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
+        applicantQueries.allInterviewSchedules(),
     );
 
     const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
@@ -175,7 +107,7 @@ function InterviewEvaluationPage() {
             <div css={s_selectionContainer}>
                 <IntervieweeList
                     intervieweeList={intervieweelist}
-                    interviewSchedules={interviewSchedules}
+                    interviewSchedules={interviewSchedulelist}
                     selectedApplicantId={selectedApplicantId}
                     onSelectApplicant={setSelectedApplicantId}
                 />
@@ -184,7 +116,7 @@ function InterviewEvaluationPage() {
                 <div css={s_informationBoxWrapper}>
                     <InformationBox
                         applicant={
-                            applicantDetails2.find(
+                            intervieweelist.find(
                                 (applicant) => applicant.id === selectedApplicantId,
                             ) ?? null
                         }
