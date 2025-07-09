@@ -67,7 +67,7 @@ export const clubData = {
             },
             {
                 type: 'LONG_ANSWER',
-                label: '프로젝트 경험이 있다면 자세히 설명해주세요.',
+                label: '프로젝트 경험이 있다면 자세히 설명해주세요. (없다면 작성하지 않으셔도 됩니다.)',
                 description: '참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요.',
                 isRequired: false,
                 options: [],
