@@ -1,6 +1,7 @@
 import Search from '@assets/images/search.svg';
 import { Button, Dropdown, Input, IntervieweeCard, InterviewTimeTable, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
+import type { IntervieweeInformation } from 'api/domain/applicant/types';
 import React, { useCallback, useState } from 'react';
 import {
     s_intervieweeCardGroupWrapper,
@@ -13,7 +14,7 @@ import {
     s_titleContainer,
     s_titleTextAndSelectionButtonContainer,
 } from './IntervieweeList.style';
-import type { IntervieweeInformation, IntervieweeListProps } from './types';
+import type { IntervieweeListProps } from './types';
 import { filterQuery } from './utils/searchValue';
 
 function IntervieweeList({

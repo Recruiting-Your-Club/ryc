@@ -1,13 +1,5 @@
-import { ApplicantSummary } from '@components/ApplicantMiniCard/types';
 import type { InterviewSchedule } from '@components/InterviewTimeTable/types';
-
-export type IntervieweeInformation = {
-    id: number;
-    name: string;
-    email: string;
-    interviewDate: string;
-    interviewName: string;
-};
+import type { IntervieweeInformation } from 'api/domain/applicant/types';
 
 export interface IntervieweeListProps {
     title?: string;

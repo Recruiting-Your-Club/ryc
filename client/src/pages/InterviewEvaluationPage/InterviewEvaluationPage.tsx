@@ -1,8 +1,10 @@
+import { applicantQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { Evaluation } from '@components/EvaluationBox/types';
 import type { ApplicantDetail, Document } from '@components/InformationBox/types';
-import type { IntervieweeInformation } from '@components/IntervieweeList/types';
 import type { InterviewSchedule } from '@components/InterviewTimeTable/types';
+import { useQuery } from '@tanstack/react-query';
+import type { IntervieweeInformation } from 'api/domain/applicant/types';
 import React, { useState } from 'react';
 import {
     s_evaluationBoxWrapper,
@@ -52,30 +54,6 @@ export const interviewSchedules: InterviewSchedule[] = [
                 endTime: '10:30',
             },
         ],
-    },
-];
-
-export const applicantList2: IntervieweeInformation[] = [
-    {
-        id: 1,
-        name: '팥붕이',
-        email: 'nickname@example.com',
-        interviewDate: '2025-07-12',
-        interviewName: '1차 면접',
-    },
-    {
-        id: 2,
-        name: '슈붕이',
-        email: 'test@example.com',
-        interviewDate: '2025-07-13',
-        interviewName: '2차 면접',
-    },
-    {
-        id: 3,
-        name: '붕어빵',
-        email: 'bbang@example.com',
-        interviewDate: '2025-07-11',
-        interviewName: '1차 면접',
     },
 ];
 
@@ -186,13 +164,17 @@ export const evaluations2: Evaluation[] = [
 ];
 
 function InterviewEvaluationPage() {
+    const { data: intervieweelist = [] } = useQuery<IntervieweeInformation[]>(
+        applicantQueries.allInterviewees(),
+    );
+
     const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
 
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
                 <IntervieweeList
-                    intervieweeList={applicantList2}
+                    intervieweeList={intervieweelist}
                     interviewSchedules={interviewSchedules}
                     selectedApplicantId={selectedApplicantId}
                     onSelectApplicant={setSelectedApplicantId}
