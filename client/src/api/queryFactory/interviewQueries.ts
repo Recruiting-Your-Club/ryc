@@ -1,4 +1,5 @@
 import {
+    getAllDocuments,
     getAllEvaluations,
     getAllInterviewees,
     getAllInterviewSchedules,
@@ -16,6 +17,11 @@ const interviewQueries = {
         queryOptions({
             queryKey: interviewKeys.allInterviewSchedules,
             queryFn: () => getAllInterviewSchedules(),
+        }),
+    allDocuments: () =>
+        queryOptions({
+            queryKey: interviewKeys.allDocuments,
+            queryFn: () => getAllDocuments(),
         }),
     allInterviewEvaluations: () =>
         queryOptions({

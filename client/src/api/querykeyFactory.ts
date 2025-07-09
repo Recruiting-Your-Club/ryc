@@ -31,6 +31,7 @@ const clubKeys = {
 const interviewKeys = {
     allInterviewSchedules: ['interviewschedules'] as const,
     allInterviewees: ['interviewees'] as const,
+    allDocuments: ['documents'] as const,
     allEvaluations: ['evaluations'] as const,
 };
 

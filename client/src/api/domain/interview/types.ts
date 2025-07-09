@@ -19,10 +19,10 @@ export interface IntervieweeInformation {
     interviewName: string;
 }
 
-type DocumentSet = {
-    id: number;
+export interface Document {
+    applicantId: number;
     detail: { question: string; answer: string }[];
-};
+}
 
 export interface Evaluation {
     applicantId: number;

@@ -1,5 +1,5 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { Evaluation, IntervieweeInformation, InterviewSchedule } from './types';
+import type { Document, Evaluation, IntervieweeInformation, InterviewSchedule } from './types';
 
 async function getAllInterviewSchedules(): Promise<InterviewSchedule[]> {
     const response = await httpRequest.get({
@@ -15,6 +15,13 @@ async function getAllInterviewees(): Promise<IntervieweeInformation[]> {
     return response as IntervieweeInformation[];
 }
 
+async function getAllDocuments(): Promise<Document[]> {
+    const response = await httpRequest.get({
+        url: `documents/all`,
+    });
+    return response as Document[];
+}
+
 async function getAllEvaluations(): Promise<Evaluation[]> {
     const response = await httpRequest.get({
         url: `interviewer/all`,
@@ -22,4 +29,4 @@ async function getAllEvaluations(): Promise<Evaluation[]> {
     return response as Evaluation[];
 }
 
-export { getAllInterviewSchedules, getAllInterviewees, getAllEvaluations };
+export { getAllInterviewSchedules, getAllInterviewees, getAllDocuments, getAllEvaluations };
