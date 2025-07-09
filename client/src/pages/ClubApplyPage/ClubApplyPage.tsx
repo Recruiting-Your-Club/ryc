@@ -267,7 +267,7 @@ function ClubApplyPage() {
                     questionRefs={questionRefs}
                 />
             ),
-            width: '6rem',
+            width: '5.8rem',
         },
         {
             title: '자기소개서',
@@ -283,7 +283,7 @@ function ClubApplyPage() {
                     questionRefs={questionRefs}
                 />
             ),
-            width: '6.5rem',
+            width: '7.9rem',
         },
     ];
 
