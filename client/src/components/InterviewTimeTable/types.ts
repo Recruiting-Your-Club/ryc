@@ -1,13 +1,4 @@
-export type InterviewSet = {
-    name: string;
-    startTime: string;
-    endTime: string;
-};
-
-export type InterviewSchedule = {
-    date: string;
-    interviewSets: InterviewSet[];
-};
+import type { InterviewSchedule } from '@api/domain/interview/types';
 
 export interface InterviewTimeTableProps {
     interviewSchedules: InterviewSchedule[];
