@@ -8,9 +8,6 @@ export const s_temp = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    @media (max-width: ${theme.breakpoint.tablet}) {
-        padding: 20rem 30rem;
-    }
 `;
 export const s_reservationContainer = css`
     display: flex;
@@ -18,13 +15,13 @@ export const s_reservationContainer = css`
     padding: 2rem 3rem;
     @media (min-width: ${theme.breakpoint.tabletMini}) {
         flex-direction: row;
+        max-height: 70rem;
     }
     @media (min-width: ${theme.breakpoint.tablet}) {
         min-width: 70rem;
     }
     width: 100%;
     height: 100%;
-    max-height: 70rem;
     max-width: 90rem;
     box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
     border-radius: 10px;
