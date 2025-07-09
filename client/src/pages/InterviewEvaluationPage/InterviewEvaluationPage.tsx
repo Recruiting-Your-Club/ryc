@@ -1,6 +1,5 @@
 import { interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
-import type { Evaluation } from '@components/EvaluationBox/types';
 import type { Document } from '@components/InformationBox/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
@@ -67,40 +66,19 @@ export const documents2: Document[] = [
     },
 ];
 
-export const evaluations2: Evaluation[] = [
-    {
-        applicantId: 1,
-        averageScore: 4.5,
-        comments: [
-            { evaluator: '조준희', comment: '매우 성실한 태도였습니다.' },
-            { evaluator: '조존히', comment: '답변이 구체적이고 논리적이었습니다.' },
-        ],
-    },
-    {
-        applicantId: 2,
-        averageScore: 3.8,
-        comments: [
-            { evaluator: '준', comment: '조금 긴장한 듯 보였습니다.' },
-            { evaluator: 'aiming희', comment: '기본기는 잘 갖추고 있었음.' },
-        ],
-    },
-    {
-        applicantId: 3,
-        averageScore: 4.2,
-        comments: [
-            { evaluator: '몰라희', comment: '차분하고 준비된 모습이 인상적이었어요.' },
-            { evaluator: '그냥희', comment: '팀워크 질문에서 좋은 답변을 들었어요.' },
-        ],
-    },
-];
-
 function InterviewEvaluationPage() {
     const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
     const { data: interviewSchedulelist = [] } = useSuspenseQuery(
         interviewQueries.allInterviewSchedules(),
     );
+    const { data: evaluationlist = [] } = useSuspenseQuery(
+        interviewQueries.allInterviewEvaluations(),
+    );
 
     const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
+    const selectedEvaluation = evaluationlist.find(
+        (evaluation) => evaluation.applicantId === selectedApplicantId,
+    );
 
     return (
         <div css={s_interviewInformationPageContainer}>
@@ -127,13 +105,7 @@ function InterviewEvaluationPage() {
                     />
                 </div>
                 <div css={s_evaluationBoxWrapper}>
-                    <EvaluationBox
-                        evaluation={
-                            evaluations2.find(
-                                (evaluation) => evaluation.applicantId === selectedApplicantId,
-                            ) ?? null
-                        }
-                    />
+                    <EvaluationBox evaluation={selectedEvaluation ?? null} />
                 </div>
             </div>
         </div>

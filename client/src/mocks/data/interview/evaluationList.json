@@ -1,0 +1,56 @@
+[
+    {
+        "applicantId": 1,
+        "averageScore": 4.5,
+        "comments": [
+            {
+                "id": 1,
+                "name": "인물1",
+                "score": 4.5,
+                "comment": "매우 성실한 태도였습니다."
+            },
+            {
+                "id": 2,
+                "name": "인물2",
+                "score": 4.5,
+                "comment": "답변이 구체적이고 논리적이었습니다."
+            }
+        ]
+    },
+    {
+        "applicantId": 2,
+        "averageScore": 3.8,
+        "comments": [
+            {
+                "id": 1,
+                "name": "인물3",
+                "score": 3.8,
+                "comment": "조금 긴장한 듯 보였습니다."
+            },
+            {
+                "id": 2,
+                "name": "인물4",
+                "score": 3.8,
+                "comment": "기본기는 잘 갖추고 있었음."
+            }
+        ]
+    },
+    {
+        "applicantId": 3,
+        "averageScore": 4.2,
+        "comments": [
+            {
+                "id": 1,
+                "name": "인물5",
+                "score": 4.2,
+                "comment": "차분하고 준비된 모습이 인상적이었어요."
+            },
+            {
+                "id": 2,
+                "name": "인물6",
+                "score": 4.2,
+                "comment": "팀워크 질문에서 좋은 답변을 들었어요."
+            }
+        ]
+    }
+]

@@ -24,8 +24,8 @@ type DocumentSet = {
     detail: { question: string; answer: string }[];
 };
 
-type EvaluationSet = {
+export interface Evaluation {
     applicantId: number;
     averageScore: number;
-    comments: { evaluator: string; comment: string }[];
-};
+    comments: { id: number; score: number; name: string; comment: string }[];
+}
