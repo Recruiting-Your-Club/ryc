@@ -9,6 +9,7 @@ import {
     MainLoadingPage,
     RecruitmentPage,
     RegisterPage,
+    ReservationPage,
     TestPage,
 } from './pages';
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
         ],
+    },
+    {
+        path: '/reservation',
+        element: <ReservationPage />,
     },
 ]);
 
