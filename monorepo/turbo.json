@@ -22,6 +22,9 @@
         },
         "format:check": {
             "outputs": []
+        },
+        "test": {
+            "dependsOn": ["^test"]
         }
     }
 }

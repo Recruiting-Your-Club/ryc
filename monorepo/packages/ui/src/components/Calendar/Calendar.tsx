@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
+
+import { WEEKDAYS } from '../../constants/calendar';
+import { Text } from '../Text';
 import {
-    calendarContainer,
     calendarBodyContainer,
+    calendarContainer,
     calendarHeaderContainer,
-    weekdaysContainer,
-    daysContainer,
     dayCell,
-    weekendColor,
+    daysContainer,
     monthControlButton,
+    weekdaysContainer,
+    weekendColor,
 } from './Calendar.style';
-import { Text } from '@components';
+import type { CalendarMode, CalendarProps } from './types';
 import { useCalendar } from './utils';
-import type { CalendarProps, CalendarMode } from './types';
-import { WEEKDAYS } from '@constants/calendar';
 
 function Calendar({
     mode = 'single',
