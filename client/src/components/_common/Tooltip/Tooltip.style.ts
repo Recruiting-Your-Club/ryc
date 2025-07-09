@@ -16,7 +16,7 @@ export const fadeInScale = keyframes`
 
 export const tooltipContainter = css`
     position: relative;
-    display: inline-block;
+    display: inline-flex;
 `;
 
 export const positionStyles: Record<Direction, CSSObject> = {
