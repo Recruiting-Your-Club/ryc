@@ -1,8 +1,8 @@
-type InterviewSet = {
+interface InterviewSet {
     name: string;
     startTime: string;
     endTime: string;
-};
+}
 
 export type InterviewSchedule = {
     date: string;
