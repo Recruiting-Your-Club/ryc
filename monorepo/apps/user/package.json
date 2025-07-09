@@ -32,7 +32,8 @@
         "dayjs": "^1.11.13",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "react-router-dom": "^7.1.5"
+        "react-router-dom": "^7.1.5",
+        "whatwg-fetch": "^3.6.20"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
@@ -53,7 +54,8 @@
         "webpack": "^5.97.1",
         "webpack-cli": "^6.0.1",
         "webpack-dev-server": "^5.2.0",
-        "webpack-merge": "^6.0.1"
+        "webpack-merge": "^6.0.1",
+        "jest-environment-jsdom": "^29"
     },
     "browserslist": {
         "production": [
