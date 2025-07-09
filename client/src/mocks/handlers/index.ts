@@ -1,6 +1,6 @@
-import { applicantHandler } from './applicantHandler';
 import { clubHandler } from './clubHandler';
+import { interviewHandler } from './interviewHandler';
 
-const handlers = [...clubHandler, ...applicantHandler];
+const handlers = [...clubHandler, ...interviewHandler];
 
 export { handlers };

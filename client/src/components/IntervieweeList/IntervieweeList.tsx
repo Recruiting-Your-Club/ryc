@@ -1,7 +1,7 @@
 import Search from '@assets/images/search.svg';
 import { Button, Dropdown, Input, IntervieweeCard, InterviewTimeTable, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
-import type { IntervieweeInformation } from 'api/domain/applicant/types';
+import type { IntervieweeInformation } from '@api/domain/interview/types';
 import React, { useCallback, useState } from 'react';
 import {
     s_intervieweeCardGroupWrapper,
@@ -31,7 +31,7 @@ function IntervieweeList({
     // state, ref, querystring hooks
     const [selectedInterviewLabel, setSelectedInterviewLabel] = useState(
         `${convertDate(interviewSchedules[0].date)} ${interviewSchedules[0].interviewSets[0].name}` ||
-            '지원자 없음',
+            '면접 일정 없음',
     );
     const [query, setQuery] = useState('');
 

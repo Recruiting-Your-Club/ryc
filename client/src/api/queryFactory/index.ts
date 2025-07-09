@@ -1,2 +1,2 @@
-export * from './applicantQueries';
+export * from './interviewQueries';
 export * from './clubQueries';

@@ -1,4 +1,4 @@
-import type { IntervieweeInformation, InterviewSchedule } from '@api/domain/applicant/types';
+import type { IntervieweeInformation, InterviewSchedule } from '@api/domain/interview/types';
 
 export interface IntervieweeListProps {
     title?: string;

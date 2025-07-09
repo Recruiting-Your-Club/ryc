@@ -1,4 +1,4 @@
-import { applicantQueries } from '@api/queryFactory';
+import { interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { Evaluation } from '@components/EvaluationBox/types';
 import type { Document } from '@components/InformationBox/types';
@@ -95,9 +95,9 @@ export const evaluations2: Evaluation[] = [
 ];
 
 function InterviewEvaluationPage() {
-    const { data: intervieweelist = [] } = useSuspenseQuery(applicantQueries.allInterviewees());
+    const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
     const { data: interviewSchedulelist = [] } = useSuspenseQuery(
-        applicantQueries.allInterviewSchedules(),
+        interviewQueries.allInterviewSchedules(),
     );
 
     const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
