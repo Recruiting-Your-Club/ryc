@@ -3,7 +3,7 @@ name: github-action
 on:
   push:
     branches:
-      - refactor/issue-220
+      - develop
 
 jobs:
   build-and-deploy:
