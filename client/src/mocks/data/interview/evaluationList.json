@@ -1,18 +1,18 @@
 [
     {
         "applicantId": 1,
-        "averageScore": 4.5,
+        "averageScore": 4.0,
         "comments": [
             {
                 "id": 1,
                 "name": "인물1",
-                "score": 4.5,
+                "score": 3.0,
                 "comment": "매우 성실한 태도였습니다."
             },
             {
                 "id": 2,
                 "name": "인물2",
-                "score": 4.5,
+                "score": 5.0,
                 "comment": "답변이 구체적이고 논리적이었습니다."
             }
         ]
