@@ -24,8 +24,8 @@ export const s_labelContainer = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        gap: 1rem;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        gap: 1.5rem;
     }
 `;
 
@@ -49,6 +49,9 @@ export const s_tooltipSx = css`
 `;
 
 export const s_questionTitleSx = css`
+    white-space: normal;
+    text-align: justify;
+    word-break: break-word;
     @media (max-width: ${theme.breakpoint.mobile}) {
         ${theme.typography.captionRegular};
     }
