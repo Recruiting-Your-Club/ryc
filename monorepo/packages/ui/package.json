@@ -1,0 +1,40 @@
+{
+    "name": "@ssoc/ui",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "version": "1.0.0",
+    "files": [
+        "dist"
+    ],
+    "private": true,
+    "scripts": {
+        "build": "babel src --out-dir dist/src --extensions .ts,.tsx && tsc",
+        "dev": "yarn build:ui && yarn build:constants && yarn build:hooks && tsc --watch"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.13.0",
+        "@ssoc/assets": "workspace:*",
+        "@ssoc/styles": "workspace:*",
+        "@ssoc/utils": "workspace:*",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.26.0",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "typescript": "^4.4.2"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}

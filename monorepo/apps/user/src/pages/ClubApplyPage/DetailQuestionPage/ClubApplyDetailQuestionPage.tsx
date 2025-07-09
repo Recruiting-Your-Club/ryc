@@ -1,0 +1,70 @@
+import React from 'react';
+
+import { Text, TextArea } from '@ssoc/ui';
+
+import type { ClubApplyDetailQuestionPageProps } from '../types';
+import { getAnswer } from '../utils';
+import {
+    clubApplyDetailQuestionContainer,
+    labelContainer,
+    textAreaSx,
+} from './ClubApplyDetailQuestionPage.style';
+
+function ClubApplyDetailQuestionPage({
+    answers,
+    clubDetailQuestions,
+    onAnswerChange,
+    containerStyle,
+    touched,
+    onBlur,
+    onFocus,
+}: ClubApplyDetailQuestionPageProps) {
+    return (
+        <div css={containerStyle}>
+            {clubDetailQuestions.map((question) => {
+                const hasError =
+                    question.isRequired &&
+                    touched[question.questionTitle] &&
+                    !getAnswer(answers, question.questionTitle)?.trim();
+                return (
+                    <div
+                        key={question.questionTitle}
+                        css={clubApplyDetailQuestionContainer}
+                        tabIndex={-1}
+                        onFocus={() => onFocus(question.questionTitle)}
+                        onBlur={() => onBlur(question.questionTitle)}
+                    >
+                        <div css={labelContainer}>
+                            <Text
+                                type="bodyRegular"
+                                sx={{ display: 'inline', marginLeft: '0.5rem' }}
+                            >
+                                {question.questionTitle}
+                            </Text>
+                            {question.isRequired && (
+                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                    *
+                                </Text>
+                            )}
+                        </div>
+                        <TextArea
+                            size="lg"
+                            value={getAnswer(answers, question.questionTitle)}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                                onAnswerChange(question.questionTitle, e.target.value)
+                            }
+                            wrapperSx={{ marginTop: '1rem' }}
+                            textAreaSx={textAreaSx}
+                            error={hasError}
+                            onFocus={() => onFocus(question.questionTitle)}
+                            onBlur={() => onBlur(question.questionTitle)}
+                            errorText={hasError ? '필수 항목입니다.' : undefined}
+                        />
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+export { ClubApplyDetailQuestionPage };

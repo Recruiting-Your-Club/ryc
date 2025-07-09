@@ -18,9 +18,12 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.club.business.ClubService;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.role.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,14 +35,15 @@ public class AnnouncementService {
   private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
+  @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
-      String clubId, AnnouncementCreateRequest request) {
+      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
     // 1.Club 찾기
 
     // 2.Announcement 생성
-    Announcement announcement = Announcement.initialize(request, clubId);
+    Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
 
-    ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubId);
+    ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubRoleSecuredDto.clubId());
 
     Announcement savedAnnouncement = announcementRepository.save(announcement, clubProxy);
 
@@ -68,10 +72,12 @@ public class AnnouncementService {
     return AnnouncementGetDetailResponse.from(announcement);
   }
 
-  // todo @hasAnyRole,
   @Transactional
+  @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
-      AnnouncementUpdateRequest request, String announcementId) {
+      ClubRoleSecuredDto clubRoleSecuredDto,
+      AnnouncementUpdateRequest request,
+      String announcementId) {
     // 1. 기존 Announcement 조회
     Announcement existingAnnouncement =
         announcementRepository.findByIdWithApplication(announcementId);

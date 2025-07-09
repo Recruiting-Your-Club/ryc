@@ -1,0 +1,17 @@
+export interface RecruitDetailInfo {
+    recruitmentSubject: string;
+    recruitmentNumber: string;
+    activityPeriod: string;
+    recruitmentField: string;
+    recruitmentTarget: string;
+    documentPeriod: string;
+    documentResult: string;
+    interviewSchedule: string;
+    finalResult: string;
+}
+
+export interface BasicInfoFields {
+    studentId: boolean;
+    phone: boolean;
+    photo: boolean;
+}

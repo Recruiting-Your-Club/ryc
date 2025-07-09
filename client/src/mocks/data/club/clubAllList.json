@@ -1,0 +1,82 @@
+[
+    {
+        "id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
+        "name": "PATCH API 테스트 동아리",
+        "shortDescription": "연극을 사랑하는 사람들의 모임",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
+        "category": "PERFORMANCE_ARTS",
+        "clubTags": [
+            {
+                "name": "연극"
+            },
+            {
+                "name": "워크숍"
+            }
+        ]
+    },
+    {
+        "id": "b2c3d4e5-f6a7-8901-2345-bcdefa234567",
+        "name": "세계문화탐방단",
+        "shortDescription": "문화 교류 중심 동아리",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422202.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422202.png",
+        "category": "CULTURE",
+        "clubTags": [
+            {
+                "name": "문화"
+            },
+            {
+                "name": "체험활동"
+            }
+        ]
+    },
+    {
+        "id": "c3d4e5f6-a7b8-9012-3456-cdefab345678",
+        "name": "FC UNIV",
+        "shortDescription": "축구를 즐기는 체육 동아리",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422210.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422210.png",
+        "category": "SPORTS",
+        "clubTags": [
+            {
+                "name": "리그참가"
+            },
+            {
+                "name": "축구"
+            }
+        ]
+    },
+    {
+        "id": "d4e5f6a7-b8c9-0123-4567-defabc456789",
+        "name": "알고리즘 마스터즈",
+        "shortDescription": "학술 동아리",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422200.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422200.png",
+        "category": "ACADEMIC",
+        "clubTags": [
+            {
+                "name": "알고리즘"
+            },
+            {
+                "name": "코딩스터디"
+            }
+        ]
+    },
+    {
+        "id": "e5f6a7b8-c9d0-1234-5678-efabcd567890",
+        "name": "코딩이야",
+        "shortDescription": "봉사활동 동아리",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",
+        "category": "VOLUNTEER",
+        "clubTags": [
+            {
+                "name": "봉사"
+            },
+            {
+                "name": "지역연계"
+            }
+        ]
+    }
+]
