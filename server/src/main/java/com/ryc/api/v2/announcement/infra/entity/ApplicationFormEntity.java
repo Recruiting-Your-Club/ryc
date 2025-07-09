@@ -22,18 +22,18 @@ public class ApplicationFormEntity extends BaseEntity {
   private String id;
 
   @ElementCollection
-  @CollectionTable(name = "application_questions")
+  @CollectionTable(name = "applicationform_questions")
   @OrderColumn(name = "application_question_order")
   private List<ApplicationQuestionVO> applicationQuestions;
 
   @ElementCollection
-  @CollectionTable(name = "application_personal_info_questions")
+  @CollectionTable(name = "applicationform_personal_info_questions")
   @OrderColumn(name = "personal_info_question_order")
   @Enumerated(EnumType.STRING)
   private List<PersonalInfoQuestionType> personalInfoQuestions;
 
   @ElementCollection
-  @CollectionTable(name = "application_pre_questions")
+  @CollectionTable(name = "applicationform_pre_questions")
   @OrderColumn(name = "pre_question_order")
   private List<ApplicationQuestionVO> preQuestions;
 
