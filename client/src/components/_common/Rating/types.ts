@@ -4,7 +4,7 @@ export interface RatingProps {
     value?: number;
     size?: StarSize;
     totalStars?: number;
-    type?: 'click' | 'display';
+    type?: RatingType;
     onChange?: (rating: number) => void;
     sx?: CSSObject;
 }
@@ -19,4 +19,5 @@ export interface StarProps {
     onMouseLeave?: () => void;
 }
 
+type RatingType = 'click' | 'display';
 export type StarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';
