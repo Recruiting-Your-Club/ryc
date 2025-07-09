@@ -1,7 +1,14 @@
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
-import { ClubCreatePage, LoginPage, NotFoundPage, RegisterPage, TestPage } from './pages';
+import {
+    ClubCreatePage,
+    ClubSearchPage,
+    LoginPage,
+    NotFoundPage,
+    RegisterPage,
+    TestPage,
+} from './pages';
 
 const router = createBrowserRouter([
     {
@@ -22,6 +29,7 @@ const router = createBrowserRouter([
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
+            { path: 'club-search', element: <ClubSearchPage /> },
         ],
     },
 ]);
