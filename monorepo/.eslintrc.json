@@ -21,7 +21,9 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
-        "prettier"
+        "prettier",
+        "react-app",
+        "react-app/jest"
     ],
     "plugins": ["react", "@typescript-eslint", "react-hooks", "jsx-a11y"],
     "rules": {
