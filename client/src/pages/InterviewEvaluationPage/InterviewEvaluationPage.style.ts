@@ -6,7 +6,7 @@ export const s_interviewInformationPageContainer = css`
     padding: 2rem 8rem;
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    min-width: 100rem;
 `;
 
 export const s_selectionContainer = css`
