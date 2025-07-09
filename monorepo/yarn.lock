@@ -2491,6 +2491,7 @@ __metadata:
     msw: "npm:^2.9.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    react-easy-crop: "npm:^5.4.2"
     react-router-dom: "npm:^7.1.5"
     storybook: "npm:^8.5.4"
     webpack: "npm:^5.97.1"
@@ -9901,6 +9902,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"normalize-wheel@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "normalize-wheel@npm:1.0.1"
+  checksum: 10c0/5daf4c97e39f36658a5263a6499bbc148676ae2bd85f12c8d03c46ffe7bc3c68d44564c00413d88d0457ac0d94450559bb1c24c2ce7ae0c107031f82d093ac06
+  languageName: node
+  linkType: hard
+
 "npm-run-path@npm:^4.0.1":
   version: 4.0.1
   resolution: "npm-run-path@npm:4.0.1"
@@ -10753,6 +10761,19 @@ __metadata:
   peerDependencies:
     react: ^19.1.0
   checksum: 10c0/3e26e89bb6c67c9a6aa86cb888c7a7f8258f2e347a6d2a15299c17eb16e04c19194e3452bc3255bd34000a61e45e2cb51e46292392340432f133e5a5d2dfb5fc
+  languageName: node
+  linkType: hard
+
+"react-easy-crop@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "react-easy-crop@npm:5.4.2"
+  dependencies:
+    normalize-wheel: "npm:^1.0.1"
+    tslib: "npm:^2.0.1"
+  peerDependencies:
+    react: ">=16.4.0"
+    react-dom: ">=16.4.0"
+  checksum: 10c0/e83b52a775e2c7b593cacff2ebbf347183d0fef1c8756544284e5ac3a10a89aa4229dca77eb3aff90bc418ba3b0a7521d850f3aeb06236f2e5faf7ac1a38db4f
   languageName: node
   linkType: hard
 
