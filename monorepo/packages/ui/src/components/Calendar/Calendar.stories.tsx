@@ -1,10 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-// 실제 경로에 맞게 조정
+import type { Meta, StoryObj } from '@storybook/react';
+import { Calendar } from './Calendar'; // 실제 경로에 맞게 조정
 import { useState } from 'react';
-
-import { Calendar } from './Calendar';
-
 const meta: Meta<typeof Calendar> = {
     title: 'Calendar',
     component: Calendar,
@@ -35,16 +32,16 @@ export const Default: Story = {
         );
     },
     args: {
-        isMultiple: true,
+        mode: 'single',
         size: 'lg',
         border: true,
         shadow: true,
         disabled: false,
     },
     argTypes: {
-        isMultiple: {
-            control: {
-                type: 'boolean',
+        mode: {
+            radio: {
+                options: ['single', 'multiple', 'range', 'custom'],
             },
         },
         size: {
