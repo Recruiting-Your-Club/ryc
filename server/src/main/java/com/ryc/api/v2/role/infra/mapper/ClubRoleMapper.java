@@ -1,8 +1,8 @@
 package com.ryc.api.v2.role.infra.mapper;
 
-import com.ryc.api.v2.auth.domain.Admin;
-import com.ryc.api.v2.auth.infra.entity.AdminEntity;
-import com.ryc.api.v2.auth.infra.mapper.AdminMapper;
+import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.admin.infra.entity.AdminEntity;
+import com.ryc.api.v2.admin.infra.mapper.AdminMapper;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;

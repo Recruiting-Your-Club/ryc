@@ -42,8 +42,10 @@ public class ClubHttpApi {
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
-  public ResponseEntity<ClubCreateResponse> createClub(@Valid @RequestBody ClubCreateRequest body) {
-    ClubCreateResponse response = clubService.createClub(body);
+  public ResponseEntity<ClubCreateResponse> createClub(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @Valid @RequestBody ClubCreateRequest body) {
+    ClubCreateResponse response = clubService.createClub(userDetail.getId(), body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 

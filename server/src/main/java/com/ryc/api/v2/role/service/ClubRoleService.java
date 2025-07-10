@@ -6,8 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.auth.domain.Admin;
-import com.ryc.api.v2.auth.domain.AdminRepository;
+import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.common.aop.annotation.HasRole;

@@ -2,11 +2,12 @@ package com.ryc.api.v2.club.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.auth.domain.Admin;
-import com.ryc.api.v2.auth.service.AuthService;
+import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
@@ -26,14 +27,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ClubService {
-
-  private final ClubRepository clubRepository;
-  private final AuthService authService;
-
   private final ClubRoleService clubRoleService;
+  private final ClubRepository clubRepository;
+  private final AdminRepository adminRepository;
 
   @Transactional
-  public ClubCreateResponse createClub(ClubCreateRequest body) {
+  public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
     final Club club =
         Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
 
@@ -43,8 +42,12 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    Admin currentUser = authService.getCurrentUser();
-    clubRoleService.assignRole(currentUser, savedClub, Role.OWNER);
+    Admin currentAdmin =
+        adminRepository
+            .findById(adminId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + adminId));
+
+    clubRoleService.assignRole(currentAdmin, savedClub, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.id()).build();
   }

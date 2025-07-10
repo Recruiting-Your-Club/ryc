@@ -9,28 +9,16 @@ import {
     logoAndTitleContainer,
 } from './MainCard.style';
 import type { MainCardProps } from './types';
+import { getCategory } from '@utils/changeCategory';
 import { Link } from 'react-router-dom';
-
-// FIXME: 나중에 useMemo로 최적화 해야할듯?
-const getTagStatus = (status: string) => {
-    switch (status) {
-        case 'progress':
-            return <Tag text="모집중" variant="progress" />;
-        case 'primary':
-            return <Tag text="모집예정" variant="primary" />;
-        case 'end':
-            return <Tag text="모집마감" variant="end" />;
-        default:
-            return <Tag text="미상" variant="progress" />;
-    }
-};
+import { TagStatus } from './TagStatus';
 
 function MainCard({
     title = 'En#',
     category = '학술동아리',
     description = 'IT 동아리 EN# 신규 멤버 모집이야쥐기네~~~~~~',
     status = 'progress',
-    hashTag = ['프로그래밍', '코딩', '자바스크립트'],
+    clubTags = [{ name: '연극' }, { name: '워크숍' }],
     link = 'http://localhost:3000/manager',
     imageURL = '',
 }: MainCardProps) {
@@ -41,11 +29,15 @@ function MainCard({
     // form hooks
     // query hooks
     // calculated values
-    const hashTagList = hashTag.map((tag) => `#${tag} `);
+    const clubTagList = clubTags.map((tag) => `#${tag.name} `);
     // handlers
     // effects
     return (
-        <Link to={link} css={cardContainer}>
+        <Link
+            to={link}
+            state={{ title: title, category: category, clubLogo: imageURL }}
+            css={cardContainer}
+        >
             <div css={cardHeaderContainer}>
                 <div css={logoAndTitleContainer}>
                     <Avatar
@@ -56,15 +48,23 @@ function MainCard({
                         imageName="logo"
                     />
                     <div css={cardTitleContainer}>
-                        <Text as="div" type="h4Semibold" color="black" noWrap cropped>
+                        <Text
+                            as="div"
+                            type="bodySemibold"
+                            color="black"
+                            textAlign="start"
+                            noWrap
+                            cropped
+                            sx={{ width: '19rem' }}
+                        >
                             {title}
                         </Text>
                         <Text as="div" type="bodyLight" color="caption" noWrap cropped>
-                            {category}
+                            {getCategory(category)}
                         </Text>
                     </div>
                 </div>
-                {getTagStatus(status)}
+                {TagStatus(status)}
             </div>
             <div css={cardBodyContainer}>
                 <Text textAlign="start" type="bodyLight" cropped noWrap>
@@ -73,7 +73,7 @@ function MainCard({
             </div>
             <div css={cardFooterContainer}>
                 <Text type="captionLight" color="primary" noWrap cropped>
-                    {hashTagList}
+                    {clubTagList}
                 </Text>
             </div>
         </Link>

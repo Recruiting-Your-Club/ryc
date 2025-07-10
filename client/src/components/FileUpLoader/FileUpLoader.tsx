@@ -8,17 +8,23 @@ import type { FileUpLoaderProps } from './types';
 import { useFilteredFile } from '@hooks/components/useFilteredFile';
 import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 
-function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps) {
+function FileUpLoaderRoot({
+    children,
+    sx,
+    disabled = false,
+    files = [],
+    onFilesChange,
+}: FileUpLoaderProps) {
     // prop destruction
     // lib hooks
     // initial values
+    const safeOnFilesChange = onFilesChange || (() => {});
     // state, ref, querystring hooks
 
-    const [files, setFiles] = useState<File[]>([]);
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(setFiles);
+    const { filterAndSetFiles } = useFilteredFile(safeOnFilesChange, files.length);
 
     // form hooks
     // query hooks
@@ -37,27 +43,27 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
             if (disabled) return;
             const selectedFiles = e.target.files;
             if (!selectedFiles) return;
-            filterAndSetFiles(selectedFiles);
+            filterAndSetFiles(selectedFiles, files);
             e.target.value = '';
         },
-        [disabled, filterAndSetFiles],
+        [disabled, filterAndSetFiles, files],
     );
 
     //---File delete Handler---//
 
     const handleDelete = useCallback(
         (index: number) => {
-            if (disabled) return;
-            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+            if (disabled || !onFilesChange) return;
+            onFilesChange(files.filter((_, i) => i !== index));
         },
-        [disabled],
+        [disabled, onFilesChange, files],
     );
 
     const handleDeleteEntire = useCallback(() => {
-        if (disabled) return;
-        setFiles([]);
+        if (disabled || !onFilesChange) return;
+        onFilesChange([]);
         setIsActive(false);
-    }, [disabled]);
+    }, [disabled, onFilesChange]);
 
     //---Drag and Drop Handler---//
 
@@ -84,21 +90,21 @@ function FileUpLoaderRoot({ children, sx, disabled = false }: FileUpLoaderProps)
         (e: React.DragEvent<HTMLDivElement>) => {
             if (disabled) return;
             e.preventDefault();
-            filterAndSetFiles(e.dataTransfer.files);
+            filterAndSetFiles(e.dataTransfer.files, files);
             setIsActive(false);
         },
-        [disabled, filterAndSetFiles],
+        [disabled, filterAndSetFiles, files],
     );
 
     const stateContextValue = useMemo(
         () => ({
             files,
-            setFiles,
+            onFilesChange: safeOnFilesChange,
             isActive,
             setIsActive,
             disabled,
         }),
-        [files, isActive, disabled],
+        [files, onFilesChange, isActive, disabled],
     );
 
     const interactionContextValue = useMemo(

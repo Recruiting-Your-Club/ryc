@@ -1,4 +1,5 @@
 import BasicImage from '@assets/images/basicImage.png';
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { s_shape, s_size } from './Avatar.style';
 
@@ -11,10 +12,11 @@ interface AvatarProps {
     radius?: string;
     imageURL?: string;
     imageName?: string;
+    sx?: CSSObject;
 }
 
-function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName }: AvatarProps) {
-    const cssProp = [s_size(size)];
+function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName, sx }: AvatarProps) {
+    const cssProp = [s_size(size), sx];
 
     if (shape) cssProp.push(s_shape(shape, radius));
 

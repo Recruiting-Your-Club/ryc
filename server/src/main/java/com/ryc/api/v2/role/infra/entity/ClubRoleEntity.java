@@ -2,7 +2,7 @@ package com.ryc.api.v2.role.infra.entity;
 
 import jakarta.persistence.*;
 
-import com.ryc.api.v2.auth.infra.entity.AdminEntity;
+import com.ryc.api.v2.admin.infra.entity.AdminEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.common.entity.BaseEntity;
 import com.ryc.api.v2.role.domain.enums.Role;
