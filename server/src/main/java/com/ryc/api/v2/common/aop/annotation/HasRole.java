@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.role.domain.enums.Role;
 
 /*
  * 이 어노테이션은 메소드에 적용되어 해당 메소드가 특정 역할을 가진 사용자만 접근할 수 있도록 합니다.

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.application;
+package com.ryc.api.v2.club.service;
 
 import java.util.List;
 
@@ -19,15 +19,15 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.role.business.RoleService;
-import com.ryc.api.v2.role.domain.Role;
+import com.ryc.api.v2.role.domain.enums.Role;
+import com.ryc.api.v2.role.service.ClubRoleService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ClubService {
-  private final RoleService roleService;
+  private final ClubRoleService clubRoleService;
   private final ClubRepository clubRepository;
   private final AdminRepository adminRepository;
 
@@ -47,7 +47,7 @@ public class ClubService {
             .findById(adminId)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + adminId));
 
-    roleService.assignRole(currentAdmin, savedClub, Role.OWNER);
+    clubRoleService.assignRole(currentAdmin, savedClub, Role.OWNER);
 
     return ClubCreateResponse.builder().clubId(savedClub.id()).build();
   }

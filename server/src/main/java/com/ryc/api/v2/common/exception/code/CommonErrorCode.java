@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 public enum CommonErrorCode implements ErrorCode {
   INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Invalid parameter included"),
   RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not exists"),
+  DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "Resource already exists"),
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
 
   private final HttpStatus httpStatus;

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.application;
+package com.ryc.api.v2.club.service;
 
 import java.util.List;
 import java.util.Map;
