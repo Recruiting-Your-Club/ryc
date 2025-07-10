@@ -82,6 +82,11 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
+  public List<Club> getAllClub() {
+    return clubRepository.findAll();
+  }
+
+  @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
     Club club =
         clubRepository
@@ -103,11 +108,6 @@ public class ClubService {
         .clubSummaries(club.clubSummaries())
         .clubDetailImages(club.clubDetailImages())
         .build();
-  }
-
-  @Transactional(readOnly = true)
-  public List<Club> getAllClub() {
-    return clubRepository.findAll();
   }
 
   @Transactional(readOnly = true)

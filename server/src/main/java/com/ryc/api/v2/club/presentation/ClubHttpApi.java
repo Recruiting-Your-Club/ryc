@@ -49,20 +49,6 @@ public class ClubHttpApi {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @GetMapping("/{id}")
-  @Operation(summary = "동아리 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
-  public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
-    ClubGetResponse response = clubService.getClub(id);
-    return ResponseEntity.status(HttpStatus.OK).body(response);
-  }
-
-  @GetMapping
-  @Operation(summary = "모든 동아리 조회 API")
-  public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
-    List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
-    return ResponseEntity.status(HttpStatus.OK).body(responses);
-  }
-
   @PatchMapping("/{id}")
   @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
   public ResponseEntity<ClubUpdateResponse> updateClub(
@@ -74,4 +60,26 @@ public class ClubHttpApi {
     ClubUpdateResponse response = clubService.updateClub(dto, body);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
+
+  @GetMapping
+  @Operation(summary = "모든 동아리 조회 API")
+  public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
+    List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
+    return ResponseEntity.status(HttpStatus.OK).body(responses);
+  }
+
+  @GetMapping("/{id}")
+  @Operation(summary = "동아리 상세 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
+  public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
+    ClubGetResponse response = clubService.getClub(id);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  //  @GetMapping
+  //  @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
+  //  public ResponseEntity<ClubGetResponse> getClubByAdminId(
+  //      @AuthenticationPrincipal CustomUserDetail userDetail) {
+  //    ClubGetResponse response = clubService.getClubByAdminId(userDetail.getId());
+  //    return ResponseEntity.status(HttpStatus.OK).body(response);
+  //  }
 }
