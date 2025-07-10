@@ -1,7 +1,6 @@
 import Search from '@assets/images/search.svg';
 import { Button, Dropdown, Input, IntervieweeCard, InterviewTimeTable, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
-import type { IntervieweeInformation } from '@api/domain/interview/types';
 import React, { useCallback, useState } from 'react';
 import {
     s_intervieweeCardGroupWrapper,
@@ -14,7 +13,7 @@ import {
     s_titleContainer,
     s_titleTextAndSelectionButtonContainer,
 } from './IntervieweeList.style';
-import type { IntervieweeListProps } from './types';
+import type { EnrichedInterviewee, IntervieweeListProps } from './types';
 import { filterQuery } from './utils/searchValue';
 
 function IntervieweeList({
@@ -47,13 +46,14 @@ function IntervieweeList({
         : intervieweeList;
 
     const filterInterviewees = useCallback(
-        (applicants: IntervieweeInformation[]) => filterQuery(applicants, query),
+        (applicants: EnrichedInterviewee[]) => filterQuery(applicants, query),
         [query],
     );
-    const filteredInterviewees: IntervieweeInformation[] = filterInterviewees(selectedInterviewees);
+    const filteredInterviewees: EnrichedInterviewee[] = filterInterviewees(selectedInterviewees);
 
     // handlers
     // effects
+
     return (
         <div css={s_listContainer(height)}>
             <div css={s_titleContainer}>

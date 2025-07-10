@@ -1,5 +1,6 @@
 import { interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
+import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import {
@@ -46,21 +47,25 @@ function InterviewEvaluationPage() {
         [interviewSchedulelist],
     );
 
-    const finalIntervieweList = useMemo(
+    const finalIntervieweeList = useMemo(
         () =>
-            intervieweelist.map((interviewee) => {
-                const matchedSet = flatScheduleList.find(
-                    (schedule) => schedule.id === interviewee.interviewSetId,
-                );
-                return {
-                    ...interviewee,
-                    interviewDate: matchedSet?.date,
-                    interviewName: matchedSet?.name,
-                    startTime: matchedSet?.startTime,
-                    endTime: matchedSet?.endTime,
-                };
-            }),
-        [],
+            intervieweelist
+                .map((interviewee) => {
+                    const matchedSet = flatScheduleList.find(
+                        (schedule) => schedule.id === interviewee.interviewSetId,
+                    );
+                    if (!matchedSet) return null;
+
+                    return {
+                        ...interviewee,
+                        interviewDate: matchedSet.date,
+                        interviewName: matchedSet.name,
+                        startTime: matchedSet.startTime,
+                        endTime: matchedSet.endTime,
+                    };
+                })
+                .filter(Boolean) as EnrichedInterviewee[],
+        [intervieweelist, flatScheduleList],
     );
 
     // handlers
@@ -70,7 +75,7 @@ function InterviewEvaluationPage() {
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
                 <IntervieweeList
-                    intervieweeList={finalIntervieweList}
+                    intervieweeList={finalIntervieweeList}
                     interviewSchedules={interviewSchedulelist}
                     selectedApplicantId={selectedApplicantId}
                     onSelectApplicant={setSelectedApplicantId}
