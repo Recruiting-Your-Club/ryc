@@ -9,10 +9,23 @@ import {
     s_interviewInformationPageContainer,
     s_selectionContainer,
 } from './InterviewEvaluationPage.style';
+import { getInitialId } from './utils/getInitialId';
 
 function InterviewEvaluationPage() {
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
+    // prop destruction
+    // lib hooks
+    // initial values
     const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
+    const initialId = getInitialId(intervieweelist);
+
+    // state, ref, querystring hooks
+    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(initialId ?? 1);
+
+    // form hooks
+    // query hooks
+    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
+        interviewQueries.allInterviewSchedules(),
+    );
     const { data: intervieweeDetail } = useSuspenseQuery(
         interviewQueries.getIntervieweeDetail(selectedApplicantId),
     );
@@ -21,10 +34,7 @@ function InterviewEvaluationPage() {
         interviewQueries.getInterviewEvaluation(selectedApplicantId),
     );
 
-    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
-        interviewQueries.allInterviewSchedules(),
-    );
-
+    // calculated values
     const flatScheduleList = useMemo(
         () =>
             interviewSchedulelist.flatMap((schedule) =>
@@ -52,6 +62,9 @@ function InterviewEvaluationPage() {
             }),
         [],
     );
+
+    // handlers
+    // effects
 
     return (
         <div css={s_interviewInformationPageContainer}>
