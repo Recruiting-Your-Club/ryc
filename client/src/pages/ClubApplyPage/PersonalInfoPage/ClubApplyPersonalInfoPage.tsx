@@ -12,6 +12,9 @@ import {
     labelContainer,
     labelSx,
 } from './ClubApplyPersonalInfoPage.style';
+import type { ClubApplyPersonalInfoPageProps } from '../types';
+import { getAnswer } from '../utils';
+import { Checkbox } from '@components';
 
 function ClubApplyPersonalInfoPage({
     answers,
