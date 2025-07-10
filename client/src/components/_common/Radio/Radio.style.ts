@@ -1,6 +1,14 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
-import type { RadioOrientation } from './Radio';
+import type { RadioOrientation, RadioSize } from './types';
+
+const radioSizeMap: Record<RadioSize, { size: string; padding: string }> = {
+    xs: { size: '1rem', padding: '0.1rem' },
+    sm: { size: '1.5rem', padding: '0.2rem' },
+    md: { size: '2rem', padding: '0.2rem' },
+    lg: { size: '2.5rem', padding: '0.3rem' },
+    xl: { size: '3rem', padding: '0.3rem' },
+};
 
 export const radioContainer = (orientation: RadioOrientation) => css`
     display: flex;
@@ -17,7 +25,7 @@ export const s_input = css`
     display: none;
 `;
 
-export const s_label = (disabled: boolean) => css`
+export const s_label = (checked: boolean, disabled: boolean) => css`
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -32,31 +40,30 @@ export const s_label = (disabled: boolean) => css`
     `}
 
     &:hover {
-        & span {
-            border: 0.1rem solid ${theme.colors.default};
+        & div {
+            ${!checked &&
+            css`
+                border: 1px solid ${theme.colors.default};
+            `}
         }
     }
 `;
 
-export const s_radio = (checked: boolean) => css`
-    width: 1.2rem;
-    height: 1.2rem;
-    border-radius: 50%;
-    border: 0.1rem solid ${theme.colors.black};
+export const s_radio = (size: RadioSize = 'md') => css`
+    width: ${radioSizeMap[size].size};
+    height: ${radioSizeMap[size].size};
+    border-radius: 100px;
+    border: 1px solid ${theme.colors.black};
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    padding: ${radioSizeMap[size].padding};
+`;
 
-    &::after {
-        content: '';
-        width: 0.8rem;
-        height: 0.8rem;
-        border-radius: 50%;
-        ${checked &&
-        css`
-            background-color: ${theme.colors.default};
-        `};
-        transition: background-color 0.1s ease-in;
-    }
+export const s_radioInner = css`
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    background-color: ${theme.colors.default};
+    transition: background-color 0.1s ease-in;
 `;

@@ -1,15 +1,19 @@
 import type { CSSObject } from '@emotion/react';
 
+export type CalendarMode = 'single' | 'multiple' | 'range' | 'custom';
 export interface CalendarProps {
     // useState의 왼쪽 값
     selectedDate?: string[];
     // useState의 오른쪽 값
     onSelect?: (selectedDate: string[]) => void;
-    isMultiple?: boolean;
+    highlightedDate?: string[];
+    onlySelected?: boolean;
+    mode?: CalendarMode;
     disabled?: boolean;
     border?: boolean;
     shadow?: boolean;
     size?: Size;
+    rangePicker?: boolean;
     sx?: CSSObject;
     zIndex?: CSSObject['zIndex'];
 }
