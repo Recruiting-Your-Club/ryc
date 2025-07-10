@@ -9,7 +9,9 @@
     "private": true,
     "scripts": {
         "build": "babel src --out-dir dist/src --extensions .ts,.tsx && tsc",
-        "dev": "yarn build:ui && yarn build:constants && yarn build:hooks && tsc --watch"
+        "dev": "yarn build:ui && yarn build:constants && yarn build:hooks && tsc --watch",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@emotion/react": "^11.13.0",

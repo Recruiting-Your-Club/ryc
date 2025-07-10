@@ -13,6 +13,9 @@
             "persistent": true,
             "cache": false
         },
+        "storybook": {
+            "outputs": []
+        },
         "check-types": {
             "dependsOn": ["^check-types"]
         },

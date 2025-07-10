@@ -30,6 +30,8 @@ yarn-error.log*
 .vscode/
 .turbo
 
+.yarn/install-state.gz
+
 # TypeScript build info
 *.tsbuildinfo
 **/*.tsbuildinfo
