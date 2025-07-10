@@ -10,7 +10,6 @@ export const s_interviewTimeTableContainer = css`
 export const s_calendar = css`
     width: 25rem;
     height: 30rem;
-    /* box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1); */
 `;
 
 export const s_timeContentContainer = css`
