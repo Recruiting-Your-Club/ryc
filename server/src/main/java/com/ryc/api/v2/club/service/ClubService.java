@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ClubService {
+
   private final ClubRoleService clubRoleService;
   private final ClubRepository clubRepository;
   private final AdminRepository adminRepository;

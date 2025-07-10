@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.club.infra.mapper.ClubMapper;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
@@ -14,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class ClubClubRoleRepositoryImpl implements ClubRoleRepository {
+public class ClubRoleRepositoryImpl implements ClubRoleRepository {
 
   private final ClubRoleJpaRepository clubRoleJpaRepository;
 
@@ -29,6 +32,12 @@ public class ClubClubRoleRepositoryImpl implements ClubRoleRepository {
   public List<ClubRole> findRolesByClubId(String clubId) {
     List<ClubRoleEntity> clubRoleEntities = clubRoleJpaRepository.findByClubId(clubId);
     return clubRoleEntities.stream().map(ClubRoleMapper::toDomain).toList();
+  }
+
+  @Override
+  public List<Club> findClubsByAdminId(String adminId) {
+    List<ClubEntity> clubEntities = clubRoleJpaRepository.findClubsByAdminId(adminId);
+    return clubEntities.stream().map(ClubMapper::toDomain).toList();
   }
 
   @Override

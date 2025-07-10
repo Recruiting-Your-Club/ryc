@@ -10,6 +10,7 @@ import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
@@ -82,6 +83,22 @@ public class ClubRoleService {
     }
 
     clubRoleRepository.deleteByUserId(targetUserId);
+  }
+
+  @Transactional(readOnly = true)
+  public List<ClubGetByAdminIdResponse> getClubByAdminId(String adminId) {
+    List<Club> clubs = clubRoleRepository.findClubsByAdminId(adminId);
+    return clubs.stream()
+        .map(
+            club ->
+                ClubGetByAdminIdResponse.builder()
+                    .id(club.id())
+                    .name(club.name())
+                    .shortDescription(club.shortDescription())
+                    .imageUrl(club.imageUrl())
+                    .thumbnailUrl(club.thumbnailUrl())
+                    .build())
+        .toList();
   }
 
   @Transactional(readOnly = true)

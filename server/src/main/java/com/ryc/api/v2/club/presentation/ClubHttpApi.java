@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.*;
 import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
 import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.role.service.ClubRoleService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "동아리")
 public class ClubHttpApi {
 
+  private final ClubRoleService clubRoleService;
   private final ClubService clubService;
   private final ClubAnnouncementFacade clubAnnouncementFacade;
 
@@ -75,11 +74,11 @@ public class ClubHttpApi {
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-  //  @GetMapping
-  //  @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
-  //  public ResponseEntity<ClubGetResponse> getClubByAdminId(
-  //      @AuthenticationPrincipal CustomUserDetail userDetail) {
-  //    ClubGetResponse response = clubService.getClubByAdminId(userDetail.getId());
-  //    return ResponseEntity.status(HttpStatus.OK).body(response);
-  //  }
+  @GetMapping("/my")
+  @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
+  public ResponseEntity<List<ClubGetByAdminIdResponse>> getClubByAdminId(
+      @AuthenticationPrincipal CustomUserDetail userDetail) {
+    List<ClubGetByAdminIdResponse> responses = clubRoleService.getClubByAdminId(userDetail.getId());
+    return ResponseEntity.status(HttpStatus.OK).body(responses);
+  }
 }
