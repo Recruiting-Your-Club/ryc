@@ -22,16 +22,6 @@ export interface IntervieweeDetail extends Interviewee {
     phone: string;
 }
 
-export interface IntervieweeInformation {
-    id: number;
-    name: string;
-    email: string;
-    studentId: string;
-    phone: string;
-    interviewDate: string;
-    interviewName: string;
-}
-
 export interface Document {
     applicantId: number;
     detail: { question: string; answer: string }[];
