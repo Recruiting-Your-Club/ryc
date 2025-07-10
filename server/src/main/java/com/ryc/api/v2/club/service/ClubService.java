@@ -27,8 +27,7 @@ public class ClubService {
 
   @Transactional
   public Club createClub(ClubCreateRequest body) {
-    final Club club =
-        Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
+    Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
 
     if (clubRepository.existsByName(club.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);

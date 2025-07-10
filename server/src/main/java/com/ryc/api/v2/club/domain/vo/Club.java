@@ -29,13 +29,15 @@ public record Club(
 
   /** Club 동아리 최초 생성시에만 사용 (id가 생성되기 전에만) */
   public static Club initialize(
-      String name, String imageUrl, String thumbnailUrl, Category category) {
+      String name, String imageUrl, String thumbnailUrl, String category) {
+
+    Category categoryEnum = Category.from(category);
     return Club.builder()
         .id(DEFAULT_INITIAL_ID) // 실제로 비즈니스 로직에서 사용되지 않음
         .name(name)
         .imageUrl(imageUrl)
         .thumbnailUrl(thumbnailUrl)
-        .category(category)
+        .category(categoryEnum)
         .clubTags(new ArrayList<>())
         .clubSummaries(new ArrayList<>())
         .clubDetailImages(new ArrayList<>())
@@ -60,7 +62,9 @@ public record Club(
             ? this.thumbnailUrl
             : clubUpdateRequest.thumbnailUrl();
     Category newCategory =
-        clubUpdateRequest.category() == null ? this.category : clubUpdateRequest.category();
+        clubUpdateRequest.category() == null
+            ? this.category
+            : Category.from(clubUpdateRequest.category());
     List<ClubTag> newClubTags =
         clubUpdateRequest.clubTags().isEmpty() ? this.clubTags : clubUpdateRequest.clubTags();
     List<ClubSummary> newClubSummaries =
