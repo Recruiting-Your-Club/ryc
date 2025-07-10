@@ -13,18 +13,16 @@ import {
 function InterviewEvaluationPage() {
     const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
     const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
-    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
-        interviewQueries.allInterviewSchedules(),
-    );
-    const { data: documentlist = [] } = useSuspenseQuery(interviewQueries.allDocuments());
-    const { data: evaluationlist = [] } = useSuspenseQuery(
-        interviewQueries.allInterviewEvaluations(),
-    );
-    const selectedEvaluation = evaluationlist.find(
-        (evaluation) => evaluation.applicantId === selectedApplicantId,
-    );
     const { data: intervieweeDetail } = useSuspenseQuery(
         interviewQueries.getIntervieweeDetail(selectedApplicantId),
+    );
+    const { data: document } = useSuspenseQuery(interviewQueries.getDocument(selectedApplicantId));
+    const { data: evaluation } = useSuspenseQuery(
+        interviewQueries.getInterviewEvaluation(selectedApplicantId),
+    );
+
+    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
+        interviewQueries.allInterviewSchedules(),
     );
 
     const flatScheduleList = useMemo(
@@ -67,17 +65,10 @@ function InterviewEvaluationPage() {
             </div>
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
-                    <InformationBox
-                        applicant={intervieweeDetail}
-                        documentList={
-                            documentlist.find(
-                                (document) => document.applicantId === selectedApplicantId,
-                            ) ?? null
-                        }
-                    />
+                    <InformationBox applicant={intervieweeDetail} documentList={document} />
                 </div>
                 <div css={s_evaluationBoxWrapper}>
-                    <EvaluationBox evaluation={selectedEvaluation ?? null} />
+                    <EvaluationBox evaluation={evaluation} />
                 </div>
             </div>
         </div>

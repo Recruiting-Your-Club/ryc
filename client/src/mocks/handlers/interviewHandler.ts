@@ -9,9 +9,9 @@ import { BASE_URL } from '@constants/api';
 import { http, HttpResponse } from 'msw';
 import documentList from '../data/interview/documentList.json';
 import evaluationList from '../data/interview/evaluationList.json';
+import intervieweeDetailList from '../data/interview/intervieweeDetailList.json';
 import intervieweeList from '../data/interview/intervieweeList.json';
 import interviewScheduleList from '../data/interview/interviewScheduleList.json';
-import intervieweeDetailList from '../data/interview/intervieweeDetailList.json';
 
 const interviewHandler = [
     http.get(`${BASE_URL}interviewschedules/all`, () => {
@@ -26,11 +26,15 @@ const interviewHandler = [
         );
         return HttpResponse.json(detail as IntervieweeDetail, { status: 200 });
     }),
-    http.get(`${BASE_URL}documents/all`, () => {
-        return HttpResponse.json(documentList as Document[], { status: 200 });
+    http.get(`${BASE_URL}documents/:id`, ({ params }) => {
+        const detail = documentList.find((document) => document.applicantId === Number(params.id));
+        return HttpResponse.json(detail as Document, { status: 200 });
     }),
-    http.get(`${BASE_URL}interviewer/all`, () => {
-        return HttpResponse.json(evaluationList as Evaluation[], { status: 200 });
+    http.get(`${BASE_URL}interviewer/:id`, ({ params }) => {
+        const detail = evaluationList.find(
+            (evaluation) => evaluation.applicantId === Number(params.id),
+        );
+        return HttpResponse.json(detail as Evaluation, { status: 200 });
     }),
 ];
 

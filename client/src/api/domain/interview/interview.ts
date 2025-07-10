@@ -28,24 +28,24 @@ async function getIntervieweeDetail(id: number): Promise<IntervieweeDetail> {
     return response as IntervieweeDetail;
 }
 
-async function getAllDocuments(): Promise<Document[]> {
+async function getDocument(id: number): Promise<Document> {
     const response = await httpRequest.get({
-        url: `documents/all`,
+        url: `documents/${id}`,
     });
-    return response as Document[];
+    return response as Document;
 }
 
-async function getAllEvaluations(): Promise<Evaluation[]> {
+async function getEvaluation(id: number): Promise<Evaluation> {
     const response = await httpRequest.get({
-        url: `interviewer/all`,
+        url: `interviewer/${id}`,
     });
-    return response as Evaluation[];
+    return response as Evaluation;
 }
 
 export {
     getAllInterviewSchedules,
     getAllInterviewees,
-    getAllDocuments,
-    getAllEvaluations,
+    getDocument,
+    getEvaluation,
     getIntervieweeDetail,
 };

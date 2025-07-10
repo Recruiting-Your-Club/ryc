@@ -32,8 +32,8 @@ const interviewKeys = {
     allInterviewSchedules: ['interviewschedules'] as const,
     allInterviewees: ['interviewees'] as const,
     intervieweeDetail: (id: number) => ['interviewee-detail', id] as const,
-    allDocuments: ['documents'] as const,
-    allEvaluations: ['evaluations'] as const,
+    documentDetail: (id: number) => ['document-detail', id] as const,
+    evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
 };
 
 export { clubKeys, interviewKeys };
