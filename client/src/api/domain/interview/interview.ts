@@ -1,5 +1,11 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { Document, Evaluation, IntervieweeInformation, InterviewSchedule } from './types';
+import type {
+    Document,
+    Evaluation,
+    Interviewee,
+    IntervieweeDetail,
+    InterviewSchedule,
+} from './types';
 
 async function getAllInterviewSchedules(): Promise<InterviewSchedule[]> {
     const response = await httpRequest.get({
@@ -8,11 +14,18 @@ async function getAllInterviewSchedules(): Promise<InterviewSchedule[]> {
     return response as InterviewSchedule[];
 }
 
-async function getAllInterviewees(): Promise<IntervieweeInformation[]> {
+async function getAllInterviewees(): Promise<Interviewee[]> {
     const response = await httpRequest.get({
         url: `interviewees/all`,
     });
-    return response as IntervieweeInformation[];
+    return response as Interviewee[];
+}
+
+async function getIntervieweeDetail(id: number): Promise<IntervieweeDetail> {
+    const response = await httpRequest.get({
+        url: `interviewees/${id}`,
+    });
+    return response as IntervieweeDetail;
 }
 
 async function getAllDocuments(): Promise<Document[]> {
@@ -29,4 +42,10 @@ async function getAllEvaluations(): Promise<Evaluation[]> {
     return response as Evaluation[];
 }
 
-export { getAllInterviewSchedules, getAllInterviewees, getAllDocuments, getAllEvaluations };
+export {
+    getAllInterviewSchedules,
+    getAllInterviewees,
+    getAllDocuments,
+    getAllEvaluations,
+    getIntervieweeDetail,
+};

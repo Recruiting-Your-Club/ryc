@@ -3,27 +3,18 @@
         "id": 1,
         "name": "팥붕이",
         "email": "nickname@example.com",
-        "studentId": "23000000",
-        "phone": "010-1234-5678",
-        "interviewDate": "2025-07-12",
-        "interviewName": "1차 면접"
+        "interviewSetId": 2025071201
     },
     {
         "id": 2,
         "name": "슈붕이",
         "email": "test@example.com",
-        "studentId": "23000000",
-        "phone": "010-1234-5678",
-        "interviewDate": "2025-07-13",
-        "interviewName": "2차 면접"
+        "interviewSetId": 2025071301
     },
     {
         "id": 3,
         "name": "붕어빵",
         "email": "bbang@example.com",
-        "studentId": "23000000",
-        "phone": "010-1234-5678",
-        "interviewDate": "2025-07-11",
-        "interviewName": "1차 면접"
+        "interviewSetId": 2025071102
     }
 ]

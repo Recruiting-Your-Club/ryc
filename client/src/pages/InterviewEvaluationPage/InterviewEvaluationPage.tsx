@@ -1,7 +1,7 @@
 import { interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     s_evaluationBoxWrapper,
     s_informationAndEvaluationContainer,
@@ -11,6 +11,7 @@ import {
 } from './InterviewEvaluationPage.style';
 
 function InterviewEvaluationPage() {
+    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
     const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
     const { data: interviewSchedulelist = [] } = useSuspenseQuery(
         interviewQueries.allInterviewSchedules(),
@@ -19,17 +20,46 @@ function InterviewEvaluationPage() {
     const { data: evaluationlist = [] } = useSuspenseQuery(
         interviewQueries.allInterviewEvaluations(),
     );
-
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
     const selectedEvaluation = evaluationlist.find(
         (evaluation) => evaluation.applicantId === selectedApplicantId,
+    );
+    const { data: intervieweeDetail } = useSuspenseQuery(
+        interviewQueries.getIntervieweeDetail(selectedApplicantId),
+    );
+
+    const flatScheduleList = useMemo(
+        () =>
+            interviewSchedulelist.flatMap((schedule) =>
+                schedule.interviewSets.map((set) => ({
+                    ...set,
+                    date: schedule.date,
+                })),
+            ),
+        [interviewSchedulelist],
+    );
+
+    const finalIntervieweList = useMemo(
+        () =>
+            intervieweelist.map((interviewee) => {
+                const matchedSet = flatScheduleList.find(
+                    (schedule) => schedule.id === interviewee.interviewSetId,
+                );
+                return {
+                    ...interviewee,
+                    interviewDate: matchedSet?.date,
+                    interviewName: matchedSet?.name,
+                    startTime: matchedSet?.startTime,
+                    endTime: matchedSet?.endTime,
+                };
+            }),
+        [],
     );
 
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
                 <IntervieweeList
-                    intervieweeList={intervieweelist}
+                    intervieweeList={finalIntervieweList}
                     interviewSchedules={interviewSchedulelist}
                     selectedApplicantId={selectedApplicantId}
                     onSelectApplicant={setSelectedApplicantId}
@@ -38,11 +68,7 @@ function InterviewEvaluationPage() {
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
                     <InformationBox
-                        applicant={
-                            intervieweelist.find(
-                                (applicant) => applicant.id === selectedApplicantId,
-                            ) ?? null
-                        }
+                        applicant={intervieweeDetail}
                         documentList={
                             documentlist.find(
                                 (document) => document.applicantId === selectedApplicantId,
