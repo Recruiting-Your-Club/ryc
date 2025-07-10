@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.*;
+import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
+import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
 import com.ryc.api.v2.club.service.ClubFacade;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
