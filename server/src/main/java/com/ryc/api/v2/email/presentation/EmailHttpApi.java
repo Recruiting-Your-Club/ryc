@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
-import com.ryc.api.v2.email.application.EmailService;
+import com.ryc.api.v2.email.service.EmailService;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;

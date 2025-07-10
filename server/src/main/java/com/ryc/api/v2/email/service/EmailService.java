@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.application;
+package com.ryc.api.v2.email.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +22,7 @@ import com.ryc.api.v2.email.domain.EmailSentStatus;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
-import com.ryc.api.v2.evaluation.bussiness.InterviewService;
+import com.ryc.api.v2.evaluation.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 @Service
