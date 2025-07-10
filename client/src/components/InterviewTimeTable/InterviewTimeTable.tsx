@@ -14,14 +14,25 @@ function InterviewTimeTable({
     selectedInterviewLabel,
     onSelect,
 }: InterviewTimeTableProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
     const [date, setDate] = useState<string[]>([interviewSchedules[0].date ?? '']);
 
+    // form hooks
+    // query hooks
+    // calculated values
     const scheduleToShow = interviewSchedules.find((schedule) => schedule.date === date[0]);
     const enabledDates = interviewSchedules.map((schedule) => schedule.date);
 
+    // handlers
     const handleCalendar = (newSelected: string[]) => {
         setDate(newSelected);
     };
+
+    // effects
+
     return (
         <div css={s_interviewTimeTableContainer}>
             <Calendar
