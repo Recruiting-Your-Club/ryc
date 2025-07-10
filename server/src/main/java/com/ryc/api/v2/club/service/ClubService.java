@@ -2,17 +2,13 @@ package com.ryc.api.v2.club.service;
 
 import java.util.List;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
@@ -20,7 +16,6 @@ import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.role.service.ClubRoleService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,12 +23,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClubService {
 
-  private final ClubRoleService clubRoleService;
   private final ClubRepository clubRepository;
-  private final AdminRepository adminRepository;
 
   @Transactional
-  public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
+  public Club createClub(ClubCreateRequest body) {
     final Club club =
         Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
 
@@ -41,16 +34,7 @@ public class ClubService {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
-    final Club savedClub = clubRepository.save(club);
-
-    Admin currentAdmin =
-        adminRepository
-            .findById(adminId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + adminId));
-
-    clubRoleService.assignRole(currentAdmin, savedClub, Role.OWNER);
-
-    return ClubCreateResponse.builder().clubId(savedClub.id()).build();
+    return clubRepository.save(club);
   }
 
   @Transactional
@@ -89,12 +73,9 @@ public class ClubService {
 
   @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
-    Club club =
-        clubRepository
-            .findById(clubId)
-            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
-
+    Club club = getClubById(clubId);
     String detailDescription = club.detailDescription();
+
     if (detailDescription.isBlank()) {
       detailDescription = club.shortDescription();
     }
@@ -109,6 +90,13 @@ public class ClubService {
         .clubSummaries(club.clubSummaries())
         .clubDetailImages(club.clubDetailImages())
         .build();
+  }
+
+  @Transactional(readOnly = true)
+  public Club getClubById(String clubId) {
+    return clubRepository
+        .findById(clubId)
+        .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
   }
 
   @Transactional(readOnly = true)

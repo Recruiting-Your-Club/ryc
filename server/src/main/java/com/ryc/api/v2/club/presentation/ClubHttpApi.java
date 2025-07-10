@@ -19,6 +19,7 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.*;
 import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.service.ClubFacade;
 import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.role.service.ClubRoleService;
@@ -37,6 +38,7 @@ public class ClubHttpApi {
 
   private final ClubRoleService clubRoleService;
   private final ClubService clubService;
+  private final ClubFacade clubFacade;
   private final ClubAnnouncementFacade clubAnnouncementFacade;
 
   @PostMapping
@@ -44,7 +46,7 @@ public class ClubHttpApi {
   public ResponseEntity<ClubCreateResponse> createClub(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ClubCreateRequest body) {
-    ClubCreateResponse response = clubService.createClub(userDetail.getId(), body);
+    ClubCreateResponse response = clubFacade.createClub(userDetail.getId(), body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
