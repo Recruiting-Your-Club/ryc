@@ -41,4 +41,9 @@ public class ClubRepositoryImpl implements ClubRepository {
   public List<Club> findAll() {
     return clubJpaRepository.findAll().stream().map(ClubMapper::toDomain).toList();
   }
+
+  @Override
+  public boolean existsById(String clubId) {
+    return clubJpaRepository.existsById(clubId);
+  }
 }

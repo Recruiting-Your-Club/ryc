@@ -109,4 +109,9 @@ public class ClubService {
   public List<Club> getAllClub() {
     return clubRepository.findAll();
   }
+
+  @Transactional(readOnly = true)
+  public boolean isValidClubId(String clubId) {
+    return clubRepository.existsById(clubId);
+  }
 }

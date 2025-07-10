@@ -22,6 +22,7 @@ import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.role.domain.enums.Role;
 
@@ -38,9 +39,7 @@ public class AnnouncementService {
   @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
       ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
-    // 1.Club 찾기
-
-    // 2.Announcement 생성
+    // Announcement 생성
     Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
 
     ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubRoleSecuredDto.clubId());
@@ -51,20 +50,18 @@ public class AnnouncementService {
   }
 
   @Transactional(readOnly = true)
+  @ValidClub
   public List<AnnouncementGetAllResponse> findAllByClubId(String clubId) {
-    // 1. todo club 조회
-
-    // 2. 클럽 ID에 해당하는 모든 공고 조회
+    // 클럽 ID에 해당하는 모든 공고 조회
     List<Announcement> announcements = announcementRepository.findAllByClubId(clubId);
 
-    // 3. 도메인 객체 목록을 응답 DTO 목록으로 변환
+    // 도메인 객체 목록을 응답 DTO 목록으로 변환
     return announcements.stream().map(AnnouncementGetAllResponse::from).toList();
   }
 
   @Transactional(readOnly = true)
-  public AnnouncementGetDetailResponse findById(String announcementId) {
-    // 1. todo club 조회
-
+  @ValidClub
+  public AnnouncementGetDetailResponse findById(String clubId, String announcementId) {
     // 공고 ID로 공고 조회
     Announcement announcement = announcementRepository.findByIdWithApplication(announcementId);
 
