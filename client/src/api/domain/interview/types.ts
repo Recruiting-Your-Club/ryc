@@ -5,10 +5,10 @@ interface InterviewSet {
     endTime: string;
 }
 
-export type InterviewSchedule = {
+export interface InterviewSchedule {
     date: string;
     interviewSets: InterviewSet[];
-};
+}
 
 export interface Interviewee {
     id: number;
