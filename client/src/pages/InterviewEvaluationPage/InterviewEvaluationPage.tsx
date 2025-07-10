@@ -70,7 +70,7 @@ function InterviewEvaluationPage() {
 
     // handlers
     // effects
-
+    //
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
