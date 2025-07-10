@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ryc.api.v2.club.business.ClubAnnouncementFacade;
-import com.ryc.api.v2.club.business.ClubService;
+import com.ryc.api.v2.club.application.ClubAnnouncementFacade;
+import com.ryc.api.v2.club.application.ClubService;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
@@ -42,8 +42,10 @@ public class ClubHttpApi {
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
-  public ResponseEntity<ClubCreateResponse> createClub(@Valid @RequestBody ClubCreateRequest body) {
-    ClubCreateResponse response = clubService.createClub(body);
+  public ResponseEntity<ClubCreateResponse> createClub(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @Valid @RequestBody ClubCreateRequest body) {
+    ClubCreateResponse response = clubService.createClub(userDetail.getId(), body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 

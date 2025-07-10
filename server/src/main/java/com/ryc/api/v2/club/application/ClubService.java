@@ -1,4 +1,4 @@
-package com.ryc.api.v2.club.business;
+package com.ryc.api.v2.club.application;
 
 import java.util.List;
 
@@ -21,7 +21,6 @@ import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.business.RoleService;
 import com.ryc.api.v2.role.domain.Role;
-import com.ryc.api.v2.util.UserUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +32,7 @@ public class ClubService {
   private final AdminRepository adminRepository;
 
   @Transactional
-  public ClubCreateResponse createClub(ClubCreateRequest body) {
+  public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
     final Club club =
         Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
 
@@ -43,13 +42,10 @@ public class ClubService {
 
     final Club savedClub = clubRepository.save(club);
 
-    String currentUserId = UserUtil.getCurrentUserId();
-
     Admin currentAdmin =
         adminRepository
-            .findById(currentUserId)
-            .orElseThrow(
-                () -> new UsernameNotFoundException("User not found with id: " + currentUserId));
+            .findById(adminId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + adminId));
 
     roleService.assignRole(currentAdmin, savedClub, Role.OWNER);
 
