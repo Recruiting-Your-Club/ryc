@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
+import com.ryc.api.v2.evaluation.presentation.dto.response.InterviewEvaluationResponse;
 import com.ryc.api.v2.evaluation.service.EvaluationService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
@@ -34,6 +36,16 @@ public class EvaluationHttpApi {
       @Valid @RequestBody ApplicationEvaluationRequest body) {
     ApplicationEvaluationResponse response =
         evaluationService.evaluateApplication(body, userDetail.getId());
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
+
+  @PostMapping("/interview")
+  @Operation(summary = "면접 평가 생성 API")
+  public ResponseEntity<InterviewEvaluationResponse> evaluateInterview(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @Valid @RequestBody InterviewEvaluationRequest body) {
+    InterviewEvaluationResponse response =
+        evaluationService.evaluateInterview(body, userDetail.getId());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 }

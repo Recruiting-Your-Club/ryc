@@ -6,7 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
+import com.ryc.api.v2.evaluation.presentation.dto.response.InterviewEvaluationResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,18 @@ public class EvaluationService {
     Evaluation savedEvaluation = evaluationRepository.save(evaluation);
 
     return ApplicationEvaluationResponse.builder()
+        .score(savedEvaluation.getScore())
+        .comment(savedEvaluation.getComment())
+        .build();
+  }
+
+  @Transactional
+  public InterviewEvaluationResponse evaluateInterview(
+      InterviewEvaluationRequest body, String adminId) {
+    Evaluation evaluation = Evaluation.initialize(body, adminId);
+    Evaluation savedEvaluation = evaluationRepository.save(evaluation);
+
+    return InterviewEvaluationResponse.builder()
         .score(savedEvaluation.getScore())
         .comment(savedEvaluation.getComment())
         .build();
