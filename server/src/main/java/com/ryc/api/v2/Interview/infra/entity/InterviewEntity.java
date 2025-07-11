@@ -1,6 +1,7 @@
 package com.ryc.api.v2.Interview.infra.entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 
 @Entity
@@ -14,6 +15,4 @@ public class InterviewEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
-
-
 }

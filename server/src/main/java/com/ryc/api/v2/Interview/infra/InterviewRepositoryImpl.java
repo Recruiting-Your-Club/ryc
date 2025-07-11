@@ -1,8 +1,8 @@
 package com.ryc.api.v2.Interview.infra;
 
-import com.ryc.api.v2.Interview.domain.InterviewRepository;
 import org.springframework.stereotype.Repository;
 
+import com.ryc.api.v2.Interview.domain.InterviewRepository;
+
 @Repository
-public class InterviewRepositoryImpl implements InterviewRepository {
-}
+public class InterviewRepositoryImpl implements InterviewRepository {}

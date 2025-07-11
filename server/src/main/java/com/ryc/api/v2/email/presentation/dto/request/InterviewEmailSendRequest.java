@@ -13,7 +13,8 @@ public record InterviewEmailSendRequest(
                 @NotNull(message = "number of people by interview date shouldn't be null")
                 NumberOfPeopleByInterviewDate>
             numberOfPeopleByInterviewDates,
-    @NotNull(message = "email send request shouldn't be null") @Valid EmailSendRequest emailSendRequest) {
+    @NotNull(message = "email send request shouldn't be null") @Valid
+        EmailSendRequest emailSendRequest) {
 
   @Override
   public List<NumberOfPeopleByInterviewDate> numberOfPeopleByInterviewDates() {
