@@ -1,8 +1,8 @@
 package com.ryc.api.v2.email.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +44,9 @@ public class EmailService {
     this.interviewService = interviewService;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
-    this.linkHtmlTemplate = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
+    try (InputStream is = resource.getInputStream()) {
+      this.linkHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
   }
 
   @Transactional
