@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.PageRequest;
@@ -30,18 +31,18 @@ public class EmailService {
 
   private final String baseUri;
   private final String linkHtmlTemplate;
-  private final InterviewService interviewService;
   private final EmailRepository emailRepository;
+  private final ApplicationEventPublisher eventPublisher;
 
   public EmailService(
       @Value("${reservation.base-url}") String baseUri,
-      InterviewService interviewService,
       EmailRepository emailRepository,
+      ApplicationEventPublisher eventPublisher,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
-    this.interviewService = interviewService;
     this.emailRepository = emailRepository;
+    this.eventPublisher = eventPublisher;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     this.linkHtmlTemplate = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
@@ -94,6 +95,7 @@ public class EmailService {
             body.emailSendRequest().recipients(),
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
+
 
     interviewService.createInterview(
         clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());

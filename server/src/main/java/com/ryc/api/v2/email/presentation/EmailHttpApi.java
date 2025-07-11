@@ -7,11 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
@@ -29,14 +25,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/v2/emails")
+@RequestMapping("api/v2")
 @RequiredArgsConstructor
 @Tag(name = "이메일")
 public class EmailHttpApi {
 
   private final EmailService emailService;
 
-  @PostMapping
+  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails/")
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   @ApiResponses(
       value = {
@@ -52,8 +48,8 @@ public class EmailHttpApi {
       })
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @RequestParam String clubId,
-      @RequestParam String announcementId,
+      @PathVariable String clubId,
+      @PathVariable String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
     List<EmailSendResponse> responses =
@@ -61,7 +57,7 @@ public class EmailHttpApi {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 
-  @PostMapping("/interviews")
+  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails/interviews")
   @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
   @ApiResponses(
       value = {
@@ -77,8 +73,8 @@ public class EmailHttpApi {
       })
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @RequestParam String clubId,
-      @RequestParam String announcementId,
+      @PathVariable String clubId,
+      @PathVariable String announcementId,
       @Valid @RequestBody InterviewEmailSendRequest body) {
     ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
     List<EmailSendResponse> responses =
