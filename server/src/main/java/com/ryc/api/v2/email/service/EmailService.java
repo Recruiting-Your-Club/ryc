@@ -6,8 +6,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ryc.api.v2.Interview.service.InterviewService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.Interview.service.InterviewService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.domain.Email;
@@ -32,17 +31,17 @@ public class EmailService {
   private final String baseUri;
   private final String linkHtmlTemplate;
   private final EmailRepository emailRepository;
-  private final ApplicationEventPublisher eventPublisher;
+  private final InterviewService interviewService;
 
   public EmailService(
       @Value("${reservation.base-url}") String baseUri,
       EmailRepository emailRepository,
-      ApplicationEventPublisher eventPublisher,
+      InterviewService interviewService,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
     this.emailRepository = emailRepository;
-    this.eventPublisher = eventPublisher;
+    this.interviewService = interviewService;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     this.linkHtmlTemplate = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
@@ -96,9 +95,7 @@ public class EmailService {
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
-
-    interviewService.createInterview(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
+    interviewService.createInterview(clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()

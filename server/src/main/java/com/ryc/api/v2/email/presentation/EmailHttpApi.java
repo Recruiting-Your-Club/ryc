@@ -32,7 +32,7 @@ public class EmailHttpApi {
 
   private final EmailService emailService;
 
-  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails/")
+  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails")
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   @ApiResponses(
       value = {
