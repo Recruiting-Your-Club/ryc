@@ -1,10 +1,10 @@
-package com.ryc.api.v2.evaluation.service;
+package com.ryc.api.v2.interview.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ryc.api.v2.evaluation.domain.NumberOfPeopleByInterviewDate;
+import com.ryc.api.v2.interview.domain.NumberOfPeopleByInterviewDate;
 
 @Service
 public class InterviewService {
