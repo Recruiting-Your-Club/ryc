@@ -1,15 +1,10 @@
 import type { CSSObject } from '@emotion/react';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
-
-import DownArrow from '@ssoc/assets/images/downArrow.svg';
-
-import { s_selectTrigger } from './Select.styles';
+import React, { forwardRef, useMemo } from 'react';
 import { useSelectContext } from './SelectContext';
-
-interface SelectTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: ReactNode;
-    sx?: CSSObject;
-}
+import { s_selectTrigger } from './Select.styles';
+import DownArrow from '@ssoc/assets/images/downArrow.svg';
+import type { SelectTriggerProps } from './types';
 
 function SelectTrigger(
     { children, sx, ...props }: SelectTriggerProps,

@@ -83,6 +83,9 @@ function BasicInfoStep({
     // lib hooks
     const { toast } = useToast();
 
+    //calculate values
+    const questionArray = [...questionTypes]
+
     //handlers
     const handleQuestions = () => {
         if (questions.length >= 20) {
@@ -112,7 +115,8 @@ function BasicInfoStep({
                                 onValueChange={(value) =>
                                     handleQuestionTypeChange(question.id, value as QuestionType)
                                 }
-                                sx={s_selectContainer}
+                                sx={s_selectContainer}  
+                                options={questionArray}                      
                             >
                                 <Select.Trigger>
                                     <Select.Value placeholder="문제 유형 선택" />
