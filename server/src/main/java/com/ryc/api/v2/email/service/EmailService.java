@@ -52,10 +52,7 @@ public class EmailService {
   @Transactional
   @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String adminId,
-      String announcementId,
-      EmailSendRequest body) {
+      ClubRoleSecuredDto clubRoleSecuredDto, String announcementId, EmailSendRequest body) {
 
     List<Email> emails =
         body.recipients().stream()
@@ -66,8 +63,7 @@ public class EmailService {
                         recipient,
                         body.subject(),
                         body.content(),
-                        announcementId,
-                        adminId))
+                        announcementId))
             .toList();
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
@@ -97,7 +93,7 @@ public class EmailService {
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
-    interviewService.createInterview(
+    interviewService.createInterviewSlot(
         clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
@@ -146,9 +142,7 @@ public class EmailService {
               baseUri, adminId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 
-      emails.add(
-          Email.initialize(
-              adminId, recipient, subject, linkHtml + content, announcementId, adminId));
+      emails.add(Email.initialize(adminId, recipient, subject, linkHtml + content, announcementId));
     }
     return emails;
   }

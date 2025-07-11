@@ -52,8 +52,7 @@ public class EmailHttpApi {
       @PathVariable String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    List<EmailSendResponse> responses =
-        emailService.createEmails(dto, userDetail.getId(), announcementId, body);
+    List<EmailSendResponse> responses = emailService.createEmails(dto, announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 
