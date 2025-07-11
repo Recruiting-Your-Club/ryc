@@ -17,8 +17,9 @@ public class Evaluation {
   private final String evaluateeId;
   private final BigDecimal score;
   private final String comment;
-
+  private final EvaluationType type;
   private final Boolean deleted;
+
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
 
@@ -29,7 +30,8 @@ public class Evaluation {
    * @param adminId 평가를 수행하는 관리자(admin)의 식별자
    * @return {@link Evaluation} 도메인 객체
    */
-  public static Evaluation initialize(EvaluationRequest request, String adminId) {
+  public static Evaluation initialize(
+      EvaluationRequest request, EvaluationType type, String adminId) {
     Evaluation evaluation =
         Evaluation.builder()
             .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
@@ -37,6 +39,8 @@ public class Evaluation {
             .evaluateeId(request.applicantId())
             .score(request.score())
             .comment(request.comment())
+            .type(type)
+            .deleted(false)
             .build();
 
     evaluation.validate();

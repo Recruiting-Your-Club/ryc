@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
+import com.ryc.api.v2.evaluation.domain.EvaluationType;
 import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
@@ -20,7 +21,7 @@ public class EvaluationService {
   @Transactional
   public ApplicationEvaluationResponse evaluateApplication(
       ApplicationEvaluationRequest body, String adminId) {
-    Evaluation evaluation = Evaluation.initialize(body, adminId);
+    Evaluation evaluation = Evaluation.initialize(body, EvaluationType.APPLICATION, adminId);
     Evaluation savedEvaluation = evaluationRepository.save(evaluation);
 
     return ApplicationEvaluationResponse.builder()
@@ -32,7 +33,7 @@ public class EvaluationService {
   @Transactional
   public InterviewEvaluationResponse evaluateInterview(
       InterviewEvaluationRequest body, String adminId) {
-    Evaluation evaluation = Evaluation.initialize(body, adminId);
+    Evaluation evaluation = Evaluation.initialize(body, EvaluationType.INTERVIEW, adminId);
     Evaluation savedEvaluation = evaluationRepository.save(evaluation);
 
     return InterviewEvaluationResponse.builder()
