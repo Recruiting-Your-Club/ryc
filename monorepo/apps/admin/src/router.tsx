@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 
 import { ManagerLayout } from './layouts';
-import { LoginPage, NotFoundPage, RegisterPage, TestPage } from './pages';
+import { LoginPage, NotFoundPage, RecruitCreatePage, RegisterPage, TestPage } from './pages';
 
 const router = createBrowserRouter([
     {
@@ -12,6 +12,7 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'test', element: <TestPage /> },
         ],
     },

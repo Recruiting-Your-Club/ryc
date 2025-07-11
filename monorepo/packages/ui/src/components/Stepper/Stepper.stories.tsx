@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import React, { useState } from 'react';
 
-import { Button } from '@ssoc/ui';
+import { Button } from '../Button';
 
 import { Step } from './Step';
 import { StepLabel } from './StepLabel';
