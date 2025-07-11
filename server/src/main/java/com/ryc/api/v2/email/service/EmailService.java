@@ -60,7 +60,12 @@ public class EmailService {
             .map(
                 recipient ->
                     Email.initialize(
-                        recipient, body.subject(), body.content(), announcementId, adminId))
+                        clubRoleSecuredDto.adminId(),
+                        recipient,
+                        body.subject(),
+                        body.content(),
+                        announcementId,
+                        adminId))
             .toList();
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
@@ -139,7 +144,9 @@ public class EmailService {
               baseUri, adminId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 
-      emails.add(Email.initialize(recipient, subject, linkHtml + content, announcementId, adminId));
+      emails.add(
+          Email.initialize(
+              adminId, recipient, subject, linkHtml + content, announcementId, adminId));
     }
     return emails;
   }

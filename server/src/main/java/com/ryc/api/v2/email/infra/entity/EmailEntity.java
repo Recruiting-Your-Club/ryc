@@ -31,6 +31,9 @@ public class EmailEntity extends BaseEntity {
   private String id;
 
   @Column(nullable = false)
+  private String senderId;
+
+  @Column(nullable = false)
   private String recipient;
 
   @Column(nullable = false)

@@ -12,6 +12,7 @@ public class EmailMapper {
   public static EmailEntity toEntity(Email email) {
     return EmailEntity.builder()
         .id(email.id())
+        .senderId(email.senderId())
         .recipient(email.recipient())
         .subject(email.subject())
         .content(email.content())
@@ -25,6 +26,7 @@ public class EmailMapper {
   public static Email toDomain(EmailEntity emailEntity) {
     return Email.builder()
         .id(emailEntity.getId())
+        .senderId(emailEntity.getSenderId())
         .recipient(emailEntity.getRecipient())
         .subject(emailEntity.getSubject())
         .content(emailEntity.getContent())

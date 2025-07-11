@@ -9,6 +9,7 @@ import lombok.Builder;
 @Builder
 public record Email(
     String id,
+    String senderId,
     String recipient,
     String subject,
     String content,
@@ -20,9 +21,15 @@ public record Email(
     LocalDateTime updatedAt) {
 
   public static Email initialize(
-      String recipient, String subject, String content, String announcementId, String adminId) {
+      String senderId,
+      String recipient,
+      String subject,
+      String content,
+      String announcementId,
+      String adminId) {
     return Email.builder()
         .id(DEFAULT_INITIAL_ID)
+        .senderId(senderId)
         .recipient(recipient)
         .subject(subject)
         .content(content)
@@ -36,6 +43,7 @@ public record Email(
   public Email updateStatus(EmailSentStatus status) {
     return Email.builder()
         .id(this.id)
+        .senderId(this.senderId)
         .recipient(this.recipient)
         .subject(this.subject)
         .content(this.content)
@@ -49,6 +57,7 @@ public record Email(
   public Email incrementRetryCount() {
     return Email.builder()
         .id(this.id)
+        .senderId(this.senderId)
         .recipient(this.recipient)
         .subject(this.subject)
         .content(this.content)
