@@ -2,6 +2,7 @@ import { Button, Divider, Select, Text } from '@components';
 import { useInterviewSettingDialogContext } from '@components/InterviewSettingDialog/InterviewSettingDialogContext';
 import type { InterviewInformation } from '@components/InterviewSettingDialog/types';
 import { DEFAULT_END_TIME, DEFAULT_START_TIME } from '@constants/InterviewSettingDialog';
+import { useToast } from '@hooks/useToast';
 import { generateTimeRange } from '@utils/InterviewTimeBox/generateTime';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import {
@@ -39,6 +40,7 @@ function InterviewTimeBox() {
         setInterviewInformation,
         currentDate,
     } = useInterviewSettingDialogContext();
+    const { toast } = useToast();
 
     // initial values
     // state, ref, querystring hooks
@@ -66,7 +68,7 @@ function InterviewTimeBox() {
     const handleApply = () => {
         if (!interval) return;
         if (!currentDate) {
-            alert('캘린더에서 날짜를 선택해주세요!');
+            toast('캘린더에서 날짜를 선택해주세요!', { type: 'error' });
             return;
         }
         const result = generateTimeRange(startTime, endTime, interval).slice(0, -1);
