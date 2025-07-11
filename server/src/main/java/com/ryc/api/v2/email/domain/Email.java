@@ -43,6 +43,8 @@ public record Email(
         .announcementId(this.announcementId)
         .status(status)
         .retryCount(this.retryCount)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
         .build();
   }
 
@@ -56,6 +58,8 @@ public record Email(
         .announcementId(this.announcementId)
         .status(this.status)
         .retryCount(this.retryCount + 1)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
         .build();
   }
 }
