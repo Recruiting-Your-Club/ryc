@@ -16,7 +16,17 @@ public record ClubUpdateRequest(
     @Schema(description = "동아리 상세 설명") String detailDescription,
     @Schema(description = "동아리 이미지 URL") String imageUrl,
     @Schema(description = "동아리 썸네일 URL") String thumbnailUrl,
-    @Schema(description = "동아리 카테고리") String category,
+    @Schema(
+            description = "동아리 카테고리",
+            allowableValues = {
+              "PERFORMANCE_ARTS",
+              "CULTURE",
+              "SPORTS",
+              "ACADEMIC",
+              "VOLUNTEER",
+              "RELIGION"
+            })
+        String category,
     @Schema(description = "동아리 태그 리스트") List<ClubTag> clubTags,
     @Schema(description = "동아리 요약 리스트") List<ClubSummary> clubSummaries,
     @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImage> clubDetailImages) {
