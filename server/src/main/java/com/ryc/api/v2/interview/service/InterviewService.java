@@ -1,4 +1,4 @@
-package com.ryc.api.v2.evaluation.bussiness;
+package com.ryc.api.v2.evaluation.service;
 
 import java.util.List;
 
