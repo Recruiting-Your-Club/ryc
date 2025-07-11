@@ -56,7 +56,10 @@ function InterviewTimeBox() {
     }, [timeValue]);
 
     const timeItems = useMemo(() => {
-        return generateTimeRange(DEFAULT_START_TIME, DEFAULT_END_TIME, interval);
+        return generateTimeRange(DEFAULT_START_TIME, DEFAULT_END_TIME, interval).map((time) => ({
+            value: time,
+            label: time,
+        }));
     }, [interval]);
 
     // handler
@@ -131,27 +134,39 @@ function InterviewTimeBox() {
                     면접 진행 시간
                 </Text>
                 <div css={s_timeRangeSettingContainer}>
-                    <Select value={startTime} onValueChange={setStartTime} size="xs" sx={s_select}>
+                    <Select
+                        value={startTime}
+                        onValueChange={setStartTime}
+                        options={timeItems}
+                        size="xs"
+                        sx={s_select}
+                    >
                         <Select.Trigger sx={s_selectTrigger}>
                             <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                            {timeItems.map((item) => (
-                                <Select.Item key={item} value={item}>
-                                    {item}
+                            {timeItems.map(({ value, label }) => (
+                                <Select.Item key={value} value={value}>
+                                    {label}
                                 </Select.Item>
                             ))}
                         </Select.Content>
                     </Select>
                     -
-                    <Select value={endTime} onValueChange={setEndTime} size="xs" sx={s_select}>
+                    <Select
+                        value={endTime}
+                        onValueChange={setEndTime}
+                        options={timeItems}
+                        size="xs"
+                        sx={s_select}
+                    >
                         <Select.Trigger sx={s_selectTrigger}>
                             <Select.Value />
                         </Select.Trigger>
                         <Select.Content sx={s_selectContent}>
-                            {timeItems.map((item) => (
-                                <Select.Item key={item} value={item}>
-                                    {item}
+                            {timeItems.map(({ value, label }) => (
+                                <Select.Item key={value} value={value}>
+                                    {label}
                                 </Select.Item>
                             ))}
                         </Select.Content>

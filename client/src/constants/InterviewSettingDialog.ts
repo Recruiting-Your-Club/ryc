@@ -24,5 +24,23 @@ export const numberOnlyRegex = /^[0-9]*$/;
 
 export const DEFAULT_START_TIME = '08:00';
 export const DEFAULT_END_TIME = '22:00';
-export const DEFAULT_TIME_VALUE = '15분';
+export const DEFAULT_TIME_VALUE = '15';
 export const DEFAULT_NUMBER_VALUE = '1';
+
+export const numberOptions = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+    { value: '6', label: '6' },
+    { value: '7', label: '7' },
+    { value: '8', label: '8' },
+    { value: '9', label: '9' },
+    { value: '10', label: '10' },
+];
+export const timeOptions = [
+    { value: '15', label: '15분' },
+    { value: '30', label: '30분' },
+    { value: '60', label: '1시간' },
+];

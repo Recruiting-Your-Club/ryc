@@ -17,6 +17,8 @@ import {
     DEFAULT_START_TIME,
     DEFAULT_TIME_VALUE,
     INITIAL_FORM,
+    numberOptions,
+    timeOptions,
 } from '@constants/InterviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
@@ -42,9 +44,6 @@ import {
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
-
-const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-const times = ['15분', '30분', '1시간'];
 
 function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogProps) {
     // prop destruction
@@ -165,14 +164,15 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onValueChange={setNumberValue}
                                 size="xs"
                                 sx={s_select}
+                                options={numberOptions}
                             >
                                 <Select.Trigger sx={s_selectTrigger}>
                                     <Select.Value />
                                 </Select.Trigger>
                                 <Select.Content>
-                                    {numbers.map((number) => (
-                                        <Select.Item key={number} value={number}>
-                                            {number}
+                                    {numberOptions.map(({ value, label }) => (
+                                        <Select.Item key={value} value={value}>
+                                            {label}
                                         </Select.Item>
                                     ))}
                                 </Select.Content>
@@ -190,14 +190,15 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onValueChange={setTimeValue}
                                 size="xs"
                                 sx={s_select}
+                                options={timeOptions}
                             >
                                 <Select.Trigger sx={s_selectTrigger}>
                                     <Select.Value />
                                 </Select.Trigger>
                                 <Select.Content>
-                                    {times.map((time) => (
-                                        <Select.Item key={time} value={time}>
-                                            {time}
+                                    {timeOptions.map(({ value, label }) => (
+                                        <Select.Item key={value} value={value}>
+                                            {label}
                                         </Select.Item>
                                     ))}
                                 </Select.Content>
