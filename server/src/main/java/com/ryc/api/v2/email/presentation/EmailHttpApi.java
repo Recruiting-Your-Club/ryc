@@ -2,10 +2,6 @@ package com.ryc.api.v2.email.presentation;
 
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,6 +21,10 @@ import com.ryc.api.v2.email.service.EmailService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -38,13 +38,18 @@ public class EmailHttpApi {
 
   @PostMapping
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "202", description = "이메일 전송 성공"),
-      @ApiResponse(responseCode = "400", description = "잘못된 요청",
-          content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "403", description = "권한 없음",
-          content = @Content(schema = @Schema(hidden = true)))
-  })
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "202", description = "이메일 전송 성공"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "잘못된 요청",
+            content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "권한 없음",
+            content = @Content(schema = @Schema(hidden = true)))
+      })
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String clubId,
@@ -58,13 +63,18 @@ public class EmailHttpApi {
 
   @PostMapping("/interviews")
   @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "202", description = "이메일 전송 성공"),
-      @ApiResponse(responseCode = "400", description = "잘못된 요청",
-          content = @Content(schema = @Schema(hidden = true))),
-      @ApiResponse(responseCode = "403", description = "권한 없음",
-          content = @Content(schema = @Schema(hidden = true)))
-  })
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "202", description = "이메일 전송 성공"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "잘못된 요청",
+            content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(
+            responseCode = "403",
+            description = "권한 없음",
+            content = @Content(schema = @Schema(hidden = true)))
+      })
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String clubId,
