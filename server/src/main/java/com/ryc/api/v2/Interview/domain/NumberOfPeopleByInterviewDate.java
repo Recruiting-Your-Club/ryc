@@ -1,5 +1,6 @@
 package com.ryc.api.v2.Interview.domain;
 
-import java.time.LocalDateTime;
+import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
 
-public record NumberOfPeopleByInterviewDate(LocalDateTime interviewDate, Integer numberOfPeople) {}
+public record NumberOfPeopleByInterviewDate(
+    PeriodRequest interviewPeriod, Integer numberOfPeople) {}

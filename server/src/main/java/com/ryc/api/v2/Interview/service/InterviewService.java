@@ -9,7 +9,7 @@ import com.ryc.api.v2.Interview.domain.NumberOfPeopleByInterviewDate;
 @Service
 public class InterviewService {
 
-  public void createInterview(
+  public void createInterviewSlot(
       String adminId,
       String announcementId,
       List<NumberOfPeopleByInterviewDate> numberOfPeopleByInterviewDate) {}
