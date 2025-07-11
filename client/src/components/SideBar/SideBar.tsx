@@ -51,7 +51,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
 
     const defaultSubMenuItems: SubMenuItem[] = [
         { parentId: 1, subMenu: '모집공고', link: '/manager/recruitment' },
-        { parentId: 2, subMenu: '단계별 통합 관리', link: '/manager/steps' },
+        { parentId: 2, subMenu: '단계별 지원자 관리', link: '/manager/steps' },
         { parentId: 2, subMenu: '불합격자 관리', link: '/manager/rejected' },
         { parentId: 3, subMenu: '공고 편집', link: '/manager/edit' },
         { parentId: 4, subMenu: '시간대 별 지원자 편집', link: '/manager/time-slots' },
