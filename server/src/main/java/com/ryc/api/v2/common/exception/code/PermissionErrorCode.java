@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PermissionErrorCode implements ErrorCode {
-  FORBIDDEN_NOT_CLUB_OWNER(HttpStatus.FORBIDDEN, "You are not the club owner. Access forbidden."),
-  FORBIDDEN_NOT_CLUB_MEMBER(HttpStatus.FORBIDDEN, "You are not the club member. Access forbidden.");
+  FORBIDDEN_NOT_CLUB_OWNER(HttpStatus.FORBIDDEN, "동아리 회장이 아닙니다. 접근이 금지되었습니다."),
+  FORBIDDEN_NOT_CLUB_MEMBER(HttpStatus.FORBIDDEN, "동아리원이 아닙니다. 접근이 금지되었습니다."),;
 
   private final HttpStatus httpStatus;
   private final String message;
