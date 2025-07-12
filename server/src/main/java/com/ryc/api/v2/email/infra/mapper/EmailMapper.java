@@ -11,14 +11,14 @@ public class EmailMapper {
 
   public static EmailEntity toEntity(Email email) {
     return EmailEntity.builder()
-        .id(email.id())
-        .senderId(email.senderId())
-        .recipient(email.recipient())
-        .subject(email.subject())
-        .content(email.content())
-        .announcementId(email.announcementId())
-        .status(email.status())
-        .retryCount(email.retryCount())
+        .id(email.getId())
+        .senderId(email.getSenderId())
+        .recipient(email.getRecipient())
+        .subject(email.getSubject())
+        .content(email.getContent())
+        .announcementId(email.getAnnouncementId())
+        .status(email.getStatus())
+        .retryCount(email.getRetryCount())
         .build();
   }
 
@@ -32,8 +32,6 @@ public class EmailMapper {
         .announcementId(emailEntity.getAnnouncementId())
         .status(emailEntity.getStatus())
         .retryCount(emailEntity.getRetryCount())
-        .createdAt(emailEntity.getCreatedAt())
-        .updatedAt(emailEntity.getUpdatedAt())
         .build();
   }
 }
