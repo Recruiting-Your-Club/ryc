@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.service.AdminService;
-import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
 import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
@@ -84,11 +84,11 @@ public class ClubRoleService {
         .map(
             club ->
                 ClubGetByAdminIdResponse.builder()
-                    .id(club.id())
-                    .name(club.name())
-                    .shortDescription(club.shortDescription())
-                    .imageUrl(club.imageUrl())
-                    .thumbnailUrl(club.thumbnailUrl())
+                    .id(club.getId())
+                    .name(club.getName())
+                    .shortDescription(club.getShortDescription())
+                    .imageUrl(club.getImageUrl())
+                    .thumbnailUrl(club.getThumbnailUrl())
                     .build())
         .toList();
   }

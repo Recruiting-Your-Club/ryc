@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
@@ -29,7 +29,7 @@ public class ClubService {
   public Club createClub(ClubCreateRequest body) {
     Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
 
-    if (clubRepository.existsByName(club.name())) {
+    if (clubRepository.existsByName(club.getName())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
@@ -53,15 +53,15 @@ public class ClubService {
     Club savedClub = clubRepository.save(newClub);
 
     return ClubUpdateResponse.builder()
-        .name(savedClub.name())
-        .shortDescription(savedClub.shortDescription())
-        .detailDescription(savedClub.detailDescription())
-        .imageUrl(savedClub.imageUrl())
-        .thumbnailUrl(savedClub.thumbnailUrl())
-        .category(savedClub.category())
-        .clubTags(savedClub.clubTags())
-        .clubSummaries(savedClub.clubSummaries())
-        .clubDetailImages(savedClub.clubDetailImages())
+        .name(savedClub.getName())
+        .shortDescription(savedClub.getShortDescription())
+        .detailDescription(savedClub.getDetailDescription())
+        .imageUrl(savedClub.getImageUrl())
+        .thumbnailUrl(savedClub.getThumbnailUrl())
+        .category(savedClub.getCategory())
+        .clubTags(savedClub.getClubTags())
+        .clubSummaries(savedClub.getClubSummaries())
+        .clubDetailImages(savedClub.getClubDetailImages())
         .build();
   }
 
@@ -71,23 +71,17 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubGetResponse getClub(String clubId) {
+  public ClubGetResponse getClubResponse(String clubId) {
     Club club = getClubById(clubId);
-    String detailDescription = club.detailDescription();
-
-    if (detailDescription.isBlank()) {
-      detailDescription = club.shortDescription();
-    }
-
     return ClubGetResponse.builder()
-        .name(club.name())
-        .detailDescription(detailDescription)
-        .imageUrl(club.imageUrl())
-        .thumbnailUrl(club.thumbnailUrl())
-        .category(club.category())
-        .clubTags(club.clubTags())
-        .clubSummaries(club.clubSummaries())
-        .clubDetailImages(club.clubDetailImages())
+        .name(club.getName())
+        .detailDescription(club.getDetailDescription())
+        .imageUrl(club.getImageUrl())
+        .thumbnailUrl(club.getThumbnailUrl())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .clubSummaries(club.getClubSummaries())
+        .clubDetailImages(club.getClubDetailImages())
         .build();
   }
 

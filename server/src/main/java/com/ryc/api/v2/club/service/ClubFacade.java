@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.service.AdminService;
-import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
@@ -33,7 +33,7 @@ public class ClubFacade {
     Club savedClub = clubService.createClub(body);
     Admin admin = adminService.getAdminById(adminId);
     clubRoleService.assignRole(admin, savedClub, Role.OWNER);
-    return new ClubCreateResponse(savedClub.id());
+    return new ClubCreateResponse(savedClub.getId());
   }
 
   @Transactional
@@ -44,7 +44,7 @@ public class ClubFacade {
 
   @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
-    return clubService.getClub(clubId);
+    return clubService.getClubResponse(clubId);
   }
 
   @Transactional(readOnly = true)
