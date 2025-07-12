@@ -2,8 +2,6 @@ package com.ryc.api.v2.Interview.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
-import java.time.LocalDateTime;
-
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
 
@@ -21,8 +19,6 @@ public class InterviewSlot {
   private final String announcementId;
   private final Integer maxNumberOfPeople;
   private final Period period;
-  private final LocalDateTime createdAt;
-  private final LocalDateTime updatedAt;
 
   public static InterviewSlot initialize(
       String creatorId,

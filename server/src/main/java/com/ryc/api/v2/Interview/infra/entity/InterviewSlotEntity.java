@@ -1,7 +1,5 @@
 package com.ryc.api.v2.Interview.infra.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,15 +10,18 @@ import jakarta.persistence.Table;
 import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.AccessLevel;
 
 @Entity
 @Table(name = "interview_slots")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class InterviewSlotEntity extends BaseEntity {
 
   @Id
@@ -38,21 +39,4 @@ public class InterviewSlotEntity extends BaseEntity {
 
   @Column(nullable = false)
   private PeriodVO period;
-
-  @Builder
-  public InterviewSlotEntity(
-      String id,
-      String creatorId,
-      String announcementId,
-      Integer maxNumberOfPeople,
-      PeriodVO period,
-      LocalDateTime createdAt,
-      LocalDateTime updatedAt) {
-    super(createdAt, updatedAt);
-    this.id = id;
-    this.creatorId = creatorId;
-    this.announcementId = announcementId;
-    this.maxNumberOfPeople = maxNumberOfPeople;
-    this.period = period;
-  }
 }

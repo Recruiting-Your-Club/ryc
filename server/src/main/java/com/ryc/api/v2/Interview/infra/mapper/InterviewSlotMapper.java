@@ -20,8 +20,6 @@ public class InterviewSlotMapper {
         .announcementId(interviewSlotEntity.getAnnouncementId())
         .maxNumberOfPeople(interviewSlotEntity.getMaxNumberOfPeople())
         .period(period)
-        .createdAt(interviewSlotEntity.getCreatedAt())
-        .updatedAt(interviewSlotEntity.getUpdatedAt())
         .build();
   }
 
@@ -33,8 +31,6 @@ public class InterviewSlotMapper {
         .announcementId(interviewSlot.getAnnouncementId())
         .maxNumberOfPeople(interviewSlot.getMaxNumberOfPeople())
         .period(periodVO)
-        .createdAt(interviewSlot.getCreatedAt())
-        .updatedAt(interviewSlot.getUpdatedAt())
         .build();
   }
 }
