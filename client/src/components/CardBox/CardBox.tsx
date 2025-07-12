@@ -119,7 +119,6 @@ function CardBox({ stepTitle, step, query, applicantList, handleOpen, height, sx
                         />
                     ))}
                 </div>
-                {/* {children} */}
             </div>
         </div>
     );
