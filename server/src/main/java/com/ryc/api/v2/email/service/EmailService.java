@@ -88,8 +88,8 @@ public class EmailService {
             clubRoleSecuredDto.clubId(),
             clubRoleSecuredDto.adminId(),
             announcementId,
-            // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요
-            body.emailSendRequest().recipients(),
+            body.emailSendRequest()
+                .recipients(), // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
