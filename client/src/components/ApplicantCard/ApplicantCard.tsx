@@ -14,16 +14,7 @@ import {
 } from './ApplicantCard.style';
 import type { ApplicantCardProps } from './types';
 
-function ApplicantCard({
-    name,
-    email,
-    date,
-    score,
-    status,
-    checked,
-    onChange,
-    onClick,
-}: ApplicantCardProps) {
+function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -33,7 +24,7 @@ function ApplicantCard({
     // calculated values
     // handlers
     const handleChange = (checked: boolean) => {
-        onChange(email, checked);
+        onChange(applicant.email, checked);
     };
     // effects
 
@@ -50,12 +41,16 @@ function ApplicantCard({
                 <Checkbox.Control />
             </Checkbox.Root>
             <Card.TopBody>
-                <Card.TitleContainer title={name} subTitle={email} subTitleSx={emailTextCss} />
+                <Card.TitleContainer
+                    title={applicant.name}
+                    subTitle={applicant.email}
+                    subTitleSx={emailTextCss}
+                />
             </Card.TopBody>
             <Card.BottomBody sx={bottomCss}>
                 <span css={dateWrapper}>
                     <TimeCircle css={timeCircleSvgCss} />
-                    <Card.DescriptionText description={date} sx={dateTextCss} />
+                    <Card.DescriptionText description={applicant.date} sx={dateTextCss} />
                 </span>
             </Card.BottomBody>
             <Divider sx={dividerCss} />
@@ -63,11 +58,11 @@ function ApplicantCard({
                 <Text
                     as="span"
                     type="helperTextBold"
-                    color={status.startsWith('평가 완료') ? 'primary' : 'black'}
+                    color={applicant.status.startsWith('평가 완료') ? 'primary' : 'black'}
                 >
-                    {status}
+                    {applicant.status}
                 </Text>
-                <ScoreTag score={score} />
+                <ScoreTag score={applicant.score} />
             </Card.Footer>
         </Card.Root>
     );

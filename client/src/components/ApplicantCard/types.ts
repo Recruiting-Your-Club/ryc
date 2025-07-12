@@ -1,9 +1,7 @@
+import { Applicant } from '@pages/StepManagementPage/types';
+
 export interface ApplicantCardProps {
-    name: string;
-    email: string;
-    date: string;
-    score: string;
-    status: string;
+    applicant: Applicant;
     checked: boolean;
     onChange: (email: string, checked: boolean) => void;
     onClick: () => void;
