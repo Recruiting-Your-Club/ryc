@@ -5,19 +5,22 @@ import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import com.ryc.api.v2.Interview.domain.NumberOfPeopleByInterviewDate;
+import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record InterviewEmailSendRequest(
-    @NotNull(message = "number of people by interview date shouldn't be null")
+    @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.")
         List<
-                @NotNull(message = "number of people by interview date shouldn't be null")
-                NumberOfPeopleByInterviewDate>
-            numberOfPeopleByInterviewDates,
-    @NotNull(message = "email send request shouldn't be null") @Valid
+                @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.") @Valid
+                NumberOfPeopleByInterviewDateRequest>
+            numberOfPeopleByInterviewDateRequests,
+    @NotNull(message = "이메일 전송 요청 정보는 null일 수 없습니다.") @Valid @Schema(description = "이메일 전송 요청 정보")
         EmailSendRequest emailSendRequest) {
 
   @Override
-  public List<NumberOfPeopleByInterviewDate> numberOfPeopleByInterviewDates() {
-    return List.copyOf(numberOfPeopleByInterviewDates);
+  @Schema(description = "면접 날짜별 인원 수 정보")
+  public List<NumberOfPeopleByInterviewDateRequest> numberOfPeopleByInterviewDateRequests() {
+    return List.copyOf(numberOfPeopleByInterviewDateRequests);
   }
 }

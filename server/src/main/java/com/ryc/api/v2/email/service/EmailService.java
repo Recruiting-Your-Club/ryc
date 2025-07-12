@@ -94,7 +94,7 @@ public class EmailService {
             body.emailSendRequest().content());
 
     interviewService.createInterviewSlot(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
+        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDateRequests());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()
