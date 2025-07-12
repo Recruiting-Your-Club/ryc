@@ -2,15 +2,15 @@ import TimeCircle from '@assets/images/time-circle.svg';
 import { Card, Checkbox, Divider, ScoreTag, Text } from '@components';
 import React from 'react';
 import {
-    bottomCss,
-    checkboxCss,
-    dateTextCss,
-    dateWrapper,
-    dividerCss,
-    emailTextCss,
-    FooterCss,
-    rootCss,
-    timeCircleSvgCss,
+    s_bottom,
+    s_checkbox,
+    s_dateText,
+    s_dateWrapper,
+    s_divider,
+    s_emailText,
+    s_Footer,
+    s_root,
+    s_timeCircleSvg,
 } from './ApplicantCard.style';
 import type { ApplicantCardProps } from './types';
 
@@ -29,13 +29,13 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
     // effects
 
     return (
-        <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={rootCss}>
+        <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={s_root}>
             <Checkbox.Root
                 size="xs"
                 isChecked={checked}
                 onChange={(checked) => handleChange(checked)}
                 onClick={(e) => e.stopPropagation()}
-                sx={checkboxCss}
+                sx={s_checkbox}
             >
                 <Checkbox.HiddenInput />
                 <Checkbox.Control />
@@ -44,17 +44,17 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
                 <Card.TitleContainer
                     title={applicant.name}
                     subTitle={applicant.email}
-                    subTitleSx={emailTextCss}
+                    subTitleSx={s_emailText}
                 />
             </Card.TopBody>
-            <Card.BottomBody sx={bottomCss}>
-                <span css={dateWrapper}>
-                    <TimeCircle css={timeCircleSvgCss} />
-                    <Card.DescriptionText description={applicant.date} sx={dateTextCss} />
+            <Card.BottomBody sx={s_bottom}>
+                <span css={s_dateWrapper}>
+                    <TimeCircle css={s_timeCircleSvg} />
+                    <Card.DescriptionText description={applicant.date} sx={s_dateText} />
                 </span>
             </Card.BottomBody>
-            <Divider sx={dividerCss} />
-            <Card.Footer sx={FooterCss}>
+            <Divider sx={s_divider} />
+            <Card.Footer sx={s_Footer}>
                 <Text
                     as="span"
                     type="helperTextBold"

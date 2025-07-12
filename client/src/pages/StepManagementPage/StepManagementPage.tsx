@@ -10,11 +10,11 @@ import {
 import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
 import React, { useState } from 'react';
 import {
-    inputCss,
-    searchBarContainer,
-    stepBoxContainer,
-    stepManagementPageContainer,
-    topContainer,
+    s_input,
+    s_searchBarContainer,
+    s_stepBoxContainer,
+    s_stepManagementPageContainer,
+    s_topContainer,
 } from './StepManagementPage.style';
 import type { Applicant, ClubNotice } from './types';
 const applicantList = [
@@ -157,7 +157,6 @@ function StepManagementPage() {
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
     const [query, setQuery] = useState('');
-
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
@@ -166,7 +165,6 @@ function StepManagementPage() {
     // query hooks
     // calculated values
     // handlers
-
     const handleOpen = (applicant: Applicant) => {
         setSelectedApplicant(applicant);
         setIsOpen(true);
@@ -188,9 +186,9 @@ function StepManagementPage() {
     // effects
 
     return (
-        <div css={stepManagementPageContainer}>
-            <div css={topContainer}>
-                <nav css={searchBarContainer}>
+        <div css={s_stepManagementPageContainer}>
+            <div css={s_topContainer}>
+                <nav css={s_searchBarContainer}>
                     <Input
                         variant="transparent"
                         endNode={
@@ -198,13 +196,13 @@ function StepManagementPage() {
                                 <Search width="1.5rem" height="1.5rem" />
                             </Button>
                         }
-                        inputSx={inputCss}
+                        inputSx={s_input}
                         placeholder="지원자 이름 검색"
                         onChange={(e) => setQuery(e.target.value)}
                     />
                 </nav>
             </div>
-            <div css={stepBoxContainer}>
+            <div css={s_stepBoxContainer}>
                 <CardBox
                     stepTitle={data.document ? '서류 평가' : '지원서 접수'}
                     step="normal"

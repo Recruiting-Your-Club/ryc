@@ -1,8 +1,5 @@
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
-import { Divider, Text } from '@components';
-import { ApplicantCard } from '@components/ApplicantCard';
-import { Button } from '@components/_common';
-import { Dropdown } from '@components/_common/Dropdown';
+import { ApplicantCard, Button, Divider, Dropdown, Text } from '@components';
 import { Applicant } from '@pages/StepManagementPage/types';
 import React, { useCallback, useState } from 'react';
 import {

@@ -1,18 +1,18 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const dialogCss = css`
+export const s_dialog = css`
     max-width: 64dvw;
     max-height: 90dvh;
     min-width: 115rem;
 `;
 
-export const headerCss = css`
+export const s_header = css`
     justify-content: space-between;
     padding: 1.4rem 3rem;
 `;
 
-export const contentCss = css`
+export const s_content = css`
     display: flex;
     flex-direction: row;
     padding: 2rem 4rem;
@@ -46,7 +46,7 @@ export const s_resetButton = css`
     }
 `;
 
-export const informationContainer = css`
+export const s_informationContainer = css`
     flex: 4;
     display: flex;
     flex-direction: column;
@@ -55,7 +55,7 @@ export const informationContainer = css`
     gap: 1rem;
 `;
 
-export const verticalDivider = css`
+export const s_verticalDivider = css`
     border-left: 1px solid ${theme.colors.gray[200]};
     height: 100%;
     margin: 0 1rem;
@@ -70,20 +70,20 @@ export const s_emailContainer = css`
     gap: 1.5rem;
 `;
 
-export const titleInputCss = css`
+export const s_titleInput = css`
     border: 1px solid ${theme.colors.gray[500]};
     border-radius: 8px;
     padding-left: 1rem;
     ${theme.typography.captionRegular}
 `;
 
-export const inputCss = css`
+export const s_input = css`
     ::placeholder {
         ${theme.typography.captionRegular}
     }
 `;
 
-export const textAreaInner = css`
+export const s_textAreaInner = css`
     ${theme.typography.captionRegular}
     margin: -2.5rem 0;
     padding: 1rem 1.5rem;
@@ -105,14 +105,14 @@ export const s_textAreaOuter = css`
     margin: 0;
 `;
 
-export const titleWrapper = css`
+export const s_titleWrapper = css`
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 `;
 
-export const contentWrapper = css`
+export const s_contentWrapper = css`
     flex: 8.5;
     height: 100%;
     display: flex;
@@ -121,7 +121,7 @@ export const contentWrapper = css`
     gap: 1rem;
 `;
 
-export const submitButtonWrapper = css`
+export const s_submitButtonWrapper = css`
     flex: 0.5;
     display: flex;
     align-items: center;
@@ -130,17 +130,17 @@ export const submitButtonWrapper = css`
     max-height: 3rem;
 `;
 
-export const informationInput = css`
+export const s_informationInput = css`
     display: flex;
     gap: 5rem;
 `;
 
-export const perInformationInput = css`
+export const s_perInformationInput = css`
     display: flex;
     flex-direction: column;
 `;
 
-export const informationInputCss = (isError: boolean) => css`
+export const s_informationInputCss = (isError: boolean) => css`
     border: 1px solid ${theme.colors.gray[400]};
     border-radius: 10px;
     width: 4.5rem;
@@ -163,25 +163,25 @@ export const s_selectTrigger = css`
     height: 2.5rem;
 `;
 
-export const inputFormSection = css`
+export const s_inputFormSection = css`
     display: flex;
     height: 3rem;
     align-items: center;
     margin: 0.5rem 0;
 `;
 
-export const calendarCss = css`
+export const s_calendar = css`
     margin: 1.5rem 0;
     width: 100%;
     height: 60rem;
     box-shadow: rgba(0, 27, 55, 0.1) 0px 2px 30px 0px;
 `;
 
-export const helperCss = css`
+export const s_helper = css`
     ${theme.typography.helperTextRegular}
     margin: -0.3rem 0.5rem;
 `;
 
-export const numberUnitText = css`
+export const s_numberUnitText = css`
     margin: 0 0 0 -7.5rem;
 `;

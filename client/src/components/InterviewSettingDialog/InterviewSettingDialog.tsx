@@ -22,25 +22,25 @@ import {
 } from '@constants/InterviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-    calendarCss,
-    contentCss,
-    contentWrapper,
-    dialogCss,
-    headerCss,
-    informationContainer,
-    inputCss,
-    submitButtonWrapper,
+    s_calendar,
+    s_content,
+    s_contentWrapper,
+    s_dialog,
     s_emailContainer,
     s_emptyPlace,
+    s_header,
+    s_informationContainer,
+    s_input,
     s_perInformationContainer,
     s_resetButton,
     s_select,
     s_selectContainer,
     s_selectTrigger,
+    s_submitButtonWrapper,
     s_textAreaOuter,
-    titleInputCss,
-    titleWrapper,
-    verticalDivider,
+    s_titleInput,
+    s_titleWrapper,
+    s_verticalDivider,
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
@@ -152,8 +152,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
 
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
-            <Dialog open={open} handleClose={handleClose} size="full" sx={dialogCss}>
-                <Dialog.Header position="start" sx={headerCss}>
+            <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
+                <Dialog.Header position="start" sx={s_header}>
                     <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
                         면접 일정 보내기
                     </Text>
@@ -167,7 +167,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                     </Button>
                 </Dialog.Header>
                 <Divider color="black" sx={{ borderTop: '1px solid' }} />
-                <Dialog.Content sx={contentCss}>
+                <Dialog.Content sx={s_content}>
                     <div css={s_selectContainer}>
                         <Text as="span" type="h4Bold" textAlign="start">
                             상세 면접 정보
@@ -242,20 +242,20 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             </Button>
                         </div>
                     </div>
-                    <div css={informationContainer}>
+                    <div css={s_informationContainer}>
                         <Calendar
                             mode="custom"
                             size="md"
                             selectedDate={selectedDates}
                             onSelect={handleDates}
                             highlightedDate={highlightedDate}
-                            sx={calendarCss}
+                            sx={s_calendar}
                         />
                         <InterviewTimeBox />
                     </div>
-                    <div css={verticalDivider} />
+                    <div css={s_verticalDivider} />
                     <div css={s_emailContainer}>
-                        <div css={titleWrapper}>
+                        <div css={s_titleWrapper}>
                             <Text as="span" type="h4Semibold" textAlign="start">
                                 제목
                             </Text>
@@ -264,11 +264,11 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onChange={(e) => setEmailTitle(e.target.value)}
                                 height="4rem"
                                 placeholder="이메일 제목을 입력해주세요."
-                                inputSx={titleInputCss}
-                                sx={inputCss}
+                                inputSx={s_titleInput}
+                                sx={s_input}
                             />
                         </div>
-                        <div css={contentWrapper}>
+                        <div css={s_contentWrapper}>
                             <Text as="span" type="h4Semibold" textAlign="start">
                                 내용
                             </Text>
@@ -281,7 +281,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 wrapperSx={s_textAreaOuter}
                             />
                         </div>
-                        <div css={submitButtonWrapper}>
+                        <div css={s_submitButtonWrapper}>
                             <Button>이메일 보내기</Button>
                         </div>
                     </div>
