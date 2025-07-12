@@ -35,7 +35,7 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
    *
    * @throws IllegalArgumentException 시작날짜보다 끝 날짜가 빠른 경우
    */
-  public void validate() {
+  private void validate() {
     if (startDate.isAfter(endDate)) {
       throw new IllegalArgumentException("startDate should be before endDate");
     }

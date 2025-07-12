@@ -1,8 +1,8 @@
-package com.ryc.api.v2.email.application;
+package com.ryc.api.v2.email.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.Interview.service.InterviewService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.domain.Email;
@@ -22,7 +23,6 @@ import com.ryc.api.v2.email.domain.EmailSentStatus;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
-import com.ryc.api.v2.evaluation.bussiness.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 @Service
@@ -30,49 +30,44 @@ public class EmailService {
 
   private final String baseUri;
   private final String linkHtmlTemplate;
-  private final InterviewService interviewService;
   private final EmailRepository emailRepository;
+  private final InterviewService interviewService;
 
   public EmailService(
-      @Value("${reservation.base-url}") String baseUri,
-      InterviewService interviewService,
+      @Value("${RESERVATION.BASE-URL.LOCAL}") String baseUri,
       EmailRepository emailRepository,
+      InterviewService interviewService,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
-    this.interviewService = interviewService;
     this.emailRepository = emailRepository;
+    this.interviewService = interviewService;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
-    this.linkHtmlTemplate = Files.readString(resource.getFile().toPath(), StandardCharsets.UTF_8);
+    try (InputStream is = resource.getInputStream()) {
+      this.linkHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
   }
 
   @Transactional
   @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String adminId,
-      String announcementId,
-      EmailSendRequest body) {
+      ClubRoleSecuredDto clubRoleSecuredDto, String announcementId, EmailSendRequest body) {
 
     List<Email> emails =
         body.recipients().stream()
             .map(
                 recipient ->
                     Email.initialize(
-                        recipient, body.subject(), body.content(), announcementId, adminId))
+                        clubRoleSecuredDto.adminId(),
+                        recipient,
+                        body.subject(),
+                        body.content(),
+                        clubRoleSecuredDto.clubId(),
+                        announcementId))
             .toList();
 
-    List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream()
-        .map(
-            email ->
-                EmailSendResponse.builder()
-                    .emailId(email.id())
-                    .status(email.status())
-                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
-                    .build())
-        .toList();
+    return saveAll(emails);
   }
 
   @Transactional
@@ -82,27 +77,23 @@ public class EmailService {
       String announcementId,
       InterviewEmailSendRequest body) {
 
+    interviewService.createInterviewSlot(
+        clubRoleSecuredDto.adminId(),
+        clubRoleSecuredDto.clubId(),
+        announcementId,
+        body.numberOfPeopleByInterviewDateRequests());
+
     List<Email> emails =
         createEmailsWithEachLink(
+            clubRoleSecuredDto.clubId(),
             clubRoleSecuredDto.adminId(),
             announcementId,
-            body.emailSendRequest().recipients(),
+            body.emailSendRequest()
+                .recipients(), // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
-    interviewService.createInterview(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
-
-    List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream()
-        .map(
-            email ->
-                EmailSendResponse.builder()
-                    .emailId(email.id())
-                    .status(email.status())
-                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
-                    .build())
-        .toList();
+    return saveAll(emails);
   }
 
   @Transactional(readOnly = true)
@@ -125,22 +116,40 @@ public class EmailService {
   }
 
   private List<Email> createEmailsWithEachLink(
+      String clubId,
       String adminId,
       String announcementId,
-      List<String> recipients,
+      List<String> recipientIds,
       String subject,
       String content) {
     List<Email> emails = new ArrayList<>();
 
-    for (String recipient : recipients) {
+    for (String recipient : recipientIds) {
       String link =
           String.format(
-              "%s?admin-id=%s&announcement-id=%s&recipient=%s",
-              baseUri, adminId, announcementId, recipient);
+              "%s?club-id=%s&announcement-id=%s&recipient-id=%s",
+              baseUri, clubId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 
-      emails.add(Email.initialize(recipient, subject, linkHtml + content, announcementId, adminId));
+      emails.add(
+          Email.initialize(
+              adminId, recipient, subject, linkHtml + content, clubId, announcementId));
     }
     return emails;
+  }
+
+  private List<EmailSendResponse> saveAll(List<Email> emails) {
+    List<Email> savedEmails = emailRepository.saveAll(emails);
+    return savedEmails.stream()
+        .map(
+            email -> {
+              String statusUrl = String.format("api/v2/emails/%s/status", email.getId());
+              return EmailSendResponse.builder()
+                  .emailId(email.getId())
+                  .status(email.getStatus())
+                  .statusUrl(statusUrl)
+                  .build();
+            })
+        .toList();
   }
 }

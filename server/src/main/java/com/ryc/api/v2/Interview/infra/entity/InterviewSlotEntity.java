@@ -1,9 +1,14 @@
-package com.ryc.api.v2.email.infra.entity;
+package com.ryc.api.v2.Interview.infra.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
 import com.ryc.api.v2.common.entity.BaseEntity;
-import com.ryc.api.v2.email.domain.EmailSentStatus;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,28 +17,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "emails")
+@Table(name = "interview_slots")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class EmailEntity extends BaseEntity {
+public class InterviewSlotEntity extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
   @Column(nullable = false)
-  private String senderId;
-
-  @Column(nullable = false)
-  private String recipient;
-
-  @Column(nullable = false)
-  private String subject;
-
-  @Column(columnDefinition = "TEXT", nullable = false)
-  private String content;
+  private String creatorId;
 
   @Column(nullable = false)
   private String clubId;
@@ -42,10 +38,8 @@ public class EmailEntity extends BaseEntity {
   private String announcementId;
 
   @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private EmailSentStatus status;
+  private Integer maxNumberOfPeople;
 
   @Column(nullable = false)
-  @Builder.Default
-  private Integer retryCount = 0;
+  private PeriodVO period;
 }
