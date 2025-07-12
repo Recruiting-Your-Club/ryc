@@ -19,10 +19,10 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   private final InterviewSlotJpaRepository interviewSlotJpaRepository;
 
   @Override
-  public List<String> saveAll(List<InterviewSlot> interviewSlots) {
+  public List<InterviewSlot> saveAll(List<InterviewSlot> interviewSlots) {
     List<InterviewSlotEntity> entities =
         interviewSlots.stream().map(InterviewSlotMapper::toEntity).toList();
     List<InterviewSlotEntity> savedEntities = interviewSlotJpaRepository.saveAll(entities);
-    return savedEntities.stream().map(InterviewSlotEntity::getId).toList();
+    return savedEntities.stream().map(InterviewSlotMapper::toDomain).toList();
   }
 }

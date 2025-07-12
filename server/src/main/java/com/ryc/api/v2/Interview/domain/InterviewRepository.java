@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface InterviewRepository {
 
-  List<String> saveAll(List<InterviewSlot> interviewSlots);
+  List<InterviewSlot> saveAll(List<InterviewSlot> interviewSlots);
 }

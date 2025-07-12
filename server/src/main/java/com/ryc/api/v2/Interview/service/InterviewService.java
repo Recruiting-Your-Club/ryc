@@ -32,6 +32,9 @@ public class InterviewService {
                         request.interviewPeriod()))
             .toList();
 
-    return interviewRepository.saveAll(interviewSlots);
+    List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAll(interviewSlots);
+    return savedInterviewSlots.stream()
+        .map(InterviewSlot::getId)
+        .toList();
   }
 }
