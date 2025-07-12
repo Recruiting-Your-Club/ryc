@@ -1,6 +1,5 @@
 import Search from '@assets/images/search.svg';
 import {
-    ApplicantCard,
     ApplicantDialog,
     Button,
     CardBox,
@@ -9,9 +8,8 @@ import {
     PlainEmailDialog,
 } from '@components';
 import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
-    cardGroup,
     inputCss,
     searchBarContainer,
     stepBoxContainer,
@@ -157,7 +155,6 @@ function StepManagementPage() {
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
     const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
     const [query, setQuery] = useState('');
 
@@ -168,33 +165,7 @@ function StepManagementPage() {
     // form hooks
     // query hooks
     // calculated values
-    const normalizeQuery = (name: string) => {
-        return name.toLowerCase().replace(/\s+/g, '');
-    }; // 엄밀히 말하면 util 함수에 해당
-
-    const filteredNames = useCallback(
-        (applicantList: Applicant[]) => {
-            const normalizedQuery = normalizeQuery(query);
-            return applicantList.filter((applicant) =>
-                normalizeQuery(applicant.name).includes(normalizedQuery),
-            );
-        },
-        [query],
-    );
-
     // handlers
-    const handleToggle = (email: string, checked: boolean) => {
-        setSelectedEmails((prev) => (checked ? [...prev, email] : prev.filter((e) => e !== email)));
-    };
-
-    const handleSelectAll = () => {
-        // 임시 기능 (체크박스 전체선택) -> 추후 적용 예정
-        if (selectedEmails.length === applicantList.length) {
-            setSelectedEmails([]);
-        } else {
-            setSelectedEmails(applicantList.map((applicant) => applicant.email));
-        }
-    };
 
     const handleOpen = (applicant: Applicant) => {
         setSelectedApplicant(applicant);
@@ -234,59 +205,29 @@ function StepManagementPage() {
                 </nav>
             </div>
             <div css={stepBoxContainer}>
-                <CardBox stepTitle={data.document ? '서류 평가' : '지원서 접수'} step="normal">
-                    <div css={cardGroup}>
-                        {filteredNames(applicantList).map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.email}
-                                name={applicant.name}
-                                email={applicant.email}
-                                date={applicant.date}
-                                score={applicant.score}
-                                status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)} // 임의 (추후 기능 연장)
-                                onChange={handleToggle}
-                                onClick={() => handleOpen(applicant as Applicant)}
-                            />
-                        ))}
-                    </div>
-                </CardBox>
+                <CardBox
+                    stepTitle={data.document ? '서류 평가' : '지원서 접수'}
+                    step="normal"
+                    query={query}
+                    applicantList={applicantList}
+                    handleOpen={handleOpen}
+                />
                 {data.interview && (
-                    <CardBox stepTitle="면접" step="normal">
-                        <div css={cardGroup}>
-                            {filteredNames(applicantList2).map((applicant) => (
-                                <ApplicantCard
-                                    key={applicant.email}
-                                    name={applicant.name}
-                                    email={applicant.email}
-                                    date={applicant.date}
-                                    score={applicant.score}
-                                    status={applicant.status}
-                                    checked={selectedEmails.includes(applicant.email)} // 임의
-                                    onChange={handleToggle}
-                                    onClick={() => handleOpen(applicant as Applicant)}
-                                />
-                            ))}
-                        </div>
-                    </CardBox>
+                    <CardBox
+                        stepTitle="면접"
+                        step="normal"
+                        query={query}
+                        applicantList={applicantList2}
+                        handleOpen={handleOpen}
+                    />
                 )}
-                <CardBox stepTitle="최종 합격" step="final">
-                    <div css={cardGroup}>
-                        {filteredNames(finalApplicantList).map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.email}
-                                name={applicant.name}
-                                email={applicant.email}
-                                date={applicant.date}
-                                score={applicant.score}
-                                status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)} // 임의
-                                onChange={handleToggle}
-                                onClick={() => handleOpen(applicant as Applicant)}
-                            />
-                        ))}
-                    </div>
-                </CardBox>
+                <CardBox
+                    stepTitle="최종 합격"
+                    step="final"
+                    query={query}
+                    applicantList={finalApplicantList}
+                    handleOpen={handleOpen}
+                />
                 {selectedApplicant && (
                     <ApplicantDialog
                         name={selectedApplicant.name}

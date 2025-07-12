@@ -44,20 +44,3 @@ export const inputCss = css`
     background-color: ${theme.colors.white};
     box-shadow: 0px 0px 3px 0px rgba(${hexToRgb(theme.colors.black)}, 0.15);
 `;
-
-export const cardGroup = css`
-    height: 100%;
-    padding: 0.5rem 0.5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-
-    &::after {
-        content: '';
-        height: 0.5rem;
-        flex-shrink: 0;
-    }
-`;

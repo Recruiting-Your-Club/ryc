@@ -1,13 +1,14 @@
 import type { CSSObject } from '@emotion/react';
-import type { ReactNode } from 'react';
+import { Applicant } from '@pages/StepManagementPage/types';
 
 export type Step = 'normal' | 'final';
 
 export interface CardBoxProps {
     stepTitle: string;
     step: Step;
-    toggleDropdown?: () => void;
+    query: string;
+    applicantList: Applicant[];
+    handleOpen: (applicant: Applicant) => void;
     height?: string;
-    children?: ReactNode;
     sx?: CSSObject;
 }

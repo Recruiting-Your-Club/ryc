@@ -32,6 +32,23 @@ export const s_cardGroupWrapper = css`
     padding: 0.5rem 1rem 1rem 1rem;
 `;
 
+export const s_cardGroup = css`
+    height: 100%;
+    padding: 0.5rem 0.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+
+    &::after {
+        content: '';
+        height: 0.5rem;
+        flex-shrink: 0;
+    }
+`;
+
 export const s_svg = css`
     height: 1.5rem;
     vertical-align: middle;
@@ -68,14 +85,14 @@ export const s_dropdownItem = css`
         background-color: ${theme.colors.gray[200]};
         border-radius: 0;
     }
-`;
-
-export const s_dropdownSubTrigger = css`
-    ${s_dropdownItem}
     &:focus {
         background-color: ${theme.colors.gray[200]};
         border-radius: 0;
     }
+`;
+
+export const s_dropdownSubTrigger = css`
+    ${s_dropdownItem}
 `;
 
 export const s_dropdownSubContent = css`
