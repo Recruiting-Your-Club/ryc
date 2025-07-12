@@ -82,7 +82,7 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubGetResponse getClub(String clubId) {
+  public ClubGetResponse getClubResponse(String clubId) {
     Club club =
         clubRepository
             .findById(clubId)
@@ -103,6 +103,13 @@ public class ClubService {
         .clubSummaries(club.clubSummaries())
         .clubDetailImages(club.clubDetailImages())
         .build();
+  }
+
+  @Transactional(readOnly = true)
+  public Club getClubById(String clubId) {
+    return clubRepository
+        .findById(clubId)
+        .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
   }
 
   @Transactional(readOnly = true)

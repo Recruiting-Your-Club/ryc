@@ -25,4 +25,11 @@ public class InterviewRepositoryImpl implements InterviewRepository {
     List<InterviewSlotEntity> savedEntities = interviewSlotJpaRepository.saveAll(entities);
     return savedEntities.stream().map(InterviewSlotMapper::toDomain).toList();
   }
+
+  @Override
+  public List<InterviewSlot> findInterviewSlotByAnnouncementId(String announcementId) {
+    List<InterviewSlotEntity> entities =
+        interviewSlotJpaRepository.findByAnnouncementId(announcementId);
+    return entities.stream().map(InterviewSlotMapper::toDomain).toList();
+  }
 }

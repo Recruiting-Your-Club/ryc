@@ -1,7 +1,5 @@
 package com.ryc.api.v2.Interview.presentation;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +28,12 @@ public class InterviewHttpApi {
   }
 
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
-  public ResponseEntity<List<InterviewSlotsGetResponse>> getInterviewSlots(
+  public ResponseEntity<InterviewSlotsGetResponse> getInterviewSlots(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @RequestParam("applicant-id") String applicantId) {
-    List<InterviewSlotsGetResponse> responses =
+    InterviewSlotsGetResponse response =
         interviewService.getInterviewSlots(clubId, announcementId, applicantId);
-    return ResponseEntity.ok(responses);
+    return ResponseEntity.ok(response);
   }
 }

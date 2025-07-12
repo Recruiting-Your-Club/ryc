@@ -52,7 +52,7 @@ public class ClubHttpApi {
   @GetMapping("/{id}")
   @Operation(summary = "동아리 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
   public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
-    ClubGetResponse response = clubService.getClub(id);
+    ClubGetResponse response = clubService.getClubResponse(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
