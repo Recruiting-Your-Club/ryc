@@ -78,7 +78,10 @@ public class EmailService {
       InterviewEmailSendRequest body) {
 
     interviewService.createInterviewSlot(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDateRequests());
+        clubRoleSecuredDto.adminId(),
+        clubRoleSecuredDto.clubId(),
+        announcementId,
+        body.numberOfPeopleByInterviewDateRequests());
 
     List<Email> emails =
         createEmailsWithEachLink(
@@ -124,7 +127,7 @@ public class EmailService {
     for (String recipient : recipientIds) {
       String link =
           String.format(
-              "%s?club-id=%s&announcement-id=%s&recipient=%s",
+              "%s?club-id=%s&announcement-id=%s&recipient-id=%s",
               baseUri, clubId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 

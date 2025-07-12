@@ -1,12 +1,9 @@
 package com.ryc.api.v2.Interview.presentation;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationResponse;
@@ -32,9 +29,13 @@ public class InterviewHttpApi {
     return null;
   }
 
-  @GetMapping("announcements/{announcement-id}/interview-slots")
-  public ResponseEntity<InterviewSlotsGetResponse> getInterviewSlots(
-      @PathVariable("announcement-id") String announcementId) {
-    return null;
+  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
+  public ResponseEntity<List<InterviewSlotsGetResponse>> getInterviewSlots(
+      @PathVariable("club-id") String clubId,
+      @PathVariable("announcement-id") String announcementId,
+      @RequestParam("applicant-id") String applicantId) {
+    List<InterviewSlotsGetResponse> responses =
+        interviewService.getInterviewSlots(clubId, announcementId, applicantId);
+    return ResponseEntity.ok(responses);
   }
 }

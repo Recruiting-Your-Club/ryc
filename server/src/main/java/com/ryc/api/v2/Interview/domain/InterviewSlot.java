@@ -16,12 +16,14 @@ public class InterviewSlot {
 
   private final String id;
   private final String creatorId;
+  private final String clubId;
   private final String announcementId;
   private final Integer maxNumberOfPeople;
   private final Period period;
 
   public static InterviewSlot initialize(
       String creatorId,
+      String clubId,
       String announcementId,
       Integer maxNumberOfPeople,
       PeriodRequest periodRequest) {
@@ -30,6 +32,7 @@ public class InterviewSlot {
     return InterviewSlot.builder()
         .id(DEFAULT_INITIAL_ID)
         .creatorId(creatorId)
+        .clubId(clubId)
         .announcementId(announcementId)
         .maxNumberOfPeople(maxNumberOfPeople)
         .period(period)

@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.Interview.domain.InterviewRepository;
 import com.ryc.api.v2.Interview.domain.InterviewSlot;
 import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
+import com.ryc.api.v2.club.service.ClubService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,10 +18,14 @@ import lombok.RequiredArgsConstructor;
 public class InterviewService {
 
   private final InterviewRepository interviewRepository;
+  private final ClubService clubService;
 
   @Transactional
   public List<String> createInterviewSlot(
-      String adminId, String announcementId, List<NumberOfPeopleByInterviewDateRequest> requests) {
+      String adminId,
+      String clubId,
+      String announcementId,
+      List<NumberOfPeopleByInterviewDateRequest> requests) {
 
     List<InterviewSlot> interviewSlots =
         requests.stream()
@@ -27,6 +33,7 @@ public class InterviewService {
                 request ->
                     InterviewSlot.initialize(
                         adminId,
+                        clubId,
                         announcementId,
                         request.numberOfPeople(),
                         request.interviewPeriod()))
@@ -34,5 +41,11 @@ public class InterviewService {
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAll(interviewSlots);
     return savedInterviewSlots.stream().map(InterviewSlot::getId).toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<InterviewSlotsGetResponse> getInterviewSlots(
+      String clubId, String announcementId, String applicantId) {
+    return null;
   }
 }
