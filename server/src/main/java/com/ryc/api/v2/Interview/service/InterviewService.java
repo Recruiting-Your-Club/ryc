@@ -33,8 +33,6 @@ public class InterviewService {
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAll(interviewSlots);
-    return savedInterviewSlots.stream()
-        .map(InterviewSlot::getId)
-        .toList();
+    return savedInterviewSlots.stream().map(InterviewSlot::getId).toList();
   }
 }

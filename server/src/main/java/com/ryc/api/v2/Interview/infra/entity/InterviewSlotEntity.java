@@ -10,11 +10,11 @@ import jakarta.persistence.Table;
 import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "interview_slots")

@@ -1,6 +1,40 @@
 package com.ryc.api.v2.Interview.presentation;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
+import com.ryc.api.v2.Interview.service.InterviewService;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+
 @RestController
-public class InterviewHttpApi {}
+@RequestMapping("api/v2/")
+@RequiredArgsConstructor
+@Tag(name = "면접")
+public class InterviewHttpApi {
+
+  private final InterviewService interviewService;
+
+  @PostMapping("announcements/{announcement-id}/interview-slots/{slot-id}/reservations}")
+  public ResponseEntity<InterviewReservationResponse> reservationInterview(
+      @PathVariable("announcement-id") String announcementId,
+      @PathVariable("slot-id") String slotId,
+      @RequestBody InterviewReservationRequest interviewReservationRequest) {
+    return null;
+  }
+
+  @GetMapping("announcements/{announcement-id}/interview-slots")
+  public ResponseEntity<InterviewSlotsGetResponse> getInterviewSlots(
+      @PathVariable("announcement-id") String announcementId) {
+    return null;
+  }
+}
