@@ -23,20 +23,18 @@ import {
 import type { CardBoxProps } from './types';
 
 function CardBox({ stepTitle, step, query, applicantList, handleOpen, height, sx }: CardBoxProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
     const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
 
+    // form hooks
+    // query hooks
+    // calculated values
     const normalizeQuery = (name: string) => {
         return name.toLowerCase().replace(/\s+/g, '');
     }; // 엄밀히 말하면 util 함수에 해당
-
-    const handleSelectAll = () => {
-        // 임시 기능 (체크박스 전체선택) -> 추후 적용 예정
-        if (selectedEmails.length === applicantList.length) {
-            setSelectedEmails([]);
-        } else {
-            setSelectedEmails(applicantList.map((applicant) => applicant.email));
-        }
-    };
 
     const filteredNames = useCallback(
         (applicantList: Applicant[]) => {
@@ -47,6 +45,15 @@ function CardBox({ stepTitle, step, query, applicantList, handleOpen, height, sx
         },
         [query],
     );
+
+    // handlers
+    const handleSelectAll = () => {
+        if (selectedEmails.length === applicantList.length) {
+            setSelectedEmails([]);
+        } else {
+            setSelectedEmails(applicantList.map((applicant) => applicant.email));
+        }
+    };
 
     const handleToggle = (email: string, checked: boolean) => {
         setSelectedEmails((prev) => (checked ? [...prev, email] : prev.filter((e) => e !== email)));
