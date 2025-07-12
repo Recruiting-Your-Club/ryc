@@ -14,18 +14,25 @@ public class Email {
   private final String recipient;
   private final String subject;
   private final String content;
+  private final String clubId;
   private final String announcementId;
   private final EmailSentStatus status;
   private final Integer retryCount;
 
   public static Email initialize(
-      String senderId, String recipient, String subject, String content, String announcementId) {
+      String senderId,
+      String recipient,
+      String subject,
+      String content,
+      String clubId,
+      String announcementId) {
     return Email.builder()
         .id(DEFAULT_INITIAL_ID)
         .senderId(senderId)
         .recipient(recipient)
         .subject(subject)
         .content(content)
+        .clubId(clubId)
         .announcementId(announcementId)
         .status(EmailSentStatus.PENDING)
         .retryCount(0)
@@ -39,6 +46,7 @@ public class Email {
         .recipient(this.recipient)
         .subject(this.subject)
         .content(this.content)
+        .clubId(this.clubId)
         .announcementId(this.announcementId)
         .status(status)
         .retryCount(this.retryCount)
@@ -52,6 +60,7 @@ public class Email {
         .recipient(this.recipient)
         .subject(this.subject)
         .content(this.content)
+        .clubId(this.clubId)
         .announcementId(this.announcementId)
         .status(this.status)
         .retryCount(this.retryCount + 1)

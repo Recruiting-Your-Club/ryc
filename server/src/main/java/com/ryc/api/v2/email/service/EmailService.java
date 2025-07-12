@@ -63,6 +63,7 @@ public class EmailService {
                         recipient,
                         body.subject(),
                         body.content(),
+                        clubRoleSecuredDto.clubId(),
                         announcementId))
             .toList();
 
@@ -76,21 +77,18 @@ public class EmailService {
       String announcementId,
       InterviewEmailSendRequest body) {
 
-    List<String> interviewSlotIds =
-        interviewService.createInterviewSlot(
-            clubRoleSecuredDto.adminId(),
-            announcementId,
-            body.numberOfPeopleByInterviewDateRequests());
+    interviewService.createInterviewSlot(
+        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDateRequests());
 
     List<Email> emails =
         createEmailsWithEachLink(
+            clubRoleSecuredDto.clubId(),
             clubRoleSecuredDto.adminId(),
             announcementId,
             // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요
             body.emailSendRequest().recipients(),
             body.emailSendRequest().subject(),
-            body.emailSendRequest().content(),
-            interviewSlotIds);
+            body.emailSendRequest().content());
 
     return saveAll(emails);
   }
@@ -115,20 +113,24 @@ public class EmailService {
   }
 
   private List<Email> createEmailsWithEachLink(
+      String clubId,
       String adminId,
       String announcementId,
       List<String> recipientIds,
       String subject,
-      String content,
-      List<String> interviewSlotIds) {
+      String content) {
     List<Email> emails = new ArrayList<>();
 
     for (String recipient : recipientIds) {
       String link =
-          String.format("%s?announcement-id=%s&recipient=%s", baseUri, announcementId, recipient);
+          String.format(
+              "%s?club-id=%s&announcement-id=%s&recipient=%s",
+              baseUri, clubId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 
-      emails.add(Email.initialize(adminId, recipient, subject, linkHtml + content, announcementId));
+      emails.add(
+          Email.initialize(
+              adminId, recipient, subject, linkHtml + content, clubId, announcementId));
     }
     return emails;
   }

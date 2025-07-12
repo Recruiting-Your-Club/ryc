@@ -36,6 +36,9 @@ public class EmailEntity extends BaseEntity {
   private String content;
 
   @Column(nullable = false)
+  private String clubId;
+
+  @Column(nullable = false)
   private String announcementId;
 
   @Column(nullable = false)
