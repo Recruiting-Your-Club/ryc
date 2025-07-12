@@ -1,6 +1,8 @@
 package com.ryc.api.v2.Interview.domain;
 
+import java.util.List;
+
 public interface InterviewRepository {
 
-  String save(InterviewSlot interviewSlot);
+  List<String> saveAll(List<InterviewSlot> interviewSlots);
 }

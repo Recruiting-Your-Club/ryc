@@ -5,14 +5,20 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.Interview.domain.InterviewRepository;
 import com.ryc.api.v2.Interview.domain.InterviewSlot;
 import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class InterviewService {
 
+  private final InterviewRepository interviewRepository;
+
   @Transactional
-  public void createInterviewSlot(
+  public List<String> createInterviewSlot(
       String adminId, String announcementId, List<NumberOfPeopleByInterviewDateRequest> requests) {
 
     List<InterviewSlot> interviewSlots =
@@ -25,5 +31,7 @@ public class InterviewService {
                         request.numberOfPeople(),
                         request.interviewPeriod()))
             .toList();
+
+    return interviewRepository.saveAll(interviewSlots);
   }
 }
