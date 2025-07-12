@@ -5,6 +5,7 @@ import {
     formatButtons,
     listButtons,
     optionButtons,
+    sizeOptions,
 } from '@constants/Editor';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -191,17 +192,17 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                     onValueChange={(value) => handleSize(value as Size)}
                     size="s"
                     sx={selectCss}
+                    options={sizeOptions}
                 >
                     <Select.Trigger sx={sizeSelect}>
                         <Select.Value />
                     </Select.Trigger>
                     <Select.Content>
-                        <Select.Item value="10px">10px</Select.Item>
-                        <Select.Item value="12px">12px</Select.Item>
-                        <Select.Item value="14px">14px</Select.Item>
-                        <Select.Item value="16px">16px</Select.Item>
-                        <Select.Item value="24px">24px</Select.Item>
-                        <Select.Item value="36px">36px</Select.Item>
+                        {sizeOptions.map(({ value, label }) => (
+                            <Select.Item key={value} value={value}>
+                                {label}
+                            </Select.Item>
+                        ))}
                     </Select.Content>
                 </Select>
             </div>
