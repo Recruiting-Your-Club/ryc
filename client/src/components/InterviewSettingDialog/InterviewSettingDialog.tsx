@@ -101,6 +101,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         setStartTime(DEFAULT_START_TIME);
         setEndTime(DEFAULT_END_TIME);
         setInterviewInformation({});
+        setSelectedDates([]);
+        setHighlightedDate([]);
     };
 
     const handleDates = (newDates: string[]) => {
