@@ -25,14 +25,6 @@ public class InterviewHttpApi {
 
   private final InterviewService interviewService;
 
-  @PostMapping("announcements/{announcement-id}/interview-slots/{interview-slot-id}/reservations}")
-  public ResponseEntity<InterviewReservationResponse> reservationInterview(
-      @PathVariable("announcement-id") String announcementId,
-      @PathVariable("interview-slot-id") String slotId,
-      @RequestBody InterviewReservationRequest interviewReservationRequest) {
-    return null;
-  }
-
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
   public ResponseEntity<InterviewSlotGetAllResponse> getInterviewSlots(
       @PathVariable("club-id") String clubId,
@@ -41,5 +33,14 @@ public class InterviewHttpApi {
     InterviewSlotGetAllResponse response =
         interviewService.getInterviewSlots(clubId, announcementId, applicantId);
     return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("interview-slots/{interview-slot-id}/reservations}")
+  public ResponseEntity<InterviewReservationResponse> reservationInterview(
+      @PathVariable("interview-slot-id") String slotId,
+      @RequestBody InterviewReservationRequest body) {
+    InterviewReservationResponse response = interviewService.reservationInterview(slotId, body);
+//    return ResponseEntity.ok(response);
+    return null;
   }
 }

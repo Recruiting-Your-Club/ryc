@@ -7,7 +7,6 @@ import lombok.Builder;
 
 @Builder
 public record InterviewSlotGetAllResponse(
-    @Schema(description = "동아리 ID") String clubId,
     @Schema(description = "동아리 이름") String clubName,
     @Schema(description = "동아리 카테고리") String clubCategory,
     @Schema(description = "동아리 이미지 URL") String clubImageUrl,
