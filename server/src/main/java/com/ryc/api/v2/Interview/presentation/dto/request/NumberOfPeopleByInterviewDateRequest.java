@@ -9,5 +9,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public record NumberOfPeopleByInterviewDateRequest(
     @NotNull(message = "면접 날짜는 null일 수 없습니다.") @Valid PeriodRequest interviewPeriod,
-    @NotNull(message = "면접 날짜별 인원 수는 null일 수 없습니다.") @Schema(description = "면접 날짜별 인원 수")
+    @NotNull(message = "면접 날짜별 인원 수는 null일 수 없습니다.") @Schema(description = "인원 수")
         Integer numberOfPeople) {}
