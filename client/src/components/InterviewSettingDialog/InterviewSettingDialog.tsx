@@ -57,6 +57,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
 
     const [timeButtonList, setTimeButtonList] = useState<string[]>([]);
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
+    const [highlightedDate, setHighlightedDate] = useState<string[]>([]);
     const [currentDate, setCurrentDate] = useState<string>('');
     const [interviewInformation, setInterviewInformation] = useState<
         Record<string, InterviewInformation>
@@ -102,11 +103,28 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         setInterviewInformation({});
     };
 
+    const handleDates = (newDates: string[]) => {
+        const newDate = newDates[0];
+        const prevDate = highlightedDate[0];
+
+        if (prevDate) {
+            const shouldRemovePrev =
+                !interviewInformation[prevDate] ||
+                interviewInformation[prevDate].selectedTimeList.length === 0;
+
+            if (shouldRemovePrev)
+                setSelectedDates((prev) => prev.filter((date) => date !== prevDate));
+        }
+
+        setHighlightedDate([newDate]);
+        setSelectedDates((prev) => (prev.includes(newDate) ? prev : [...prev, newDate]));
+    };
+
     // effects
     useEffect(() => {
-        setCurrentDate(selectedDates.at(-1)!);
+        setCurrentDate(highlightedDate.at(-1)!);
         setTimeButtonList([]);
-    }, [selectedDates]);
+    }, [highlightedDate]);
 
     // 현재 날짜에 알맞은 정보를 불러옴
     useEffect(() => {
@@ -224,10 +242,11 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                     </div>
                     <div css={informationContainer}>
                         <Calendar
-                            // isMultiple
+                            mode="custom"
                             size="md"
                             selectedDate={selectedDates}
-                            onSelect={setSelectedDates}
+                            onSelect={handleDates}
+                            highlightedDate={highlightedDate}
                             sx={calendarCss}
                         />
                         <InterviewTimeBox />
