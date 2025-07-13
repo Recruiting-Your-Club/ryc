@@ -16,7 +16,7 @@ const applicantQueries = {
     allApplicants: () =>
         queryOptions({
             queryKey: applicantKeys.allApplicants,
-            queryFn: () => getAllApplicants,
+            queryFn: () => getAllApplicants(),
         }),
     getDocument: (id: number) =>
         queryOptions({

@@ -1,5 +1,4 @@
-import { Applicant } from '@components/ApplicantMiniCard/types';
-import type { ReactNode } from 'react';
+import { Applicant } from '@api/domain/applicant/types';
 
 export interface ApplicationListProps {
     title?: string;

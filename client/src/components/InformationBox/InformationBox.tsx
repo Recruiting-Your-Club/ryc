@@ -14,7 +14,7 @@ import {
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
 
-function InformationBox({ applicant, documentList, height }: InformationBoxProps) {
+function InformationBox({ applicant, document, height }: InformationBoxProps) {
     // prop destruction
     // lib hooks
     // initial value
@@ -50,7 +50,7 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
             <div css={contentSection}>
                 {applicant && isToggle && (
                     <div css={documentWrapper}>
-                        {documentList?.detail.map((document, index) => (
+                        {document?.detail.map((document, index) => (
                             <DocumentBox
                                 key={index}
                                 index={index}

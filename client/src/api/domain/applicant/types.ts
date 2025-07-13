@@ -17,5 +17,5 @@ export interface Document {
 export interface Evaluation {
     applicantId: number;
     averageScore: number;
-    comments: { evaluator: string; comment: string }[];
+    comments: { id: number; name: string; score: number; comment: string }[];
 }

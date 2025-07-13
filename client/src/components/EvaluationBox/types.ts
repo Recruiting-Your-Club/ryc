@@ -1,10 +1,6 @@
-export interface Evaluation {
-    applicantId: number;
-    averageScore: number;
-    comments: { evaluator: string; comment: string }[];
-}
+import { Evaluation } from '@api/domain/applicant/types';
 
 export interface EvaluationBoxProps {
-    evaluation: Evaluation | null;
+    evaluation: Evaluation;
     height?: string;
 }

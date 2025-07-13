@@ -1,7 +1,7 @@
 import { ApplicantDetail, Document } from '@api/domain/applicant/types';
 
 export interface InformationBoxProps {
-    applicant: ApplicantDetail | null;
-    documentList: Document | null;
+    applicant: ApplicantDetail;
+    document: Document;
     height?: string;
 }

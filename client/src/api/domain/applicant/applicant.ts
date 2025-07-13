@@ -1,6 +1,5 @@
 import { httpRequest } from '@api/common/httpRequest';
-import { Applicant } from '@pages/StepManagementPage/types';
-import { ApplicantDetail, Evaluation } from './types';
+import { Applicant, ApplicantDetail, Document, Evaluation } from './types';
 
 async function getAllApplicants(): Promise<Applicant[]> {
     const response = await httpRequest.get({
