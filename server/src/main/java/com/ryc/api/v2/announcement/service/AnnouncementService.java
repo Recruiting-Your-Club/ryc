@@ -36,8 +36,7 @@ public class AnnouncementService {
   @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
       ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
-    // 1.Club 찾기
-    // 2.Announcement 생성
+    // 1.Announcement 생성
     Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
@@ -72,18 +71,8 @@ public class AnnouncementService {
       ClubRoleSecuredDto clubRoleSecuredDto,
       AnnouncementUpdateRequest request,
       String announcementId) {
-
-    Announcement existAnnouncement = announcementRepository.findById(announcementId);
-
-    if (!existAnnouncement.getClubId().equals(clubRoleSecuredDto.clubId())) {}
-
-    // 1. announcement 객체로 변환
     Announcement updateAnnouncement =
-        Announcement.of(
-            request,
-            announcementId,
-            clubRoleSecuredDto.clubId(),
-            existAnnouncement.getApplicationForm().getId());
+        Announcement.of(request, announcementId, clubRoleSecuredDto.clubId());
 
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);

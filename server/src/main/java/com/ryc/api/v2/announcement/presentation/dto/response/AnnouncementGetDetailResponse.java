@@ -7,6 +7,7 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
