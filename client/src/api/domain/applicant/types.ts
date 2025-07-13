@@ -17,5 +17,12 @@ export interface Document {
 export interface Evaluation {
     applicantId: number;
     averageScore: number;
-    comments: { id: number; name: string; score: number; comment: string }[];
+    comments: {
+        id: number;
+        writerId: string;
+        name: string;
+        score: number;
+        comment: string;
+        isMine?: boolean;
+    }[];
 }
