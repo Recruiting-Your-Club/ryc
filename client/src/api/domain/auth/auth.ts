@@ -3,7 +3,7 @@ import { Login, LoginResponse, Register, RegisterResponse } from "./types";
 
 async function login(data: Login): Promise<LoginResponse>{
     return httpRequest.post({
-        url: '/auth/login',
+        url: 'auth/login',
         body: data,
         isAuthRequire: false,
     })
@@ -11,7 +11,7 @@ async function login(data: Login): Promise<LoginResponse>{
 
 async function register(data: Register): Promise<RegisterResponse>{
     return httpRequest.post({
-        url: '/auth/register',
+        url: 'auth/register',
         body: data,
         isAuthRequire: false,
     })
