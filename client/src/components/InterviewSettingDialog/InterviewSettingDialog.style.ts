@@ -174,7 +174,6 @@ export const s_calendar = css`
     margin: 1.5rem 0;
     width: 100%;
     height: 60rem;
-    box-shadow: rgba(0, 27, 55, 0.1) 0px 2px 30px 0px;
 `;
 
 export const s_helper = css`
