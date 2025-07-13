@@ -35,7 +35,7 @@ function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardPro
                     </Text>
                 </div>
                 <div css={ratingSection}>
-                    <Rating value={score} size="lg" type="display" />
+                    <Rating key={score} value={score} size="lg" type="display" />
                 </div>
             </div>
             <div css={contentContainer}>

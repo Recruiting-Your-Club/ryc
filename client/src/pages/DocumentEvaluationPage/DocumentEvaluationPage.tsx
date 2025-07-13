@@ -1,7 +1,7 @@
-import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox, Text } from '@components';
-import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
-import type { Evaluation } from '@components/EvaluationBox/types';
-import type { ApplicantDetail, Document } from '@components/InformationBox/types';
+import { Applicant, ApplicantDetail, Document } from '@api/domain/applicant/types';
+import { applicantQueries } from '@api/queryFactory';
+import { ApplicantList, EvaluationBox, InformationBox } from '@components';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import {
     documentEvaluationPageContainer,
@@ -10,7 +10,7 @@ import {
     listContainer,
 } from './DocumentEvaluationPage.style';
 
-export const applicantList: ApplicantSummary[] = [
+export const applicantList: Applicant[] = [
     { id: 1, name: '팥붕이', email: 'nickname@example.com' },
     { id: 2, name: '슈붕이', email: 'test@example.com' },
     { id: 3, name: '붕어빵', email: 'bbang@example.com' },
@@ -42,7 +42,7 @@ export const applicantDetails: ApplicantDetail[] = [
 
 export const documents: Document[] = [
     {
-        id: 1,
+        applicantId: 1,
         detail: [
             {
                 question: 'Q1. 자기소개 부탁드립니다.',
@@ -60,64 +60,37 @@ export const documents: Document[] = [
         ],
     },
     {
-        id: 2,
-        detail: [
-            {
-                question: 'Q1. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q2. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q3. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-        ],
-    },
-    {
-        id: 3,
-        detail: [
-            {
-                question: 'Q1. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q2. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q3. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-        ],
-    },
-];
-
-export const evaluations: Evaluation[] = [
-    {
-        applicantId: 1,
-        averageScore: 4.5,
-        comments: [
-            { evaluator: '조준희', comment: '매우 성실한 태도였습니다.' },
-            { evaluator: '조존히', comment: '답변이 구체적이고 논리적이었습니다.' },
-        ],
-    },
-    {
         applicantId: 2,
-        averageScore: 3.8,
-        comments: [
-            { evaluator: '준', comment: '조금 긴장한 듯 보였습니다.' },
-            { evaluator: 'aiming희', comment: '기본기는 잘 갖추고 있었음.' },
+        detail: [
+            {
+                question: 'Q1. 자기소개 부탁드립니다.',
+                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
+            },
+            {
+                question: 'Q2. 자기소개 부탁드립니다.',
+                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
+            },
+            {
+                question: 'Q3. 자기소개 부탁드립니다.',
+                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
+            },
         ],
     },
     {
         applicantId: 3,
-        averageScore: 4.2,
-        comments: [
-            { evaluator: '몰라희', comment: '차분하고 준비된 모습이 인상적이었어요.' },
-            { evaluator: '그냥희', comment: '팀워크 질문에서 좋은 답변을 들었어요.' },
+        detail: [
+            {
+                question: 'Q1. 자기소개 부탁드립니다.',
+                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
+            },
+            {
+                question: 'Q2. 자기소개 부탁드립니다.',
+                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
+            },
+            {
+                question: 'Q3. 자기소개 부탁드립니다.',
+                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
+            },
         ],
     },
 ];
@@ -126,54 +99,38 @@ function DocumentEvaluationPage() {
     // prop destruction
     // lib hooks
     // initial values
+
     // state, ref, querystring hooks
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
+    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
 
     // form hooks
     // query hooks
+    const { data: applicantList = [] } = useSuspenseQuery(applicantQueries.allApplicants());
+    const { data: applicantDetail } = useSuspenseQuery(
+        applicantQueries.getApplicantDetail(selectedApplicantId),
+    );
+    const { data: document } = useSuspenseQuery(applicantQueries.getDocument(selectedApplicantId));
+    const { data: evaluation } = useSuspenseQuery(
+        applicantQueries.getDocumentEvaluation(selectedApplicantId),
+    );
+
     // calculated values
     // handlers
     // effects
     return (
         <div css={documentEvaluationPageContainer}>
             <div css={listContainer}>
-                <ApplicantList isList={applicantList.length !== 0}>
-                    {applicantList.length > 0 ? (
-                        applicantList.map((applicant) => (
-                            <ApplicantMiniCard
-                                key={applicant.id}
-                                applicant={applicant}
-                                onClick={() => setSelectedApplicantId(applicant.id)}
-                                isActivated={selectedApplicantId === applicant.id}
-                            />
-                        ))
-                    ) : (
-                        <Text as="span" type="captionSemibold">
-                            지원자가 없습니다.
-                        </Text>
-                    )}
-                </ApplicantList>
+                <ApplicantList
+                    applicantList={applicantList}
+                    selectedApplicantId={selectedApplicantId}
+                    onSelectApplicantId={setSelectedApplicantId}
+                />
             </div>
             <div css={informationContainer}>
-                <InformationBox
-                    applicant={
-                        applicantDetails.find(
-                            (applicant) => applicant.id === selectedApplicantId,
-                        ) ?? null
-                    }
-                    documentList={
-                        documents.find((document) => document.id === selectedApplicantId) ?? null
-                    }
-                />
+                <InformationBox applicant={applicantDetail} document={document} />
             </div>
             <div css={evaluationContainer}>
-                <EvaluationBox
-                    evaluation={
-                        evaluations.find(
-                            (evaluation) => evaluation.applicantId === selectedApplicantId,
-                        ) ?? null
-                    }
-                />
+                <EvaluationBox evaluation={evaluation} />
             </div>
         </div>
     );
