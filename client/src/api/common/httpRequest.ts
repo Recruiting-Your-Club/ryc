@@ -40,6 +40,7 @@ const httpRequest = {
                 method,
                 ...option,
             });
+
             return httpClient.handleResponse<T>(response)
         };
 
