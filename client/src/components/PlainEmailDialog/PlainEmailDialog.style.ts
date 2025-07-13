@@ -84,3 +84,27 @@ export const actionCss = css`
     justify-content: flex-end;
     padding: 1rem 4rem 3rem 4rem;
 `;
+
+export const s_editorRoot = css`
+    min-width: 43rem;
+    height: 100%;
+    justify-content: start;
+`;
+
+export const s_editorToolbar = css`
+    flex: 0.6;
+    min-height: 3.8rem;
+    background-color: ${theme.colors.white};
+    border-radius: 8px;
+    border: 1px solid ${theme.colors.gray[500]};
+`;
+
+export const s_editorTextarea = css`
+    flex: 9.4;
+    border-radius: 8px;
+    transition: border-color 0.3s ease-in-out;
+    &:focus {
+        border-color: ${theme.colors.default};
+        outline: none;
+    }
+`;

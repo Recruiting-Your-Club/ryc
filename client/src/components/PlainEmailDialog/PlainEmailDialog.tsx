@@ -1,6 +1,5 @@
 import XIcon from '@assets/images/xIcon.svg';
-import { Button, Dialog, Divider, Input, Text } from '@components/_common';
-import { TextArea } from '@components/_common/TextArea';
+import { Button, Dialog, Divider, Editor, Input, Text } from '@components/_common';
 import React from 'react';
 import {
     actionCss,
@@ -10,8 +9,9 @@ import {
     headerCss,
     inputCss,
     s_divider,
-    s_textareaInner,
-    s_textareaOutside,
+    s_editorRoot,
+    s_editorTextarea,
+    s_editorToolbar,
     s_titleText,
     titleInputCss,
     titleWrapper,
@@ -54,12 +54,10 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                     <Text as="span" type="h4Semibold" textAlign="start">
                         내용
                     </Text>
-                    <TextArea
-                        size="md"
-                        placeholder="이메일 내용을 입력해주세요."
-                        textAreaSx={s_textareaInner}
-                        wrapperSx={s_textareaOutside}
-                    />
+                    <Editor.Root sx={s_editorRoot}>
+                        <Editor.Toolbar sx={s_editorToolbar} />
+                        <Editor.Textarea sx={s_editorTextarea} />
+                    </Editor.Root>
                 </div>
             </Dialog.Content>
             <Dialog.Action sx={actionCss}>
