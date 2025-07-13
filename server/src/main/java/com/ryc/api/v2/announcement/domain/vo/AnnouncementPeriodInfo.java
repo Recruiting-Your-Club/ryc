@@ -1,8 +1,10 @@
 package com.ryc.api.v2.announcement.domain.vo;
 
+import java.util.List;
+
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
-import com.ryc.api.v2.announcement.common.exception.custom.BusinessException;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementPeriodInfoRequest;
+import com.ryc.api.v2.common.exception.code.ErrorCode;
 
 import lombok.Builder;
 
@@ -40,27 +42,27 @@ public record AnnouncementPeriodInfo(
    * @param hasInterview 면접 여부
    * @throws IllegalArgumentException
    */
-  public void validate(boolean hasInterview) {
+  public void validate(boolean hasInterview, List<ErrorCode> errors) {
 
     // 1. 면접 진행 시 추가되는 기간 값들에 대한 validate
     if (hasInterview) {
       if (interviewPeriod == null) {
-        throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_REQUIRED);
+        errors.add(AnnouncementErrorCode.INTERVIEW_PERIOD_REQUIRED);
       }
       if (documentResultPeriod == null) {
-        throw new BusinessException(AnnouncementErrorCode.DOCUMENT_RESULT_PERIOD_REQUIRED);
+        errors.add(AnnouncementErrorCode.DOCUMENT_RESULT_PERIOD_REQUIRED);
       }
     } else {
       if (interviewPeriod != null) {
-        throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_NOT_ALLOWED);
+        errors.add(AnnouncementErrorCode.INTERVIEW_PERIOD_NOT_ALLOWED);
       }
       if (documentResultPeriod != null) {
-        throw new BusinessException(AnnouncementErrorCode.DOCUMENT_RESULT_PERIOD_NOT_ALLOWED);
+        errors.add(AnnouncementErrorCode.DOCUMENT_RESULT_PERIOD_NOT_ALLOWED);
       }
     }
 
     // 2. 기간들간의 validate
-    validateSequence(hasInterview);
+    validateSequence(hasInterview, errors);
   }
 
   /**
@@ -69,28 +71,23 @@ public record AnnouncementPeriodInfo(
    * @param hasInterview 면접 여부
    * @throws IllegalArgumentException 기간 순서가 맞지 않을 경우
    */
-  private void validateSequence(Boolean hasInterview) {
+  private void validateSequence(Boolean hasInterview, List<ErrorCode> errors) {
     // 인터뷰가 있을경우 지원 기간 -> 서류발표기간 -> 면접기간 -> 최종발표기간
     if (hasInterview) {
       if (!applicationPeriod.isBefore(documentResultPeriod)) {
-        throw new BusinessException(
-            AnnouncementErrorCode.DOCUMENT_PERIOD_MUST_BE_AFTER_APPLICATION);
+        errors.add(AnnouncementErrorCode.DOCUMENT_PERIOD_MUST_BE_AFTER_APPLICATION);
       }
       if (!documentResultPeriod.isBefore(interviewPeriod)) {
-        throw new BusinessException(AnnouncementErrorCode.INTERVIEW_PERIOD_MUST_BE_AFTER_DOCUMENT);
+        errors.add(AnnouncementErrorCode.INTERVIEW_PERIOD_MUST_BE_AFTER_DOCUMENT);
       }
-      if (!finalResultPeriod.isOverlap(interviewPeriod)
-          && finalResultPeriod.isBefore(interviewPeriod)) {
-        throw new BusinessException(
-            AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_INTERVIEW);
+      if (interviewPeriod.isBefore(finalResultPeriod)) {
+        errors.add(AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_INTERVIEW);
       }
     }
     // 없을경우 모집기간 -> 최종발표기간
     else {
-      if (!finalResultPeriod.isOverlap(applicationPeriod)
-          && finalResultPeriod.isBefore(applicationPeriod)) {
-        throw new BusinessException(
-            AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_APPLICATION);
+      if (applicationPeriod.isBefore(finalResultPeriod)) {
+        errors.add(AnnouncementErrorCode.FINAL_RESULT_PERIOD_MUST_BE_AFTER_APPLICATION);
       }
     }
   }

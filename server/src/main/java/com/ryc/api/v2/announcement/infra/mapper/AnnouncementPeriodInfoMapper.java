@@ -1,25 +1,18 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
 import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
 
-import lombok.RequiredArgsConstructor;
-
-@Component
-@RequiredArgsConstructor
 public class AnnouncementPeriodInfoMapper {
-  private final PeriodMapper periodMapper;
 
   /** VO to Domain */
-  AnnouncementPeriodInfo toDomain(AnnouncementPeriodInfoVO periodInfoVO) {
-    Period applicationPeriod = periodMapper.toDomain(periodInfoVO.getApplicationPeriodVO());
-    Period interviewPeriod = periodMapper.toDomain(periodInfoVO.getInterviewPeriodVO());
-    Period finalResultPeriod = periodMapper.toDomain(periodInfoVO.getFinalResultPeriodVO());
-    Period documentResultPeriod = periodMapper.toDomain(periodInfoVO.getDocumentResultPeriodVO());
+  public static AnnouncementPeriodInfo toDomain(AnnouncementPeriodInfoVO periodInfoVO) {
+    Period applicationPeriod = PeriodMapper.toDomain(periodInfoVO.getApplicationPeriodVO());
+    Period interviewPeriod = PeriodMapper.toDomain(periodInfoVO.getInterviewPeriodVO());
+    Period finalResultPeriod = PeriodMapper.toDomain(periodInfoVO.getFinalResultPeriodVO());
+    Period documentResultPeriod = PeriodMapper.toDomain(periodInfoVO.getDocumentResultPeriodVO());
 
     return AnnouncementPeriodInfo.builder()
         .applicationPeriod(applicationPeriod)
@@ -30,11 +23,11 @@ public class AnnouncementPeriodInfoMapper {
   }
 
   /** Domain to VO */
-  AnnouncementPeriodInfoVO toVO(AnnouncementPeriodInfo periodInfo) {
-    PeriodVO applicationPeriodVO = periodMapper.toVO(periodInfo.applicationPeriod());
-    PeriodVO interviewPeriodVO = periodMapper.toVO(periodInfo.interviewPeriod());
-    PeriodVO finalResultPeriodVO = periodMapper.toVO(periodInfo.finalResultPeriod());
-    PeriodVO documentResultPeriodVO = periodMapper.toVO(periodInfo.documentResultPeriod());
+  public static AnnouncementPeriodInfoVO toVO(AnnouncementPeriodInfo periodInfo) {
+    PeriodVO applicationPeriodVO = PeriodMapper.toVO(periodInfo.applicationPeriod());
+    PeriodVO interviewPeriodVO = PeriodMapper.toVO(periodInfo.interviewPeriod());
+    PeriodVO finalResultPeriodVO = PeriodMapper.toVO(periodInfo.finalResultPeriod());
+    PeriodVO documentResultPeriodVO = PeriodMapper.toVO(periodInfo.documentResultPeriod());
 
     return AnnouncementPeriodInfoVO.builder()
         .applicationPeriodVO(applicationPeriodVO)

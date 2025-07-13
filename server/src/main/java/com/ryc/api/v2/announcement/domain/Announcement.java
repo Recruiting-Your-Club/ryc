@@ -1,16 +1,20 @@
 package com.ryc.api.v2.announcement.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Image;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
+import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.common.exception.code.ErrorCode;
+import com.ryc.api.v2.common.exception.custom.ValidationListException;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +31,7 @@ public class Announcement {
   private final String summaryDescription;
   private final String target;
   private final List<Tag> tags;
-  private final List<Image> images;
+  private final List<AnnouncementImage> images;
   private final AnnouncementStatus announcementStatus;
   private final AnnouncementType announcementType;
   private final Boolean hasInterview;
@@ -51,11 +55,10 @@ public class Announcement {
    * @return Announcement domain
    */
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
-
-    // 1. 각 request mapping
     List<Tag> tags = request.tags().stream().map(Tag::from).toList();
 
-    List<Image> images = request.images().stream().map(Image::from).toList();
+    List<AnnouncementImage> images =
+        request.images().stream().map(AnnouncementImage::initialize).toList();
 
     ApplicationForm applicationForm = ApplicationForm.initialize(request.applicationForm());
 
@@ -64,11 +67,6 @@ public class Announcement {
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
-
-    // 3. 기간 값이 올바르지 않은 경우(CLOSED) Exception 발생
-    if (announcementStatus == AnnouncementStatus.CLOSED) {
-      throw new IllegalArgumentException("announcement shouldn't have closed status");
-    }
 
     // 4. Announcement 생성
     Announcement announcement =
@@ -102,25 +100,17 @@ public class Announcement {
    * @param request Update Request
    */
   public static Announcement of(
-      AnnouncementUpdateRequest request,
-      String announcementId,
-      String clubId,
-      String applicationFormId) {
+      AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
-    // 1. 각 request update
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
+    List<AnnouncementImage> updatedImages =
+        request.images().stream().map(AnnouncementImage::from).toList();
 
-    List<Image> updatedImages = request.images().stream().map(Image::from).toList();
-
+    ApplicationForm applicationForm = ApplicationForm.from(request.applicationForm());
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
-
-    // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus updatedAnnouncementStatus =
         AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
-
-    ApplicationForm applicationForm =
-        ApplicationForm.of(request.applicationForm(), applicationFormId);
 
     // 3. announcement 생성
     Announcement announcement =
@@ -179,6 +169,25 @@ public class Announcement {
    * @throws IllegalArgumentException 각 객체가 유효하지 않을 경우
    */
   public void validate() {
-    announcementPeriodInfo.validate(hasInterview);
+    List<ErrorCode> errors = new ArrayList<>();
+    // 생성시에는 모집 예정, 모집 중
+    if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
+      if (announcementStatus == AnnouncementStatus.CLOSED) {
+        errors.add(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+      }
+    }
+    // 업데이트시 모집 예정일때만 수정가능
+    else {
+      if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
+        errors.add(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+      }
+    }
+
+    announcementPeriodInfo.validate(hasInterview, errors);
+    applicationForm.checkBusinessRules(errors);
+
+    if (!errors.isEmpty()) {
+      throw new ValidationListException(errors);
+    }
   }
 }

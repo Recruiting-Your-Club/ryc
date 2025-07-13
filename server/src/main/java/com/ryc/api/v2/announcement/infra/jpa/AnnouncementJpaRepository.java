@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 
+@Repository
 public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEntity, String> {
   @Query("select a from AnnouncementEntity a where a.clubId = :clubId")
   List<AnnouncementEntity> findAllByClubId(@Param("clubId") String clubId);

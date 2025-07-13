@@ -12,7 +12,8 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRe
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
-import com.ryc.api.v2.announcement.service.ApplicationFormService;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 

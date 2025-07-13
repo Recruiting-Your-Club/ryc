@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
+import com.ryc.api.v2.applicationForm.presentation.request.ApplicationFormCreateRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -55,10 +56,13 @@ public record AnnouncementCreateRequest(
         Boolean hasInterview,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
-    @NotNull(message = "applicationForm shouldn't be null") @Valid @Schema(description = "공고 지원서")
-        ApplicationFormRequest applicationForm,
+    @NotNull(message = "applicationForm shouldn't be null")
+        @Schema(description = "공고 지원서")
+        @Valid
+        @NotNull
+        ApplicationFormCreateRequest applicationForm,
     @NotNull(message = "images shouldn't be null")
-        List<@NotNull(message = "image shouldn't be null") ImageRequest> images) {
+        List<@NotNull(message = "image shouldn't be null") ImageCreateRequest> images) {
 
   // @Schema는 get함수에 사용해야 작동함.
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
@@ -68,7 +72,7 @@ public record AnnouncementCreateRequest(
   }
 
   @Override
-  public List<ImageRequest> images() {
+  public List<ImageCreateRequest> images() {
     return List.copyOf(images);
   }
 }

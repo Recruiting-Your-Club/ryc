@@ -1,28 +1,24 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
-import org.springframework.stereotype.Component;
+import com.ryc.api.v2.announcement.domain.AnnouncementImage;
+import com.ryc.api.v2.announcement.infra.entity.AnnouncementImageEntity;
+import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
 
-import com.ryc.api.v2.announcement.domain.vo.Image;
-import com.ryc.api.v2.announcement.infra.vo.ImageVO;
-
-import lombok.RequiredArgsConstructor;
-
-@Component
-@RequiredArgsConstructor
 public class ImageMapper {
 
-  /** ImageVO to Domain */
-  public Image toDomain(ImageVO imageVO) {
-
-    return Image.builder()
-        .imageUrl(imageVO.getImageUrl())
-        .thumbnailUrl(imageVO.getThumbnailUrl())
+  public static AnnouncementImage toDomain(AnnouncementImageEntity entity) {
+    return AnnouncementImage.builder()
+        .id(entity.getId())
+        .fileMetadataId(entity.getFileMetadataId())
         .build();
   }
 
-  /** Domain to ImageVO */
-  ImageVO toVO(Image image) {
-
-    return ImageVO.builder().imageUrl(image.imageUrl()).thumbnailUrl(image.thumbnailUrl()).build();
+  public static AnnouncementImageEntity toEntity(
+      AnnouncementImage domain, FileMetadataEntity fileMetadata, int displayOrder) {
+    return AnnouncementImageEntity.builder()
+        .id(domain.getId())
+        .fileMetadata(fileMetadata)
+        .displayOrder(displayOrder)
+        .build();
   }
 }

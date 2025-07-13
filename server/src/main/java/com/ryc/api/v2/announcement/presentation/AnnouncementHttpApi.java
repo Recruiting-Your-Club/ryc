@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.exception.response.ErrorResponse;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface AnnouncementHttpApi {
 
   @PostMapping("/clubs/{club-id}/announcements")
-  @Operation(summary = "클럽 공고 생성")
+  @Operation(summary = "클럽 공고 생성", operationId = "createAnnouncement")
   @ApiResponses(
       value = {
         @ApiResponse(
@@ -37,7 +39,10 @@ public interface AnnouncementHttpApi {
                     mediaType = "application/json",
                     schema = @Schema(implementation = AnnouncementCreateResponse.class)),
             headers = {@Header(name = "Location", description = "생성된 리소스의 상세정보 조회 URI")}),
-        @ApiResponse(responseCode = "400", ref = "#/components/responses/AnnouncementBadRequest"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Bad Request",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(
             responseCode = "404",
             description = "존재하지 않는 클럽입니다.",
@@ -75,11 +80,14 @@ public interface AnnouncementHttpApi {
       @PathVariable("announcement-id") String announcementId);
 
   @PutMapping("/clubs/{club-id}/announcements/{announcement-id}")
-  @Operation(summary = "공고 수정")
+  @Operation(summary = "공고 수정", operationId = "updateAnnouncement")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "400", ref = "#/components/responses/AnnouncementBadRequest"),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Bad Request",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(
             responseCode = "404",
             description = "존재하지 않는 클럽 또는 공고입니다.",
