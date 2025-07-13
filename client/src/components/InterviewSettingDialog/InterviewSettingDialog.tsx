@@ -8,9 +8,8 @@ import {
     InterviewTimeBox,
     Select,
     Text,
-    TextArea,
 } from '@components';
-import { s_textareaInner } from '@components/PlainEmailDialog/PlainEmailDialog.style';
+import { Editor } from '@components/_common';
 import {
     DEFAULT_END_TIME,
     DEFAULT_NUMBER_VALUE,
@@ -26,6 +25,9 @@ import {
     s_content,
     s_contentWrapper,
     s_dialog,
+    s_editorRoot,
+    s_editorTextarea,
+    s_editorToolbar,
     s_emailContainer,
     s_emptyPlace,
     s_header,
@@ -37,7 +39,6 @@ import {
     s_selectContainer,
     s_selectTrigger,
     s_submitButtonWrapper,
-    s_textAreaOuter,
     s_titleInput,
     s_titleWrapper,
     s_verticalDivider,
@@ -272,14 +273,18 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             <Text as="span" type="h4Semibold" textAlign="start">
                                 내용
                             </Text>
-                            <TextArea
+                            <Editor.Root sx={s_editorRoot}>
+                                <Editor.Toolbar sx={s_editorToolbar} />
+                                <Editor.Textarea sx={s_editorTextarea} />
+                            </Editor.Root>
+                            {/* <TextArea
                                 value={emailContent}
                                 onChange={(e) => setEmailContent(e.target.value)}
                                 size="md"
                                 placeholder="이메일 내용을 입력해주세요."
                                 textAreaSx={s_textareaInner}
                                 wrapperSx={s_textAreaOuter}
-                            />
+                            /> */}
                         </div>
                         <div css={s_submitButtonWrapper}>
                             <Button>이메일 보내기</Button>
