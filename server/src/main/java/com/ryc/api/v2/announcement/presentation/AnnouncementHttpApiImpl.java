@@ -10,7 +10,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.announcement.presentation.dto.response.*;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
@@ -43,15 +46,15 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(String clubId) {
-    /** todo club 조회 */
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
   }
 
   @Override
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      String announcementId) {
+      String clubId, String announcementId) {
 
-    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(announcementService.findById(clubId, announcementId));
   }
 
   @Override

@@ -66,7 +66,7 @@ public interface AnnouncementHttpApi {
   ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
       @PathVariable("club-id") String clubId);
 
-  @GetMapping("/announcements/{announcement-id}")
+  @GetMapping("/clubs/{club-id}/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
   @ApiResponses(
       value = {
@@ -77,6 +77,7 @@ public interface AnnouncementHttpApi {
             content = @Content(schema = @Schema(hidden = true)))
       })
   ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
+      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId);
 
   @PutMapping("/clubs/{club-id}/announcements/{announcement-id}")
