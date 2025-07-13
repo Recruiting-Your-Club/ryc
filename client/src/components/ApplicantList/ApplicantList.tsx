@@ -1,6 +1,6 @@
 import Search from '@assets/images/search.svg';
 import { ApplicantMiniCard, Button, Divider, Input, Text } from '@components';
-import { ApplicantSummary } from '@components/ApplicantMiniCard/types';
+import { Applicant } from '@components/ApplicantMiniCard/types';
 import React, { useCallback, useState } from 'react';
 import {
     s_listContainer,
@@ -31,10 +31,10 @@ function ApplicantList({
     // query hooks
     // calculated values
     const filterApplicants = useCallback(
-        (applicants: ApplicantSummary[]) => filterQuery(applicants, query),
+        (applicants: Applicant[]) => filterQuery(applicants, query),
         [query],
     );
-    const filteredApplicants: ApplicantSummary[] = filterApplicants(applicantList);
+    const filteredApplicants: Applicant[] = filterApplicants(applicantList);
     // handlers
     // effects
     return (

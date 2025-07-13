@@ -1,17 +1,7 @@
-export interface ApplicantDetail {
-    id: number;
-    name: string;
-    email: string;
-    studentId: string;
-    phone: string;
-}
+import { ApplicantDetail, Document } from '@api/domain/applicant/types';
+
 export interface InformationBoxProps {
     applicant: ApplicantDetail | null;
     documentList: Document | null;
     height?: string;
-}
-
-export interface Document {
-    id: number;
-    detail: { question: string; answer: string }[];
 }
