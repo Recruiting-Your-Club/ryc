@@ -25,8 +25,57 @@ async function getDocument(id: number): Promise<Document> {
 async function getDocumentEvaluation(id: number): Promise<Evaluation> {
     const response = await httpRequest.get({
         url: `doc-evaluation/${id}`,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42',
+        },
     });
     return response as Evaluation;
 }
 
-export { getAllApplicants, getApplicantDetail, getDocument, getDocumentEvaluation };
+async function postDocumentEvaluation(
+    applicantId: number,
+    body: { score: number; comment: string },
+): Promise<void> {
+    await httpRequest.post({
+        url: `doc-evaluation/${applicantId}/comment`,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42',
+            'Content-Type': 'application/json',
+        },
+        body: body,
+    });
+}
+
+async function deleteDocumentEvaluation(applicantId: number, commentId: number) {
+    await httpRequest.delete({
+        url: `doc-evaluation/${applicantId}/comment/${commentId}`,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42',
+        },
+    });
+}
+
+async function updateDocumentEvaluation(
+    applicantId: number,
+    commentId: number,
+    body: { score: number; comment: string },
+): Promise<void> {
+    await httpRequest.put({
+        url: `doc-evaluation/${applicantId}/comment/${commentId}`,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42',
+            'Content-Type': 'applicatiion/json',
+        },
+        body: body,
+    });
+}
+
+export {
+    getAllApplicants,
+    getApplicantDetail,
+    getDocument,
+    getDocumentEvaluation,
+    postDocumentEvaluation,
+    deleteDocumentEvaluation,
+    updateDocumentEvaluation,
+};

@@ -1,4 +1,5 @@
 import { Applicant, ApplicantDetail, Document } from '@api/domain/applicant/types';
+import { applicantMutations } from '@api/mutationFactory/applicantMutations';
 import { applicantQueries } from '@api/queryFactory';
 import { ApplicantList, EvaluationBox, InformationBox } from '@components';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -113,6 +114,9 @@ function DocumentEvaluationPage() {
     const { data: evaluation } = useSuspenseQuery(
         applicantQueries.getDocumentEvaluation(selectedApplicantId),
     );
+    const { mutate: postComment } = applicantMutations.usePostDocumentEvaluation();
+    const { mutate: deleteComment } = applicantMutations.useDeleteDocumentEvaluation();
+    const { mutate: updateComment } = applicantMutations.useUpdateDocumentEvaluation();
 
     // calculated values
     // handlers
@@ -130,7 +134,12 @@ function DocumentEvaluationPage() {
                 <InformationBox applicant={applicantDetail} document={document} />
             </div>
             <div css={evaluationContainer}>
-                <EvaluationBox evaluation={evaluation} />
+                <EvaluationBox
+                    evaluation={evaluation}
+                    onPostComment={postComment}
+                    onDeleteComment={deleteComment}
+                    onUpdateComment={updateComment}
+                />
             </div>
         </div>
     );

@@ -1,4 +1,8 @@
+import EditPencil from '@assets/images/edit-pencil.svg';
+import Trash from '@assets/images/trash.svg';
 import { Avatar, Rating, Text } from '@components';
+import { svgButtonCss, svgButtonGroup } from '@components/EvaluationBox/EvaluationBox.style';
+import { Button } from '@components/_common';
 import React from 'react';
 import {
     cardContainer,
@@ -9,7 +13,18 @@ import {
 } from './PersonalScoreCard.style';
 import type { PersonalScoreCardProps } from './types';
 
-function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardProps) {
+function PersonalScoreCard({
+    image,
+    name,
+    score,
+    comment,
+    isMine = false,
+    isEditable = false,
+    handleDelete,
+    onOpenForm,
+    onComment,
+    onScore,
+}: PersonalScoreCardProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -18,6 +33,11 @@ function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardPro
     // query hooks
     // calculated values
     // handlers
+    const handleEditFunction = () => {
+        onOpenForm(true);
+        onComment(comment);
+        onScore(score);
+    };
     // effects
     return (
         <div css={cardContainer}>
@@ -33,6 +53,16 @@ function PersonalScoreCard({ image, name, score, comment }: PersonalScoreCardPro
                     >
                         {name}
                     </Text>
+                    {isEditable && isMine && (
+                        <span css={svgButtonGroup}>
+                            <Button variant="transparent" size="xs">
+                                <EditPencil css={svgButtonCss} onClick={handleEditFunction} />
+                            </Button>
+                            <Button variant="transparent" size="xs" onClick={handleDelete}>
+                                <Trash css={svgButtonCss} />
+                            </Button>
+                        </span>
+                    )}
                 </div>
                 <div css={ratingSection}>
                     <Rating key={score} value={score} size="lg" type="display" />
