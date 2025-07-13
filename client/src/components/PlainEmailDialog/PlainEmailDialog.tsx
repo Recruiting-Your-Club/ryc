@@ -2,19 +2,19 @@ import XIcon from '@assets/images/xIcon.svg';
 import { Button, Dialog, Divider, Editor, Input, Text } from '@components/_common';
 import React from 'react';
 import {
-    actionCss,
-    contentCss,
-    contentWrapper,
-    dialogCss,
-    headerCss,
-    inputCss,
+    s_action,
+    s_content,
+    s_contentWrapper,
+    s_dialog,
     s_divider,
     s_editorRoot,
     s_editorTextarea,
     s_editorToolbar,
+    s_header,
+    s_input,
+    s_titleInput,
     s_titleText,
-    titleInputCss,
-    titleWrapper,
+    s_titleWrapper,
 } from './PlainEmailDialog.style';
 import type { PlainEmailDialogProps } from './types';
 function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
@@ -28,8 +28,8 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
     // handlers
     // effects
     return (
-        <Dialog open={open} handleClose={handleClose} size="full" sx={dialogCss}>
-            <Dialog.Header position="start" sx={headerCss}>
+        <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
+            <Dialog.Header position="start" sx={s_header}>
                 <Text as="span" type="bodyBold" sx={s_titleText}>
                     전체 이메일 보내기
                 </Text>
@@ -38,19 +38,19 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                 </Button>
             </Dialog.Header>
             <Divider color="black" sx={s_divider} />
-            <Dialog.Content sx={contentCss}>
-                <div css={titleWrapper}>
+            <Dialog.Content sx={s_content}>
+                <div css={s_titleWrapper}>
                     <Text as="span" type="h4Semibold" textAlign="start">
                         제목
                     </Text>
                     <Input
                         height="4rem"
                         placeholder="이메일 제목을 입력해주세요."
-                        inputSx={titleInputCss}
-                        sx={inputCss}
+                        inputSx={s_titleInput}
+                        sx={s_input}
                     />
                 </div>
-                <div css={contentWrapper}>
+                <div css={s_contentWrapper}>
                     <Text as="span" type="h4Semibold" textAlign="start">
                         내용
                     </Text>
@@ -60,7 +60,7 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                     </Editor.Root>
                 </div>
             </Dialog.Content>
-            <Dialog.Action sx={actionCss}>
+            <Dialog.Action sx={s_action}>
                 <Button>이메일 보내기</Button>
             </Dialog.Action>
         </Dialog>
