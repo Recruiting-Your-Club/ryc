@@ -1,5 +1,5 @@
 import Search from '@assets/images/search.svg';
-import { Button, Divider, Input, Text } from '@components';
+import { ApplicantMiniCard, Button, Divider, Input, Text } from '@components';
 import React from 'react';
 import {
     s_listContainer,
@@ -12,7 +12,13 @@ import {
 } from './ApplicantList.style';
 import type { ApplicationListProps } from './types';
 
-function ApplicantList({ title = '지원자 목록', height, children, isList }: ApplicationListProps) {
+function ApplicantList({
+    title = '지원자 목록',
+    height,
+    applicantList,
+    selectedApplicantId,
+    onSelectApplicantId,
+}: ApplicationListProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -44,7 +50,22 @@ function ApplicantList({ title = '지원자 목록', height, children, isList }:
             </div>
             <Divider />
             <div css={s_miniCardGroupWrapper}>
-                <div css={s_miniCardContainer(isList)}>{children}</div>
+                <div css={s_miniCardContainer(applicantList.length !== 0)}>
+                    {applicantList.length > 0 ? (
+                        applicantList.map((applicant) => (
+                            <ApplicantMiniCard
+                                key={applicant.id}
+                                applicant={applicant}
+                                onClick={() => onSelectApplicantId(applicant.id)}
+                                isActivated={selectedApplicantId === applicant.id}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            지원자가 없습니다.
+                        </Text>
+                    )}
+                </div>
             </div>
         </div>
     );
