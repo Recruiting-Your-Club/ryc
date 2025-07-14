@@ -2485,6 +2485,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@types/jest": "npm:^27.0.1"
     dayjs: "npm:^1.11.13"
+    dotenv-webpack: "npm:^8.1.0"
     html-webpack-plugin: "npm:^5.6.3"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29"
