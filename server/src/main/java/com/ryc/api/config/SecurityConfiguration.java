@@ -73,13 +73,17 @@ public class SecurityConfiguration {
                         "/v3/**",
                         "/swagger-resources/**")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "/api/v2/application",
+                        "/api/v2/interview-slots/*/reservations")
                     .permitAll()
                     .requestMatchers(
                         HttpMethod.GET,
                         "/api/v2/application/form",
                         "/api/v2/clubs/*",
-                        "/api/v2/clubs")
+                        "/api/v2/clubs",
+                        "/api/v2/clubs/*/announcements/*/interview-slots")
                     .permitAll()
                     .anyRequest()
                     .authenticated());
