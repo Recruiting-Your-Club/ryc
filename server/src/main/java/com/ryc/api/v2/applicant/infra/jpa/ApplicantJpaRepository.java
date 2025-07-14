@@ -1,6 +1,5 @@
 package com.ryc.api.v2.applicant.infra.jpa;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +11,4 @@ public interface ApplicantJpaRepository extends JpaRepository<ApplicantEntity, S
 
   @Query("SELECT a.email FROM ApplicantEntity a WHERE a.id = :id")
   Optional<String> findEmailById(String id);
-
-  List<ApplicantEntity> findByAnnouncementId(String announcementId);
 }

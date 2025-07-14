@@ -16,6 +16,7 @@ import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCr
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetResponse;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
+import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.service.ClubService;
@@ -119,8 +120,9 @@ public class InterviewService {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
+    Applicant applicant = applicantRepository.findById(body.applicantId());
     InterviewReservation reservation =
-        InterviewReservation.initialize(body.applicantId(), interviewSlot.getId());
+        InterviewReservation.initialize(applicant, interviewSlot.getId());
 
     InterviewReservation savedReservation =
         interviewRepository.saveInterviewReservation(reservation);
