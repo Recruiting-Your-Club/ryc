@@ -1,5 +1,6 @@
 package com.ryc.api.v2.Interview.infra;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -34,9 +35,17 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public List<InterviewSlot> findInterviewSlotByAnnouncementId(String announcementId) {
+  public List<InterviewSlot> findInterviewSlotsByAnnouncementId(String announcementId) {
     List<InterviewSlotEntity> entities =
         interviewSlotJpaRepository.findByAnnouncementId(announcementId);
+    return entities.stream().map(InterviewSlotMapper::toDomain).toList();
+  }
+
+  @Override
+  public List<InterviewSlot> findInterviewSlotsByAnnouncementIdAndDate(
+      String announcementId, LocalDate interviewDate) {
+    List<InterviewSlotEntity> entities =
+        interviewSlotJpaRepository.findByAnnouncementIdAndDate(announcementId, interviewDate);
     return entities.stream().map(InterviewSlotMapper::toDomain).toList();
   }
 

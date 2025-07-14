@@ -1,8 +1,10 @@
 package com.ryc.api.v2.Interview.presentation;
 
 import java.net.URI;
+import java.time.LocalDate;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetAllResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewInfoGetResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCreateResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
 import com.ryc.api.v2.Interview.service.InterviewService;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +39,7 @@ public class InterviewHttpApi {
   private final InterviewService interviewService;
 
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
-  @Operation(summary = "면접 시간대 조회", description = "특정 동아리의 공고에 대한 면접 시간대를 조회합니다.")
+  @Operation(summary = "면접 시간대 조회", description = "지원자가 특정 동아리의 공고에 대한 면접 시간대를 조회합니다.")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "면접 시간대 조회 성공"),
     @ApiResponse(
@@ -41,12 +47,27 @@ public class InterviewHttpApi {
         description = "동아리 또는 공고를 찾을 수 없음",
         content = @Content(schema = @Schema(hidden = true)))
   })
-  public ResponseEntity<InterviewSlotGetAllResponse> getInterviewSlots(
+  public ResponseEntity<InterviewSlotsGetResponse> getInterviewSlots(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @RequestParam("applicant-id") String applicantId) {
-    InterviewSlotGetAllResponse response =
+    InterviewSlotsGetResponse response =
         interviewService.getInterviewSlots(clubId, announcementId, applicantId);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/reservations")
+  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜의 공고 면접 정보를 조회합니다.")
+  public ResponseEntity<InterviewInfoGetResponse> getInterviewInfo(
+      @AuthenticationPrincipal CustomUserDetail userDetails,
+      @PathVariable("club-id") String clubId,
+      @PathVariable("announcement-id") String announcementId,
+      @Parameter(description = "면접 날짜", example = "2023-10-01", required = true)
+          @RequestParam("interview-date")
+          LocalDate interviewDate) {
+    ClubRoleSecuredDto clubRoleSecuredDto = new ClubRoleSecuredDto(userDetails.getId(), clubId);
+    InterviewInfoGetResponse response =
+        interviewService.getInterviewInfo(clubRoleSecuredDto, announcementId, interviewDate);
     return ResponseEntity.ok(response);
   }
 
@@ -63,10 +84,11 @@ public class InterviewHttpApi {
         description = "면접 슬롯을 찾을 수 없음",
         content = @Content(schema = @Schema(hidden = true)))
   })
-  public ResponseEntity<InterviewReservationResponse> reservationInterview(
+  public ResponseEntity<InterviewReservationCreateResponse> reservationInterview(
       @PathVariable("interview-slot-id") String slotId,
       @RequestBody InterviewReservationRequest body) {
-    InterviewReservationResponse response = interviewService.reservationInterview(slotId, body);
+    InterviewReservationCreateResponse response =
+        interviewService.reservationInterview(slotId, body);
     URI location = URI.create(String.format("api/v2/reservations/%s", response.id()));
     return ResponseEntity.created(location).body(response);
   }

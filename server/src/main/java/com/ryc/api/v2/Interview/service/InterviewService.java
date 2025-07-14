@@ -1,5 +1,6 @@
 package com.ryc.api.v2.Interview.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,15 +11,19 @@ import com.ryc.api.v2.Interview.domain.InterviewReservation;
 import com.ryc.api.v2.Interview.domain.InterviewSlot;
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetAllResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewInfoGetResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCreateResponse;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,12 +56,26 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
-  public InterviewSlotGetAllResponse getInterviewSlots(
+  @HasRole(Role.MEMBER)
+  public InterviewInfoGetResponse getInterviewInfo(
+      ClubRoleSecuredDto clubRoleSecuredDto, String announcementId, LocalDate interviewDate) {
+    List<InterviewSlot> interviewSlots =
+        interviewRepository.findInterviewSlotsByAnnouncementIdAndDate(
+            announcementId, interviewDate);
+
+    //    for (InterviewSlot slot : interviewSlots) {
+    //      interviewRepository.find
+    //    }
+    return null;
+  }
+
+  @Transactional(readOnly = true)
+  public InterviewSlotsGetResponse getInterviewSlots(
       String clubId, String announcementId, String applicantId) {
 
     Club club = clubService.getClubById(clubId);
     List<InterviewSlot> interviewSlots =
-        interviewRepository.findInterviewSlotByAnnouncementId(announcementId);
+        interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
     String applicantEmail = applicantRepository.findEmailById(applicantId);
 
     List<InterviewSlotGetResponse> slotResponses =
@@ -77,7 +96,7 @@ public class InterviewService {
                 })
             .toList();
 
-    return InterviewSlotGetAllResponse.builder()
+    return InterviewSlotsGetResponse.builder()
         .clubName(club.name())
         .clubCategory(club.category().toString())
         .clubImageUrl(club.imageUrl())
@@ -88,7 +107,7 @@ public class InterviewService {
   }
 
   @Transactional
-  public InterviewReservationResponse reservationInterview(
+  public InterviewReservationCreateResponse reservationInterview(
       String slotId, InterviewReservationRequest body) {
 
     InterviewSlot interviewSlot = interviewRepository.findInterviewSlotByIdForUpdate(slotId);
@@ -105,6 +124,6 @@ public class InterviewService {
 
     InterviewReservation savedReservation =
         interviewRepository.saveInterviewReservation(reservation);
-    return new InterviewReservationResponse(savedReservation.getId());
+    return new InterviewReservationCreateResponse(savedReservation.getId());
   }
 }
