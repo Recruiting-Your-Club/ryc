@@ -9,9 +9,9 @@ public interface InterviewRepository {
 
   List<InterviewSlot> findInterviewSlotByAnnouncementId(String announcementId);
 
-  Optional<InterviewSlot> findInterviewSlotById(String interviewSlotId);
+  Optional<InterviewSlot> findInterviewSlotByIdForUpdate(String interviewSlotId);
 
-  List<InterviewReservation> findInterviewReservationsBySlotId(String interviewSlotId);
+  Integer countInterviewReservationBySlogId(String interviewSlotId);
 
   InterviewReservation saveInterviewReservation(InterviewReservation interviewReservation);
 }

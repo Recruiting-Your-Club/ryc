@@ -1,5 +1,7 @@
 package com.ryc.api.v2.Interview.presentation;
 
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +42,7 @@ public class InterviewHttpApi {
       @PathVariable("interview-slot-id") String slotId,
       @RequestBody InterviewReservationRequest body) {
     InterviewReservationResponse response = interviewService.reservationInterview(slotId, body);
-    //    return ResponseEntity.ok(response);
-    return null;
+    URI location = URI.create(String.format("api/v2/reservations/%s", response.id()));
+    return ResponseEntity.created(location).body(response);
   }
 }

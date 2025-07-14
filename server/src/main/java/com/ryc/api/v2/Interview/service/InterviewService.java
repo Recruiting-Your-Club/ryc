@@ -87,13 +87,13 @@ public class InterviewService {
 
     InterviewSlot interviewSlot =
         interviewRepository
-            .findInterviewSlotById(slotId)
+            .findInterviewSlotByIdForUpdate(slotId)
             .orElseThrow(() -> new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_NOT_FOUND));
-    List<InterviewReservation> prevReservations =
-        interviewRepository.findInterviewReservationsBySlotId(slotId);
+    Integer currentNumberOfPeople =
+        interviewRepository.countInterviewReservationBySlogId(interviewSlot.getId());
 
     // 예약 가능한 인원 수를 초과하는지 확인
-    if (interviewSlot.getMaxNumberOfPeople() <= prevReservations.size()) {
+    if (interviewSlot.getMaxNumberOfPeople() <= currentNumberOfPeople) {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
@@ -102,6 +102,6 @@ public class InterviewService {
 
     InterviewReservation savedReservation =
         interviewRepository.saveInterviewReservation(reservation);
-    return null;
+    return new InterviewReservationResponse(savedReservation.getId());
   }
 }

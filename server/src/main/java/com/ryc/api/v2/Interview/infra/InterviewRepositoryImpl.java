@@ -40,16 +40,15 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public Optional<InterviewSlot> findInterviewSlotById(String interviewSlotId) {
-    Optional<InterviewSlotEntity> entity = interviewSlotJpaRepository.findById(interviewSlotId);
+  public Optional<InterviewSlot> findInterviewSlotByIdForUpdate(String interviewSlotId) {
+    Optional<InterviewSlotEntity> entity =
+        interviewSlotJpaRepository.findByIdForUpdate(interviewSlotId);
     return entity.map(InterviewSlotMapper::toDomain);
   }
 
   @Override
-  public List<InterviewReservation> findInterviewReservationsBySlotId(String interviewSlotId) {
-    List<InterviewReservationEntity> entities =
-        interviewReservationJpaRepository.findByInterviewSlotId(interviewSlotId);
-    return entities.stream().map(InterviewReservationMapper::toDomain).toList();
+  public Integer countInterviewReservationBySlogId(String interviewSlotId) {
+    return interviewReservationJpaRepository.countByInterviewSlotId(interviewSlotId);
   }
 
   @Override
