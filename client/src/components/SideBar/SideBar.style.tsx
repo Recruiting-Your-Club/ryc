@@ -3,41 +3,23 @@ import theme from '@styles/theme';
 
 export const sideBarContainer = css`
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: sticky;
     top: 0;
     left: 0;
     height: 100dvh;
-    overflow: clip;
-    border-right: 1px solid ${theme.colors.gray[100]};
-`;
-
-export const sectionContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 0 2rem;
-    width: 7rem;
-    height: inherit;
-    overflow: auto;
-    background-color: #f6f7f9;
     border-right: 1px solid ${theme.colors.gray[300]};
+    z-index: 10000;
+    padding-left: 2rem;
+    padding-right: 1rem;
 `;
 
-export const navContainer = css`
+export const navMenuContainer = (isExpanded: boolean) => css`
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    gap: 1rem;
-`;
-
-export const menuListContainer = css`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
 `;
 
 export const emptyContainer = css`
@@ -50,18 +32,6 @@ export const imageContainer = css`
     height: 4rem;
     border-radius: 10px;
 `;
-export const menuButton = (isActive: boolean) => css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 10px;
-    ${isActive && `background-color: ${theme.colors.gray[300]};`}
-    :hover {
-        background-color: ${theme.colors.gray[300]};
-    }
-`;
 
 const sideBar_collapse = keyframes`
     0% {
@@ -69,25 +39,138 @@ const sideBar_collapse = keyframes`
     }
     100% {
         border-right: 0;
-        width: 0;
+        width: 4rem;
     }
 `;
 const sideBar_expand = keyframes`
     0% {
-        width: 0;
+        width: 4rem;
     }
     100% {
-        border-right: 1px solid ${theme.colors.gray[300]};
         width: 23rem;
     }
 `;
 const sideBar_opacity = keyframes`
     0% {
         opacity: 0;
+        display: none;
+    }
+    30%{
+        display: none;
     }
     100% {
         opacity: 1;
     }
+`;
+
+export const clubContainer = css`
+    display: flex;
+    gap: 1rem;
+`;
+export const clubLogoWrapper = css`
+    margin-bottom: 1rem;
+    width: 4rem;
+    height: 4rem;
+    padding: 0;
+`;
+export const clubTextWrapper = (isExpanded: boolean) => css`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+    animation: ${isExpanded
+        ? css`
+              ${sideBar_opacity} 0.4s ease forwards
+          `
+        : css`
+              ${sideBar_collapse} 0.4s ease forwards
+          `};
+`;
+
+export const homeLogoContainer = css`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    height: 5rem;
+`;
+export const menuContainer = (isActive: boolean) => css`
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding: 0;
+    
+    gap: 1rem;
+    ${isActive && `color: ${theme.colors.black};`}
+    :hover {
+        color: ${theme.colors.black};
+        background-color: none;
+    }
+`;
+
+export const menuTextWrapper = (isExpanded: boolean) => css`
+    animation: ${isExpanded
+        ? css`
+              ${sideBar_opacity} 0.4s ease forwards
+          `
+        : css`
+              ${sideBar_collapse} 0.4s ease forwards
+          `};
+    color: ${theme.colors.gray[900]};
+`;
+
+export const menuListContainer = css`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    width: 100%;
+`;
+
+export const mainMenuContainer = css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`
+export const subMenuContainer = (isExpanded: boolean) => css`
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    gap: 0.5rem;
+    animation: ${isExpanded
+        ? css`
+              ${sideBar_opacity} 0.4s ease forwards
+          `
+        : css`
+              ${sideBar_collapse} 0.4s ease forwards
+          `};
+`
+export const subMenuWrapper = css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-left: solid 1px ${theme.colors.gray[300]};
+    padding-left: 0.5rem;
+`
+
+export const navContainer = (isExpanded: boolean) => css`
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    height: 100%;
+    width: 100%;
+    gap: 1rem;
+    background-color: ${theme.colors.white};
+    z-index: 1000;
+    animation: ${isExpanded
+        ? css`
+              ${sideBar_expand} 0.2s ease-in-out forwards
+          `
+        : css`
+              ${sideBar_collapse} 0.4s ease forwards
+          `};
 `;
 
 export const contentContainer = (isExpanded: boolean) => css`
@@ -97,7 +180,7 @@ export const contentContainer = (isExpanded: boolean) => css`
     border-right: 1px solid ${theme.colors.gray[300]};
     padding: 2rem 0rem;
     white-space: nowrap;
-    background-color: #f6f7f9;
+    background-color: ${theme.colors.white};
     animation: ${isExpanded
         ? css`
               ${sideBar_expand} 0.2s ease-in-out forwards, ${sideBar_opacity} 1s ease forwards
@@ -105,6 +188,7 @@ export const contentContainer = (isExpanded: boolean) => css`
         : css`
               ${sideBar_collapse} 0.4s ease forwards
           `};
+    z-index: 1000;
 `;
 
 export const menuTitle = css`
@@ -116,18 +200,16 @@ export const menuTitle = css`
     ${theme.typography.h4Semibold};
 `;
 
-export const menuContainer = css`
-    padding: 0 0.5rem;
-`;
 export const menuContent = (isActive: boolean) => css`
     display: flex;
     justify-content: start;
     align-items: center;
-    height: 4rem;
+    height: 3rem;
     width: 100%;
     padding: 0 1rem;
     border-radius: 7px;
-    ${theme.typography.captionRegular};
+    margin-left: 1rem;
+    ${theme.typography.captionLight};
     ${isActive &&
     css`
         background-color: ${theme.colors.blue[100]};

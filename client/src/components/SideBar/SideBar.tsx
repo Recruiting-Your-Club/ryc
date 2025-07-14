@@ -4,23 +4,29 @@ import basicImage from '@assets/images/basicImage.png';
 import EditApplication from '@assets/images/EditApplication.svg';
 import Home from '@assets/images/Home.svg';
 import Ryc from '@assets/images/Ryc.svg';
+import SSOC from '@assets/images/ssoc.png';
 import UserSet from '@assets/images/UserSet.svg';
-import { Button, Divider } from '@components';
+import { Button, Text, Tooltip, Dropdown } from '@components';
 import { useRouter } from '@hooks/useRouter';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
+    clubContainer,
     contentContainer,
     emptyContainer,
     imageContainer,
-    menuButton,
     menuContainer,
     menuContent,
     menuListContainer,
     menuTitle,
     navContainer,
-    sectionContainer,
     sideBarContainer,
+    menuTextWrapper,
+    homeLogoContainer,
+    clubTextWrapper,
+    mainMenuContainer,
+    subMenuContainer,
+    subMenuWrapper,
 } from './SideBar.style';
 
 interface MenuItem {
@@ -60,6 +66,79 @@ function SideBar({ menu, subMenu }: SideBarProps) {
         { parentId: 4, subMenu: '면접 공통 질문 설정', link: '/manager/questions' },
         { parentId: 5, subMenu: '사용자 권한 설정', link: '/manager/setting' },
     ];
+    const testMenu = [
+  {
+    id: 1,
+    menu: "모집공고",
+    icon: <Home />, // <Home /> 컴포넌트
+    subMenus: [
+      {
+        menu: "모집공고",
+        link: "/manager/recruitment"
+      }
+    ]
+  },
+  {
+    id: 2,
+    menu: "지원자 관리",
+    icon: <AplicantManage />, // <AplicantManage /> 컴포넌트
+    subMenus: [
+      {
+        menu: "단계별 통합 관리",
+        link: "/manager/steps"
+      },
+      {
+        menu: "불합격자 관리",
+        link: "/manager/rejected"
+      }
+    ]
+  },
+  {
+    id: 3,
+    menu: "공고 편집",
+    icon: <EditApplication />, // <EditApplication /> 컴포넌트
+    subMenus: [
+      {
+        menu: "공고 편집",
+        link: "/manager/edit"
+      }
+    ]
+  },
+  {
+    id: 4,
+    menu: "면접 관리",
+    icon: <ApplicationManage />, // <ApplicationManage /> 컴포넌트
+    subMenus: [
+      {
+        menu: "시간대 별 지원자 편집",
+        link: "/manager/time-slots"
+      },
+      {
+        menu: "서류 평가",
+        link: "/manager/doc-evaluation"
+      },
+      {
+        menu: "면접 평가 테이블",
+        link: "/manager/evaluation"
+      },
+      {
+        menu: "면접 공통 질문 설정",
+        link: "/manager/questions"
+      }
+    ]
+  },
+  {
+    id: 5,
+    menu: "사용자 설정",
+    icon: <UserSet />, // <UserSet /> 컴포넌트
+    subMenus: [
+      {
+        menu: "사용자 권한 설정",
+        link: "/manager/setting"
+      }
+    ]
+  }
+]
     const menuItems = Array.isArray(menu) ? menu : defaultMenuItems;
     const subMenuItems = Array.isArray(subMenu) ? subMenu : defaultSubMenuItems;
 
@@ -110,8 +189,10 @@ function SideBar({ menu, subMenu }: SideBarProps) {
 
     // handlers
     const handleCollapsed = (id: number) => {
+        console.log(id);
         if (!isExpanded || activeMenu !== id) {
             setActiveMenu(id);
+            setActiveSubMenu(subMenuItems.find((item) => item.parentId === id)?.subMenu || '')
             setIsExpanded(true);
         } else {
             setIsExpanded(false);
@@ -121,36 +202,79 @@ function SideBar({ menu, subMenu }: SideBarProps) {
     return (
         <>
             <aside css={sideBarContainer}>
-                <section css={sectionContainer}>
-                    <nav css={navContainer}>
-                        <Button
-                            variant="transparent"
-                            size="lg"
-                            sx={{
-                                marginBottom: '1rem',
-                                width: '4rem',
-                                height: '4rem',
-                                padding: '0',
-                            }}
-                        >
-                            <Ryc width="100%" height="100%" css={{ borderRadius: '10px' }} />
-                        </Button>
-                        {menuItems.map((item) => (
-                            <div key={item.id} css={menuListContainer}>
+                
+                    <nav css={navContainer(isExpanded)}>
+                        <div css={homeLogoContainer}>
+                        {isExpanded ? (
+                            <Text as="div" type="h3Bold">
+                                SSOC
+                            </Text>
+                        ) : (
+                            <div>>></div>
+                        )}
+                        </div>
+                        <div css={clubContainer}>
+                            <Button
+                                variant="transparent"
+                                size="s"
+                                sx={{
+                                    marginBottom: '1rem',
+                                    width: '3.5rem',
+                                    height: '3.5rem',
+                                    padding: '0',
+                                }}
+                            >
+                                <Ryc width="100%" height="100%" css={{ borderRadius: '10px' }} />
+                            </Button>
+                            {isExpanded &&
+                            <div css={clubTextWrapper(isExpanded)}>
+                                <Text as = 'div' type='captionRegular'>엔샵</Text>
+                                <Text as = 'div' type='captionRegular'>세종대학교 SW</Text>
+                            </div>
+                        }
+                        </div>
+                        {testMenu.map((MainMenu) => (
+                            <div key={MainMenu.id} css={menuListContainer}>
+
                                 <Button
-                                    variant="transparent"
-                                    size="lg"
-                                    sx={menuButton(item.id === activeMenu)}
+                                    variant="text"
+                                    size="full"
+                                    sx={menuContainer(MainMenu.id === activeMenu)}
                                     onClick={() => {
-                                        handleCollapsed(item.id);
+                                        handleCollapsed(MainMenu.id);
                                     }}
+                                    zIndex={1000}
                                 >
-                                    {item.icon}
+                                    <Tooltip content={MainMenu.menu}>
+                                        {MainMenu.icon}
+                                    </Tooltip>
+                                    {isExpanded && <Text as='div' type='bodySemibold' sx={menuTextWrapper(isExpanded)}>{MainMenu.menu}</Text>}
                                 </Button>
+                                
+                                
+                                
+
+                                {isExpanded && <div css={subMenuContainer(isExpanded)}>
+                                {MainMenu.subMenus.map((subMenu) => (
+                                    <div css={subMenuWrapper}>
+                                        <Button
+                                            key={subMenu.menu}
+                                            variant="text"
+                                            onClick={() => {
+                                                setActiveSubMenu(subMenu.menu);
+                                                goTo(subMenu.link);
+                                            }}
+                                            sx={menuContent(activeSubMenu === subMenu.menu)}
+                                    >
+                                {subMenu.menu}
+                            </Button>
+                                    </div>
+                                ))}
+                                </div>
+}
                             </div>
                         ))}
                     </nav>
-                    <div css={emptyContainer} />
 
                     <div css={imageContainer}>
                         <img
@@ -161,9 +285,14 @@ function SideBar({ menu, subMenu }: SideBarProps) {
                             style={{ borderRadius: '10px' }}
                         />
                     </div>
-                </section>
+                
 
+                {/**
                 <section css={contentContainer(isExpanded)}>
+                    <div>
+                        <div>엔샵</div>
+                        <div>학술동아리</div>
+                    </div>
                     {menuItems
                         .filter((item) => item.id === activeMenu)
                         .map((item) => (
@@ -172,12 +301,6 @@ function SideBar({ menu, subMenu }: SideBarProps) {
                             </div>
                         ))}
 
-                    <Divider
-                        width="90"
-                        color="gray"
-                        weight="1"
-                        sx={{ marginTop: '2rem', marginBottom: '1rem' }}
-                    />
                     <div css={menuContainer}>
                         {filteredSubMenu.map((item) => (
                             <Button
@@ -194,6 +317,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
                         ))}
                     </div>
                 </section>
+                 */}
             </aside>
         </>
     );
