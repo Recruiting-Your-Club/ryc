@@ -10,7 +10,7 @@ public interface InterviewRepository {
 
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
 
-  Integer countInterviewReservationBySlogId(String interviewSlotId);
+  Integer countInterviewReservationBySlotId(String interviewSlotId);
 
   InterviewReservation saveInterviewReservation(InterviewReservation interviewReservation);
 }

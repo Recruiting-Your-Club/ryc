@@ -61,12 +61,15 @@ public class InterviewService {
             .map(
                 slot -> {
                   PeriodResponse periodResponse = PeriodResponse.from(slot.getPeriod());
+                  Integer currentCount =
+                      interviewRepository.countInterviewReservationBySlotId(
+                          slot.getId()); // TODO: 성능 개선 필요
 
                   return InterviewSlotGetResponse.builder()
                       .id(slot.getId())
                       .period(periodResponse)
                       .maxNumberOfPeople(slot.getMaxNumberOfPeople())
-                      .currentNumberOfPeople(0) // TODO: 현재 예약된 인원 수를 가져오는 로직 추가
+                      .currentNumberOfPeople(currentCount)
                       .build();
                 })
             .toList();
@@ -87,7 +90,7 @@ public class InterviewService {
 
     InterviewSlot interviewSlot = interviewRepository.findInterviewSlotByIdForUpdate(slotId);
     Integer currentNumberOfPeople =
-        interviewRepository.countInterviewReservationBySlogId(interviewSlot.getId());
+        interviewRepository.countInterviewReservationBySlotId(interviewSlot.getId());
 
     // 예약 가능한 인원 수를 초과하는지 확인
     if (interviewSlot.getMaxNumberOfPeople() <= currentNumberOfPeople) {

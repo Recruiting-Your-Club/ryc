@@ -50,7 +50,7 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public Integer countInterviewReservationBySlogId(String interviewSlotId) {
+  public Integer countInterviewReservationBySlotId(String interviewSlotId) {
     return interviewReservationJpaRepository.countByInterviewSlotId(interviewSlotId);
   }
 
