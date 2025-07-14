@@ -1,15 +1,16 @@
 import EditPencil from '@assets/images/edit-pencil.svg';
 import Trash from '@assets/images/trash.svg';
 import { Avatar, Rating, Text } from '@components';
-import { svgButtonCss, svgButtonGroup } from '@components/EvaluationBox/EvaluationBox.style';
 import { Button } from '@components/_common';
 import React from 'react';
 import {
-    cardContainer,
-    contentContainer,
-    evaluatorSection,
-    headerContainer,
-    ratingSection,
+    s_cardContainer,
+    s_contentContainer,
+    s_evaluatorSection,
+    s_headerContainer,
+    s_ratingSection,
+    s_svgButton,
+    s_svgButtonGroup,
 } from './PersonalScoreCard.style';
 import type { PersonalScoreCardProps } from './types';
 
@@ -40,9 +41,9 @@ function PersonalScoreCard({
     };
     // effects
     return (
-        <div css={cardContainer}>
-            <div css={headerContainer}>
-                <div css={evaluatorSection}>
+        <div css={s_cardContainer}>
+            <div css={s_headerContainer}>
+                <div css={s_evaluatorSection}>
                     <Avatar shape="round" size="xs" imageURL={image} />
                     <Text
                         as="span"
@@ -54,21 +55,21 @@ function PersonalScoreCard({
                         {name}
                     </Text>
                     {isEditable && isMine && (
-                        <span css={svgButtonGroup}>
+                        <span css={s_svgButtonGroup}>
                             <Button variant="transparent" size="xs">
-                                <EditPencil css={svgButtonCss} onClick={handleEditFunction} />
+                                <EditPencil css={s_svgButton} onClick={handleEditFunction} />
                             </Button>
                             <Button variant="transparent" size="xs" onClick={handleDelete}>
-                                <Trash css={svgButtonCss} />
+                                <Trash css={s_svgButton} />
                             </Button>
                         </span>
                     )}
                 </div>
-                <div css={ratingSection}>
+                <div css={s_ratingSection}>
                     <Rating key={score} value={score} size="lg" type="display" />
                 </div>
             </div>
-            <div css={contentContainer}>
+            <div css={s_contentContainer}>
                 <Text as="span" type="captionSemibold" textAlign="start">
                     {comment}
                 </Text>

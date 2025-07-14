@@ -141,14 +141,3 @@ export const textareaCss = css`
         outline: 2px solid ${theme.colors.gray[300]};
     }
 `;
-
-export const svgButtonGroup = css`
-    display: flex;
-    margin: 0.5rem 0;
-`;
-
-export const svgButtonCss = css`
-    width: 1.2rem;
-    height: 1.2rem;
-    cursor: pointer;
-`;
