@@ -1,15 +1,15 @@
 package com.ryc.api.v2.role.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.admin.service.AdminService;
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
@@ -28,21 +28,14 @@ public class ClubRoleService {
 
   private final ClubRoleRepository clubRoleRepository;
   private final ClubRepository clubRepository;
-  private final AdminRepository adminRepository;
+  private final AdminService adminService;
 
   @Transactional
   public RoleDemandResponse assignRole(String userId, String clubId) {
-    Club club =
-        clubRepository
-            .findById(clubId)
-            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
-
-    Admin admin =
-        adminRepository
-            .findById(userId)
-            .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + userId));
-
+    Club club = clubRepository.findById(clubId);
+    Admin admin = adminService.getAdminById(userId);
     ClubRole clubRole = assignRole(admin, club, Role.MEMBER);
+
     return new RoleDemandResponse(clubRole.id());
   }
 
@@ -82,6 +75,22 @@ public class ClubRoleService {
     }
 
     clubRoleRepository.deleteByUserId(targetUserId);
+  }
+
+  @Transactional(readOnly = true)
+  public List<ClubGetByAdminIdResponse> getClubByAdminId(String adminId) {
+    List<Club> clubs = clubRoleRepository.findClubsByAdminId(adminId);
+    return clubs.stream()
+        .map(
+            club ->
+                ClubGetByAdminIdResponse.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .shortDescription(club.getShortDescription())
+                    .imageUrl(club.getImageUrl())
+                    .thumbnailUrl(club.getThumbnailUrl())
+                    .build())
+        .toList();
   }
 
   @Transactional(readOnly = true)
