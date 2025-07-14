@@ -78,10 +78,7 @@ public class EmailService {
       InterviewEmailSendRequest body) {
 
     interviewService.createInterviewSlot(
-        clubRoleSecuredDto.adminId(),
-        clubRoleSecuredDto.clubId(),
-        announcementId,
-        body.numberOfPeopleByInterviewDateRequests());
+        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDateRequests());
 
     List<Email> emails =
         createEmailsWithEachLink(

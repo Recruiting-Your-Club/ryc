@@ -30,10 +30,7 @@ public class InterviewService {
 
   @Transactional
   public List<String> createInterviewSlot(
-      String adminId,
-      String clubId,
-      String announcementId,
-      List<NumberOfPeopleByInterviewDateRequest> requests) {
+      String adminId, String announcementId, List<NumberOfPeopleByInterviewDateRequest> requests) {
 
     List<InterviewSlot> interviewSlots =
         requests.stream()
@@ -41,7 +38,6 @@ public class InterviewService {
                 request ->
                     InterviewSlot.initialize(
                         adminId,
-                        clubId,
                         announcementId,
                         request.numberOfPeople(),
                         request.interviewPeriod()))

@@ -32,9 +32,6 @@ public class InterviewSlotEntity extends BaseEntity {
   private String creatorId;
 
   @Column(nullable = false)
-  private String clubId;
-
-  @Column(nullable = false)
   private String announcementId;
 
   @Column(nullable = false)
