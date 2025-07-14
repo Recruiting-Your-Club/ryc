@@ -19,6 +19,9 @@ public class ApplicantEntity extends BaseEntity {
     @Column(nullable = false, name = "announcement_id")
     private String announcementId;
 
+    private String email;
+    private String name;
+
     @Enumerated(EnumType.STRING)
     private ApplicantStatus status;
 

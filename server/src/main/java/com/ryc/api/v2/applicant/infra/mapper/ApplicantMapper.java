@@ -8,12 +8,11 @@ public class ApplicantMapper {
         if (entity == null) return null;
         return Applicant.builder()
                 .id(entity.getId())
-                .userId(entity.getUserId())
+                .userId(entity.getId())
                 .announcementId(entity.getAnnouncementId())
                 .status(entity.getStatus())
                 .isDeleted(entity.getIsDeleted())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
+                .email(entity.getEmail())
                 .build();
     }
 
@@ -21,10 +20,11 @@ public class ApplicantMapper {
         if (domain == null) return null;
         return ApplicantEntity.builder()
                 .id(domain.getId())
-                .userId(domain.getUserId())
                 .announcementId(domain.getAnnouncementId())
                 .status(domain.getStatus())
                 .isDeleted(domain.getIsDeleted())
+                .email(domain.getEmail())
+                .name(domain.getName())
                 .build();
     }
 }

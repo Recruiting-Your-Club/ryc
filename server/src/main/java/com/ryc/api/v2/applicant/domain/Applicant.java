@@ -14,6 +14,6 @@ public class Applicant {
     private final String announcementId;
     private final ApplicantStatus status;
     private final Boolean isDeleted;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private final String name;
+    private final String email;
 }
