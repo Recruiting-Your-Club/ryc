@@ -23,5 +23,6 @@ public class ApplicantEntity extends BaseEntity {
   @Column(nullable = false)
   private String email;
 
-  // TODO: 지원서와 연관관계 필요
+  @Column(nullable = false)
+  private String announcementId;
 }

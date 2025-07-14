@@ -11,6 +11,7 @@ public class ApplicantMapper {
         .id(applicant.getId())
         .name(applicant.getName())
         .email(applicant.getEmail())
+        .announcementId(applicant.getAnnouncementId())
         .build();
   }
 
@@ -19,6 +20,7 @@ public class ApplicantMapper {
         .id(applicantEntity.getId())
         .name(applicantEntity.getName())
         .email(applicantEntity.getEmail())
+        .announcementId(applicantEntity.getAnnouncementId())
         .build();
   }
 }
