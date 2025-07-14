@@ -1,7 +1,6 @@
 package com.ryc.api.v2.Interview.infra;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +13,8 @@ import com.ryc.api.v2.Interview.infra.jpa.InterviewReservationJpaRepository;
 import com.ryc.api.v2.Interview.infra.jpa.InterviewSlotJpaRepository;
 import com.ryc.api.v2.Interview.infra.mapper.InterviewReservationMapper;
 import com.ryc.api.v2.Interview.infra.mapper.InterviewSlotMapper;
+import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,10 +41,12 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public Optional<InterviewSlot> findInterviewSlotByIdForUpdate(String interviewSlotId) {
-    Optional<InterviewSlotEntity> entity =
-        interviewSlotJpaRepository.findByIdForUpdate(interviewSlotId);
-    return entity.map(InterviewSlotMapper::toDomain);
+  public InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId) {
+    InterviewSlotEntity entity =
+        interviewSlotJpaRepository
+            .findByIdForUpdate(interviewSlotId)
+            .orElseThrow(() -> new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_NOT_FOUND));
+    return InterviewSlotMapper.toDomain(entity);
   }
 
   @Override

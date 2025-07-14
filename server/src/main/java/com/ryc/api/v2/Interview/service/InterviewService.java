@@ -85,10 +85,7 @@ public class InterviewService {
   public InterviewReservationResponse reservationInterview(
       String slotId, InterviewReservationRequest body) {
 
-    InterviewSlot interviewSlot =
-        interviewRepository
-            .findInterviewSlotByIdForUpdate(slotId)
-            .orElseThrow(() -> new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_NOT_FOUND));
+    InterviewSlot interviewSlot = interviewRepository.findInterviewSlotByIdForUpdate(slotId);
     Integer currentNumberOfPeople =
         interviewRepository.countInterviewReservationBySlogId(interviewSlot.getId());
 
