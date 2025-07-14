@@ -40,10 +40,7 @@ public class ClubService {
   @HasRole(Role.MEMBER)
   public ClubUpdateResponse updateClub(
       ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
-    Club previousClub =
-        clubRepository
-            .findById(clubRoleSecuredDto.clubId())
-            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+    Club previousClub = clubRepository.findById(clubRoleSecuredDto.clubId());
 
     if (body.name() != null && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
@@ -71,8 +68,8 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubGetResponse getClubResponse(String clubId) {
-    Club club = getClubById(clubId);
+  public ClubGetResponse getClub(String clubId) {
+    Club club = clubRepository.findById(clubId);
     return ClubGetResponse.builder()
         .name(club.getName())
         .detailDescription(club.getDetailDescription())
@@ -83,13 +80,6 @@ public class ClubService {
         .clubSummaries(club.getClubSummaries())
         .clubDetailImages(club.getClubDetailImages())
         .build();
-  }
-
-  @Transactional(readOnly = true)
-  public Club getClubById(String clubId) {
-    return clubRepository
-        .findById(clubId)
-        .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
   }
 
   @Transactional(readOnly = true)

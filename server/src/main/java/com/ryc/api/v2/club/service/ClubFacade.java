@@ -44,7 +44,7 @@ public class ClubFacade {
 
   @Transactional(readOnly = true)
   public ClubGetResponse getClub(String clubId) {
-    return clubService.getClubResponse(clubId);
+    return clubService.getClub(clubId);
   }
 
   @Transactional(readOnly = true)

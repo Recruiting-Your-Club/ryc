@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
-import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
@@ -27,12 +27,12 @@ import lombok.RequiredArgsConstructor;
 public class ClubRoleService {
 
   private final ClubRoleRepository clubRoleRepository;
-  private final ClubService clubService;
+  private final ClubRepository clubRepository;
   private final AdminService adminService;
 
   @Transactional
   public RoleDemandResponse assignRole(String userId, String clubId) {
-    Club club = clubService.getClubById(clubId);
+    Club club = clubRepository.findById(clubId);
     Admin admin = adminService.getAdminById(userId);
     ClubRole clubRole = assignRole(admin, club, Role.MEMBER);
 
