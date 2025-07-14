@@ -14,6 +14,7 @@ import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationRe
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetAllResponse;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
+import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.vo.Club;
 import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
@@ -27,6 +28,7 @@ public class InterviewService {
 
   private final InterviewRepository interviewRepository;
   private final ClubService clubService;
+  private final ApplicantRepository applicantRepository;
 
   @Transactional
   public List<String> createInterviewSlot(
@@ -55,6 +57,7 @@ public class InterviewService {
     Club club = clubService.getClubById(clubId);
     List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotByAnnouncementId(announcementId);
+    String applicantEmail = applicantRepository.findEmailById(applicantId);
 
     List<InterviewSlotGetResponse> slotResponses =
         interviewSlots.stream()
@@ -80,7 +83,7 @@ public class InterviewService {
         .clubImageUrl(club.imageUrl())
         .clubThumbnailUrl(club.thumbnailUrl())
         .interviewSlots(slotResponses)
-        .applicantEmail("MOCK EMAIL") // TODO: applicantId를 사용하여 지원자 이메일 가져오기
+        .applicantEmail(applicantEmail)
         .build();
   }
 

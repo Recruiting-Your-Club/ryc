@@ -17,6 +17,13 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   private final ApplicantJpaRepository applicantJpaRepository;
 
   @Override
+  public String findEmailById(String id) {
+    return applicantJpaRepository
+        .findEmailById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Applicant not found with id: " + id));
+  }
+
+  @Override
   public Applicant findById(String id) {
     ApplicantEntity entity =
         applicantJpaRepository
