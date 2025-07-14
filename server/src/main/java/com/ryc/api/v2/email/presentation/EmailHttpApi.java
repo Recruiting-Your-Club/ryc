@@ -7,7 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
@@ -34,18 +38,17 @@ public class EmailHttpApi {
 
   @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails")
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "202", description = "이메일 전송 성공"),
-        @ApiResponse(
-            responseCode = "400",
-            description = "잘못된 요청",
-            content = @Content(schema = @Schema(hidden = true))),
-        @ApiResponse(
-            responseCode = "403",
-            description = "권한 없음",
-            content = @Content(schema = @Schema(hidden = true)))
-      })
+  @ApiResponses({
+    @ApiResponse(responseCode = "202", description = "이메일 전송 성공"),
+    @ApiResponse(
+        responseCode = "400",
+        description = "잘못된 요청",
+        content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(
+        responseCode = "403",
+        description = "권한 없음",
+        content = @Content(schema = @Schema(hidden = true)))
+  })
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable String clubId,
