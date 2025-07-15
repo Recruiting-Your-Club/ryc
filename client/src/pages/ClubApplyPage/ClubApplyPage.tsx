@@ -290,12 +290,6 @@ function ClubApplyPage() {
     // effects
     useEffect(() => {
         const completedCount = answers.filter((answer) => {
-            const question = allQuestions.find(
-                (question) => question.questionTitle === answer.questionTitle,
-            );
-            // 필수 항목이 아닌 경우 제외
-            if (!question?.isRequired) return false;
-
             // 값이 비어있는 경우 제외
             if (!answer.value.trim()) return false;
 
@@ -361,7 +355,7 @@ function ClubApplyPage() {
                 <Button
                     variant="primary"
                     size="full"
-                    disabled={completedQuestions !== requiredQuestionsCount}
+                    disabled={completedQuestions < requiredQuestionsCount}
                     onClick={handleSubmit}
                     sx={{ height: '4rem' }}
                 >
