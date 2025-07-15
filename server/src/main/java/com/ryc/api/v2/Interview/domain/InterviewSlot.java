@@ -2,10 +2,13 @@ package com.ryc.api.v2.Interview.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
+import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +44,51 @@ public class InterviewSlot {
   }
 
   public boolean isFull() {
-    return interviewReservations.size() >= maxNumberOfPeople;
+    return interviewReservations.size() == maxNumberOfPeople;
+  }
+
+  public InterviewSlot addInterviewReservations(InterviewReservation newReservation) {
+    int maxCount = this.maxNumberOfPeople;
+    List<InterviewReservation> newInterviewReservations =
+        new ArrayList<>(this.interviewReservations);
+
+    if (maxNumberOfPeople == interviewReservations.size()) {
+      maxCount++;
+    }
+
+    newInterviewReservations.add(newReservation);
+
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(maxCount)
+        .period(this.period)
+        .interviewReservations(newInterviewReservations)
+        .build();
+  }
+
+  public InterviewReservation getInterviewReservationById(String reservationId) {
+    return this.interviewReservations.stream()
+        .filter(reservation -> reservation.getId().equals(reservationId))
+        .findFirst()
+        .orElseThrow(
+            () -> new InterviewException(InterviewErrorCode.INTERVIEW_RESERVATION_NOT_FOUND));
+  }
+
+  public InterviewSlot removeInterviewReservationById(InterviewReservation reservation) {
+    List<InterviewReservation> newInterviewReservations =
+        new ArrayList<>(this.interviewReservations);
+
+    newInterviewReservations.remove(reservation);
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .period(this.period)
+        .interviewReservations(newInterviewReservations)
+        .build();
   }
 
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.

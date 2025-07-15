@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface InterviewRepository {
 
+  InterviewSlot saveInterviewSlot(InterviewSlot interviewSlot);
+
   List<InterviewSlot> saveAllInterviewSLot(List<InterviewSlot> interviewSlots);
 
   List<InterviewSlot> findInterviewSlotsByAnnouncementId(String announcementId);
@@ -13,6 +15,8 @@ public interface InterviewRepository {
       String announcementId, LocalDate interviewDate);
 
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
+
+  InterviewSlot findInterviewSlotByReservationId(String interviewReservationId);
 
   InterviewReservation saveInterviewReservation(
       InterviewReservation reservation, InterviewSlot slot);

@@ -27,6 +27,13 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   private final InterviewReservationJpaRepository interviewReservationJpaRepository;
 
   @Override
+  public InterviewSlot saveInterviewSlot(InterviewSlot interviewSlot) {
+    InterviewSlotEntity entity = InterviewSlotMapper.toEntity(interviewSlot);
+    InterviewSlotEntity savedEntity = interviewSlotJpaRepository.save(entity);
+    return InterviewSlotMapper.toDomain(savedEntity);
+  }
+
+  @Override
   public List<InterviewSlot> saveAllInterviewSLot(List<InterviewSlot> interviewSlots) {
     List<InterviewSlotEntity> entities =
         interviewSlots.stream().map(InterviewSlotMapper::toEntity).toList();
@@ -54,6 +61,15 @@ public class InterviewRepositoryImpl implements InterviewRepository {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
             .findByIdForUpdate(interviewSlotId)
+            .orElseThrow(() -> new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_NOT_FOUND));
+    return InterviewSlotMapper.toDomain(entity);
+  }
+
+  @Override
+  public InterviewSlot findInterviewSlotByReservationId(String interviewReservationId) {
+    InterviewSlotEntity entity =
+        interviewReservationJpaRepository
+            .findInterviewSlotById(interviewReservationId)
             .orElseThrow(() -> new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_NOT_FOUND));
     return InterviewSlotMapper.toDomain(entity);
   }

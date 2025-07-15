@@ -11,6 +11,7 @@ import com.ryc.api.v2.Interview.domain.InterviewRepository;
 import com.ryc.api.v2.Interview.domain.InterviewReservation;
 import com.ryc.api.v2.Interview.domain.InterviewSlot;
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
+import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationUpdatedRequest;
 import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
 import com.ryc.api.v2.Interview.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
@@ -158,5 +159,48 @@ public class InterviewService {
     InterviewReservation savedReservation =
         interviewRepository.saveInterviewReservation(reservation, interviewSlot);
     return new InterviewReservationCreateResponse(savedReservation.getId());
+  }
+
+  @Transactional
+  @HasRole(Role.MEMBER)
+  public InterviewReservationUpdateResponse changeInterviewReservation(
+      ClubRoleSecuredDto clubRoleSecuredDto,
+      String reservationId,
+      InterviewReservationUpdatedRequest body) {
+    // 기존 면접 슬롯 조회
+    InterviewSlot oldInterviewSlot =
+        interviewRepository.findInterviewSlotByReservationId(reservationId);
+
+    // 기존 면접 슬롯에서 예약 정보 조회
+    InterviewReservation reservation = oldInterviewSlot.getInterviewReservationById(reservationId);
+
+    // 기존 면접 슬롯에서 예약 정보 제거
+    InterviewSlot removedInterviewReservation =
+        oldInterviewSlot.removeInterviewReservationById(reservation);
+
+    // 새로운 면접 슬롯 조회
+    InterviewSlot newInterviewSlot =
+        interviewRepository.findInterviewSlotByIdForUpdate(body.interviewSlotId());
+
+    // 새로운 면접 슬롯에 예약 정보 추가
+    newInterviewSlot.addInterviewReservations(reservation);
+
+    // 면접 예약 정보 업데이트
+    InterviewReservation savedReservation =
+        interviewRepository.saveInterviewReservation(reservation, newInterviewSlot);
+
+    PeriodResponse periodResponse = PeriodResponse.from(newInterviewSlot.getPeriod());
+    InterviewSlotGetResponse slotGetResponse =
+        InterviewSlotGetResponse.builder()
+            .id(newInterviewSlot.getId())
+            .period(periodResponse)
+            .maxNumberOfPeople(newInterviewSlot.getMaxNumberOfPeople())
+            .currentNumberOfPeople(newInterviewSlot.getInterviewReservations().size())
+            .build();
+
+    return InterviewReservationUpdateResponse.builder()
+        .interviewReservationId(savedReservation.getId())
+        .interviewSlot(slotGetResponse)
+        .build();
   }
 }

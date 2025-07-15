@@ -6,17 +6,13 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
+import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationUpdatedRequest;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewInfoGetResponse;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCreateResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationUpdateResponse;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
 import com.ryc.api.v2.Interview.service.InterviewService;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
@@ -99,5 +95,32 @@ public class InterviewHttpApi {
         interviewService.reservationInterview(slotId, body);
     URI location = URI.create(String.format("api/v2/reservations/%s", response.id()));
     return ResponseEntity.created(location).body(response);
+  }
+
+  @PatchMapping("clubs/{club-id}/interview-reservations/{reservation-id}")
+  @Operation(
+      summary = "면접 예약 수정",
+      description =
+          "동아리 관리자가 지원자의 면접 일정을 수정합니다.\n 만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "면접 예약 수정 성공"),
+    @ApiResponse(
+        responseCode = "403",
+        description = "동아리 회장 또는 동아리원이 아닙니다.",
+        content = @Content(schema = @Schema(hidden = true))),
+    @ApiResponse(
+        responseCode = "404",
+        description = "면접 슬롯 또는 면접 예약을 찾을 수 없음",
+        content = @Content(schema = @Schema(hidden = true)))
+  })
+  public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
+      @AuthenticationPrincipal CustomUserDetail userDetails,
+      @PathVariable("club-id") String clubId,
+      @PathVariable("reservation-id") String reservationId,
+      @RequestBody InterviewReservationUpdatedRequest body) {
+    ClubRoleSecuredDto clubRoleSecuredDto = new ClubRoleSecuredDto(userDetails.getId(), clubId);
+    InterviewReservationUpdateResponse response =
+        interviewService.changeInterviewReservation(clubRoleSecuredDto, reservationId, body);
+    return ResponseEntity.ok(response);
   }
 }
