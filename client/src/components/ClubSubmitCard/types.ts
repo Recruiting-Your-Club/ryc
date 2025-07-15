@@ -9,8 +9,9 @@ export interface ClubSubmitCardProps {
     detailQuestions: DetailQuestion[];
     completedQuestionsCount: number;
     requiredQuestionsCount: number;
-    deadlineColor?: string;
-    onSubmit?: () => void;
+    requiredQuestionsCompleted: boolean;
+    allQuestionsCount: number;
     answers: Answer[];
     onQuestionFocus: (questionTitle: string, tab: string) => void;
+    onSubmit?: () => void;
 }
