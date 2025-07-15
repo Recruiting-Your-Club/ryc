@@ -2,9 +2,10 @@ import type { DetailQuestion, PersonalQuestion, Answer } from '@pages/ClubApplyP
 
 export interface QuestionDropdownProps {
     completedQuestionsCount: number;
-    requiredQuestionsCount: number;
     personalQuestions: PersonalQuestion[];
     detailQuestions: DetailQuestion[];
+    requiredQuestionsCompleted: boolean;
+    allQuestionsCount: number;
     answers: Answer[];
     onQuestionFocus: (questionTitle: string, tab: string) => void;
 }
