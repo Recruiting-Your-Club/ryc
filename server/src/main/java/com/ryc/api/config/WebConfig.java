@@ -11,7 +11,10 @@ public class WebConfig implements WebMvcConfigurer {
     registry
         .addMapping("/**")
         .allowedOrigins(
-            "http://localhost:3000", "https://d24yror9k3fwgn.cloudfront.net") // 허용할 Origin
+            "http://localhost:3000",
+            "http://localhost:3000/",
+            "https://d24yror9k3fwgn.cloudfront.net/",
+            "https://d24yror9k3fwgn.cloudfront.net") // 허용할 Origin
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
         .allowCredentials(true) // 쿠키 인증 요청 허용
         .allowedHeaders("*")
