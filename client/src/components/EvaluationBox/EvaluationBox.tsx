@@ -59,6 +59,7 @@ function EvaluationBox({
         });
         setScore(0);
         setComment('');
+        handleFormState({ score: 0, comment: '' });
     };
 
     const handleDelete = () => {
