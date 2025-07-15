@@ -144,7 +144,7 @@ function EvaluationBox({
                                 onComment={setComment}
                                 onScore={setScore}
                                 onOpenForm={setIsOpenForm}
-                                onId={setCommentIdForEdit}
+                                onCommentId={setCommentIdForEdit}
                                 isEditable
                             />
                         ))
@@ -159,6 +159,7 @@ function EvaluationBox({
             {(!Boolean(myComment) || formState.isOpenForm) && (
                 <div css={s_userEvaluation}>
                     <Rating
+                        key={formState.score}
                         size="lg"
                         value={formState.score}
                         onChange={(score) => handleFormState({ score })}
