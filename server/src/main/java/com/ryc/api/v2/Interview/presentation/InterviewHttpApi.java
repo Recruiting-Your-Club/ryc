@@ -2,6 +2,7 @@ package com.ryc.api.v2.Interview.presentation;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -57,8 +58,8 @@ public class InterviewHttpApi {
   }
 
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/reservations")
-  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜의 공고 면접 정보를 조회합니다.")
-  public ResponseEntity<InterviewInfoGetResponse> getInterviewInfo(
+  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜의 공고 면접자 정보를 조회합니다.")
+  public ResponseEntity<List<InterviewInfoGetResponse>> getInterviewInfo(
       @AuthenticationPrincipal CustomUserDetail userDetails,
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
@@ -66,7 +67,7 @@ public class InterviewHttpApi {
           @RequestParam("interview-date")
           LocalDate interviewDate) {
     ClubRoleSecuredDto clubRoleSecuredDto = new ClubRoleSecuredDto(userDetails.getId(), clubId);
-    InterviewInfoGetResponse response =
+    List<InterviewInfoGetResponse> response =
         interviewService.getInterviewInfo(clubRoleSecuredDto, announcementId, interviewDate);
     return ResponseEntity.ok(response);
   }

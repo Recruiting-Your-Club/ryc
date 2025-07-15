@@ -14,8 +14,6 @@ public interface InterviewRepository {
 
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
 
-  Integer countInterviewReservationBySlotId(String interviewSlotId);
-
   InterviewReservation saveInterviewReservation(
       InterviewReservation reservation, InterviewSlot slot);
 }

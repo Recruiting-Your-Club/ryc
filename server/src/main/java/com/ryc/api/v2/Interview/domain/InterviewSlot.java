@@ -40,6 +40,10 @@ public class InterviewSlot {
         .build();
   }
 
+  public boolean isFull() {
+    return interviewReservations.size() >= maxNumberOfPeople;
+  }
+
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
   public List<InterviewReservation> getInterviewReservations() {
     return List.copyOf(interviewReservations);

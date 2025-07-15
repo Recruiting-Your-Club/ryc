@@ -59,13 +59,11 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public Integer countInterviewReservationBySlotId(String interviewSlotId) {
-    return interviewReservationJpaRepository.countByInterviewSlotId(interviewSlotId);
-  }
-
-  @Override
-  public InterviewReservation saveInterviewReservation(InterviewReservation interviewReservation) {
-    InterviewReservationEntity entity = InterviewReservationMapper.toEntity(interviewReservation);
+  public InterviewReservation saveInterviewReservation(
+      InterviewReservation reservation, InterviewSlot slot) {
+    InterviewSlotEntity slotEntity = InterviewSlotMapper.toEntity(slot);
+    InterviewReservationEntity entity =
+        InterviewReservationMapper.toEntity(reservation, slotEntity);
     InterviewReservationEntity savedEntity = interviewReservationJpaRepository.save(entity);
     return InterviewReservationMapper.toDomain(savedEntity);
   }

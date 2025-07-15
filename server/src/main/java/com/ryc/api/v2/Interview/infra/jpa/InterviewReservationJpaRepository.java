@@ -5,7 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ryc.api.v2.Interview.infra.entity.InterviewReservationEntity;
 
 public interface InterviewReservationJpaRepository
-    extends JpaRepository<InterviewReservationEntity, String> {
-
-  Integer countByInterviewSlotId(String interviewSlotId);
-}
+    extends JpaRepository<InterviewReservationEntity, String> {}

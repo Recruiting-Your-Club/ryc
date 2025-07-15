@@ -1,6 +1,7 @@
 package com.ryc.api.v2.Interview.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,10 +12,7 @@ import com.ryc.api.v2.Interview.domain.InterviewReservation;
 import com.ryc.api.v2.Interview.domain.InterviewSlot;
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewInfoGetResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCreateResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotGetResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
+import com.ryc.api.v2.Interview.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
@@ -56,18 +54,56 @@ public class InterviewService {
     return savedInterviewSlots.stream().map(InterviewSlot::getId).toList();
   }
 
+  /*
+   * 한 날짜에 해당하는 면접 슬롯과 면접 예약 목록을 조회
+   */
   @Transactional(readOnly = true)
   @HasRole(Role.MEMBER)
-  public InterviewInfoGetResponse getInterviewInfo(
+  public List<InterviewInfoGetResponse> getInterviewInfo(
       ClubRoleSecuredDto clubRoleSecuredDto, String announcementId, LocalDate interviewDate) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotsByAnnouncementIdAndDate(
             announcementId, interviewDate);
+    List<InterviewInfoGetResponse> responses = new ArrayList<>(); // 최종 반환할 응답 리스트
 
-    //    for (InterviewSlot slot : interviewSlots) {
-    //      interviewRepository.find
-    //    }
-    return null;
+    for (InterviewSlot slot : interviewSlots) {
+      List<InterviewReservation> reservations = slot.getInterviewReservations();
+
+      // 면접 슬롯 정보를 담을 응답 객체
+      InterviewSlotGetResponse slotResponse =
+          InterviewSlotGetResponse.builder()
+              .id(slot.getId())
+              .period(PeriodResponse.from(slot.getPeriod()))
+              .maxNumberOfPeople(slot.getMaxNumberOfPeople())
+              .currentNumberOfPeople(reservations.size())
+              .build();
+
+      // 면접 예약 정보를 담을 응답 리스트
+      List<InterviewReservationGetResponse> reservationResponses = new ArrayList<>();
+
+      for (InterviewReservation reservation : reservations) {
+        Applicant applicant = reservation.getApplicant();
+
+        // 면접 예약 정보를 담을 응답 객체
+        InterviewReservationGetResponse reservationResponse =
+            InterviewReservationGetResponse.builder()
+                .interviewReservationId(reservation.getId())
+                .applicantEmail(applicant.getEmail())
+                .applicantName(applicant.getName())
+                .build();
+        reservationResponses.add(reservationResponse);
+      }
+
+      // 최종 응답 객체 생성
+      InterviewInfoGetResponse response =
+          InterviewInfoGetResponse.builder()
+              .interviewSlotGetResponse(slotResponse)
+              .interviewReservations(reservationResponses)
+              .build();
+      responses.add(response);
+    }
+
+    return responses;
   }
 
   @Transactional(readOnly = true)
@@ -84,15 +120,13 @@ public class InterviewService {
             .map(
                 slot -> {
                   PeriodResponse periodResponse = PeriodResponse.from(slot.getPeriod());
-                  Integer currentCount =
-                      interviewRepository.countInterviewReservationBySlotId(
-                          slot.getId()); // TODO: 성능 개선 필요
+                  int size = slot.getInterviewReservations().size();
 
                   return InterviewSlotGetResponse.builder()
                       .id(slot.getId())
                       .period(periodResponse)
                       .maxNumberOfPeople(slot.getMaxNumberOfPeople())
-                      .currentNumberOfPeople(currentCount)
+                      .currentNumberOfPeople(size)
                       .build();
                 })
             .toList();
@@ -112,20 +146,17 @@ public class InterviewService {
       String slotId, InterviewReservationRequest body) {
 
     InterviewSlot interviewSlot = interviewRepository.findInterviewSlotByIdForUpdate(slotId);
-    Integer currentNumberOfPeople =
-        interviewRepository.countInterviewReservationBySlotId(interviewSlot.getId());
 
     // 예약 가능한 인원 수를 초과하는지 확인
-    if (interviewSlot.getMaxNumberOfPeople() <= currentNumberOfPeople) {
+    if (interviewSlot.isFull()) {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
     Applicant applicant = applicantRepository.findById(body.applicantId());
-    InterviewReservation reservation =
-        InterviewReservation.initialize(applicant, interviewSlot.getId());
+    InterviewReservation reservation = InterviewReservation.initialize(applicant);
 
     InterviewReservation savedReservation =
-        interviewRepository.saveInterviewReservation(reservation);
+        interviewRepository.saveInterviewReservation(reservation, interviewSlot);
     return new InterviewReservationCreateResponse(savedReservation.getId());
   }
 }
