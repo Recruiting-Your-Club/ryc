@@ -14,7 +14,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     clear: () => set({accessToken: null}),
     bootstrap: async() => {
         try{
-            const refreshURL = new URL('/auth/refreshToken', BASE_URL).toString();
+            const refreshURL = new URL('api/v2/auth/refreshToken', BASE_URL).toString();
             const res = await fetch(refreshURL, {
                 method: 'GET',
                 credentials: 'include'
