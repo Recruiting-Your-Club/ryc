@@ -59,6 +59,13 @@ public class InterviewHttpApi {
 
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/reservations")
   @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜의 공고 면접자 정보를 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "면접 정보 조회 성공"),
+    @ApiResponse(
+        responseCode = "403",
+        description = "동아리 회장 또는 동아리원이 아닙니다.",
+        content = @Content(schema = @Schema(hidden = true)))
+  })
   public ResponseEntity<List<InterviewInfoGetResponse>> getInterviewInfo(
       @AuthenticationPrincipal CustomUserDetail userDetails,
       @PathVariable("club-id") String clubId,
