@@ -27,6 +27,11 @@ public class InterviewReservationEntity extends BaseEntity {
   @JoinColumn(name = "applicant_id", nullable = false)
   private ApplicantEntity applicant;
 
-  @Column(nullable = false)
-  private String interviewSlotId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "interview_slot_id", nullable = false)
+  private InterviewSlotEntity interviewSlot;
+
+  public void setInterviewSlot(InterviewSlotEntity interviewSlot) {
+    this.interviewSlot = interviewSlot;
+  }
 }

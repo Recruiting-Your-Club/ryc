@@ -16,5 +16,6 @@ public interface InterviewRepository {
 
   Integer countInterviewReservationBySlotId(String interviewSlotId);
 
-  InterviewReservation saveInterviewReservation(InterviewReservation interviewReservation);
+  InterviewReservation saveInterviewReservation(
+      InterviewReservation reservation, InterviewSlot slot);
 }

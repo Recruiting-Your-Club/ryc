@@ -1,6 +1,11 @@
 package com.ryc.api.v2.Interview.infra.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ryc.api.v2.Interview.domain.InterviewReservation;
 import com.ryc.api.v2.Interview.domain.InterviewSlot;
+import com.ryc.api.v2.Interview.infra.entity.InterviewReservationEntity;
 import com.ryc.api.v2.Interview.infra.entity.InterviewSlotEntity;
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.infra.mapper.PeriodMapper;
@@ -12,25 +17,40 @@ public class InterviewSlotMapper {
     // Private constructor to prevent instantiation
   }
 
-  public static InterviewSlot toDomain(InterviewSlotEntity interviewSlotEntity) {
-    Period period = PeriodMapper.toDomain(interviewSlotEntity.getPeriod());
+  public static InterviewSlot toDomain(InterviewSlotEntity slotEntity) {
+    List<InterviewReservation> reservations =
+        slotEntity.getInterviewReservations().stream()
+            .map(InterviewReservationMapper::toDomain)
+            .toList();
+    Period period = PeriodMapper.toDomain(slotEntity.getPeriod());
+
     return InterviewSlot.builder()
-        .id(interviewSlotEntity.getId())
-        .creatorId(interviewSlotEntity.getCreatorId())
-        .announcementId(interviewSlotEntity.getAnnouncementId())
-        .maxNumberOfPeople(interviewSlotEntity.getMaxNumberOfPeople())
+        .id(slotEntity.getId())
+        .creatorId(slotEntity.getCreatorId())
+        .announcementId(slotEntity.getAnnouncementId())
+        .maxNumberOfPeople(slotEntity.getMaxNumberOfPeople())
         .period(period)
+        .interviewReservations(reservations)
         .build();
   }
 
-  public static InterviewSlotEntity toEntity(InterviewSlot interviewSlot) {
-    PeriodVO periodVO = PeriodMapper.toVO(interviewSlot.getPeriod());
-    return InterviewSlotEntity.builder()
-        .id(interviewSlot.getId())
-        .creatorId(interviewSlot.getCreatorId())
-        .announcementId(interviewSlot.getAnnouncementId())
-        .maxNumberOfPeople(interviewSlot.getMaxNumberOfPeople())
-        .period(periodVO)
-        .build();
+  public static InterviewSlotEntity toEntity(InterviewSlot slot) {
+    PeriodVO periodVO = PeriodMapper.toVO(slot.getPeriod());
+    InterviewSlotEntity slotEntity =
+        InterviewSlotEntity.builder()
+            .id(slot.getId())
+            .creatorId(slot.getCreatorId())
+            .announcementId(slot.getAnnouncementId())
+            .maxNumberOfPeople(slot.getMaxNumberOfPeople())
+            .period(periodVO)
+            .interviewReservations(new ArrayList<>())
+            .build();
+
+    for (InterviewReservation reservation : slot.getInterviewReservations()) {
+      InterviewReservationEntity reservationEntity =
+          InterviewReservationMapper.toEntity(reservation, slotEntity);
+      slotEntity.addReservation(reservationEntity);
+    }
+    return slotEntity;
   }
 }

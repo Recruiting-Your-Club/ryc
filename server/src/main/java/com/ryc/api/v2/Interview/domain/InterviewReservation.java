@@ -15,13 +15,8 @@ public class InterviewReservation {
 
   private final String id;
   private final Applicant applicant;
-  private final String interviewSlotId;
 
-  public static InterviewReservation initialize(Applicant applicant, String interviewSlotId) {
-    return InterviewReservation.builder()
-        .id(DEFAULT_INITIAL_ID)
-        .applicant(applicant)
-        .interviewSlotId(interviewSlotId)
-        .build();
+  public static InterviewReservation initialize(Applicant applicant) {
+    return InterviewReservation.builder().id(DEFAULT_INITIAL_ID).applicant(applicant).build();
   }
 }

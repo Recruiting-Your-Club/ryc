@@ -1,11 +1,8 @@
 package com.ryc.api.v2.Interview.infra.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
 import com.ryc.api.v2.common.entity.BaseEntity;
@@ -39,4 +36,12 @@ public class InterviewSlotEntity extends BaseEntity {
 
   @Column(nullable = false)
   private PeriodVO period;
+
+  @OneToMany(mappedBy = "interviewSlot", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<InterviewReservationEntity> interviewReservations;
+
+  public void addReservation(InterviewReservationEntity reservation) {
+    reservation.setInterviewSlot(this);
+    interviewReservations.add(reservation);
+  }
 }
