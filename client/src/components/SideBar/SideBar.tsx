@@ -157,9 +157,11 @@ function SideBar() {
             <aside css={sideBarContainer}>
                 <div css={homeLogoContainer}>
                     <Button variant='text' onClick={() => {
-                        handleCollapsed(1);
-                        setActiveSubMenu('/manager/recruitment');
-                        goTo('/manager/recruitment');
+                        if (location.pathname !== '/manager/recruitment') {
+                            if(!activeMenus.includes(1)) handleCollapsed(1);
+                            setActiveSubMenu('/manager/recruitment');
+                            goTo('/manager/recruitment');
+                        }
                     }} sx={homeLogoTextWrapper(isExpanded)}>
                         SSOC
                     </Button>
@@ -171,7 +173,7 @@ function SideBar() {
                 <nav css={navContainer(isExpanded)}>
 
 
-                    <Dropdown sx={{ width: '100%', marginBottom: '3rem'  }}>
+                    <Dropdown sx={{ width: '100%', marginBottom: '3rem' }}>
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
                             <div css={dropDownTriggerWrapper}>
                                 <Ryc width="3.5rem" height="3.5rem" css={{ borderRadius: '10px' }} />
@@ -191,7 +193,7 @@ function SideBar() {
                             offsetX={isExpanded ? 32 : 20}
                             offsetY={isExpanded ? 10 : 10} sx={{
                                 zIndex: 10001,
-                                
+
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
                             }}>
                             <Dropdown.Item sx={drowdownClubContainer}>
@@ -251,7 +253,7 @@ function SideBar() {
                     ))}
                     <div css={emptyContainer} />
 
-                    <Dropdown sx={{ width: '100%', marginBottom: '1.5rem'}}>
+                    <Dropdown sx={{ width: '100%', marginBottom: '1.5rem' }}>
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
                             <div css={dropDownTriggerWrapper}>
                                 <Ryc width="3.5rem" height="3.5rem" css={{ borderRadius: '10px' }} />
