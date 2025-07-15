@@ -28,20 +28,16 @@ function QuestionDropdown({
     //form hooks
     //query hooks
     //calculated values
-    const personalQuestionCount = personalQuestions.filter(
-        (question) => question.isRequired,
-    ).length;
-    const detailQuestionCount = detailQuestions.filter((question) => question.isRequired).length;
-    const totalQuestionCount = personalQuestionCount + detailQuestionCount;
+    const totalQuestionCount = personalQuestions.length + detailQuestions.length;
     const offsetY = baseOffsetY + (totalQuestionCount - 1) * 1.8;
     //effects
     return (
         <div css={questionStatusContainer}>
             <Text
                 type="subCaptionRegular"
-                sx={questionStatusTextSx(completedQuestionsCount === requiredQuestionsCount)}
+                sx={questionStatusTextSx(completedQuestionsCount >= requiredQuestionsCount)}
             >
-                필수 항목 ({completedQuestionsCount} / {requiredQuestionsCount})
+                필수 항목 ({completedQuestionsCount} / {totalQuestionCount})
             </Text>
             <Dropdown>
                 <Dropdown.Trigger asChild sx={{ border: 'none', padding: 0 }}>
