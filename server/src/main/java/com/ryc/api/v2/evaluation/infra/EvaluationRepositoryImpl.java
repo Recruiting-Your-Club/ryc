@@ -1,5 +1,7 @@
 package com.ryc.api.v2.evaluation.infra;
 
+import java.util.List;
+
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
@@ -10,12 +12,14 @@ import com.ryc.api.v2.applicant.infra.entity.ApplicantEntity;
 import com.ryc.api.v2.applicant.infra.jpa.ApplicantJpaRepository;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
+import com.ryc.api.v2.evaluation.domain.EvaluationType;
 import com.ryc.api.v2.evaluation.infra.entity.EvaluationEntity;
 import com.ryc.api.v2.evaluation.infra.jpa.EvaluationJpaRepository;
 import com.ryc.api.v2.evaluation.infra.mapper.EvaluationMapper;
 
 import lombok.RequiredArgsConstructor;
 
+// TODO: 컨벤션 정의 필요. Infra 레이어에서 예외처리 책임 어디까지 들고 있을 것인지.
 @Repository
 @RequiredArgsConstructor
 public class EvaluationRepositoryImpl implements EvaluationRepository {
@@ -25,18 +29,39 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
 
   @Override
   public Evaluation save(Evaluation evaluation) {
+    if (evaluation == null) {
+      throw new IllegalArgumentException("Evaluation must not be null");
+    }
+
     AdminEntity adminEntity =
         adminJpaRepository
             .findById(evaluation.getEvaluatorId())
-            .orElseThrow(() -> new EntityNotFoundException("AdminEntity not found"));
+            .filter(entity -> !entity.getDeleted())
+            .orElseThrow(() -> new EntityNotFoundException("AdminEntity not found or deleted"));
 
     ApplicantEntity applicantEntity =
         applicantJpaRepository
             .findById(evaluation.getEvaluateeId())
-            .orElseThrow(() -> new EntityNotFoundException("ApplicantEntity not found"));
+            // TODO: applicant 논리 삭제 허용시, 아래 필터 추가
+            //                        .filter(entity -> !entity.getDeleted())
+            .orElseThrow(() -> new EntityNotFoundException("ApplicantEntity not found or deleted"));
 
     EvaluationEntity evaluationEntity =
         EvaluationMapper.toEntity(evaluation, adminEntity, applicantEntity);
     return EvaluationMapper.toDomain(evaluationJpaRepository.save(evaluationEntity));
+  }
+
+  @Override
+  public List<Evaluation> findEvaluationsByApplicantIdsAndType(
+      List<String> applicantIdList, EvaluationType type) {
+    if (applicantIdList == null || applicantIdList.isEmpty()) {
+      throw new IllegalArgumentException("ApplicantIdList must not be null or empty");
+    }
+
+    return evaluationJpaRepository
+        .findEvaluationsByApplicantIdsAndType(applicantIdList, type)
+        .stream()
+        .map(EvaluationMapper::toDomain)
+        .toList();
   }
 }

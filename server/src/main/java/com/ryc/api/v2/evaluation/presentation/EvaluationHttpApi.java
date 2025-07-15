@@ -5,14 +5,14 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.ryc.api.v2.evaluation.domain.EvaluationType;
 import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationSearchRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
+import com.ryc.api.v2.evaluation.presentation.dto.response.EvaluationSearchResponse;
 import com.ryc.api.v2.evaluation.presentation.dto.response.InterviewEvaluationResponse;
 import com.ryc.api.v2.evaluation.service.EvaluationService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -47,5 +47,25 @@ public class EvaluationHttpApi {
     InterviewEvaluationResponse response =
         evaluationService.evaluateInterview(body, userDetail.getId());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
+
+  @PostMapping("/applicaitons/search")
+  @Operation(summary = "지원자의 지원서 평가 리스트 검색 API")
+  public ResponseEntity<EvaluationSearchResponse> getApplicationEvaluations(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @Valid @RequestBody EvaluationSearchRequest body) {
+    EvaluationSearchResponse response =
+        evaluationService.findAllEvaluations(body, userDetail.getId(), EvaluationType.APPLICATION);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @PostMapping("/interviews/search")
+  @Operation(summary = "지원자의 면접 평가 리스트 검색 API")
+  public ResponseEntity<EvaluationSearchResponse> getInterviewEvaluations(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @Valid @RequestBody EvaluationSearchRequest body) {
+    EvaluationSearchResponse response =
+        evaluationService.findAllEvaluations(body, userDetail.getId(), EvaluationType.INTERVIEW);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }
