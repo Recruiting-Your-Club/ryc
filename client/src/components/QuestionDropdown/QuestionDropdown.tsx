@@ -13,9 +13,10 @@ import { getAnswer } from '@pages/ClubApplyPage/utils';
 
 function QuestionDropdown({
     completedQuestionsCount,
-    requiredQuestionsCount,
     personalQuestions,
     detailQuestions,
+    requiredQuestionsCompleted,
+    allQuestionsCount,
     answers,
     onQuestionFocus,
 }: QuestionDropdownProps) {
@@ -28,16 +29,17 @@ function QuestionDropdown({
     //form hooks
     //query hooks
     //calculated values
-    const totalQuestionCount = personalQuestions.length + detailQuestions.length;
-    const offsetY = baseOffsetY + (totalQuestionCount - 1) * 1.8;
+    const offsetY = baseOffsetY + (allQuestionsCount - 1) * 1.8;
     //effects
     return (
         <div css={questionStatusContainer}>
             <Text
                 type="subCaptionRegular"
-                sx={questionStatusTextSx(completedQuestionsCount >= requiredQuestionsCount)}
+                sx={questionStatusTextSx(
+                    requiredQuestionsCompleted || completedQuestionsCount === allQuestionsCount,
+                )}
             >
-                필수 항목 ({completedQuestionsCount} / {totalQuestionCount})
+                작성된 항목 ({completedQuestionsCount} / {allQuestionsCount})
             </Text>
             <Dropdown>
                 <Dropdown.Trigger asChild sx={{ border: 'none', padding: 0 }}>
@@ -46,52 +48,46 @@ function QuestionDropdown({
                 <Dropdown.Content offsetX={baseOffsetX} offsetY={offsetY} sx={s_dropdownContent}>
                     <Dropdown.Label>사전질문</Dropdown.Label>
                     <Dropdown.Group>
-                        {personalQuestions.map(
-                            (question) =>
-                                question.isRequired && (
-                                    <Dropdown.Item
-                                        key={question.questionTitle}
-                                        onItemSelect={() =>
-                                            onQuestionFocus(question.questionTitle, '사전질문')
-                                        }
-                                        sx={{ marginBottom: '0.5rem' }}
-                                    >
-                                        <div css={s_dropdownItem}>
-                                            {question.questionTitle}
-                                            {getAnswer(answers, question.questionTitle)?.trim() && (
-                                                <Text type="subCaptionRegular" color="primary">
-                                                    [완료]
-                                                </Text>
-                                            )}
-                                        </div>
-                                    </Dropdown.Item>
-                                ),
-                        )}
+                        {personalQuestions.map((question) => (
+                            <Dropdown.Item
+                                key={question.questionTitle}
+                                onItemSelect={() =>
+                                    onQuestionFocus(question.questionTitle, '사전질문')
+                                }
+                                sx={{ marginBottom: '0.5rem' }}
+                            >
+                                <div css={s_dropdownItem}>
+                                    {question.questionTitle}
+                                    {getAnswer(answers, question.questionTitle)?.trim() && (
+                                        <Text type="subCaptionRegular" color="primary">
+                                            [완료]
+                                        </Text>
+                                    )}
+                                </div>
+                            </Dropdown.Item>
+                        ))}
                     </Dropdown.Group>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
                         <Dropdown.Label>자기소개서</Dropdown.Label>
-                        {detailQuestions.map(
-                            (question, index) =>
-                                question.isRequired && (
-                                    <Dropdown.Item
-                                        key={question.questionTitle}
-                                        onItemSelect={() =>
-                                            onQuestionFocus(question.questionTitle, '자기소개서')
-                                        }
-                                        sx={{ marginBottom: '0.5rem' }}
-                                    >
-                                        <div css={s_dropdownItem}>
-                                            질문{index + 1}
-                                            {getAnswer(answers, question.questionTitle)?.trim() && (
-                                                <Text type="subCaptionRegular" color="primary">
-                                                    [완료]
-                                                </Text>
-                                            )}
-                                        </div>
-                                    </Dropdown.Item>
-                                ),
-                        )}
+                        {detailQuestions.map((question, index) => (
+                            <Dropdown.Item
+                                key={question.questionTitle}
+                                onItemSelect={() =>
+                                    onQuestionFocus(question.questionTitle, '자기소개서')
+                                }
+                                sx={{ marginBottom: '0.5rem' }}
+                            >
+                                <div css={s_dropdownItem}>
+                                    질문{index + 1}
+                                    {getAnswer(answers, question.questionTitle)?.trim() && (
+                                        <Text type="subCaptionRegular" color="primary">
+                                            [완료]
+                                        </Text>
+                                    )}
+                                </div>
+                            </Dropdown.Item>
+                        ))}
                     </Dropdown.Group>
                 </Dropdown.Content>
             </Dropdown>
