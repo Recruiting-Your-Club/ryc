@@ -8,9 +8,9 @@ import SSOC from '@assets/images/ssoc.png';
 import UserSet from '@assets/images/UserSet.svg';
 import { Button, Text, Tooltip, Dropdown } from '@components';
 import { useRouter } from '@hooks/useRouter';
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import clubData from './clubData.json';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
     emptyContainer,
     menuContainer,
@@ -150,7 +150,7 @@ function SideBar() {
                 }
             });
         }
-    }, []);
+    }, [isExpanded]);
     //useEffect
     return (
         <>
@@ -158,7 +158,7 @@ function SideBar() {
                 <div css={homeLogoContainer}>
                     <Button variant='text' onClick={() => {
                         if (location.pathname !== '/manager/recruitment') {
-                            if(!activeMenus.includes(1)) handleCollapsed(1);
+                            if (!activeMenus.includes(1)) handleCollapsed(1);
                             setActiveSubMenu('/manager/recruitment');
                             goTo('/manager/recruitment');
                         }
@@ -171,7 +171,6 @@ function SideBar() {
                 </div>
 
                 <nav css={navContainer(isExpanded)}>
-
 
                     <Dropdown sx={{ width: '100%', marginBottom: '3rem' }}>
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
