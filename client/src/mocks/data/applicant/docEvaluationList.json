@@ -438,7 +438,7 @@
             {
                 "id": 2,
                 "writerId": "user-40",
-                "name": "인물42",
+                "name": "인물44",
                 "score": 4.2,
                 "comment": "논리적인 흐름이 잘 짜였어요.",
                 "isMine": false
@@ -460,7 +460,7 @@
             {
                 "id": 2,
                 "writerId": "user-42",
-                "name": "인물44",
+                "name": "인물42",
                 "score": 4.5,
                 "comment": "시야가 넓고 깊이 있는 사고가 인상적이었어요.",
                 "isMine": false
