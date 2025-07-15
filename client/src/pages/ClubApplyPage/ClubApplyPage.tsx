@@ -157,10 +157,6 @@ function ClubApplyPage() {
     // calculated values
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
-        const allQuestions = [
-            ...clubData.application.preQuestions,
-            ...clubData.application.applicationQuestions,
-        ];
         return allQuestions.filter((question) => question.isRequired).length;
     }, []);
 
@@ -178,6 +174,22 @@ function ClubApplyPage() {
         },
         [getValidationError],
     );
+
+    // 필수 질문 완료 여부 계산
+    const requiredQuestionsCompleted = useMemo(() => {
+        return allQuestions
+            .filter((question) => question.isRequired)
+            .every((question) => {
+                const answer = answers.find(
+                    (answer) => answer.questionTitle === question.questionTitle,
+                );
+                if (!answer || !answer.value.trim()) return false;
+                if (VALIDATION_PATTERNS[question.questionTitle as ValidationKey]) {
+                    return !getValidationError(question.questionTitle, answer.value);
+                }
+                return true;
+            });
+    }, [answers, allQuestions, getValidationError]);
 
     const allocateFocus = (questionTitle: string) => {
         const element = questionRefs.current[questionTitle];
@@ -198,14 +210,16 @@ function ClubApplyPage() {
     const handleAnswerChange = (questionTitle: string, value: string) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
-            const question = clubPersonalQuestions.find((q) => q.questionTitle === questionTitle);
+            const question = clubPersonalQuestions.find(
+                (question) => question.questionTitle === questionTitle,
+            );
 
             // 체크박스인 경우
             if (question?.type === 'MULTIPLE_CHOICE') {
                 const currentValues = existingAnswer?.value?.split(',') || [];
                 const isCurrentlyChecked = currentValues.includes(value);
                 const newValues = isCurrentlyChecked
-                    ? currentValues.filter((v) => v !== value)
+                    ? currentValues.filter((currentValue) => currentValue !== value)
                     : [...currentValues, value];
                 value = newValues.join(',');
             }
@@ -322,9 +336,10 @@ function ClubApplyPage() {
                         personalQuestions={clubPersonalQuestions}
                         detailQuestions={detailQuestions}
                         completedQuestionsCount={completedQuestions}
-                        requiredQuestionsCount={requiredQuestionsCount}
                         answers={answers}
                         onQuestionFocus={handleQuestionFocus}
+                        requiredQuestionsCompleted={requiredQuestionsCompleted}
+                        allQuestionsCount={allQuestions.length}
                     />
                 </div>
                 <div css={clubApplyTabContainer}>
@@ -348,6 +363,8 @@ function ClubApplyPage() {
                     onSubmit={handleSubmit}
                     answers={answers}
                     onQuestionFocus={handleQuestionFocus}
+                    requiredQuestionsCompleted={requiredQuestionsCompleted}
+                    allQuestionsCount={allQuestions.length}
                 />
             </div>
 
@@ -355,7 +372,9 @@ function ClubApplyPage() {
                 <Button
                     variant="primary"
                     size="full"
-                    disabled={completedQuestions < requiredQuestionsCount}
+                    disabled={
+                        !(requiredQuestionsCompleted || completedQuestions === allQuestions.length)
+                    }
                     onClick={handleSubmit}
                     sx={{ height: '4rem' }}
                 >
