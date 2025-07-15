@@ -19,11 +19,13 @@ function ClubSubmitCard({
     deadline,
     personalQuestions,
     detailQuestions,
+    allQuestionsCount,
     completedQuestionsCount,
     requiredQuestionsCount,
-    onSubmit,
+    requiredQuestionsCompleted,
     answers,
     onQuestionFocus,
+    onSubmit,
 }: ClubSubmitCardProps) {
     // prop destruction
     // lib hooks
@@ -63,16 +65,22 @@ function ClubSubmitCard({
                     </Text>
                     <QuestionDropdown
                         completedQuestionsCount={completedQuestionsCount}
-                        requiredQuestionsCount={requiredQuestionsCount}
                         personalQuestions={personalQuestions}
                         detailQuestions={detailQuestions}
                         answers={answers}
                         onQuestionFocus={onQuestionFocus}
+                        requiredQuestionsCompleted={requiredQuestionsCompleted}
+                        allQuestionsCount={allQuestionsCount}
                     />
                 </div>
                 <Button
                     size="full"
-                    disabled={completedQuestionsCount < requiredQuestionsCount}
+                    disabled={
+                        !(
+                            requiredQuestionsCompleted ||
+                            completedQuestionsCount === allQuestionsCount
+                        )
+                    }
                     onClick={onSubmit}
                 >
                     제출하기
