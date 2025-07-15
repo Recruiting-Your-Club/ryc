@@ -1,7 +1,6 @@
 import EditPencil from '@assets/images/edit-pencil.svg';
 import Trash from '@assets/images/trash.svg';
-import { Avatar, Rating, Text } from '@components';
-import { Button } from '@components/_common';
+import { Avatar, Button, Rating, Text } from '@components';
 import React from 'react';
 import {
     s_cardContainer,
@@ -19,12 +18,11 @@ function PersonalScoreCard({
     name,
     score,
     comment,
+    commentId,
     isMine = false,
     isEditable = false,
     handleDelete,
     onOpenForm,
-    onComment,
-    onScore,
 }: PersonalScoreCardProps) {
     // prop destruction
     // lib hooks
@@ -35,11 +33,15 @@ function PersonalScoreCard({
     // calculated values
     // handlers
     const handleEditFunction = () => {
-        onOpenForm(true);
-        onComment(comment);
-        onScore(score);
+        onOpenForm({
+            isOpenForm: true,
+            comment,
+            score,
+            commentIdForEdit: commentId,
+        });
     };
     // effects
+
     return (
         <div css={s_cardContainer}>
             <div css={s_headerContainer}>

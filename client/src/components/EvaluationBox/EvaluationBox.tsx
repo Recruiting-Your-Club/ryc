@@ -1,7 +1,9 @@
 import { Button, Divider, Rating, Text } from '@components';
+import { ConfirmDialog } from '@components/ConfirmDialog';
 import { PersonalScoreCard } from '@components/PersonalScoreCard';
 import { TextArea } from '@components/_common/TextArea';
-import React, { useEffect, useState } from 'react';
+import { useToast } from '@hooks/useToast';
+import React, { useState } from 'react';
 import {
     perStarScoreGroup,
     s_averageNumber,
@@ -17,6 +19,13 @@ import {
 } from './EvaluationBox.style';
 import type { EvaluationBoxProps } from './types';
 
+const defaultState = {
+    score: 0,
+    comment: '',
+    isOpenForm: false,
+    commentIdForEdit: null as number | null,
+};
+
 function EvaluationBox({
     evaluation,
     onPostComment,
@@ -26,25 +35,20 @@ function EvaluationBox({
 }: EvaluationBoxProps) {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
-    const [formStateMap, setFormStateMap] = useState<
-        Record<
-            number,
-            { score: number; comment: string; isOpenForm: boolean; commentIdForEdit: number | null }
-        >
-    >({});
-    const formState = formStateMap[evaluation.applicantId] ?? {
+    const defaultState = {
         score: 0,
         comment: '',
         isOpenForm: false,
-        commentIdForEdit: null,
+        commentIdForEdit: null as number | null,
     };
 
     // state, ref, querystring hooks
-    const [commentIdForEdit, setCommentIdForEdit] = useState<number | null>(null);
-    const [score, setScore] = useState<number>(0);
-    const [comment, setComment] = useState<string>('');
-    const [isOpenForm, setIsOpenForm] = useState<boolean>(false);
+    const [formStateMap, setFormStateMap] = useState<Record<number, typeof defaultState>>({}); // applicantId별로 상태 관리
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    const formState = formStateMap[evaluation.applicantId] ?? defaultState;
 
     // form hooks
     // query hooks
@@ -52,22 +56,50 @@ function EvaluationBox({
     const myComment = evaluation.comments.find((comment) => comment.isMine);
 
     // handlers
+    const handleFormState = (partial: Partial<typeof defaultState>) => {
+        setFormStateMap((prev) => ({
+            ...prev,
+            [evaluation.applicantId]: {
+                ...(prev[evaluation.applicantId] ?? defaultState),
+                ...partial,
+            },
+        }));
+    };
+
     const handlePost = () => {
+        if (formState.comment.length === 0) {
+            toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
+            return;
+        }
         onPostComment({
             applicantId: evaluation.applicantId,
             body: { score: formState.score, comment: formState.comment },
         });
-        setScore(0);
-        setComment('');
+        toast('작성한 평가가 저장되었어요!', { type: 'info' });
         handleFormState({ score: 0, comment: '' });
     };
 
     const handleDelete = () => {
         if (!myComment) return;
-        onDeleteComment({ applicantId: evaluation.applicantId, commentId: myComment.id });
+        onDeleteComment({
+            applicantId: evaluation.applicantId,
+            commentId: myComment.id,
+        });
+    };
+
+    const handleDeleteClick = () => {
+        if (formState.isOpenForm) {
+            toast('수정 중에는 삭제할 수 없어요!', { type: 'error' });
+            return;
+        }
+        setIsDeleteModalOpen(true);
     };
 
     const handleUpdate = () => {
+        if (formState.comment.length === 0) {
+            toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
+            return;
+        }
         if (!myComment) return;
         onUpdateComment({
             applicantId: evaluation.applicantId,
@@ -77,38 +109,19 @@ function EvaluationBox({
                 comment: formState.comment,
             },
         });
-        setIsOpenForm(false);
-        setScore(0);
-        setComment('');
-        setCommentIdForEdit(null);
-        handleFormState({ isOpenForm: false });
+        handleFormState({
+            isOpenForm: false,
+        });
+        toast('작성한 평가가 수정되었어요!', { type: 'info' });
     };
 
-    const handleFormState = (partial: Partial<typeof formState>) => {
-        setFormStateMap((prev) => ({
-            ...prev,
-            [evaluation.applicantId]: {
-                ...formState,
-                ...partial,
-            },
-        }));
-    };
-
-    const handleOpenFormState = (partial: Partial<typeof formState>) => {
-        setFormStateMap((prev) => ({
-            ...prev,
-            [evaluation.applicantId]: {
-                ...formState,
-                ...partial,
-            },
-        }));
-        setIsOpenForm(false);
+    const handleCancelEdit = () => {
+        handleFormState({
+            isOpenForm: false,
+        });
     };
 
     // effects
-    useEffect(() => {
-        if (isOpenForm) handleFormState({ score, comment, isOpenForm, commentIdForEdit });
-    }, [isOpenForm]);
 
     return (
         <div css={s_boxContainer(height)}>
@@ -140,11 +153,15 @@ function EvaluationBox({
                                 comment={evaluator.comment}
                                 commentId={evaluator.id}
                                 isMine={evaluator.isMine}
-                                handleDelete={handleDelete}
-                                onComment={setComment}
-                                onScore={setScore}
-                                onOpenForm={setIsOpenForm}
-                                onCommentId={setCommentIdForEdit}
+                                handleDelete={handleDeleteClick}
+                                onOpenForm={() =>
+                                    handleFormState({
+                                        isOpenForm: true,
+                                        comment: evaluator.comment,
+                                        score: evaluator.score,
+                                        commentIdForEdit: evaluator.id,
+                                    })
+                                }
                                 isEditable
                             />
                         ))
@@ -155,6 +172,7 @@ function EvaluationBox({
                     )}
                 </div>
             </div>
+
             {/* 등록된 평가가 없거나, 수정 버튼을 누르면 아래 Form이 열립니다. */}
             {(!Boolean(myComment) || formState.isOpenForm) && (
                 <div css={s_userEvaluation}>
@@ -177,11 +195,7 @@ function EvaluationBox({
                         </Button>
                     ) : (
                         <div css={s_buttonContainerForEdit}>
-                            <Button
-                                size="full"
-                                onClick={() => handleOpenFormState({ isOpenForm: false })}
-                                sx={s_cancelButton}
-                            >
+                            <Button size="full" onClick={handleCancelEdit} sx={s_cancelButton}>
                                 취소하기
                             </Button>
                             <Button size="full" onClick={handleUpdate}>
@@ -190,6 +204,19 @@ function EvaluationBox({
                         </div>
                     )}
                 </div>
+            )}
+            {isDeleteModalOpen && (
+                <ConfirmDialog
+                    type="warning"
+                    title="알림"
+                    dialogSize="sm"
+                    cancelButton
+                    closeIcon
+                    content={`평가를 삭제하면 복구할 수 없어요.\n계속할까요?`}
+                    open={isDeleteModalOpen}
+                    handleClose={() => setIsDeleteModalOpen(false)}
+                    actionHandler={handleDelete}
+                />
             )}
         </div>
     );
