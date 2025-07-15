@@ -72,7 +72,7 @@ function ClubSubmitCard({
                 </div>
                 <Button
                     size="full"
-                    disabled={!(completedQuestionsCount === requiredQuestionsCount)}
+                    disabled={completedQuestionsCount < requiredQuestionsCount}
                     onClick={onSubmit}
                 >
                     제출하기
