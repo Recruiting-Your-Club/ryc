@@ -9,7 +9,6 @@ import UserSet from '@assets/images/UserSet.svg';
 import { Button, Text, Tooltip, Dropdown, Tag } from '@components';
 import { useRouter } from '@hooks/useRouter';
 import React, { useState, useMemo, useCallback } from 'react';
-import clubData from './clubData.json';
 import { useLocation } from 'react-router-dom';
 import {
     emptyContainer,
@@ -42,13 +41,14 @@ import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
 import { useQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory/clubQueries';
+import { announcementQueries } from '@api/queryFactory/announcementQueries';
+import type { AnnouncementList } from '@api/domain/announcement/types';
 
 function SideBar() {
     // prop destruction
     // lib hooks
     const location = useLocation();
     const { goTo } = useRouter();
-    const { data: myClub, isLoading } = useQuery(clubQueries.myClub());
 
     // initial values
     const navMenu = useMemo(() => [
@@ -131,10 +131,15 @@ function SideBar() {
     const [activeMenus, setActiveMenus] = useState<number[]>([getMainMenu()]);
     const [activeSubMenu, setActiveSubMenu] = useState<string>(location.pathname);
     const [isExpanded, setIsExpanded] = useState(true);
-    const [currentClub, setCurrentClub] = useState<string>(clubData[0].name);
+    const [currentClub, setCurrentClub] = useState<string>('');
+    const [queryOn, setQueryOn] = useState<boolean>(false);
+    const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>(announcementList?.[0]);
 
     // form hooks
     // query hooks
+    const { data: myClub, isLoading } = useQuery(clubQueries.myClub());
+    const { data: announcementList } = useQuery(announcementQueries.getListByClub('2', queryOn));
+
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
 
@@ -156,6 +161,7 @@ function SideBar() {
             });
         }
     }, [isExpanded]);
+
     //useEffect
     return (
         <>
@@ -190,13 +196,13 @@ function SideBar() {
 
                 <nav css={navContainer(isExpanded)}>
 
-                    <Dropdown sx={dropdownContainer(isExpanded)}>
+                    <Dropdown sx={dropdownContainer(isExpanded)} onOpenChange={() => setQueryOn(true)}>
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
                             <div css={dropDownTriggerWrapper}>
                                 {isExpanded &&
                                     <div css={dropDownChevronWrapper}>
                                         <div css={announcementWrapper(isExpanded)}>
-                                            <Text as='div' type='bodySemibold' cropped noWrap sx={{ maxWidth: '14rem', marginTop: '0.2rem' }}>프론트엔드</Text>
+                                            <Text as='div' type='bodySemibold' cropped noWrap sx={{ maxWidth: '14rem', marginTop: '0.2rem' }}>{currentAnnouncement?.title}</Text>
                                             <Tag text='모집중' variant='progress' />
                                         </div>
                                         <ChevronUpDown css={chevronUpDownWrapper} />
@@ -212,11 +218,10 @@ function SideBar() {
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
                             }}>
                             <Dropdown.Item sx={drowdownClubContainer}>
-                                {clubData.map((club) =>
-                                    <div key={club.id} css={dropDownClubWrapper}>
-                                        <img src={club.imageUrl} alt={club.name} css={dropdownClubLogoWrapper} />
-                                        <Text as='div' type='captionRegular' cropped noWrap>{club.name}</Text>
-                                    </div>
+                                {announcementList?.map((announcement) =>
+                                    <Button variant='transparent' key={announcement.announcementId} sx={dropDownClubWrapper} onClick={() => setCurrentAnnouncement(announcement)}>
+                                        <Text as='div' type='captionRegular' cropped noWrap>{announcement.title}</Text>
+                                    </Button>
                                 )}
                             </Dropdown.Item>
                         </Dropdown.Content>
@@ -292,7 +297,7 @@ function SideBar() {
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
                             }}>
                             <Dropdown.Item sx={drowdownClubContainer}>
-                                {clubData.map((club) =>
+                                {myClub?.map((club) =>
                                     <div key={club.id} css={dropDownClubWrapper}>
                                         <img src={club.imageUrl} alt={club.name} css={dropdownClubLogoWrapper} />
                                         <Text as='div' type='captionRegular' cropped noWrap>{club.name}</Text>

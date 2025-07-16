@@ -258,12 +258,10 @@ export const drowdownClubContainer = css`
 export const dropDownClubWrapper = css`
     display: flex;
     align-items: center;
+    justify-content: start;
     width: 100%;
     gap: 1rem;
     padding: 0.5rem;
-    :hover {
-        background-color: ${theme.colors.gray[100]};
-    }
     border-radius: 5px;
 `
 export const dropdownClubLogoWrapper = css`
