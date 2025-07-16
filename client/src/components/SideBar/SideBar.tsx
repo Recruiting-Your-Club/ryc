@@ -133,7 +133,7 @@ function SideBar() {
     const [isExpanded, setIsExpanded] = useState(true);
     const [currentClub, setCurrentClub] = useState<string>('');
     const [queryOn, setQueryOn] = useState<boolean>(false);
-    const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>(announcementList?.[0]);
+    const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>();
 
     // form hooks
     // query hooks
@@ -202,8 +202,8 @@ function SideBar() {
                                 {isExpanded &&
                                     <div css={dropDownChevronWrapper}>
                                         <div css={announcementWrapper(isExpanded)}>
-                                            <Text as='div' type='bodySemibold' cropped noWrap sx={{ maxWidth: '14rem', marginTop: '0.2rem' }}>{currentAnnouncement?.title}</Text>
-                                            <Tag text='모집중' variant='progress' />
+                                            <Text as='div' type='bodySemibold' cropped noWrap sx={{ maxWidth: '18rem', marginTop: '0.2rem' }}>{currentAnnouncement?.title || '공고를 선택해주세요'}</Text>
+                                            {/**<Tag text='모집중' variant='progress' />*/}
                                         </div>
                                         <ChevronUpDown css={chevronUpDownWrapper} />
                                     </div>

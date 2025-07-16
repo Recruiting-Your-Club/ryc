@@ -46,7 +46,7 @@ export const clubSideBarContainer = css`
 export const clubActive = (activeClub: boolean) => css`
     height: 8px;
     width: 4px;
-    background-color: ${theme.colors.black};
+    background-color: ${theme.colors.blue[200]};
     border-radius: 0 4px 4px 0;
     transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     ${!activeClub && css`
