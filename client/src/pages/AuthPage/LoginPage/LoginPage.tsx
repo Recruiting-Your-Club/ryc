@@ -17,9 +17,10 @@ function LoginPage() {
     // prop destruction
     // lib hooks
     const { removeHistoryAndGo } = useRouter();
+    
     // initial values
     // state, ref, querystring hooks
-     const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     // form hooks
@@ -33,9 +34,6 @@ function LoginPage() {
         login({email, password})
     }
     // effects
-   
-    
-    
 
     return (
         <form css={LoginContainer} onSubmit={handleSubmit}>
