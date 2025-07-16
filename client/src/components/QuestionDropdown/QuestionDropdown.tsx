@@ -46,7 +46,7 @@ function QuestionDropdown({
                     <ArrowDown css={s_arrowDown} />
                 </Dropdown.Trigger>
                 <Dropdown.Content offsetX={baseOffsetX} offsetY={offsetY} sx={s_dropdownContent}>
-                    <Dropdown.Label>사전질문</Dropdown.Label>
+                    <Dropdown.Label sx={{ marginTop: '0.5rem' }}>사전질문</Dropdown.Label>
                     <Dropdown.Group>
                         {personalQuestions.map((question) => (
                             <Dropdown.Item
@@ -69,7 +69,7 @@ function QuestionDropdown({
                     </Dropdown.Group>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
-                        <Dropdown.Label>자기소개서</Dropdown.Label>
+                        <Dropdown.Label sx={{ marginBottom: '0.5rem' }}>자기소개서</Dropdown.Label>
                         {detailQuestions.map((question, index) => (
                             <Dropdown.Item
                                 key={question.questionTitle}
