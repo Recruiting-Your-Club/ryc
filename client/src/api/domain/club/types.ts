@@ -29,3 +29,10 @@ export interface Club {
     clubSummaries: summaries[];
     clubDetailImages: images[];
 }
+export interface MyClub {
+    id: string;
+    name: string;
+    shortDescription: string;
+    imageUrl: string;
+    thumbnailUrl: string;
+}
