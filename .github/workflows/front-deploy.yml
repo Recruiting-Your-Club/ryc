@@ -30,17 +30,14 @@ jobs:
         run: yarn install
         working-directory: ./monorepo
 
-      # 4. user 앱에 .env.production 파일 생성
-      - name: Create .env.production file
-        run: |
-          echo "BASE_URL=${{ secrets.BASE_URL }}" > ./monorepo/apps/user/.env.production
-
-      # 5. user 앱 빌드
+      # 4. user 앱 빌드
       - name: Build user app
         run: yarn build
         working-directory: ./monorepo
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
 
-      # 6. AWS 자격 증명 설정
+      # 5. AWS 자격 증명 설정
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -48,12 +45,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # 7. 빌드 파일 S3에 업로드
+      # 6. 빌드 파일 S3에 업로드
       - name: Upload to S3
         run: |
           aws s3 sync ./monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/dev/dist --delete
 
-      # 8. CloudFront 캐시 무효
+      # 7. CloudFront 캐시 무효
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
