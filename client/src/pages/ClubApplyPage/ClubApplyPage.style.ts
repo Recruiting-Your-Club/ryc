@@ -73,6 +73,8 @@ export const clubLogoAndNameContainer = css`
     max-width: 80rem;
     max-height: 4.5rem;
     margin-bottom: 2rem;
+    margin-top: 1rem;
+
     @media (max-width: ${theme.breakpoint.tablet}) {
         margin-top: 2rem;
     }
@@ -88,6 +90,7 @@ export const clubNameContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 0.5rem;
 `;
 
 export const clubApplyTabContainer = css`
