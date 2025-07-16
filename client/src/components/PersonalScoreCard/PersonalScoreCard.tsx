@@ -22,7 +22,7 @@ function PersonalScoreCard({
     isUser = false,
     isEditable = false,
     handleDelete,
-    onOpenForm,
+    onHandleForm,
 }: PersonalScoreCardProps) {
     // prop destruction
     // lib hooks
@@ -33,7 +33,7 @@ function PersonalScoreCard({
     // calculated values
     // handlers
     const handleEditFunction = () => {
-        onOpenForm({
+        onHandleForm({
             isOpenForm: true,
             comment,
             score,

@@ -24,13 +24,6 @@ import {
 } from './EvaluationBox.style';
 import { EvaluationBoxProps, MOCK_USER_ID } from './types';
 
-const defaultState = {
-    score: 0,
-    comment: '',
-    isOpenForm: false,
-    commentIdForEdit: null as number | null,
-};
-
 function EvaluationBox({
     evaluation,
     onPostComment,
@@ -152,21 +145,21 @@ function EvaluationBox({
                 <Divider />
                 <div css={perStarScoreGroup((evaluation?.comments?.length ?? 0) > 0)}>
                     {evaluation && evaluation.comments.length > 0 ? (
-                        evaluation.comments.map((evaluator) => (
+                        evaluation.comments.map((comment) => (
                             <PersonalScoreCard
-                                key={evaluator.id}
-                                score={evaluator.score}
-                                name={evaluator.name}
-                                comment={evaluator.comment}
-                                commentId={evaluator.id}
-                                isUser={evaluator.writerId === currentUserId}
+                                key={comment.id}
+                                score={comment.score}
+                                name={comment.name}
+                                comment={comment.comment}
+                                commentId={comment.id}
+                                isUser={comment.writerId === currentUserId}
                                 handleDelete={handleDeleteClick}
-                                onOpenForm={() =>
+                                onHandleForm={() =>
                                     handleFormState({
                                         isOpenForm: true,
-                                        comment: evaluator.comment,
-                                        score: evaluator.score,
-                                        commentIdForEdit: evaluator.id,
+                                        comment: comment.comment,
+                                        score: comment.score,
+                                        commentIdForEdit: comment.id,
                                     })
                                 }
                                 isEditable
