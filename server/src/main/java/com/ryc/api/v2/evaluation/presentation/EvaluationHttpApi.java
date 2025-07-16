@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class EvaluationHttpApi {
   private final EvaluationService evaluationService;
 
-  // TODO: 동아리원 검증 AOP 수행
+  // TODO: 동아리원 검증 AOP 수행 - AOP 구현이후 어노테이션 추가, Header에서 받은 clubId를 ClubRoleAspect로 넘긴다.
   @PostMapping("/application")
   @Operation(summary = "지원서 평가 생성 API")
   public ResponseEntity<ApplicationEvaluationResponse> evaluateApplication(
@@ -39,6 +39,7 @@ public class EvaluationHttpApi {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
+  // TODO: 동아리원 검증 AOP 수행
   @PostMapping("/interview")
   @Operation(summary = "면접 평가 생성 API")
   public ResponseEntity<InterviewEvaluationResponse> evaluateInterview(
@@ -49,6 +50,7 @@ public class EvaluationHttpApi {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
+  // TODO: 동아리원 검증 AOP 수행
   @PostMapping("/applicaitons/search")
   @Operation(summary = "지원자의 지원서 평가 리스트 검색 API")
   public ResponseEntity<EvaluationSearchResponse> getApplicationEvaluations(
@@ -59,6 +61,7 @@ public class EvaluationHttpApi {
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
+  // TODO: 동아리원 검증 AOP 수행
   @PostMapping("/interviews/search")
   @Operation(summary = "지원자의 면접 평가 리스트 검색 API")
   public ResponseEntity<EvaluationSearchResponse> getInterviewEvaluations(
@@ -68,4 +71,6 @@ public class EvaluationHttpApi {
         evaluationService.findAllEvaluations(body, userDetail.getId(), EvaluationType.INTERVIEW);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
+
+
 }
