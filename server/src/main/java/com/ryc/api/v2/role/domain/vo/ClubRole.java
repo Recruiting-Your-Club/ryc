@@ -5,7 +5,7 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 import java.time.LocalDateTime;
 
 import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.Builder;
