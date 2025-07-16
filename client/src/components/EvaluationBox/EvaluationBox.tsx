@@ -1,7 +1,12 @@
-import { Button, Divider, Rating, Text } from '@components';
-import { ConfirmDialog } from '@components/ConfirmDialog';
-import { PersonalScoreCard } from '@components/PersonalScoreCard';
-import { TextArea } from '@components/_common/TextArea';
+import {
+    Button,
+    ConfirmDialog,
+    Divider,
+    PersonalScoreCard,
+    Rating,
+    Text,
+    TextArea,
+} from '@components';
 import { useToast } from '@hooks/useToast';
 import React, { useState } from 'react';
 import {
