@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
 public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, String> {
@@ -33,4 +34,12 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
       @Param("adminId") String adminId, @Param("clubId") String clubId);
 
   void deleteByAdminId(String adminId);
+
+  @Query(
+      """
+        SELECT c FROM ClubRoleEntity r
+        JOIN r.club c
+        WHERE r.admin.id = :adminId
+      """)
+  List<ClubEntity> findClubsByAdminId(String adminId);
 }

@@ -63,9 +63,8 @@ public class SecurityConfiguration {
             request ->
                 request
                     .requestMatchers(
-                        "/",
+                        "/api/health",
                         "/api/v2/auth/*",
-                        "/actuator/**",
                         "/swagger-ui/*",
                         "/swagger-ui.html",
                         "/webjars/**",
@@ -83,6 +82,8 @@ public class SecurityConfiguration {
                         "/api/v2/application/form",
                         "/api/v2/clubs/*",
                         "/api/v2/clubs",
+                        "/clubs/{club-id}/announcements",
+                        "/clubs/{club-id}/announcements/*",
                         "/api/v2/clubs/*/announcements/*/interview-slots")
                     .permitAll()
                     .anyRequest()

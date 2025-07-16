@@ -17,8 +17,8 @@ import com.ryc.api.v2.Interview.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
-import com.ryc.api.v2.club.domain.vo.Club;
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class InterviewService {
 
   private final InterviewRepository interviewRepository;
-  private final ClubService clubService;
+  private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
 
   @Transactional
@@ -111,7 +111,7 @@ public class InterviewService {
   public InterviewSlotsGetResponse getInterviewSlots(
       String clubId, String announcementId, String applicantId) {
 
-    Club club = clubService.getClubById(clubId);
+    Club club = clubRepository.findById(clubId);
     List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
     String applicantEmail = applicantRepository.findEmailById(applicantId);
@@ -133,10 +133,10 @@ public class InterviewService {
             .toList();
 
     return InterviewSlotsGetResponse.builder()
-        .clubName(club.name())
-        .clubCategory(club.category().toString())
-        .clubImageUrl(club.imageUrl())
-        .clubThumbnailUrl(club.thumbnailUrl())
+        .clubName(club.getName())
+        .clubCategory(club.getCategory().toString())
+        .clubImageUrl(club.getImageUrl())
+        .clubThumbnailUrl(club.getThumbnailUrl())
         .interviewSlots(slotResponses)
         .applicantEmail(applicantEmail)
         .build();

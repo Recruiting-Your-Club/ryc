@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableAspectJAutoProxy
 @EnableScheduling
-@SpringBootApplication
 @EnableJpaAuditing
+@SpringBootApplication
 @EntityScan(basePackages = {"com.ryc.api.v2"})
 public class ApiApplication {
 
