@@ -16,3 +16,5 @@ export * from './Text';
 export * from './TextArea';
 export * from './TextToggle';
 export * from './Toggle';
+export * from './Tooltip';
+export * from './Dropdown';
