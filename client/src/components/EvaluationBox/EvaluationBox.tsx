@@ -85,6 +85,16 @@ function EvaluationBox({
             applicantId: evaluation.applicantId,
             commentId: myComment.id,
         });
+
+        // 초기화
+        if (formState.commentIdForEdit === myComment.id) {
+            handleFormState({
+                isOpenForm: false,
+                comment: '',
+                score: 0,
+                commentIdForEdit: null,
+            });
+        }
     };
 
     const handleDeleteClick = () => {
@@ -121,6 +131,8 @@ function EvaluationBox({
         });
     };
 
+    console.log(formState.commentIdForEdit);
+    console.log(myComment?.id);
     // effects
 
     return (
