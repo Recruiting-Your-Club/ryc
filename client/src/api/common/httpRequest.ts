@@ -4,32 +4,6 @@ import { HttpError } from './httpError';
 import type { RequestBodyOption, RequestWithoutBodyOption } from './types';
 import type { HttpMethod } from './types';
 
-const httpRequest1 = {
-    request<T>(method: HttpMethod, { ...option }: RequestBodyOption): Promise<T>{
-        const data = httpClient.createHttpRequest({
-            method,
-            ...option,
-        }).then((response) => httpClient.handleResponse<T>(response));
-        return data;
-    },
-
-    get<T>({ url, headers, isAuthRequire }: RequestWithoutBodyOption): Promise<T> {
-        return this.request('GET', { url, headers, isAuthRequire });
-    },
-    post<T>({ url, headers, body, isAuthRequire }: RequestBodyOption): Promise<T> {
-        return this.request('POST', { url, headers, body, isAuthRequire });
-    },
-    put<T>({ url, headers, body, isAuthRequire }: RequestBodyOption): Promise<T> {
-        return this.request('PUT', { url, headers, body, isAuthRequire });
-    },
-    delete<T>({ url, headers, isAuthRequire }: RequestWithoutBodyOption): Promise<T> {
-        return this.request('DELETE', { url, headers, isAuthRequire });
-    },
-    patch<T>({ url, headers, body, isAuthRequire }: RequestBodyOption): Promise<T> {
-        return this.request('PATCH', { url, headers, body, isAuthRequire });
-    },
-};
-
 const httpRequest = {
     async request<T>(
         method: HttpMethod,
