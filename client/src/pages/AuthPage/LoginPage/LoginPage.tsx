@@ -14,15 +14,28 @@ import { useRouter } from '@hooks/useRouter';
 import { useLogin } from '@hooks/useLogin';
 
 function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const {mutate: login, isPending, error} = useLogin();
+    // prop destruction
+    // lib hooks
     const { removeHistoryAndGo } = useRouter();
+    // initial values
+    // state, ref, querystring hooks
+     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleSubmit = (e: FormEvent) => {
+    // form hooks
+    // query hooks
+    const {mutate: login, isPending, error} = useLogin();
+
+    // calculated values
+    // handlers
+     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         login({email, password})
     }
+    // effects
+   
+    
+    
 
     return (
         <form css={LoginContainer} onSubmit={handleSubmit}>
