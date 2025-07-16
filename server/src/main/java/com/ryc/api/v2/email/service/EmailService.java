@@ -34,12 +34,12 @@ public class EmailService {
   private final InterviewService interviewService;
 
   public EmailService(
-      @Value("${RESERVATION.BASE-URL.LOCAL}") String baseUri,
+      @Value("${LOCAL_CLIENT_URL}") String baseUri,
       EmailRepository emailRepository,
       InterviewService interviewService,
       ResourceLoader resourceLoader)
       throws IOException {
-    this.baseUri = baseUri;
+    this.baseUri = baseUri + "/reservation";
     this.emailRepository = emailRepository;
     this.interviewService = interviewService;
 
