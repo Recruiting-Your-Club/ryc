@@ -131,8 +131,6 @@ function EvaluationBox({
         });
     };
 
-    console.log(formState.commentIdForEdit);
-    console.log(myComment?.id);
     // effects
 
     return (
