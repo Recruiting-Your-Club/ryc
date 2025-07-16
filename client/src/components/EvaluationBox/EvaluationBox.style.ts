@@ -147,6 +147,7 @@ export const s_buttonContainerForEdit = css`
     width: 100%;
     gap: 0.5rem;
 `;
+
 export const s_cancelButton = css`
     background-color: ${theme.colors.gray[300]};
     &:hover {

@@ -36,6 +36,7 @@ function EvaluationBox({
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+
     // initial values
     const defaultState = {
         score: 0,
@@ -48,11 +49,10 @@ function EvaluationBox({
     const [formStateMap, setFormStateMap] = useState<Record<number, typeof defaultState>>({}); // applicantId별로 상태 관리
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-    const formState = formStateMap[evaluation.applicantId] ?? defaultState;
-
     // form hooks
     // query hooks
     // calculated values
+    const formState = formStateMap[evaluation.applicantId] ?? defaultState;
 
     const currentUserId = MOCK_USER_ID;
     const myComment = evaluation.comments.find((comment) => comment.writerId === currentUserId);
