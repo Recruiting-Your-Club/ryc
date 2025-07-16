@@ -26,9 +26,10 @@ async function getDocumentEvaluation(id: number): Promise<Evaluation> {
     const response = await httpRequest.get({
         url: `doc-evaluation/${id}`,
         headers: {
-            Authorization: 'Bearer mock-user-token-user-42',
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
     });
+
     return response as Evaluation;
 }
 
@@ -39,8 +40,7 @@ async function postDocumentEvaluation(
     await httpRequest.post({
         url: `doc-evaluation/${applicantId}/comment`,
         headers: {
-            Authorization: 'Bearer mock-user-token-user-42',
-            'Content-Type': 'application/json',
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
         body: body,
     });
@@ -50,7 +50,7 @@ async function deleteDocumentEvaluation(applicantId: number, commentId: number) 
     await httpRequest.delete({
         url: `doc-evaluation/${applicantId}/comment/${commentId}`,
         headers: {
-            Authorization: 'Bearer mock-user-token-user-42',
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
     });
 }
@@ -63,8 +63,7 @@ async function updateDocumentEvaluation(
     await httpRequest.put({
         url: `doc-evaluation/${applicantId}/comment/${commentId}`,
         headers: {
-            Authorization: 'Bearer mock-user-token-user-42',
-            'Content-Type': 'applicatiion/json',
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
         body: body,
     });

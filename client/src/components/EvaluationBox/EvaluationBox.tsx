@@ -17,7 +17,7 @@ import {
     s_textarea,
     s_userEvaluation,
 } from './EvaluationBox.style';
-import type { EvaluationBoxProps } from './types';
+import { EvaluationBoxProps, MOCK_USER_ID } from './types';
 
 const defaultState = {
     score: 0,
@@ -53,7 +53,9 @@ function EvaluationBox({
     // form hooks
     // query hooks
     // calculated values
-    const myComment = evaluation.comments.find((comment) => comment.isMine);
+
+    const currentUserId = MOCK_USER_ID;
+    const myComment = evaluation.comments.find((comment) => comment.writerId === currentUserId);
 
     // handlers
     const handleFormState = (partial: Partial<typeof defaultState>) => {
@@ -152,7 +154,7 @@ function EvaluationBox({
                                 name={evaluator.name}
                                 comment={evaluator.comment}
                                 commentId={evaluator.id}
-                                isMine={evaluator.isMine}
+                                isUser={evaluator.writerId === currentUserId}
                                 handleDelete={handleDeleteClick}
                                 onOpenForm={() =>
                                     handleFormState({

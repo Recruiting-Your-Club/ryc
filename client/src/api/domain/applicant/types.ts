@@ -17,12 +17,20 @@ export interface Document {
 export interface Evaluation {
     applicantId: number;
     averageScore: number;
-    comments: {
-        id: number;
-        writerId: string;
-        name: string;
-        score: number;
-        comment: string;
-        isMine?: boolean;
-    }[];
+    comments: Comment[];
+}
+export interface Comment {
+    id: number;
+    writerId: string;
+    name: string;
+    score: number;
+    comment: string;
+}
+
+export interface CommentWithIsUser extends Comment {
+    isUser: boolean;
+}
+
+export interface EvaluationWithIsMine extends Omit<Evaluation, 'comments'> {
+    comments: CommentWithIsUser[];
 }

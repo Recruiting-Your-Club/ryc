@@ -19,7 +19,7 @@ function PersonalScoreCard({
     score,
     comment,
     commentId,
-    isMine = false,
+    isUser = false,
     isEditable = false,
     handleDelete,
     onOpenForm,
@@ -56,7 +56,7 @@ function PersonalScoreCard({
                     >
                         {name}
                     </Text>
-                    {isEditable && isMine && (
+                    {isEditable && isUser && (
                         <span css={s_svgButtonGroup}>
                             <Button variant="transparent" size="xs">
                                 <EditPencil css={s_svgButton} onClick={handleEditFunction} />

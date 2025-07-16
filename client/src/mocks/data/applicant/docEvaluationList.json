@@ -8,72 +8,63 @@
                 "writerId": "user-1",
                 "name": "인물1",
                 "score": 4.0,
-                "comment": "논리적인 사고가 돋보였습니다.",
-                "isMine": false
+                "comment": "논리적인 사고가 돋보였습니다."
             },
             {
                 "id": 2,
                 "writerId": "user-2",
                 "name": "인물2",
                 "score": 4.5,
-                "comment": "팀워크에 강점이 있어 보여요.",
-                "isMine": false
+                "comment": "팀워크에 강점이 있어 보여요."
             },
             {
                 "id": 3,
                 "writerId": "user-3",
                 "name": "인물3",
                 "score": 5.0,
-                "comment": "전반적으로 완성도가 높았어요.",
-                "isMine": false
+                "comment": "전반적으로 완성도가 높았어요."
             },
             {
                 "id": 4,
                 "writerId": "user-4",
                 "name": "인물4",
                 "score": 3.5,
-                "comment": "조금 긴장했지만 기본기는 좋았음.",
-                "isMine": false
+                "comment": "조금 긴장했지만 기본기는 좋았음."
             },
             {
                 "id": 5,
                 "writerId": "user-5",
                 "name": "인물5",
                 "score": 4.0,
-                "comment": "답변이 명확해서 좋았습니다.",
-                "isMine": false
+                "comment": "답변이 명확해서 좋았습니다."
             },
             {
                 "id": 6,
                 "writerId": "user-6",
                 "name": "인물6",
                 "score": 4.5,
-                "comment": "기술 이해도가 높았어요.",
-                "isMine": false
+                "comment": "기술 이해도가 높았어요."
             },
             {
                 "id": 7,
                 "writerId": "user-7",
                 "name": "인물7",
                 "score": 3.5,
-                "comment": "예시가 조금 부족했어요.",
-                "isMine": false
+                "comment": "예시가 조금 부족했어요."
             },
             {
                 "id": 8,
                 "writerId": "user-8",
                 "name": "인물8",
                 "score": 4.5,
-                "comment": "태도가 매우 인상적이었어요.",
-                "isMine": false
+                "comment": "태도가 매우 인상적이었어요."
             },
             {
                 "id": 9,
                 "writerId": "user-9",
                 "name": "인물8.5",
                 "score": 4.0,
-                "comment": "태도가 매우 인상적이었어요.",
-                "isMine": false
+                "comment": "태도가 매우 인상적이었어요."
             }
         ]
     },
@@ -86,24 +77,21 @@
                 "writerId": "user-10",
                 "name": "인물9",
                 "score": 4.0,
-                "comment": "커뮤니케이션 능력이 좋았습니다.",
-                "isMine": false
+                "comment": "커뮤니케이션 능력이 좋았습니다."
             },
             {
                 "id": 2,
                 "writerId": "user-49",
                 "name": "인물10",
                 "score": 4.0,
-                "comment": "논리적인 흐름이 깔끔했어요.",
-                "isMine": false
+                "comment": "논리적인 흐름이 깔끔했어요."
             },
             {
                 "id": 3,
                 "writerId": "user-11",
                 "name": "인물11",
                 "score": 4.0,
-                "comment": "실제 경험이 녹아든 답변이었어요.",
-                "isMine": false
+                "comment": "실제 경험이 녹아든 답변이었어요."
             }
         ]
     },
@@ -116,24 +104,21 @@
                 "writerId": "user-12",
                 "name": "인물12",
                 "score": 5.0,
-                "comment": "자신감 있고 유연한 답변이 인상적이었어요.",
-                "isMine": false
+                "comment": "자신감 있고 유연한 답변이 인상적이었어요."
             },
             {
                 "id": 2,
                 "writerId": "user-13",
                 "name": "인물13",
                 "score": 4.5,
-                "comment": "지원 분야에 대한 이해도가 높았습니다.",
-                "isMine": false
+                "comment": "지원 분야에 대한 이해도가 높았습니다."
             },
             {
                 "id": 3,
                 "writerId": "user-48",
                 "name": "인물14",
                 "score": 4.0,
-                "comment": "기초가 잘 잡혀 있었어요.",
-                "isMine": false
+                "comment": "기초가 잘 잡혀 있었어요."
             }
         ]
     },
@@ -146,16 +131,14 @@
                 "writerId": "user-14",
                 "name": "인물15",
                 "score": 4.0,
-                "comment": "말투가 부드러워서 좋았어요.",
-                "isMine": false
+                "comment": "말투가 부드러워서 좋았어요."
             },
             {
                 "id": 2,
                 "writerId": "user-15",
                 "name": "인물16",
                 "score": 3.8,
-                "comment": "조금 더 구체적이면 좋겠어요.",
-                "isMine": false
+                "comment": "조금 더 구체적이면 좋겠어요."
             }
         ]
     },
@@ -168,16 +151,14 @@
                 "writerId": "user-16",
                 "name": "인물17",
                 "score": 4.5,
-                "comment": "자신감이 느껴졌어요.",
-                "isMine": false
+                "comment": "자신감이 느껴졌어요."
             },
             {
                 "id": 2,
                 "writerId": "user-17",
                 "name": "인물18",
                 "score": 3.9,
-                "comment": "준비를 많이 한 느낌이었어요.",
-                "isMine": false
+                "comment": "준비를 많이 한 느낌이었어요."
             }
         ]
     },
@@ -190,16 +171,14 @@
                 "writerId": "user-18",
                 "name": "인물19",
                 "score": 3.5,
-                "comment": "긴장한 모습이 살짝 보였어요.",
-                "isMine": false
+                "comment": "긴장한 모습이 살짝 보였어요."
             },
             {
                 "id": 2,
                 "writerId": "user-19",
                 "name": "인물20",
                 "score": 3.7,
-                "comment": "말투가 조금 빠르게 느껴졌어요.",
-                "isMine": false
+                "comment": "말투가 조금 빠르게 느껴졌어요."
             }
         ]
     },
@@ -212,16 +191,14 @@
                 "writerId": "user-20",
                 "name": "인물21",
                 "score": 4.0,
-                "comment": "기초가 잘 되어 있었어요.",
-                "isMine": false
+                "comment": "기초가 잘 되어 있었어요."
             },
             {
                 "id": 2,
                 "writerId": "user-21",
                 "name": "인물22",
                 "score": 4.6,
-                "comment": "팀워크에 대한 고민이 좋았어요.",
-                "isMine": false
+                "comment": "팀워크에 대한 고민이 좋았어요."
             }
         ]
     },
@@ -234,16 +211,14 @@
                 "writerId": "user-22",
                 "name": "인물23",
                 "score": 4.5,
-                "comment": "자기소개가 매끄러웠습니다.",
-                "isMine": false
+                "comment": "자기소개가 매끄러웠습니다."
             },
             {
                 "id": 2,
                 "writerId": "user-23",
                 "name": "인물24",
                 "score": 4.7,
-                "comment": "실제 경험이 인상적이었어요.",
-                "isMine": false
+                "comment": "실제 경험이 인상적이었어요."
             }
         ]
     },
@@ -256,16 +231,14 @@
                 "writerId": "user-24",
                 "name": "인물25",
                 "score": 4.2,
-                "comment": "답변의 구성력이 좋았습니다.",
-                "isMine": false
+                "comment": "답변의 구성력이 좋았습니다."
             },
             {
                 "id": 2,
                 "writerId": "user-25",
                 "name": "인물26",
                 "score": 4.0,
-                "comment": "조금 더 자신감 있었으면 해요.",
-                "isMine": false
+                "comment": "조금 더 자신감 있었으면 해요."
             }
         ]
     },
@@ -278,16 +251,14 @@
                 "writerId": "user-26",
                 "name": "인물27",
                 "score": 3.5,
-                "comment": "조금 더 준비가 필요해 보여요.",
-                "isMine": false
+                "comment": "조금 더 준비가 필요해 보여요."
             },
             {
                 "id": 2,
                 "writerId": "user-27",
                 "name": "인물28",
                 "score": 3.9,
-                "comment": "기본적인 자세는 좋았어요.",
-                "isMine": false
+                "comment": "기본적인 자세는 좋았어요."
             }
         ]
     },
@@ -300,16 +271,14 @@
                 "writerId": "user-28",
                 "name": "인물29",
                 "score": 4.5,
-                "comment": "굉장히 자신감 있는 모습이었어요.",
-                "isMine": false
+                "comment": "굉장히 자신감 있는 모습이었어요."
             },
             {
                 "id": 2,
                 "writerId": "user-47",
                 "name": "인물30",
                 "score": 4.3,
-                "comment": "논리적으로 설명을 잘 해줬어요.",
-                "isMine": false
+                "comment": "논리적으로 설명을 잘 해줬어요."
             }
         ]
     },
@@ -322,16 +291,14 @@
                 "writerId": "user-29",
                 "name": "인물31",
                 "score": 4.0,
-                "comment": "기본에 충실한 느낌이었어요.",
-                "isMine": false
+                "comment": "기본에 충실한 느낌이었어요."
             },
             {
                 "id": 2,
                 "writerId": "user-30",
                 "name": "인물32",
                 "score": 4.0,
-                "comment": "질문을 잘 이해하고 대답했어요.",
-                "isMine": false
+                "comment": "질문을 잘 이해하고 대답했어요."
             }
         ]
     },
@@ -344,16 +311,14 @@
                 "writerId": "user-31",
                 "name": "인물33",
                 "score": 3.8,
-                "comment": "답변이 조금 짧았어요.",
-                "isMine": false
+                "comment": "답변이 조금 짧았어요."
             },
             {
                 "id": 2,
                 "writerId": "user-32",
                 "name": "인물34",
                 "score": 3.8,
-                "comment": "좀 더 적극적인 태도가 좋을 것 같아요.",
-                "isMine": false
+                "comment": "좀 더 적극적인 태도가 좋을 것 같아요."
             }
         ]
     },
@@ -366,16 +331,14 @@
                 "writerId": "user-33",
                 "name": "인물35",
                 "score": 4.2,
-                "comment": "기술적인 설명이 뛰어났어요.",
-                "isMine": false
+                "comment": "기술적인 설명이 뛰어났어요."
             },
             {
                 "id": 2,
                 "writerId": "user-34",
                 "name": "인물36",
                 "score": 4.2,
-                "comment": "예시가 적절하게 잘 들어갔어요.",
-                "isMine": false
+                "comment": "예시가 적절하게 잘 들어갔어요."
             }
         ]
     },
@@ -388,16 +351,14 @@
                 "writerId": "user-35",
                 "name": "인물37",
                 "score": 4.0,
-                "comment": "목소리가 또렷하고 전달이 좋았어요.",
-                "isMine": false
+                "comment": "목소리가 또렷하고 전달이 좋았어요."
             },
             {
                 "id": 2,
                 "writerId": "user-36",
                 "name": "인물38",
                 "score": 4.2,
-                "comment": "긴 문장도 자연스럽게 잘 말했어요.",
-                "isMine": false
+                "comment": "긴 문장도 자연스럽게 잘 말했어요."
             }
         ]
     },
@@ -410,16 +371,14 @@
                 "writerId": "user-37",
                 "name": "인물39",
                 "score": 3.8,
-                "comment": "조금 더 깊이 있는 설명이 있으면 좋아요.",
-                "isMine": false
+                "comment": "조금 더 깊이 있는 설명이 있으면 좋아요."
             },
             {
                 "id": 2,
                 "writerId": "user-38",
                 "name": "인물40",
                 "score": 4.0,
-                "comment": "기초 개념은 잘 잡혀 있었어요.",
-                "isMine": false
+                "comment": "기초 개념은 잘 잡혀 있었어요."
             }
         ]
     },
@@ -432,16 +391,14 @@
                 "writerId": "user-39",
                 "name": "인물41",
                 "score": 4.4,
-                "comment": "열정이 인상적이었어요.",
-                "isMine": false
+                "comment": "열정이 인상적이었어요."
             },
             {
                 "id": 2,
                 "writerId": "user-40",
                 "name": "인물44",
                 "score": 4.2,
-                "comment": "논리적인 흐름이 잘 짜였어요.",
-                "isMine": false
+                "comment": "논리적인 흐름이 잘 짜였어요."
             }
         ]
     },
@@ -454,16 +411,14 @@
                 "writerId": "user-41",
                 "name": "인물43",
                 "score": 4.5,
-                "comment": "자신감 넘치고 조리 있는 답변이었어요.",
-                "isMine": false
+                "comment": "자신감 넘치고 조리 있는 답변이었어요."
             },
             {
                 "id": 2,
                 "writerId": "user-42",
                 "name": "인물42",
                 "score": 4.5,
-                "comment": "시야가 넓고 깊이 있는 사고가 인상적이었어요.",
-                "isMine": false
+                "comment": "시야가 넓고 깊이 있는 사고가 인상적이었어요."
             }
         ]
     },
@@ -476,16 +431,14 @@
                 "writerId": "user-43",
                 "name": "인물45",
                 "score": 4.0,
-                "comment": "조용하지만 핵심을 잘 찔렀어요.",
-                "isMine": false
+                "comment": "조용하지만 핵심을 잘 찔렀어요."
             },
             {
                 "id": 2,
                 "writerId": "user-44",
                 "name": "인물46",
                 "score": 4.0,
-                "comment": "군더더기 없이 깔끔한 답변이었어요.",
-                "isMine": false
+                "comment": "군더더기 없이 깔끔한 답변이었어요."
             }
         ]
     },
@@ -498,16 +451,14 @@
                 "writerId": "user-45",
                 "name": "인물47",
                 "score": 4.0,
-                "comment": "기술적인 질문에도 침착하게 잘 대응했어요.",
-                "isMine": false
+                "comment": "기술적인 질문에도 침착하게 잘 대응했어요."
             },
             {
                 "id": 2,
                 "writerId": "user-46",
                 "name": "인물48",
                 "score": 4.2,
-                "comment": "신뢰감 있는 태도가 좋았습니다.",
-                "isMine": false
+                "comment": "신뢰감 있는 태도가 좋았습니다."
             }
         ]
     }

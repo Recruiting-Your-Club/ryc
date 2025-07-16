@@ -13,7 +13,7 @@ export interface PersonalScoreCardProps {
     score: number;
     comment: string;
     commentId: number;
-    isMine?: boolean;
+    isUser?: boolean;
     isEditable?: boolean;
     handleDelete: () => void;
     onOpenForm: (nextState: Partial<FormState>) => void;
