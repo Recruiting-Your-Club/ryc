@@ -7,4 +7,7 @@ public interface EvaluationRepository {
 
   List<Evaluation> findEvaluationsByApplicantIdsAndType(
       List<String> applicantIdList, EvaluationType type);
+
+  List<String> findEvaluatedApplicantIds(
+      String evaluatorId, EvaluationType type, List<String> applicantIdList);
 }

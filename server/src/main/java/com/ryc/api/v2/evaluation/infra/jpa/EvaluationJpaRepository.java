@@ -20,4 +20,18 @@ public interface EvaluationJpaRepository extends JpaRepository<EvaluationEntity,
     """)
   List<EvaluationEntity> findEvaluationsByApplicantIdsAndType(
       @Param("applicantIds") List<String> applicantIds, @Param("type") EvaluationType type);
+
+  @Query(
+      """
+        SELECT e.applicantEntity.id
+        FROM EvaluationEntity e
+        WHERE e.adminEntity.id = :evaluatorId
+          AND e.type = :type
+          AND e.applicantEntity.id in :applicantIds
+          AND e.deleted = false
+    """)
+  List<String> findEvaluatedApplicantIds(
+      @Param("evaluatorId") String evaluatorId,
+      @Param("type") EvaluationType type,
+      @Param("applicantIds") List<String> applicantIds);
 }

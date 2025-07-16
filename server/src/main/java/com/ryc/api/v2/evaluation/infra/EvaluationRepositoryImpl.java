@@ -64,4 +64,10 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
         .map(EvaluationMapper::toDomain)
         .toList();
   }
+
+  @Override
+  public List<String> findEvaluatedApplicantIds(
+      String evaluatorId, EvaluationType type, List<String> applicantIdList) {
+    return evaluationJpaRepository.findEvaluatedApplicantIds(evaluatorId, type, applicantIdList);
+  }
 }

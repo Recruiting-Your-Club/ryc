@@ -18,9 +18,11 @@ import com.ryc.api.v2.evaluation.domain.EvaluationType;
 import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationSearchRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.MyEvaluationStatusSearchRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
 import com.ryc.api.v2.evaluation.presentation.dto.response.EvaluationSearchResponse;
 import com.ryc.api.v2.evaluation.presentation.dto.response.InterviewEvaluationResponse;
+import com.ryc.api.v2.evaluation.presentation.dto.response.MyEvaluationStatusSearchResponse;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -84,6 +86,24 @@ public class EvaluationService {
                                 list, evaluatorIdToNameMap, currentAdminId, totalEvaluatorCount))));
 
     return new EvaluationSearchResponse(response);
+  }
+
+  @Transactional(readOnly = true)
+  public MyEvaluationStatusSearchResponse findMyEvaluationStatusForApplicants(
+      MyEvaluationStatusSearchRequest body, String currentAdminId, EvaluationType type) {
+    List<String> evaluatedApplicantIds =
+        evaluationRepository.findEvaluatedApplicantIds(
+            currentAdminId, type, body.applicantIdList());
+
+    List<MyEvaluationStatusSearchResponse.ApplicantEvaluationStatus> applicantEvaluationStatuses =
+        evaluatedApplicantIds.stream()
+            .map(
+                applicantId ->
+                    new MyEvaluationStatusSearchResponse.ApplicantEvaluationStatus(
+                        applicantId, evaluatedApplicantIds.contains(applicantId)))
+            .toList();
+
+    return new MyEvaluationStatusSearchResponse(applicantEvaluationStatuses);
   }
 
   /**
