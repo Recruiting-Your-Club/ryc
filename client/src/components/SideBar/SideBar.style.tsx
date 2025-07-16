@@ -27,6 +27,43 @@ const chevron_collapse_animation = keyframes`
         transform: rotate(0deg);
     }
 `
+export const clubSideBarContainer = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 1rem 0.5rem 2rem 0;
+    gap: 1rem;
+    height: 100dvh;
+    z-index: 1000;
+    background-color: ${theme.colors.gray[100]};
+    border-right: 1px solid ${theme.colors.gray[200]};
+    z-index: 10000;
+`
+export const clubActive = (activeClub: boolean) => css`
+    height: 8px;
+    width: 4px;
+    background-color: ${theme.colors.black};
+    border-radius: 0 4px 4px 0;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    ${!activeClub && css`
+        border-radius: 50%;
+        opacity: 0;
+    `}
+    ${activeClub && css`
+        height: 35px;
+        opacity: 1;
+    `}
+`
+export const clubWrapper = css`
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0.3rem;
+    background-color: transparent;
+`
 export const sideBarContainer = css`
     display: flex;
     flex-direction: column;
@@ -37,9 +74,9 @@ export const sideBarContainer = css`
     left: 0;
     height: 100dvh;
     border-right: 1px solid ${theme.colors.gray[300]};
-    z-index: 10000;
-    padding-left: 2rem;
-    padding-right: 1rem;
+    z-index: 1000;
+    padding-left: 1rem;
+    padding-right: 0.5rem;
 `;
 
 
@@ -54,6 +91,16 @@ export const clubLogoWrapper = css`
     height: 4rem;
     padding: 0;
 `;
+export const announcementWrapper = (isExpanded: boolean) => css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+    animation: ${isExpanded && 
+    css`
+        ${sideBar_opacity} 0.2s ease forwards
+    `}
+`
 export const clubTextWrapper = (isExpanded: boolean) => css`
     display: flex;
     flex-direction: column;
@@ -131,7 +178,7 @@ export const menuListContainer = css`
     gap: 0.5rem;
     margin-bottom: 1rem;
     margin-left: 0.5rem;
-    width: 100%;
+    width: 95%;
 `;
 
 export const mainMenuContainer = css`
@@ -169,6 +216,13 @@ export const navContainer = (isExpanded: boolean) => css`
     width: ${isExpanded ? '23rem' : '4rem'};
 `;
 
+export const dropdownContainer = (isExpanded: boolean) => css`
+    width: 100%;
+    margin-bottom: 3rem;
+    ${!isExpanded && css`
+        display: none;
+    `}
+`
 export const dropdownTriggerContainer = css`
     border: none;
     padding: 0;
@@ -203,6 +257,7 @@ export const drowdownClubContainer = css`
 `
 export const dropDownClubWrapper = css`
     display: flex;
+    align-items: center;
     width: 100%;
     gap: 1rem;
     padding: 0.5rem;

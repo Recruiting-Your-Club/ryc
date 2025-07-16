@@ -6,7 +6,7 @@ import Home from '@assets/images/Home.svg';
 import Ryc from '@assets/images/Ryc.svg';
 import SSOC from '@assets/images/ssoc.png';
 import UserSet from '@assets/images/UserSet.svg';
-import { Button, Text, Tooltip, Dropdown } from '@components';
+import { Button, Text, Tooltip, Dropdown, Tag } from '@components';
 import { useRouter } from '@hooks/useRouter';
 import React, { useState, useMemo, useCallback } from 'react';
 import clubData from './clubData.json';
@@ -32,28 +32,44 @@ import {
     drowdownClubContainer,
     dropdownClubLogoWrapper,
     dropDownClubWrapper,
+    clubSideBarContainer,
+    clubWrapper,
+    clubActive,
+    announcementWrapper,
+    dropdownContainer,
 } from './SideBar.style';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
+import { useQuery } from '@tanstack/react-query';
+import { clubQueries } from '@api/queryFactory/clubQueries';
 
 function SideBar() {
     // prop destruction
     // lib hooks
     const location = useLocation();
     const { goTo } = useRouter();
+    const { data: myClub, isLoading } = useQuery(clubQueries.myClub());
 
     // initial values
     const navMenu = useMemo(() => [
         {
             id: 1,
-            menu: "모집공고",
+            menu: "공고 관리",
             icon: <Home />,
             subMenus: [
                 {
-                    menu: "모집공고",
-                    link: "/manager/recruitment"
+                    menu: "모집 공고",
+                    link: "/announcements"
+                },
+                {
+                    menu: "공고 생성",
+                    link: "/announcements/create"
+                },
+                {
+                    menu: "공고 편집",
+                    link: "/announcements/edit"
                 }
-            ]
+            ],
         },
         {
             id: 2,
@@ -61,23 +77,23 @@ function SideBar() {
             icon: <AplicantManage />,
             subMenus: [
                 {
-                    menu: "단계별 통합 관리",
-                    link: "/manager/steps"
-                },
-                {
-                    menu: "불합격자 관리",
-                    link: "/manager/rejected"
+                    menu: "지원자 관리",
+                    link: "/applicants"
                 }
             ]
         },
         {
             id: 3,
-            menu: "공고 편집",
+            menu: "평가 관리",
             icon: <EditApplication />,
             subMenus: [
                 {
-                    menu: "공고 편집",
-                    link: "/manager/edit"
+                    menu: "서류 평가",
+                    link: "/evaluations/document"
+                },
+                {
+                    menu: "면접 평가",
+                    link: "/evaluations/interview"
                 }
             ]
         },
@@ -87,20 +103,8 @@ function SideBar() {
             icon: <ApplicationManage />,
             subMenus: [
                 {
-                    menu: "시간대 별 지원자 편집",
-                    link: "/manager/time-slots"
-                },
-                {
-                    menu: "서류 평가",
-                    link: "/manager/doc-evaluation"
-                },
-                {
-                    menu: "면접 평가 테이블",
-                    link: "/manager/evaluation"
-                },
-                {
-                    menu: "면접 공통 질문 설정",
-                    link: "/manager/questions"
+                    menu: "지원자 면접 일정 관리",
+                    link: "/interviews/schedule"
                 }
             ]
         },
@@ -111,7 +115,7 @@ function SideBar() {
             subMenus: [
                 {
                     menu: "사용자 권한 설정",
-                    link: "/manager/setting"
+                    link: "/settings"
                 }
             ]
         }
@@ -127,6 +131,7 @@ function SideBar() {
     const [activeMenus, setActiveMenus] = useState<number[]>([getMainMenu()]);
     const [activeSubMenu, setActiveSubMenu] = useState<string>(location.pathname);
     const [isExpanded, setIsExpanded] = useState(true);
+    const [currentClub, setCurrentClub] = useState<string>(clubData[0].name);
 
     // form hooks
     // query hooks
@@ -154,13 +159,26 @@ function SideBar() {
     //useEffect
     return (
         <>
+            <div css={clubSideBarContainer}>
+                {!isLoading && myClub?.map((data) => (
+                    <div key={data.id} css={{ display: 'flex', alignItems: 'center', width: '100%', gap: '0.3rem' }}>
+                        <div css={clubActive(data.name === currentClub)} />
+                        <button css={clubWrapper} onClick={() => setCurrentClub(data.name)}>
+                            <Tooltip content={data.name}>
+                                <img src={data.imageUrl} alt='clubLogo' width='100%' height='100%' css={{ borderRadius: '10px' }} />
+                            </Tooltip>
+                        </button>
+                    </div>
+                ))}
+
+            </div>
             <aside css={sideBarContainer}>
                 <div css={homeLogoContainer}>
                     <Button variant='text' onClick={() => {
-                        if (location.pathname !== '/manager/recruitment') {
+                        if (location.pathname !== '/announcements') {
                             if (!activeMenus.includes(1)) handleCollapsed(1);
-                            setActiveSubMenu('/manager/recruitment');
-                            goTo('/manager/recruitment');
+                            setActiveSubMenu('/announcements');
+                            goTo('/announcements');
                         }
                     }} sx={homeLogoTextWrapper(isExpanded)}>
                         SSOC
@@ -172,16 +190,14 @@ function SideBar() {
 
                 <nav css={navContainer(isExpanded)}>
 
-                    <Dropdown sx={{ width: '100%', marginBottom: '3rem' }}>
+                    <Dropdown sx={dropdownContainer(isExpanded)}>
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
                             <div css={dropDownTriggerWrapper}>
-                                <Ryc width="3.5rem" height="3.5rem" css={{ borderRadius: '10px' }} />
-
                                 {isExpanded &&
                                     <div css={dropDownChevronWrapper}>
-                                        <div css={clubTextWrapper(isExpanded)}>
-                                            <Text as='div' type='captionRegular'>엔샵</Text>
-                                            <Text as='div' type='captionRegular'>세종대학교 SW</Text>
+                                        <div css={announcementWrapper(isExpanded)}>
+                                            <Text as='div' type='bodySemibold' cropped noWrap sx={{ maxWidth: '14rem', marginTop: '0.2rem' }}>프론트엔드</Text>
+                                            <Tag text='모집중' variant='progress' />
                                         </div>
                                         <ChevronUpDown css={chevronUpDownWrapper} />
                                     </div>
