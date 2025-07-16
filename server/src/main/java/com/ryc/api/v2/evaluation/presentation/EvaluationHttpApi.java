@@ -82,7 +82,7 @@ public class EvaluationHttpApi {
 
   @HasRole(Role.MEMBER)
   @PostMapping("/applicaitons/my-status")
-  @Operation(summary = "각 지원자에 대해 해당 로그인한 평가자의 평가 수행 여부 조회 API")
+  @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 지원서 평가 수행 여부 조회 API")
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyApplicationEvaluationStatusForApplicants(
           @RequestHeader("X-CLUB-ID") String securedClubId,
@@ -91,6 +91,20 @@ public class EvaluationHttpApi {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
             body, userDetail.getId(), EvaluationType.APPLICATION);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @HasRole(Role.MEMBER)
+  @PostMapping("/interviews/my-status")
+  @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 면접 평가 수행 여부 조회 API")
+  public ResponseEntity<MyEvaluationStatusSearchResponse>
+      getMyInterviewEvaluationStatusForApplicants(
+          @RequestHeader("X-CLUB-ID") String securedClubId,
+          @AuthenticationPrincipal CustomUserDetail userDetail,
+          @Valid @RequestBody MyEvaluationStatusSearchRequest body) {
+    MyEvaluationStatusSearchResponse response =
+        evaluationService.findMyEvaluationStatusForApplicants(
+            body, userDetail.getId(), EvaluationType.INTERVIEW);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }
