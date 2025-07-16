@@ -13,9 +13,11 @@ import ChevronRight from '@assets/images/chevronRight.svg';
 import { myClubQueries } from '@api/queryFactory/myClubQueries';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-
 function MyClubPage() {
+
+    //query hooks
     const {data: myClubs} = useSuspenseQuery(myClubQueries.all());
+
     return (
         <div css={myClubPageLayout}>
             <div css={myClubPageContainer}>

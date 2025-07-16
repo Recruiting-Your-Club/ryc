@@ -15,14 +15,24 @@ import { useRegister } from '@hooks/useRegister';
 import { useToast } from '@hooks/useToast';
 
 function RegisterPage() {
+    // prop destruction
+    // lib hooks
+    const { removeHistoryAndGo } = useRouter();
+    const {toast} = useToast();
+
+    // initial values
+    // state, ref, querystring hooks
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
-    const {mutate: register, isPending, error} = useRegister();
-    const {toast} = useToast();
-    const { removeHistoryAndGo } = useRouter();
 
+    // form hooks
+    // query hooks
+    const {mutate: register, isPending, error} = useRegister();
+
+    // calculated values
+    // handlers
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         if(password !== passwordConfirm){
@@ -35,6 +45,8 @@ function RegisterPage() {
         register({email, name, password});
     }
 
+    // effects
+    
     return (
         <form css={RegisterContainer} onSubmit={handleSubmit}>
             <div css={RegisterBox}>
