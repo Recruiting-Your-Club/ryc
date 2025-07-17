@@ -64,6 +64,7 @@ module.exports = {
         }),
         new Dotenv({
             path: path.resolve(__dirname, './', dotenvFilename),
+            systemvars: true,
         }),
     ],
 };
