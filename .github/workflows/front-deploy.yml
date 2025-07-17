@@ -3,7 +3,7 @@ name: github-action
 on:
   push:
     branches:
-      - feature/issue-247
+      - develop
 
 jobs:
   build-and-deploy:
@@ -36,10 +36,9 @@ jobs:
             echo "NODE_ENV: $NODE_ENV"
             echo "BASE_URL: $BASE_URL"
             echo "API_MOKING: $API_MOKING"
-            yarn build --no-cache
+            yarn build
         working-directory: ./monorepo
         env:
-          NODE_ENV: production
           BASE_URL: ${{ secrets.BASE_URL }}
           API_MOKING: disabled
 
