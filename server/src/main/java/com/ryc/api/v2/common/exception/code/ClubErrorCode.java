@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ClubErrorCode implements ErrorCode {
+  CLUB_ID_BAD_REQUEST(HttpStatus.BAD_REQUEST, "요청 헤더에 X-CLUB-ID가 필요합니다."),
   CLUB_NOT_FOUND(HttpStatus.NOT_FOUND, "동아리를 찾을 수 없습니다."),
   CLUB_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "동아리원을 찾을 수 없습니다."),
   DUPLICATE_CLUB_NAME(HttpStatus.BAD_REQUEST, "동아리 이름은 중복될 수 없습니다."),
