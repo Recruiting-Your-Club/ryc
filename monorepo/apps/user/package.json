@@ -6,7 +6,7 @@
     "scripts": {
         "start": "webpack serve --open --config webpack.prod.js",
         "dev": "NODE_ENV=development webpack serve --open --config webpack.dev.js",
-        "build": "webpack --config webpack.prod.js",
+        "build": "NODE_ENV=production webpack --config webpack.prod.js",
         "lint": "eslint --fix .",
         "format": "prettier --write .",
         "test": "jest --coverage ",
