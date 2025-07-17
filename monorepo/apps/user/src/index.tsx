@@ -20,7 +20,12 @@ async function initializeApp() {
     if (process.env.API_MOKING === 'enabled') {
         await browserServer.start();
     }
-
+    // eslint-disable-next-line no-console
+    console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+    // eslint-disable-next-line no-console
+    console.log('process.env.BASE_URL', process.env.BASE_URL);
+    // eslint-disable-next-line no-console
+    console.log('process.env.API_MOKING', process.env.API_MOKING);
     root.render(
         <React.StrictMode>
             <Global styles={globalStyles} />
