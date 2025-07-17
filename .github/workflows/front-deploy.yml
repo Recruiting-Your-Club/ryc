@@ -36,6 +36,7 @@ jobs:
             echo "NODE_ENV: $NODE_ENV"
             echo "BASE_URL: $BASE_URL"
             echo "API_MOKING: $API_MOKING"
+            node -e "console.log('process.env.BASE_URL:', process.env.BASE_URL)"
             yarn build
         working-directory: ./monorepo
         env:
