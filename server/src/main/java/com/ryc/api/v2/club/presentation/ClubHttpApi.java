@@ -106,7 +106,6 @@ public class ClubHttpApi {
   }
 
   @GetMapping("/my")
-  @HasRole(Role.MEMBER)
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
   @ApiResponse(responseCode = "200", description = "사용자가 속한 동아리 조회 성공")
   public ResponseEntity<List<ClubGetByAdminIdResponse>> getClubByAdminId(
