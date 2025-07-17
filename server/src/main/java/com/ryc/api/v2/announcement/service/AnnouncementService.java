@@ -21,10 +21,7 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateR
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.service.ClubService;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,13 +33,12 @@ public class AnnouncementService {
   private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
-      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
+      String clubId, AnnouncementCreateRequest request) {
     // Announcement 생성
-    Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
+    Announcement announcement = Announcement.initialize(request, clubId);
 
-    ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubRoleSecuredDto.clubId());
+    ClubEntity clubProxy = clubJpaRepository.getReferenceById(clubId);
 
     Announcement savedAnnouncement = announcementRepository.save(announcement, clubProxy);
 
@@ -60,8 +56,7 @@ public class AnnouncementService {
   }
 
   @Transactional(readOnly = true)
-  @ValidClub
-  public AnnouncementGetDetailResponse findById(String clubId, String announcementId) {
+  public AnnouncementGetDetailResponse findById(String announcementId) {
     // 공고 ID로 공고 조회
     Announcement announcement = announcementRepository.findByIdWithApplication(announcementId);
 
@@ -70,11 +65,8 @@ public class AnnouncementService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      AnnouncementUpdateRequest request,
-      String announcementId) {
+      AnnouncementUpdateRequest request, String announcementId) {
     // 1. 기존 Announcement 조회
     Announcement existingAnnouncement =
         announcementRepository.findByIdWithApplication(announcementId);

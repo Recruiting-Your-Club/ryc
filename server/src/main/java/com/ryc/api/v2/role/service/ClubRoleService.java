@@ -10,8 +10,6 @@ import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
@@ -46,9 +44,8 @@ public class ClubRoleService {
   }
 
   @Transactional(readOnly = true)
-  @HasRole(Role.MEMBER)
-  public List<AdminsGetResponse> getAdminsInClub(ClubRoleSecuredDto dto) {
-    List<ClubRole> clubRoles = clubRoleRepository.findRolesByClubId(dto.clubId());
+  public List<AdminsGetResponse> getAdminsInClub(String clubId) {
+    List<ClubRole> clubRoles = clubRoleRepository.findRolesByClubId(clubId);
 
     return clubRoles.stream()
         .map(
@@ -64,13 +61,12 @@ public class ClubRoleService {
   }
 
   @Transactional
-  @HasRole(Role.OWNER)
-  public void deleteRole(ClubRoleSecuredDto dto, String targetUserId) {
-    if (dto.adminId().equals(targetUserId)) {
+  public void deleteRole(String adminId, String clubId, String targetUserId) {
+    if (adminId.equals(targetUserId)) {
       throw new ClubException(ClubErrorCode.CLUB_OWNER_CANNOT_BE_DELETED);
     }
 
-    if (!clubRoleRepository.existsByAdminIdAndClubId(targetUserId, dto.clubId())) {
+    if (!clubRoleRepository.existsByAdminIdAndClubId(targetUserId, clubId)) {
       throw new ClubException(ClubErrorCode.CLUB_MEMBER_NOT_FOUND);
     }
 

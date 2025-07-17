@@ -78,7 +78,9 @@ public class SecurityConfiguration {
                         HttpMethod.GET,
                         "/api/v2/application/form",
                         "/api/v2/clubs/*",
-                        "/api/v2/clubs")
+                        "/api/v2/clubs",
+                        "/api/v2/clubs/*/announcements",
+                        "/api/v2/clubs/*/announcements/*")
                     .permitAll()
                     .anyRequest()
                     .authenticated());

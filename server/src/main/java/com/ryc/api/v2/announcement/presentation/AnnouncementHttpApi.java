@@ -14,6 +14,8 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +41,7 @@ public interface AnnouncementHttpApi {
                     schema = @Schema(implementation = AnnouncementCreateResponse.class)),
             headers = {@Header(name = "Location", description = "생성된 리소스의 상세정보 조회 URI")})
       })
+  @HasRole(Role.MEMBER)
   ResponseEntity<AnnouncementCreateResponse> create(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable("club-id") String clubId,
@@ -49,17 +52,15 @@ public interface AnnouncementHttpApi {
   ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
       @PathVariable("club-id") String clubId);
 
-  @GetMapping("/clubs/{club-id}/announcements/{announcement-id}")
+  @GetMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
   ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId);
 
-  @PutMapping("/clubs/{club-id}//announcements/{announcement-id}")
+  @PutMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 수정")
+  @HasRole(Role.MEMBER)
   ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body);
 }

@@ -25,7 +25,8 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
 import com.ryc.api.v2.club.service.ClubFacade;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,6 +64,7 @@ public class ClubHttpApi {
   }
 
   @PatchMapping("/{id}")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "동아리 수정 성공"),
@@ -76,12 +78,8 @@ public class ClubHttpApi {
         content = @Content(schema = @Schema(hidden = true)))
   })
   public ResponseEntity<ClubUpdateResponse> updateClub(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable String id,
-      @RequestBody ClubUpdateRequest body) {
-
-    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), id);
-    ClubUpdateResponse response = clubFacade.updateClub(dto, body);
+      @PathVariable String id, @RequestBody ClubUpdateRequest body) {
+    ClubUpdateResponse response = clubFacade.updateClub(id, body);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
@@ -108,6 +106,7 @@ public class ClubHttpApi {
   }
 
   @GetMapping("/my")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
   @ApiResponse(responseCode = "200", description = "사용자가 속한 동아리 조회 성공")
   public ResponseEntity<List<ClubGetByAdminIdResponse>> getClubByAdminId(
