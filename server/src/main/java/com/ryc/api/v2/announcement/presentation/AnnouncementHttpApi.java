@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface AnnouncementHttpApi {
 
   @PostMapping("/clubs/{club-id}/announcements")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "클럽 공고 생성")
   @ApiResponses(
       value = {
@@ -41,7 +42,6 @@ public interface AnnouncementHttpApi {
                     schema = @Schema(implementation = AnnouncementCreateResponse.class)),
             headers = {@Header(name = "Location", description = "생성된 리소스의 상세정보 조회 URI")})
       })
-  @HasRole(Role.MEMBER)
   ResponseEntity<AnnouncementCreateResponse> create(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable("club-id") String clubId,
@@ -58,8 +58,8 @@ public interface AnnouncementHttpApi {
       @PathVariable("announcement-id") String announcementId);
 
   @PutMapping("/announcements/{announcement-id}")
-  @Operation(summary = "공고 수정")
   @HasRole(Role.MEMBER)
+  @Operation(summary = "공고 수정")
   ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body);
