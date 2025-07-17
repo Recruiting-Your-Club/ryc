@@ -36,7 +36,7 @@ jobs:
             echo "NODE_ENV: $NODE_ENV"
             echo "BASE_URL: $BASE_URL"
             echo "API_MOKING: $API_MOKING"
-            yarn build
+            yarn build --no-cache
         working-directory: ./monorepo
         env:
           NODE_ENV: production
