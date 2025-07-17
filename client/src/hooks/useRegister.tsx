@@ -10,6 +10,9 @@ function useRegister(){
         mutationFn: register,
         onSuccess: () => {
             navigate('/login', {replace: true})
+        },
+        onError: (error) => {
+            console.log(error)
         }
     })
 }

@@ -13,8 +13,10 @@ function useLogin() {
         mutationFn: login,
         onSuccess: (data) => {
             setAccessToken(data.accessToken);
-            console.log(data.accessToken);
             removeHistoryAndGo('/myClub');
+        },
+        onError: (error) => {
+            console.log(error);
         }
     })
 }

@@ -77,8 +77,8 @@ function RegisterPage() {
                 )}
 
                 <div css={buttonContainer}>
-                    <Button type='submit' variant="primary" size="full">
-                        {isPending ? '로딩 중...' : '회원가입'}
+                    <Button type='submit' variant="primary" size="full" loading={isPending}>
+                        회원가입
                     </Button>
                     <Button
                         onClick={() => removeHistoryAndGo('/login')}

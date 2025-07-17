@@ -50,8 +50,8 @@ function LoginPage() {
                 )}
 
                 <div css={buttonContainer}>
-                    <Button variant="primary" size="full" type='submit'>
-                        {isPending ? '로딩 중...' : '로그인'}
+                    <Button variant="primary" size="full" type='submit' loading={isPending}>
+                        로그인
                     </Button>
                     <Button
                         onClick={() => removeHistoryAndGo('/register')}
