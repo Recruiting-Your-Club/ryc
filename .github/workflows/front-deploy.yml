@@ -3,7 +3,7 @@ name: github-action
 on:
   push:
     branches:
-      - develop
+      - feature/issue-247
 
 jobs:
   build-and-deploy:
