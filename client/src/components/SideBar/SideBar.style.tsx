@@ -264,6 +264,12 @@ export const dropDownClubWrapper = css`
     padding: 0.5rem;
     border-radius: 5px;
 `
+export const dropDownLogoutWrapper = css`
+    display: flex;
+    position: sticky;
+    bottom: 0;
+    color: ${theme.colors.red[800]};
+`
 export const dropdownClubLogoWrapper = css`
     width: 2rem;
     height: 2rem;

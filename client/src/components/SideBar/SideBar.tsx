@@ -36,6 +36,7 @@ import {
     clubActive,
     announcementWrapper,
     dropdownContainer,
+    dropDownLogoutWrapper,
 } from './SideBar.style';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
@@ -137,8 +138,8 @@ function SideBar() {
 
     // form hooks
     // query hooks
-    const { data: myClub, isLoading } = useQuery(clubQueries.myClub());
-    const { data: announcementList } = useQuery(announcementQueries.getListByClub('2', queryOn));
+    const { data: myClub, isLoading: clubLoading } = useQuery(clubQueries.myClub());
+    const { data: announcementList, isLoading: announcementLoading } = useQuery(announcementQueries.getListByClub('2', queryOn));
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
@@ -166,7 +167,7 @@ function SideBar() {
     return (
         <>
             <div css={clubSideBarContainer}>
-                {!isLoading && myClub?.map((data) => (
+                {!clubLoading && myClub?.map((data) => (
                     <div key={data.id} css={{ display: 'flex', alignItems: 'center', width: '100%', gap: '0.3rem' }}>
                         <div css={clubActive(data.name === currentClub)} />
                         <button css={clubWrapper} onClick={() => setCurrentClub(data.name)}>
@@ -297,12 +298,8 @@ function SideBar() {
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
                             }}>
                             <Dropdown.Item sx={drowdownClubContainer}>
-                                {myClub?.map((club) =>
-                                    <div key={club.id} css={dropDownClubWrapper}>
-                                        <img src={club.imageUrl} alt={club.name} css={dropdownClubLogoWrapper} />
-                                        <Text as='div' type='captionRegular' cropped noWrap>{club.name}</Text>
-                                    </div>
-                                )}
+                                <Button variant='transparent' size='full'>계정설정</Button>
+                                <Button variant='transparent' size='full' sx={dropDownLogoutWrapper}>로그아웃</Button>
                             </Dropdown.Item>
                         </Dropdown.Content>
                     </Dropdown>
