@@ -7,7 +7,7 @@
         "build": {
             "dependsOn": ["^build"],
             "outputs": ["dist/**"],
-            "env": ["BASE_URL", "API_MOKING", "NODE_ENV"]
+            "env": ["BASE_URL"]
         },
         "dev": {
             "dependsOn": ["^build"],
