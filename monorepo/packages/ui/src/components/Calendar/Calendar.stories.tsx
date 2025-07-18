@@ -13,7 +13,7 @@ const meta: Meta<typeof Calendar> = {
         layout: 'fullscreen',
         docs: {
             description: {
-                component: 'SideBar 컴포넌트입니다.',
+                component: '캘린더 컴포넌트입니다.',
             },
         },
     },
