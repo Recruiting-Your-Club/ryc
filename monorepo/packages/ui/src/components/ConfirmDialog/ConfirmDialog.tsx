@@ -1,5 +1,5 @@
-import Alert from '@assets/images/alert.svg';
-import Check from '@assets/images/check.svg';
+import Alert from '@ssoc/assets/images/alert.svg';
+import Check from '@ssoc/assets/images/check.svg';
 import React from 'react';
 
 import { Button } from '../Button';

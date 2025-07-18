@@ -2587,6 +2587,7 @@ __metadata:
     jest-environment-jsdom: "npm:^29"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    storybook: "npm:^8.5.4"
     typescript: "npm:^4.4.2"
   languageName: unknown
   linkType: soft

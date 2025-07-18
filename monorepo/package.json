@@ -11,6 +11,7 @@
         "dev": "turbo run dev",
         "build": "turbo run build",
         "test": "turbo run test",
+        "storybook": "turbo run storybook",
         "lint": "eslint . --ext .ts,.tsx,.js,.jsx --config .eslintrc.json",
         "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --config .eslintrc.json --fix",
         "format": "prettier --write . --config .prettierrc.js",
