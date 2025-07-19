@@ -19,7 +19,7 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
     // prop destruction
     // lib hooks
     // initial value
-    const textMap = [
+    const personalInformationMap = [
         { label: '이름', value: applicant?.name },
         { label: '이메일', value: applicant?.email },
         { label: '학번', value: applicant?.studentId },
@@ -53,7 +53,7 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
                     <div css={s_documentWrapper}>
                         {documentList?.detail.map((document, index) => (
                             <DocumentBox
-                                key={index}
+                                key={document.id}
                                 index={index}
                                 question={document.question}
                                 answer={document.answer}
@@ -65,7 +65,7 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
                     <div css={s_personalDataWrapper}>
                         <Avatar sx={s_avatar} />
                         <div css={s_textGroup}>
-                            {textMap.map((item) => (
+                            {personalInformationMap.map((item) => (
                                 <div key={item.label} css={s_textContainer}>
                                     <Text
                                         as="span"

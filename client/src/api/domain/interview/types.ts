@@ -24,7 +24,7 @@ export interface IntervieweeDetail extends Interviewee {
 
 export interface Document {
     applicantId: number;
-    detail: { question: string; answer: string }[];
+    detail: { id: number; question: string; answer: string }[];
 }
 
 export interface Evaluation {
