@@ -15,12 +15,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     bootstrap: async() => {
         try{
             const refreshURL = new URL('api/v2/auth/refreshToken', BASE_URL).toString();
-            const res = await fetch(refreshURL, {
+            const response = await fetch(refreshURL, {
                 method: 'GET',
                 credentials: 'include'
             });
-            if(!res.ok) throw new Error('refresh 실패');
-            const {accessToken} = (await res.json()) as {accessToken: string}
+            if(!response.ok) throw new Error('refresh 실패');
+            const {accessToken} = (await response.json()) as {accessToken: string}
             set({accessToken})
             return accessToken;
         } catch {
