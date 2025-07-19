@@ -14,7 +14,6 @@ import {
     s_titleTextAndSelectionButtonContainer,
 } from './IntervieweeList.style';
 import type { EnrichedInterviewee, IntervieweeListProps } from './types';
-import { filterQuery } from './utils/searchValue';
 
 function IntervieweeList({
     title = '지원자 목록',
@@ -32,7 +31,7 @@ function IntervieweeList({
         `${convertDate(interviewSchedules[0].date)} ${interviewSchedules[0].interviewSets[0].name}` ||
             '면접 일정 없음',
     );
-    const [query, setQuery] = useState('');
+    const [searchText, setSearchText] = useState('');
 
     // form hooks
     // query hooks
@@ -45,11 +44,16 @@ function IntervieweeList({
           )
         : intervieweeList;
 
-    const filterInterviewees = useCallback(
-        (applicants: EnrichedInterviewee[]) => filterQuery(applicants, query),
-        [query],
+    const searchInterviewees = useCallback(
+        (applicants: EnrichedInterviewee[]) => {
+            return applicants.filter((value) =>
+                value.name.toLowerCase().includes(searchText.toLowerCase()),
+            );
+        },
+        [searchText],
     );
-    const filteredInterviewees: EnrichedInterviewee[] = filterInterviewees(selectedInterviewees);
+
+    const searchedInterviewees: EnrichedInterviewee[] = searchInterviewees(selectedInterviewees);
 
     // handlers
     // effects
@@ -87,14 +91,14 @@ function IntervieweeList({
                         height="3rem"
                         inputSx={s_searchInput}
                         placeholder="이름 검색"
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => setSearchText(e.target.value)}
                     />
                 </span>
             </div>
             <div css={s_intervieweeCardGroupWrapper}>
-                <div css={s_invervieweeCardContainer(filteredInterviewees.length !== 0)}>
-                    {filteredInterviewees.length > 0 ? (
-                        filteredInterviewees.map((interviewee) => (
+                <div css={s_invervieweeCardContainer(searchedInterviewees.length !== 0)}>
+                    {searchedInterviewees.length > 0 ? (
+                        searchedInterviewees.map((interviewee) => (
                             <IntervieweeCard
                                 key={interviewee.id}
                                 name={interviewee.name}
