@@ -27,10 +27,15 @@ function IntervieweeList({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState(
-        `${convertDate(interviewSchedules[0].date)} ${interviewSchedules[0].interviewSets[0].name}` ||
-            '면접 일정 없음',
-    );
+    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState(() => {
+        if (interviewSchedules[0]) {
+            const date = convertDate(interviewSchedules[0].date);
+            const name = interviewSchedules[0].interviewSets[0].name;
+            return `${date} ${name}`;
+        }
+        return '면접 일정 없음';
+    });
+
     const [searchText, setSearchText] = useState('');
 
     // form hooks
