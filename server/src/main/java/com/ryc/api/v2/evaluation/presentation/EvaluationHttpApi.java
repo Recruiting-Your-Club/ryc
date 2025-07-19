@@ -115,4 +115,15 @@ public class EvaluationHttpApi {
         evaluationService.findAllEvaluationOverviews(body, EvaluationType.APPLICATION);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
+
+    @HasRole(Role.MEMBER)
+    @PostMapping("/interviews/summary")
+    @Operation(summary = "지원자들의 면접에 대해 현재까지 완료된 평가 수 및 평균 점수를 조회하는 API")
+    public ResponseEntity<EvaluationOverviewSearchResponse> getInterviewEvaluationOverviews(
+            @RequestHeader("X-CLUB-ID") String securedClubId,
+            @Valid @RequestBody EvaluationSearchRequest body) {
+        EvaluationOverviewSearchResponse response =
+                evaluationService.findAllEvaluationOverviews(body, EvaluationType.INTERVIEW);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
