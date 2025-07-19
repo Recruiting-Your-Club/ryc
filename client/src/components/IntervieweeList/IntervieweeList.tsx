@@ -1,7 +1,7 @@
 import Search from '@assets/images/search.svg';
 import { Button, Dropdown, Input, IntervieweeCard, InterviewTimeTable, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     s_intervieweeCardGroupWrapper,
     s_invervieweeCardContainer,
@@ -60,13 +60,20 @@ function IntervieweeList({
         [searchText],
     );
 
-    const searchedInterviewees: EnrichedInterviewee[] = searchInterviewees(selectedInterviewees);
+    const visibleInterviewees: EnrichedInterviewee[] = searchInterviewees(selectedInterviewees);
 
     // handlers
     const handleOpen = () => {
         setOpen((prev) => !prev);
     };
+
     // effects
+    useEffect(() => {
+        const interviewee = visibleInterviewees.reduce((min, current) => {
+            return current.id < min.id ? current : min;
+        }, visibleInterviewees[0]);
+        onSelectApplicant(interviewee.id);
+    }, [selectedInterviewLabel]);
 
     return (
         <div css={s_listContainer(height)}>
@@ -106,9 +113,9 @@ function IntervieweeList({
                 </span>
             </div>
             <div css={s_intervieweeCardGroupWrapper}>
-                <div css={s_invervieweeCardContainer(searchedInterviewees.length !== 0)}>
-                    {searchedInterviewees.length > 0 ? (
-                        searchedInterviewees.map((interviewee) => (
+                <div css={s_invervieweeCardContainer(visibleInterviewees.length !== 0)}>
+                    {visibleInterviewees.length > 0 ? (
+                        visibleInterviewees.map((interviewee) => (
                             <IntervieweeCard
                                 key={interviewee.id}
                                 name={interviewee.name}
