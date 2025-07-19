@@ -70,4 +70,13 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
       String evaluatorId, EvaluationType type, List<String> applicantIdList) {
     return evaluationJpaRepository.findEvaluatedApplicantIds(evaluatorId, type, applicantIdList);
   }
+
+  @Override
+  public Evaluation findEvaluationById(String evaluationId) {
+    return evaluationJpaRepository
+        .findById(evaluationId)
+        .filter(e -> !e.getDeleted())
+        .map(EvaluationMapper::toDomain)
+        .orElseThrow(() -> new EntityNotFoundException("evaluationEntity not found or deleted"));
+  }
 }

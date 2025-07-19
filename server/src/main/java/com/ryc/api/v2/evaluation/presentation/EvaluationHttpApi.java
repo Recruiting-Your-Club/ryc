@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
-import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationSearchRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.request.MyEvaluationStatusSearchRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.*;
 import com.ryc.api.v2.evaluation.presentation.dto.response.*;
 import com.ryc.api.v2.evaluation.service.EvaluationService;
 import com.ryc.api.v2.role.domain.enums.Role;
@@ -124,6 +121,16 @@ public class EvaluationHttpApi {
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationOverviewSearchResponse response =
         evaluationService.findAllEvaluationOverviews(body, EvaluationType.INTERVIEW);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @HasRole(Role.MEMBER)
+  @PutMapping("/evaluations/{evaluation-id}")
+  @Operation(summary = "평가 수정 API")
+  public ResponseEntity<EvaluationUpdateResponse> updateEvaluation(
+      @PathVariable("evaluation-id") String evaluationId,
+      @Valid @RequestBody EvaluationUpdateRequest body) {
+    EvaluationUpdateResponse response = evaluationService.updateEvaluation(body, evaluationId);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

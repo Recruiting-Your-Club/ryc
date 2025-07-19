@@ -15,10 +15,7 @@ import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
-import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationSearchRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.request.MyEvaluationStatusSearchRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.*;
 import com.ryc.api.v2.evaluation.presentation.dto.response.*;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 
@@ -140,6 +137,20 @@ public class EvaluationService {
             .toList();
 
     return new EvaluationOverviewSearchResponse(overviewDataList);
+  }
+
+  @Transactional
+  public EvaluationUpdateResponse updateEvaluation(
+      EvaluationUpdateRequest body, String evaluationId) {
+    Evaluation evaluation = evaluationRepository.findEvaluationById(evaluationId);
+    Evaluation updatedEvaluation = evaluation.update(body);
+    Evaluation savedEvaluation = evaluationRepository.save(updatedEvaluation);
+
+    return EvaluationUpdateResponse.builder()
+        .evaluationId(savedEvaluation.getId())
+        .score(savedEvaluation.getScore())
+        .comment(savedEvaluation.getComment())
+        .build();
   }
 
   /**

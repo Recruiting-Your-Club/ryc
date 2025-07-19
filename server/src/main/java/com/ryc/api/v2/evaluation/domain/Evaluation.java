@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationRequest;
+import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationUpdateRequest;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -54,5 +55,23 @@ public class Evaluation {
    */
   public void validate() {
     // TODO: score 검증
+  }
+
+  public Evaluation update(EvaluationUpdateRequest body) {
+    Evaluation evaluation =
+        Evaluation.builder()
+            .id(id)
+            .evaluatorId(evaluatorId)
+            .evaluateeId(evaluateeId)
+            .score(body.score())
+            .comment(body.comment())
+            .type(type)
+            .deleted(deleted)
+            .createdAt(createdAt)
+            .updatedAt(createdAt)
+            .build();
+
+    evaluation.validate();
+    return evaluation;
   }
 }
