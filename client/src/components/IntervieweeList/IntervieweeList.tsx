@@ -27,7 +27,7 @@ function IntervieweeList({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState(() => {
+    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<string>(() => {
         if (interviewSchedules[0]) {
             const date = convertDate(interviewSchedules[0].date);
             const name = interviewSchedules[0].interviewSets[0].name;
@@ -36,7 +36,8 @@ function IntervieweeList({
         return '면접 일정 없음';
     });
 
-    const [searchText, setSearchText] = useState('');
+    const [searchText, setSearchText] = useState<string>('');
+    const [open, setOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -62,6 +63,9 @@ function IntervieweeList({
     const searchedInterviewees: EnrichedInterviewee[] = searchInterviewees(selectedInterviewees);
 
     // handlers
+    const handleOpen = () => {
+        setOpen((prev) => !prev);
+    };
     // effects
 
     return (
@@ -71,9 +75,9 @@ function IntervieweeList({
                     <Text as="span" type="captionSemibold" textAlign="start">
                         {title}
                     </Text>
-                    <Dropdown>
+                    <Dropdown open={open}>
                         <Dropdown.Trigger asChild>
-                            <Button variant="outlined" sx={s_selectionButton}>
+                            <Button variant="outlined" sx={s_selectionButton} onClick={handleOpen}>
                                 {selectedInterviewLabel}
                             </Button>
                         </Dropdown.Trigger>
