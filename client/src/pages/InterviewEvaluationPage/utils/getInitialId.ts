@@ -2,7 +2,7 @@ import type { Interviewee } from '@api/domain/interview/types';
 
 export const getInitialId = (intervieweelist: Interviewee[]) => {
     const earliestInterviewSetId = intervieweelist.reduce<number | null>((minId, applicant) => {
-        return minId === null || applicant.interviewSetId < minId
+        return minId === null || (applicant.interviewSetId && applicant.interviewSetId < minId)
             ? applicant.interviewSetId
             : minId;
     }, null);
