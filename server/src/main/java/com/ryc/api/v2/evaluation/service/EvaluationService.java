@@ -19,10 +19,7 @@ import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationR
 import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationSearchRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.MyEvaluationStatusSearchRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
-import com.ryc.api.v2.evaluation.presentation.dto.response.EvaluationSearchResponse;
-import com.ryc.api.v2.evaluation.presentation.dto.response.InterviewEvaluationResponse;
-import com.ryc.api.v2.evaluation.presentation.dto.response.MyEvaluationStatusSearchResponse;
+import com.ryc.api.v2.evaluation.presentation.dto.response.*;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -106,6 +103,45 @@ public class EvaluationService {
     return new MyEvaluationStatusSearchResponse(applicantEvaluationStatuses);
   }
 
+  @Transactional(readOnly = true)
+  public EvaluationOverviewSearchResponse findAllEvaluationOverviews(
+      EvaluationSearchRequest body, EvaluationType type) {
+    int totalEvaluatorCount = clubRoleRepository.countManagerAndMemberByClubId(body.clubId());
+
+    List<Evaluation> evaluations =
+        evaluationRepository.findEvaluationsByApplicantIdsAndType(body.applicantIdList(), type);
+
+    // 평가해야 할 인원이 없거나, 평가 데이터가 없는 경우
+    if (totalEvaluatorCount == 0 || evaluations.isEmpty())
+      return createEmptyEvaluationOverviewResponse(body.applicantIdList(), totalEvaluatorCount);
+
+    Map<String, List<Evaluation>> groupedByEvaluateeId =
+        evaluations.stream().collect(Collectors.groupingBy(Evaluation::getEvaluateeId));
+
+    List<EvaluationOverviewSearchResponse.OverviewData> overviewDataList =
+        groupedByEvaluateeId.entrySet().stream()
+            .map(
+                entry -> {
+                  String applicantId = entry.getKey();
+
+                  List<Evaluation> applicantEvaluations = entry.getValue();
+                  int completedEvaluatorCount = applicantEvaluations.size();
+
+                  BigDecimal averageScore =
+                      calculateAverageScore(applicantEvaluations, completedEvaluatorCount);
+
+                  return EvaluationOverviewSearchResponse.OverviewData.builder()
+                      .applicantId(applicantId)
+                      .completedEvaluatorCount(completedEvaluatorCount)
+                      .totalEvaluatorCount(totalEvaluatorCount)
+                      .averageScore(averageScore)
+                      .build();
+                })
+            .toList();
+
+    return new EvaluationOverviewSearchResponse(overviewDataList);
+  }
+
   /**
    * 평가자 ID를 기준으로 평가자 이름을 매핑한 Map을 반환합니다.
    *
@@ -181,7 +217,8 @@ public class EvaluationService {
   }
 
   /**
-   * 평가 데이터가 존재하지 않는 경우에 대한 응답 객체를 생성합니다. 각 applicantId 별로 평가자 수, 평균 점수 등을 기본 값으로 채운 응답을 반환합니다.
+   * 평가 데이터가 존재하지 않는 경우에 대한 평가 데이터 응답 객체를 생성합니다. 각 applicantId 별로 평가자 수, 평균 점수 등을 기본 값으로 채운 응답을
+   * 반환합니다.
    *
    * <p>이 메서드는 아래 두 경우에 사용됩니다: - 평가 필수 참여 동아리원이 0명인 경우 (즉, 동아리원이 없는 경우) - 평가 데이터가 없는 경우
    *
@@ -207,5 +244,35 @@ public class EvaluationService {
     }
 
     return new EvaluationSearchResponse(response);
+  }
+
+  /**
+   * 평가 데이터가 존재하지 않는 경우에 대한 평가 요약 응답 객체를 생성합니다. 각 applicantId 별로 평가자 수, 평균 점수 등을 기본 값으로 채운 응답을
+   * 반환합니다.
+   *
+   * <p>이 메서드는 아래 두 경우에 사용됩니다: - 평가 필수 참여 동아리원이 0명인 경우 (즉, 동아리원이 없는 경우) - 평가 데이터가 없는 경우
+   *
+   * @param applicantIds 평가 데이터를 생성할 지원자 ID 목록
+   * @param totalEvaluatorCount 해당 동아리의 전체 평가자 수 (없으면 0)
+   * @return 비어 있는 평가 요약 응답 DTO
+   */
+  private EvaluationOverviewSearchResponse createEmptyEvaluationOverviewResponse(
+      List<String> applicantIds, int totalEvaluatorCount) {
+    final int completedEvaluatorCount = 0;
+    final BigDecimal averageScore = BigDecimal.ZERO;
+
+    List<EvaluationOverviewSearchResponse.OverviewData> overviewDataList =
+        applicantIds.stream()
+            .map(
+                applicantId ->
+                    EvaluationOverviewSearchResponse.OverviewData.builder()
+                        .applicantId(applicantId)
+                        .completedEvaluatorCount(completedEvaluatorCount)
+                        .totalEvaluatorCount(totalEvaluatorCount)
+                        .averageScore(averageScore)
+                        .build())
+            .toList();
+
+    return new EvaluationOverviewSearchResponse(overviewDataList);
   }
 }

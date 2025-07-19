@@ -13,10 +13,7 @@ import com.ryc.api.v2.evaluation.presentation.dto.request.ApplicationEvaluationR
 import com.ryc.api.v2.evaluation.presentation.dto.request.EvaluationSearchRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.InterviewEvaluationRequest;
 import com.ryc.api.v2.evaluation.presentation.dto.request.MyEvaluationStatusSearchRequest;
-import com.ryc.api.v2.evaluation.presentation.dto.response.ApplicationEvaluationResponse;
-import com.ryc.api.v2.evaluation.presentation.dto.response.EvaluationSearchResponse;
-import com.ryc.api.v2.evaluation.presentation.dto.response.InterviewEvaluationResponse;
-import com.ryc.api.v2.evaluation.presentation.dto.response.MyEvaluationStatusSearchResponse;
+import com.ryc.api.v2.evaluation.presentation.dto.response.*;
 import com.ryc.api.v2.evaluation.service.EvaluationService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -105,6 +102,17 @@ public class EvaluationHttpApi {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
             body, userDetail.getId(), EvaluationType.INTERVIEW);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @HasRole(Role.MEMBER)
+  @PostMapping("/applications/summary")
+  @Operation(summary = "지원자들의 지원서에 대해 현재까지 완료된 평가 수 및 평균 점수를 조회하는 API")
+  public ResponseEntity<EvaluationOverviewSearchResponse> getApplicationEvaluationOverviews(
+      @RequestHeader("X-CLUB-ID") String securedClubId,
+      @Valid @RequestBody EvaluationSearchRequest body) {
+    EvaluationOverviewSearchResponse response =
+        evaluationService.findAllEvaluationOverviews(body, EvaluationType.APPLICATION);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }
