@@ -18,7 +18,12 @@ function InterviewTimeTable({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [date, setDate] = useState<string[]>([interviewSchedules[0].date ?? '']);
+    const [date, setDate] = useState<string[]>(() => {
+        if (interviewSchedules.length > 0 && interviewSchedules[0].date) {
+            return [interviewSchedules[0].date];
+        }
+        return [''];
+    });
 
     // form hooks
     // query hooks
