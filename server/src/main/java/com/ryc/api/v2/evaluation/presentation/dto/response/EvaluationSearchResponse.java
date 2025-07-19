@@ -11,16 +11,16 @@ import lombok.Builder;
 @Schema(
     description =
         """
-                        지원서 및 면접 평가 결과 조회 공통 응답 DTO입니다.
-                        이 DTO는 두 가지 별도 API에서 동일한 응답 구조를 사용하지만, 요청한 평가 유형에 따라 반환되는 실제 데이터는 다릅니다.
-                        또한, 해당 응답 DTO 단일 객체 내에는 지원서 평가데이터와 면접 평가데이터는 공존하지 않습니다.(25.07.14 조상준)
-                        /evaluation/application/search -> 지원서 평가 결과 반환
-                        /evaluation/interview/search -> 면접 평가 결과 반환
+                                지원서 및 면접 평가 결과 조회 공통 응답 DTO입니다.
+                                이 DTO는 두 가지 별도 API에서 동일한 응답 구조를 사용하지만, 요청한 평가 유형에 따라 반환되는 실제 데이터는 다릅니다.
+                                또한, 해당 응답 DTO 단일 객체 내에는 지원서 평가데이터와 면접 평가데이터는 공존하지 않습니다.(25.07.14 조상준)
+                                /evaluation/application/search -> 지원서 평가 결과 반환
+                                /evaluation/interview/search -> 면접 평가 결과 반환
 
-                        - evaluationsByApplicant :
-                                Key: 각 지원자 ID
-                                Value: 평가 결과, 지원자 평점, 참여 평가 인원, 전체 평가 필수 인원
-                """,
+                                - evaluationsByApplicant :
+                                        Key: 각 지원자 ID
+                                        Value: 평가 결과, 지원자 평점, 참여 평가 인원, 전체 평가 필수 인원
+                        """,
     example =
         """
                         {
@@ -31,6 +31,7 @@ import lombok.Builder;
                               "averageScore": 4.3,
                               "evaluationDatas": [
                                 {
+                                  "evaluationId": "evaluation-123",
                                   "evaluatorId": "admin-123",
                                   "evaluatorName": "조상준",
                                   "score": 4.5,
@@ -39,6 +40,7 @@ import lombok.Builder;
                                   "isMyEvaluation": true
                                 },
                                 {
+                                  "evaluationId": "evaluation-456",
                                   "evaluatorId": "admin-456",
                                   "evaluatorName": "홍길동",
                                   "score": 4.0,
@@ -73,6 +75,7 @@ public record EvaluationSearchResponse(
                               "averageScore": 4.3,
                               "evaluationDatas": [
                                 {
+                                      "evaluationId": "evaluation-123",
                                       "evaluatorId": "admin-123",
                                       "evaluatorName": "조상준",
                                       "score": 4.5,
@@ -98,6 +101,7 @@ public record EvaluationSearchResponse(
           """
                             한 명의 관리자가 작성한 개별 평가 데이터입니다.
 
+                            - evaluationId : 평가 ID
                             - evaluatorId : 평가자 ID
                             - evaluatorName : 평가자 이름
                             - score : 점수
@@ -108,6 +112,7 @@ public record EvaluationSearchResponse(
       example =
           """
                             {
+                                          "evaluationId": "evaluation-123",
                                           "evaluatorId": "admin-123",
                                           "evaluatorName": "조상준",
                                           "score": 4.5,
@@ -118,6 +123,7 @@ public record EvaluationSearchResponse(
                             """)
   @Builder
   public record EvaluationData(
+      @Schema(description = "평가 ID", example = "evaluation-123") String evaluationId,
       @Schema(description = "평가자 ID", example = "admin-123") String evaluatorId,
       @Schema(description = "평가자 이름", example = "조상준") String evaluatorName,
       @Schema(description = "평가 점수", example = "4.5") BigDecimal score,

@@ -180,6 +180,7 @@ public class EvaluationService {
             .map(
                 evaluation ->
                     EvaluationSearchResponse.EvaluationData.builder()
+                        .evaluationId(evaluation.getId())
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
                             evaluatorIdToNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
