@@ -125,7 +125,7 @@ public class EvaluationHttpApi {
   }
 
   @HasRole(Role.MEMBER)
-  @PutMapping("/evaluations/{evaluation-id}")
+  @PutMapping("/{evaluation-id}")
   @Operation(summary = "평가 수정 API")
   public ResponseEntity<EvaluationUpdateResponse> updateEvaluation(
       @PathVariable("evaluation-id") String evaluationId,
