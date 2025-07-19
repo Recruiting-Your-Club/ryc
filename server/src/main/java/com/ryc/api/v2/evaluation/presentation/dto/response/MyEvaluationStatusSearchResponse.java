@@ -27,7 +27,7 @@ public record MyEvaluationStatusSearchResponse(
                           }
                         ]
                         """)
-        List<ApplicantEvaluationStatus> data) {
+        List<ApplicantEvaluationStatus> applicantEvaluationStatuses) {
   @Schema(description = "지원자별 로그인 평가자의 평가 여부 상태 DTO")
   public record ApplicantEvaluationStatus(
       @Schema(description = "지원자 ID", example = "applicant-1") String applicantId,
