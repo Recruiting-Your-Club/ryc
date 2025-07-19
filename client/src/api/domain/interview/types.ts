@@ -14,7 +14,7 @@ export interface Interviewee {
     id: number;
     name: string;
     email: string;
-    interviewSetId: number;
+    interviewSetId: number | null;
 }
 
 export interface IntervieweeDetail extends Interviewee {
