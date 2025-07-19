@@ -17,11 +17,23 @@ export const s_interviewInformationButton = (isSelected: boolean) => css`
     align-items: center;
     justify-content: space-between;
     padding: 0.8rem 0.5rem 0.8rem 1rem;
+    cursor: pointer;
     transition: all 0.3s ease;
+
     &:hover {
-        ${fillButton()}
+        color: ${theme.colors.default};
+        border: 1px solid ${theme.colors.default};
+        box-shadow: 0 2px 8px rgba(${hexToRgb(theme.colors.black)}, 0.15);
     }
-    ${isSelected && fillButton()};
+
+    ${isSelected &&
+    css`
+        ${fillButton()};
+        &:hover {
+            color: ${theme.colors.white};
+            border: 0;
+        }
+    `};
 `;
 
 export const s_interviewInformationTextContainer = css`
