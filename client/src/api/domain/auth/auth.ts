@@ -3,7 +3,7 @@ import { Login, LoginResponse, Register, RegisterResponse } from "./types";
 
 async function login(data: Login): Promise<LoginResponse>{
     const response = await httpRequest.post({
-        url: 'api/v2/auth/login',
+        url: 'auth/login',
         body: data,
         isAuthRequire: false,
     })
@@ -12,7 +12,7 @@ async function login(data: Login): Promise<LoginResponse>{
 
 async function register(data: Register): Promise<RegisterResponse>{
     const response = await httpRequest.post({
-        url: 'api/v2/auth/register',
+        url: 'auth/register',
         body: data,
         isAuthRequire: false,
     })
