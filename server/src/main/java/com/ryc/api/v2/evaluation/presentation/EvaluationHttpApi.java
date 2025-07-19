@@ -133,4 +133,12 @@ public class EvaluationHttpApi {
     EvaluationUpdateResponse response = evaluationService.updateEvaluation(body, evaluationId);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
+
+  @HasRole(Role.MEMBER)
+  @DeleteMapping("/{evaluation-id}")
+  @Operation(summary = "평가 삭제 API")
+  public ResponseEntity<Void> deleteEvaluation(@PathVariable("evaluation-id") String evaluationId) {
+    evaluationService.deleteEvaluation(evaluationId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 }

@@ -12,4 +12,6 @@ public interface EvaluationRepository {
       String evaluatorId, EvaluationType type, List<String> applicantIdList);
 
   Evaluation findEvaluationById(String evaluationId);
+
+  void deleteById(String evaluationId);
 }

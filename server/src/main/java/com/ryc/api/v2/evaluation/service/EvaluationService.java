@@ -144,6 +144,7 @@ public class EvaluationService {
   @Transactional
   public EvaluationUpdateResponse updateEvaluation(
       EvaluationUpdateRequest body, String evaluationId) {
+    // TODO: 본인 평가 ID인지 검증 필요
     Evaluation evaluation = evaluationRepository.findEvaluationById(evaluationId);
     Evaluation updatedEvaluation = evaluation.update(body);
     Evaluation savedEvaluation = evaluationRepository.save(updatedEvaluation);
@@ -153,6 +154,13 @@ public class EvaluationService {
         .score(savedEvaluation.getScore())
         .comment(savedEvaluation.getComment())
         .build();
+  }
+
+  @Transactional
+  public void deleteEvaluation(String evaluationId) {
+    // TODO: 본인 평가 ID인지 검증 필요
+    //  현재 물리 삭제로 구현. 추후 의논 후 논리/물리 삭제 기준 설계 필요.
+    evaluationRepository.deleteById(evaluationId);
   }
 
   /**

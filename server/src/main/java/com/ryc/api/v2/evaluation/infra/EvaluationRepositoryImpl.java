@@ -79,4 +79,9 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
         .map(EvaluationMapper::toDomain)
         .orElseThrow(() -> new EntityNotFoundException("evaluationEntity not found or deleted"));
   }
+
+  @Override
+  public void deleteById(String evaluationId) {
+    evaluationJpaRepository.deleteById(evaluationId);
+  }
 }
