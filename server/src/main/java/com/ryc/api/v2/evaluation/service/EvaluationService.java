@@ -32,6 +32,7 @@ public class EvaluationService {
   public ApplicationEvaluationResponse evaluateApplication(
       ApplicationEvaluationRequest body, String adminId) {
     Evaluation evaluation = Evaluation.initialize(body, EvaluationType.APPLICATION, adminId);
+    // TODO: 평가자-지원자-타입 쌍 중복 데이터 확인. 있다면 update 처리
     Evaluation savedEvaluation = evaluationRepository.save(evaluation);
 
     return ApplicationEvaluationResponse.builder()
@@ -44,6 +45,7 @@ public class EvaluationService {
   public InterviewEvaluationResponse evaluateInterview(
       InterviewEvaluationRequest body, String adminId) {
     Evaluation evaluation = Evaluation.initialize(body, EvaluationType.INTERVIEW, adminId);
+    // TODO: 평가자-지원자-타입 쌍 중복 데이터 확인. 있다면 update 처리
     Evaluation savedEvaluation = evaluationRepository.save(evaluation);
 
     return InterviewEvaluationResponse.builder()
