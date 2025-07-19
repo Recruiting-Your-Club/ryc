@@ -41,13 +41,14 @@ function IntervieweeList({
     // form hooks
     // query hooks
     // calculated values
-    const selectedInterviewees = selectedInterviewLabel
-        ? intervieweeList.filter(
-              (interviewee) =>
-                  `${convertDate(interviewee.interviewDate)} ${interviewee.interviewName}` ===
-                  selectedInterviewLabel,
-          )
-        : intervieweeList;
+    const selectedInterviewees =
+        selectedInterviewLabel !== '면접 일정 없음'
+            ? intervieweeList.filter(
+                  (interviewee) =>
+                      `${convertDate(interviewee.interviewDate)} ${interviewee.interviewName}` ===
+                      selectedInterviewLabel,
+              )
+            : [];
 
     const searchInterviewees = useCallback(
         (applicants: EnrichedInterviewee[]) => {
