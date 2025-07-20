@@ -50,7 +50,29 @@ export const clubCategoryContainer = css`
     align-items: center;
     width: 100%;
     height: 3.5rem;
-    border-bottom: 1px solid ${theme.colors.gray[200]};
+`;
+
+export const divider = css`
+    width: 100%;
+    background-color: ${theme.colors.gray[200]};
+`;
+
+export const categorySlider = (position: number, width: string) => css`
+    display: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 1;
+    border-radius: 25px;
+    border: 1px solid ${theme.colors.default};
+    width: ${width};
+    transform: translateX(${position}rem);
+    transition:
+        transform 0.3s ease-in-out,
+        width 0.2s ease-in-out 0.05s;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
 `;
 
 export const emptyElement = css`

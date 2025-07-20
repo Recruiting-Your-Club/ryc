@@ -1,19 +1,14 @@
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { CALENDAR_SIZE } from '../../constants';
+import { CALENDAR_SIZE, SELECTED_ENDDAY, SELECTED_STARTDAY } from '../../constants/calendar';
 import type { CalendarData } from './types';
 
-function useCalendar(
-    selectedDate: string[] = [],
-    isMultiple: boolean = false,
-    onSelect: (selectedDate: string[]) => void,
-) {
+function useCalendar(selectedDate: string[] = [], onSelect: (selectedDate: string[]) => void) {
     // prop destruction
     // lib hooks
     // initial values
     const today = dayjs().format('YYYY-MM-DD');
-    const newSelectedDate = new Set<string>(selectedDate);
     // state, ref, querystring hooks
     const [days, setDays] = useState<CalendarData[]>([]);
     const [currentDate, setCurrentDate] = useState(dayjs());
@@ -21,28 +16,69 @@ function useCalendar(
     // form hooks
     // query hooks
     // calculated values
-
     // handlers
+    const isSelected = (date: string) => selectedDate.includes(date);
+    const isToday = (date: string) => date === today;
+    const isDisabled = (date: string, onlySelected: boolean) => {
+        if (onlySelected) {
+            return !selectedDate.includes(date);
+        }
+        return false;
+    };
     const handleBackMonth = () => {
         setCurrentDate(currentDate.subtract(1, 'month'));
     };
     const handleNextMonth = () => {
         setCurrentDate(currentDate.add(1, 'month'));
     };
-    const handleSelectedDate = useCallback(
-        (selectDate: string) => {
-            const newSelectedDate = new Set<string>(selectedDate);
-            if (newSelectedDate.has(selectDate)) {
-                newSelectedDate.delete(selectDate);
-                onSelect([...newSelectedDate]);
-            } else if (isMultiple) {
-                newSelectedDate.add(selectDate);
-                onSelect([...newSelectedDate]);
+
+    const handleSingleSelect = useCallback(
+        (newDate: string) => {
+            if (selectedDate.includes(newDate)) {
+                onSelect([]);
             } else {
-                onSelect([selectDate]);
+                onSelect([newDate]);
             }
         },
-        [selectedDate, onSelect, isMultiple],
+        [onSelect, selectedDate],
+    );
+
+    const handleMultipleSelect = useCallback(
+        (newDate: string) => {
+            const isAlreadySelected = selectedDate.includes(newDate);
+            if (isAlreadySelected) {
+                const updatedDates = selectedDate.filter((date) => date !== newDate);
+                onSelect(updatedDates);
+            } else {
+                const updatedDates = [...selectedDate, newDate];
+                onSelect(updatedDates);
+            }
+        },
+        [selectedDate, onSelect],
+    );
+
+    const handleRangeSelect = useCallback(
+        (newDate: string) => {
+            if (selectedDate.length === SELECTED_ENDDAY) {
+                onSelect([newDate]);
+            } else if (selectedDate.length === SELECTED_STARTDAY) {
+                const isCorrectRange = selectedDate[0] < newDate;
+                if (isCorrectRange) {
+                    onSelect([selectedDate[0], newDate]);
+                } else {
+                    onSelect([newDate]);
+                }
+            } else {
+                onSelect([newDate]);
+            }
+        },
+        [selectedDate, onSelect],
+    );
+    const handleCustomSelect = useCallback(
+        (newDate: string) => {
+            onSelect([newDate]);
+        },
+        [onSelect],
     );
 
     const generateCalendarDays = () => {
@@ -99,10 +135,15 @@ function useCalendar(
         currentDate,
         days,
         today,
-        newSelectedDate,
         handleBackMonth,
         handleNextMonth,
-        handleSelectedDate,
+        handleRangeSelect,
+        handleSingleSelect,
+        handleMultipleSelect,
+        handleCustomSelect,
+        isSelected,
+        isToday,
+        isDisabled,
     };
 }
 export { useCalendar };

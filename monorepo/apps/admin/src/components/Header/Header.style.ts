@@ -7,8 +7,7 @@ export const headerContainer = css`
     justify-content: space-between;
     width: 100%;
     padding: 1.5rem 1rem;
-    background-color: #f6f7f9;
-    border-bottom: 1px solid ${theme.colors.gray[300]};
+    border-bottom: 1px solid ${theme.colors.gray[200]};
 `;
 
 export const logoContainer = css`
@@ -24,11 +23,7 @@ export const leftContainer = css`
     display: flex;
     align-items: center;
     gap: 0.5rem;
-`;
-
-export const rightContainer = css`
-    display: flex;
-    align-items: center;
+    margin-left: 2rem;
 `;
 
 export const roleContainer = css`
