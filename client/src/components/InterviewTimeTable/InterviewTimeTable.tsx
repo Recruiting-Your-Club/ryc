@@ -71,7 +71,6 @@ function InterviewTimeTable({
                                     label={label}
                                     startTime={schedule.startTime}
                                     endTime={schedule.endTime}
-                                    // onClick={() => onSelect(label)}
                                     onClick={() => handleButtonClick(label)}
                                     isSelected={selectedInterviewLabel === label}
                                 />
