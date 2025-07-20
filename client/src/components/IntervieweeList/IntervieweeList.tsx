@@ -63,10 +63,6 @@ function IntervieweeList({
     const visibleInterviewees: EnrichedInterviewee[] = searchInterviewees(selectedInterviewees);
 
     // handlers
-    const handleOpen = () => {
-        setOpen((prev) => !prev);
-    };
-
     // effects
     useEffect(() => {
         const interviewee = visibleInterviewees.reduce((min, current) => {
@@ -82,9 +78,9 @@ function IntervieweeList({
                     <Text as="span" type="captionSemibold" textAlign="start">
                         {title}
                     </Text>
-                    <Dropdown open={open}>
+                    <Dropdown open={open} onOpenChange={setOpen}>
                         <Dropdown.Trigger asChild>
-                            <Button variant="outlined" sx={s_selectionButton} onClick={handleOpen}>
+                            <Button variant="outlined" sx={s_selectionButton}>
                                 {selectedInterviewLabel}
                             </Button>
                         </Dropdown.Trigger>
@@ -93,6 +89,7 @@ function IntervieweeList({
                                 interviewSchedules={interviewSchedules}
                                 selectedInterviewLabel={selectedInterviewLabel}
                                 onSelect={(label) => setSelectedInterviewLabel(label)}
+                                onOpenChange={setOpen}
                             />
                         </Dropdown.Content>
                     </Dropdown>

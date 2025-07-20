@@ -13,6 +13,7 @@ function InterviewTimeTable({
     interviewSchedules,
     selectedInterviewLabel,
     onSelect,
+    onOpenChange,
 }: InterviewTimeTableProps) {
     // prop destruction
     // lib hooks
@@ -34,6 +35,11 @@ function InterviewTimeTable({
     // handlers
     const handleCalendar = (newSelected: string[]) => {
         setDate(newSelected);
+    };
+
+    const handleButtonClick = (label: string) => {
+        onSelect(label);
+        onOpenChange((prev) => !prev);
     };
 
     // effects
@@ -65,7 +71,8 @@ function InterviewTimeTable({
                                     label={label}
                                     startTime={schedule.startTime}
                                     endTime={schedule.endTime}
-                                    onClick={() => onSelect(label)}
+                                    // onClick={() => onSelect(label)}
+                                    onClick={() => handleButtonClick(label)}
                                     isSelected={selectedInterviewLabel === label}
                                 />
                             );
