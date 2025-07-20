@@ -19,7 +19,7 @@ import {
     s_textToggle,
     s_textToggleLeft,
     s_textToggleRight,
-    s_textToggleWrapper,
+    s_rightSideContainer,
     s_titleGroup,
 } from './CardBox.style';
 import type { CardBoxProps } from './types';
@@ -80,7 +80,7 @@ function CardBox({
                 <Text as="span" type="captionSemibold">
                     {stepTitle}
                 </Text>
-                <div css={s_textToggleWrapper}>
+                <div css={s_rightSideContainer}>
                     <TextToggle
                         size="sm"
                         sx={s_textToggle(step)}

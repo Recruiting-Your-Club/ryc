@@ -132,7 +132,7 @@ export const s_textToggleLeft = (isChecked: boolean, step: Step) => css`
     `}
 `;
 
-export const s_textToggleWrapper = css`
+export const s_rightSideContainer = css`
     display: flex;
     align-items: center;
     gap: 0.5rem;
