@@ -156,7 +156,7 @@ function StepManagementPage() {
     // initial values
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
-    const [query, setQuery] = useState('');
+    const [searchText, setSearchText] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
@@ -198,7 +198,7 @@ function StepManagementPage() {
                         }
                         inputSx={s_input}
                         placeholder="지원자 이름 검색"
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => setSearchText(e.target.value)}
                     />
                 </nav>
             </div>
@@ -206,7 +206,7 @@ function StepManagementPage() {
                 <CardBox
                     stepTitle={data.document ? '서류 평가' : '지원서 접수'}
                     step="normal"
-                    query={query}
+                    searchText={searchText}
                     applicantList={applicantList}
                     handleOpen={handleOpen}
                 />
@@ -214,7 +214,7 @@ function StepManagementPage() {
                     <CardBox
                         stepTitle="면접"
                         step="normal"
-                        query={query}
+                        searchText={searchText}
                         applicantList={applicantList2}
                         handleOpen={handleOpen}
                     />
@@ -222,7 +222,7 @@ function StepManagementPage() {
                 <CardBox
                     stepTitle="최종 합격"
                     step="final"
-                    query={query}
+                    searchText={searchText}
                     applicantList={finalApplicantList}
                     handleOpen={handleOpen}
                 />

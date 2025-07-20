@@ -19,7 +19,15 @@ import {
 } from './CardBox.style';
 import type { CardBoxProps } from './types';
 
-function CardBox({ stepTitle, step, query, applicantList, handleOpen, height, sx }: CardBoxProps) {
+function CardBox({
+    stepTitle,
+    step,
+    searchText,
+    applicantList,
+    handleOpen,
+    height,
+    sx,
+}: CardBoxProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -35,12 +43,12 @@ function CardBox({ stepTitle, step, query, applicantList, handleOpen, height, sx
 
     const filteredNames = useCallback(
         (applicantList: Applicant[]) => {
-            const normalizedQuery = normalizeQuery(query);
+            const normalizedQuery = normalizeQuery(searchText);
             return applicantList.filter((applicant) =>
                 normalizeQuery(applicant.name).includes(normalizedQuery),
             );
         },
-        [query],
+        [searchText],
     );
 
     // handlers

@@ -6,7 +6,7 @@ export type Step = 'normal' | 'final';
 export interface CardBoxProps {
     stepTitle: string;
     step: Step;
-    query: string;
+    searchText: string;
     applicantList: Applicant[];
     handleOpen: (applicant: Applicant) => void;
     height?: string;
