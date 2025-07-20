@@ -103,3 +103,37 @@ export const s_dropdownSubItem = css`
     ${s_dropdownItem}
     padding: 0.5rem 0.2rem;
 `;
+
+export const s_textToggle = (step: Step) => css`
+    ${step !== 'final' &&
+    css`
+        background-color: ${theme.colors.gray[400]};
+    `}
+`;
+
+export const s_textToggleRight = (isChecked: boolean, step: Step) => css`
+    ${theme.typography.helperTextRegular}
+    padding: 0.4rem 0.7rem;
+
+    ${step !== 'final' &&
+    isChecked &&
+    css`
+        color: ${theme.colors.gray[700]};
+    `}
+`;
+
+export const s_textToggleLeft = (isChecked: boolean, step: Step) => css`
+    ${theme.typography.helperTextRegular}
+    padding: 0.4rem 0.7rem;
+    ${step !== 'final' &&
+    !isChecked &&
+    css`
+        color: ${theme.colors.gray[700]};
+    `}
+`;
+
+export const s_textToggleWrapper = css`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`;
