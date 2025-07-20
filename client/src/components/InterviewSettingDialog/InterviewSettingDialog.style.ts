@@ -192,15 +192,16 @@ export const s_editorRoot = css`
 `;
 
 export const s_editorToolbar = css`
-    flex: 0.6;
-    min-height: 3.8rem;
+    flex: 0.8;
+    height: 4rem;
+    max-height: 4rem;
     background-color: ${theme.colors.white};
     border-radius: 8px;
     border: 1px solid ${theme.colors.gray[500]};
 `;
 
 export const s_editorTextarea = css`
-    flex: 9.4;
+    flex: 9.2;
     border-radius: 8px;
     transition: border-color 0.3s ease-in-out;
     &:focus {

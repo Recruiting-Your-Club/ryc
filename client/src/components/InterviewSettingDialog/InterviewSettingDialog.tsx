@@ -277,14 +277,6 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 <Editor.Toolbar sx={s_editorToolbar} />
                                 <Editor.Textarea sx={s_editorTextarea} />
                             </Editor.Root>
-                            {/* <TextArea
-                                value={emailContent}
-                                onChange={(e) => setEmailContent(e.target.value)}
-                                size="md"
-                                placeholder="이메일 내용을 입력해주세요."
-                                textAreaSx={s_textareaInner}
-                                wrapperSx={s_textAreaOuter}
-                            /> */}
                         </div>
                         <div css={s_submitButtonWrapper}>
                             <Button>이메일 보내기</Button>
