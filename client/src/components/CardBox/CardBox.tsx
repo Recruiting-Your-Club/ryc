@@ -15,11 +15,11 @@ import {
     s_dropdownSubItem,
     s_dropdownSubTrigger,
     s_meatballButton,
+    s_rightSideContainer,
     s_svg,
     s_textToggle,
     s_textToggleLeft,
     s_textToggleRight,
-    s_rightSideContainer,
     s_titleGroup,
 } from './CardBox.style';
 import type { CardBoxProps } from './types';
@@ -97,7 +97,7 @@ function CardBox({
                                 <MeatBallMenu css={s_svg} />
                             </Button>
                         </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={6} offsetY={8} sx={s_dropdownContent}>
+                        <Dropdown.Content offsetX={6.2} offsetY={10} sx={s_dropdownContent}>
                             <Dropdown.Group>
                                 <Dropdown.Sub>
                                     <Dropdown.SubTrigger inset sx={s_dropdownSubTrigger}>
@@ -121,6 +121,12 @@ function CardBox({
                                         </Dropdown.Group>
                                     </Dropdown.SubContent>
                                 </Dropdown.Sub>
+                                <Dropdown.Seperator sx={s_dropdownSeparator} />
+                                <Dropdown.Item inset sx={s_dropdownItem}>
+                                    <Text as="text" type="subCaptionRegular" color="warning">
+                                        불합격 처리
+                                    </Text>
+                                </Dropdown.Item>
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
                                 <Dropdown.Item inset sx={s_dropdownItem}>
                                     <Text as="text" type="subCaptionRegular">
