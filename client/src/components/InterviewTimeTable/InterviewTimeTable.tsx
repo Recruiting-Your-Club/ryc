@@ -1,6 +1,6 @@
 import { Calendar, Divider, InterviewInformationButton, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     s_calendar,
     s_interviewInformationButtonGroupWrapper,
@@ -28,13 +28,16 @@ function InterviewTimeTable({
     // form hooks
     // query hooks
     // calculated values
-    const scheduleToShow = interviewSchedules.find((schedule) => schedule.date === highlightedDate);
+    const scheduleMap = useMemo(() => {
+        return new Map(interviewSchedules.map((schedule) => [schedule.date, schedule]));
+    }, [interviewSchedules]);
+    const scheduleToShow = scheduleMap.get(highlightedDate);
+
     const enabledDates = interviewSchedules.map((schedule) => schedule.date);
 
     // handlers
     const handleCalendar = (newSelected: string[]) => {
         setHighlightedDate(newSelected[0] ?? '');
-        // setDate(newSelected);
     };
 
     const handleButtonClick = (label: string) => {
