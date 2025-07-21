@@ -34,6 +34,8 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
     // form hooks
     // query hooks
     // calculated values
+    const hasComments = (evaluation?.comments?.length ?? 0) > 0;
+
     // handlers
     // effects
     return (
@@ -56,7 +58,7 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
                     </div>
                 </div>
                 <Divider />
-                <div css={perStarScoreGroup((evaluation?.comments?.length ?? 0) > 0)}>
+                <div css={perStarScoreGroup(hasComments)}>
                     {evaluation && evaluation.comments.length > 0 ? (
                         evaluation.comments.map((evaluator) => (
                             <PersonalScoreCard
