@@ -70,7 +70,7 @@ function InterviewEvaluationPage() {
 
     // handlers
     // effects
-    //
+
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
@@ -83,7 +83,11 @@ function InterviewEvaluationPage() {
             </div>
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
-                    <InformationBox applicant={intervieweeDetail} documentList={document} />
+                    <InformationBox
+                        applicant={intervieweeDetail}
+                        documentList={document}
+                        isVisible={interviewSchedulelist.length > 0}
+                    />
                 </div>
                 <div css={s_evaluationBoxWrapper}>
                     <EvaluationBox evaluation={evaluation} />
