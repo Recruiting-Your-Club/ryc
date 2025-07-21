@@ -1,18 +1,15 @@
-import { getAllClubs, getClub } from '@api/domain/club/club';
+import { getMyClub } from '@api/domain';
+import { myClubKeys } from '@api/querykeyFactory';
+import { DEFAULT_STALETIME } from '@constants/staleTime';
 import { queryOptions } from '@tanstack/react-query';
 
-import { clubKeys } from '../querykeyFactory';
-
-const clubQueries = {
+const myClubQueries = {
     all: () =>
         queryOptions({
-            queryKey: clubKeys.all,
-            queryFn: () => getAllClubs(),
-        }),
-    getClub: (id: string) =>
-        queryOptions({
-            queryKey: clubKeys.detail(id),
-            queryFn: () => getClub(id),
+            queryKey: myClubKeys.all,
+            queryFn: () => getMyClub(),
+            staleTime: DEFAULT_STALETIME,
         }),
 };
-export { clubQueries };
+
+export { myClubQueries };
