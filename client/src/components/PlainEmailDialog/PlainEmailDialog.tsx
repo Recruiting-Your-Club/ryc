@@ -1,6 +1,6 @@
 import XIcon from '@assets/images/xIcon.svg';
 import { Button, Dialog, Divider, Editor, Input, Text } from '@components/_common';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     s_action,
     s_content,
@@ -22,6 +22,9 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
     // lib hooks
     // initial values
     // state, ref, querystring hooks
+    const [emailTitle, setEmailTitle] = useState<string>('');
+    const [emailContent, setEmailContent] = useState<string>('');
+
     // form hooks
     // query hooks
     // calculated values
@@ -44,6 +47,8 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                         제목
                     </Text>
                     <Input
+                        value={emailTitle}
+                        onChange={(e) => setEmailTitle(e.target.value)}
                         height="4rem"
                         placeholder="이메일 제목을 입력해주세요."
                         inputSx={s_titleInput}
@@ -56,7 +61,11 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                     </Text>
                     <Editor.Root sx={s_editorRoot}>
                         <Editor.Toolbar sx={s_editorToolbar} />
-                        <Editor.Textarea sx={s_editorTextarea} />
+                        <Editor.Textarea
+                            value={emailContent}
+                            onChange={setEmailContent}
+                            sx={s_editorTextarea}
+                        />
                     </Editor.Root>
                 </div>
             </Dialog.Content>
