@@ -65,6 +65,7 @@ function IntervieweeList({
     // handlers
     // effects
     useEffect(() => {
+        if (intervieweeList.length <= 0) return;
         const interviewee = visibleInterviewees.reduce((min, current) => {
             return current.id < min.id ? current : min;
         }, visibleInterviewees[0]);
