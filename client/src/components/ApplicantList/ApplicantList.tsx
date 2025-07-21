@@ -1,6 +1,7 @@
 import Search from '@assets/images/search.svg';
-import { Button, Divider, Input, Text } from '@components';
-import React from 'react';
+import { ApplicantMiniCard, Button, Divider, Input, Text } from '@components';
+import { Applicant } from '@components/ApplicantMiniCard/types';
+import React, { useCallback, useState } from 'react';
 import {
     s_listContainer,
     s_miniCardContainer,
@@ -11,15 +12,29 @@ import {
     s_titleContainer,
 } from './ApplicantList.style';
 import type { ApplicationListProps } from './types';
+import { filterQuery } from './utils/searchValue';
 
-function ApplicantList({ title = '지원자 목록', height, children, isList }: ApplicationListProps) {
+function ApplicantList({
+    title = '지원자 목록',
+    height,
+    applicantList,
+    selectedApplicantId,
+    onSelectApplicantId,
+}: ApplicationListProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
+    const [query, setQuery] = useState('');
+
     // form hooks
     // query hooks
     // calculated values
+    const filterApplicants = useCallback(
+        (applicants: Applicant[]) => filterQuery(applicants, query),
+        [query],
+    );
+    const filteredApplicants: Applicant[] = filterApplicants(applicantList);
     // handlers
     // effects
     return (
@@ -39,12 +54,28 @@ function ApplicantList({ title = '지원자 목록', height, children, isList }:
                         height="3rem"
                         inputSx={s_searchInput}
                         placeholder="이름 검색"
+                        onChange={(e) => setQuery(e.target.value)}
                     />
                 </span>
             </div>
             <Divider />
             <div css={s_miniCardGroupWrapper}>
-                <div css={s_miniCardContainer(isList)}>{children}</div>
+                <div css={s_miniCardContainer(filteredApplicants.length !== 0)}>
+                    {filteredApplicants.length > 0 ? (
+                        filteredApplicants.map((applicant) => (
+                            <ApplicantMiniCard
+                                key={applicant.id}
+                                applicant={applicant}
+                                onClick={() => onSelectApplicantId(applicant.id)}
+                                isActivated={selectedApplicantId === applicant.id}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            지원자가 없습니다.
+                        </Text>
+                    )}
+                </div>
             </div>
         </div>
     );

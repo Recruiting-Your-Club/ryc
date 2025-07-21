@@ -1,8 +1,7 @@
+import { ManagerHeader, SideBar } from '@components';
 import React from 'react';
-import { SideBar, ManagerHeader } from '@components';
 import { Outlet } from 'react-router-dom';
-import { layoutContainer, contentContainer } from './ManagerLayout.style';
-import { Footer } from '@components/Footer';
+import { contentContainer, layoutContainer } from './ManagerLayout.style';
 
 function ManagerLayout() {
     return (
@@ -13,7 +12,6 @@ function ManagerLayout() {
                     <SideBar />
                     <Outlet />
                 </div>
-                <Footer />
             </div>
         </>
     );

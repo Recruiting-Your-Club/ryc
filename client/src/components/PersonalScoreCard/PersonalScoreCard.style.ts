@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-export const cardContainer = css`
+export const s_cardContainer = css`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -7,19 +7,19 @@ export const cardContainer = css`
     padding: 0.5rem 1rem;
 `;
 
-export const headerContainer = css`
+export const s_headerContainer = css`
     width: 100%;
     display: flex;
     align-items: center;
 `;
 
-export const contentContainer = css`
+export const s_contentContainer = css`
     width: 100%;
     word-break: keep-all;
     overflow-wrap: break-word;
 `;
 
-export const evaluatorSection = css`
+export const s_evaluatorSection = css`
     flex: 4;
     display: flex;
     align-items: center;
@@ -29,7 +29,19 @@ export const evaluatorSection = css`
     text-overflow: ellipsis;
 `;
 
-export const ratingSection = css`
+export const s_ratingSection = css`
     flex: 6;
     display: flex;
+    justify-content: end;
+`;
+
+export const s_svgButtonGroup = css`
+    display: flex;
+    margin: 0.5rem 0;
+`;
+
+export const s_svgButton = css`
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
 `;

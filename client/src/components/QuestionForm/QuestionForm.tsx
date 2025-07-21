@@ -1,7 +1,8 @@
+import { Checkbox } from '@components';
+import { Button, Input } from '@components/_common';
+import { useToast } from '@hooks/useToast';
 import type { ChangeEvent } from 'react';
 import React from 'react';
-import type { QuestionFormProps } from './types';
-import { Button, Input } from '@components/_common';
 import {
     s_addOptionButton,
     s_applicationQuestion,
@@ -11,10 +12,7 @@ import {
     s_questionOptionRow,
     s_removeOptionButton,
 } from './QuestionForm.style';
-import { CheckboxRoot } from '@components/Checkbox/CheckboxRoot';
-import { CheckboxHiddenInput } from '@components/Checkbox/CheckboxHiddenInput';
-import { CheckboxControl } from '@components/Checkbox/CheckboxControl';
-import { useToast } from '@hooks/useToast';
+import type { QuestionFormProps } from './types';
 
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
     // prop destruction
@@ -113,10 +111,10 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                 {question.options?.map((option) => (
                     <div key={option.id} css={s_questionOptionRow}>
                         {question.type === 'multiple' ? (
-                            <CheckboxRoot disabled size="md">
-                                <CheckboxHiddenInput />
-                                <CheckboxControl />
-                            </CheckboxRoot>
+                            <Checkbox.Root disabled size="md">
+                                <Checkbox.HiddenInput />
+                                <Checkbox.Control />
+                            </Checkbox.Root>
                         ) : (
                             <div />
                         )}
