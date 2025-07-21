@@ -5,10 +5,14 @@ export const clubApplyDetailQuestionContainer = css`
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-bottom: 1rem;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         width: 100%;
     }
+`;
+export const s_textAreaWrapperSx = css`
+    margin-top: 0.5rem;
 `;
 
 export const textAreaSx = css`
