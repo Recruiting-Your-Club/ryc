@@ -59,27 +59,6 @@ export const s_contentWrapper = css`
     height: 100%;
 `;
 
-// export const s_textareaInner = css`
-//     ${theme.typography.captionRegular}
-//     margin: -2.5rem 0;
-//     padding: 1rem 1.5rem;
-//     min-height: 35rem;
-//     height: 100%;
-
-//     ::placeholder {
-//         ${theme.typography.captionRegular}
-//     }
-//     &:focus {
-//         border-color: ${theme.colors.default};
-//         outline: none;
-//     }
-// `;
-
-// export const s_textareaOutside = css`
-//     height: 100%;
-//     margin: 0;
-// `;
-
 export const s_action = css`
     justify-content: flex-end;
     padding: 1rem 4rem 3rem 4rem;
@@ -93,7 +72,8 @@ export const s_editorRoot = css`
 
 export const s_editorToolbar = css`
     flex: 0.6;
-    min-height: 3.8rem;
+    height: 4rem;
+    max-height: 4rem;
     background-color: ${theme.colors.white};
     border-radius: 8px;
     border: 1px solid ${theme.colors.gray[500]};
