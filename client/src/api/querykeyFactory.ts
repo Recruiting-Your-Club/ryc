@@ -28,4 +28,8 @@ const clubKeys = {
     detail: (id: string) => ['detail', id] as const,
 };
 
-export { clubKeys };
+const myClubKeys = {
+  all: ['clubs'] as const,
+}
+
+export { clubKeys, myClubKeys };
