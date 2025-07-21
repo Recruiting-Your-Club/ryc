@@ -15,7 +15,6 @@ import {
     DEFAULT_NUMBER_VALUE,
     DEFAULT_START_TIME,
     DEFAULT_TIME_VALUE,
-    INITIAL_FORM,
     numberOptions,
     timeOptions,
 } from '@constants/InterviewSettingDialog';
@@ -65,7 +64,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
     >({});
 
     const [emailTitle, setEmailTitle] = useState<string>('');
-    const [emailContent, setEmailContent] = useState<string>(INITIAL_FORM);
+    const [emailContent, setEmailContent] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -275,7 +274,11 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             </Text>
                             <Editor.Root sx={s_editorRoot}>
                                 <Editor.Toolbar sx={s_editorToolbar} />
-                                <Editor.Textarea sx={s_editorTextarea} />
+                                <Editor.Textarea
+                                    sx={s_editorTextarea}
+                                    value={emailContent}
+                                    onChange={setEmailContent}
+                                />
                             </Editor.Root>
                         </div>
                         <div css={s_submitButtonWrapper}>
