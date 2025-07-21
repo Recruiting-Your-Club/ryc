@@ -39,6 +39,7 @@ export const s_questionTitleContainer = css`
 export const s_infoIcon = css`
     width: 2rem;
     height: 2rem;
+    cursor: pointer;
     color: ${theme.colors.gray[500]};
 `;
 
