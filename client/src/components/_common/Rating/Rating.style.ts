@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
-import type { StarSize } from './types';
+import type { RatingType, StarSize } from './types';
 
 interface Size {
     width?: CSSProperties['width'];
@@ -38,7 +38,7 @@ export const s_size = (size: StarSize) => {
     `;
 };
 
-export const s_star = (filled: boolean) => {
+export const s_star = (filled: boolean, type: RatingType) => {
     return css`
         cursor: pointer;
         position: relative;
@@ -48,11 +48,20 @@ export const s_star = (filled: boolean) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.2s ease;
 
-        &:hover {
-            transform: scale(1.2);
-        }
+        ${type === 'display' &&
+        css`
+            cursor: default;
+        `}
+
+        ${type === 'click' &&
+        css`
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        `}
 
         & > svg {
             width: 100%;

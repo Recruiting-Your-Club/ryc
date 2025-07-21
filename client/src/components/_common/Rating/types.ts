@@ -14,10 +14,11 @@ export interface StarProps {
     partialFill?: number;
     size: StarSize;
     sx?: CSSObject;
+    type: RatingType;
     onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
 }
 
-type RatingType = 'click' | 'display';
+export type RatingType = 'click' | 'display';
 export type StarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';

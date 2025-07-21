@@ -47,6 +47,7 @@ export function Rating({
                         key={starIndex}
                         filled={isFilled}
                         partialFill={partialFill}
+                        type={type}
                         size={size ?? 'md'}
                         onClick={() => handleClick(starIndex)}
                         onMouseEnter={() => handleMouseEnter(starIndex)}

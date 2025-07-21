@@ -9,11 +9,12 @@ export function Star({
     partialFill,
     size,
     sx,
+    type,
     onClick,
     onMouseEnter,
     onMouseLeave,
 }: StarProps) {
-    const cssProp = [s_size(size), s_star(filled)];
+    const cssProp = [s_size(size), s_star(filled, type)];
 
     return (
         <button
