@@ -83,3 +83,11 @@ export const s_labelText = css`
 export const s_valueText = css`
     flex: 1;
 `;
+
+export const s_invisibleText = css`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;

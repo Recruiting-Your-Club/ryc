@@ -5,6 +5,7 @@ import {
     s_boxContainer,
     s_contentSection,
     s_documentWrapper,
+    s_invisibleText,
     s_labelText,
     s_personalDataWrapper,
     s_textContainer,
@@ -15,7 +16,12 @@ import {
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
 
-function InformationBox({ applicant, documentList, height }: InformationBoxProps) {
+function InformationBox({
+    applicant,
+    documentList,
+    height,
+    isVisible = true,
+}: InformationBoxProps) {
     // prop destruction
     // lib hooks
     // initial value
@@ -49,7 +55,7 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
                 />
             </div>
             <div css={s_contentSection}>
-                {applicant && isToggle && (
+                {isVisible && applicant && isToggle && (
                     <div css={s_documentWrapper}>
                         {documentList?.detail.map((document, index) => (
                             <DocumentBox
@@ -61,7 +67,7 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
                         ))}
                     </div>
                 )}
-                {applicant && !isToggle && (
+                {isVisible && applicant && !isToggle && (
                     <div css={s_personalDataWrapper}>
                         <Avatar sx={s_avatar} />
                         <div css={s_textGroup}>
@@ -87,6 +93,13 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
                                 </div>
                             ))}
                         </div>
+                    </div>
+                )}
+                {!isVisible && (
+                    <div css={s_invisibleText}>
+                        <Text as="span" type="captionSemibold" textAlign="center" sx={s_titleText}>
+                            지원자 정보가 없습니다.
+                        </Text>
                     </div>
                 )}
             </div>

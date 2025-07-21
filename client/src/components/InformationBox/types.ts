@@ -11,4 +11,5 @@ export interface InformationBoxProps {
     applicant: ApplicantDetail | null;
     documentList: Document | null;
     height?: string;
+    isVisible?: boolean;
 }
