@@ -1,8 +1,8 @@
 import { myClubQueries } from '@api/queryFactory';
-import ChevronRight from '@assets/images/chevronRight.svg';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 
+import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
 import { Avatar, Button, Text } from '@ssoc/ui';
 
 import {
