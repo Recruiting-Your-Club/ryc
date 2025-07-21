@@ -14,7 +14,7 @@
             "@types/*": ["types/*"],
             "@utils/*": ["utils/*"],
             "@styles/*": ["styles/*"],
-            "@stores/*": ["stores/*"]
+            "@stores/*": ["stores/*"],
         },
         "moduleResolution": "bundler", // webpack 번들링 위해 필요
         "noEmit": true // tsconfig말고 webpack으로 번들링 함
