@@ -1,6 +1,6 @@
 import { useLogin } from '@hooks/useLogin';
 import type { FormEvent } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Input, PasswordInput } from '@ssoc/ui';
@@ -54,8 +54,6 @@ function LoginPage() {
                         height={'4.5rem'}
                     />
                 </div>
-
-                {error && <div>로그인 실패</div>}
 
                 <div css={buttonContainer}>
                     <Button variant="primary" size="full" type="submit" loading={isPending}>

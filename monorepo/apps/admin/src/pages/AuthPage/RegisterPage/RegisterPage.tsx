@@ -97,8 +97,6 @@ function RegisterPage() {
                     />
                 </div>
 
-                {error && <div>회원가입에 실패했습니다.</div>}
-
                 <div css={buttonContainer}>
                     <Button type="submit" variant="primary" size="full" loading={isPending}>
                         회원가입
