@@ -19,22 +19,22 @@ function InterviewTimeTable({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [date, setDate] = useState<string[]>(() => {
-        if (interviewSchedules.length > 0 && interviewSchedules[0].date) {
-            return [interviewSchedules[0].date];
-        }
-        return [''];
+    const [highlightedDate, setHighlightedDate] = useState<string>(() => {
+        if (interviewSchedules.length > 0 && interviewSchedules[0].date)
+            return interviewSchedules[0].date;
+        return '';
     });
 
     // form hooks
     // query hooks
     // calculated values
-    const scheduleToShow = interviewSchedules.find((schedule) => schedule.date === date[0]);
+    const scheduleToShow = interviewSchedules.find((schedule) => schedule.date === highlightedDate);
     const enabledDates = interviewSchedules.map((schedule) => schedule.date);
 
     // handlers
     const handleCalendar = (newSelected: string[]) => {
-        setDate(newSelected);
+        setHighlightedDate(newSelected[0] ?? '');
+        // setDate(newSelected);
     };
 
     const handleButtonClick = (label: string) => {
@@ -50,7 +50,7 @@ function InterviewTimeTable({
                 mode="custom"
                 onSelect={handleCalendar}
                 selectedDate={enabledDates}
-                highlightedDate={date}
+                highlightedDate={[highlightedDate]}
                 onlySelected
                 size="sm"
                 sx={s_calendar}
@@ -59,7 +59,7 @@ function InterviewTimeTable({
             <Divider />
             <div css={s_timeContentContainer}>
                 <Text as="span" type="bodyBold" textAlign="center">
-                    {date}
+                    {highlightedDate}
                 </Text>
                 <div css={s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow))}>
                     {scheduleToShow ? (
