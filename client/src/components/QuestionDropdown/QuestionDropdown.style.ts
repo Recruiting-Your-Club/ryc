@@ -25,6 +25,22 @@ export const s_arrowDown = css`
     height: 1rem;
 `;
 
+export const s_dropdownTriggerSx = css`
+    border: none;
+    padding: 0;
+`;
+
+export const s_dropdownLabelTopSx = css`
+    margin-top: 0.5rem;
+`;
+export const s_dropdownLabelBottomSx = css`
+    margin-bottom: 0.5rem;
+`;
+
+export const s_dropdownItemSx = css`
+    margin-bottom: 0.5rem;
+`;
+
 export const s_dropdownItem = css`
     display: flex;
     align-items: center;

@@ -6,6 +6,7 @@ import {
     inputSx,
     labelContainer,
     labelSx,
+    s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer } from '../utils';
@@ -64,11 +65,7 @@ function ClubApplyPersonalInfoPage({
                             <div css={labelContainer}>
                                 <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
-                                    <Text
-                                        type="bodyRegular"
-                                        color="warning"
-                                        sx={{ marginTop: '0.3rem' }}
-                                    >
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
                                     </Text>
                                 )}
@@ -102,11 +99,7 @@ function ClubApplyPersonalInfoPage({
                             <div css={labelContainer}>
                                 <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
-                                    <Text
-                                        type="bodyRegular"
-                                        color="warning"
-                                        sx={{ marginTop: '0.3rem' }}
-                                    >
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
                                     </Text>
                                 )}
@@ -147,11 +140,7 @@ function ClubApplyPersonalInfoPage({
                         <div css={labelContainer}>
                             <Text type="bodyRegular">{question.questionTitle}</Text>
                             {question.isRequired && (
-                                <Text
-                                    type="bodyRegular"
-                                    color="warning"
-                                    sx={{ marginTop: '0.3rem' }}
-                                >
+                                <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                     *
                                 </Text>
                             )}

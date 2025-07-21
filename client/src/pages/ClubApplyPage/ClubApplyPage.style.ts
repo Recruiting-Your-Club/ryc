@@ -143,6 +143,10 @@ export const submitButtonContainer = css`
     }
 `;
 
+export const s_submitButtonSx = css`
+    height: 4rem;
+`;
+
 export const mobileQuestionStatus = css`
     position: absolute;
     right: 5rem;

@@ -7,6 +7,10 @@ import {
     s_dropdownItem,
     s_arrowDown,
     s_dropdownContent,
+    s_dropdownTriggerSx,
+    s_dropdownItemSx,
+    s_dropdownLabelTopSx,
+    s_dropdownLabelBottomSx,
 } from './QuestionDropdown.style';
 import type { QuestionDropdownProps } from './types';
 import { getAnswer } from '@pages/ClubApplyPage/utils';
@@ -42,11 +46,11 @@ function QuestionDropdown({
                 작성된 항목 ({completedQuestionsCount} / {allQuestionsCount})
             </Text>
             <Dropdown>
-                <Dropdown.Trigger asChild sx={{ border: 'none', padding: 0 }}>
+                <Dropdown.Trigger asChild sx={s_dropdownTriggerSx}>
                     <ArrowDown css={s_arrowDown} />
                 </Dropdown.Trigger>
                 <Dropdown.Content offsetX={baseOffsetX} offsetY={offsetY} sx={s_dropdownContent}>
-                    <Dropdown.Label sx={{ marginTop: '0.5rem' }}>사전질문</Dropdown.Label>
+                    <Dropdown.Label sx={s_dropdownLabelTopSx}>사전질문</Dropdown.Label>
                     <Dropdown.Group>
                         {personalQuestions.map((question) => (
                             <Dropdown.Item
@@ -54,7 +58,7 @@ function QuestionDropdown({
                                 onItemSelect={() =>
                                     onQuestionFocus(question.questionTitle, '사전질문')
                                 }
-                                sx={{ marginBottom: '0.5rem' }}
+                                sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
                                     {question.questionTitle}
@@ -69,14 +73,14 @@ function QuestionDropdown({
                     </Dropdown.Group>
                     <Dropdown.Seperator />
                     <Dropdown.Group>
-                        <Dropdown.Label sx={{ marginBottom: '0.5rem' }}>자기소개서</Dropdown.Label>
+                        <Dropdown.Label sx={s_dropdownLabelBottomSx}>자기소개서</Dropdown.Label>
                         {detailQuestions.map((question, index) => (
                             <Dropdown.Item
                                 key={question.questionTitle}
                                 onItemSelect={() =>
                                     onQuestionFocus(question.questionTitle, '자기소개서')
                                 }
-                                sx={{ marginBottom: '0.5rem' }}
+                                sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
                                     질문{index + 1}

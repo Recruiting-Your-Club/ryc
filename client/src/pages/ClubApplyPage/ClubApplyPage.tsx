@@ -11,6 +11,7 @@ import {
     applyFormContainer,
     submitCardContainer,
     clubApplyTabContainer,
+    s_submitButtonSx,
 } from './ClubApplyPage.style';
 import Ryc from '@assets/images/Ryc.svg';
 import { Text, Button } from '@components/_common/';
@@ -376,7 +377,7 @@ function ClubApplyPage() {
                         !(requiredQuestionsCompleted || completedQuestions === allQuestions.length)
                     }
                     onClick={handleSubmit}
-                    sx={{ height: '4rem' }}
+                    sx={s_submitButtonSx}
                 >
                     제출하기
                 </Button>

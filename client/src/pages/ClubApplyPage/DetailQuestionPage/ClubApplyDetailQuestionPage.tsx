@@ -8,6 +8,7 @@ import {
     s_questionStarSx,
     s_questionTitleContainer,
     s_questionTitleSx,
+    s_textAreaWrapperSx,
     textAreaSx,
 } from './ClubApplyDetailQuestionPage.style';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
@@ -69,7 +70,7 @@ function ClubApplyDetailQuestionPage({
                             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
                                 onAnswerChange(question.questionTitle, event.target.value)
                             }
-                            wrapperSx={{ marginTop: '0.5rem' }}
+                            wrapperSx={s_textAreaWrapperSx}
                             textAreaSx={textAreaSx}
                             error={hasError}
                             onFocus={() => onFocus(question.questionTitle)}
