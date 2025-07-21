@@ -1,5 +1,5 @@
 import { useLogin } from '@hooks/useLogin';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import React, { useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';

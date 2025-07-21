@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { useRegister } from '@hooks/useRegister';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import React, { useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';
