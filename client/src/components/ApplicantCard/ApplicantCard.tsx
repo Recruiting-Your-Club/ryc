@@ -31,6 +31,7 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
     return (
         <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={s_root}>
             <Checkbox.Root
+                variant="solid"
                 size="xs"
                 isChecked={checked}
                 onChange={(checked) => handleChange(checked)}
