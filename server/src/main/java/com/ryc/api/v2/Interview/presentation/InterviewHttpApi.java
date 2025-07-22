@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationUpdatedRequest;
@@ -80,7 +81,7 @@ public class InterviewHttpApi {
   @ApiResponses({
     @ApiResponse(responseCode = "201", description = "면접 예약 성공"),
     @ApiResponse(
-        responseCode = "400",
+        responseCode = "409",
         description = "이미 예약된 면접 슬롯",
         content = @Content(schema = @Schema(hidden = true))),
     @ApiResponse(
@@ -91,9 +92,14 @@ public class InterviewHttpApi {
   public ResponseEntity<InterviewReservationCreateResponse> reservationInterview(
       @PathVariable("interview-slot-id") String slotId,
       @RequestBody InterviewReservationRequest body) {
+
     InterviewReservationCreateResponse response =
         interviewService.reservationInterview(slotId, body);
-    URI location = URI.create(String.format("api/v2/reservations/%s", response.id()));
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/api/v2/reservations/{reservation-id}")
+            .buildAndExpand(response.id())
+            .toUri();
     return ResponseEntity.created(location).body(response);
   }
 
