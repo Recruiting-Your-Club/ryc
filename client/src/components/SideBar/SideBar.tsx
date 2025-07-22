@@ -43,7 +43,6 @@ import { useQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory/clubQueries';
 import { announcementQueries } from '@api/queryFactory/announcementQueries';
 import type { AnnouncementList } from '@api/domain/announcement/types';
-import dayjs from 'dayjs';
 
 function SideBar() {
     // prop destruction
@@ -52,7 +51,6 @@ function SideBar() {
     const { goTo } = useRouter();
 
     // initial values
-    const today = dayjs();
     const navMenu = useMemo(() => [
         {
             id: 1,
@@ -146,22 +144,22 @@ function SideBar() {
     const isMenuActive = (id: number) => activeMenus.includes(id);
 
     const announcementsByStatus = useMemo(() => {
-        if (!announcementList) return { upcoming: [], active: [], closed: [] };
+        if (!announcementList) return { upcoming: [], recruiting: [], closed: [] };
 
         return announcementList.reduce((acc, announcement) => {
-            if (today.isBefore(dayjs(announcement.applicationStartDate))) {
+            if (announcement.announcementStatus === 'UPCOMING') {
                 acc.upcoming.push(announcement);
             }
-            if (today.isAfter(dayjs(announcement.applicationStartDate)) && today.isBefore(dayjs(announcement.applicationEndDate))) {
-                acc.active.push(announcement);
+            if (announcement.announcementStatus === 'RECRUITING') {
+                acc.recruiting.push(announcement);
             }
-            if (today.isAfter(dayjs(announcement.applicationEndDate))) {
+            if (announcement.announcementStatus === 'CLOSED') {
                 acc.closed.push(announcement);
             }
             return acc;
         }, {
             upcoming: [] as AnnouncementList[],
-            active: [] as AnnouncementList[],
+            recruiting: [] as AnnouncementList[],
             closed: [] as AnnouncementList[]
         });
     }, [announcementList]);
@@ -245,7 +243,7 @@ function SideBar() {
                                     </Button>
                                 )}
                                 <Text as='div' type='subCaptionRegular' color='caption' textAlign='start' sx={{ width: '100%' }}>진행중 공고</Text>
-                                {announcementsByStatus.active?.map((announcement) =>
+                                {announcementsByStatus.recruiting?.map((announcement) =>
                                     <Button variant='transparent' key={announcement.announcementId} sx={dropDownClubWrapper} onClick={() => setCurrentAnnouncement(announcement)}>
                                         <Text as='div' type='captionRegular' cropped noWrap>{announcement.title}</Text>
                                     </Button>
