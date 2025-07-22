@@ -41,7 +41,6 @@ export const clubSideBarContainer = css`
     z-index: 1000;
     background-color: ${theme.colors.gray[100]};
     border-right: 1px solid ${theme.colors.gray[200]};
-    z-index: 10000;
 `
 export const clubActive = (activeClub: boolean) => css`
     height: 8px;
@@ -96,6 +95,7 @@ export const announcementWrapper = (isExpanded: boolean) => css`
     align-items: center;
     gap: 0.5rem;
     margin-left: 1rem;
+    height: 4rem;
     animation: ${isExpanded && 
     css`
         ${sideBar_opacity} 0.2s ease forwards
@@ -120,6 +120,7 @@ export const homeLogoContainer = css`
     padding: 0.2rem;
     width: 100%;
     height: 6rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
 `;
 export const homeLogoTextWrapper = (isExpanded: boolean) => css`
@@ -160,7 +161,7 @@ export const menuContainer = (isActive: boolean) => css`
     ${isActive && `color: ${theme.colors.black};`}
     :hover {
         color: ${theme.colors.black};
-        background-color: none;
+        background-color: transparent;
     }
 `;
 
@@ -244,16 +245,23 @@ export const chevronUpDownWrapper = css`
     width: 1.5rem;
     height: 1.5rem;
 `
-export const drowdownClubContainer = css`
+export const dropdownClubContainer = css`
     display: flex;
     flex-direction: column;
     width: 25rem;
     height: 20rem;
     overflow-y: auto;
     gap: 0.5rem;
+    cursor: default;
+    overflow-y: auto;
     :hover {
         background-color: transparent;
     }
+`
+export const createAnnouncementButton = css`
+    color: ${theme.colors.default};
+    border-radius: 0;
+    border-top: 1px solid ${theme.colors.gray[300]};
 `
 export const dropDownClubWrapper = css`
     display: flex;

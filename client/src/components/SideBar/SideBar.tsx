@@ -1,15 +1,14 @@
 import AplicantManage from '@assets/images/AplicantManage.svg';
 import ApplicationManage from '@assets/images/ApplicationManage.svg';
-import basicImage from '@assets/images/basicImage.png';
 import EditApplication from '@assets/images/EditApplication.svg';
 import Home from '@assets/images/Home.svg';
 import Ryc from '@assets/images/Ryc.svg';
-import SSOC from '@assets/images/ssoc.png';
 import UserSet from '@assets/images/UserSet.svg';
-import { Button, Text, Tooltip, Dropdown, Tag } from '@components';
+import { Button, Text, Tooltip, Dropdown } from '@components';
 import { useRouter } from '@hooks/useRouter';
 import React, { useState, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import theme from '@styles/theme';
 import {
     emptyContainer,
     menuContainer,
@@ -28,8 +27,7 @@ import {
     dropDownChevronWrapper,
     chevronRightWrapper,
     homeLogoTextWrapper,
-    drowdownClubContainer,
-    dropdownClubLogoWrapper,
+    dropdownClubContainer,
     dropDownClubWrapper,
     clubSideBarContainer,
     clubWrapper,
@@ -37,6 +35,7 @@ import {
     announcementWrapper,
     dropdownContainer,
     dropDownLogoutWrapper,
+    createAnnouncementButton,
 } from './SideBar.style';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
@@ -44,6 +43,7 @@ import { useQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory/clubQueries';
 import { announcementQueries } from '@api/queryFactory/announcementQueries';
 import type { AnnouncementList } from '@api/domain/announcement/types';
+import dayjs from 'dayjs';
 
 function SideBar() {
     // prop destruction
@@ -52,6 +52,7 @@ function SideBar() {
     const { goTo } = useRouter();
 
     // initial values
+    const today = dayjs();
     const navMenu = useMemo(() => [
         {
             id: 1,
@@ -139,10 +140,31 @@ function SideBar() {
     // form hooks
     // query hooks
     const { data: myClub, isLoading: clubLoading } = useQuery(clubQueries.myClub());
-    const { data: announcementList, isLoading: announcementLoading } = useQuery(announcementQueries.getListByClub('2', queryOn));
+    const { data: announcementList } = useQuery(announcementQueries.getListByClub('2', queryOn));
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
+
+    const announcementsByStatus = useMemo(() => {
+        if (!announcementList) return { upcoming: [], active: [], closed: [] };
+
+        return announcementList.reduce((acc, announcement) => {
+            if (today.isBefore(dayjs(announcement.applicationStartDate))) {
+                acc.upcoming.push(announcement);
+            }
+            if (today.isAfter(dayjs(announcement.applicationStartDate)) && today.isBefore(dayjs(announcement.applicationEndDate))) {
+                acc.active.push(announcement);
+            }
+            if (today.isAfter(dayjs(announcement.applicationEndDate))) {
+                acc.closed.push(announcement);
+            }
+            return acc;
+        }, {
+            upcoming: [] as AnnouncementList[],
+            active: [] as AnnouncementList[],
+            closed: [] as AnnouncementList[]
+        });
+    }, [announcementList]);
 
     // handlers
     const handleCollapsed = useCallback((id: number) => {
@@ -177,7 +199,6 @@ function SideBar() {
                         </button>
                     </div>
                 ))}
-
             </div>
             <aside css={sideBarContainer}>
                 <div css={homeLogoContainer}>
@@ -204,7 +225,6 @@ function SideBar() {
                                     <div css={dropDownChevronWrapper}>
                                         <div css={announcementWrapper(isExpanded)}>
                                             <Text as='div' type='bodySemibold' cropped noWrap sx={{ maxWidth: '18rem', marginTop: '0.2rem' }}>{currentAnnouncement?.title || '공고를 선택해주세요'}</Text>
-                                            {/**<Tag text='모집중' variant='progress' />*/}
                                         </div>
                                         <ChevronUpDown css={chevronUpDownWrapper} />
                                     </div>
@@ -214,17 +234,32 @@ function SideBar() {
                         <Dropdown.Content
                             offsetX={isExpanded ? 32 : 20}
                             offsetY={isExpanded ? 10 : 10} sx={{
-                                zIndex: 10001,
-
+                                zIndex: 1001,
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
                             }}>
-                            <Dropdown.Item sx={drowdownClubContainer}>
-                                {announcementList?.map((announcement) =>
+                            <Dropdown.Item sx={dropdownClubContainer}>
+                                <Text as='div' type='subCaptionRegular' color='caption' textAlign='start' sx={{ width: '100%' }}>예정된 공고</Text>
+                                {announcementsByStatus.upcoming?.map((announcement) =>
+                                    <Button variant='transparent' key={announcement.announcementId} sx={dropDownClubWrapper} onClick={() => setCurrentAnnouncement(announcement)}>
+                                        <Text as='div' type='captionRegular' cropped noWrap>{announcement.title}</Text>
+                                    </Button>
+                                )}
+                                <Text as='div' type='subCaptionRegular' color='caption' textAlign='start' sx={{ width: '100%' }}>진행중 공고</Text>
+                                {announcementsByStatus.active?.map((announcement) =>
+                                    <Button variant='transparent' key={announcement.announcementId} sx={dropDownClubWrapper} onClick={() => setCurrentAnnouncement(announcement)}>
+                                        <Text as='div' type='captionRegular' cropped noWrap>{announcement.title}</Text>
+                                    </Button>
+                                )}
+                                <Text as='div' type='subCaptionRegular' color='caption' textAlign='start' sx={{ width: '100%' }}>마감된 공고</Text>
+                                {announcementsByStatus.closed?.map((announcement) =>
                                     <Button variant='transparent' key={announcement.announcementId} sx={dropDownClubWrapper} onClick={() => setCurrentAnnouncement(announcement)}>
                                         <Text as='div' type='captionRegular' cropped noWrap>{announcement.title}</Text>
                                     </Button>
                                 )}
                             </Dropdown.Item>
+                            <Button variant='transparent' size='full' sx={createAnnouncementButton}>
+                                공고 생성
+                            </Button>
                         </Dropdown.Content>
                     </Dropdown>
 
@@ -297,7 +332,7 @@ function SideBar() {
                                 border: 'none',
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
                             }}>
-                            <Dropdown.Item sx={drowdownClubContainer}>
+                            <Dropdown.Item sx={dropdownClubContainer}>
                                 <Button variant='transparent' size='full'>계정설정</Button>
                                 <Button variant='transparent' size='full' sx={dropDownLogoutWrapper}>로그아웃</Button>
                             </Dropdown.Item>
