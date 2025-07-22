@@ -20,9 +20,9 @@ import lombok.Getter;
 public class ApplicationForm {
   private final String id;
 
-  private List<Question> applicationQuestions;
-  private List<PersonalInfoQuestionType> personalInfoQuestionTypes;
-  private List<Question> preQuestions;
+  private final List<Question> applicationQuestions;
+  private final List<PersonalInfoQuestionType> personalInfoQuestionTypes;
+  private final List<Question> preQuestions;
 
   /**
    * @param request create request
