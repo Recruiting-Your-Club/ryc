@@ -1,0 +1,61 @@
+name: github-action
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    # 실행 환경 정의 (최신 우분투)
+    runs-on: ubuntu-latest
+    environment: development
+    # 단계별로 실행될 명령어 정의
+    steps:
+      # 1. GitHub 저장소의 코드를 runner로 가져옴
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Node.js 환경 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Node.js 20.x 버전을 사용
+          node-version: "20.x"
+          cache: "yarn" # yarn 캐시 설정
+          cache-dependency-path: monorepo/yarn.lock
+
+      # 3. monorepo 루트에서 의존성 패키지 설치
+      - name: Install dependencies
+        run: yarn install
+        working-directory: ./monorepo
+
+      # 4. user 앱 빌드
+      - name: Build user app
+        run: |
+            echo "NODE_ENV: $NODE_ENV"
+            echo "BASE_URL: $BASE_URL"
+            echo "API_MOKING: $API_MOKING"
+            yarn build
+        working-directory: ./monorepo
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          API_MOKING: disabled
+
+      # 5. AWS 자격 증명 설정
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # 6. 빌드 파일 S3에 업로드
+      - name: Upload to S3
+        run: |
+          aws s3 sync ./monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/dev/dist --delete
+
+      # 7. CloudFront 캐시 무효
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

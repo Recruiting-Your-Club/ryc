@@ -1,5 +1,6 @@
 package com.ryc.api.config;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,19 +19,22 @@ import com.ryc.api.v2.security.exception.RestAuthenticationEntryPoint;
 import com.ryc.api.v2.security.exception.TokenAccessDeniedHandler;
 import com.ryc.api.v2.security.filter.EmailPasswordAuthenticationFilter;
 import com.ryc.api.v2.security.filter.JwtAuthenticationFilter;
+import com.ryc.api.v2.security.jwt.JwtProperties;
 import com.ryc.api.v2.security.jwt.JwtTokenManager;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtTokenManager jwtTokenManager;
+  private final JwtProperties jwtProperties;
   private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,7 +45,10 @@ public class SecurityConfiguration {
             jwtAuthenticationFilter, EmailPasswordAuthenticationFilter.class) // jwt 인증 필터
         .addFilterAt(
             new EmailPasswordAuthenticationFilter(
-                authenticationManager(authenticationConfiguration), jwtTokenManager),
+                authenticationManager(authenticationConfiguration),
+                eventPublisher,
+                jwtTokenManager,
+                jwtProperties),
             UsernamePasswordAuthenticationFilter.class) // email - password 로그인 필터
         .exceptionHandling(
             exceptions ->
@@ -55,27 +62,24 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             request ->
                 request
-                    .requestMatchers("/")
-                    .permitAll() // health check
-                    .requestMatchers("/api/v2/auth/*")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v2/application/form")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v2/clubs/{id}")
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v2/clubs/all")
-                    .permitAll()
                     .requestMatchers(
-                        "/actuator/**",
+                        "/api/health",
+                        "/api/v2/auth/*",
                         "/swagger-ui/*",
                         "/swagger-ui.html",
                         "/webjars/**",
                         "/v2/**",
                         "/v3/**",
                         "/swagger-resources/**")
-                    .permitAll() // swagger 접근 허용
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
+                    .permitAll()
+                    .requestMatchers(
+                        HttpMethod.GET,
+                        "/api/v2/application/form",
+                        "/api/v2/clubs/*",
+                        "/api/v2/clubs")
+                    .permitAll()
                     .anyRequest()
                     .authenticated());
 

@@ -1,8 +1,5 @@
 package com.ryc.api.v2.security.exception;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -13,7 +10,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import lombok.RequiredArgsConstructor;
 
-/** Access Denied 예외 핸들러 */
+/** 인증은 성공, 권한이 부족할 때 발생하는 Access Denied 예외 핸들러 */
 @RequiredArgsConstructor
 @Component
 public class TokenAccessDeniedHandler implements AccessDeniedHandler {
@@ -23,8 +20,7 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(
       HttpServletRequest request,
       HttpServletResponse response,
-      AccessDeniedException accessDeniedException)
-      throws IOException, ServletException {
+      AccessDeniedException accessDeniedException) {
     handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
   }
 }

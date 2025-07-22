@@ -1,5 +1,7 @@
 import React from 'react';
 import { Input, Text, Checkbox, Radio } from '@components/_common';
+import type { ClubApplyPersonalInfoPageProps } from '../types';
+import { getAnswer } from '../utils';
 import {
     clubApplyPersonalQuestionForm,
     helperTextSx,
@@ -8,8 +10,6 @@ import {
     labelSx,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
-import type { ClubApplyPersonalInfoPageProps } from '../types';
-import { getAnswer } from '../utils';
 
 function ClubApplyPersonalInfoPage({
     answers,

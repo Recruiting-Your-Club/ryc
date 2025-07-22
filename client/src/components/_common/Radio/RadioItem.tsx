@@ -1,21 +1,19 @@
-import type { HTMLAttributes } from 'react';
 import React from 'react';
-import { s_radio, s_label, s_input } from './Radio.style';
+import { s_radio, s_radioInner, s_label, s_input } from './Radio.style';
+import type { RadioItemProps } from './types';
 
-interface RadioItemProps extends HTMLAttributes<HTMLInputElement> {
-    option?: string;
-    value: string;
-    name: string;
-    checked: boolean;
-    disabled?: boolean;
-    onChange: () => void;
-}
-
-function RadioItem({ option, checked, disabled = false, onChange, ...props }: RadioItemProps) {
+function RadioItem({
+    option,
+    checked = false,
+    disabled = false,
+    onChange,
+    size = 'md',
+    ...props
+}: RadioItemProps) {
     return (
-        <label css={s_label(disabled)}>
+        <label css={s_label(checked, disabled)}>
             <input type="radio" checked={checked} onChange={onChange} css={s_input} {...props} />
-            <span css={s_radio(checked)} />
+            <div css={s_radio(size)}>{checked && <div css={s_radioInner} />}</div>
             {option}
         </label>
     );
