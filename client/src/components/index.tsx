@@ -36,10 +36,9 @@ export * from './ManagerHeader';
 export * from './PasswordInput';
 export * from './RecruitCard';
 export * from './RecruitDialog';
-export * from './ScrollBar';
-export * from './Select';
-export * from './SideBar';
-export * from './Stepper';
-export * from './_common';
+export * from './ClubSubmitCard';
+export * from './SubmitDialog';
+export * from './FileUpLoader';
+export * from './Footer';
+export * from './QuestionDropdown';
 export * from './ImageEditDialog';
-
