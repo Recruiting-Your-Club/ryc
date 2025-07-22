@@ -6,9 +6,8 @@ import Ryc from '@assets/images/Ryc.svg';
 import UserSet from '@assets/images/UserSet.svg';
 import { Button, Text, Tooltip, Dropdown } from '@components';
 import { useRouter } from '@hooks/useRouter';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import theme from '@styles/theme';
 import {
     emptyContainer,
     menuContainer,
@@ -184,15 +183,20 @@ function SideBar() {
     }, [isExpanded]);
 
     //useEffect
+    useEffect(() => {
+        if(currentClub === ''){
+            setCurrentClub(myClub?.[0].name || '');
+        }
+    }, [currentClub, myClub]);
     return (
         <>
             <div css={clubSideBarContainer}>
-                {!clubLoading && myClub?.map((data) => (
-                    <div key={data.id} css={{ display: 'flex', alignItems: 'center', width: '100%', gap: '0.3rem' }}>
-                        <div css={clubActive(data.name === currentClub)} />
-                        <button css={clubWrapper} onClick={() => setCurrentClub(data.name)}>
-                            <Tooltip content={data.name}>
-                                <img src={data.imageUrl} alt='clubLogo' width='100%' height='100%' css={{ borderRadius: '10px' }} />
+                {!clubLoading && myClub?.map((club, index) => (
+                    <div key={club.id} css={{ display: 'flex', alignItems: 'center', width: '100%', gap: '0.3rem' }}>
+                        <div css={clubActive(club.name === currentClub)} />
+                        <button css={clubWrapper} onClick={() => setCurrentClub(club.name)}>
+                            <Tooltip content={club.name}>
+                                <img src={club.imageUrl} alt='clubLogo' width='100%' height='100%' css={{ borderRadius: '10px' }} />
                             </Tooltip>
                         </button>
                     </div>
