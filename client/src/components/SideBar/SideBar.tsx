@@ -24,7 +24,7 @@ import {
     chevronUpDownWrapper,
     dropDownTriggerWrapper,
     dropDownChevronWrapper,
-    chevronRightWrapper,
+    chevronDoubleRightWrapper,
     homeLogoTextWrapper,
     dropdownClubContainer,
     dropDownClubWrapper,
@@ -35,9 +35,12 @@ import {
     dropdownContainer,
     dropDownLogoutWrapper,
     createAnnouncementButton,
+    mainMenuContainer,
+    chevronRightWrapper,
 } from './SideBar.style';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
+import ChevronRight from '@assets/images/chevronRight.svg';
 import { useQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory/clubQueries';
 import { announcementQueries } from '@api/queryFactory/announcementQueries';
@@ -184,14 +187,14 @@ function SideBar() {
 
     //useEffect
     useEffect(() => {
-        if(currentClub === ''){
+        if (currentClub === '') {
             setCurrentClub(myClub?.[0].name || '');
         }
     }, [currentClub, myClub]);
     return (
         <>
             <div css={clubSideBarContainer}>
-                {!clubLoading && myClub?.map((club, index) => (
+                {!clubLoading && myClub?.map((club) => (
                     <div key={club.id} css={{ display: 'flex', alignItems: 'center', width: '100%', gap: '0.3rem' }}>
                         <div css={clubActive(club.name === currentClub)} />
                         <button css={clubWrapper} onClick={() => setCurrentClub(club.name)}>
@@ -214,7 +217,7 @@ function SideBar() {
                         SSOC
                     </Button>
                     <Button variant='transparent' size='md' sx={{ color: 'black' }} onClick={() => setIsExpanded(!isExpanded)}>
-                        <ChevronDoubleRight css={chevronRightWrapper(isExpanded)} />
+                        <ChevronDoubleRight css={chevronDoubleRightWrapper(isExpanded)} />
                     </Button>
                 </div>
 
@@ -269,7 +272,6 @@ function SideBar() {
 
                     {navMenu.map((MainMenu) => (
                         <div key={MainMenu.id} css={menuListContainer}>
-
                             <Button
                                 variant="text"
                                 size="full"
@@ -282,7 +284,12 @@ function SideBar() {
                                 <Tooltip content={MainMenu.menu}>
                                     {MainMenu.icon}
                                 </Tooltip>
-                                {isExpanded && <Text as='div' type='bodyRegular' sx={menuTextWrapper(isExpanded)}>{MainMenu.menu}</Text>}
+                                {isExpanded &&
+                                    <div css={mainMenuContainer}>
+                                        <Text as='div' type='bodyRegular' sx={menuTextWrapper(isExpanded)}>{MainMenu.menu}</Text>
+                                        <ChevronRight css={chevronRightWrapper(isMenuActive(MainMenu.id))} />
+                                    </div>
+                                }
                             </Button>
 
 

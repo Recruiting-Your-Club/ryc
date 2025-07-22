@@ -27,6 +27,22 @@ const chevron_collapse_animation = keyframes`
         transform: rotate(0deg);
     }
 `
+const chevron_right_animation = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+`
+const chevron_right_collapse_animation = keyframes`
+    0% {
+        transform: rotate(90deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+`
 export const clubSideBarContainer = css`
     display: flex;
     flex-direction: column;
@@ -96,7 +112,7 @@ export const announcementWrapper = (isExpanded: boolean) => css`
     gap: 0.5rem;
     margin-left: 1rem;
     height: 4rem;
-    animation: ${isExpanded && 
+    animation: ${isExpanded &&
     css`
         ${sideBar_opacity} 0.2s ease forwards
     `}
@@ -138,7 +154,7 @@ export const homeLogoTextWrapper = (isExpanded: boolean) => css`
     }
 `
 
-export const chevronRightWrapper = (isExpanded: boolean) => css`
+export const chevronDoubleRightWrapper = (isExpanded: boolean) => css`
     width: 2rem;
     height: 2rem;
     animation: ${isExpanded
@@ -184,9 +200,24 @@ export const menuListContainer = css`
 
 export const mainMenuContainer = css`
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
     gap: 0.5rem;
 `;
+
+export const chevronRightWrapper = (isOpen: boolean) => css`
+    width: 1.5rem;
+    height: 1.5rem;
+    animation: ${isOpen
+        ? css`    
+              ${chevron_right_animation} 0.2s ease forwards
+          `
+        : css`      
+              ${chevron_right_collapse_animation} 0.2s ease forwards
+          `};
+`
+
 export const subMenuContainer = (isOpen: boolean) => css`
     display: flex;
     flex-direction: column;
@@ -261,7 +292,7 @@ export const dropdownClubContainer = css`
 export const createAnnouncementButton = css`
     color: ${theme.colors.default};
     border-radius: 0;
-    border-top: 1px solid ${theme.colors.gray[300]};
+    border-top: 0.5px solid ${theme.colors.gray[300]};
 `
 export const dropDownClubWrapper = css`
     display: flex;
