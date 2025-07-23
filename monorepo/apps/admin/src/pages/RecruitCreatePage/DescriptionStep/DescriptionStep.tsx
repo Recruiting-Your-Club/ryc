@@ -1,5 +1,10 @@
-import { Input } from '@ssoc/ui';
+import { FieldLabel } from '@components/FieldLabel/FieldLabel';
+import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
 import React from 'react';
+
+import { Editor, Input } from '@ssoc/ui';
+import { FileUpLoader } from '@ssoc/ui';
+
 import {
     s_customFieldLabel,
     s_descriptionFileUploader,
@@ -7,10 +12,7 @@ import {
     s_form,
     s_formGroup,
 } from './DescriptionStep.style';
-import { FileUpLoader } from '@ssoc/ui';
-import { FieldLabel } from '@components/FieldLabel/FieldLabel';
 import type { DescriptionProps, DetailQuestionList } from './types';
-import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
 
 function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) {
     return (
@@ -45,7 +47,10 @@ function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) 
                     description="자세한 모집 공고 내용을 입력해주세요"
                     required
                 />
-                <span>여기는 텍스트 에디터</span>
+                <Editor.Root>
+                    <Editor.Toolbar />
+                    <Editor.Textarea />
+                </Editor.Root>
             </div>
             <div css={s_descriptionWrapper}>
                 <FieldLabel
