@@ -10,7 +10,6 @@ import {
     Text,
     TextArea,
 } from '@components';
-import { s_textareaInner } from '@components/PlainEmailDialog/PlainEmailDialog.style';
 import {
     DEFAULT_END_TIME,
     DEFAULT_NUMBER_VALUE,
@@ -35,6 +34,7 @@ import {
     s_select,
     s_selectContainer,
     s_selectTrigger,
+    s_textareaInner,
     s_textAreaOuter,
     titleInputCss,
     titleWrapper,

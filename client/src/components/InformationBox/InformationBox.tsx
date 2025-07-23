@@ -1,6 +1,4 @@
-import { TextToggle } from '@components';
-import { DocumentBox } from '@components/DocumentBox';
-import { Avatar, Text } from '@components/_common';
+import { Avatar, DocumentBox, Text, TextToggle } from '@components';
 import React, { useState } from 'react';
 import {
     avatarCss,
