@@ -197,7 +197,7 @@ function EvaluationBox({
                         placeholder="코멘트를 작성해주세요."
                         textAreaSx={s_textarea}
                         value={formState.comment}
-                        onChange={(e) => handleFormState({ comment: e.target.value })}
+                        onChange={(event) => handleFormState({ comment: event.target.value })}
                     />
                     {!formState.isOpenForm ? (
                         <Button size="full" onClick={handlePost}>
