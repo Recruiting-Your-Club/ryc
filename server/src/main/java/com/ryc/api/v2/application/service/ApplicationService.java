@@ -103,9 +103,7 @@ public class ApplicationService {
   @Transactional(readOnly = true)
   public ApplicationGetResponse getApplicationDetail(String announcementId, String applicantId) {
     // 1. 지원자 조회
-    Applicant applicant =
-        applicantRepository
-            .findById(applicantId);
+    Applicant applicant = applicantRepository.findById(applicantId);
 
     // 2. 지원서 조회
     Application application = applicationRepository.findByApplicantId(applicant.getId());
