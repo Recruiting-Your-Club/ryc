@@ -22,11 +22,11 @@ public class ApplicationMapper {
   }
 
   public static ApplicationEntity toEntity(
-      Application domain, Map<String, FileMetadataEntity> fileMetadataMap) {
+      Application domain, Map<String, FileMetadataEntity> fileMetadataMap, String applicantId) {
     if (domain == null) return null;
 
     ApplicationEntity entity =
-        ApplicationEntity.builder().id(domain.getId()).applicantId(domain.getApplicantId()).build();
+        ApplicationEntity.builder().id(domain.getId()).applicantId(applicantId).build();
 
     List<AnswerEntity> answers =
         domain.getAnswers().stream()

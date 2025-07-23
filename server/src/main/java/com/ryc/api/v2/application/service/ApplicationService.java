@@ -46,19 +46,26 @@ public class ApplicationService {
     if (announcement.getAnnouncementStatus() != AnnouncementStatus.RECRUITING) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.ANNOUNCEMENT_NOT_RECRUITING);
     }
-
-    // 3. 지원, 지원자 도메인 객체 생성
-    Application application = Application.initialize(applicationSubmissionRequest.application());
+    if (applicantRepository.existsByAnnouncementIdAndEmail(
+        announcementId, applicationSubmissionRequest.applicant().email())) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.DUPLICATE_APPLICATION);
+    }
+    // 3. 지원자 객체 생성 및 비즈니스 룰 검사
     Applicant applicant =
         Applicant.initialize(applicationSubmissionRequest.applicant(), announcementId);
 
-    // 4. 비즈니스 룰 검사
     applicant.checkBusinessRules(announcement.getApplicationForm());
-    application.validate(announcement.getApplicationForm());
 
     Applicant savedApplicant = applicantRepository.save(applicant);
-    application.assignApplicantId(savedApplicant.getId());
-    Application savedApplication = applicationRepository.save(application);
+
+    // 4. 지원서 객체 생성 및 비즈니스 룰 검사
+
+    Application application =
+        Application.initialize(applicationSubmissionRequest.application(), applicant.getId());
+
+    application.checkBusinessRules(announcement.getApplicationForm());
+
+    Application savedApplication = applicationRepository.save(application, savedApplicant.getId());
 
     return ApplicationSubmissionResponse.of(savedApplicant.getId(), savedApplication.getId());
   }

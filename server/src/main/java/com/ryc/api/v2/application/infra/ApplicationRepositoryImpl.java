@@ -26,6 +26,20 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
   private final FileMetadataJpaRepository fileMetadataJpaRepository;
 
   @Override
+  public Application save(Application application, String applicantId) {
+    List<String> fileMetadataIds =
+        application.getAnswers().stream().map(Answer::getFileMetadataId).toList();
+
+    Map<String, FileMetadataEntity> fileMetadataMap =
+        fileMetadataJpaRepository.findAllById(fileMetadataIds).stream()
+            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
+
+    return ApplicationMapper.toDomain(
+        applicationJpaRepository.save(
+            ApplicationMapper.toEntity(application, fileMetadataMap, applicantId)));
+  }
+
+  @Override
   public Application findByApplicantId(String applicantId) {
     return applicationJpaRepository
         .findByApplicantId(applicantId)

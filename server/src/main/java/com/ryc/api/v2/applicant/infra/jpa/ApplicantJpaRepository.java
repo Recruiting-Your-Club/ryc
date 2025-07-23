@@ -14,4 +14,6 @@ public interface ApplicantJpaRepository extends JpaRepository<ApplicantEntity, S
 
   List<ApplicantEntity> findAllByAnnouncementIdAndStatus(
       String announcementId, ApplicantStatus status);
+
+  Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
 }

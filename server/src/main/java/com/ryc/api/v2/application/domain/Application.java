@@ -21,21 +21,21 @@ import lombok.Getter;
 @Builder
 public class Application {
   private final String id;
-  private String applicantId;
+  private final String applicantId;
   private final List<Answer> answers;
   private final LocalDateTime createdAt;
 
-  public static Application initialize(ApplicationCreateRequest request) {
+  public static Application initialize(ApplicationCreateRequest request, String applicantId) {
     List<Answer> answers = request.answers().stream().map(Answer::initialize).toList();
 
     return Application.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
-        .applicantId(DomainDefaultValues.DEFAULT_INITIAL_ID)
+        .applicantId(applicantId)
         .answers(answers)
         .build();
   }
 
-  public void validate(ApplicationForm applicationForm) {
+  public void checkBusinessRules(ApplicationForm applicationForm) {
     Map<String, Question> questionMap =
         Stream.concat(
                 applicationForm.getApplicationQuestions().stream(),
@@ -49,9 +49,5 @@ public class Application {
       }
       answer.checkBusinessRules(question);
     }
-  }
-
-  public void assignApplicantId(String applicantId) {
-    this.applicantId = applicantId;
   }
 }

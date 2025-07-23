@@ -78,12 +78,12 @@ public class ApplicationForm {
   public void checkBusinessRules() {
     validatePersonalInfoQuestionTypes();
 
-    // 각 ApplicationQuestion 객체의 validate
+    // 각 ApplicationQuestion 객체의 checkBusinessRules
     for (Question question : applicationQuestions) {
       question.checkBusinessRules();
     }
 
-    // 각 preQuestion 객체의 validate
+    // 각 preQuestion 객체의 checkBusinessRules
     for (Question question : preQuestions) {
       question.checkBusinessRules();
     }

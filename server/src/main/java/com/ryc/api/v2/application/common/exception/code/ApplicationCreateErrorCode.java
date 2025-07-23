@@ -15,6 +15,7 @@ public enum ApplicationCreateErrorCode implements ErrorCode {
   INVALID_QUESTION_ID(HttpStatus.CONFLICT, "제출된 변의 질문 ID 유효하지 않거나 해당 공고에 속하지 않습니다."),
   INVALID_ANSWER_FORMAT(HttpStatus.CONFLICT, "답변의 형식이 올바르지 않습니다."),
   ANNOUNCEMENT_NOT_RECRUITING(HttpStatus.CONFLICT, "공고 지원은 모집중 일때만 가능 합니다."),
+  DUPLICATE_APPLICATION(HttpStatus.CONFLICT, "이미 해당 공고에 지원한 이메일 입니다."),
   ;
 
   private final HttpStatus httpStatus;

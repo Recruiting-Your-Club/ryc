@@ -49,4 +49,9 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
         .map(ApplicantMapper::toDomain)
         .collect(Collectors.toList());
   }
+
+  @Override
+  public Boolean existsByAnnouncementIdAndEmail(String announcementId, String email) {
+    return applicantJpaRepository.existsByAnnouncementIdAndEmail(announcementId, email);
+  }
 }
