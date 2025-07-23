@@ -19,10 +19,8 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDeta
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.service.ClubService;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +32,6 @@ public class AnnouncementService {
   private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
       ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
     // 1.Club 찾기
@@ -68,7 +65,6 @@ public class AnnouncementService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public AnnouncementUpdateResponse updateAnnouncement(
       ClubRoleSecuredDto clubRoleSecuredDto,
       AnnouncementUpdateRequest request,
