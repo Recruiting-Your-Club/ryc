@@ -12,7 +12,6 @@ import {
     s_titleContainer,
 } from './ApplicantList.style';
 import type { ApplicationListProps } from './types';
-import { filterQuery } from './utils/searchValue';
 
 function ApplicantList({
     title = '지원자 목록',
@@ -25,16 +24,21 @@ function ApplicantList({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [query, setQuery] = useState<string>('');
+    const [searchText, setSearchText] = useState<string>('');
 
     // form hooks
     // query hooks
     // calculated values
-    const filterApplicants = useCallback(
-        (applicants: Applicant[]) => filterQuery(applicants, query),
-        [query],
+    const searchApplicants = useCallback(
+        (applicants: Applicant[]) => {
+            return applicants.filter((value) =>
+                value.name.toLowerCase().includes(searchText.toLowerCase()),
+            );
+        },
+        [searchText],
     );
-    const filteredApplicants: Applicant[] = filterApplicants(applicantList);
+    const visibleApplicants: Applicant[] = searchApplicants(applicantList);
+
     // handlers
     // effects
     return (
@@ -54,15 +58,15 @@ function ApplicantList({
                         height="3rem"
                         inputSx={s_searchInput}
                         placeholder="이름 검색"
-                        onChange={(event) => setQuery(event.target.value)}
+                        onChange={(event) => setSearchText(event.target.value)}
                     />
                 </span>
             </div>
             <Divider />
             <div css={s_miniCardGroupWrapper}>
-                <div css={s_miniCardContainer(filteredApplicants.length !== 0)}>
-                    {filteredApplicants.length > 0 ? (
-                        filteredApplicants.map((applicant) => (
+                <div css={s_miniCardContainer(visibleApplicants.length !== 0)}>
+                    {visibleApplicants.length > 0 ? (
+                        visibleApplicants.map((applicant) => (
                             <ApplicantMiniCard
                                 key={applicant.id}
                                 applicant={applicant}
