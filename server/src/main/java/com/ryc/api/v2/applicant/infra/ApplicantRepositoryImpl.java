@@ -1,10 +1,10 @@
 package com.ryc.api.v2.applicant.infra;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.applicant.domain.Applicant;
@@ -29,7 +29,10 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
 
   @Override
   public Applicant findById(String id) {
-    return applicantJpaRepository.findById(id).map(ApplicantMapper::toDomain).orElseThrow(() -> new EntityNotFoundException("Applicant not found"));
+    return applicantJpaRepository
+        .findById(id)
+        .map(ApplicantMapper::toDomain)
+        .orElseThrow(() -> new EntityNotFoundException("Applicant not found"));
   }
 
   @Override

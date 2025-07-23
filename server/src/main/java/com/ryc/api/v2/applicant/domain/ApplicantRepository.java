@@ -1,7 +1,6 @@
 package com.ryc.api.v2.applicant.domain;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 
