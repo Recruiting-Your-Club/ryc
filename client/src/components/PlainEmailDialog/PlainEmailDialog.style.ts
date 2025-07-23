@@ -77,6 +77,7 @@ export const s_editorToolbar = css`
     background-color: ${theme.colors.white};
     border-radius: 8px;
     border: 1px solid ${theme.colors.gray[500]};
+    padding: 5px 10px;
 `;
 
 export const s_editorTextarea = css`
