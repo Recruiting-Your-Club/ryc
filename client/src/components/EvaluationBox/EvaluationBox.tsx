@@ -36,6 +36,7 @@ function EvaluationBox({
     const { toast } = useToast();
 
     // initial values
+    const currentUserId = MOCK_USER_ID;
     const defaultState = {
         score: 0,
         comment: '',
@@ -52,10 +53,9 @@ function EvaluationBox({
     // calculated values
     const formState = formStateMap[evaluation.applicantId] ?? defaultState;
 
-    const currentUserId = MOCK_USER_ID;
-    const myComment = evaluation.comments.find((comment) => comment.writerId === currentUserId);
+    const commentMap = new Map(evaluation?.comments?.map((comment) => [comment.writerId, comment]));
+    const myComment = commentMap.get(currentUserId);
 
-    // handlers
     const handleFormState = (partial: Partial<typeof defaultState>) => {
         setFormStateMap((prev) => ({
             ...prev,
@@ -148,13 +148,13 @@ function EvaluationBox({
                             type="display"
                         />
                         <Text as="span" type="captionRegular" color="primary" sx={s_averageNumber}>
-                            ({evaluation ? evaluation.averageScore : 0})
+                            ({evaluation?.averageScore ? evaluation.averageScore : 0})
                         </Text>
                     </div>
                 </div>
                 <Divider />
                 <div css={perStarScoreGroup((evaluation?.comments?.length ?? 0) > 0)}>
-                    {evaluation && evaluation.comments.length > 0 ? (
+                    {evaluation?.comments?.length > 0 ? (
                         evaluation.comments.map((comment) => (
                             <PersonalScoreCard
                                 key={comment.id}
