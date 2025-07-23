@@ -46,7 +46,7 @@ function EvaluationBox({
 
     // state, ref, querystring hooks
     const [formStateMap, setFormStateMap] = useState<Record<number, typeof defaultState>>({}); // applicantId별로 상태 관리
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks

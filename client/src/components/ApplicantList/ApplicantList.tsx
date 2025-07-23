@@ -25,7 +25,7 @@ function ApplicantList({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -54,7 +54,7 @@ function ApplicantList({
                         height="3rem"
                         inputSx={s_searchInput}
                         placeholder="이름 검색"
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(event) => setQuery(event.target.value)}
                     />
                 </span>
             </div>
