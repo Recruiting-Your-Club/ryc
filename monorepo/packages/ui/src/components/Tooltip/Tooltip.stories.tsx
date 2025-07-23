@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import { Button } from '../Button';
+import { Button } from '@ssoc/ui';
+
 import { Tooltip } from './Tooltip';
 import type { TooltipProps } from './types';
 
