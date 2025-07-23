@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+
 import theme from '@ssoc/styles';
 
 export const s_descriptionWrapper = css`

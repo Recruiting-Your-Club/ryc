@@ -1,14 +1,16 @@
-import React from 'react';
 import { FieldLabel } from '@components/FieldLabel';
+import { QuestionForm } from '@components/QuestionForm';
+import React from 'react';
+
 import { Button } from '@ssoc/ui';
+import { useToast } from '@ssoc/ui';
+
 import {
     s_buttonContainer,
     s_buttonPosition,
     s_questionContainer,
 } from './PersonalStatementStep.style';
-import { QuestionForm } from '@components/QuestionForm';
 import type { PersonalStatementStepProps } from './types';
-import { useToast } from '@ssoc/ui';
 
 function PersonalStatementStep({
     applicationQuestions,

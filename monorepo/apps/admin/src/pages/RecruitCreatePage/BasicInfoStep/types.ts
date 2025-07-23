@@ -1,6 +1,7 @@
-import type { Dispatch, SetStateAction } from 'react';
-import type { BasicInfoFields } from '../types';
 import type { QuestionProps, QuestionType } from '@components/QuestionForm/types';
+import type { Dispatch, SetStateAction } from 'react';
+
+import type { BasicInfoFields } from '../types';
 
 export interface BasicInfoStepProps extends QuestionHandlers {
     infoFields: BasicInfoFields;

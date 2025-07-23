@@ -1,6 +1,13 @@
-import { Button, Checkbox, Select, Text, Toggle } from '@ssoc/ui';
 import { FieldLabel } from '@components/FieldLabel';
+import { QuestionForm } from '@components/QuestionForm';
+import type { QuestionType } from '@components/QuestionForm/types';
+import { questionTypes } from '@constants/questionType';
 import React, { useState } from 'react';
+
+import { Button, Checkbox, Select, Text, Toggle } from '@ssoc/ui';
+import { useToast } from '@ssoc/ui';
+
+import type { BasicInfoFields } from '../types';
 import {
     s_additionalInfoWrapper,
     s_checkboxLabel,
@@ -16,12 +23,7 @@ import {
     s_toggleContainer,
     s_toggleLabel,
 } from './BasicInfoStep.style';
-import { questionTypes } from '@constants/questionType';
-import { QuestionForm } from '@components/QuestionForm';
-import type { QuestionType } from '@components/QuestionForm/types';
 import type { BasicInfoStepProps, InfoFieldGroupProps } from './types';
-import type { BasicInfoFields } from '../types';
-import { useToast } from '@ssoc/ui'
 
 function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
     //handler
@@ -84,7 +86,7 @@ function BasicInfoStep({
     const { toast } = useToast();
 
     //calculate values
-    const questionArray = [...questionTypes]
+    const questionArray = [...questionTypes];
 
     //handlers
     const handleQuestions = () => {
@@ -115,8 +117,8 @@ function BasicInfoStep({
                                 onValueChange={(value) =>
                                     handleQuestionTypeChange(question.id, value as QuestionType)
                                 }
-                                sx={s_selectContainer}  
-                                options={questionArray}                      
+                                sx={s_selectContainer}
+                                options={questionArray}
                             >
                                 <Select.Trigger>
                                     <Select.Value placeholder="문제 유형 선택" />

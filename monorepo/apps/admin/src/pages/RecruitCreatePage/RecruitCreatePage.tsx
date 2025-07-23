@@ -1,6 +1,13 @@
-import { Button, Stepper } from '@ssoc/ui';
-import { useStepper } from '@ssoc/ui'
+import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
+import { useQuestion } from '@hooks/useQuestion';
 import React, { useEffect, useRef, useState } from 'react';
+
+import { Button, Stepper } from '@ssoc/ui';
+import { useStepper } from '@ssoc/ui';
+
+import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
+import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
+import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
 import {
     s_prohibitDragArea,
     s_recruitCreatePageContainer,
@@ -8,13 +15,7 @@ import {
     s_stepComponent,
     s_stepWrapper,
 } from './RecruitCreatePage.style';
-import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
-import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
-import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
 import type { BasicInfoFields, RecruitDetailInfo } from './types';
-
-import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
-import { useQuestion } from '@hooks/useQuestion';
 
 function RecruitCreatePage() {
     // prop destruction
