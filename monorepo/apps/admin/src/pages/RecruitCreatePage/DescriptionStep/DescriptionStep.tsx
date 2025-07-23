@@ -14,7 +14,12 @@ import {
 } from './DescriptionStep.style';
 import type { DescriptionProps, DetailQuestionList } from './types';
 
-function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) {
+function DescriptionStepPage({
+    recruitDetailInfo,
+    recruitFiles,
+    onChange,
+    onFileChange,
+}: DescriptionProps) {
     return (
         <>
             <div css={s_descriptionWrapper}>
@@ -57,7 +62,11 @@ function DescriptionStepPage({ recruitDetailInfo, onChange }: DescriptionProps) 
                     label="공고 이미지"
                     description="동아리 모집 관련 이미지를 첨부해주세요. (최대 5장까지 가능합니다)"
                 />
-                <FileUpLoader sx={s_descriptionFileUploader}>
+                <FileUpLoader
+                    sx={s_descriptionFileUploader}
+                    files={recruitFiles}
+                    onFilesChange={onFileChange}
+                >
                     <FileUpLoader.Button />
                     <FileUpLoader.HelperText>
                         PDF, 이미지 파일만 업로드 가능합니다(JPG, JPEG, PNG)

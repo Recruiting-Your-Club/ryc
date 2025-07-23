@@ -54,6 +54,9 @@ function RecruitCreatePage() {
         finalResult: '',
     });
 
+    //공고 모집 관련 이미지 상태 관리
+    const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
+
     //체크박스를 통한 신원 정보 상태관리
     const [basicInfoFields, setBasicInfoFields] = useState<BasicInfoFields>({
         studentId: false,
@@ -72,6 +75,10 @@ function RecruitCreatePage() {
         }));
     };
 
+    const handleFileChage = (recruitFiles: File[]) => {
+        setRecuritFiles(recruitFiles);
+    };
+
     // effects
     useEffect(() => {
         containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -84,7 +91,9 @@ function RecruitCreatePage() {
                 return (
                     <DescriptionStepPage
                         recruitDetailInfo={recruitDetailInfo}
+                        recruitFiles={recruitFiles}
                         onChange={handleInputChange}
+                        onFileChange={handleFileChage}
                     />
                 );
             case 1:
