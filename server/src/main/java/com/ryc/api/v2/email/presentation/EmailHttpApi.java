@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.email.application.EmailService;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,28 +34,26 @@ public class EmailHttpApi {
   private final EmailService emailService;
 
   @PostMapping
+  @HasRole(Role.MEMBER)
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @RequestParam String clubId,
       @RequestParam String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
-    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
     List<EmailSendResponse> responses =
-        emailService.createEmails(dto, userDetail.getId(), announcementId, body);
+        emailService.createEmails(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 
   @PostMapping("/interview")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @RequestParam String clubId,
       @RequestParam String announcementId,
       @Valid @RequestBody InterviewEmailSendRequest body) {
-    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
     List<EmailSendResponse> responses =
-        emailService.createInterviewDateEmails(dto, announcementId, body);
+        emailService.createInterviewDateEmails(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 }

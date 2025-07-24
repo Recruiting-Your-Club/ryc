@@ -12,7 +12,9 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRe
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +30,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface AnnouncementHttpApi {
 
   @PostMapping("/clubs/{club-id}/announcements")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "클럽 공고 생성", operationId = "createAnnouncement")
   @ApiResponses(
       value = {
@@ -66,7 +69,7 @@ public interface AnnouncementHttpApi {
   ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
       @PathVariable("club-id") String clubId);
 
-  @GetMapping("/clubs/{club-id}/announcements/{announcement-id}")
+  @GetMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
   @ApiResponses(
       value = {
@@ -77,10 +80,10 @@ public interface AnnouncementHttpApi {
             content = @Content(schema = @Schema(hidden = true)))
       })
   ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId);
 
   @PutMapping("/clubs/{club-id}/announcements/{announcement-id}")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "공고 수정", operationId = "updateAnnouncement")
   @ApiResponses(
       value = {
@@ -95,7 +98,6 @@ public interface AnnouncementHttpApi {
             content = @Content(schema = @Schema(hidden = true)))
       })
   ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body);

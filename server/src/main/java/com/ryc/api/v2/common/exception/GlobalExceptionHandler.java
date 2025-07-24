@@ -37,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ClubException.class)
   public ResponseEntity<Object> handleClubException(ClubException e) {
     ErrorCode errorCode = e.getErrorCode();
-    return handleExceptionInternal(errorCode, e.getMessage());
+    return handleExceptionInternal(errorCode);
   }
 
   // DataIntegrityViolationException은 JPA에서 중복된 데이터 삽입 시 발생하는 예외

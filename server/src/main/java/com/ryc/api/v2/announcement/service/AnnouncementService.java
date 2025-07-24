@@ -17,30 +17,21 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
-import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.service.ClubService;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class AnnouncementService {
+
   private final AnnouncementRepository announcementRepository;
-  private final ClubService clubService;
-  private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public AnnouncementCreateResponse createAnnouncement(
-      ClubRoleSecuredDto clubRoleSecuredDto, AnnouncementCreateRequest request) {
-    // 1.Club 찾기
-
-    // 2.Announcement 생성
-    Announcement announcement = Announcement.initialize(request, clubRoleSecuredDto.clubId());
+      String clubId, AnnouncementCreateRequest request) {
+    // Announcement 생성
+    Announcement announcement = Announcement.initialize(request, clubId);
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
@@ -48,7 +39,6 @@ public class AnnouncementService {
   }
 
   @Transactional(readOnly = true)
-  @ValidClub
   public List<AnnouncementGetAllResponse> findAllByClubId(String clubId) {
     // 1. 클럽 ID에 해당하는 모든 공고 조회
     List<Announcement> announcements = announcementRepository.findAllByClubId(clubId);
@@ -58,8 +48,7 @@ public class AnnouncementService {
   }
 
   @Transactional(readOnly = true)
-  @ValidClub
-  public AnnouncementGetDetailResponse findById(String clubId, String announcementId) {
+  public AnnouncementGetDetailResponse findById(String announcementId) {
     // 공고 ID로 공고 조회
     Announcement announcement = announcementRepository.findById(announcementId);
 
@@ -68,13 +57,11 @@ public class AnnouncementService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
+  @ValidClub
   public AnnouncementUpdateResponse updateAnnouncement(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      AnnouncementUpdateRequest request,
-      String announcementId) {
-    Announcement updateAnnouncement =
-        Announcement.of(request, announcementId, clubRoleSecuredDto.clubId());
+      AnnouncementUpdateRequest request, String announcementId, String clubId) {
+
+    Announcement updateAnnouncement = Announcement.of(request, announcementId, clubId);
 
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);

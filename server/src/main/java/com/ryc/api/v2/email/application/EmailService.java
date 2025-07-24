@@ -14,8 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
@@ -23,7 +21,6 @@ import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.evaluation.bussiness.InterviewService;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 @Service
 public class EmailService {
@@ -50,12 +47,8 @@ public class EmailService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String adminId,
-      String announcementId,
-      EmailSendRequest body) {
+      String adminId, String announcementId, EmailSendRequest body) {
 
     List<Email> emails =
         body.recipients().stream()
@@ -78,22 +71,19 @@ public class EmailService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createInterviewDateEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String announcementId,
-      InterviewEmailSendRequest body) {
+      String adminId, String announcementId, InterviewEmailSendRequest body) {
 
     List<Email> emails =
         createEmailsWithEachLink(
-            clubRoleSecuredDto.adminId(),
+            adminId,
             announcementId,
             body.emailSendRequest().recipients(),
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
     interviewService.createInterview(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
+        adminId, announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()

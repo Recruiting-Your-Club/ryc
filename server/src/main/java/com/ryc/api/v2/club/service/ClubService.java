@@ -11,11 +11,8 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,10 +34,8 @@ public class ClubService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
-  public ClubUpdateResponse updateClub(
-      ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
-    Club previousClub = clubRepository.findById(clubRoleSecuredDto.clubId());
+  public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
+    Club previousClub = clubRepository.findById(clubId);
 
     if (body.name() != null && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
