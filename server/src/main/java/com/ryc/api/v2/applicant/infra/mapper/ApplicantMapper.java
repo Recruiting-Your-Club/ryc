@@ -4,6 +4,8 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.infra.entity.ApplicantEntity;
 
 public class ApplicantMapper {
+    private ApplicantMapper() {}
+
     public static Applicant toDomain(ApplicantEntity entity) {
         if (entity == null) return null;
         return Applicant.builder()

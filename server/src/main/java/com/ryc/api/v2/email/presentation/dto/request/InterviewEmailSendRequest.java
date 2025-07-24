@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotNull;
 
-import com.ryc.api.v2.evaluation.domain.NumberOfPeopleByInterviewDate;
+import com.ryc.api.v2.interview.domain.NumberOfPeopleByInterviewDate;
 
 public record InterviewEmailSendRequest(
     @NotNull(message = "number of people by interview date shouldn't be null")
