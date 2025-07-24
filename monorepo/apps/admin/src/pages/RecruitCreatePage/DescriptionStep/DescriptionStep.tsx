@@ -47,11 +47,7 @@ function DescriptionStepPage({
                 ))}
             </div>
             <div css={s_descriptionWrapper}>
-                <FieldLabel
-                    label="상세 정보"
-                    description="자세한 모집 공고 내용을 입력해주세요"
-                    required
-                />
+                <FieldLabel label="상세 정보" description="자세한 모집 공고 내용을 입력해주세요" />
                 <Editor.Root>
                     <Editor.Toolbar />
                     <Editor.Textarea />

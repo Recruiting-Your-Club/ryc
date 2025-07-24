@@ -48,9 +48,7 @@ export const s_questionHeader = css`
 `;
 
 export const s_removeQuestion = css`
-    ${theme.typography.bodySemibold};
-    background-color: ${theme.colors.blue[300]};
-    margin-left: 2rem;
+    margin-left: 1rem;
 `;
 
 export const s_questionSection = css`
@@ -76,4 +74,9 @@ export const s_toggleLabel = css`
     ${theme.typography.subCaptionRegular};
     color: ${theme.colors.gray[800]};
     margin-right: 0.5rem;
+`;
+
+export const s_trashIcon = css`
+    width: 2rem;
+    height: 2rem;
 `;

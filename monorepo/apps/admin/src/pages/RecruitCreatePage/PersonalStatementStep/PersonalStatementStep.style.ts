@@ -22,3 +22,8 @@ export const s_buttonPosition = css`
     right: 0.5rem;
     top: 0.5rem;
 `;
+
+export const s_trashIcon = css`
+    width: 2rem;
+    height: 2rem;
+`;

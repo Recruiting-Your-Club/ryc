@@ -2,6 +2,7 @@ import { FieldLabel } from '@components/FieldLabel';
 import { QuestionForm } from '@components/QuestionForm';
 import React from 'react';
 
+import Trash from '@ssoc/assets/images/trash.svg';
 import { Button } from '@ssoc/ui';
 import { useToast } from '@ssoc/ui';
 
@@ -9,6 +10,7 @@ import {
     s_buttonContainer,
     s_buttonPosition,
     s_questionContainer,
+    s_trashIcon,
 } from './PersonalStatementStep.style';
 import type { PersonalStatementStepProps } from './types';
 
@@ -37,17 +39,17 @@ function PersonalStatementStep({
             <FieldLabel
                 label="자기소개서"
                 description="지원자에게 질문하고 싶은 문항을 작성해주세요.(최대 20개의 질문까지 작성 가능합니다)"
-                required
             />
             <div css={s_buttonContainer}>
                 {applicationQuestions.map((q) => (
                     <div key={q.id} css={s_questionContainer}>
                         <Button
+                            variant="transparent"
                             size="lg"
                             onClick={() => removeApplicationQuestion(q.id)}
                             sx={s_buttonPosition}
                         >
-                            x
+                            <Trash css={s_trashIcon} />
                         </Button>
                         <QuestionForm question={q} updateQuestion={updateApplicationQuestion} />
                     </div>

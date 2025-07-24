@@ -4,6 +4,7 @@ import type { QuestionType } from '@components/QuestionForm/types';
 import { questionTypes } from '@constants/questionType';
 import React, { useState } from 'react';
 
+import Trash from '@ssoc/assets/images/trash.svg';
 import { Button, Checkbox, Select, Text, Toggle } from '@ssoc/ui';
 import { useToast } from '@ssoc/ui';
 
@@ -22,6 +23,7 @@ import {
     s_textHighlight,
     s_toggleContainer,
     s_toggleLabel,
+    s_trashIcon,
 } from './BasicInfoStep.style';
 import type { BasicInfoStepProps, InfoFieldGroupProps } from './types';
 
@@ -39,7 +41,6 @@ function InfoFieldGroup({ infoFields, setInfoFields }: InfoFieldGroupProps) {
             <FieldLabel
                 label="인적사항"
                 description="지원자에게 입력 받을 인적사항 항목을 선택해주세요."
-                required
             />
             <div css={s_noticeBox}>
                 <Text as="span" type="captionRegular" textAlign="start">
@@ -146,11 +147,12 @@ function BasicInfoStep({
                                     />
                                 </div>
                                 <Button
+                                    variant="transparent"
                                     onClick={() => removeQuestion(question.id)}
                                     sx={s_removeQuestion}
                                     size="lg"
                                 >
-                                    x
+                                    <Trash css={s_trashIcon} />
                                 </Button>
                             </div>
                         </div>
