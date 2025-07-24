@@ -5,6 +5,7 @@ export * from './Card';
 export * from './Checkbox';
 export * from './Dialog';
 export * from './Divider';
+export * from './Dropdown';
 export * from './Editor';
 export * from './Image';
 export * from './Radio';
