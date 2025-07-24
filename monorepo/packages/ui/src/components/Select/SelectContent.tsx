@@ -1,7 +1,8 @@
 import type { Ref } from 'react';
 import React, { forwardRef, useMemo } from 'react';
-import { useSelectContext } from './SelectContext';
+
 import { s_selectContent } from './Select.styles';
+import { useSelectContext } from './SelectContext';
 import type { SelectContentProps } from './types';
 
 /**

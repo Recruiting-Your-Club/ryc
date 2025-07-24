@@ -1,14 +1,16 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { SelectContext, useSelectContext } from './SelectContext';
+
+import { useClickOutside } from '@ssoc/hooks';
+
 import { s_select, s_size } from './Select.styles';
 import { SelectContent } from './SelectContent';
+import { SelectContext, useSelectContext } from './SelectContext';
 import { SelectGroup } from './SelectGroup';
 import { SelectItem } from './SelectItem';
 import { SelectLabel } from './SelectLabel';
 import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
-import { useClickOutside } from '@ssoc/hooks';
 import type { SelectProps } from './types';
 
 /**

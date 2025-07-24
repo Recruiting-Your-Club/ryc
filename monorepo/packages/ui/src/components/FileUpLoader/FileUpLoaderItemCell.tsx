@@ -1,5 +1,6 @@
 import React from 'react';
-import { s_fileMetaItem, s_fileNameWithIcon, s_fileHeaderText } from './FileUpLoader.style';
+
+import { s_fileHeaderText, s_fileMetaItem, s_fileNameWithIcon } from './FileUpLoader.style';
 import type { FileUpLoaderItemCellProps } from './types';
 
 function FileUpLoaderItemCell({

@@ -1,9 +1,11 @@
 import type { CSSObject } from '@emotion/react';
 import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
 import React, { useState } from 'react';
-import { useSelectContext } from './SelectContext';
-import { s_selectItem, s_selectItemIndicator } from './Select.styles';
+
 import Check from '@ssoc/assets/images/select_check.svg';
+
+import { s_selectItem, s_selectItemIndicator } from './Select.styles';
+import { useSelectContext } from './SelectContext';
 import type { SelectItemProps } from './types';
 
 /**

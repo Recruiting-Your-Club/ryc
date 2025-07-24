@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
+
 import theme from '@ssoc/styles';
+
 import type { Align } from './types';
 
 export const s_fileUpLoader = css`

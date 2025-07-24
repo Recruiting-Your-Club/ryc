@@ -1,7 +1,8 @@
 import type { CSSObject } from '@emotion/react';
-import { useSelectContext } from './SelectContext';
-import { s_selectPlaceholder, s_selectValue } from './Select.styles';
 import React from 'react';
+
+import { s_selectPlaceholder, s_selectValue } from './Select.styles';
+import { useSelectContext } from './SelectContext';
 import type { SelectValueProps } from './types';
 
 /**

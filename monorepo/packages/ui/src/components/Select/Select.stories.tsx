@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Select } from './Select';
 import React, { useState } from 'react';
+
+import { Select } from './Select';
 
 type Story = StoryObj<typeof Select>;
 type Trigger = StoryObj<typeof Select.Trigger>;

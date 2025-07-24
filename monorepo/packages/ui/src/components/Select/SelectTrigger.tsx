@@ -1,9 +1,11 @@
 import type { CSSObject } from '@emotion/react';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import React, { forwardRef, useMemo } from 'react';
-import { useSelectContext } from './SelectContext';
-import { s_selectTrigger } from './Select.styles';
+
 import DownArrow from '@ssoc/assets/images/downArrow.svg';
+
+import { s_selectTrigger } from './Select.styles';
+import { useSelectContext } from './SelectContext';
 import type { SelectTriggerProps } from './types';
 
 function SelectTrigger(

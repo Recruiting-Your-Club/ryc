@@ -18,6 +18,6 @@ export * from './Radio';
 export * from './TextArea';
 export * from './PasswordInput';
 export * from './Toast';
-export * from './Select'
+export * from './Select';
 export * from './Stepper';
 export * from './FileUpLoader';

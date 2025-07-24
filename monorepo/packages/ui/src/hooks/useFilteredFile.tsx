@@ -1,7 +1,8 @@
-import { FileExtension } from '../constants/fileUpLoader';
-import { getExtension } from '../components/FileUpLoader/utills'
-import { useToast } from './useToast';
 import { useCallback } from 'react';
+
+import { getExtension } from '../components/FileUpLoader/utills';
+import { FileExtension } from '../constants/fileUpLoader';
+import { useToast } from './useToast';
 
 function useFilteredFile(onFilesChange: (files: File[]) => void, currentFileCount: number) {
     const { toast } = useToast();

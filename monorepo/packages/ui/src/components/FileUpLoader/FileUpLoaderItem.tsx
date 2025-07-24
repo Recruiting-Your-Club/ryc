@@ -1,15 +1,17 @@
 import type { ReactNode } from 'react';
 import React from 'react';
-import { s_fileItem, s_fileRow, s_fileImagePreview } from './FileUpLoader.style';
+
 import XIcon from '@ssoc/assets/images/gray_xicon.svg';
-import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
-import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
-import type { FileUpLoaderItemProps } from './types';
-import { FileExtension } from '../../constants/fileUpLoader';
 import PdfIcon from '@ssoc/assets/images/PdfIcon.svg';
-import { formatDate, formatBytes, getExtension } from './utills';
+
+import { FileExtension } from '../../constants/fileUpLoader';
 import { Button } from '../Button';
+import { s_fileImagePreview, s_fileItem, s_fileRow } from './FileUpLoader.style';
 import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
+import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
+import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
+import type { FileUpLoaderItemProps } from './types';
+import { formatBytes, formatDate, getExtension } from './utills';
 
 function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     //props destruction

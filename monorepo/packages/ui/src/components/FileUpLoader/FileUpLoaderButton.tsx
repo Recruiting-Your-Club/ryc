@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { Button } from '../Button';
 import { s_fileUpLoaderInput } from './FileUpLoader.style';
-import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
+import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 
 function FileUpLoaderButton() {
     const { disabled } = useFileUpLoaderStateContext();
