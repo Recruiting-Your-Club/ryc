@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import jakarta.validation.ConstraintViolationException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -53,13 +55,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(NoSuchElementException.class)
-  public ResponseEntity<Object> handleIllegalArgumentException(NoSuchElementException e) {
+  public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e) {
     ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
     return handleExceptionInternal(errorCode, e.getMessage());
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
+    ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+    return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
     return handleExceptionInternal(errorCode, e.getMessage());
   }
