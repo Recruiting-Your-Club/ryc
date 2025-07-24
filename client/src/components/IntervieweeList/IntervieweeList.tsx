@@ -85,7 +85,7 @@ function IntervieweeList({
                                 {selectedInterviewLabel}
                             </Button>
                         </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={11.7} offsetY={44}>
+                        <Dropdown.Content offsetX={11.7} offsetY={42}>
                             <InterviewTimeTable
                                 interviewSchedules={interviewSchedules}
                                 selectedInterviewLabel={selectedInterviewLabel}

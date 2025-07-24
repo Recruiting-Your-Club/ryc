@@ -21,6 +21,8 @@ export const s_timeContentContainer = css`
 export const s_interviewInformationButtonGroupWrapper = (isSchedule: boolean = true) => css`
     display: flex;
     flex-direction: column;
+    /* height: 100%;
+    max-height: 25rem; */
     height: 22rem;
     gap: 1rem;
     padding: 0 0.5rem;
