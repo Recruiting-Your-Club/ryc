@@ -80,7 +80,8 @@ public class SecurityConfiguration {
                         "/api/v2/clubs",
                         "/api/v2/clubs/*",
                         "/api/v2/clubs/*/announcements",
-                        "/api/v2/announcements/*")
+                        "/api/v2/announcements/*",
+                        "/api/v2/announcements/*/application-form")
                     .permitAll()
                     .anyRequest()
                     .authenticated());
