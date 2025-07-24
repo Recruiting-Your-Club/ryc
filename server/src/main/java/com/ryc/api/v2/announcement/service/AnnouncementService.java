@@ -62,11 +62,10 @@ public class AnnouncementService {
 
   @Transactional
   public AnnouncementUpdateResponse updateAnnouncement(
-      AnnouncementUpdateRequest request, String announcementId) {
-    
-    Announcement updateAnnouncement =
-        Announcement.of(request, announcementId, clubRoleSecuredDto.clubId());
-    
+      AnnouncementUpdateRequest request, String announcementId, String clubId) {
+
+    Announcement updateAnnouncement = Announcement.of(request, announcementId, clubId);
+
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
 

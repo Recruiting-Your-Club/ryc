@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -98,6 +98,7 @@ public interface AnnouncementHttpApi {
             content = @Content(schema = @Schema(hidden = true)))
       })
   ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
+      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body);
 

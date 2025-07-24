@@ -54,9 +54,9 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      String announcementId, AnnouncementUpdateRequest body) {
+      String clubId, String announcementId, AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(announcementService.updateAnnouncement(body, announcementId));
+        .body(announcementService.updateAnnouncement(body, announcementId, clubId));
   }
 
   @Override
