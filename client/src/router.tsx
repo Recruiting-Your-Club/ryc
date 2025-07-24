@@ -1,6 +1,7 @@
 import { ClubApplyPage } from '@pages/ClubApplyPage';
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
+import { RecruitCreatePage } from '@pages/RecruitCreatePage/RecruitCreatePage';
 import { ManagerLayout, UserLayout } from './layouts';
 import {
     ClubCreatePage,
@@ -10,6 +11,8 @@ import {
     LoginPage,
     MainLoadingPage,
     RecruitmentPage,
+    ReservationPage,
+    MyClubPage,
     RegisterPage,
     StepManagementPage,
     TestPage,
@@ -45,6 +48,7 @@ const router = createBrowserRouter([
             { path: 'detail', element: <LazyDetailPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'detail/recruitment', element: <RecruitmentPage /> },
+            { path: 'myclub', element: <MyClubPage /> },
             { path: 'club/create', element: <ClubCreatePage /> },
         ],
     },
@@ -54,7 +58,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <TestPage /> },
             { path: 'test', element: <LoginPage /> },
-            { path: 'recruitment', element: <RegisterPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'steps', element: <StepManagementPage /> },
             { path: 'rejected', element: <RegisterPage /> },
             { path: 'edit', element: <LoginPage /> },
@@ -64,6 +68,10 @@ const router = createBrowserRouter([
             { path: 'questions', element: <RegisterPage /> },
             { path: 'setting', element: <LoginPage /> },
         ],
+    },
+    {
+        path: '/reservation',
+        element: <ReservationPage />,
     },
 ]);
 

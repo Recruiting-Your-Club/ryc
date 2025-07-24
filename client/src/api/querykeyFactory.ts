@@ -36,4 +36,9 @@ const interviewKeys = {
     evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
 };
 
-export { clubKeys, interviewKeys };
+const myClubKeys = {
+  all: ['clubs'] as const,
+}
+
+export { clubKeys, interviewKeys, myClubKeys };
+

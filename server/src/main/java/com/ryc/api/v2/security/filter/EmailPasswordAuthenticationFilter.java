@@ -2,6 +2,8 @@ package com.ryc.api.v2.security.filter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +12,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,8 +24,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ryc.api.v2.auth.domain.event.RefreshTokenIssuedEvent;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
+import com.ryc.api.v2.security.jwt.JwtProperties;
 import com.ryc.api.v2.security.jwt.JwtTokenManager;
+import com.ryc.api.v2.security.jwt.TokenType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +36,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
+  private final ApplicationEventPublisher eventPublisher;
   private final JwtTokenManager jwtTokenManager;
+  private final JwtProperties jwtProperties;
 
   {
     setFilterProcessesUrl("/api/v2/auth/login");
@@ -59,7 +69,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
       // JSON 파싱
       ObjectMapper objectMapper = new ObjectMapper();
-      return objectMapper.readValue(requestBody, new TypeReference<>() {});
+      return objectMapper.readValue(requestBody, new TypeReference<Map<String, String>>() {});
 
     } catch (Exception e) {
       throw new AuthenticationException("Failed to parse request body") {};
@@ -72,9 +82,9 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
       HttpServletResponse response,
       FilterChain chain,
       Authentication authentication) {
-    // JWT 토큰 발급 로직 추가
+
     CustomUserDetail customUserDetail = (CustomUserDetail) authentication.getPrincipal();
-    String email = customUserDetail.getEmail();
+    String adminId = customUserDetail.getId();
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -82,18 +92,39 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
 
     String role = auth.getAuthority();
 
-    String accessToken = jwtTokenManager.generateAccessToken(email, role);
+    String accessToken = jwtTokenManager.generateAccessToken(adminId, role);
+    String refreshToken = jwtTokenManager.generateRefreshToken(adminId, role);
 
+    LocalDateTime expirationTime =
+        jwtTokenManager
+            .getExpirationDateFromToken(TokenType.REFRESH_TOKEN, refreshToken)
+            .toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime();
+
+    eventPublisher.publishEvent(new RefreshTokenIssuedEvent(adminId, refreshToken, expirationTime));
+
+    // RT HttpOnly, Secure, SameSite=Strict 쿠키 옵션 설정
+    ResponseCookie cookie =
+        ResponseCookie.from("refresh-token", refreshToken)
+            .httpOnly(true)
+            .secure(true)
+            .path("/api/v2/auth")
+            .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
+            .sameSite("Strict")
+            .build();
+
+    response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     String jsonResponse =
         """
-                {
-                    "accessToken": "%s",
-                    "tokenType": "Bearer"
-                }
-                """
+                        {
+                            "accessToken": "%s",
+                            "tokenType": "Bearer"
+                        }
+                        """
             .formatted(accessToken);
     try {
       response.getWriter().write(jsonResponse);

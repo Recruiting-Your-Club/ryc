@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import lombok.RequiredArgsConstructor;
 
-/** Access Denied 예외 핸들러 */
+/** 인증은 성공, 권한이 부족할 때 발생하는 Access Denied 예외 핸들러 */
 @RequiredArgsConstructor
 @Component
 public class TokenAccessDeniedHandler implements AccessDeniedHandler {
