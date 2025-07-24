@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import { Button, Input } from '@ssoc/ui';
+import { Button, Input, Radio } from '@ssoc/ui';
 import { Checkbox } from '@ssoc/ui';
 import { useToast } from '@ssoc/ui';
 
@@ -118,7 +118,7 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                                 <Checkbox.Control />
                             </Checkbox.Root>
                         ) : (
-                            <div />
+                            <Radio options={[{ value: '1' }]} disabled size="sm" />
                         )}
                         <Input
                             placeholder="객관식 문항을 입력해주세요"
