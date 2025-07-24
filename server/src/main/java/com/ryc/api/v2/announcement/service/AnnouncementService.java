@@ -17,8 +17,6 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
-import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.service.ClubService;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 
 import lombok.RequiredArgsConstructor;
@@ -26,9 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class AnnouncementService {
+
   private final AnnouncementRepository announcementRepository;
-  private final ClubService clubService;
-  private final ClubJpaRepository clubJpaRepository;
 
   @Transactional
   public AnnouncementCreateResponse createAnnouncement(
@@ -42,7 +39,6 @@ public class AnnouncementService {
   }
 
   @Transactional(readOnly = true)
-  @ValidClub
   public List<AnnouncementGetAllResponse> findAllByClubId(String clubId) {
     // 1. 클럽 ID에 해당하는 모든 공고 조회
     List<Announcement> announcements = announcementRepository.findAllByClubId(clubId);
@@ -61,6 +57,7 @@ public class AnnouncementService {
   }
 
   @Transactional
+  @ValidClub
   public AnnouncementUpdateResponse updateAnnouncement(
       AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
