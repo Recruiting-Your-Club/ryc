@@ -15,6 +15,8 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
   private final AnnouncementService announcementService;
+  private final ApplicationFormService applicationFormService;
 
   @Override
   public ResponseEntity<AnnouncementCreateResponse> create(
@@ -54,5 +57,11 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
       String announcementId, AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(announcementService.updateAnnouncement(body, announcementId));
+  }
+
+  @Override
+  public ResponseEntity<ApplicationFormResponse> getApplicationForm(String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
   }
 }

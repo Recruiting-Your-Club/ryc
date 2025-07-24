@@ -11,6 +11,7 @@ const baseTag = css`
     padding: 0.4rem 0.8rem;
     padding-top: 0.5rem;
     border-radius: 1rem;
+    white-space: nowrap;
 `;
 export const tag = (variant: tagVariant) => {
     switch (variant) {

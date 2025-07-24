@@ -1,6 +1,7 @@
 import { ClubBox, ImageDialog } from '@components';
 import React, { useState } from 'react';
 
+import { useRouter } from '@ssoc/hooks';
 import { Button, Image, Tag, Text } from '@ssoc/ui';
 
 import {
@@ -21,6 +22,7 @@ function RecruitmentPage() {
     // prop destruction
     //const { open, openDialog, closeDialog } = useDialog();
     // lib hooks
+    const { goTo } = useRouter();
     // initial values
     const images = [
         'https://ticketimage.interpark.com/Play/image/large/24/24013437_p.gif',
@@ -55,7 +57,12 @@ function RecruitmentPage() {
                             </Text>
                             <Tag variant="progress" text="모집중" />
                         </div>
-                        <Button variant="primary" size="xl" sx={applyButtonAtDesktop}>
+                        <Button
+                            variant="primary"
+                            size="xl"
+                            sx={applyButtonAtDesktop}
+                            onClick={() => goTo('/apply')}
+                        >
                             지원하기
                         </Button>
                     </div>

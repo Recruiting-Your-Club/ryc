@@ -11,7 +11,7 @@ export const backdropContainer = css`
     width: 100%;
     height: 100%;
     background: ${theme.colors.gray[500]};
-    z-index: 100;
+    z-index: 10000;
     opacity: 0;
     backdrop-filter: blur(0px); /* 초기 상태 명시 */
     animation: dialog-backdrop 0.2s ease-in-out forwards; // forwards는 애니메이션 종료 후 유지
@@ -42,7 +42,7 @@ export const dialogContainer = css`
     max-height: 90rem;
     border-radius: 1rem;
     background-color: ${theme.colors.white};
-    z-index: 101;
+    z-index: 10001;
     animation: dialog-down 0.2s ease-in-out;
 
     @keyframes dialog-down {
@@ -80,6 +80,7 @@ export const contentContainer = css`
     justify-content: center;
     align-items: center;
     padding: 1.5rem 2.5rem;
+    overflow-y: auto;
 `;
 
 export const actionContainer = (border: boolean, position: PositionType) => css`

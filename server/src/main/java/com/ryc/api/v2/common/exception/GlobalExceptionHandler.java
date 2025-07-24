@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
@@ -42,6 +43,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleDataIntegrityViolationException(
       DataIntegrityViolationException e) {
     ErrorCode errorCode = CommonErrorCode.DUPLICATE_RESOURCE;
+    return handleExceptionInternal(errorCode);
+  }
+
+  @ExceptionHandler(BusinessRuleException.class)
+  public ResponseEntity<Object> handleBusinessRuleException(BusinessRuleException e) {
+    ErrorCode errorCode = e.getErrorCode();
     return handleExceptionInternal(errorCode);
   }
 

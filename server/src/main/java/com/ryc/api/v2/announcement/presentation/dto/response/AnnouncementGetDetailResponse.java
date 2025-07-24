@@ -7,6 +7,7 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -26,7 +27,7 @@ import lombok.Builder;
  * @param interviewPeriod 면접 기간
  * @param documentResultPeriod 서류 결과 기간
  * @param finalResultPeriod 최종 발표 기간
- * @param application 지원서
+ * @param applicationForm 지원서
  * @param tags
  * @param images
  */
@@ -51,7 +52,7 @@ public record AnnouncementGetDetailResponse(
     @Schema(description = "최종 결과 발표 기간") PeriodResponse finalResultPeriod,
 
     // 지원서 정보
-    AnnouncementApplicationResponse application,
+    ApplicationFormResponse applicationForm,
 
     // 기타 정보
     @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]") List<String> tags,
@@ -68,8 +69,8 @@ public record AnnouncementGetDetailResponse(
     List<ImageResponse> images =
         announcement.getImages().stream().map(ImageResponse::from).toList();
 
-    AnnouncementApplicationResponse application =
-        AnnouncementApplicationResponse.from(announcement.getAnnouncementApplication());
+    ApplicationFormResponse application =
+        ApplicationFormResponse.from(announcement.getApplicationForm());
 
     PeriodResponse applicationPeriod = PeriodResponse.from(periodInfo.applicationPeriod());
     PeriodResponse interviewPeriod = PeriodResponse.from(periodInfo.interviewPeriod());
@@ -91,7 +92,7 @@ public record AnnouncementGetDetailResponse(
         .interviewPeriod(interviewPeriod)
         .documentResultPeriod(documentResultPeriod)
         .finalResultPeriod(finalResultPeriod)
-        .application(application)
+        .applicationForm(application)
         .tags(tags)
         .images(images)
         .build();

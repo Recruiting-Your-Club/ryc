@@ -41,6 +41,12 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
     }
   }
 
+  public Boolean isOverlap(Period other) {
+    return (startDate.isBefore(other.startDate) && endDate.isAfter(other.endDate))
+        || (startDate.isBefore(other.startDate) && endDate.isBefore(other.endDate))
+        || (startDate.isAfter(other.startDate) && endDate.isAfter(other.endDate));
+  }
+
   /** 파라미터의 Period보다 이전 Period인지 여부 */
   public Boolean isBefore(Period other) {
     return endDate.isBefore(other.startDate);

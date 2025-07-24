@@ -1,17 +1,16 @@
 import React from 'react';
 
-import ArrowDown from '@ssoc/assets/images/downArrow.svg';
 import Ryc from '@ssoc/assets/images/Ryc.svg';
 import { Button, Text } from '@ssoc/ui';
+import { getDeadlineInfo } from '@ssoc/utils/src/compareTime';
 
+import { QuestionDropdown } from '../../components';
 import {
-    arrowIcon,
     clubApplySubmitCardContainer,
     clubSubmitCard,
     clubSubmitCardLogo,
     clubSubmitCardSubCaption,
-    questionStatusContainer,
-    questionStatusTextSx,
+    deadlineText,
     svgContainer,
 } from './ClubSubmitCard.style';
 import type { ClubSubmitCardProps } from './types';
@@ -20,11 +19,26 @@ function ClubSubmitCard({
     clubName,
     tag,
     deadline,
-    completedQuestions,
-    totalQuestions,
-    deadlineColor,
+    personalQuestions,
+    detailQuestions,
+    allQuestionsCount,
+    completedQuestionsCount,
+    requiredQuestionsCount,
+    requiredQuestionsCompleted,
+    answers,
+    onQuestionFocus,
     onSubmit,
 }: ClubSubmitCardProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    const { displayText, diffDay } = getDeadlineInfo(deadline);
+    // handlers
+    // effects
     return (
         <div css={clubApplySubmitCardContainer}>
             <div css={clubSubmitCard}>
@@ -32,10 +46,12 @@ function ClubSubmitCard({
                     <Ryc css={svgContainer} />
                     {deadline && (
                         <Text
+                            color="caption"
                             type="captionRegular"
-                            sx={deadlineColor ? { color: deadlineColor } : undefined}
+                            sx={deadlineText(diffDay)}
+                            noWrap
                         >
-                            {deadline}
+                            {displayText}
                         </Text>
                     )}
                 </div>
@@ -49,20 +65,24 @@ function ClubSubmitCard({
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
                         26기 신입기수 모집
                     </Text>
-
-                    <div css={questionStatusContainer}>
-                        <Text
-                            type="subCaptionRegular"
-                            sx={questionStatusTextSx(completedQuestions === totalQuestions)}
-                        >
-                            필수 항목 ({completedQuestions} / {totalQuestions})
-                        </Text>
-                        <ArrowDown css={arrowIcon} />
-                    </div>
+                    <QuestionDropdown
+                        completedQuestionsCount={completedQuestionsCount}
+                        personalQuestions={personalQuestions}
+                        detailQuestions={detailQuestions}
+                        answers={answers}
+                        onQuestionFocus={onQuestionFocus}
+                        requiredQuestionsCompleted={requiredQuestionsCompleted}
+                        allQuestionsCount={allQuestionsCount}
+                    />
                 </div>
                 <Button
                     size="full"
-                    disabled={!(completedQuestions === totalQuestions)}
+                    disabled={
+                        !(
+                            requiredQuestionsCompleted ||
+                            completedQuestionsCount === allQuestionsCount
+                        )
+                    }
                     onClick={onSubmit}
                 >
                     제출하기
