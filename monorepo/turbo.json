@@ -6,12 +6,16 @@
         },
         "build": {
             "dependsOn": ["^build"],
-            "outputs": ["dist/**"]
+            "outputs": ["dist/**"],
+            "env": ["BASE_URL"]
         },
         "dev": {
             "dependsOn": ["^build"],
             "persistent": true,
             "cache": false
+        },
+        "storybook": {
+            "dependsOn": ["^build"]
         },
         "check-types": {
             "dependsOn": ["^check-types"]
@@ -22,6 +26,9 @@
         },
         "format:check": {
             "outputs": []
+        },
+        "test": {
+            "dependsOn": ["^test"]
         }
     }
 }

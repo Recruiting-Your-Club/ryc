@@ -1,30 +1,24 @@
+import React from 'react';
+
 import { Text } from '@ssoc/ui';
 
 import { clubBoxContainer, clubBoxItem } from './ClubBox.style';
+import type { ClubBoxProps } from './types';
 
-function ClubBox() {
-    const data = [
-        '동아리 소개',
-        '모집 공고',
-        '동아리 일정',
-        '동아리 회칙',
-        '동아리 사진첩',
-        '동아리 게시판',
-        '최종 합격자 발표',
-    ];
-    const dataList = [
-        '동아리 소개1',
-        '모집 공고1',
-        '동아리 일정1',
-        '동아리 회칙1',
-        '동아리 사진첩1',
-        '동아리 게시판1',
-        '최종 합격자 발표1',
-    ];
+function ClubBox({ data }: ClubBoxProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     return (
         <div css={clubBoxContainer}>
-            {data.map((item, index) => (
-                <div key={item} css={clubBoxItem}>
+            {data?.map((data) => (
+                <div key={data.title} css={clubBoxItem}>
                     <Text
                         as="div"
                         type="bodyRegular"
@@ -33,10 +27,10 @@ function ClubBox() {
                         textAlign="start"
                         noWrap
                     >
-                        {item}
+                        {data.title}
                     </Text>
                     <Text as="div" type="bodyRegular" textAlign="start" noWrap>
-                        {dataList[index]}
+                        {data.value}
                     </Text>
                 </div>
             ))}

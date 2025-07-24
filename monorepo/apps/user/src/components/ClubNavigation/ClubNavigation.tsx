@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button } from '@ssoc/ui';
 
@@ -12,17 +12,18 @@ import type { ClubNavigationProps } from './types';
 
 function ClubNavigation(props: ClubNavigationProps) {
     // prop destruction
-    const { navigationItem } = props;
+    const { navigationItem, controlledActive, onActiveChange } = props;
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [active, setActive] = useState<string>(navigationItem[0].title);
+    const [uncontrolledActive, setUncontrolledActive] = useState<string>(navigationItem[0].title);
     const [sliderPosition, setSliderPosition] = useState<number>(0);
     const [sliderWidth, setSliderWidth] = useState<string>(navigationItem[0].width);
 
     // form hooks
     // query hooks
     // calculated values
+    const active = controlledActive !== undefined ? controlledActive : uncontrolledActive;
     const activeContent = navigationItem.find((content) => content.title === active);
 
     const calculateSliderPosition = (title: string) => {
@@ -39,10 +40,17 @@ function ClubNavigation(props: ClubNavigationProps) {
     };
     // handlers
     const handlePosition = (title: string) => {
-        setActive(title);
-        calculateSliderPosition(title);
+        if (onActiveChange) {
+            onActiveChange(title);
+        } else {
+            setUncontrolledActive(title);
+            calculateSliderPosition(title);
+        }
     };
     // effects
+    useEffect(() => {
+        calculateSliderPosition(active);
+    }, [active]);
     return (
         <>
             <div css={navigationContainer}>

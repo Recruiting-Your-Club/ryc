@@ -14,7 +14,6 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.service.ClubRoleService;
 
@@ -37,9 +36,8 @@ public class ClubFacade {
   }
 
   @Transactional
-  public ClubUpdateResponse updateClub(
-      ClubRoleSecuredDto clubRoleSecuredDto, ClubUpdateRequest body) {
-    return clubService.updateClub(clubRoleSecuredDto, body);
+  public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
+    return clubService.updateClub(clubId, body);
   }
 
   @Transactional(readOnly = true)

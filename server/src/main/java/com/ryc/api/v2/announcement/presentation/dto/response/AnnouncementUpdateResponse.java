@@ -6,6 +6,7 @@ import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -26,7 +27,7 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "인터뷰 여부", example = "true") Boolean hasInterview,
 
     // 지원서
-    @Schema(description = "지원서") AnnouncementApplicationResponse application,
+    @Schema(description = "지원서") ApplicationFormResponse application,
 
     // 기간정보
     @Schema(description = "지원 기간") PeriodResponse applicationPeriod,
@@ -39,8 +40,8 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "태그", example = "[\"TAG1\", \"TAG2\"]") List<String> tags) {
 
   public static AnnouncementUpdateResponse from(Announcement announcement) {
-    AnnouncementApplicationResponse application =
-        AnnouncementApplicationResponse.from(announcement.getAnnouncementApplication());
+    ApplicationFormResponse application =
+        ApplicationFormResponse.from(announcement.getApplicationForm());
     PeriodResponse applicationPeriod =
         PeriodResponse.from(announcement.getAnnouncementPeriodInfo().applicationPeriod());
     PeriodResponse interviewPeriod =

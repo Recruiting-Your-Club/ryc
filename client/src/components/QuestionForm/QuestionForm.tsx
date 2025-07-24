@@ -11,9 +11,7 @@ import {
     s_questionOptionRow,
     s_removeOptionButton,
 } from './QuestionForm.style';
-import { CheckboxRoot } from '@components/Checkbox/CheckboxRoot';
-import { CheckboxHiddenInput } from '@components/Checkbox/CheckboxHiddenInput';
-import { CheckboxControl } from '@components/Checkbox/CheckboxControl';
+import { Checkbox } from '@components';
 import { useToast } from '@hooks/useToast';
 
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
@@ -113,10 +111,10 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                 {question.options?.map((option) => (
                     <div key={option.id} css={s_questionOptionRow}>
                         {question.type === 'multiple' ? (
-                            <CheckboxRoot disabled size="md">
-                                <CheckboxHiddenInput />
-                                <CheckboxControl />
-                            </CheckboxRoot>
+                            <Checkbox.Root disabled size="md">
+                                <Checkbox.HiddenInput />
+                                <Checkbox.Control />
+                            </Checkbox.Root>
                         ) : (
                             <div />
                         )}

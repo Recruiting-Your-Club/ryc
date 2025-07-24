@@ -14,8 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
@@ -34,12 +32,12 @@ public class EmailService {
   private final EmailRepository emailRepository;
 
   public EmailService(
-      @Value("${RESERVATION.BASE-URL.LOCAL}") String baseUri,
+      @Value("${LOCAL_CLIENT_URL}") String baseUri,
       EmailRepository emailRepository,
       InterviewService interviewService,
       ResourceLoader resourceLoader)
       throws IOException {
-    this.baseUri = baseUri;
+    this.baseUri = baseUri + "/reservation";
     this.emailRepository = emailRepository;
     this.interviewService = interviewService;
 
@@ -50,12 +48,8 @@ public class EmailService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String adminId,
-      String announcementId,
-      EmailSendRequest body) {
+      String adminId, String announcementId, EmailSendRequest body) {
 
     List<Email> emails =
         body.recipients().stream()
@@ -78,22 +72,19 @@ public class EmailService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createInterviewDateEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String announcementId,
-      InterviewEmailSendRequest body) {
+      String adminId, String announcementId, InterviewEmailSendRequest body) {
 
     List<Email> emails =
         createEmailsWithEachLink(
-            clubRoleSecuredDto.adminId(),
+            adminId,
             announcementId,
             body.emailSendRequest().recipients(),
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
     interviewService.createInterview(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDates());
+        adminId, announcementId, body.numberOfPeopleByInterviewDates());
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
     return savedEmails.stream()
