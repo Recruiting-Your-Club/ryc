@@ -59,7 +59,6 @@ public class ApplicationService {
     Applicant savedApplicant = applicantRepository.save(applicant);
 
     // 4. 지원서 객체 생성 및 비즈니스 룰 검사
-
     Application application =
         Application.initialize(applicationSubmissionRequest.application(), applicant.getId());
 

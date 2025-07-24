@@ -35,43 +35,61 @@ public class Answer {
 
   public void checkBusinessRules(Question question) {
     switch (question.getQuestionType()) {
-      case LONG_ANSWER, SHORT_ANSWER -> validateTextAnswer();
-      case SINGLE_CHOICE -> validateSingleChoiceAnswer();
-      case MULTIPLE_CHOICE -> validateMultipleChoiceAnswer();
-      case FILE -> validateFileAnswer();
+      case LONG_ANSWER, SHORT_ANSWER -> validateTextAnswer(question.isRequired());
+      case SINGLE_CHOICE -> validateSingleChoiceAnswer(question.isRequired());
+      case MULTIPLE_CHOICE -> validateMultipleChoiceAnswer(question.isRequired());
+      case FILE -> validateFileAnswer(question.isRequired());
     }
   }
 
   /** 주관식 질문 응답객체 validation */
-  private void validateTextAnswer() {
-    if (textAnswer == null
-        || textAnswer.isBlank()
-        || !choices.isEmpty()
+  private void validateTextAnswer(Boolean isRequired) {
+    // textAnswer외에 다른 입력값이 들어간 경우
+    if (!choices.isEmpty()
         || fileMetadataId != null) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
+    }
+
+    // 필수 입력값인데 비어있는 경우
+    if(isRequired && textAnswer == null) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
   }
 
   /** 단일 선택 질문 응답객체 validation */
-  private void validateSingleChoiceAnswer() {
-    if (choices.size() != 1 || textAnswer != null || fileMetadataId != null) {
+  private void validateSingleChoiceAnswer(Boolean isRequired) {
+    // choices외에 다른 입력값이 들어온 경우
+    if (textAnswer != null || fileMetadataId != null) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
+    }
+
+    // 필수 입력값인데 올바른 입력값이 아닌경우 (단일 선택)
+    if (isRequired&&choices.size()!=1) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
   }
 
   /** 다중 선택 질문 응답객체 validation */
-  private void validateMultipleChoiceAnswer() {
-    if (choices.isEmpty() || textAnswer != null || fileMetadataId != null) {
+  private void validateMultipleChoiceAnswer(Boolean isRequired) {
+    if (textAnswer != null || fileMetadataId != null) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
+    }
+
+    // 필수 입력값인데 올바른 입력값이 아닌경우 (다중 선택)
+    if (isRequired && choices.isEmpty()) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
   }
 
   /** 파일 질문 응답객체 validation */
-  private void validateFileAnswer() {
-    if (fileMetadataId == null
-        || fileMetadataId.isBlank()
-        || textAnswer != null
+  private void validateFileAnswer(Boolean isRequired) {
+    if (textAnswer != null
         || !choices.isEmpty()) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
+    }
+
+    // 필수 입력값인데 비어있는 경우
+    if (isRequired && fileMetadataId == null) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
   }
