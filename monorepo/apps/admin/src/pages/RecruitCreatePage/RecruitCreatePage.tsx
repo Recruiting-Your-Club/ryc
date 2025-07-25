@@ -1,6 +1,6 @@
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { act, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button, Stepper } from '@ssoc/ui';
 import { useStepper } from '@ssoc/ui';
@@ -67,9 +67,51 @@ function RecruitCreatePage() {
     // form hooks
     // query hooks
     // calculated values
+
+    //--------Step별 유효성 검사--------//
+    //step1 검사
     const isDescriptionStepValid = useMemo(() => {
-        return Object.values(recruitDetailInfo).every((value) => value !== '');
-    }, [recruitDetailInfo]);
+        return (
+            recruitDetailInfo.recruitmentSubject.trim() !== '' &&
+            recruitDetailInfo.documentPeriod.trim() !== ''
+        );
+    }, [recruitDetailInfo.recruitmentSubject, recruitDetailInfo.documentPeriod]);
+
+    //step2 감시
+    const isBasicInfoStepValid = useMemo(() => {
+        return questions.every((question) => {
+            if (question.title.trim() === '') return false;
+
+            if (question.type === 'multiple' || question.type === 'single') {
+                if (!question.options || question.options.length === 0) return false;
+                return question.options.every((option) => option.text.trim() !== '');
+            }
+
+            return true;
+        });
+    }, [questions]);
+
+    //step3 검사
+    const isPersonalStatementStepValid = useMemo(() => {
+        return applicationQuestions.every((question) => {
+            return question.title.trim() !== '';
+        });
+    }, [applicationQuestions]);
+
+    //종합
+    const isCurrentStepValid = () => {
+        switch (activeStep) {
+            case 0:
+                return isDescriptionStepValid;
+            case 1:
+                return isBasicInfoStepValid;
+            case 2:
+                return isPersonalStatementStepValid;
+            default:
+                return true;
+        }
+    };
+    //-----------------------------//
 
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
@@ -151,7 +193,7 @@ function RecruitCreatePage() {
                     <Button onClick={prev} disabled={isFirst}>
                         이전
                     </Button>
-                    <Button onClick={next} disabled={!isDescriptionStepValid}>
+                    <Button onClick={next} disabled={!isCurrentStepValid()}>
                         {isLast ? '완료' : '다음'}
                     </Button>
                 </div>

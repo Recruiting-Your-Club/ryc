@@ -17,7 +17,7 @@ export const s_requiredLabel = css`
 `;
 
 export const s_labelDescription = css`
-    ${theme.typography.captionRegular}
+    ${theme.typography.subCaptionRegular}
     color: ${theme.colors.gray[800]};
-    margin-top: 0.7rem;
+    margin-top: 0.5rem;
 `;
