@@ -1,6 +1,6 @@
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button, Stepper } from '@ssoc/ui';
 import { useStepper } from '@ssoc/ui';
@@ -67,6 +67,10 @@ function RecruitCreatePage() {
     // form hooks
     // query hooks
     // calculated values
+    const isDescriptionStepValid = useMemo(() => {
+        return Object.values(recruitDetailInfo).every((value) => value !== '');
+    }, [recruitDetailInfo]);
+
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
         setRecruitDetailInfo((prev) => ({
@@ -147,7 +151,9 @@ function RecruitCreatePage() {
                     <Button onClick={prev} disabled={isFirst}>
                         이전
                     </Button>
-                    <Button onClick={next}>{isLast ? '완료' : '다음'}</Button>
+                    <Button onClick={next} disabled={!isDescriptionStepValid}>
+                        {isLast ? '완료' : '다음'}
+                    </Button>
                 </div>
             </div>
         </div>

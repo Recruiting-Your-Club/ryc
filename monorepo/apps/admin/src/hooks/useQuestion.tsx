@@ -7,16 +7,7 @@ const DEFAULT_OPTIONS = [
 ];
 
 export const useQuestion = () => {
-    const [questions, setQuestions] = useState<QuestionProps[]>([
-        { id: '1', type: 'short', title: '', required: false },
-        {
-            id: '2',
-            type: 'single',
-            title: '',
-            options: [...DEFAULT_OPTIONS],
-            required: false,
-        },
-    ]);
+    const [questions, setQuestions] = useState<QuestionProps[]>([]);
 
     const [applicationQuestions, setApplicationQuestions] = useState<QuestionProps[]>([]);
 

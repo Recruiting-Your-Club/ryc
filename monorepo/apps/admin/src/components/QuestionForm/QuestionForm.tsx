@@ -59,7 +59,7 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
         updateQuestion(question.id, { options: filtered });
     };
 
-    if (question.type === 'short') {
+    if (question.type === 'short' || question.type === 'file') {
         return (
             <div css={s_questionContainer}>
                 <Input
