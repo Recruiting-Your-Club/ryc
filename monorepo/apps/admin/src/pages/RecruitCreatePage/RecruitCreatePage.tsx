@@ -1,8 +1,10 @@
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
 import React, { act, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import { Button, Stepper } from '@ssoc/ui';
+import { useRouter } from '@ssoc/hooks';
+import { Button, Dialog, Stepper } from '@ssoc/ui';
 import { useStepper } from '@ssoc/ui';
 
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
@@ -25,6 +27,8 @@ function RecruitCreatePage() {
         INITIALRECRUITSTEP,
     );
 
+    const { removeHistoryAndGo } = useRouter();
+
     const {
         questions,
         addQuestion,
@@ -36,10 +40,14 @@ function RecruitCreatePage() {
         removeApplicationQuestion,
         updateApplicationQuestion,
     } = useQuestion();
+
+    const location = useLocation();
+
     // initial values
 
     // state, ref, querystring hooks
     const containerRef = useRef<HTMLDivElement>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
@@ -125,6 +133,19 @@ function RecruitCreatePage() {
         setRecuritFiles(recruitFiles);
     };
 
+    const handleNextClick = () => {
+        if (isLast) {
+            setIsDialogOpen(true);
+        } else {
+            next();
+        }
+    };
+
+    const handleConfirmSubmit = () => {
+        const currentPath = location.pathname;
+        removeHistoryAndGo(`${currentPath}/success`);
+    };
+
     // effects
     useEffect(() => {
         containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -193,9 +214,25 @@ function RecruitCreatePage() {
                     <Button onClick={prev} disabled={isFirst}>
                         이전
                     </Button>
-                    <Button onClick={next} disabled={!isCurrentStepValid()}>
+                    <Button onClick={handleNextClick} disabled={!isCurrentStepValid()}>
                         {isLast ? '완료' : '다음'}
                     </Button>
+                    <Dialog
+                        open={isDialogOpen}
+                        handleClose={() => {
+                            setIsDialogOpen(false);
+                        }}
+                    >
+                        <Dialog.Header closeIcon handleClose={() => setIsDialogOpen(false)}>
+                            모집 공고 제출 확인
+                        </Dialog.Header>
+                        <Dialog.Content>
+                            정말 모집 공고를 제출하시겠습니까? 모집이 시작된 후 수정이 불가능합니다.
+                        </Dialog.Content>
+                        <Dialog.Action border position="end">
+                            <Button onClick={handleConfirmSubmit}>공고 생성</Button>
+                        </Dialog.Action>
+                    </Dialog>
                 </div>
             </div>
         </div>
