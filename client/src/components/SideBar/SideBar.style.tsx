@@ -255,11 +255,12 @@ export const dropdownContainer = (isExpanded: boolean) => css`
         display: none;
     `}
 `
-export const dropdownTriggerContainer = css`
-    border: none;
-    padding: 0;
-    width: 100%;
-`
+export const dropdownTriggerContainer = css` 
+    border: none; 
+    padding: 0; 
+    width: 100%; 
+    &:focus { box-shadow: none; border: none; }`
+;
 export const dropDownTriggerWrapper = css`
     display: flex;
     align-items: center;
