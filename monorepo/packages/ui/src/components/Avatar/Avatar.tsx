@@ -1,3 +1,4 @@
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
 
 import BasicImage from '@ssoc/assets/images/basicImage.png';
@@ -13,6 +14,7 @@ interface AvatarProps {
     radius?: string;
     imageURL?: string;
     imageName?: string;
+    sx?: CSSObject;
 }
 
 function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName }: AvatarProps) {
