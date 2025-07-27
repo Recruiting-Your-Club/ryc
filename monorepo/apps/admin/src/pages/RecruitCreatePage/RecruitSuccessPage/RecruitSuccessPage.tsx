@@ -3,6 +3,7 @@ import { useState } from 'react';
 import CheckCircle from '@ssoc/assets/images/check-circle.svg';
 import Copy from '@ssoc/assets/images/copy.svg';
 import ExternalLink from '@ssoc/assets/images/external-link.svg';
+import { useRouter } from '@ssoc/hooks';
 import { Button, Text, useToast } from '@ssoc/ui';
 
 import {
@@ -27,9 +28,10 @@ function RecruitSuccessPage() {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+    const { removeHistoryAndGo } = useRouter();
 
     // initial values
-    const postingUrl = 'https://ssoc.kr/recruitment/success';
+    const postingUrl = 'https://github.com/Recruiting-Your-Club/ryc';
 
     // state, ref, querystring hooks
     const [copied, setCopied] = useState(false);
@@ -49,6 +51,14 @@ function RecruitSuccessPage() {
                 position: 'topCenter',
             });
         }
+    };
+
+    const handleOpenNewRecruitTab = (url: string) => {
+        window.open(url, '_blank', 'noopener noreferrer');
+    };
+
+    const handleNavigateToAdmin = () => {
+        removeHistoryAndGo('/');
     };
 
     // effects
@@ -74,11 +84,13 @@ function RecruitSuccessPage() {
             </div>
 
             <div css={s_buttonContainer}>
-                <Button>
+                <Button onClick={() => handleOpenNewRecruitTab(postingUrl)}>
                     <ExternalLink css={s_externalLink} />
                     공고 확인하기
                 </Button>
-                <Button variant="outlined">관리자 페이지 이동</Button>
+                <Button variant="outlined" onClick={handleNavigateToAdmin}>
+                    관리자 페이지 이동
+                </Button>
             </div>
 
             <div css={s_footerContainer}>
