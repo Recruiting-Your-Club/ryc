@@ -29,7 +29,18 @@ const clubKeys = {
 };
 
 const myClubKeys = {
-  all: ['clubs'] as const,
-}
+    all: ['clubs'] as const,
+};
 
-export { clubKeys, myClubKeys };
+const applicationKeys = {
+    all: ['application'] as const,
+    detail: (id: string) => ['detail', id] as const,
+};
+
+const announcementKeys = {
+    all: ['announcement'] as const,
+    lists: (clubId: string) => [...announcementKeys.all, 'list', clubId] as const,
+    detail: (id: string) => ['detail', id] as const,
+};
+
+export { clubKeys, myClubKeys, applicationKeys, announcementKeys };
