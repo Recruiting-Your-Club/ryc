@@ -1,3 +1,4 @@
+import { InterviewEvaluationPage } from '@pages/InterviewEvaluationPage';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
             { index: true, element: <TestPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'test', element: <TestPage /> },
+            { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
         ],
     },
     {
