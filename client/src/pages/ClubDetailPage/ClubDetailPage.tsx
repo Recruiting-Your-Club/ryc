@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { ClubNavigation, Text } from '@components';
 import {
     clubDetailPageContainer,
@@ -17,6 +18,7 @@ function ClubDetailPage() {
     // prop destruction
     const location = useLocation();
     const { title, category, clubLogo } = location.state;
+    const { id: clubId } = useParams<{ id: string }>();
     // lib hooks
     // initial values
     const navigationItem = useMemo(
@@ -28,11 +30,11 @@ function ClubDetailPage() {
             },
             {
                 title: '모집 공고',
-                page: <RecruitmentPage />,
+                page: <RecruitmentPage clubId={clubId || '1'} />,
                 width: '6.4rem',
             },
         ],
-        [],
+        [clubId],
     );
 
     // state, ref, querystring hooks
