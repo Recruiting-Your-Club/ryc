@@ -42,6 +42,17 @@ public class Application {
                 applicationForm.getPreQuestions().stream())
             .collect(Collectors.toMap(Question::getId, Function.identity()));
 
+    for (Question question : questionMap.values()) {
+      if (question.isRequired()) {
+        answers.stream()
+            .filter(answer -> answer.getQuestionId().equals(question.getId()))
+            .findAny()
+            .orElseThrow(
+                () ->
+                    new BusinessRuleException(ApplicationCreateErrorCode.MISSING_REQUIRED_ANSWER));
+      }
+    }
+
     for (Answer answer : answers) {
       Question question = questionMap.get(answer.getQuestionId());
       if (question == null) {

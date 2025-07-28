@@ -45,13 +45,12 @@ public class Answer {
   /** 주관식 질문 응답객체 validation */
   private void validateTextAnswer(Boolean isRequired) {
     // textAnswer외에 다른 입력값이 들어간 경우
-    if (!choices.isEmpty()
-        || fileMetadataId != null) {
+    if (!choices.isEmpty() || fileMetadataId != null) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
 
     // 필수 입력값인데 비어있는 경우
-    if(isRequired && textAnswer == null) {
+    if (isRequired && textAnswer == null) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
   }
@@ -64,7 +63,7 @@ public class Answer {
     }
 
     // 필수 입력값인데 올바른 입력값이 아닌경우 (단일 선택)
-    if (isRequired&&choices.size()!=1) {
+    if (isRequired && choices.size() != 1) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
   }
@@ -83,8 +82,7 @@ public class Answer {
 
   /** 파일 질문 응답객체 validation */
   private void validateFileAnswer(Boolean isRequired) {
-    if (textAnswer != null
-        || !choices.isEmpty()) {
+    if (textAnswer != null || !choices.isEmpty()) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.INVALID_ANSWER_FORMAT);
     }
 
