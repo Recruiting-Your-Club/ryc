@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.applicationForm.domain.Question;
-import com.ryc.api.v2.applicationForm.domain.QuestionOption;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -26,7 +24,8 @@ public record ApplicationGetResponse(
     @Schema(description = "지원 상태", example = "PENDING") ApplicantStatus status,
     @Schema(description = "제출 일시", example = "2025-07-22T10:00:00") LocalDateTime submittedAt,
     @Schema(description = "추가 개인정보 목록") List<ApplicantPersonalInfoResponse> personalInfos,
-    @Schema(description = "답변 목록") List<AnswerResponse> answers) {
+    @Schema(description = "사전 질문 답변 목록") List<AnswerResponse> preQuestionAnswers,
+    @Schema(description = "본 질문 답변 목록") List<AnswerResponse> applicationQuestionAnswers) {
   public static ApplicationGetResponse of(
       Applicant applicant, Application application, ApplicationForm applicationForm) {
     List<ApplicantPersonalInfoResponse> personalInfoResponses =
@@ -34,25 +33,27 @@ public record ApplicationGetResponse(
             .map(ApplicantPersonalInfoResponse::from)
             .collect(Collectors.toList());
 
-    Map<String, Question> questionMap =
-        Stream.concat(
-                applicationForm.getApplicationQuestions().stream(),
-                applicationForm.getPreQuestions().stream())
+    Map<String, Question> preQuestionMap =
+        applicationForm.getPreQuestions().stream()
             .collect(Collectors.toMap(Question::getId, Function.identity()));
 
-    Map<String, QuestionOption> optionMap =
-        Stream.concat(
-                applicationForm.getApplicationQuestions().stream(),
-                applicationForm.getPreQuestions().stream())
-            .flatMap(q -> q.getOptions().stream())
-            .collect(Collectors.toMap(QuestionOption::getId, Function.identity()));
+    Map<String, Question> applicationQuestionMap =
+        applicationForm.getApplicationQuestions().stream()
+            .collect(Collectors.toMap(Question::getId, Function.identity()));
 
-    List<AnswerResponse> answerResponses =
+    List<AnswerResponse> preQuestionAnswers =
         application.getAnswers().stream()
+            .filter(answer -> preQuestionMap.containsKey(answer.getQuestionId()))
+            .map(answer -> AnswerResponse.of(answer, preQuestionMap.get(answer.getQuestionId())))
+            .toList();
+
+    List<AnswerResponse> applicationQuestionAnswers =
+        application.getAnswers().stream()
+            .filter(answer -> applicationQuestionMap.containsKey(answer.getQuestionId()))
             .map(
                 answer ->
-                    AnswerResponse.of(answer, questionMap.get(answer.getQuestionId()), optionMap))
-            .collect(Collectors.toList());
+                    AnswerResponse.of(answer, applicationQuestionMap.get(answer.getQuestionId())))
+            .toList();
 
     return ApplicationGetResponse.builder()
         .applicantId(applicant.getId())
@@ -61,7 +62,8 @@ public record ApplicationGetResponse(
         .status(applicant.getStatus())
         .submittedAt(application.getCreatedAt()) // Assuming Application has createdAt
         .personalInfos(personalInfoResponses)
-        .answers(answerResponses)
+        .preQuestionAnswers(preQuestionAnswers)
+        .applicationQuestionAnswers(applicationQuestionAnswers)
         .build();
   }
 }
