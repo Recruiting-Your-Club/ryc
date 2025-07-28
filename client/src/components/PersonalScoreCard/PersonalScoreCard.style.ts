@@ -32,4 +32,5 @@ export const evaluatorSection = css`
 export const ratingSection = css`
     flex: 6;
     display: flex;
+    justify-content: end;
 `;

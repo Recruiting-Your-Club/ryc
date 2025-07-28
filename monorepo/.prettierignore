@@ -1,0 +1,10 @@
+node_modules
+dist
+.turbo
+build
+*.d.ts
+yarn.lock
+**/dist/
+**/build/
+**/node_modules/
+**/public/

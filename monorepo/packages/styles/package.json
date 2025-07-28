@@ -1,0 +1,21 @@
+{
+    "name": "@ssoc/styles",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.13.0",
+        "@ssoc/assets": "workspace:*"
+    },
+    "devDependencies": {
+        "typescript": "^4.4.2"
+    }
+}

@@ -1,20 +1,15 @@
 package com.ryc.api.v2.announcement.presentation.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 /**
- * @param thumbnailImageUrl 썸네일 url
- * @param imageUrl 이미지 url
  * @brief 이미지 Request Dto
  */
 @Builder
 public record ImageRequest(
-    @Schema(description = "썸네일 이미지 URL", example = "https://example.com/thumbnail.jpg")
-        @NotEmpty(message = "thumbnailImageUrl shouldn't be empty")
-        String thumbnailImageUrl,
-    @Schema(description = "원본 이미지 URL", example = "https://example.com/image.jpg")
-        @NotEmpty(message = "imageUrl shouldn't be empty")
-        String imageUrl) {}
+    @NotBlank(message = "imageMetaDataId shouldn't be blank")
+        @Schema(description = "이미지 meta data id", example = "e223e4567-e89b-12d3-a456-426614174000")
+        String imageMetaDataId) {}

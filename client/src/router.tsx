@@ -7,6 +7,7 @@ import {
     ClubCreatePage,
     DetailLoadingPage,
     DocumentEvaluationPage,
+    InterviewEvaluationPage,
     LoginPage,
     MainLoadingPage,
     RecruitmentPage,

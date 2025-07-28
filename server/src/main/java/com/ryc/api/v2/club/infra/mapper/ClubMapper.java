@@ -1,6 +1,6 @@
 package com.ryc.api.v2.club.infra.mapper;
 
-import com.ryc.api.v2.club.domain.vo.Club;
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 public class ClubMapper {
@@ -10,17 +10,16 @@ public class ClubMapper {
 
   public static ClubEntity toEntity(Club club) {
     return ClubEntity.builder()
-        .id(club.id())
-        .name(club.name())
-        .shortDescription(club.shortDescription())
-        .detailDescription(club.detailDescription())
-        .imageUrl(club.imageUrl())
-        .thumbnailUrl(club.thumbnailUrl())
-        .category(club.category())
-        .clubTags(club.clubTags())
-        .clubSummaries(club.clubSummaries())
-        .clubDetailImages(club.clubDetailImages())
-        .deleted(club.deleted())
+        .id(club.getId())
+        .name(club.getName())
+        .shortDescription(club.getShortDescription())
+        .detailDescription(club.getDetailDescription())
+        .imageUrl(club.getImageUrl())
+        .thumbnailUrl(club.getThumbnailUrl())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .clubSummaries(club.getClubSummaries())
+        .clubDetailImages(club.getClubDetailImages())
         .build();
   }
 
@@ -36,9 +35,6 @@ public class ClubMapper {
         .clubTags(clubEntity.getClubTags())
         .clubSummaries(clubEntity.getClubSummaries())
         .clubDetailImages(clubEntity.getClubDetailImages())
-        .createdAt(clubEntity.getCreatedAt())
-        .updatedAt(clubEntity.getUpdatedAt())
-        .deleted(clubEntity.getDeleted())
         .build();
   }
 }

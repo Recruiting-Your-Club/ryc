@@ -16,7 +16,7 @@ export const fadeInScale = keyframes`
 
 export const tooltipContainter = css`
     position: relative;
-    display: inline-block;
+    display: inline-flex;
 `;
 
 export const positionStyles: Record<Direction, CSSObject> = {
@@ -68,10 +68,11 @@ export const tooltipStyle = (direction: Direction) => css`
     color: ${theme.colors.white};
     padding: 0.8rem 1rem;
     border-radius: 5px;
-    max-width: 20rem;
+    min-width: 10rem;
     white-space: nowrap;
     z-index: 999;
     animation: ${fadeInScale} 0.2s ease-in-out;
     ${theme.typography.subCaptionRegular};
+    text-align: center;
     ${positionStyles[direction]};
 `;

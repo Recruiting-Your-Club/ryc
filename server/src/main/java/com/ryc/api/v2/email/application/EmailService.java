@@ -1,0 +1,139 @@
+package com.ryc.api.v2.email.application;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ryc.api.v2.email.domain.Email;
+import com.ryc.api.v2.email.domain.EmailRepository;
+import com.ryc.api.v2.email.domain.EmailSentStatus;
+import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
+import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
+import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+import com.ryc.api.v2.interview.service.InterviewService;
+import com.ryc.api.v2.role.domain.enums.Role;
+
+@Service
+public class EmailService {
+
+  private final String baseUri;
+  private final String linkHtmlTemplate;
+  private final InterviewService interviewService;
+  private final EmailRepository emailRepository;
+
+  public EmailService(
+      @Value("${LOCAL_CLIENT_URL}") String baseUri,
+      EmailRepository emailRepository,
+      InterviewService interviewService,
+      ResourceLoader resourceLoader)
+      throws IOException {
+    this.baseUri = baseUri + "/reservation";
+    this.emailRepository = emailRepository;
+    this.interviewService = interviewService;
+
+    Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
+    try (InputStream is = resource.getInputStream()) {
+      this.linkHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
+  }
+
+  @Transactional
+  public List<EmailSendResponse> createEmails(
+      String adminId, String announcementId, EmailSendRequest body) {
+
+    List<Email> emails =
+        body.recipients().stream()
+            .map(
+                recipient ->
+                    Email.initialize(
+                        recipient, body.subject(), body.content(), announcementId, adminId))
+            .toList();
+
+    List<Email> savedEmails = emailRepository.saveAll(emails);
+    return savedEmails.stream()
+        .map(
+            email ->
+                EmailSendResponse.builder()
+                    .emailId(email.id())
+                    .status(email.status())
+                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
+                    .build())
+        .toList();
+  }
+
+  @Transactional
+  public List<EmailSendResponse> createInterviewDateEmails(
+      String adminId, String announcementId, InterviewEmailSendRequest body) {
+
+    List<Email> emails =
+        createEmailsWithEachLink(
+            adminId,
+            announcementId,
+            body.emailSendRequest().recipients(),
+            body.emailSendRequest().subject(),
+            body.emailSendRequest().content());
+
+    interviewService.createInterview(
+        adminId, announcementId, body.numberOfPeopleByInterviewDates());
+
+    List<Email> savedEmails = emailRepository.saveAll(emails);
+    return savedEmails.stream()
+        .map(
+            email ->
+                EmailSendResponse.builder()
+                    .emailId(email.id())
+                    .status(email.status())
+                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
+                    .build())
+        .toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<Email> findPendingEmails() {
+    return emailRepository.findPendingEmails(
+        PageRequest.of(
+            0, 50, Sort.by("createdAt").descending().and(Sort.by("retryCount").descending())));
+  }
+
+  @Transactional
+  public void updateStatus(Email email, EmailSentStatus status) {
+    Email updatedEmail = email.updateStatus(status);
+    emailRepository.save(updatedEmail);
+  }
+
+  @Transactional
+  public void incrementRetryCount(Email email) {
+    Email updatedEmail = email.incrementRetryCount();
+    emailRepository.save(updatedEmail);
+  }
+
+  private List<Email> createEmailsWithEachLink(
+      String adminId,
+      String announcementId,
+      List<String> recipients,
+      String subject,
+      String content) {
+    List<Email> emails = new ArrayList<>();
+
+    for (String recipient : recipients) {
+      String link =
+          String.format(
+              "%s?admin-id=%s&announcement-id=%s&recipient=%s",
+              baseUri, adminId, announcementId, recipient);
+      String linkHtml = String.format(linkHtmlTemplate, link);
+
+      emails.add(Email.initialize(recipient, subject, linkHtml + content, announcementId, adminId));
+    }
+    return emails;
+  }
+}
