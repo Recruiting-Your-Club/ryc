@@ -1,9 +1,9 @@
 package com.ryc.api.v2.application.infra.jpa;
 
-import com.ryc.api.v2.application.infra.entity.AnswerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.ryc.api.v2.application.infra.entity.AnswerEntity;
+
 @Repository
-public interface AnswerJpaRepository extends JpaRepository<AnswerEntity, String> {
-}
+public interface AnswerJpaRepository extends JpaRepository<AnswerEntity, String> {}
