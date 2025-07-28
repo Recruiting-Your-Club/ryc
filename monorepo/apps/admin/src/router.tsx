@@ -1,7 +1,14 @@
 import { createBrowserRouter } from 'react-router';
 
-import { ManagerLayout } from './layouts';
-import { LoginPage, NotFoundPage, RegisterPage, TestPage } from './pages';
+import { EntryLayout, ManagerLayout } from './layouts';
+import {
+    ClubCreatePage,
+    ClubSearchPage,
+    LoginPage,
+    NotFoundPage,
+    RegisterPage,
+    TestPage,
+} from './pages';
 
 const router = createBrowserRouter([
     {
@@ -10,9 +17,19 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <TestPage /> },
             { path: '*', element: <NotFoundPage /> },
+            { path: 'test', element: <TestPage /> },
+        ],
+    },
+    {
+        path: '/',
+        element: <EntryLayout />,
+        children: [
+            { index: true, element: <TestPage /> },
+            { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
-            { path: 'test', element: <TestPage /> },
+            { path: 'club-create', element: <ClubCreatePage /> },
+            { path: 'club-search', element: <ClubSearchPage /> },
         ],
     },
 ]);

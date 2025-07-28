@@ -2,7 +2,7 @@ import ChevronLeft from '@assets/images/chevronLeft.svg';
 import ChevronRight from '@assets/images/chevronRight.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { Button, Dialog, Divider, DocumentBox, PersonalScoreCard, Rating, Text } from '@components';
-import { evaluation } from '@constants/ApplicantDialog';
+import { evaluation } from '@constants/applicantDialog';
 import React, { useState } from 'react';
 import {
     chevronSvgCss,

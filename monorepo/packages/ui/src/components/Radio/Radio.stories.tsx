@@ -9,7 +9,7 @@ const meta: Meta<typeof Radio> = {
     parameters: {
         docs: {
             description: {
-                component: '공용 라디오 컴포넌트입니다.',
+                component: '공용 라디오 컴포넌트입니다. size: xs, s, md, lg, xl, full 지원',
             },
         },
     },
@@ -28,6 +28,7 @@ export const Primary = () => {
             value={value}
             onChange={setValue}
             orientation="horizontal"
+            size="md"
         />
     );
 };
@@ -116,6 +117,91 @@ export const NoLabelRadio = () => {
             value={value}
             onChange={setValue}
             orientation="horizontal"
+        />
+    );
+};
+
+export const SizeXs = () => {
+    const [value, setValue] = useState('1');
+    return (
+        <Radio
+            options={[
+                { label: 'XS', value: '1' },
+                { label: 'XS2', value: '2' },
+            ]}
+            name="sizeXs"
+            value={value}
+            onChange={setValue}
+            orientation="horizontal"
+            size="xs"
+        />
+    );
+};
+
+export const SizeS = () => {
+    const [value, setValue] = useState('1');
+    return (
+        <Radio
+            options={[
+                { label: 'S', value: '1' },
+                { label: 'S2', value: '2' },
+            ]}
+            name="sizeS"
+            value={value}
+            onChange={setValue}
+            orientation="horizontal"
+            size="sm"
+        />
+    );
+};
+
+export const SizeMd = () => {
+    const [value, setValue] = useState('1');
+    return (
+        <Radio
+            options={[
+                { label: 'MD', value: '1' },
+                { label: 'MD2', value: '2' },
+            ]}
+            name="sizeMd"
+            value={value}
+            onChange={setValue}
+            orientation="horizontal"
+            size="md"
+        />
+    );
+};
+
+export const SizeLg = () => {
+    const [value, setValue] = useState('1');
+    return (
+        <Radio
+            options={[
+                { label: 'LG', value: '1' },
+                { label: 'LG2', value: '2' },
+            ]}
+            name="sizeLg"
+            value={value}
+            onChange={setValue}
+            orientation="horizontal"
+            size="lg"
+        />
+    );
+};
+
+export const SizeXl = () => {
+    const [value, setValue] = useState('1');
+    return (
+        <Radio
+            options={[
+                { label: 'XL', value: '1' },
+                { label: 'XL2', value: '2' },
+            ]}
+            name="sizeXl"
+            value={value}
+            onChange={setValue}
+            orientation="horizontal"
+            size="xl"
         />
     );
 };

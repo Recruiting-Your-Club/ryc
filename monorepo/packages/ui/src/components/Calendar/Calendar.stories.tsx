@@ -13,7 +13,7 @@ const meta: Meta<typeof Calendar> = {
         layout: 'fullscreen',
         docs: {
             description: {
-                component: 'SideBar 컴포넌트입니다.',
+                component: '캘린더 컴포넌트입니다.',
             },
         },
     },
@@ -35,16 +35,16 @@ export const Default: Story = {
         );
     },
     args: {
-        isMultiple: true,
+        mode: 'single',
         size: 'lg',
         border: true,
         shadow: true,
         disabled: false,
     },
     argTypes: {
-        isMultiple: {
-            control: {
-                type: 'boolean',
+        mode: {
+            radio: {
+                options: ['single', 'multiple', 'range', 'custom'],
             },
         },
         size: {

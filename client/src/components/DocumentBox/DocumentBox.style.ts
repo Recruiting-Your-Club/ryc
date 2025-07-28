@@ -3,6 +3,7 @@ import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';
 
 export const contentContainer = (index: number) => css`
+    width: 100%;
     display: flex;
     flex-direction: column;
     border-radius: 8px;

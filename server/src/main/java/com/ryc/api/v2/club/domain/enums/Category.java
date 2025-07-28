@@ -1,6 +1,12 @@
 package com.ryc.api.v2.club.domain.enums;
 
+import com.ryc.api.v2.common.exception.code.ClubErrorCode;
+import com.ryc.api.v2.common.exception.custom.ClubException;
+
+import lombok.Getter;
+
 /** 동아리 대분류 */
+@Getter
 public enum Category {
   PERFORMANCE_ARTS("공연분과"),
   CULTURE("문화분과"),
@@ -15,7 +21,13 @@ public enum Category {
     this.koreanName = koreanName;
   }
 
-  public String getKoreanName() {
-    return koreanName;
+  public static Category from(String category) {
+    for (Category c : Category.values()) {
+      // 대소문자 구분 없이 비교
+      if (c.toString().equalsIgnoreCase(category)) {
+        return c;
+      }
+    }
+    throw new ClubException(ClubErrorCode.CLUB_CATEGORY_NOT_FOUND);
   }
 }

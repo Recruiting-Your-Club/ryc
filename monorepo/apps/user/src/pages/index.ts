@@ -5,3 +5,5 @@ export * from './MainPage';
 export * from './NotFoundPage';
 export * from './RecruitmentPage';
 export * from './TestPage';
+export * from './LoadingPage';
+export * from './ReservationPage';
