@@ -23,9 +23,8 @@ queryClient.prefetchQueries({
 })
 */
 
-const clubKeys = {
+const myClubKeys = {
     all: ['clubs'] as const,
-    detail: (id: string) => ['detail', id] as const,
 };
 
-export { clubKeys };
+export { myClubKeys };

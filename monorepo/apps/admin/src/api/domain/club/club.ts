@@ -1,17 +1,12 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { AllClub, Club } from './types';
+import type { MyClubResponse } from './types';
 
-async function getAllClubs(): Promise<AllClub[]> {
+async function getMyClub(): Promise<MyClubResponse[]> {
     const response = await httpRequest.get({
-        url: 'clubs',
+        url: 'clubs/my',
+        isAuthRequire: true,
     });
-    return response as AllClub[];
-}
-async function getClub(id: string): Promise<Club> {
-    const response = await httpRequest.get({
-        url: `clubs/${id}`,
-    });
-    return response as Club;
+    return response as MyClubResponse[];
 }
 
-export { getAllClubs, getClub };
+export { getMyClub };
