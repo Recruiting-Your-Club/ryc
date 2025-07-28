@@ -17,8 +17,8 @@ interface AvatarProps {
     sx?: CSSObject;
 }
 
-function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName }: AvatarProps) {
-    const cssProp = [s_size(size)];
+function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName, sx }: AvatarProps) {
+    const cssProp = [s_size(size), sx];
 
     if (shape) cssProp.push(s_shape(shape, radius));
 
