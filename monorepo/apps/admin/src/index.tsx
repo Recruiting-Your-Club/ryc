@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 
 dayjs.locale('ko'); // dayjs를 한국기준으로 설정'
 async function initializeApp() {
-    if (process.env.API_MOKING === 'enabled') {
+    if (process.env.API_MOCKING === 'enabled') {
         await browserServer.start();
     }
 
