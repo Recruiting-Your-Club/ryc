@@ -12,7 +12,7 @@ export interface Question {
     options?: string[];
 }
 
-export interface Announcement {
+export interface AnnouncementSummary {
     announcementId: string;
     title: string;
     summaryDescription: string;
@@ -22,4 +22,37 @@ export interface Announcement {
     applicationStartDate: string;
     applicationEndDate: string;
     tags: string[];
+}
+
+export interface Period {
+    startDate: string;
+    endDate: string;
+}
+
+export interface Image {
+    id: string;
+    fileMetadataId: string;
+    originUrl: string;
+    thumbnailUrl: string;
+    ContentType: string;
+}
+
+export interface Announcement {
+    id: string;
+    title: string;
+    summaryDescription: string;
+    detailDescription: string;
+    target: string;
+    announcementStatus: string;
+    announcementType: string;
+    hasInterview: boolean;
+    activityPeriod: string;
+    numberOfPeople: string;
+    applicationPeriod: Period;
+    interviewPeriod: Period;
+    documentResultPeriod: Period;
+    finalResultPeriod: Period;
+    applicationForm: ApplicationForm;
+    tags: string[];
+    images: Image[];
 }
