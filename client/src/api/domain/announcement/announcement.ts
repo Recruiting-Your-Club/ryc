@@ -1,5 +1,5 @@
 import { httpRequest } from '@api/common/httpRequest';
-import { ApplicationForm, Announcement } from './types';
+import { ApplicationForm, Announcement, AnnouncementSummary } from './types';
 
 async function getApplicationForm(): Promise<ApplicationForm> {
     const response = await httpRequest.get({
@@ -8,11 +8,18 @@ async function getApplicationForm(): Promise<ApplicationForm> {
     return response as ApplicationForm;
 }
 
-async function getAnnouncementList(clubId: string): Promise<Announcement[]> {
+async function getAnnouncementList(clubId: string): Promise<AnnouncementSummary[]> {
     const response = await httpRequest.get({
         url: `clubs/${clubId}/announcements`,
     });
-    return response as Announcement[];
+    return response as AnnouncementSummary[];
 }
 
-export { getApplicationForm, getAnnouncementList };
+async function getAnnouncementDetail(announcementId: string): Promise<Announcement> {
+    const response = await httpRequest.get({
+        url: `announcements/${announcementId}`,
+    });
+    return response as Announcement;
+}
+
+export { getApplicationForm, getAnnouncementList, getAnnouncementDetail };
