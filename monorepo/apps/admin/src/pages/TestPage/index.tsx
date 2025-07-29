@@ -9,7 +9,7 @@ function TestPage() {
                 <Dropdown.Trigger asChild>
                     <Button>hello</Button>
                 </Dropdown.Trigger>
-                <Dropdown.Content>
+                <Dropdown.Content offsetY={-8}>
                     <Dropdown.Item>1</Dropdown.Item>
                     <Dropdown.Item>1</Dropdown.Item>
                     <Dropdown.Item>1</Dropdown.Item>
