@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { RecruitCard, RecruitDialog, Text } from '@components';
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
@@ -7,21 +7,28 @@ import { announcementQueries } from '@api/queryFactory';
 import { RecruitmentPageProps } from '../\btypes';
 
 function RecruitmentPage({ clubId }: RecruitmentPageProps) {
-    // prop destruction
-    // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
-    // initial values
-    // state, ref, querystring hooks
-    // form hooks
-    // query hooks
+    const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null);
+
     const {
         data: announcements,
         isLoading,
         error,
     } = useQuery(announcementQueries.getAnnouncementList(clubId));
-    // calculated values
-    // handlers
-    // effects
+
+    const { data: selectedAnnouncementDetail, isLoading: isDetailLoading } = useQuery({
+        ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId || ''),
+    });
+
+    const handleCardClick = (announcementId: string) => {
+        setSelectedAnnouncementId(announcementId);
+        openDialog();
+    };
+
+    const handleDialogClose = () => {
+        closeDialog();
+        setSelectedAnnouncementId(null);
+    };
 
     if (isLoading) {
         return (
@@ -50,7 +57,7 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
                                 content={announcement.summaryDescription}
                                 deadline={announcement.applicationEndDate}
                                 hashtags={announcement.tags}
-                                onClick={openDialog}
+                                onClick={() => handleCardClick(announcement.announcementId)}
                             />
                         </div>
                     ))
@@ -58,7 +65,13 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
                     <Text>등록된 공고가 없습니다.</Text>
                 )}
             </div>
-            {open && <RecruitDialog open={open} handleClose={closeDialog} />}
+            {open && selectedAnnouncementDetail && (
+                <RecruitDialog
+                    open={open}
+                    handleClose={handleDialogClose}
+                    announcementDetail={selectedAnnouncementDetail}
+                />
+            )}
         </>
     );
 }
