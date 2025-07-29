@@ -1,0 +1,207 @@
+[
+    {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "title": "2025년도 상반기 신입 모집",
+        "summaryDescription": "코딩 동아리에서 신입 회원을 모집합니다.",
+        "detailDescription": "자세한 모집 내용은 다음과 같습니다. 우리 동아리는 웹 개발과 백엔드 개발에 관심 있는 학생들을 모집합니다. React, Node.js, Python 등을 다루며 실제 프로젝트를 진행합니다.",
+        "target": "컴퓨터공학과 학생",
+        "announcementStatus": "RECRUITING",
+        "announcementType": "ALWAYS_OPEN",
+        "hasInterview": true,
+        "activityPeriod": "2025년 3월 ~ 12월",
+        "numberOfPeople": "10명",
+        "applicationPeriod": {
+            "startDate": "2025-06-01T09:00",
+            "endDate": "2025-06-30T18:00"
+        },
+        "interviewPeriod": {
+            "startDate": "2025-07-01T09:00",
+            "endDate": "2025-07-15T18:00"
+        },
+        "documentResultPeriod": {
+            "startDate": "2025-07-16T09:00",
+            "endDate": "2025-07-20T18:00"
+        },
+        "finalResultPeriod": {
+            "startDate": "2025-07-25T09:00",
+            "endDate": "2025-07-30T18:00"
+        },
+        "applicationForm": {
+            "applicationQuestions": [
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174000",
+                    "type": "LONG_ANSWER",
+                    "label": "자신의 개발 경험을 적어주세요.",
+                    "isRequired": true,
+                    "options": null
+                },
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174001",
+                    "type": "MULTIPLE_CHOICE",
+                    "label": "가장 관심 있는 개발 분야를 선택해주세요.",
+                    "isRequired": true,
+                    "options": ["프론트엔드", "백엔드", "모바일 앱", "AI/ML"]
+                }
+            ],
+            "preQuestions": [
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174002",
+                    "type": "SHORT_ANSWER",
+                    "label": "GitHub 계정이 있나요?",
+                    "isRequired": true,
+                    "options": null
+                }
+            ],
+            "personalInfoQuestions": ["NAME", "EMAIL", "PHONE"]
+        },
+        "tags": ["프로그래밍", "웹개발", "백엔드"],
+        "images": [
+            {
+                "id": "123e4567-e89b-12d3-a456-426614174000",
+                "fileMetadataId": "123e4567-e89b-12d3-a456-426614174000",
+                "originUrl": "announcements/uuid/images/uuid_filename.jpg",
+                "thumbnailUrl": "announcements/uuid/images/uuid_thumbnail.jpg",
+                "ContentType": "image/jpeg"
+            }
+        ]
+    },
+    {
+        "id": "456e7890-e89b-12d3-a456-426614174001",
+        "title": "디자인 스튜디오 동아리 모집",
+        "summaryDescription": "창의적인 디자인을 함께 만들어갈 멤버를 찾습니다.",
+        "detailDescription": "우리 디자인 스튜디오는 UI/UX 디자인과 그래픽 디자인에 관심 있는 학생들을 모집합니다. Figma, Adobe Creative Suite 등을 활용하여 실제 프로젝트를 진행합니다.",
+        "target": "디자인학과 학생",
+        "announcementStatus": "RECRUITING",
+        "announcementType": "LIMITED_TIME",
+        "hasInterview": false,
+        "activityPeriod": "2025년 3월 ~ 8월",
+        "numberOfPeople": "5명",
+        "applicationPeriod": {
+            "startDate": "2025-05-15T10:00",
+            "endDate": "2025-07-15T17:00"
+        },
+        "interviewPeriod": {
+            "startDate": "2025-07-16T10:00",
+            "endDate": "2025-07-20T17:00"
+        },
+        "documentResultPeriod": {
+            "startDate": "2025-07-21T10:00",
+            "endDate": "2025-07-25T17:00"
+        },
+        "finalResultPeriod": {
+            "startDate": "2025-07-26T10:00",
+            "endDate": "2025-07-30T17:00"
+        },
+        "applicationForm": {
+            "applicationQuestions": [
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174003",
+                    "type": "LONG_ANSWER",
+                    "label": "디자인 포트폴리오를 설명해주세요.",
+                    "isRequired": true,
+                    "options": null
+                },
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174004",
+                    "type": "MULTIPLE_CHOICE",
+                    "label": "주로 사용하는 디자인 도구는 무엇인가요?",
+                    "isRequired": true,
+                    "options": ["Figma", "Adobe XD", "Sketch", "Photoshop/Illustrator"]
+                }
+            ],
+            "preQuestions": [
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174005",
+                    "type": "SHORT_ANSWER",
+                    "label": "디자인 경험이 있나요?",
+                    "isRequired": false,
+                    "options": null
+                }
+            ],
+            "personalInfoQuestions": ["NAME", "EMAIL"]
+        },
+        "tags": ["디자인", "UI/UX", "그래픽디자인"],
+        "images": [
+            {
+                "id": "456e7890-e89b-12d3-a456-426614174001",
+                "fileMetadataId": "456e7890-e89b-12d3-a456-426614174001",
+                "originUrl": "announcements/uuid/images/design_studio.jpg",
+                "thumbnailUrl": "announcements/uuid/images/design_studio_thumb.jpg",
+                "ContentType": "image/jpeg"
+            }
+        ]
+    },
+    {
+        "id": "789e0123-e89b-12d3-a456-426614174002",
+        "title": "AI 연구 동아리 신입 모집",
+        "summaryDescription": "인공지능과 머신러닝에 관심 있는 학생들을 모집합니다.",
+        "detailDescription": "AI 연구 동아리는 딥러닝, 머신러닝, 데이터 분석에 관심 있는 학생들을 모집합니다. Python, TensorFlow, PyTorch 등을 활용하여 연구 프로젝트를 진행합니다.",
+        "target": "전산학과, 수학과 학생",
+        "announcementStatus": "CLOSED",
+        "announcementType": "LIMITED_TIME",
+        "hasInterview": true,
+        "activityPeriod": "2025년 3월 ~ 12월",
+        "numberOfPeople": "8명",
+        "applicationPeriod": {
+            "startDate": "2025-04-01T09:00",
+            "endDate": "2025-05-31T18:00"
+        },
+        "interviewPeriod": {
+            "startDate": "2025-06-01T09:00",
+            "endDate": "2025-06-10T18:00"
+        },
+        "documentResultPeriod": {
+            "startDate": "2025-06-11T09:00",
+            "endDate": "2025-06-15T18:00"
+        },
+        "finalResultPeriod": {
+            "startDate": "2025-06-16T09:00",
+            "endDate": "2025-06-20T18:00"
+        },
+        "applicationForm": {
+            "applicationQuestions": [
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174006",
+                    "type": "LONG_ANSWER",
+                    "label": "AI/ML 관련 프로젝트 경험을 설명해주세요.",
+                    "isRequired": true,
+                    "options": null
+                },
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174007",
+                    "type": "MULTIPLE_CHOICE",
+                    "label": "가장 관심 있는 AI 분야는 무엇인가요?",
+                    "isRequired": true,
+                    "options": ["컴퓨터 비전", "자연어 처리", "강화학습", "생성형 AI"]
+                },
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174008",
+                    "type": "SHORT_ANSWER",
+                    "label": "Python 프로그래밍 경험이 있나요?",
+                    "isRequired": true,
+                    "options": null
+                }
+            ],
+            "preQuestions": [
+                {
+                    "id": "e23e4567-e89b-12d3-a456-426614174009",
+                    "type": "LONG_ANSWER",
+                    "label": "AI 연구에 참여하고 싶은 이유를 적어주세요.",
+                    "isRequired": true,
+                    "options": null
+                }
+            ],
+            "personalInfoQuestions": ["NAME", "EMAIL", "PHONE", "STUDENT_ID"]
+        },
+        "tags": ["AI", "머신러닝", "딥러닝", "데이터분석"],
+        "images": [
+            {
+                "id": "789e0123-e89b-12d3-a456-426614174002",
+                "fileMetadataId": "789e0123-e89b-12d3-a456-426614174002",
+                "originUrl": "announcements/uuid/images/ai_research.jpg",
+                "thumbnailUrl": "announcements/uuid/images/ai_research_thumb.jpg",
+                "ContentType": "image/jpeg"
+            }
+        ]
+    }
+]
