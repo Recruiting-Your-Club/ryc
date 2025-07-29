@@ -251,6 +251,8 @@ function ClubApplyPage() {
     };
 
     const handleConfirmSubmit = () => {
+        // TODO: 실제 제출 로직 구현
+        console.log('제출된 답변:', answers);
         setIsSubmitDialogOpen(false);
     };
 
