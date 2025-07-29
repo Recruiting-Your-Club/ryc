@@ -43,12 +43,18 @@ const router = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            { path: 'apply', element: <ClubApplyPage /> },
             { path: 'detail', element: <LazyDetailPage /> },
             { path: 'test', element: <TestPage /> },
-            { path: 'detail/recruitment', element: <RecruitmentPage /> },
             { path: 'myclub', element: <MyClubPage /> },
             { path: 'club/create', element: <ClubCreatePage /> },
+        ],
+    },
+    {
+        path: '/announcements',
+        element: <UserLayout />,
+        children: [
+            { path: ':announcementId', element: <RecruitmentPage /> },
+            { path: ':announcementId/application', element: <ClubApplyPage /> },
         ],
     },
     {
