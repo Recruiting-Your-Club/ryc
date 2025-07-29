@@ -1,0 +1,35 @@
+[
+    {
+        "announcementId": "123e4567-e89b-12d3-a456-426614174000",
+        "title": "2025년도 상반기 신입 모집",
+        "summaryDescription": "코딩 동아리에서 신입 회원을 모집합니다.",
+        "target": "컴퓨터공학과 학생",
+        "announcementStatus": "RECRUITING",
+        "announcementType": "LIMITED_TIME",
+        "applicationStartDate": "2025-06-01T09:00",
+        "applicationEndDate": "2025-06-30T18:00",
+        "tags": ["프로그래밍", "웹개발", "백엔드"]
+    },
+    {
+        "announcementId": "456e7890-e89b-12d3-a456-426614174001",
+        "title": "디자인 스튜디오 동아리 모집",
+        "summaryDescription": "창의적인 디자인을 함께 만들어갈 멤버를 찾습니다.",
+        "target": "디자인학과 학생",
+        "announcementStatus": "RECRUITING",
+        "announcementType": "ALWAYS_OPEN",
+        "applicationStartDate": "2025-07-29T10:00",
+        "applicationEndDate": "2025-08-15T17:00",
+        "tags": ["디자인", "UI/UX", "그래픽디자인"]
+    },
+    {
+        "announcementId": "789e0123-e89b-12d3-a456-426614174002",
+        "title": "AI 연구 동아리 신입 모집",
+        "summaryDescription": "인공지능과 머신러닝에 관심 있는 학생들을 모집합니다.",
+        "target": "전산학과, 수학과 학생",
+        "announcementStatus": "CLOSED",
+        "announcementType": "LIMITED_TIME",
+        "applicationStartDate": "2025-07-29T09:00",
+        "applicationEndDate": "2025-08-01T18:00",
+        "tags": ["AI", "머신러닝", "딥러닝", "데이터분석"]
+    }
+]
