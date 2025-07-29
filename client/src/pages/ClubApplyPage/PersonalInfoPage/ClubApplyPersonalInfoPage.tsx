@@ -79,6 +79,7 @@ function ClubApplyPersonalInfoPage({
                                         value: option,
                                     })) || []
                                 }
+                                size="sm"
                                 value={getAnswer(answers, question.questionTitle)}
                                 onChange={(value) => onAnswerChange(question.questionTitle, value)}
                             />
@@ -150,7 +151,9 @@ function ClubApplyPersonalInfoPage({
                             labelSx={labelSx}
                             inputSx={inputSx}
                             value={getAnswer(answers, question.questionTitle)}
-                            onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
+                            onChange={(event) =>
+                                onAnswerChange(question.questionTitle, event.target.value)
+                            }
                             error={hasError && touched[question.questionTitle]}
                             onFocus={() => onFocus(question.questionTitle)}
                             onBlur={() => onBlur(question.questionTitle)}
