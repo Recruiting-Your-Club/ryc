@@ -39,6 +39,7 @@ export interface Image {
 
 export interface Announcement {
     id: string;
+    clubName: string;
     title: string;
     summaryDescription: string;
     detailDescription: string;
