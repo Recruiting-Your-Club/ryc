@@ -1,7 +1,9 @@
 package com.ryc.api.v2.application.infra.entity;
 
-import com.ryc.api.v2.common.entity.BaseEntity;
 import jakarta.persistence.*;
+
+import com.ryc.api.v2.common.entity.BaseEntity;
+
 import lombok.*;
 
 @Entity
@@ -11,14 +13,14 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnswerChoiceEntity extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answer_id")
-    private AnswerEntity answer;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "answer_id")
+  private AnswerEntity answer;
 
-    @Column(nullable = false, name = "option_id")
-    private String optionId;
+  @Column(nullable = false, name = "option_id")
+  private String optionId;
 }

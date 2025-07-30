@@ -42,7 +42,7 @@ public record AnnouncementPeriodInfo(
    */
   public void validate(boolean hasInterview) {
 
-    // 1. 면접 진행 시 추가되는 기간 값들에 대한 validate
+    // 1. 면접 진행 시 추가되는 기간 값들에 대한 checkBusinessRules
     if (hasInterview) {
       if (interviewPeriod == null) {
         throw new BusinessRuleException(AnnouncementErrorCode.INTERVIEW_PERIOD_REQUIRED);
@@ -59,7 +59,7 @@ public record AnnouncementPeriodInfo(
       }
     }
 
-    // 2. 기간들간의 validate
+    // 2. 기간들간의 checkBusinessRules
     validateSequence(hasInterview);
   }
 

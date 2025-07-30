@@ -6,6 +6,7 @@ import {
     ClubCreatePage,
     ClubSearchPage,
     LoginPage,
+    MyClubPage,
     NotFoundPage,
     RegisterPage,
     TestPage,
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
             { path: 'register', element: <RegisterPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
             { path: 'club-search', element: <ClubSearchPage /> },
+            { path: 'myclub', element: <MyClubPage /> },
         ],
     },
 ]);

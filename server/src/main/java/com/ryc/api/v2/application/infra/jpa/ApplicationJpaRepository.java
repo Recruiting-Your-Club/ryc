@@ -1,12 +1,16 @@
 package com.ryc.api.v2.application.infra.jpa;
 
-import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
 
 @Repository
 public interface ApplicationJpaRepository extends JpaRepository<ApplicationEntity, String> {
-    Optional<ApplicationEntity> findByApplicantId(String applicantId);
+  Optional<ApplicationEntity> findByApplicantId(String applicantId);
+
+  List<ApplicationEntity> findAllByApplicantIdIn(List<String> applicantIds);
 }
