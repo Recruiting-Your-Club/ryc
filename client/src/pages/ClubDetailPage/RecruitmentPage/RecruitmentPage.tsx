@@ -8,7 +8,7 @@ import { RecruitmentPageProps } from '../\btypes';
 
 function RecruitmentPage({ clubId }: RecruitmentPageProps) {
     const { open, openDialog, closeDialog } = useDialog();
-    const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null);
+    const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
 
     const {
         data: announcements,
@@ -16,9 +16,9 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
         error,
     } = useQuery(announcementQueries.getAnnouncementList(clubId));
 
-    const { data: selectedAnnouncementDetail, isLoading: isDetailLoading } = useQuery({
-        ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId || ''),
-    });
+    const { data: selectedAnnouncementDetail, isLoading: isDetailLoading } = useQuery(
+        announcementQueries.getAnnouncementDetail(selectedAnnouncementId),
+    );
 
     const handleCardClick = (announcementId: string) => {
         setSelectedAnnouncementId(announcementId);
@@ -27,7 +27,7 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
 
     const handleDialogClose = () => {
         closeDialog();
-        setSelectedAnnouncementId(null);
+        setSelectedAnnouncementId('');
     };
 
     if (isLoading) {
@@ -69,7 +69,7 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
                 <RecruitDialog
                     open={open}
                     handleClose={handleDialogClose}
-                    announcementDetail={selectedAnnouncementDetail}
+                    announcementDetaildata={selectedAnnouncementDetail}
                 />
             )}
         </>
