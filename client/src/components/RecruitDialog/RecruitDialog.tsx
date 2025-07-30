@@ -13,33 +13,28 @@ import {
 } from './RecruitDialog.style';
 import { useRouter } from '@hooks/useRouter';
 import { useNavigate } from 'react-router-dom';
+import { parseAnnouncementClubBoxData, parseAnnouncementData } from '@utils/parseAnnouncementData';
 
 function RecruitDialog(props: RecruitmentDialogProps) {
     // prop destruction
-    const { open, handleClose, link = '/apply', announcementDetail } = props;
+    const { open, handleClose, announcementDetaildata } = props;
     const { goTo } = useRouter();
     const navigate = useNavigate();
     // calculated values
-    const images = announcementDetail?.images || [];
+    const images = announcementDetaildata?.images || [];
+    const clubBoxData = announcementDetaildata
+        ? parseAnnouncementClubBoxData(announcementDetaildata)
+        : [];
 
-    // ClubBox용 데이터 변환
-    const clubBoxData = [
-        { title: '모집 대상', value: announcementDetail?.target || '-' },
-        { title: '활동 기간', value: announcementDetail?.activityPeriod || '-' },
-        { title: '모집 인원', value: announcementDetail?.numberOfPeople || '-' },
-        { title: '면접 여부', value: announcementDetail?.hasInterview ? '있음' : '없음' },
-        {
-            title: '신청 기간',
-            value: `${announcementDetail?.applicationPeriod?.startDate?.split('T')[0] || '-'} ~ ${announcementDetail?.applicationPeriod?.endDate?.split('T')[0] || '-'}`,
-        },
-    ];
-
+    const parsedAnnouncementData = announcementDetaildata
+        ? parseAnnouncementData(announcementDetaildata)
+        : [];
     // handlers
     const handleFullPageView = () => {
         handleClose?.();
         // announcementDetail을 state로 전달
-        navigate(`/announcements/${announcementDetail.id}`, {
-            state: { announcementDetailData: announcementDetail },
+        navigate(`/announcements/${announcementDetaildata?.id}`, {
+            state: { clubBoxData, parsedAnnouncementData },
         });
     };
 
@@ -67,7 +62,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
             <Dialog.Content sx={contentContainer}>
                 <ClubBox data={clubBoxData} />
                 <Text textAlign="start" sx={textContainer}>
-                    {announcementDetail?.detailDescription}
+                    {announcementDetaildata?.detailDescription}
                 </Text>
 
                 <div css={imageListContainer}>
@@ -84,7 +79,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                     size="xl"
                     onClick={() => {
                         handleClose?.();
-                        goTo(`/announcements/${announcementDetail.id}/application`);
+                        goTo(`/announcements/${announcementDetaildata?.id}/application`);
                     }}
                     sx={applyButton}
                     zIndex={10}
