@@ -1,0 +1,3 @@
+function ApplicantSchedulePage() {}
+
+export { ApplicantSchedulePage };
