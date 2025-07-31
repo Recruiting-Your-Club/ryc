@@ -16,6 +16,7 @@ import {
     RegisterPage,
     StepManagementPage,
     TestPage,
+    ApplicantSchedulePage,
 } from './pages';
 
 const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
             { path: 'applicants', element: <StepManagementPage /> },
             { path: 'evaluations/document', element: <DocumentEvaluationPage /> },
             { path: 'evaluations/interview', element: <RegisterPage /> },
-            { path: 'interviews/schedule', element: <LoginPage /> },
+            { path: 'interviews/schedule', element: <ApplicantSchedulePage /> },
             { path: 'settings', element: <LoginPage /> },
         ],
     },

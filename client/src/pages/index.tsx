@@ -12,3 +12,4 @@ export * from './MyClubPage';
 export * from './DocumentEvaluationPage';
 export * from './InterviewEvaluationPage';
 export * from './LoadingPage';
+export * from './ApplicantSchedulePage';
