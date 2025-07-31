@@ -1,4 +1,4 @@
-import { Button, Dropdown } from '@ssoc/ui';
+import { Button, Dropdown, Rating } from '@ssoc/ui';
 
 function TestPage() {
     return (
