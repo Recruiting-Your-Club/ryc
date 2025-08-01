@@ -24,12 +24,11 @@ public class ClubService {
 
   @Transactional
   public Club createClub(ClubCreateRequest body) {
-    Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
-
-    if (clubRepository.existsByName(club.getName())) {
+    if (clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
+    Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
     return clubRepository.save(club);
   }
 

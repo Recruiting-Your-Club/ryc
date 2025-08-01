@@ -26,14 +26,12 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
 import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
 import com.ryc.api.v2.club.service.ClubFacade;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
+import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -48,13 +46,9 @@ public class ClubHttpApi {
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
-  @ApiResponses({
-    @ApiResponse(responseCode = "201", description = "동아리 생성 성공"),
-    @ApiResponse(
-        responseCode = "400",
-        description = "이미 존재하는 동아리 이름",
-        content = @Content(schema = @Schema(hidden = true)))
-  })
+  @ApiErrorCodeExample(
+      value = ClubErrorCode.class,
+      include = {"DUPLICATE_CLUB_NAME"})
   public ResponseEntity<ClubCreateResponse> createClub(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ClubCreateRequest body) {
@@ -66,17 +60,9 @@ public class ClubHttpApi {
   @PatchMapping("/{id}")
   @HasRole(Role.MEMBER)
   @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "동아리 수정 성공"),
-    @ApiResponse(
-        responseCode = "404",
-        description = "동아리 ID가 존재하지 않음",
-        content = @Content(schema = @Schema(hidden = true))),
-    @ApiResponse(
-        responseCode = "400",
-        description = "이미 존재하는 동아리 이름으로 수정하려고 함",
-        content = @Content(schema = @Schema(hidden = true)))
-  })
+  @ApiErrorCodeExample(
+      value = ClubErrorCode.class,
+      include = {"DUPLICATE_CLUB_NAME", "CLUB_NOT_FOUND"})
   public ResponseEntity<ClubUpdateResponse> updateClub(
       @PathVariable String id, @RequestBody ClubUpdateRequest body) {
     ClubUpdateResponse response = clubFacade.updateClub(id, body);
@@ -85,7 +71,7 @@ public class ClubHttpApi {
 
   @GetMapping
   @Operation(summary = "모든 동아리 조회 API")
-  @ApiResponse(responseCode = "200", description = "모든 동아리 조회 성공")
+  //  @ApiResponse(responseCode = "200", description = "모든 동아리 조회 성공")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
     List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
     return ResponseEntity.status(HttpStatus.OK).body(responses);
@@ -93,13 +79,16 @@ public class ClubHttpApi {
 
   @GetMapping("/{id}")
   @Operation(summary = "동아리 상세 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "동아리 상세 조회 성공"),
-    @ApiResponse(
-        responseCode = "404",
-        description = "동아리 ID가 존재하지 않음",
-        content = @Content(schema = @Schema(hidden = true)))
-  })
+  //  @ApiResponses({
+  //    @ApiResponse(responseCode = "200", description = "동아리 상세 조회 성공"),
+  //    @ApiResponse(
+  //        responseCode = "404",
+  //        description = "동아리 ID가 존재하지 않음",
+  //        content = @Content(schema = @Schema(hidden = true)))
+  //  })
+  @ApiErrorCodeExample(
+      value = ClubErrorCode.class,
+      include = {"CLUB_NOT_FOUND"})
   public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
     ClubGetResponse response = clubFacade.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -107,7 +96,7 @@ public class ClubHttpApi {
 
   @GetMapping("/my")
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
-  @ApiResponse(responseCode = "200", description = "사용자가 속한 동아리 조회 성공")
+  //  @ApiResponse(responseCode = "200", description = "사용자가 속한 동아리 조회 성공")
   public ResponseEntity<List<ClubGetByAdminIdResponse>> getClubByAdminId(
       @AuthenticationPrincipal CustomUserDetail userDetail) {
     List<ClubGetByAdminIdResponse> responses = clubFacade.getClubByAdminId(userDetail.getId());
