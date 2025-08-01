@@ -76,5 +76,5 @@ export const s_invervieweeCardContainer = (isList: boolean = true) => css`
 `;
 
 export const s_buttonGroup = css`
-    max-height: 22rem;
+    height: 22rem;
 `;
