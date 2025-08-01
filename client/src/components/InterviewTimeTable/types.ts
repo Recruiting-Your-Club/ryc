@@ -8,6 +8,6 @@ export interface InterviewTimeTableProps {
     onSelect: (label: string) => void;
     onOpenChange?: Dispatch<SetStateAction<boolean>>;
     sx?: CSSObject;
-    selectedDateSx?: CSSObject;
+    timeContentSx?: CSSObject;
     listSx?: CSSObject;
 }

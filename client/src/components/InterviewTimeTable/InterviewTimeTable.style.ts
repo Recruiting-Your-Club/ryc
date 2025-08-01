@@ -6,7 +6,7 @@ export const s_interviewTimeTableContainer = css`
     padding: 2rem 2.5rem;
     gap: 2rem;
     align-items: center;
-    /* justify-content: center; */
+    justify-content: center;
     height: 100%;
 `;
 

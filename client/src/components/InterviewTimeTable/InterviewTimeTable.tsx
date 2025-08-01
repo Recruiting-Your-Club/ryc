@@ -15,7 +15,7 @@ function InterviewTimeTable({
     onSelect,
     onOpenChange,
     sx,
-    selectedDateSx,
+    timeContentSx,
     listSx,
 }: InterviewTimeTableProps) {
     // prop destruction
@@ -63,7 +63,7 @@ function InterviewTimeTable({
                 shadow={false}
             />
             <Divider />
-            <div css={[s_timeContentContainer, selectedDateSx]}>
+            <div css={[s_timeContentContainer, timeContentSx]}>
                 <Text as="span" type="bodyBold" textAlign="center">
                     {highlightedDate}
                 </Text>
