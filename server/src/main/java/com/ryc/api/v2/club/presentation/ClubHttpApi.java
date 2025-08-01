@@ -71,7 +71,6 @@ public class ClubHttpApi {
 
   @GetMapping
   @Operation(summary = "모든 동아리 조회 API")
-  //  @ApiResponse(responseCode = "200", description = "모든 동아리 조회 성공")
   public ResponseEntity<List<AllClubGetResponse>> getAllClub() {
     List<AllClubGetResponse> responses = clubAnnouncementFacade.getAllClubWithAnnouncementStatus();
     return ResponseEntity.status(HttpStatus.OK).body(responses);
@@ -79,13 +78,6 @@ public class ClubHttpApi {
 
   @GetMapping("/{id}")
   @Operation(summary = "동아리 상세 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
-  //  @ApiResponses({
-  //    @ApiResponse(responseCode = "200", description = "동아리 상세 조회 성공"),
-  //    @ApiResponse(
-  //        responseCode = "404",
-  //        description = "동아리 ID가 존재하지 않음",
-  //        content = @Content(schema = @Schema(hidden = true)))
-  //  })
   @ApiErrorCodeExample(
       value = ClubErrorCode.class,
       include = {"CLUB_NOT_FOUND"})
@@ -96,7 +88,6 @@ public class ClubHttpApi {
 
   @GetMapping("/my")
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
-  //  @ApiResponse(responseCode = "200", description = "사용자가 속한 동아리 조회 성공")
   public ResponseEntity<List<ClubGetByAdminIdResponse>> getClubByAdminId(
       @AuthenticationPrincipal CustomUserDetail userDetail) {
     List<ClubGetByAdminIdResponse> responses = clubFacade.getClubByAdminId(userDetail.getId());
