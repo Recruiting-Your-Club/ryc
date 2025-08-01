@@ -5,6 +5,7 @@ export const s_interviewTimeTableContainer = css`
     flex-direction: column;
     padding: 2rem 2.5rem;
     gap: 2rem;
+    align-items: center;
 `;
 
 export const s_calendar = css`
@@ -16,6 +17,7 @@ export const s_timeContentContainer = css`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
 `;
 
 export const s_interviewInformationButtonGroupWrapper = (isSchedule: boolean = true) => css`

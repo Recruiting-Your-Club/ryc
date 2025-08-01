@@ -14,6 +14,9 @@ function InterviewTimeTable({
     selectedInterviewLabel,
     onSelect,
     onOpenChange,
+    sx,
+    selectedDateSx,
+    listSx,
 }: InterviewTimeTableProps) {
     // prop destruction
     // lib hooks
@@ -48,7 +51,7 @@ function InterviewTimeTable({
     // effects
 
     return (
-        <div css={s_interviewTimeTableContainer}>
+        <div css={[s_interviewTimeTableContainer, sx]}>
             <Calendar
                 mode="custom"
                 onSelect={handleCalendar}
@@ -60,11 +63,16 @@ function InterviewTimeTable({
                 shadow={false}
             />
             <Divider />
-            <div css={s_timeContentContainer}>
+            <div css={[s_timeContentContainer, selectedDateSx]}>
                 <Text as="span" type="bodyBold" textAlign="center">
                     {highlightedDate}
                 </Text>
-                <div css={s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow))}>
+                <div
+                    css={[
+                        s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow)),
+                        listSx,
+                    ]}
+                >
                     {scheduleToShow ? (
                         scheduleToShow.interviewSets.map((schedule) => {
                             const label = `${convertDate(scheduleToShow.date)} ${schedule.name}`;
