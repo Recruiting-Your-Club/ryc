@@ -2,6 +2,7 @@ import React from 'react';
 
 import { s_table, s_tableWrapper } from './Table.style';
 import { TableBody } from './TableBody';
+import { TableCell } from './TableCell';
 import { TableColumnHeaderCell } from './TableColumnHeaderCell';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
@@ -20,6 +21,7 @@ const Table = Object.assign(TableRoot, {
     Row: TableRow,
     ColumnHeaderCell: TableColumnHeaderCell,
     Body: TableBody,
+    Cell: TableCell,
 });
 
 export { Table };

@@ -25,10 +25,17 @@ export const s_tableRow = css`
 `;
 
 export const s_tableColumnHeaderCell = css`
-    ${theme.typography.captionSemibold}
-    height: 4rem;
+    ${theme.typography.subCaptionSemibold}
+    height: 3rem;
     padding: 0.75rem;
+    padding-left: 2rem;
     vertical-align: middle;
+    text-align: left;
+
+    &:last-child {
+        text-align: right;
+        padding-right: 2rem;
+    }
 `;
 
 export const s_tableBody = css`
@@ -38,6 +45,14 @@ export const s_tableBody = css`
 `;
 
 export const s_tableCell = css`
-    padding: 1rem;
+    padding: 0.75rem;
+    padding-left: 2rem;
+    height: 5rem;
     vertical-align: middle;
+    ${theme.typography.captionRegular}
+
+    &:last-child {
+        text-align: right;
+        padding-right: 2rem;
+    }
 `;

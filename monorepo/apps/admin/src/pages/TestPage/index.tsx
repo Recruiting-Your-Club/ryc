@@ -12,6 +12,26 @@ function TestPage() {
                         <Table.ColumnHeaderCell>작업</Table.ColumnHeaderCell>
                     </Table.Row>
                 </Table.Header>
+                <Table.Body>
+                    <Table.Row>
+                        <Table.Cell>오성</Table.Cell>
+                        <Table.Cell>2025.09.01</Table.Cell>
+                        <Table.Cell>회장</Table.Cell>
+                        <Table.Cell>hello</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                        <Table.Cell>오성</Table.Cell>
+                        <Table.Cell>2025.09.01</Table.Cell>
+                        <Table.Cell>회장</Table.Cell>
+                        <Table.Cell>hello</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                        <Table.Cell>오성</Table.Cell>
+                        <Table.Cell>2025.09.01</Table.Cell>
+                        <Table.Cell>회장</Table.Cell>
+                        <Table.Cell>hello</Table.Cell>
+                    </Table.Row>
+                </Table.Body>
             </Table>
             <div>hi</div>
         </div>
