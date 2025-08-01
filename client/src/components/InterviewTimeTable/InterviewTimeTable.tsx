@@ -42,7 +42,7 @@ function InterviewTimeTable({
 
     const handleButtonClick = (label: string) => {
         onSelect(label);
-        onOpenChange((prev) => !prev);
+        onOpenChange?.((prev) => !prev);
     };
 
     // effects
