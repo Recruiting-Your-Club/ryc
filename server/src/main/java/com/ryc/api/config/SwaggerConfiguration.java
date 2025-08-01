@@ -61,12 +61,17 @@ public class SwaggerConfiguration {
 
       // 조건: @ApiErrorCodeExample 어노테이션이 붙은 API만 적용
       if (handlerMethod.hasMethodAnnotation(ApiErrorCodeExample.class)) {
-        Class<? extends ErrorCode> value =
-            handlerMethod.getMethodAnnotation(ApiErrorCodeExample.class).value();
+        ApiErrorCodeExample annotation =
+            handlerMethod.getMethodAnnotation(ApiErrorCodeExample.class);
+
+        Class<? extends ErrorCode> value = annotation.value();
+        Set<String> includes = new HashSet<>(List.of(annotation.include()));
 
         if (value != null) {
           ApiResponses responses = operation.getResponses();
-          List<ExampleResponse> examples = createExampleResponses(value.getEnumConstants());
+
+          List<ErrorCode> errorCodes = extractErrorCodes(value, includes);
+          List<ExampleResponse> examples = createExampleResponses(errorCodes);
 
           examples.forEach(example -> responses.addApiResponse(example.name(), example.item()));
         }
@@ -86,7 +91,15 @@ public class SwaggerConfiguration {
     return new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
   }
 
-  private List<ExampleResponse> createExampleResponses(ErrorCode[] errorCodes) {
+  private List<ErrorCode> extractErrorCodes(
+      Class<? extends ErrorCode> value, Set<String> includes) {
+    ErrorCode[] errorCodes = value.getEnumConstants();
+    return Arrays.stream(errorCodes)
+        .filter(e -> includes.isEmpty() || includes.contains(e.name()))
+        .toList();
+  }
+
+  private List<ExampleResponse> createExampleResponses(List<ErrorCode> errorCodes) {
     List<ExampleResponse> responses = new ArrayList<>();
     Map<Integer, List<Example>> statusWithExamples = createStatusWithExamples(errorCodes);
 
@@ -99,20 +112,22 @@ public class SwaggerConfiguration {
           examples.forEach(e -> mediaType.addExamples(e.getSummary(), e));
           content.addMediaType("application/json", mediaType);
           apiResponse.setContent(content);
+
           responses.add(new ExampleResponse(status.toString(), apiResponse));
         });
     return responses;
   }
 
-  private Map<Integer, List<Example>> createStatusWithExamples(ErrorCode[] errorCodes) {
+  private Map<Integer, List<Example>> createStatusWithExamples(List<ErrorCode> errorCodes) {
     Map<Integer, List<Example>> statusWithExamples = new HashMap<>();
 
-    for (ErrorCode errorCode : errorCodes) {
-      int statusCode = errorCode.getHttpStatus().value();
-      Example example = createExample(errorCode);
+    errorCodes.forEach(
+        e -> {
+          int statusCode = e.getHttpStatus().value();
+          Example example = createExample(e);
 
-      statusWithExamples.computeIfAbsent(statusCode, k -> new ArrayList<>()).add(example);
-    }
+          statusWithExamples.computeIfAbsent(statusCode, k -> new ArrayList<>()).add(example);
+        });
     return statusWithExamples;
   }
 
