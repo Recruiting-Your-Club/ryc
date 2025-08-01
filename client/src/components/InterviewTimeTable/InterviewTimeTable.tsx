@@ -1,6 +1,6 @@
 import { Calendar, Divider, InterviewInformationButton, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
     s_calendar,
     s_interviewInformationButtonGroupWrapper,
@@ -13,6 +13,7 @@ function InterviewTimeTable({
     interviewSchedules,
     selectedInterviewLabel,
     onSelect,
+    setSelectedLabel,
     onOpenChange,
     sx,
     timeContentSx,
@@ -44,10 +45,13 @@ function InterviewTimeTable({
     };
 
     const handleButtonClick = (label: string) => {
-        onSelect(label);
-        onOpenChange?.((prev) => !prev);
+        if (onSelect) {
+            onSelect(label); // 외부 제어
+        } else if (setSelectedLabel) {
+            setSelectedLabel(label); // 내부 기본 동작
+            onOpenChange?.(false);
+        }
     };
-
     // effects
 
     return (
