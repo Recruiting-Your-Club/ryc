@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { s_table, s_tableWrapper } from './Table.style';
+import { TableBody } from './TableBody';
 import { TableColumnHeaderCell } from './TableColumnHeaderCell';
 import { TableHeader } from './TableHeader';
 import { TableRow } from './TableRow';
@@ -18,6 +19,7 @@ const Table = Object.assign(TableRoot, {
     Header: TableHeader,
     Row: TableRow,
     ColumnHeaderCell: TableColumnHeaderCell,
+    Body: TableBody,
 });
 
 export { Table };

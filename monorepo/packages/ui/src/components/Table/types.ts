@@ -21,3 +21,13 @@ export interface TableColumnHeaderCellProps {
     children: ReactNode;
     sx?: CSSObject;
 }
+
+export interface TableBodyProps {
+    children: ReactNode;
+    sx?: CSSObject;
+}
+
+export interface TableCellProps {
+    children: ReactNode;
+    sx?: CSSObject;
+}
