@@ -16,3 +16,8 @@ export interface TableRowProps {
     children: ReactNode;
     sx?: CSSObject;
 }
+
+export interface TableColumnHeaderCellProps {
+    children: ReactNode;
+    sx?: CSSObject;
+}
