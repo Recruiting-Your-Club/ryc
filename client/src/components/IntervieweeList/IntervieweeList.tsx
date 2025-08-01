@@ -90,7 +90,7 @@ function IntervieweeList({
                             <InterviewTimeTable
                                 interviewSchedules={interviewSchedules}
                                 selectedInterviewLabel={selectedInterviewLabel}
-                                onSelect={(label) => setSelectedInterviewLabel(label)}
+                                setSelectedLabel={(label) => setSelectedInterviewLabel(label)}
                                 onOpenChange={setOpen}
                                 listSx={s_buttonGroup}
                             />
