@@ -19,6 +19,8 @@ function ApplicantList({
     applicantList,
     selectedApplicantId,
     onSelectApplicantId,
+    titleMode = 'titleString',
+    children,
 }: ApplicationListProps) {
     // prop destruction
     // lib hooks
@@ -45,7 +47,7 @@ function ApplicantList({
         <div css={s_listContainer(height)}>
             <div css={s_titleContainer}>
                 <Text as="span" type="captionSemibold" textAlign="start">
-                    {title}
+                    {titleMode === 'titleString' ? title : children}
                 </Text>
                 <span>
                     <Input
