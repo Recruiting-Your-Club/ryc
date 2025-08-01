@@ -1,8 +1,9 @@
-import type { ReactNode } from 'react';
+import type { Applicant } from '@api/domain/applicant/types';
 
 export interface ApplicationListProps {
     title?: string;
     height?: string;
-    children?: ReactNode;
-    isList?: boolean;
+    applicantList: Applicant[];
+    selectedApplicantId: number;
+    onSelectApplicantId: (id: number) => void;
 }

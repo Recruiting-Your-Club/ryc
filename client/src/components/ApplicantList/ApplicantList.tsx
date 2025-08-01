@@ -1,6 +1,6 @@
 import Search from '@assets/images/search.svg';
-import { Button, Divider, Input, Text } from '@components';
-import React from 'react';
+import { ApplicantMiniCard, Button, Divider, Input, Text } from '@components';
+import React, { useCallback, useState } from 'react';
 import {
     s_listContainer,
     s_miniCardContainer,
@@ -11,15 +11,34 @@ import {
     s_titleContainer,
 } from './ApplicantList.style';
 import type { ApplicationListProps } from './types';
+import type { Applicant } from '@api/domain/applicant/types';
 
-function ApplicantList({ title = '지원자 목록', height, children, isList }: ApplicationListProps) {
+function ApplicantList({
+    title = '지원자 목록',
+    height,
+    applicantList,
+    selectedApplicantId,
+    onSelectApplicantId,
+}: ApplicationListProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
+    const [searchText, setSearchText] = useState<string>('');
+
     // form hooks
     // query hooks
     // calculated values
+    const searchApplicants = useCallback(
+        (applicants: Applicant[]) => {
+            return applicants.filter((value) =>
+                value.name.toLowerCase().includes(searchText.toLowerCase()),
+            );
+        },
+        [searchText],
+    );
+    const visibleApplicants: Applicant[] = searchApplicants(applicantList);
+
     // handlers
     // effects
     return (
@@ -39,12 +58,28 @@ function ApplicantList({ title = '지원자 목록', height, children, isList }:
                         height="3rem"
                         inputSx={s_searchInput}
                         placeholder="이름 검색"
+                        onChange={(event) => setSearchText(event.target.value)}
                     />
                 </span>
             </div>
             <Divider />
             <div css={s_miniCardGroupWrapper}>
-                <div css={s_miniCardContainer(isList)}>{children}</div>
+                <div css={s_miniCardContainer(visibleApplicants.length !== 0)}>
+                    {visibleApplicants.length > 0 ? (
+                        visibleApplicants.map((applicant) => (
+                            <ApplicantMiniCard
+                                key={applicant.id}
+                                applicant={applicant}
+                                onClick={() => onSelectApplicantId(applicant.id)}
+                                isActivated={selectedApplicantId === applicant.id}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            지원자가 없습니다.
+                        </Text>
+                    )}
+                </div>
             </div>
         </div>
     );
