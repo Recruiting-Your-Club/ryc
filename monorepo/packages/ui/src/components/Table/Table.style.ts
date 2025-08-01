@@ -19,3 +19,7 @@ export const s_tableHeader = css`
     border-bottom: 1px solid ${theme.colors.black};
     background-color: ${theme.colors.gray[100]};
 `;
+
+export const s_tableRow = css`
+    border-bottom: 1px solid ${theme.colors.black};
+`;
