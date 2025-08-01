@@ -3,6 +3,7 @@ import { Button, Dropdown, Input, IntervieweeCard, InterviewTimeTable, Text } fr
 import { convertDate } from '@utils/convertDate';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+    s_buttonGroup,
     s_intervieweeCardGroupWrapper,
     s_invervieweeCardContainer,
     s_listContainer,
@@ -91,6 +92,7 @@ function IntervieweeList({
                                 selectedInterviewLabel={selectedInterviewLabel}
                                 onSelect={(label) => setSelectedInterviewLabel(label)}
                                 onOpenChange={setOpen}
+                                listSx={s_buttonGroup}
                             />
                         </Dropdown.Content>
                     </Dropdown>
