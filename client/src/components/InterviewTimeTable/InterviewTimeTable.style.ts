@@ -6,6 +6,8 @@ export const s_interviewTimeTableContainer = css`
     padding: 2rem 2.5rem;
     gap: 2rem;
     align-items: center;
+    justify-content: center;
+    height: 100%;
 `;
 
 export const s_calendar = css`
@@ -23,9 +25,9 @@ export const s_timeContentContainer = css`
 export const s_interviewInformationButtonGroupWrapper = (isSchedule: boolean = true) => css`
     display: flex;
     flex-direction: column;
-    /* height: 100%;
-    max-height: 25rem; */
-    height: 22rem;
+    height: 100%;
+    max-height: 25rem;
+    /* height: 22rem; */
     gap: 1rem;
     padding: 0 0.5rem;
     overflow-y: auto;
