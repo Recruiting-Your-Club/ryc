@@ -1,7 +1,6 @@
 import {
     getAllInterviewees,
     getAllInterviewSchedules,
-    getDocument,
     getEvaluation,
     getIntervieweeDetail,
 } from '@api/domain/interview/interview';
@@ -23,11 +22,6 @@ const interviewQueries = {
         queryOptions({
             queryKey: interviewKeys.allInterviewSchedules,
             queryFn: () => getAllInterviewSchedules(),
-        }),
-    getDocument: (id: number) =>
-        queryOptions({
-            queryKey: interviewKeys.documentDetail(id),
-            queryFn: () => getDocument(id),
         }),
     getInterviewEvaluation: (id: number) =>
         queryOptions({
