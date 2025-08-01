@@ -16,7 +16,14 @@ import com.ryc.api.v2.common.exception.code.ErrorCode;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiErrorCodeExample {
 
-  Class<? extends ErrorCode> value(); // 에러 코드 클래스
+  // 에러 코드 enum 클래스
+  Class<? extends ErrorCode> value();
 
-  String[] include() default {}; // 포함할 에러 코드 enum 이름
+  /*
+   * 포함할 에러 코드 enum 이름을 나타냅니다.
+   * 사용되는 enum name과 정확하게 일치해야 합니다.
+   * 이 값이 비어있으면, 해당 enum의 모든 에러 코드가 포함됩니다.
+   * 예: {"CLUB_ID_BAD_REQUEST", "CLUB_NOT_FOUND"}
+   */
+  String[] include() default {};
 }
