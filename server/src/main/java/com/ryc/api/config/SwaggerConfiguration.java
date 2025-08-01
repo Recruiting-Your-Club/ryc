@@ -1,6 +1,12 @@
 package com.ryc.api.config;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -60,21 +66,17 @@ public class SwaggerConfiguration {
     return (operation, handlerMethod) -> {
 
       // 조건: @ApiErrorCodeExample 어노테이션이 붙은 API만 적용
-      if (handlerMethod.hasMethodAnnotation(ApiErrorCodeExample.class)) {
-        ApiErrorCodeExample annotation =
-            handlerMethod.getMethodAnnotation(ApiErrorCodeExample.class);
+      ApiErrorCodeExample apiErrorCodeExample =
+          handlerMethod.getMethodAnnotation(ApiErrorCodeExample.class);
+      if (apiErrorCodeExample != null) {
 
-        Class<? extends ErrorCode> value = annotation.value();
-        Set<String> includes = new HashSet<>(List.of(annotation.include()));
+        // API 응답에 들어갈 예시 응답 생성
+        List<ErrorCode> errorCodes = extractErrorCodes(apiErrorCodeExample);
+        List<ExampleResponse> examples = createExampleResponses(errorCodes);
 
-        if (value != null) {
-          ApiResponses responses = operation.getResponses();
-
-          List<ErrorCode> errorCodes = extractErrorCodes(value, includes);
-          List<ExampleResponse> examples = createExampleResponses(errorCodes);
-
-          examples.forEach(example -> responses.addApiResponse(example.name(), example.item()));
-        }
+        // API 응답에 예시 추가
+        ApiResponses responses = operation.getResponses();
+        examples.forEach(example -> responses.addApiResponse(example.name(), example.item()));
       }
 
       // 조건: @HasRole 어노테이션이 붙은 API만 적용
@@ -91,14 +93,28 @@ public class SwaggerConfiguration {
     return new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
   }
 
-  private List<ErrorCode> extractErrorCodes(
-      Class<? extends ErrorCode> value, Set<String> includes) {
-    ErrorCode[] errorCodes = value.getEnumConstants();
-    return Arrays.stream(errorCodes)
-        .filter(e -> includes.isEmpty() || includes.contains(e.name()))
+  /*
+   * ApiErrorCodeExample 어노테이션에서 지정한 에러 코드 enum을 추출합니다.
+   * 이 메서드는 해당 enum의 모든 상수를 가져오고,
+   * include 속성에 지정된 이름이 있는 에러 코드만 필터링합니다.
+   */
+  private List<ErrorCode> extractErrorCodes(ApiErrorCodeExample annotation) {
+
+    // 모든 에러 코드 enum 상수를 가져옵니다.
+    Class<? extends ErrorCode> value = annotation.value();
+    ErrorCode[] allErrorCodes = value.getEnumConstants();
+
+    // include 속성에 지정된 에러 코드 이름을 Set으로 변환합니다.
+    Set<String> includes = new HashSet<>(List.of(annotation.include()));
+
+    return Arrays.stream(allErrorCodes)
+        .filter(errorCode -> includes.isEmpty() || includes.contains(errorCode.name()))
         .toList();
   }
 
+  /*
+   * 에러 코드 목록을 기반으로 Swagger API 응답 예시를 생성합니다.
+   */
   private List<ExampleResponse> createExampleResponses(List<ErrorCode> errorCodes) {
     List<ExampleResponse> responses = new ArrayList<>();
     Map<Integer, List<Example>> statusWithExamples = createStatusWithExamples(errorCodes);
@@ -109,8 +125,13 @@ public class SwaggerConfiguration {
           MediaType mediaType = new MediaType();
           ApiResponse apiResponse = new ApiResponse();
 
+          // mediaType에 예시를 추가합니다.
           examples.forEach(e -> mediaType.addExamples(e.getSummary(), e));
+
+          // content에 mediaType을 추가합니다.
           content.addMediaType("application/json", mediaType);
+
+          // apiResponse에 content를 설정합니다.
           apiResponse.setContent(content);
 
           responses.add(new ExampleResponse(status.toString(), apiResponse));
@@ -118,6 +139,11 @@ public class SwaggerConfiguration {
     return responses;
   }
 
+  /*
+   * 에러 코드 목록을 기반으로 HTTP 상태 코드와 예시 응답을 매핑합니다.
+   * 각 에러 코드는 HTTP 상태 코드에 따라 그룹화되어,
+   * 해당 상태 코드에 대한 예시 응답을 생성합니다.
+   */
   private Map<Integer, List<Example>> createStatusWithExamples(List<ErrorCode> errorCodes) {
     Map<Integer, List<Example>> statusWithExamples = new HashMap<>();
 
@@ -126,11 +152,17 @@ public class SwaggerConfiguration {
           int statusCode = e.getHttpStatus().value();
           Example example = createExample(e);
 
+          // 상태 코드에 해당하는 예시들을 추가합니다.
           statusWithExamples.computeIfAbsent(statusCode, k -> new ArrayList<>()).add(example);
         });
     return statusWithExamples;
   }
 
+  /*
+   * 주어진 에러 코드에 대한 Swagger API 응답 예시를 생성합니다.
+   * 이 메서드는 ErrorResponse 객체를 생성하고,
+   * 해당 에러 코드의 이름과 메시지를 포함하는 예시를 반환합니다.
+   */
   private Example createExample(ErrorCode errorCode) {
     Example example = new Example();
     ErrorResponse response =
