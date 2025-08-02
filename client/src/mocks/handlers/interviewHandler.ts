@@ -1,5 +1,4 @@
 import type {
-    Document,
     Evaluation,
     Interviewee,
     IntervieweeDetail,
@@ -12,6 +11,7 @@ import evaluationList from '../data/interview/evaluationList.json';
 import intervieweeDetailList from '../data/interview/intervieweeDetailList.json';
 import intervieweeList from '../data/interview/intervieweeList.json';
 import interviewScheduleList from '../data/interview/interviewScheduleList.json';
+import type { Document } from '@api/domain/applicant/types';
 
 const interviewHandler = [
     http.get(`${BASE_URL}interviewschedules/all`, () => {
@@ -35,6 +35,18 @@ const interviewHandler = [
             (evaluation) => evaluation.applicantId === Number(params.id),
         );
         return HttpResponse.json(detail as Evaluation, { status: 200 });
+    }),
+    http.put(`${BASE_URL}interviewees/:intervieweeId`, async ({ request, params }) => {
+        const interviewee = intervieweeList.find(
+            (interviewee) => interviewee.id === Number(params.intervieweeId),
+        );
+        if (!interviewee) return HttpResponse.json({ status: 404 });
+
+        const body = (await request.json()) as { interviewSetId: number };
+
+        interviewee.interviewSetId = body.interviewSetId;
+
+        return HttpResponse.json(interviewee, { status: 200 });
     }),
 ];
 

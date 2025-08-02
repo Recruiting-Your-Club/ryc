@@ -3,6 +3,7 @@ import {
     getAllInterviewSchedules,
     getEvaluation,
     getIntervieweeDetail,
+    updateIntervieweeSchedule,
 } from '@api/domain/interview/interview';
 import { queryOptions } from '@tanstack/react-query';
 import { interviewKeys } from '../querykeyFactory';

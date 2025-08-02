@@ -29,4 +29,20 @@ async function getEvaluation(id: number): Promise<Evaluation> {
     return response as Evaluation;
 }
 
-export { getAllInterviewSchedules, getAllInterviewees, getEvaluation, getIntervieweeDetail };
+async function updateIntervieweeSchedule(
+    intervieweeId: number,
+    body: { interviewSetId: number | null },
+): Promise<void> {
+    await httpRequest.put({
+        url: `interviewees/${intervieweeId}`,
+        body: body,
+    });
+}
+
+export {
+    getAllInterviewSchedules,
+    getAllInterviewees,
+    getEvaluation,
+    getIntervieweeDetail,
+    updateIntervieweeSchedule,
+};
