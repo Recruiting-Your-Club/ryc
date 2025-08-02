@@ -21,7 +21,6 @@ import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.interview.service.InterviewService;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 @Service
 public class EmailService {
