@@ -8,11 +8,11 @@ import { s_arrowButton, s_arrowSvg, s_moverComponent } from './ComponentMover.st
 function ComponentMover({ onMoveLeft, onMoveRight }: ComponentMoverProps) {
     return (
         <div css={s_moverComponent}>
-            <Button variant="transparent" sx={s_arrowButton} onClick={() => onMoveRight}>
+            <Button variant="transparent" sx={s_arrowButton} onClick={onMoveRight}>
                 <RightArrow css={s_arrowSvg} />
             </Button>
             <Divider />
-            <Button variant="transparent" sx={s_arrowButton} onClick={() => onMoveLeft}>
+            <Button variant="transparent" sx={s_arrowButton} onClick={onMoveLeft}>
                 <LeftArrow css={s_arrowSvg} />
             </Button>
         </div>
