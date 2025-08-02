@@ -13,6 +13,11 @@ export const s_applicantSchedulePageContainer = css`
     justify-content: center;
 `;
 
+export const s_alertSvgWrapper = css`
+    display: flex;
+    align-items: center;
+`;
+
 export const s_contentContainer = css`
     display: flex;
     padding: 0rem 2rem;

@@ -9,6 +9,7 @@ import {
     s_highlightedApplicantList,
     s_alertSvg,
     s_contentContainer,
+    s_alertSvgWrapper,
 } from './ApplicantSchedulePage.style';
 import {
     ApplicantList,
@@ -152,7 +153,7 @@ function ApplicantSchedulePage() {
 
     return (
         <div css={s_applicantSchedulePageContainer}>
-            <div>
+            <div css={s_alertSvgWrapper}>
                 <Tooltip
                     content="카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!"
                     direction="right"
