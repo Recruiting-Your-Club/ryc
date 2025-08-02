@@ -69,18 +69,6 @@ function ApplicantSchedulePage() {
         (interviewee) => interviewee.interviewSetId === null,
     );
 
-    function getInitialInterviewLabel(scheduleSetIndex: number): SelectedLabel {
-        const schedule = interviewSchedulelist?.[0];
-        const set = schedule?.interviewSets?.[scheduleSetIndex];
-
-        if (schedule && set) {
-            const date = convertDate(schedule.date);
-            const name = set.name;
-            return { label: `${date} ${name}`, interviewSetId: set.id };
-        }
-        return { label: '면접 일정 없음', interviewSetId: null };
-    }
-
     // handlers
     const labelSelectHandler =
         (
@@ -140,6 +128,18 @@ function ApplicantSchedulePage() {
     }, [interviewSchedulelist]);
 
     //etc
+    function getInitialInterviewLabel(scheduleSetIndex: number): SelectedLabel {
+        const schedule = interviewSchedulelist?.[0];
+        const set = schedule?.interviewSets?.[scheduleSetIndex];
+
+        if (schedule && set) {
+            const date = convertDate(schedule.date);
+            const name = set.name;
+            return { label: `${date} ${name}`, interviewSetId: set.id };
+        }
+        return { label: '면접 일정 없음', interviewSetId: null };
+    }
+
     const findInterviewSetIdByLabel = (label: string): number | null => {
         for (const schedule of interviewSchedulelist) {
             const date = convertDate(schedule.date);
