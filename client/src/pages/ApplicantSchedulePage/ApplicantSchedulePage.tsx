@@ -97,7 +97,7 @@ function ApplicantSchedulePage() {
                     onSelectApplicantId={setSelectedApplicantId}
                     titleMode="titleNode"
                 >
-                    <Dropdown key="wannaChange" open={open} onOpenChange={setOpen}>
+                    <Dropdown open={open} onOpenChange={setOpen}>
                         <Dropdown.Trigger asChild>
                             <Button variant="outlined" sx={s_selectionButton}>
                                 {selectedInterviewLabel}
@@ -126,7 +126,7 @@ function ApplicantSchedulePage() {
                     titleMode="titleNode"
                     sx={s_highlightedApplicantList}
                 >
-                    <Dropdown key="standard" open={standardOpen} onOpenChange={setStandardOpen}>
+                    <Dropdown open={standardOpen} onOpenChange={setStandardOpen}>
                         <Dropdown.Trigger asChild>
                             <Button variant="outlined" sx={s_selectionButton}>
                                 {selectedStandardInterviewLabel}
