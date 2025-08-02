@@ -88,69 +88,61 @@ function ApplicantSchedulePage() {
     );
 
     // effects
-    // etc
-    const renderApplicantSection = (
-        applicantId: number,
-        setApplicantId: Dispatch<SetStateAction<number>>,
-        open: boolean,
-        setOpen: Dispatch<SetStateAction<boolean>>,
-        label: string,
-        onSelect: (label: string) => void,
-        sx?: CSSObject,
-    ) => (
-        <div css={s_contentComponentWrapper}>
-            <ApplicantList
-                applicantList={applicantList}
-                selectedApplicantId={applicantId}
-                onSelectApplicantId={setApplicantId}
-                titleMode="titleNode"
-                sx={sx}
-            >
-                <Dropdown open={open} onOpenChange={setOpen}>
-                    <Dropdown.Trigger asChild>
-                        <Button variant="outlined" sx={s_selectionButton}>
-                            {label}
-                        </Button>
-                    </Dropdown.Trigger>
-                    <Dropdown.Content offsetX={11.7} offsetY={42}>
-                        <InterviewTimeTable
-                            interviewSchedules={interviewSchedulelist}
-                            selectedInterviewLabel={label}
-                            onSelect={onSelect}
-                            onOpenChange={setOpen}
-                            listSx={s_buttonGroup}
-                        />
-                    </Dropdown.Content>
-                </Dropdown>
-            </ApplicantList>
-        </div>
-    );
-
     return (
         <div css={s_applicantSchedulePageContainer}>
             <div css={s_contentComponentWrapper}>
-                {renderApplicantSection(
-                    selectedApplicantId,
-                    setSelectedApplicantId,
-                    open,
-                    setOpen,
-                    selectedInterviewLabel,
-                    handleSelectLabel,
-                )}
+                <ApplicantList
+                    applicantList={applicantList}
+                    selectedApplicantId={selectedApplicantId}
+                    onSelectApplicantId={setSelectedApplicantId}
+                    titleMode="titleNode"
+                >
+                    <Dropdown key="wannaChange" open={open} onOpenChange={setOpen}>
+                        <Dropdown.Trigger asChild>
+                            <Button variant="outlined" sx={s_selectionButton}>
+                                {selectedInterviewLabel}
+                            </Button>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content offsetX={11.7} offsetY={42}>
+                            <InterviewTimeTable
+                                interviewSchedules={interviewSchedulelist}
+                                selectedInterviewLabel={selectedInterviewLabel}
+                                onSelect={handleSelectLabel}
+                                onOpenChange={setOpen}
+                                listSx={s_buttonGroup}
+                            />
+                        </Dropdown.Content>
+                    </Dropdown>
+                </ApplicantList>
             </div>
             <div css={s_arrowContainer}>
                 <ComponentMover></ComponentMover>
             </div>
             <div css={s_contentComponentWrapper}>
-                {renderApplicantSection(
-                    selectedStandardApplicantId,
-                    setSelectedStandardApplicantId,
-                    standardOpen,
-                    setStandardOpen,
-                    selectedStandardInterviewLabel,
-                    handleSelectStandardLabel,
-                    s_highlightedApplicantList,
-                )}
+                <ApplicantList
+                    applicantList={applicantList}
+                    selectedApplicantId={selectedStandardApplicantId}
+                    onSelectApplicantId={setSelectedStandardApplicantId}
+                    titleMode="titleNode"
+                    sx={s_highlightedApplicantList}
+                >
+                    <Dropdown key="standard" open={standardOpen} onOpenChange={setStandardOpen}>
+                        <Dropdown.Trigger asChild>
+                            <Button variant="outlined" sx={s_selectionButton}>
+                                {selectedStandardInterviewLabel}
+                            </Button>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content offsetX={11.7} offsetY={42}>
+                            <InterviewTimeTable
+                                interviewSchedules={interviewSchedulelist}
+                                selectedInterviewLabel={selectedStandardInterviewLabel}
+                                onSelect={handleSelectStandardLabel}
+                                onOpenChange={setStandardOpen}
+                                listSx={s_buttonGroup}
+                            />
+                        </Dropdown.Content>
+                    </Dropdown>
+                </ApplicantList>
             </div>
             <div css={s_arrowContainer}>
                 <ComponentMover />
