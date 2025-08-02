@@ -16,8 +16,17 @@ import {
 } from './MyClubPage.style';
 
 function MyClubPage() {
-    //query hooks
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
     const { data: myClubs } = useSuspenseQuery(myClubQueries.all());
+
+    // calculated values
+    // handlers
+    // effects
 
     return (
         <div css={myClubPageLayout}>
