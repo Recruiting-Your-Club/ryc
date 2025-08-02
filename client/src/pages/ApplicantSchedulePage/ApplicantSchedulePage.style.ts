@@ -64,7 +64,7 @@ export const s_selectionButton = css`
 `;
 
 export const s_highlightedApplicantList = css`
-    box-shadow: 0px 0px 30px 0px rgba(${hexToRgb(theme.colors.default)}, 0.25);
+    box-shadow: 0px 0px 30px 0px rgba(${hexToRgb(theme.colors.default)}, 0.2);
 `;
 
 export const s_alertSvg = css`
