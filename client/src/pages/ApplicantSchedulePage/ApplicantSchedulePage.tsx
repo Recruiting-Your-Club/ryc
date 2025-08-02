@@ -7,8 +7,17 @@ import {
     s_arrowContainer,
     s_selectionButton,
     s_highlightedApplicantList,
+    s_alertSvg,
+    s_contentContainer,
 } from './ApplicantSchedulePage.style';
-import { ApplicantList, Button, ComponentMover, Dropdown, InterviewTimeTable } from '@components';
+import {
+    ApplicantList,
+    Button,
+    ComponentMover,
+    Dropdown,
+    InterviewTimeTable,
+    Tooltip,
+} from '@components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { interviewQueries } from '@api/queryFactory';
 import { convertDate } from '@utils/convertDate';
@@ -16,6 +25,7 @@ import { useToast } from '@hooks/useToast';
 import { interviewMutations } from '@api/mutationFactory/interviewMutations';
 import type { Interviewee } from '@api/domain/interview/types';
 import type { SelectedLabel } from './types';
+import Alert from '@assets/images/alert.svg';
 
 function ApplicantSchedulePage() {
     // prop destruction
@@ -142,104 +152,114 @@ function ApplicantSchedulePage() {
 
     return (
         <div css={s_applicantSchedulePageContainer}>
-            <div css={s_contentComponentWrapper}>
-                <ApplicantList
-                    applicantList={IntervieweesToMove}
-                    selectedApplicantId={selectedIntervieweeId}
-                    onSelectApplicantId={setSelectedIntervieweeId}
-                    titleMode="titleNode"
+            <div>
+                <Tooltip
+                    content="카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!"
+                    direction="right"
                 >
-                    <Dropdown open={open} onOpenChange={setOpen}>
-                        <Dropdown.Trigger asChild>
-                            <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedInterviewLabel.label}
-                            </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={11.7} offsetY={42}>
-                            <InterviewTimeTable
-                                interviewSchedules={interviewSchedulelist}
-                                selectedInterviewLabel={selectedInterviewLabel.label}
-                                onSelect={handleSelectLabel}
-                                onOpenChange={setOpen}
-                                listSx={s_buttonGroup}
-                            />
-                        </Dropdown.Content>
-                    </Dropdown>
-                </ApplicantList>
+                    <Alert css={s_alertSvg} />
+                </Tooltip>
             </div>
-            <div css={s_arrowContainer}>
-                <ComponentMover
-                    onMoveLeft={() =>
-                        handleMove(
-                            standardInterviewees,
-                            selectedStandardIntervieweeId,
-                            selectedInterviewLabel.interviewSetId,
-                            setSelectedStandardIntervieweeId,
-                        )
-                    }
-                    onMoveRight={() =>
-                        handleMove(
-                            IntervieweesToMove,
-                            selectedIntervieweeId,
-                            selectedStandardInterviewLabel.interviewSetId,
-                            setSelectedIntervieweeId,
-                        )
-                    }
-                />
-            </div>
-            <div css={s_contentComponentWrapper}>
-                <ApplicantList
-                    applicantList={standardInterviewees}
-                    selectedApplicantId={selectedStandardIntervieweeId}
-                    onSelectApplicantId={setSelectedStandardIntervieweeId}
-                    titleMode="titleNode"
-                    sx={s_highlightedApplicantList}
-                >
-                    <Dropdown open={standardOpen} onOpenChange={setStandardOpen}>
-                        <Dropdown.Trigger asChild>
-                            <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedStandardInterviewLabel.label}
-                            </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={11.7} offsetY={42}>
-                            <InterviewTimeTable
-                                interviewSchedules={interviewSchedulelist}
-                                selectedInterviewLabel={selectedStandardInterviewLabel.label}
-                                onSelect={handleSelectStandardLabel}
-                                onOpenChange={setStandardOpen}
-                                listSx={s_buttonGroup}
-                            />
-                        </Dropdown.Content>
-                    </Dropdown>
-                </ApplicantList>
-            </div>
-            <div css={s_arrowContainer}>
-                <ComponentMover
-                    onMoveLeft={() =>
-                        handleMove(
-                            unspecifiedInterviewees,
-                            unspecifiedIntervieweeId,
-                            selectedStandardInterviewLabel.interviewSetId,
-                            setUnspecifiedIntervieweeId,
-                        )
-                    }
-                    onMoveRight={() =>
-                        handleMove(
-                            standardInterviewees,
-                            selectedStandardIntervieweeId,
-                            null,
-                            setSelectedStandardIntervieweeId,
-                        )
-                    }
-                />
-            </div>
-            <div css={s_contentComponentWrapper}>
-                <ApplicantList
-                    title="면접 일정 미지정자"
-                    applicantList={unspecifiedInterviewees}
-                    selectedApplicantId={unspecifiedIntervieweeId}
-                    onSelectApplicantId={setUnspecifiedIntervieweeId}
-                />
+            <div css={s_contentContainer}>
+                <div css={s_contentComponentWrapper}>
+                    <ApplicantList
+                        applicantList={IntervieweesToMove}
+                        selectedApplicantId={selectedIntervieweeId}
+                        onSelectApplicantId={setSelectedIntervieweeId}
+                        titleMode="titleNode"
+                    >
+                        <Dropdown open={open} onOpenChange={setOpen}>
+                            <Dropdown.Trigger asChild>
+                                <Button variant="outlined" sx={s_selectionButton}>
+                                    {selectedInterviewLabel.label}
+                                </Button>
+                            </Dropdown.Trigger>
+                            <Dropdown.Content offsetX={11.7} offsetY={42}>
+                                <InterviewTimeTable
+                                    interviewSchedules={interviewSchedulelist}
+                                    selectedInterviewLabel={selectedInterviewLabel.label}
+                                    onSelect={handleSelectLabel}
+                                    onOpenChange={setOpen}
+                                    listSx={s_buttonGroup}
+                                />
+                            </Dropdown.Content>
+                        </Dropdown>
+                    </ApplicantList>
+                </div>
+                <div css={s_arrowContainer}>
+                    <ComponentMover
+                        onMoveLeft={() =>
+                            handleMove(
+                                standardInterviewees,
+                                selectedStandardIntervieweeId,
+                                selectedInterviewLabel.interviewSetId,
+                                setSelectedStandardIntervieweeId,
+                            )
+                        }
+                        onMoveRight={() =>
+                            handleMove(
+                                IntervieweesToMove,
+                                selectedIntervieweeId,
+                                selectedStandardInterviewLabel.interviewSetId,
+                                setSelectedIntervieweeId,
+                            )
+                        }
+                    />
+                </div>
+                <div css={s_contentComponentWrapper}>
+                    <ApplicantList
+                        applicantList={standardInterviewees}
+                        selectedApplicantId={selectedStandardIntervieweeId}
+                        onSelectApplicantId={setSelectedStandardIntervieweeId}
+                        titleMode="titleNode"
+                        sx={s_highlightedApplicantList}
+                    >
+                        <Dropdown open={standardOpen} onOpenChange={setStandardOpen}>
+                            <Dropdown.Trigger asChild>
+                                <Button variant="outlined" sx={s_selectionButton}>
+                                    {selectedStandardInterviewLabel.label}
+                                </Button>
+                            </Dropdown.Trigger>
+                            <Dropdown.Content offsetX={11.7} offsetY={42}>
+                                <InterviewTimeTable
+                                    interviewSchedules={interviewSchedulelist}
+                                    selectedInterviewLabel={selectedStandardInterviewLabel.label}
+                                    onSelect={handleSelectStandardLabel}
+                                    onOpenChange={setStandardOpen}
+                                    listSx={s_buttonGroup}
+                                />
+                            </Dropdown.Content>
+                        </Dropdown>
+                    </ApplicantList>
+                </div>
+                <div css={s_arrowContainer}>
+                    <ComponentMover
+                        onMoveLeft={() =>
+                            handleMove(
+                                unspecifiedInterviewees,
+                                unspecifiedIntervieweeId,
+                                selectedStandardInterviewLabel.interviewSetId,
+                                setUnspecifiedIntervieweeId,
+                            )
+                        }
+                        onMoveRight={() =>
+                            handleMove(
+                                standardInterviewees,
+                                selectedStandardIntervieweeId,
+                                null,
+                                setSelectedStandardIntervieweeId,
+                            )
+                        }
+                    />
+                </div>
+                <div css={s_contentComponentWrapper}>
+                    <ApplicantList
+                        title="면접 일정 미지정자"
+                        applicantList={unspecifiedInterviewees}
+                        selectedApplicantId={unspecifiedIntervieweeId}
+                        onSelectApplicantId={setUnspecifiedIntervieweeId}
+                    />
+                </div>
             </div>
         </div>
     );
