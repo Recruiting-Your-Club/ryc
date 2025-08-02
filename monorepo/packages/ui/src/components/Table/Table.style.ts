@@ -4,8 +4,8 @@ import theme from '@ssoc/styles';
 
 export const s_tableWrapper = css`
     position: relative;
-    width: 80%;
-    border-radius: 0.8rem;
+    width: 100%;
+    border-radius: 0.6rem;
     overflow: auto;
     border: 1px solid ${theme.colors.black};
 `;
@@ -26,8 +26,7 @@ export const s_tableRow = css`
 
 export const s_tableColumnHeaderCell = css`
     ${theme.typography.subCaptionSemibold}
-    height: 3rem;
-    padding: 0.75rem;
+    height: 4.5rem;
     padding-left: 2rem;
     vertical-align: middle;
     text-align: left;
@@ -45,9 +44,8 @@ export const s_tableBody = css`
 `;
 
 export const s_tableCell = css`
-    padding: 0.75rem;
     padding-left: 2rem;
-    height: 5rem;
+    height: 7rem;
     vertical-align: middle;
     ${theme.typography.captionRegular}
 

@@ -2,11 +2,13 @@ import { Table } from '@ssoc/ui';
 
 function TestPage() {
     return (
-        <div css={{ width: '100%' }}>
+        <div css={{ width: '60%' }}>
             <Table>
                 <Table.Header>
                     <Table.Row>
-                        <Table.ColumnHeaderCell>멤버</Table.ColumnHeaderCell>
+                        <Table.ColumnHeaderCell sx={{ paddingRight: '15rem' }}>
+                            멤버
+                        </Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>가입일</Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>권한</Table.ColumnHeaderCell>
                         <Table.ColumnHeaderCell>작업</Table.ColumnHeaderCell>
