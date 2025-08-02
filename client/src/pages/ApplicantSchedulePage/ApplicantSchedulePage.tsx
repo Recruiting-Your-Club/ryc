@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import React, { useState } from 'react';
 import {
     s_applicantSchedulePageContainer,
@@ -13,38 +14,31 @@ import { interviewQueries } from '@api/queryFactory';
 import { convertDate } from '@utils/convertDate';
 import { applicantQueries } from '@api/queryFactory/applicantQueries';
 import { useToast } from '@hooks/useToast';
+import type { CSSObject } from '@emotion/react';
 
 function ApplicantSchedulePage() {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+
     // initial values
     const { data: interviewSchedulelist = [] } = useSuspenseQuery(
         interviewQueries.allInterviewSchedules(),
     );
+
     // state, ref, querystring hooks
     const [open, setOpen] = useState<boolean>(false);
     const [standardOpen, setStandardOpen] = useState<boolean>(false);
 
     const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
     const [selectedStandardApplicantId, setSelectedStandardApplicantId] = useState<number>(1);
-    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<string>(() => {
-        if (interviewSchedulelist[0]) {
-            const date = convertDate(interviewSchedulelist[0].date);
-            const name = interviewSchedulelist[0].interviewSets[1].name;
-            return `${date} ${name}`;
-        }
-        return '면접 일정 없음';
-    });
+    const [unspecifiedApplicantId, setUnspecifiedApplicantId] = useState<number>(1);
+
+    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<string>(() =>
+        getInitialInterviewLabel(1),
+    );
     const [selectedStandardInterviewLabel, setSelectedStandardInterviewLabel] = useState<string>(
-        () => {
-            if (interviewSchedulelist[0]) {
-                const date = convertDate(interviewSchedulelist[0].date);
-                const name = interviewSchedulelist[0].interviewSets[0].name;
-                return `${date} ${name}`;
-            }
-            return '면접 일정 없음';
-        },
+        () => getInitialInterviewLabel(0),
     );
 
     // form hooks
@@ -52,88 +46,111 @@ function ApplicantSchedulePage() {
     const { data: applicantList = [] } = useSuspenseQuery(applicantQueries.allApplicants());
 
     // calculated values
+    function getInitialInterviewLabel(scheduleSetIndex: number): string {
+        if (interviewSchedulelist[0]) {
+            const date = convertDate(interviewSchedulelist[0].date);
+            const name = interviewSchedulelist[0].interviewSets[scheduleSetIndex].name;
+            return `${date} ${name}`;
+        }
+        return '면접 일정 없음';
+    }
+
     // handlers
-    const handleSelectStandardLabel = (label: string) => {
-        const isSame = label === selectedInterviewLabel && label !== '면접 일정 없음';
+    const labelSelectHandler =
+        (
+            getTargetLabel: () => string,
+            setTargetLabel: Dispatch<SetStateAction<string>>,
+            setDropdown: Dispatch<SetStateAction<boolean>>,
+        ) =>
+        (label: string) => {
+            const targetLabel = getTargetLabel();
+            const isSame = label === targetLabel && label !== '면접 일정 없음';
 
-        if (isSame) {
-            toast('같은 면접 일정은 선택할 수 없어요!', { type: 'error', toastTheme: 'black' });
-            setStandardOpen(true);
-            return;
-        }
+            if (isSame) {
+                toast('같은 면접 일정은 선택할 수 없어요!', { type: 'error', toastTheme: 'black' });
+                setDropdown(true);
+                return;
+            }
+            setTargetLabel(label);
+            setDropdown(false);
+        };
 
-        setSelectedStandardInterviewLabel(label);
-        setStandardOpen(false);
-    };
+    const handleSelectLabel = labelSelectHandler(
+        () => selectedStandardInterviewLabel,
+        setSelectedInterviewLabel,
+        setOpen,
+    );
 
-    const handleSelectLabel = (label: string) => {
-        const isSame = label === selectedStandardInterviewLabel && label !== '면접 일정 없음';
+    const handleSelectStandardLabel = labelSelectHandler(
+        () => selectedInterviewLabel,
+        setSelectedStandardInterviewLabel,
+        setStandardOpen,
+    );
 
-        if (isSame) {
-            toast('같은 면접 일정은 선택할 수 없어요!', { type: 'error', toastTheme: 'black' });
-            setOpen(true);
-            return;
-        }
-
-        setSelectedInterviewLabel(label);
-        setOpen(false);
-    };
     // effects
+    // etc
+    const renderApplicantSection = (
+        applicantId: number,
+        setApplicantId: Dispatch<SetStateAction<number>>,
+        open: boolean,
+        setOpen: Dispatch<SetStateAction<boolean>>,
+        label: string,
+        onSelect: (label: string) => void,
+        sx?: CSSObject,
+    ) => (
+        <div css={s_contentComponentWrapper}>
+            <ApplicantList
+                applicantList={applicantList}
+                selectedApplicantId={applicantId}
+                onSelectApplicantId={setApplicantId}
+                titleMode="titleNode"
+                sx={sx}
+            >
+                <Dropdown open={open} onOpenChange={setOpen}>
+                    <Dropdown.Trigger asChild>
+                        <Button variant="outlined" sx={s_selectionButton}>
+                            {label}
+                        </Button>
+                    </Dropdown.Trigger>
+                    <Dropdown.Content offsetX={11.7} offsetY={42}>
+                        <InterviewTimeTable
+                            interviewSchedules={interviewSchedulelist}
+                            selectedInterviewLabel={label}
+                            onSelect={onSelect}
+                            onOpenChange={setOpen}
+                            listSx={s_buttonGroup}
+                        />
+                    </Dropdown.Content>
+                </Dropdown>
+            </ApplicantList>
+        </div>
+    );
+
     return (
         <div css={s_applicantSchedulePageContainer}>
             <div css={s_contentComponentWrapper}>
-                <ApplicantList
-                    applicantList={applicantList}
-                    selectedApplicantId={selectedApplicantId}
-                    onSelectApplicantId={setSelectedApplicantId}
-                    titleMode="titleNode"
-                >
-                    <Dropdown key="wannaChange" open={open} onOpenChange={setOpen}>
-                        <Dropdown.Trigger asChild>
-                            <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedInterviewLabel}
-                            </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={11.7} offsetY={42}>
-                            <InterviewTimeTable
-                                interviewSchedules={interviewSchedulelist}
-                                selectedInterviewLabel={selectedInterviewLabel}
-                                onSelect={handleSelectLabel}
-                                onOpenChange={setOpen}
-                                listSx={s_buttonGroup}
-                            />
-                        </Dropdown.Content>
-                    </Dropdown>
-                </ApplicantList>
+                {renderApplicantSection(
+                    selectedApplicantId,
+                    setSelectedApplicantId,
+                    open,
+                    setOpen,
+                    selectedInterviewLabel,
+                    handleSelectLabel,
+                )}
             </div>
             <div css={s_arrowContainer}>
                 <ComponentMover></ComponentMover>
             </div>
             <div css={s_contentComponentWrapper}>
-                <ApplicantList
-                    applicantList={applicantList}
-                    selectedApplicantId={selectedStandardApplicantId}
-                    onSelectApplicantId={setSelectedStandardApplicantId}
-                    titleMode="titleNode"
-                    sx={s_highlightedApplicantList}
-                >
-                    <Dropdown key="standard" open={standardOpen} onOpenChange={setStandardOpen}>
-                        <Dropdown.Trigger asChild>
-                            <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedStandardInterviewLabel}
-                            </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={11.7} offsetY={42}>
-                            <InterviewTimeTable
-                                interviewSchedules={interviewSchedulelist}
-                                selectedInterviewLabel={selectedStandardInterviewLabel}
-                                onSelect={handleSelectStandardLabel}
-                                onOpenChange={setStandardOpen}
-                                listSx={s_buttonGroup}
-                            />
-                        </Dropdown.Content>
-                    </Dropdown>
-                </ApplicantList>
+                {renderApplicantSection(
+                    selectedStandardApplicantId,
+                    setSelectedStandardApplicantId,
+                    standardOpen,
+                    setStandardOpen,
+                    selectedStandardInterviewLabel,
+                    handleSelectStandardLabel,
+                    s_highlightedApplicantList,
+                )}
             </div>
             <div css={s_arrowContainer}>
                 <ComponentMover />
@@ -142,8 +159,8 @@ function ApplicantSchedulePage() {
                 <ApplicantList
                     title="면접 일정 미지정자"
                     applicantList={applicantList}
-                    selectedApplicantId={selectedApplicantId}
-                    onSelectApplicantId={setSelectedApplicantId}
+                    selectedApplicantId={unspecifiedApplicantId}
+                    onSelectApplicantId={setUnspecifiedApplicantId}
                 />
             </div>
         </div>
