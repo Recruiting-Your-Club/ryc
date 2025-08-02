@@ -4,5 +4,5 @@ export interface RecruitmentDialogProps {
     open?: boolean;
     handleClose?: () => void;
     link?: string;
-    announcementDetail: Announcement;
+    announcementDetaildata?: Announcement;
 }
