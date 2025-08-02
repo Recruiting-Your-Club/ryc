@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     s_applicantSchedulePageContainer,
     s_contentComponentWrapper,
@@ -12,9 +12,11 @@ import { ApplicantList, Button, ComponentMover, Dropdown, InterviewTimeTable } f
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { interviewQueries } from '@api/queryFactory';
 import { convertDate } from '@utils/convertDate';
-import { applicantQueries } from '@api/queryFactory/applicantQueries';
 import { useToast } from '@hooks/useToast';
-import type { CSSObject } from '@emotion/react';
+import { interviewMutations } from '@api/mutationFactory/interviewMutations';
+import type { Interviewee } from '@api/domain/interview/types';
+import type { SelectedLabel } from './types';
+import { getInitialId } from '@pages/InterviewEvaluationPage/utils/getInitialId';
 
 function ApplicantSchedulePage() {
     // prop destruction
@@ -22,91 +24,142 @@ function ApplicantSchedulePage() {
     const { toast } = useToast();
 
     // initial values
-    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
-        interviewQueries.allInterviewSchedules(),
-    );
-
     // state, ref, querystring hooks
     const [open, setOpen] = useState<boolean>(false);
     const [standardOpen, setStandardOpen] = useState<boolean>(false);
 
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
-    const [selectedStandardApplicantId, setSelectedStandardApplicantId] = useState<number>(1);
-    const [unspecifiedApplicantId, setUnspecifiedApplicantId] = useState<number>(1);
+    const [selectedIntervieweeId, setSelectedIntervieweeId] = useState<number>(1);
+    const [selectedStandardIntervieweeId, setSelectedStandardIntervieweeId] = useState<number>(1);
+    const [unspecifiedIntervieweeId, setUnspecifiedIntervieweeId] = useState<number>(1);
 
-    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<string>(() =>
-        getInitialInterviewLabel(1),
-    );
-    const [selectedStandardInterviewLabel, setSelectedStandardInterviewLabel] = useState<string>(
-        () => getInitialInterviewLabel(0),
-    );
+    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<SelectedLabel>({
+        label: '',
+        interviewSetId: null,
+    });
+    const [selectedStandardInterviewLabel, setSelectedStandardInterviewLabel] =
+        useState<SelectedLabel>({ label: '', interviewSetId: null });
 
     // form hooks
     // query hooks
-    const { data: applicantList = [] } = useSuspenseQuery(applicantQueries.allApplicants());
+    const { data: intervieweeList = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
+    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
+        interviewQueries.allInterviewSchedules(),
+    );
+    const { mutate: updateIntervieweeList } = interviewMutations.useUpdateIntervieweeSchedule();
 
     // calculated values
-    function getInitialInterviewLabel(scheduleSetIndex: number): string {
-        if (interviewSchedulelist[0]) {
-            const date = convertDate(interviewSchedulelist[0].date);
-            const name = interviewSchedulelist[0].interviewSets[scheduleSetIndex].name;
-            return `${date} ${name}`;
+    const standardInterviewees = intervieweeList.filter(
+        (interviewee) =>
+            interviewee.interviewSetId === selectedStandardInterviewLabel.interviewSetId,
+    );
+    const IntervieweesToMove = intervieweeList.filter(
+        (interviewee) => interviewee.interviewSetId === selectedInterviewLabel.interviewSetId,
+    );
+    const unspecifiedInterviewees = intervieweeList.filter(
+        (interviewee) => interviewee.interviewSetId === null,
+    );
+
+    function getInitialInterviewLabel(scheduleSetIndex: number): SelectedLabel {
+        const schedule = interviewSchedulelist?.[0];
+        const set = schedule?.interviewSets?.[scheduleSetIndex];
+
+        if (schedule && set) {
+            const date = convertDate(schedule.date);
+            const name = set.name;
+            return { label: `${date} ${name}`, interviewSetId: set.id };
         }
-        return '면접 일정 없음';
+        return { label: '면접 일정 없음', interviewSetId: null };
     }
 
     // handlers
     const labelSelectHandler =
         (
-            getTargetLabel: () => string,
-            setTargetLabel: Dispatch<SetStateAction<string>>,
+            getTargetLabelId: () => number | null,
+            setTargetLabel: Dispatch<SetStateAction<SelectedLabel>>,
             setDropdown: Dispatch<SetStateAction<boolean>>,
         ) =>
         (label: string) => {
-            const targetLabel = getTargetLabel();
-            const isSame = label === targetLabel && label !== '면접 일정 없음';
+            const targetSetId = getTargetLabelId();
+            const newSetId = findInterviewSetIdByLabel(label);
+
+            const isSame = newSetId !== null && newSetId === targetSetId;
 
             if (isSame) {
                 toast('같은 면접 일정은 선택할 수 없어요!', { type: 'error', toastTheme: 'black' });
                 setDropdown(true);
                 return;
             }
-            setTargetLabel(label);
+            setTargetLabel({ label, interviewSetId: newSetId });
             setDropdown(false);
         };
 
     const handleSelectLabel = labelSelectHandler(
-        () => selectedStandardInterviewLabel,
+        () => selectedStandardInterviewLabel.interviewSetId,
         setSelectedInterviewLabel,
         setOpen,
     );
 
     const handleSelectStandardLabel = labelSelectHandler(
-        () => selectedInterviewLabel,
+        () => selectedInterviewLabel.interviewSetId,
         setSelectedStandardInterviewLabel,
         setStandardOpen,
     );
 
+    const handleMove = (
+        interviewees: Interviewee[],
+        applicantId: number,
+        targetSetId: number | null,
+        resetSelectedId: Dispatch<SetStateAction<number>>,
+    ) => {
+        const selected = interviewees.find((interviewee) => interviewee.id === applicantId);
+        if (!selected) return;
+
+        updateIntervieweeList({
+            intervieweeId: selected.id,
+            body: { interviewSetId: targetSetId },
+        });
+        resetSelectedId(1);
+    };
+
     // effects
+    useEffect(() => {
+        if (interviewSchedulelist.length > 0) {
+            setSelectedInterviewLabel(getInitialInterviewLabel(1));
+            setSelectedStandardInterviewLabel(getInitialInterviewLabel(0));
+        }
+    }, [interviewSchedulelist]);
+
+    //etc
+    const findInterviewSetIdByLabel = (label: string): number | null => {
+        for (const schedule of interviewSchedulelist) {
+            const date = convertDate(schedule.date);
+            for (const set of schedule.interviewSets) {
+                const fullLabel = `${date} ${set.name}`;
+                if (fullLabel === label) return set.id;
+            }
+        }
+        return null;
+    };
+
     return (
         <div css={s_applicantSchedulePageContainer}>
             <div css={s_contentComponentWrapper}>
                 <ApplicantList
-                    applicantList={applicantList}
-                    selectedApplicantId={selectedApplicantId}
-                    onSelectApplicantId={setSelectedApplicantId}
+                    applicantList={IntervieweesToMove}
+                    selectedApplicantId={selectedIntervieweeId}
+                    onSelectApplicantId={setSelectedIntervieweeId}
                     titleMode="titleNode"
                 >
                     <Dropdown open={open} onOpenChange={setOpen}>
                         <Dropdown.Trigger asChild>
                             <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedInterviewLabel}
+                                {selectedInterviewLabel.label}
                             </Button>
                         </Dropdown.Trigger>
                         <Dropdown.Content offsetX={11.7} offsetY={42}>
                             <InterviewTimeTable
                                 interviewSchedules={interviewSchedulelist}
-                                selectedInterviewLabel={selectedInterviewLabel}
+                                selectedInterviewLabel={selectedInterviewLabel.label}
                                 onSelect={handleSelectLabel}
                                 onOpenChange={setOpen}
                                 listSx={s_buttonGroup}
@@ -116,26 +169,43 @@ function ApplicantSchedulePage() {
                 </ApplicantList>
             </div>
             <div css={s_arrowContainer}>
-                <ComponentMover></ComponentMover>
+                <ComponentMover
+                    onMoveLeft={() =>
+                        handleMove(
+                            standardInterviewees,
+                            selectedStandardIntervieweeId,
+                            selectedInterviewLabel.interviewSetId,
+                            setSelectedStandardIntervieweeId,
+                        )
+                    }
+                    onMoveRight={() =>
+                        handleMove(
+                            IntervieweesToMove,
+                            selectedIntervieweeId,
+                            selectedStandardInterviewLabel.interviewSetId,
+                            setSelectedIntervieweeId,
+                        )
+                    }
+                />
             </div>
             <div css={s_contentComponentWrapper}>
                 <ApplicantList
-                    applicantList={applicantList}
-                    selectedApplicantId={selectedStandardApplicantId}
-                    onSelectApplicantId={setSelectedStandardApplicantId}
+                    applicantList={standardInterviewees}
+                    selectedApplicantId={selectedStandardIntervieweeId}
+                    onSelectApplicantId={setSelectedStandardIntervieweeId}
                     titleMode="titleNode"
                     sx={s_highlightedApplicantList}
                 >
                     <Dropdown open={standardOpen} onOpenChange={setStandardOpen}>
                         <Dropdown.Trigger asChild>
                             <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedStandardInterviewLabel}
+                                {selectedStandardInterviewLabel.label}
                             </Button>
                         </Dropdown.Trigger>
                         <Dropdown.Content offsetX={11.7} offsetY={42}>
                             <InterviewTimeTable
                                 interviewSchedules={interviewSchedulelist}
-                                selectedInterviewLabel={selectedStandardInterviewLabel}
+                                selectedInterviewLabel={selectedStandardInterviewLabel.label}
                                 onSelect={handleSelectStandardLabel}
                                 onOpenChange={setStandardOpen}
                                 listSx={s_buttonGroup}
@@ -145,14 +215,31 @@ function ApplicantSchedulePage() {
                 </ApplicantList>
             </div>
             <div css={s_arrowContainer}>
-                <ComponentMover />
+                <ComponentMover
+                    onMoveLeft={() =>
+                        handleMove(
+                            unspecifiedInterviewees,
+                            unspecifiedIntervieweeId,
+                            selectedStandardInterviewLabel.interviewSetId,
+                            setUnspecifiedIntervieweeId,
+                        )
+                    }
+                    onMoveRight={() =>
+                        handleMove(
+                            standardInterviewees,
+                            selectedStandardIntervieweeId,
+                            null,
+                            setSelectedStandardIntervieweeId,
+                        )
+                    }
+                />
             </div>
             <div css={s_contentComponentWrapper}>
                 <ApplicantList
                     title="면접 일정 미지정자"
-                    applicantList={applicantList}
-                    selectedApplicantId={unspecifiedApplicantId}
-                    onSelectApplicantId={setUnspecifiedApplicantId}
+                    applicantList={unspecifiedInterviewees}
+                    selectedApplicantId={unspecifiedIntervieweeId}
+                    onSelectApplicantId={setUnspecifiedIntervieweeId}
                 />
             </div>
         </div>
