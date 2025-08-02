@@ -16,7 +16,6 @@ import { useToast } from '@hooks/useToast';
 import { interviewMutations } from '@api/mutationFactory/interviewMutations';
 import type { Interviewee } from '@api/domain/interview/types';
 import type { SelectedLabel } from './types';
-import { getInitialId } from '@pages/InterviewEvaluationPage/utils/getInitialId';
 
 function ApplicantSchedulePage() {
     // prop destruction
@@ -28,9 +27,9 @@ function ApplicantSchedulePage() {
     const [open, setOpen] = useState<boolean>(false);
     const [standardOpen, setStandardOpen] = useState<boolean>(false);
 
-    const [selectedIntervieweeId, setSelectedIntervieweeId] = useState<number>(1);
-    const [selectedStandardIntervieweeId, setSelectedStandardIntervieweeId] = useState<number>(1);
-    const [unspecifiedIntervieweeId, setUnspecifiedIntervieweeId] = useState<number>(1);
+    const [selectedIntervieweeId, setSelectedIntervieweeId] = useState<number>(-1);
+    const [selectedStandardIntervieweeId, setSelectedStandardIntervieweeId] = useState<number>(-1);
+    const [unspecifiedIntervieweeId, setUnspecifiedIntervieweeId] = useState<number>(-1);
 
     const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<SelectedLabel>({
         label: '',
@@ -118,7 +117,7 @@ function ApplicantSchedulePage() {
             intervieweeId: selected.id,
             body: { interviewSetId: targetSetId },
         });
-        resetSelectedId(1);
+        resetSelectedId(-1);
     };
 
     // effects
