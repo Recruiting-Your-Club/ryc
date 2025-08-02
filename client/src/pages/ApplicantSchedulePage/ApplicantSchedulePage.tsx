@@ -10,6 +10,7 @@ import {
     s_alertSvg,
     s_contentContainer,
     s_alertSvgWrapper,
+    s_dropdownContent,
 } from './ApplicantSchedulePage.style';
 import {
     ApplicantList,
@@ -175,7 +176,7 @@ function ApplicantSchedulePage() {
                                     {selectedInterviewLabel.label}
                                 </Button>
                             </Dropdown.Trigger>
-                            <Dropdown.Content offsetX={11.7} offsetY={42}>
+                            <Dropdown.Content offsetX={11.7} offsetY={42} sx={s_dropdownContent}>
                                 <InterviewTimeTable
                                     interviewSchedules={interviewSchedulelist}
                                     selectedInterviewLabel={selectedInterviewLabel.label}

@@ -73,3 +73,7 @@ export const s_alertSvg = css`
     height: 2rem;
     cursor: pointer;
 `;
+
+export const s_dropdownContent = css`
+    /* 추후 dropdown컴포넌트 리팩토링 버전 도입 후 구현 예정 */
+`;
