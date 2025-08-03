@@ -17,10 +17,10 @@ const announcementQueries = {
             queryKey: announcementKeys.detail(announcementId),
             queryFn: () => getAnnouncementDetail(announcementId),
         }),
-    getApplicationForm: () =>
+    getApplicationForm: (announcementId: string) =>
         queryOptions({
-            queryKey: announcementKeys.detail('application-form'),
-            queryFn: () => getApplicationForm(),
+            queryKey: announcementKeys.detail(`application-form-${announcementId}`),
+            queryFn: () => getApplicationForm(announcementId),
         }),
 };
 
