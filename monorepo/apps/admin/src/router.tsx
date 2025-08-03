@@ -14,12 +14,13 @@ import {
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/clubs',
         element: <ManagerLayout />,
         children: [
             { index: true, element: <TestPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'test', element: <TestPage /> },
+            { path: ':clubId', element: <TestPage /> },
             { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
         ],
     },
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
             { path: 'register', element: <RegisterPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
             { path: 'club-search', element: <ClubSearchPage /> },
-            { path: 'myclub', element: <MyClubPage /> },
+            { path: 'myClub', element: <MyClubPage /> },
         ],
     },
 ]);

@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
+import { useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text } from '@ssoc/ui';
 
 import {
@@ -18,6 +19,8 @@ import {
 function MyClubPage() {
     // prop destruction
     // lib hooks
+    const { goTo } = useRouter();
+
     // initial values
     // state, ref, querystring hooks
     // form hooks
@@ -26,6 +29,9 @@ function MyClubPage() {
 
     // calculated values
     // handlers
+    const handleGoToClubDetail = (clubId: string) => {
+        goTo(`/clubs/${clubId}`);
+    };
     // effects
 
     return (
@@ -37,7 +43,12 @@ function MyClubPage() {
                 <ul css={myClubList}>
                     {myClubs.map((club) => (
                         <li key={club.id}>
-                            <Button variant="transparent" size="xl" sx={clubItem}>
+                            <Button
+                                variant="transparent"
+                                size="xl"
+                                sx={clubItem}
+                                onClick={() => handleGoToClubDetail(club.id)}
+                            >
                                 <Avatar radius="10px" imageURL={club.imageUrl} />
                                 <div css={clubItemText}>
                                     <Text textAlign="start">{club.name}</Text>
