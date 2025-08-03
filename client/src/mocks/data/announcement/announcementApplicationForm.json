@@ -1,0 +1,130 @@
+{
+    "applicationQuestions": [
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174000",
+            "type": "LONG_ANSWER",
+            "label": "EN#에 지원한 동기가 무엇인가요?",
+            "description": "EN#에 지원하게 된 계기와 동기를 자유롭게 작성해주세요.",
+            "isRequired": true,
+            "options": []
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174001",
+            "type": "LONG_ANSWER",
+            "label": "EN#에서 기대하는 활동을 작성해주세요.",
+            "description": "EN#에서 하고 싶은 활동이나 목표를 자유롭게 작성해주세요.",
+            "isRequired": true,
+            "options": []
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174002",
+            "type": "LONG_ANSWER",
+            "label": "프로젝트 경험이 있다면 자세히 설명해주세요.",
+            "description": "참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
+            "isRequired": false,
+            "options": []
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174003",
+            "type": "MULTIPLE_CHOICE",
+            "label": "가장 관심 있는 개발 분야를 선택해주세요.",
+            "description": "여러 개 선택 가능합니다.",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "opt-001",
+                    "option": "프론트엔드"
+                },
+                {
+                    "id": "opt-002",
+                    "option": "백엔드"
+                },
+                {
+                    "id": "opt-003",
+                    "option": "모바일 앱"
+                },
+                {
+                    "id": "opt-004",
+                    "option": "AI/ML"
+                }
+            ]
+        }
+    ],
+    "preQuestions": [
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174004",
+            "type": "SHORT_ANSWER",
+            "label": "이름",
+            "description": "실명을 입력해주세요.",
+            "isRequired": true,
+            "options": []
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174005",
+            "type": "SHORT_ANSWER",
+            "label": "생년월일",
+            "description": "YYYY-MM-DD 형식으로 입력해주세요.",
+            "isRequired": true,
+            "options": []
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174006",
+            "type": "SHORT_ANSWER",
+            "label": "전화번호",
+            "description": "010-0000-0000 형식으로 입력해주세요.",
+            "isRequired": true,
+            "options": []
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174007",
+            "type": "SINGLE_CHOICE",
+            "label": "성별",
+            "description": "성별을 선택해주세요.",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "opt-005",
+                    "option": "남"
+                },
+                {
+                    "id": "opt-006",
+                    "option": "여"
+                }
+            ]
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174008",
+            "type": "MULTIPLE_CHOICE",
+            "label": "전공",
+            "description": "관련 전공을 선택해주세요. (여러 개 선택 가능)",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "opt-007",
+                    "option": "소프트웨어학과"
+                },
+                {
+                    "id": "opt-008",
+                    "option": "컴퓨터공학과"
+                },
+                {
+                    "id": "opt-009",
+                    "option": "정보보안학과"
+                },
+                {
+                    "id": "opt-010",
+                    "option": "기타"
+                }
+            ]
+        },
+        {
+            "id": "e23e4567-e89b-12d3-a456-426614174009",
+            "type": "SHORT_ANSWER",
+            "label": "GitHub 계정",
+            "description": "GitHub 계정이 있다면 입력해주세요. (선택사항)",
+            "isRequired": false,
+            "options": []
+        }
+    ],
+    "personalInfoQuestions": ["NAME", "EMAIL", "PHONE", "STUDENT_ID"]
+}
