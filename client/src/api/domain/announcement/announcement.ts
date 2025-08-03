@@ -1,9 +1,9 @@
 import { httpRequest } from '@api/common/httpRequest';
 import { ApplicationForm, Announcement, AnnouncementSummary } from './types';
 
-async function getApplicationForm(): Promise<ApplicationForm> {
+async function getApplicationForm(announcementId: string): Promise<ApplicationForm> {
     const response = await httpRequest.get({
-        url: 'application-form',
+        url: `announcements/${announcementId}/application-form`,
     });
     return response as ApplicationForm;
 }
