@@ -54,11 +54,11 @@ function ClubSubmitCard({
                     )}
                 </div>
                 <Text textAlign="left" type="bodyRegular">
-                    {clubName}
+                    동아리 이름
                 </Text>
                 <div css={clubSubmitCardSubCaption}>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
-                        {tag}
+                        동아리 분류
                     </Text>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
                         26기 신입기수 모집
