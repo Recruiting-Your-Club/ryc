@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { BASE_URL } from '@constants/api';
 import announcementAllList from '../data/announcement/announcementAllList.json';
 import announcementDetail from '../data/announcement/announcementDetail.json';
+import announcementApplicationForm from '../data/announcement/announcementApplicationForm.json';
 
 const announcementHandler = [
     http.get(`${BASE_URL}clubs/:clubId/announcements`, () => {
@@ -13,31 +14,8 @@ const announcementHandler = [
         return HttpResponse.json(announcementDetail[0], { status: 200 });
     }),
 
-    http.get(`${BASE_URL}application-form`, () => {
-        return HttpResponse.json(
-            {
-                applicationQuestions: [
-                    {
-                        id: 'e23e4567-e89b-12d3-a456-426614174000',
-                        type: 'LONG_ANSWER',
-                        label: '자신의 개발 경험을 적어주세요.',
-                        isRequired: false,
-                        options: ['보기1', '보기2'],
-                    },
-                ],
-                preQuestions: [
-                    {
-                        id: 'e23e4567-e89b-12d3-a456-426614174001',
-                        type: 'LONG_ANSWER',
-                        label: '지원 동기를 적어주세요.',
-                        isRequired: false,
-                        options: ['보기1', '보기2'],
-                    },
-                ],
-                personalInfoQuestions: ['NAME', 'EMAIL'],
-            },
-            { status: 200 },
-        );
+    http.get(`${BASE_URL}announcements/:announcementId/application-form`, () => {
+        return HttpResponse.json(announcementApplicationForm, { status: 200 });
     }),
 ];
 
