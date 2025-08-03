@@ -1,0 +1,49 @@
+name: Dev Server CI/CD
+
+on:
+  push:
+    branches: [ develop ]
+    paths:
+      - 'server/**'
+  workflow_dispatch:
+
+env:
+  EC2_HOST: ${{ secrets.EC2_HOST }}
+  EC2_USER: ${{ secrets.EC2_USER }}
+  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  REMOTE_APP_DIR: /home/ec2-user/app
+  JAR_NAME: ryc-server.jar
+
+jobs:
+  deploy:
+    name: Build & Deploy Spring App to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build JAR with Gradle
+        working-directory: server
+        run: ./gradlew clean bootJar
+
+      - name: Set up SSH Key
+        run: |
+          echo "$EC2_SSH_KEY" > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+      - name: Upload JAR to EC2
+        run: |
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no \
+            server/build/libs/*.jar \
+            $EC2_USER@$EC2_HOST:$REMOTE_APP_DIR/$JAR_NAME
+
+      - name: Restart Spring App on EC2
+        run: |
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
+            pkill -f $JAR_NAME || true
+            nohup java -jar $REMOTE_APP_DIR/$JAR_NAME > $REMOTE_APP_DIR/app.log 2>&1 &
+          EOF
+
+      - name: Clean Up SSH Key
+        run: rm -f ec2_key.pem
