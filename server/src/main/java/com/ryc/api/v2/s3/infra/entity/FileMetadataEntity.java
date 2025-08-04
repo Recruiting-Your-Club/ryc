@@ -20,7 +20,7 @@ public class FileMetadataEntity extends BaseEntity {
   private String id;
 
   @Column(nullable = false, unique = true)
-  private String s3Key;
+  private String filePath;
 
   @Column(nullable = false)
   private String originalFileName;
@@ -34,21 +34,12 @@ public class FileMetadataEntity extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private FileType fileType;
 
-  private Boolean isPublic;
+  @Column(nullable = false)
+  private String associatedId;
 
-  // 썸네일 S3 키
-  private String thumbnailS3Key;
   // 최근 업로드 유저
   private String uploadedByUserId;
 
   @Enumerated(EnumType.STRING)
-  private FileStatus status; // PENDING_UPLOAD, UPLOADED 등
-
-  public void updateStatus(FileStatus newStatus) {
-    this.status = newStatus;
-  }
-
-  public void updateThumbnailS3Key(String thumbnailS3Key) {
-    this.thumbnailS3Key = thumbnailS3Key;
-  }
+  private FileStatus status;
 }
