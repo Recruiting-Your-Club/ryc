@@ -33,10 +33,9 @@ public class EvaluationHttpApi {
   @PostMapping("/application")
   @Operation(summary = "지원서 평가 생성 API")
   // TODO: Evaluation 객체에 validate 메서드가 활성화 된다면, 그에 맞는 예외 응답 코드 추가 필요
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<ApplicationEvaluationResponse> evaluateApplication(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ApplicationEvaluationRequest body) {
@@ -48,10 +47,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/interview")
   @Operation(summary = "면접 평가 생성 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<InterviewEvaluationResponse> evaluateInterview(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody InterviewEvaluationRequest body) {
@@ -63,10 +61,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/applicaitons/search")
   @Operation(summary = "지원자의 지원서 평가 리스트 검색 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<EvaluationSearchResponse> getApplicationEvaluations(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody EvaluationSearchRequest body) {
@@ -78,10 +75,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/interviews/search")
   @Operation(summary = "지원자의 면접 평가 리스트 검색 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<EvaluationSearchResponse> getInterviewEvaluations(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody EvaluationSearchRequest body) {
@@ -93,10 +89,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/applicaitons/my-status")
   @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 지원서 평가 수행 여부 조회 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyApplicationEvaluationStatusForApplicants(
           @AuthenticationPrincipal CustomUserDetail userDetail,
@@ -110,10 +105,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/interviews/my-status")
   @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 면접 평가 수행 여부 조회 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyInterviewEvaluationStatusForApplicants(
           @AuthenticationPrincipal CustomUserDetail userDetail,
@@ -127,10 +121,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/applications/summary")
   @Operation(summary = "지원자들의 지원서에 대해 현재까지 완료된 평가 수 및 평균 점수를 조회하는 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<EvaluationOverviewSearchResponse> getApplicationEvaluationOverviews(
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationOverviewSearchResponse response =
@@ -141,10 +134,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/interviews/summary")
   @Operation(summary = "지원자들의 면접에 대해 현재까지 완료된 평가 수 및 평균 점수를 조회하는 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<EvaluationOverviewSearchResponse> getInterviewEvaluationOverviews(
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationOverviewSearchResponse response =
@@ -155,10 +147,9 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PutMapping("/{evaluation-id}")
   @Operation(summary = "평가 수정 API")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
-      include = {"INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
+      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<EvaluationUpdateResponse> updateEvaluation(
       @PathVariable("evaluation-id") String evaluationId,
       @Valid @RequestBody EvaluationUpdateRequest body) {

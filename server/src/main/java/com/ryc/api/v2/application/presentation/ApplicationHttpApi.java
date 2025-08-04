@@ -34,7 +34,8 @@ public interface ApplicationHttpApi {
         "INVALID_ANSWER_FORMAT",
         "ANNOUNCEMENT_NOT_RECRUITING",
         "DUPLICATE_APPLICATION",
-        "INVALID_PARAMETER"
+        "INVALID_PARAMETER",
+        "RESOURCE_NOT_FOUND"
       })
   ResponseEntity<ApplicationSubmissionResponse> submitApplication(
       @PathVariable("announcement-id") String announcementId,
@@ -42,12 +43,18 @@ public interface ApplicationHttpApi {
 
   @GetMapping
   @Operation(summary = "공고 지원서 목록 조회", operationId = "getApplications")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   ResponseEntity<List<ApplicationSummaryResponse>> getApplicationsByAnnouncementId(
       @PathVariable("announcement-id") String announcementId,
       @RequestParam(value = "status", required = false) String status);
 
   @GetMapping("/{applicant-id}")
   @Operation(summary = "지원서 상세 조회", operationId = "getApplicationDetail")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   ResponseEntity<ApplicationGetResponse> getApplicationDetail(
       @PathVariable("announcement-id") String announcementId,
       @PathVariable("applicant-id") String applicantId);

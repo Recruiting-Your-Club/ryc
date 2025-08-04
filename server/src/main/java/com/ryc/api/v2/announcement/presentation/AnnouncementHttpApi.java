@@ -31,7 +31,6 @@ public interface AnnouncementHttpApi {
   @PostMapping("/clubs/{club-id}/announcements")
   @HasRole(Role.MEMBER)
   @Operation(summary = "클럽 공고 생성", operationId = "createAnnouncement")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
   @ApiErrorCodeExample(
       value = {AnnouncementErrorCode.class, PermissionErrorCode.class, CommonErrorCode.class},
       include = {
@@ -63,7 +62,9 @@ public interface AnnouncementHttpApi {
 
   @GetMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
       @PathVariable("announcement-id") String announcementId);
 
@@ -93,7 +94,8 @@ public interface AnnouncementHttpApi {
         "QUESTION_OPTION_NOT_ALLOWED",
         "CLUB_NOT_FOUND",
         "FORBIDDEN_NOT_CLUB_MEMBER",
-        "INVALID_PARAMETER"
+        "INVALID_PARAMETER",
+        "RESOURCE_NOT_FOUND"
       })
   ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
       @PathVariable("club-id") String clubId,
@@ -102,7 +104,9 @@ public interface AnnouncementHttpApi {
 
   @Operation(summary = "지원폼 조회")
   @GetMapping("/announcements/{announcement-id}/application-form")
-  // TODO: EntityNotFoundException 예외 응답 코드 정의 필요
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   ResponseEntity<ApplicationFormResponse> getApplicationForm(
       @PathVariable("announcement-id") String announcementId);
 }
