@@ -22,10 +22,21 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
     // form hooks
     // query hooks
     // calculated values
+    const getEvaluationState = (): string => {
+        const totalEvaluatorCount = applicant.totalEvaluatorCount;
+        const completedEvaluatorCount = applicant.totalEvaluatorCount;
+
+        if (completedEvaluatorCount === totalEvaluatorCount)
+            return `평가 완료 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
+
+        return `평가 중 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
+    };
+
     // handlers
     const handleChange = (checked: boolean) => {
         onChange(applicant.email, checked);
     };
+
     // effects
 
     return (
@@ -51,7 +62,7 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
             <Card.BottomBody sx={s_bottom}>
                 <span css={s_dateWrapper}>
                     <TimeCircle css={s_timeCircleSvg} />
-                    <Card.DescriptionText description={applicant.date} sx={s_dateText} />
+                    <Card.DescriptionText description={applicant.applicationDate} sx={s_dateText} />
                 </span>
             </Card.BottomBody>
             <Divider sx={s_divider} />
@@ -59,11 +70,11 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
                 <Text
                     as="span"
                     type="helperTextBold"
-                    color={applicant.status.startsWith('평가 완료') ? 'primary' : 'black'}
+                    color={getEvaluationState().startsWith('평가 완료') ? 'primary' : 'black'}
                 >
-                    {applicant.status}
+                    {getEvaluationState()}
                 </Text>
-                <ScoreTag score={applicant.score} />
+                <ScoreTag score={String(applicant.averageScore)} />
             </Card.Footer>
         </Card.Root>
     );

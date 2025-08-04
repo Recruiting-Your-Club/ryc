@@ -1,7 +1,7 @@
-import { Applicant } from '@pages/StepManagementPage/types';
+import type { StepApplicant } from '@api/domain/step/types';
 
 export interface ApplicantCardProps {
-    applicant: Applicant;
+    applicant: StepApplicant;
     checked: boolean;
     onChange: (email: string, checked: boolean) => void;
     onClick: () => void;
