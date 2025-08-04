@@ -17,7 +17,7 @@ import com.ryc.api.v2.common.exception.code.ErrorCode;
 public @interface ApiErrorCodeExample {
 
   // 에러 코드 enum 클래스
-  Class<? extends ErrorCode> value();
+  Class<? extends ErrorCode>[] value();
 
   /*
    * 포함할 에러 코드 enum 이름을 나타냅니다.

@@ -3,7 +3,6 @@ package com.ryc.api.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -99,17 +98,23 @@ public class SwaggerConfiguration {
    * include 속성에 지정된 이름이 있는 에러 코드만 필터링합니다.
    */
   private List<ErrorCode> extractErrorCodes(ApiErrorCodeExample annotation) {
-
-    // 모든 에러 코드 enum 상수를 가져옵니다.
-    Class<? extends ErrorCode> value = annotation.value();
-    ErrorCode[] allErrorCodes = value.getEnumConstants();
+    List<ErrorCode> errorCodes = new ArrayList<>();
+    Class<? extends ErrorCode>[] values = annotation.value();
 
     // include 속성에 지정된 에러 코드 이름을 Set으로 변환합니다.
-    Set<String> includes = new HashSet<>(List.of(annotation.include()));
+    Set<String> includes = Set.of(annotation.include());
 
-    return Arrays.stream(allErrorCodes)
-        .filter(errorCode -> includes.isEmpty() || includes.contains(errorCode.name()))
-        .toList();
+    for (Class<? extends ErrorCode> value : values) {
+      ErrorCode[] allErrorCodes = value.getEnumConstants();
+      List<ErrorCode> list =
+          Arrays.stream(allErrorCodes)
+              .filter(errorCode -> includes.isEmpty() || includes.contains(errorCode.name()))
+              .toList();
+
+      errorCodes.addAll(list);
+    }
+
+    return errorCodes;
   }
 
   /*
