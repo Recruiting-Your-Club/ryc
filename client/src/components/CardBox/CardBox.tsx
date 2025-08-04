@@ -1,7 +1,6 @@
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
 import { ApplicantCard, Button, Divider, Dropdown, Text } from '@components';
 import { TextToggle } from '@components/_common';
-import { Applicant } from '@pages/StepManagementPage/types';
 import React, { useCallback, useState } from 'react';
 import {
     s_boxContainer,
@@ -23,12 +22,14 @@ import {
     s_titleGroup,
 } from './CardBox.style';
 import type { CardBoxProps } from './types';
+import type { StepApplicant } from '@api/domain/step/types';
 
 function CardBox({
     stepTitle,
     step,
     searchText,
-    applicantList,
+    passedApplicantList,
+    failedApplicantList,
     handleOpen,
     height,
     sx,
@@ -48,7 +49,7 @@ function CardBox({
     }; // 엄밀히 말하면 util 함수에 해당
 
     const filteredNames = useCallback(
-        (applicantList: Applicant[]) => {
+        (applicantList: StepApplicant[]) => {
             const normalizedQuery = normalizeQuery(searchText);
             return applicantList.filter((applicant) =>
                 normalizeQuery(applicant.name).includes(normalizedQuery),
@@ -59,10 +60,10 @@ function CardBox({
 
     // handlers
     const handleSelectAll = () => {
-        if (selectedEmails.length === applicantList.length) {
+        if (selectedEmails.length === passedApplicantList.length) {
             setSelectedEmails([]);
         } else {
-            setSelectedEmails(applicantList.map((applicant) => applicant.email));
+            setSelectedEmails(passedApplicantList.map((applicant) => applicant.email));
         }
     };
 
@@ -136,7 +137,7 @@ function CardBox({
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
                                 <Dropdown.Item inset sx={s_dropdownItem} onClick={handleSelectAll}>
                                     <Text as="text" type="subCaptionRegular">
-                                        {selectedEmails.length === applicantList.length
+                                        {selectedEmails.length === passedApplicantList.length
                                             ? '전체 선택 해제'
                                             : '전체 선택'}
                                     </Text>
@@ -150,18 +151,30 @@ function CardBox({
             <div css={s_cardGroupWrapper}>
                 {!pass && (
                     <div css={s_cardGroup}>
-                        {filteredNames(applicantList).map((applicant) => (
+                        {filteredNames(passedApplicantList).map((applicant) => (
                             <ApplicantCard
                                 key={applicant.email}
                                 applicant={applicant}
                                 checked={selectedEmails.includes(applicant.email)}
                                 onChange={handleCheckbox}
-                                onClick={() => handleOpen(applicant as Applicant)}
+                                onClick={() => handleOpen(applicant as StepApplicant)}
                             />
                         ))}
                     </div>
                 )}
-                {pass && <div css={s_cardGroup}>ㅎㅇ</div>}
+                {pass && (
+                    <div css={s_cardGroup}>
+                        {filteredNames(failedApplicantList).map((applicant) => (
+                            <ApplicantCard
+                                key={applicant.email}
+                                applicant={applicant}
+                                checked={selectedEmails.includes(applicant.email)}
+                                onChange={handleCheckbox}
+                                onClick={() => handleOpen(applicant as StepApplicant)}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

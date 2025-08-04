@@ -1,5 +1,5 @@
+import type { StepApplicant } from '@api/domain/step/types';
 import type { CSSObject } from '@emotion/react';
-import { Applicant } from '@pages/StepManagementPage/types';
 
 export type Step = 'normal' | 'final';
 
@@ -7,8 +7,9 @@ export interface CardBoxProps {
     stepTitle: string;
     step: Step;
     searchText: string;
-    applicantList: Applicant[];
-    handleOpen: (applicant: Applicant) => void;
+    passedApplicantList: StepApplicant[];
+    failedApplicantList: StepApplicant[];
+    handleOpen: (applicant: StepApplicant) => void;
     height?: string;
     sx?: CSSObject;
 }
