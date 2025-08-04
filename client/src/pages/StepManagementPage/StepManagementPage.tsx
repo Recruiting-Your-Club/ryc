@@ -16,146 +16,16 @@ import {
     s_stepManagementPageContainer,
     s_topContainer,
 } from './StepManagementPage.style';
-import type { Applicant, ClubNotice } from './types';
-const applicantList = [
-    {
-        name: '박민지',
-        email: 'test123@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 중 (2/6)',
-    },
-    {
-        name: '김영림',
-        email: 'test1234@naver.com',
-        date: '2025. 02. 04',
-        score: '3.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김일림',
-        email: 'test1235@naver.com',
-        date: '2025. 05. 20',
-        score: '0',
-        status: '평가 중 (0/6)',
-    },
-    {
-        name: '김이림',
-        email: 'test1236@naver.com',
-        date: '2025. 05. 20',
-        score: '1.5',
-        status: '평가 중 (3/6)',
-    },
-    {
-        name: '김세림',
-        email: 'test1237@naver.com',
-        date: '2025. 05. 20',
-        score: '2.4',
-        status: '평가 중 (2/6)',
-    },
-    {
-        name: '김네림',
-        email: 'test1238@naver.com',
-        date: '2025. 05. 20',
-        score: '5',
-        status: '평가 완료 (6/6)',
-    },
-];
-
-const applicantList2 = [
-    {
-        name: '박민지',
-        email: 'tes123@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 중 (2/6)',
-    },
-    {
-        name: '김영림',
-        email: 'tes1234@naver.com',
-        date: '2025. 02. 04',
-        score: '3.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김일림',
-        email: 'tes1235@naver.com',
-        date: '2025. 05. 20',
-        score: '0',
-        status: '평가 중 (0/6)',
-    },
-    {
-        name: '김이림',
-        email: 'tes1236@naver.com',
-        date: '2025. 05. 20',
-        score: '1.5',
-        status: '평가 중 (3/6)',
-    },
-    {
-        name: '김세림',
-        email: 'tes1237@naver.com',
-        date: '2025. 05. 20',
-        score: '2.4',
-        status: '평가 중 (2/6)',
-    },
-];
-
-const finalApplicantList = [
-    {
-        name: '박민지',
-        email: 't123@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: 'Robert Lee',
-        email: 't12355@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김영림',
-        email: 't1234@naver.com',
-        date: '2025. 02. 04',
-        score: '3.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김일림',
-        email: 't1235@naver.com',
-        date: '2025. 05. 20',
-        score: '0',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김이림',
-        email: 't1236@naver.com',
-        date: '2025. 05. 20',
-        score: '1.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김세림',
-        email: 't1237@naver.com',
-        date: '2025. 05. 20',
-        score: '2.4',
-        status: '평가 완료 (6/6)',
-    },
-];
-
-const data: ClubNotice = {
-    document: true,
-    interview: true,
-};
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { stepQueries } from '@api/queryFactory/stepQueries';
+import type { StepApplicant } from '@api/domain/step/types';
 
 function StepManagementPage() {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
     const [searchText, setSearchText] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
@@ -163,9 +33,31 @@ function StepManagementPage() {
 
     // form hooks
     // query hooks
+    const { data: totalSteps = { process: [] } } = useSuspenseQuery(stepQueries.getTotalSteps());
+    const { data: stepApplicantList = [] } = useSuspenseQuery(stepQueries.allStepApplicants());
+
     // calculated values
+    const stepApplicantGroups = {
+        documentPassed: stepApplicantList.filter(
+            (applicant) => applicant.state === 'DOCUMENT_PASS',
+        ),
+        documentFailed: stepApplicantList.filter(
+            (applicant) => applicant.state === 'DOCUMENT_FAIL',
+        ),
+        finalPassed: stepApplicantList.filter((applicant) => applicant.state === 'FINAL_PASS'),
+        finalFailed: stepApplicantList.filter((applicant) => applicant.state === 'FINAL_FAIL'),
+        ...(totalSteps.process.length === 3 && {
+            interviewPassed: stepApplicantList.filter(
+                (applicant) => applicant.state === 'INTERVIEW_PASS',
+            ),
+            interviewFailed: stepApplicantList.filter(
+                (applicant) => applicant.state === 'INTERVIEW_FAIL',
+            ),
+        }),
+    };
+
     // handlers
-    const handleOpen = (applicant: Applicant) => {
+    const handleOpen = (applicant: StepApplicant) => {
         setSelectedApplicant(applicant);
         setIsOpen(true);
     };
@@ -204,18 +96,20 @@ function StepManagementPage() {
             </div>
             <div css={s_stepBoxContainer}>
                 <CardBox
-                    stepTitle={data.document ? '서류 평가' : '지원서 접수'}
+                    stepTitle={totalSteps.process.length === 3 ? '서류 평가' : '지원서 접수'}
                     step="normal"
                     searchText={searchText}
-                    applicantList={applicantList}
+                    passedApplicantList={stepApplicantGroups.documentPassed}
+                    failedApplicantList={stepApplicantGroups.documentFailed}
                     handleOpen={handleOpen}
                 />
-                {data.interview && (
+                {totalSteps.process.length === 3 && (
                     <CardBox
                         stepTitle="면접"
                         step="normal"
                         searchText={searchText}
-                        applicantList={applicantList2}
+                        passedApplicantList={stepApplicantGroups.interviewPassed!}
+                        failedApplicantList={stepApplicantGroups.interviewFailed!}
                         handleOpen={handleOpen}
                     />
                 )}
@@ -223,7 +117,8 @@ function StepManagementPage() {
                     stepTitle="최종 합격"
                     step="final"
                     searchText={searchText}
-                    applicantList={finalApplicantList}
+                    passedApplicantList={stepApplicantGroups.finalPassed}
+                    failedApplicantList={stepApplicantGroups.finalFailed}
                     handleOpen={handleOpen}
                 />
                 {selectedApplicant && (
