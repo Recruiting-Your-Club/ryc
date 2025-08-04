@@ -1,0 +1,302 @@
+[
+    {
+        "id": 1,
+        "name": "김영수",
+        "email": "ys.kim@example.com",
+        "state": "DOCUMENT_PASS",
+        "applicationDate": "2025-07-15",
+        "completedEvaluatorCount": 4,
+        "totalEvaluatorCount": 5,
+        "averageScore": 3.8
+    },
+    {
+        "id": 2,
+        "name": "박지은",
+        "email": "je.park@example.com",
+        "state": "DOCUMENT_NONPASS",
+        "applicationDate": "2025-07-16",
+        "completedEvaluatorCount": 5,
+        "totalEvaluatorCount": 5,
+        "averageScore": 2.1
+    },
+    {
+        "id": 3,
+        "name": "이준호",
+        "email": "jh.lee@example.com",
+        "state": "INTERVIEW_PASS",
+        "applicationDate": "2025-07-12",
+        "completedEvaluatorCount": 8,
+        "totalEvaluatorCount": 9,
+        "averageScore": 4.5
+    },
+    {
+        "id": 4,
+        "name": "정수빈",
+        "email": "sb.jung@example.com",
+        "state": "INTERVIEW_NONPASS",
+        "applicationDate": "2025-07-14",
+        "completedEvaluatorCount": 6,
+        "totalEvaluatorCount": 7,
+        "averageScore": 1.9
+    },
+    {
+        "id": 5,
+        "name": "최민재",
+        "email": "mj.choi@example.com",
+        "state": "FINAL_PASS",
+        "applicationDate": "2025-07-10",
+        "completedEvaluatorCount": 10,
+        "totalEvaluatorCount": 10,
+        "averageScore": 4.9
+    },
+    {
+        "id": 6,
+        "name": "한지민",
+        "email": "jm.han@example.com",
+        "state": "FINAL_NONPASS",
+        "applicationDate": "2025-07-11",
+        "completedEvaluatorCount": 9,
+        "totalEvaluatorCount": 10,
+        "averageScore": 2.7
+    },
+    {
+        "id": 7,
+        "name": "김태현",
+        "email": "th.kim@example.com",
+        "state": "DOCUMENT_PASS",
+        "applicationDate": "2025-07-13",
+        "completedEvaluatorCount": 5,
+        "totalEvaluatorCount": 5,
+        "averageScore": 4.1
+    },
+    {
+        "id": 8,
+        "name": "이서연",
+        "email": "sy.lee@example.com",
+        "state": "DOCUMENT_NONPASS",
+        "applicationDate": "2025-07-18",
+        "completedEvaluatorCount": 3,
+        "totalEvaluatorCount": 5,
+        "averageScore": 1.5
+    },
+    {
+        "id": 9,
+        "name": "박서준",
+        "email": "sj.park@example.com",
+        "state": "INTERVIEW_PASS",
+        "applicationDate": "2025-07-09",
+        "completedEvaluatorCount": 9,
+        "totalEvaluatorCount": 9,
+        "averageScore": 4.8
+    },
+    {
+        "id": 10,
+        "name": "최유진",
+        "email": "yj.choi@example.com",
+        "state": "INTERVIEW_NONPASS",
+        "applicationDate": "2025-07-17",
+        "completedEvaluatorCount": 7,
+        "totalEvaluatorCount": 8,
+        "averageScore": 2.3
+    },
+    {
+        "id": 11,
+        "name": "김민준",
+        "email": "mj.kim@example.com",
+        "state": "FINAL_PASS",
+        "applicationDate": "2025-07-08",
+        "completedEvaluatorCount": 10,
+        "totalEvaluatorCount": 10,
+        "averageScore": 4.7
+    },
+    {
+        "id": 12,
+        "name": "정소윤",
+        "email": "sy.jung@example.com",
+        "state": "FINAL_NONPASS",
+        "applicationDate": "2025-07-20",
+        "completedEvaluatorCount": 8,
+        "totalEvaluatorCount": 10,
+        "averageScore": 2.9
+    },
+    {
+        "id": 13,
+        "name": "강하윤",
+        "email": "hy.kang@example.com",
+        "state": "DOCUMENT_PASS",
+        "applicationDate": "2025-07-21",
+        "completedEvaluatorCount": 5,
+        "totalEvaluatorCount": 5,
+        "averageScore": 4.3
+    },
+    {
+        "id": 14,
+        "name": "윤서현",
+        "email": "sh.yun@example.com",
+        "state": "DOCUMENT_NONPASS",
+        "applicationDate": "2025-07-22",
+        "completedEvaluatorCount": 4,
+        "totalEvaluatorCount": 5,
+        "averageScore": 1.8
+    },
+    {
+        "id": 15,
+        "name": "송지원",
+        "email": "jw.song@example.com",
+        "state": "INTERVIEW_PASS",
+        "applicationDate": "2025-07-19",
+        "completedEvaluatorCount": 8,
+        "totalEvaluatorCount": 8,
+        "averageScore": 4.6
+    },
+    {
+        "id": 16,
+        "name": "오지훈",
+        "email": "jh.oh@example.com",
+        "state": "INTERVIEW_NONPASS",
+        "applicationDate": "2025-07-23",
+        "completedEvaluatorCount": 6,
+        "totalEvaluatorCount": 7,
+        "averageScore": 2.0
+    },
+    {
+        "id": 17,
+        "name": "장민서",
+        "email": "ms.jang@example.com",
+        "state": "FINAL_PASS",
+        "applicationDate": "2025-07-24",
+        "completedEvaluatorCount": 10,
+        "totalEvaluatorCount": 10,
+        "averageScore": 4.9
+    },
+    {
+        "id": 18,
+        "name": "임동현",
+        "email": "dh.im@example.com",
+        "state": "FINAL_NONPASS",
+        "applicationDate": "2025-07-25",
+        "completedEvaluatorCount": 9,
+        "totalEvaluatorCount": 10,
+        "averageScore": 2.6
+    },
+    {
+        "id": 19,
+        "name": "배수지",
+        "email": "sj.bae@example.com",
+        "state": "DOCUMENT_PASS",
+        "applicationDate": "2025-07-26",
+        "completedEvaluatorCount": 5,
+        "totalEvaluatorCount": 5,
+        "averageScore": 4.0
+    },
+    {
+        "id": 20,
+        "name": "고아름",
+        "email": "ar.go@example.com",
+        "state": "DOCUMENT_NONPASS",
+        "applicationDate": "2025-07-27",
+        "completedEvaluatorCount": 3,
+        "totalEvaluatorCount": 5,
+        "averageScore": 1.7
+    },
+    {
+        "id": 21,
+        "name": "김다희",
+        "email": "dh.kim@example.com",
+        "state": "INTERVIEW_PASS",
+        "applicationDate": "2025-07-28",
+        "completedEvaluatorCount": 9,
+        "totalEvaluatorCount": 9,
+        "averageScore": 4.7
+    },
+    {
+        "id": 22,
+        "name": "정현우",
+        "email": "hw.jung@example.com",
+        "state": "INTERVIEW_NONPASS",
+        "applicationDate": "2025-07-29",
+        "completedEvaluatorCount": 7,
+        "totalEvaluatorCount": 8,
+        "averageScore": 2.1
+    },
+    {
+        "id": 23,
+        "name": "박채원",
+        "email": "cw.park@example.com",
+        "state": "FINAL_PASS",
+        "applicationDate": "2025-07-30",
+        "completedEvaluatorCount": 10,
+        "totalEvaluatorCount": 10,
+        "averageScore": 4.8
+    },
+    {
+        "id": 24,
+        "name": "이민기",
+        "email": "mg.lee@example.com",
+        "state": "FINAL_NONPASS",
+        "applicationDate": "2025-07-31",
+        "completedEvaluatorCount": 8,
+        "totalEvaluatorCount": 10,
+        "averageScore": 2.8
+    },
+    {
+        "id": 25,
+        "name": "주예린",
+        "email": "yr.joo@example.com",
+        "state": "DOCUMENT_PASS",
+        "applicationDate": "2025-08-01",
+        "completedEvaluatorCount": 5,
+        "totalEvaluatorCount": 5,
+        "averageScore": 4.2
+    },
+    {
+        "id": 26,
+        "name": "손준혁",
+        "email": "jh.son@example.com",
+        "state": "DOCUMENT_NONPASS",
+        "applicationDate": "2025-08-02",
+        "completedEvaluatorCount": 4,
+        "totalEvaluatorCount": 5,
+        "averageScore": 1.9
+    },
+    {
+        "id": 27,
+        "name": "홍지훈",
+        "email": "jh.hong@example.com",
+        "state": "INTERVIEW_PASS",
+        "applicationDate": "2025-08-03",
+        "completedEvaluatorCount": 8,
+        "totalEvaluatorCount": 8,
+        "averageScore": 4.5
+    },
+    {
+        "id": 28,
+        "name": "서유나",
+        "email": "yn.seo@example.com",
+        "state": "INTERVIEW_NONPASS",
+        "applicationDate": "2025-08-04",
+        "completedEvaluatorCount": 6,
+        "totalEvaluatorCount": 7,
+        "averageScore": 2.2
+    },
+    {
+        "id": 29,
+        "name": "한서연",
+        "email": "sy.han@example.com",
+        "state": "FINAL_PASS",
+        "applicationDate": "2025-08-05",
+        "completedEvaluatorCount": 10,
+        "totalEvaluatorCount": 10,
+        "averageScore": 4.9
+    },
+    {
+        "id": 30,
+        "name": "신동윤",
+        "email": "dy.shin@example.com",
+        "state": "FINAL_NONPASS",
+        "applicationDate": "2025-08-06",
+        "completedEvaluatorCount": 9,
+        "totalEvaluatorCount": 10,
+        "averageScore": 2.5
+    }
+]
