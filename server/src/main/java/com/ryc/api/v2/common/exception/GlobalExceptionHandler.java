@@ -51,7 +51,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(BusinessRuleException.class)
   public ResponseEntity<Object> handleBusinessRuleException(BusinessRuleException e) {
     ErrorCode errorCode = e.getErrorCode();
-    return handleExceptionInternal(errorCode);
+
+    ErrorResponse errorResponse = ErrorResponse.builder()
+        .code(errorCode.name())
+        .message(e.getFormattedMessage())
+        .build();
+
+    return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
   }
 
   // EmptyResultDataAccessException은 JPA에서 존재하지 않는 데이터를 삭제하려고 할 때 발생하는 예외

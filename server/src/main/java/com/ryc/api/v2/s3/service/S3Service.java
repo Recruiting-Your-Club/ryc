@@ -1,5 +1,7 @@
 package com.ryc.api.v2.s3.service;
 
+import com.ryc.api.v2.s3.domain.FileMetaData;
+import com.ryc.api.v2.s3.domain.FileMetaDataRepository;
 import com.ryc.api.v2.s3.domain.FileType;
 import com.ryc.api.v2.s3.presentation.dto.request.PresignedUrlRequest;
 import com.ryc.api.v2.s3.presentation.dto.response.PresignedUrlResponse;
@@ -7,8 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
+import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -16,10 +21,11 @@ import java.util.UUID;
 public class S3Service {
 
     private final S3Presigner presigner;
+    private final FileMetaDataRepository fileMetaDataRepository;
 
-    private final String clubPath = "public/clubs";
-    private final String announcementPath = "public/announcements";
-    private final String applicationPath = "private/applications";
+    private final String CLUB_PATH = "public/clubs";
+    private final String ANNOUNCEMENT_PATH = "public/announcements";
+    private final String APPLICATION_PATH = "private/applications";
 
     @Value("${CLOUD_S3_BUCKET}")
     private String bucketName;
@@ -28,10 +34,37 @@ public class S3Service {
     private String cdnDomain;
 
     @Transactional
-    public PresignedUrlResponse getPreSignedUrl(PresignedUrlRequest request, String userId) {
-        // 1. 파일 S3 경로 생성
-        String S3Key = generateS3Key(request.fileType(), request.associatedId(), request.fileName());
-        // 2. presigned url 생성
+    public PresignedUrlResponse getUploadPresignedUrl(PresignedUrlRequest request, String userId) {
+
+        // 1. String to enum && contentType validate
+        FileType fileType = FileType.from(request.fileType());
+        fileType.checkContentType(request.contentType());
+        // 2. s3 key 생성
+        String S3Key = generateS3Key(fileType, request.associatedId(), request.fileName());
+
+        // 3. fileMetaData 생성
+        FileMetaData fileMetaData = FileMetaData.initialize(request, S3Key, userId);
+
+        FileMetaData savedFileMetaData = fileMetaDataRepository.save(fileMetaData);
+
+        //4. presigned url 생성
+        PutObjectRequest objectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(S3Key)
+                .contentType(request.contentType())
+                .build();
+
+        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(10))
+                .putObjectRequest(objectRequest)
+                .build();
+
+        String presignedUrl = presigner.presignPutObject(presignRequest).url().toString();
+
+        return PresignedUrlResponse.builder()
+                .presignedUrl(presignedUrl)
+                .fileMetadataId(savedFileMetaData.getId())
+                .build();
     }
 
     private String generateS3Key(FileType fileType, String associatedId, String fileName) {
@@ -39,11 +72,11 @@ public class S3Service {
         String path;
 
         path = switch (fileType){
-            case CLUB_PROFILE -> clubPath;
-            case ANNOUNCEMENT_IMAGE -> announcementPath;
-            case APPLICATION_ATTACHMENT -> applicationPath;
+            case CLUB_PROFILE -> CLUB_PATH;
+            case ANNOUNCEMENT_IMAGE -> ANNOUNCEMENT_PATH;
+            case APPLICATION_ATTACHMENT -> APPLICATION_PATH;
         };
 
-        return String.format("%s/%s/%s", path, associatedId, uuid);
+        return String.format("%s/%s/%s_%s", path, associatedId, uuid, fileName);
     }
 }
