@@ -30,7 +30,6 @@ public class EvaluationHttpApi {
   @PostMapping("/application")
   @Operation(summary = "지원서 평가 생성 API")
   public ResponseEntity<ApplicationEvaluationResponse> evaluateApplication(
-      @RequestHeader("X-CLUB-ID") String securedClubId,
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ApplicationEvaluationRequest body) {
     ApplicationEvaluationResponse response =
@@ -42,7 +41,6 @@ public class EvaluationHttpApi {
   @PostMapping("/interview")
   @Operation(summary = "면접 평가 생성 API")
   public ResponseEntity<InterviewEvaluationResponse> evaluateInterview(
-      @RequestHeader("X-CLUB-ID") String securedClubId,
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody InterviewEvaluationRequest body) {
     InterviewEvaluationResponse response =
@@ -54,7 +52,6 @@ public class EvaluationHttpApi {
   @PostMapping("/applicaitons/search")
   @Operation(summary = "지원자의 지원서 평가 리스트 검색 API")
   public ResponseEntity<EvaluationSearchResponse> getApplicationEvaluations(
-      @RequestHeader("X-CLUB-ID") String securedClubId,
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationSearchResponse response =
@@ -66,7 +63,6 @@ public class EvaluationHttpApi {
   @PostMapping("/interviews/search")
   @Operation(summary = "지원자의 면접 평가 리스트 검색 API")
   public ResponseEntity<EvaluationSearchResponse> getInterviewEvaluations(
-      @RequestHeader("X-CLUB-ID") String securedClubId,
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationSearchResponse response =
@@ -79,7 +75,6 @@ public class EvaluationHttpApi {
   @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 지원서 평가 수행 여부 조회 API")
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyApplicationEvaluationStatusForApplicants(
-          @RequestHeader("X-CLUB-ID") String securedClubId,
           @AuthenticationPrincipal CustomUserDetail userDetail,
           @Valid @RequestBody MyEvaluationStatusSearchRequest body) {
     MyEvaluationStatusSearchResponse response =
@@ -93,7 +88,6 @@ public class EvaluationHttpApi {
   @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 면접 평가 수행 여부 조회 API")
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyInterviewEvaluationStatusForApplicants(
-          @RequestHeader("X-CLUB-ID") String securedClubId,
           @AuthenticationPrincipal CustomUserDetail userDetail,
           @Valid @RequestBody MyEvaluationStatusSearchRequest body) {
     MyEvaluationStatusSearchResponse response =
@@ -106,7 +100,6 @@ public class EvaluationHttpApi {
   @PostMapping("/applications/summary")
   @Operation(summary = "지원자들의 지원서에 대해 현재까지 완료된 평가 수 및 평균 점수를 조회하는 API")
   public ResponseEntity<EvaluationOverviewSearchResponse> getApplicationEvaluationOverviews(
-      @RequestHeader("X-CLUB-ID") String securedClubId,
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationOverviewSearchResponse response =
         evaluationService.findAllEvaluationOverviews(body, EvaluationType.APPLICATION);
@@ -117,7 +110,6 @@ public class EvaluationHttpApi {
   @PostMapping("/interviews/summary")
   @Operation(summary = "지원자들의 면접에 대해 현재까지 완료된 평가 수 및 평균 점수를 조회하는 API")
   public ResponseEntity<EvaluationOverviewSearchResponse> getInterviewEvaluationOverviews(
-      @RequestHeader("X-CLUB-ID") String securedClubId,
       @Valid @RequestBody EvaluationSearchRequest body) {
     EvaluationOverviewSearchResponse response =
         evaluationService.findAllEvaluationOverviews(body, EvaluationType.INTERVIEW);
