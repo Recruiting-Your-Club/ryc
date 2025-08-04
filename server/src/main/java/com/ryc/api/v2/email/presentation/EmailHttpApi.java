@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
+import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.email.application.EmailService;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
@@ -36,6 +39,9 @@ public class EmailHttpApi {
   @PostMapping
   @HasRole(Role.MEMBER)
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
@@ -48,6 +54,9 @@ public class EmailHttpApi {
   @PostMapping("/interview")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
   public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestParam String announcementId,
