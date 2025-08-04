@@ -5,6 +5,7 @@ import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
 import { announcementQueries } from '@api/queryFactory';
 import { RecruitmentPageProps } from '../\btypes';
+import { useClubStore } from '@stores/clubStore';
 
 function RecruitmentPage({ clubId }: RecruitmentPageProps) {
     const { open, openDialog, closeDialog } = useDialog();
@@ -19,6 +20,10 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
     const { data: selectedAnnouncementDetail, isLoading: isDetailLoading } = useQuery({
         ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId || ''),
     });
+    const { setApplicationPeriod } = useClubStore();
+    setApplicationPeriod(
+        selectedAnnouncementDetail?.applicationPeriod || { startDate: '', endDate: '' },
+    );
 
     const handleCardClick = (announcementId: string) => {
         setSelectedAnnouncementId(announcementId);
