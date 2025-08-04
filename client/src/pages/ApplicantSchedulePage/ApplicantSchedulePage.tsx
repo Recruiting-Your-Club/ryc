@@ -63,7 +63,7 @@ function ApplicantSchedulePage() {
         (interviewee) =>
             interviewee.interviewSetId === selectedStandardInterviewLabel.interviewSetId,
     );
-    const IntervieweesToMove = intervieweeList.filter(
+    const intervieweesToMove = intervieweeList.filter(
         (interviewee) => interviewee.interviewSetId === selectedInterviewLabel.interviewSetId,
     );
     const unspecifiedInterviewees = intervieweeList.filter(
@@ -165,7 +165,7 @@ function ApplicantSchedulePage() {
             <div css={s_contentContainer}>
                 <div css={s_contentComponentWrapper}>
                     <ApplicantList
-                        applicantList={IntervieweesToMove}
+                        applicantList={intervieweesToMove}
                         selectedApplicantId={selectedIntervieweeId}
                         onSelectApplicantId={setSelectedIntervieweeId}
                         titleMode="titleNode"
@@ -200,7 +200,7 @@ function ApplicantSchedulePage() {
                         }
                         onMoveRight={() =>
                             handleMove(
-                                IntervieweesToMove,
+                                intervieweesToMove,
                                 selectedIntervieweeId,
                                 selectedStandardInterviewLabel.interviewSetId,
                                 setSelectedIntervieweeId,
