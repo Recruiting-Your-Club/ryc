@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import dayjs from 'dayjs';
 import {
     clubApplyPage,
     clubApplyPageMainContainer,
@@ -22,28 +21,29 @@ import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
+import { useClubStore } from '@stores/clubStore';
+import { getDeadlineInfo } from '@utils/compareTime';
 
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
-    console.log('announcementId:', announcementId);
+    const { clubName, clubLogo, clubCategory, clubDescription, clubStatus, applicationPeriod } =
+        useClubStore();
 
     // query hooks
-    const { data: announcementDetail, isLoading: announcementLoading } = useQuery({
+    const { data: announcementDetail, isLoading: announcementLoading } = useSuspenseQuery({
         ...announcementQueries.getAnnouncementDetail(announcementId || ''),
     });
 
-    const { data: applicationForm, isLoading: formLoading } = useQuery({
+    const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery({
         ...announcementQueries.getApplicationForm(announcementId || ''),
     });
 
     // initial values
-    const deadline = announcementDetail?.applicationPeriod?.endDate
-        ? dayjs(announcementDetail.applicationPeriod.endDate).format('YYYY-MM-DD')
-        : '-';
+    const { displayText } = getDeadlineInfo(applicationPeriod.endDate);
 
     // state, ref, querystring hooks
     const [answers, setAnswers] = useState<Answer[]>([]);
@@ -269,11 +269,11 @@ function ClubApplyPage() {
         <div css={clubApplyPage}>
             <div css={clubApplyPageMainContainer}>
                 <div css={clubLogoAndNameContainer}>
-                    <Ryc css={svgContainer} />
+                    <img src={clubLogo} alt="clubLogo" css={svgContainer} />
                     <div css={clubNameContainer}>
-                        <Text type="h3Semibold">동아리 이름</Text>
+                        <Text type="h3Semibold">{clubName}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            동라리 분류
+                            {clubCategory}동아리
                         </Text>
                     </div>
                 </div>
@@ -302,7 +302,7 @@ function ClubApplyPage() {
                 <ClubSubmitCard
                     clubName={announcementDetail.title}
                     tag={announcementDetail.target}
-                    deadline={deadline}
+                    deadline={displayText}
                     personalQuestions={clubPersonalQuestions}
                     detailQuestions={detailQuestions}
                     completedQuestionsCount={completedQuestions}
