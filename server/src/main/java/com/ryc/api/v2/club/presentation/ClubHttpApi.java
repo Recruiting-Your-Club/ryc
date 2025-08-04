@@ -28,6 +28,8 @@ import com.ryc.api.v2.club.service.ClubFacade;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
+import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
@@ -47,8 +49,8 @@ public class ClubHttpApi {
   @PostMapping
   @Operation(summary = "동아리 생성 API")
   @ApiErrorCodeExample(
-      value = ClubErrorCode.class,
-      include = {"DUPLICATE_CLUB_NAME"})
+      value = {ClubErrorCode.class, CommonErrorCode.class},
+      include = {"DUPLICATE_CLUB_NAME", "INVALID_PARAMETER"})
   public ResponseEntity<ClubCreateResponse> createClub(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ClubCreateRequest body) {
@@ -61,8 +63,8 @@ public class ClubHttpApi {
   @HasRole(Role.MEMBER)
   @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
   @ApiErrorCodeExample(
-      value = ClubErrorCode.class,
-      include = {"DUPLICATE_CLUB_NAME", "CLUB_NOT_FOUND"})
+      value = {ClubErrorCode.class, PermissionErrorCode.class},
+      include = {"DUPLICATE_CLUB_NAME", "CLUB_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<ClubUpdateResponse> updateClub(
       @PathVariable String id, @RequestBody ClubUpdateRequest body) {
     ClubUpdateResponse response = clubFacade.updateClub(id, body);
@@ -79,7 +81,7 @@ public class ClubHttpApi {
   @GetMapping("/{id}")
   @Operation(summary = "동아리 상세 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
   @ApiErrorCodeExample(
-      value = ClubErrorCode.class,
+      value = {ClubErrorCode.class},
       include = {"CLUB_NOT_FOUND"})
   public ResponseEntity<ClubGetResponse> getClub(@PathVariable String id) {
     ClubGetResponse response = clubFacade.getClub(id);
