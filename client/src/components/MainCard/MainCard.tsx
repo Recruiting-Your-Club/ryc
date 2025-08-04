@@ -12,6 +12,7 @@ import type { MainCardProps } from './types';
 import { getCategory } from '@utils/changeCategory';
 import { Link } from 'react-router-dom';
 import { TagStatus } from './TagStatus';
+import { useClubStore } from '@stores/clubStore';
 
 function MainCard({
     title = 'En#',
@@ -24,12 +25,19 @@ function MainCard({
 }: MainCardProps) {
     // prop destruction
     // lib hooks
+    const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
+        useClubStore();
     // initial values
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
     const clubTagList = clubTags.map((tag) => `#${tag.name} `);
+    setClubName(title);
+    setClubLogo(imageURL);
+    setClubCategory(category);
+    setClubDescription(description);
+    setClubStatus(status);
     // handlers
     // effects
     return (
