@@ -23,42 +23,9 @@
             "description": "참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
             "isRequired": false,
             "options": []
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174003",
-            "type": "MULTIPLE_CHOICE",
-            "label": "가장 관심 있는 개발 분야를 선택해주세요.",
-            "description": "여러 개 선택 가능합니다.",
-            "isRequired": true,
-            "options": [
-                {
-                    "id": "opt-001",
-                    "option": "프론트엔드"
-                },
-                {
-                    "id": "opt-002",
-                    "option": "백엔드"
-                },
-                {
-                    "id": "opt-003",
-                    "option": "모바일 앱"
-                },
-                {
-                    "id": "opt-004",
-                    "option": "AI/ML"
-                }
-            ]
         }
     ],
     "preQuestions": [
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174004",
-            "type": "SHORT_ANSWER",
-            "label": "이름",
-            "description": "실명을 입력해주세요.",
-            "isRequired": true,
-            "options": []
-        },
         {
             "id": "e23e4567-e89b-12d3-a456-426614174005",
             "type": "SHORT_ANSWER",
@@ -109,22 +76,14 @@
                 },
                 {
                     "id": "opt-009",
-                    "option": "정보보안학과"
+                    "option": "정보보호학과"
                 },
                 {
                     "id": "opt-010",
                     "option": "기타"
                 }
             ]
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174009",
-            "type": "SHORT_ANSWER",
-            "label": "GitHub 계정",
-            "description": "GitHub 계정이 있다면 입력해주세요. (선택사항)",
-            "isRequired": false,
-            "options": []
         }
     ],
-    "personalInfoQuestions": ["NAME", "EMAIL", "PHONE", "STUDENT_ID"]
+    "personalInfoQuestions": ["NAME", "EMAIL"]
 }
