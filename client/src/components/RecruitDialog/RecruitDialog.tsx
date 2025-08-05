@@ -32,7 +32,6 @@ function RecruitDialog(props: RecruitmentDialogProps) {
     // handlers
     const handleFullPageView = () => {
         handleClose?.();
-        // announcementDetail을 state로 전달
         navigate(`/announcements/${announcementDetaildata?.id}`, {
             state: { clubBoxData, parsedAnnouncementData },
         });
