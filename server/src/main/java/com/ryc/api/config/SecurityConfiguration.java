@@ -31,13 +31,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-  @Value("${SECURITY_WHITELIST_ALL_PATHS}")
+  @Value("${SECURITY_WHITELIST_ALL_METHOD_PATHS}")
   private String[] whitelistAllPaths;
 
-  @Value("${SECURITY_WHITELIST_GET_PATHS}")
+  @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}")
   private String[] whitelistGetPaths;
 
-  @Value("${SECURITY_WHITELIST_POST_PATHS}")
+  @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}")
   private String[] whitelistPostPaths;
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
