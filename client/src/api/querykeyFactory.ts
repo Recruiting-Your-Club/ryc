@@ -40,4 +40,9 @@ const stepKeys = {
     allStepApplicants: ['step-applicants'] as const,
 };
 
-export { clubKeys, applicantKeys, stepKeys };
+const evaluationKeys = {
+    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-summary', clubId, ...applicantIds, type] as const,
+};
+
+export { clubKeys, applicantKeys, stepKeys, evaluationKeys };
