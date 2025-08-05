@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, Tag, Text } from '@components';
 import {
     cardBodyContainer,
@@ -33,11 +33,27 @@ function MainCard({
     // query hooks
     // calculated values
     const clubTagList = clubTags.map((tag) => `#${tag.name} `);
-    setClubName(title);
-    setClubLogo(imageURL);
-    setClubCategory(category);
-    setClubDescription(description);
-    setClubStatus(status);
+
+    // effects
+    useEffect(() => {
+        setClubName(title);
+        setClubLogo(imageURL);
+        setClubCategory(category);
+        setClubDescription(description);
+        setClubStatus(status);
+    }, [
+        title,
+        imageURL,
+        category,
+        description,
+        status,
+        setClubName,
+        setClubLogo,
+        setClubCategory,
+        setClubDescription,
+        setClubStatus,
+    ]);
+
     // handlers
     // effects
     return (
