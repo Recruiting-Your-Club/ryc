@@ -1,5 +1,6 @@
 import { Period } from '@api/domain/announcement/types';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface ClubState {
     clubName: string;
@@ -17,26 +18,33 @@ interface ClubState {
     clear: () => void;
 }
 
-export const useClubStore = create<ClubState>((set) => ({
-    clubName: '',
-    setClubName: (name) => set({ clubName: name }),
-    clubLogo: '',
-    setClubLogo: (logo) => set({ clubLogo: logo }),
-    clubCategory: '',
-    setClubCategory: (category) => set({ clubCategory: category }),
-    clubDescription: '',
-    setClubDescription: (description) => set({ clubDescription: description }),
-    clubStatus: '',
-    setClubStatus: (status) => set({ clubStatus: status }),
-    applicationPeriod: { startDate: '', endDate: '' },
-    setApplicationPeriod: (period) => set({ applicationPeriod: period }),
-    clear: () =>
-        set({
+export const useClubStore = create<ClubState>()(
+    persist(
+        (set) => ({
             clubName: '',
+            setClubName: (name) => set({ clubName: name }),
             clubLogo: '',
+            setClubLogo: (logo) => set({ clubLogo: logo }),
             clubCategory: '',
+            setClubCategory: (category) => set({ clubCategory: category }),
             clubDescription: '',
+            setClubDescription: (description) => set({ clubDescription: description }),
             clubStatus: '',
+            setClubStatus: (status) => set({ clubStatus: status }),
             applicationPeriod: { startDate: '', endDate: '' },
+            setApplicationPeriod: (period) => set({ applicationPeriod: period }),
+            clear: () =>
+                set({
+                    clubName: '',
+                    clubLogo: '',
+                    clubCategory: '',
+                    clubDescription: '',
+                    clubStatus: '',
+                    applicationPeriod: { startDate: '', endDate: '' },
+                }),
         }),
-}));
+        {
+            name: 'club-storage', // localStorage key
+        },
+    ),
+);
