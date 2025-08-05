@@ -1,4 +1,4 @@
-import type { DetailQuestion, PersonalQuestion } from '@pages/ClubApplyPage/types';
+import type { QuestionResponse } from '@pages/ClubApplyPage/types';
 import type { Answer } from '@pages/ClubApplyPage/types';
 
 export interface ClubSubmitCardProps {
@@ -6,8 +6,8 @@ export interface ClubSubmitCardProps {
     category: string;
     deadline: string;
     description: string;
-    personalQuestions: PersonalQuestion[];
-    detailQuestions: DetailQuestion[];
+    personalQuestions: QuestionResponse[];
+    detailQuestions: QuestionResponse[];
     completedQuestionsCount: number;
     requiredQuestionsCount: number;
     requiredQuestionsCompleted: boolean;
