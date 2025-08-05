@@ -62,7 +62,7 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
             <Card.BottomBody sx={s_bottom}>
                 <span css={s_dateWrapper}>
                     <TimeCircle css={s_timeCircleSvg} />
-                    <Card.DescriptionText description={applicant.applicationDate} sx={s_dateText} />
+                    <Card.DescriptionText description={applicant.submittedAt} sx={s_dateText} />
                 </span>
             </Card.BottomBody>
             <Divider sx={s_divider} />

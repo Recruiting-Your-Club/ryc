@@ -21,8 +21,7 @@ import {
     s_textToggleRight,
     s_titleGroup,
 } from './CardBox.style';
-import type { CardBoxProps } from './types';
-import type { StepApplicant } from '@api/domain/step/types';
+import type { CardBoxProps, MergedStepApplicant } from './types';
 
 function CardBox({
     stepTitle,
@@ -49,7 +48,7 @@ function CardBox({
     }; // 엄밀히 말하면 util 함수에 해당
 
     const filteredNames = useCallback(
-        (applicantList: StepApplicant[]) => {
+        (applicantList: MergedStepApplicant[]) => {
             const normalizedQuery = normalizeQuery(searchText);
             return applicantList.filter((applicant) =>
                 normalizeQuery(applicant.name).includes(normalizedQuery),
@@ -157,7 +156,7 @@ function CardBox({
                                 applicant={applicant}
                                 checked={selectedEmails.includes(applicant.email)}
                                 onChange={handleCheckbox}
-                                onClick={() => handleOpen(applicant as StepApplicant)}
+                                onClick={() => handleOpen(applicant as MergedStepApplicant)}
                             />
                         ))}
                     </div>
@@ -170,7 +169,7 @@ function CardBox({
                                 applicant={applicant}
                                 checked={selectedEmails.includes(applicant.email)}
                                 onChange={handleCheckbox}
-                                onClick={() => handleOpen(applicant as StepApplicant)}
+                                onClick={() => handleOpen(applicant as MergedStepApplicant)}
                             />
                         ))}
                     </div>

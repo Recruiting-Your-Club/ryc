@@ -19,6 +19,7 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { stepQueries } from '@api/queryFactory/stepQueries';
 import type { StepApplicant } from '@api/domain/step/types';
+import { evaluationQueries } from '@api/queryFactory/evaluationQueries';
 
 function StepManagementPage() {
     // prop destruction
@@ -37,21 +38,71 @@ function StepManagementPage() {
     const { data: stepApplicantList = [] } = useSuspenseQuery(stepQueries.allStepApplicants());
 
     // calculated values
+    const documentStepApplicants = stepApplicantList.filter((applicant) =>
+        ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(applicant.status),
+    );
+    const interviewStepApplicants = stepApplicantList.filter((applicant) =>
+        ['INTERVIEW_PASS', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status),
+    );
+
+    const documentApplicantIds = documentStepApplicants.map((applicant) => applicant.applicantId);
+    const interviewApplicantIds = interviewStepApplicants.map((applicant) => applicant.applicantId);
+
+    //// query
+    const { data: documentEvaluationSummaryList = [] } = useSuspenseQuery(
+        evaluationQueries.evaluationSummary({
+            clubId: 'example-42',
+            applicantIdList: documentApplicantIds,
+            type: 'document',
+        }),
+    );
+    const { data: interviewEvaluationSummaryList = [] } = useSuspenseQuery(
+        evaluationQueries.evaluationSummary({
+            clubId: 'example-42',
+            applicantIdList: interviewApplicantIds,
+            type: 'interview',
+        }),
+    );
+
+    // stepApplicantList + EvaluationSummary
+    const mergedStepApplicantList = stepApplicantList.map((applicant) => {
+        const summaryList =
+            applicant.status === 'DOCUMENT_PASS' || applicant.status === 'DOCUMENT_FAIL'
+                ? documentEvaluationSummaryList
+                : interviewEvaluationSummaryList;
+
+        const summary = summaryList.find(
+            (summary) => summary.applicantId === applicant.applicantId,
+        );
+
+        return {
+            ...applicant,
+            completedEvaluatorCount: summary?.completedEvaluatorCount ?? 0,
+            totalEvaluatorCount: summary?.totalEvaluatorCount ?? 0,
+            averageScore: summary?.averageScore ?? 0,
+        };
+    });
+
     const stepApplicantGroups = {
-        documentPassed: stepApplicantList.filter(
-            (applicant) => applicant.state === 'DOCUMENT_PASS',
+        documentPassed: mergedStepApplicantList.filter(
+            (applicant) => applicant.status === 'DOCUMENT_PASS',
         ),
-        documentFailed: stepApplicantList.filter(
-            (applicant) => applicant.state === 'DOCUMENT_FAIL',
+        documentFailed: mergedStepApplicantList.filter(
+            (applicant) => applicant.status === 'DOCUMENT_FAIL',
         ),
-        finalPassed: stepApplicantList.filter((applicant) => applicant.state === 'FINAL_PASS'),
-        finalFailed: stepApplicantList.filter((applicant) => applicant.state === 'FINAL_FAIL'),
+        finalPassed: mergedStepApplicantList.filter(
+            (applicant) => applicant.status === 'FINAL_PASS',
+        ),
+        finalFailed: mergedStepApplicantList.filter(
+            (applicant) => applicant.status === 'FINAL_FAIL',
+        ),
         ...(totalSteps.process.length === 3 && {
-            interviewPassed: stepApplicantList.filter(
-                (applicant) => applicant.state === 'INTERVIEW_PASS',
+            // [서류 - 면접 - 최종] 일 때만
+            interviewPassed: mergedStepApplicantList.filter(
+                (applicant) => applicant.status === 'INTERVIEW_PASS',
             ),
-            interviewFailed: stepApplicantList.filter(
-                (applicant) => applicant.state === 'INTERVIEW_FAIL',
+            interviewFailed: mergedStepApplicantList.filter(
+                (applicant) => applicant.status === 'INTERVIEW_FAIL',
             ),
         }),
     };
