@@ -20,7 +20,6 @@ public class ClubMapper {
         .clubTags(club.getClubTags())
         .clubSummaries(club.getClubSummaries())
         .clubDetailImages(club.getClubDetailImages())
-        .deleted(club.getDeleted())
         .build();
   }
 
@@ -36,9 +35,6 @@ public class ClubMapper {
         .clubTags(clubEntity.getClubTags())
         .clubSummaries(clubEntity.getClubSummaries())
         .clubDetailImages(clubEntity.getClubDetailImages())
-        .createdAt(clubEntity.getCreatedAt())
-        .updatedAt(clubEntity.getUpdatedAt())
-        .deleted(clubEntity.getDeleted())
         .build();
   }
 }

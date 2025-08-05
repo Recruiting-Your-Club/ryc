@@ -1,0 +1,126 @@
+import EditPencil from '@assets/images/edit-pencil.svg';
+import Trash from '@assets/images/trash.svg';
+import { Button, Divider, Rating, Text } from '@components';
+import { PersonalScoreCard } from '@components/PersonalScoreCard';
+import { TextArea } from '@components/_common/TextArea';
+import React, { useState } from 'react';
+import {
+    perStarScoreGroup,
+    svgButtonCss,
+    svgButtonGroup,
+    s_averageNumber,
+    s_averageText,
+    s_boxContainer,
+    s_evaluationTitleContainer,
+    s_myEvaluationText,
+    s_myEvaluationTitleContainer,
+    s_savedEvaluationContainer,
+    s_starScoreContainer,
+    textareaCss,
+    userEvaluation,
+    userSavedEvaluation,
+    userStarScore,
+} from './EvaluationBox.style';
+import type { EvaluationBoxProps } from './types';
+
+function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
+    // state, ref, querystring hooks
+    const [hasUserEvaluation, setHasUserEvaluation] = useState(true); // 현재 나의 평가가 등록되어있는지
+    const [willEditEvaluation, setWillEditEvaluation] = useState(false);
+
+    // form hooks
+    // query hooks
+    // calculated values
+    const hasComments = (evaluation?.comments?.length ?? 0) > 0;
+
+    // handlers
+    // effects
+    return (
+        <div css={s_boxContainer(height)}>
+            <div css={s_savedEvaluationContainer(hasUserEvaluation)}>
+                <div css={s_evaluationTitleContainer}>
+                    <Text as="span" type="captionSemibold" noWrap sx={s_averageText}>
+                        평가 목록
+                    </Text>
+                    <div css={s_starScoreContainer}>
+                        <Rating
+                            key={evaluation?.applicantId}
+                            value={evaluation ? evaluation.averageScore : 0}
+                            size="lg"
+                            type="display"
+                        />
+                        <Text as="span" type="captionRegular" color="primary" sx={s_averageNumber}>
+                            ({evaluation ? evaluation.averageScore : 0})
+                        </Text>
+                    </div>
+                </div>
+                <Divider />
+                <div css={perStarScoreGroup(hasComments)}>
+                    {evaluation && evaluation.comments.length > 0 ? (
+                        evaluation.comments.map((evaluator) => (
+                            <PersonalScoreCard
+                                key={evaluator.id}
+                                score={evaluator.score}
+                                name={evaluator.name}
+                                comment={evaluator.comment}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            등록된 평가가 없습니다.
+                        </Text>
+                    )}
+                </div>
+                <div css={userSavedEvaluation}>
+                    <div css={s_myEvaluationTitleContainer}>
+                        <Text
+                            as="span"
+                            type="subCaptionBold"
+                            textAlign="start"
+                            sx={s_myEvaluationText}
+                        >
+                            나의 평가
+                        </Text>
+                        {hasUserEvaluation && (
+                            <span css={svgButtonGroup}>
+                                {/* 추후 기능 구현 확장 예정 */}
+                                <Button variant="transparent" size="xs">
+                                    <EditPencil css={svgButtonCss} />
+                                </Button>
+                                <Button
+                                    variant="transparent"
+                                    size="xs"
+                                    onClick={() => setHasUserEvaluation(false)}
+                                >
+                                    <Trash css={svgButtonCss} />
+                                </Button>
+                            </span>
+                        )}
+                    </div>
+                    <Divider />
+                    <div css={userStarScore(hasUserEvaluation)}>
+                        <Text as="span" type="captionSemibold">
+                            등록된 평가가 없습니다.
+                        </Text>
+                    </div>
+                </div>
+            </div>
+            {(!hasUserEvaluation || willEditEvaluation) && (
+                <div css={userEvaluation}>
+                    <Rating size="lg" />
+                    <TextArea
+                        size="xs"
+                        placeholder="코멘트를 작성해주세요."
+                        textAreaSx={textareaCss}
+                    />
+                    <Button size="full">저장하기</Button>
+                </div>
+            )}
+        </div>
+    );
+}
+
+export { EvaluationBox };

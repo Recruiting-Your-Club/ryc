@@ -15,6 +15,9 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,16 +25,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
   private final AnnouncementService announcementService;
+  private final ApplicationFormService applicationFormService;
 
   @Override
   public ResponseEntity<AnnouncementCreateResponse> create(
-      String clubId, AnnouncementCreateRequest body) {
+      CustomUserDetail userDetail, String clubId, AnnouncementCreateRequest body) {
     AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/v2/announcements/{announcement-id}")
-            .buildAndExpand(response.announcementId())
+            .path("/api/v2/clubs/{club-id}/announcements/{announcement-id}")
+            .buildAndExpand(clubId, response.announcementId())
             .toUri();
 
     return ResponseEntity.created(location).body(response);
@@ -39,21 +43,25 @@ public class AnnouncementHttpApiImpl implements AnnouncementHttpApi {
 
   @Override
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(String clubId) {
-    /** todo club 조회 */
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
   }
 
   @Override
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
       String announcementId) {
-    /** todo club 조회 */
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
   }
 
   @Override
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      String announcementId, AnnouncementUpdateRequest body) {
+      String clubId, String announcementId, AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(announcementService.updateAnnouncement(body, announcementId));
+        .body(announcementService.updateAnnouncement(body, announcementId, clubId));
+  }
+
+  @Override
+  public ResponseEntity<ApplicationFormResponse> getApplicationForm(String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
   }
 }

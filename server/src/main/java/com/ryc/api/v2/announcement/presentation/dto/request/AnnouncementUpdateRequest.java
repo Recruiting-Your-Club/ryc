@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
-import com.ryc.api.v2.common.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.applicationForm.presentation.request.ApplicationFormUpdateRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -23,12 +23,11 @@ import lombok.Builder;
  * @param announcementType 공고 타입
  * @param hasInterview 면접여부
  * @param tags 태그
- * @param application 지원서
+ * @param applicationForm 지원서
  * @param images 이미지
  */
 @Builder
 public record AnnouncementUpdateRequest(
-    @Valid ClubRoleSecuredDto clubRoleSecuredDto,
     @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
         @NotBlank(message = "title shouldn't be blank")
         String title,
@@ -57,10 +56,10 @@ public record AnnouncementUpdateRequest(
         Boolean hasInterview,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
-    @Schema(description = "공고 지원서") @Valid @NotNull(message = "application shouldn't be null")
-        AnnouncementApplicationRequest application,
+    @Schema(description = "공고 지원서") @Valid @NotNull(message = "applicationForm shouldn't be null")
+        ApplicationFormUpdateRequest applicationForm,
     @Schema(description = "이미지 목록") @NotNull(message = "images shouldn't be null")
-        List<@Valid @NotNull(message = "image shouldn't be null") ImageRequest> images) {
+        List<@Valid @NotNull(message = "image shouldn't be null") ImageUpdateRequest> images) {
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
   @Override
   public List<String> tags() {
@@ -68,7 +67,7 @@ public record AnnouncementUpdateRequest(
   }
 
   @Override
-  public List<ImageRequest> images() {
+  public List<ImageUpdateRequest> images() {
     return List.copyOf(images);
   }
 }

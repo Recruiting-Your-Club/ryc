@@ -1,19 +1,16 @@
 package com.ryc.api.v2.club.infra;
 
-import java.util.*;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.auth.domain.Admin;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.domain.Role;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
-import com.ryc.api.v2.club.infra.entity.RoleEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
-import com.ryc.api.v2.club.infra.jpa.RoleJpaRepository;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
-import com.ryc.api.v2.club.infra.mapper.RoleMapper;
+import com.ryc.api.v2.common.exception.code.ClubErrorCode;
+import com.ryc.api.v2.common.exception.custom.ClubException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 public class ClubRepositoryImpl implements ClubRepository {
 
   private final ClubJpaRepository clubJpaRepository;
-  private final RoleJpaRepository roleJpaRepository;
 
   @Override
   public Club save(Club club) {
@@ -33,8 +29,12 @@ public class ClubRepositoryImpl implements ClubRepository {
   }
 
   @Override
-  public Optional<Club> findById(String id) {
-    return clubJpaRepository.findById(id).map(ClubMapper::toDomain);
+  public Club findById(String id) {
+    ClubEntity entity =
+        clubJpaRepository
+            .findById(id)
+            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+    return ClubMapper.toDomain(entity);
   }
 
   @Override
@@ -48,8 +48,7 @@ public class ClubRepositoryImpl implements ClubRepository {
   }
 
   @Override
-  public Role assignRole(Club club, Admin admin, Role role) {
-    RoleEntity savedRole = roleJpaRepository.save(RoleMapper.toEntity(role, club, admin));
-    return savedRole.getRole();
+  public boolean existsById(String clubId) {
+    return clubJpaRepository.existsById(clubId);
   }
 }

@@ -1,4 +1,4 @@
-import { PICKER_COLORS, textButtons } from '@constants/Editor';
+import { PICKER_COLORS, textButtons } from '@constants/editor';
 import React, { useEffect, useRef, useState } from 'react';
 import {
     perButtonCss,

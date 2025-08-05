@@ -1,0 +1,139 @@
+name: Deploy on develop
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'server/**'
+
+env:
+  EC2_HOST: ${{ secrets.EC2_HOST }}
+  EC2_USER: ${{ secrets.EC2_USER }}
+  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  REMOTE_APP_DIR: ${{ secrets.REMOTE_APP_DIR }}
+  JAR_NAME: ${{ secrets.JAR_NAME }}
+  
+jobs:
+  deploy:
+    name: Build & Deploy Spring App to EC2
+    runs-on: ubuntu-latest
+    environment: server-development
+
+    steps:
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+            
+      - name: Grant execute permission for gradlew
+        working-directory: server
+        run: chmod +x gradlew
+            
+      - name: Inject application config before build
+        run: |
+          mkdir -p server/src/main/resources
+          echo "${{ secrets.APPLICATION_PROPERTIES }}" > server/src/main/resources/application.properties
+          echo "${{ secrets.APPLICATION_YML }}" > server/src/main/resources/application.yml
+
+      - name: Build JAR with Gradle
+        working-directory: server
+        run: ./gradlew clean bootJar
+
+      - name: Change Jar File Name
+        run: mv server/build/libs/*.jar ./ssoc-dev-server.jar
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: SCP transfer
+        uses: appleboy/scp-action@master
+        with:
+          username: ${{ secrets.EC2_USER }}
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          rm: true
+          source: ./ssoc-dev-server.jar
+          target: ${{ secrets.REMOTE_APP_DIR }}
+
+      - name: Deploy Spring App on EC2
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+            # Stop existing application gracefully
+            PID=$(pgrep -f "${{ env.JAR_NAME }}" || echo "")
+            if [ ! -z "$PID" ]; then
+              echo "Stopping existing application (PID: $PID)..."
+              kill $PID
+              
+              # Wait for graceful shutdown (up to 30 seconds)
+              for i in {1..30}; do
+                if ! kill -0 $PID 2>/dev/null; then
+                  echo "Application stopped gracefully"
+                  break
+                fi
+                echo "Waiting for graceful shutdown... ($i/30)"
+                sleep 1
+              done
+              
+              # Force kill if still running
+              if kill -0 $PID 2>/dev/null; then
+                echo "Force killing application..."
+                kill -9 $PID
+              fi
+            fi
+            
+            # Start new application
+            echo "Starting new application..."
+            nohup java -jar "${{ env.REMOTE_APP_DIR }}/${{ env.JAR_NAME }}" > /dev/null 2>&1 &
+            echo "Application started with PID: $!"
+          EOF
+          
+      - name: Health Check
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+            # Wait for application to start (up to 60 seconds)
+            echo "Waiting for application to start..."
+            for i in {1..60}; do
+              if pgrep -f "${{ env.JAR_NAME }}" > /dev/null; then
+                echo "Application is running!"
+                
+                # Check health endpoint
+                if curl -f -s http://localhost:8080/api/health > /dev/null 2>&1; then
+                  echo "Health check passed!"
+                  exit 0
+                elif [ $i -eq 60 ]; then
+                  echo "Health check failed, but application is running"
+                  exit 0
+                fi
+              fi
+              echo "Waiting for application to start... ($i/60)"
+              sleep 1
+            done
+            
+            echo "Application failed to start!"
+            exit 1
+          EOF
+          
+      - name: Clean Up SSH Key
+        if: always()
+        run: rm -f ~/.ssh/id_rsa
