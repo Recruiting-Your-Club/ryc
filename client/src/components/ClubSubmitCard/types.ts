@@ -13,6 +13,7 @@ export interface ClubSubmitCardProps {
     requiredQuestionsCompleted: boolean;
     allQuestionsCount: number;
     answers: Answer[];
+    logo: string;
     onQuestionFocus: (questionTitle: string, tab: string) => void;
     onSubmit?: () => void;
 }
