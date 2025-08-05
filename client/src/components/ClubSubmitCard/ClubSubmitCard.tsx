@@ -12,11 +12,13 @@ import {
 } from './ClubSubmitCard.style';
 import type { ClubSubmitCardProps } from './types';
 import { getDeadlineInfo } from '@utils/compareTime';
+import { getCategory } from '@utils/changeCategory';
 
 function ClubSubmitCard({
     clubName,
-    tag,
+    category,
     deadline,
+    description,
     personalQuestions,
     detailQuestions,
     allQuestionsCount,
@@ -34,7 +36,8 @@ function ClubSubmitCard({
     // form hooks
     // query hooks
     // calculated values
-    const { displayText, diffDay } = getDeadlineInfo(deadline);
+    const { diffDay } = getDeadlineInfo(deadline);
+
     // handlers
     // effects
     return (
@@ -49,19 +52,19 @@ function ClubSubmitCard({
                             sx={deadlineText(diffDay)}
                             noWrap
                         >
-                            {displayText}
+                            {deadline}
                         </Text>
                     )}
                 </div>
                 <Text textAlign="left" type="bodyRegular">
-                    동아리 이름
+                    {clubName}
                 </Text>
                 <div css={clubSubmitCardSubCaption}>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
-                        동아리 분류
+                        {getCategory(category)}
                     </Text>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
-                        26기 신입기수 모집
+                        {description}
                     </Text>
                     <QuestionDropdown
                         completedQuestionsCount={completedQuestionsCount}
