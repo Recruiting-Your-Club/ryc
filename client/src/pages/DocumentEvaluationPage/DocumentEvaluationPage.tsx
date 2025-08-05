@@ -1,7 +1,7 @@
+import { Document, Evaluation } from '@api/domain/interview/types';
 import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox, Text } from '@components';
 import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
-import type { Evaluation } from '@components/EvaluationBox/types';
-import type { ApplicantDetail, Document } from '@components/InformationBox/types';
+import type { ApplicantDetail } from '@components/InformationBox/types';
 import React, { useState } from 'react';
 import {
     documentEvaluationPageContainer,
@@ -42,7 +42,7 @@ export const applicantDetails: ApplicantDetail[] = [
 
 export const documents: Document[] = [
     {
-        id: 1,
+        applicantId: 1,
         detail: [
             {
                 question: 'Q1. 자기소개 부탁드립니다.',
@@ -60,7 +60,7 @@ export const documents: Document[] = [
         ],
     },
     {
-        id: 2,
+        applicantId: 2,
         detail: [
             {
                 question: 'Q1. 자기소개 부탁드립니다.',
@@ -77,7 +77,7 @@ export const documents: Document[] = [
         ],
     },
     {
-        id: 3,
+        applicantId: 3,
         detail: [
             {
                 question: 'Q1. 자기소개 부탁드립니다.',
@@ -100,24 +100,29 @@ export const evaluations: Evaluation[] = [
         applicantId: 1,
         averageScore: 4.5,
         comments: [
-            { evaluator: '조준희', comment: '매우 성실한 태도였습니다.' },
-            { evaluator: '조존히', comment: '답변이 구체적이고 논리적이었습니다.' },
+            { id: 1, score: 4.5, name: '조준희', comment: '매우 성실한 태도였습니다.' },
+            { id: 2, score: 4.5, name: '조존히', comment: '답변이 구체적이고 논리적이었습니다.' },
         ],
     },
     {
         applicantId: 2,
         averageScore: 3.8,
         comments: [
-            { evaluator: '준', comment: '조금 긴장한 듯 보였습니다.' },
-            { evaluator: 'aiming희', comment: '기본기는 잘 갖추고 있었음.' },
+            { id: 1, score: 3.8, name: '준', comment: '조금 긴장한 듯 보였습니다.' },
+            { id: 2, score: 3.8, name: 'aiming희', comment: '기본기는 잘 갖추고 있었음.' },
         ],
     },
     {
         applicantId: 3,
         averageScore: 4.2,
         comments: [
-            { evaluator: '몰라희', comment: '차분하고 준비된 모습이 인상적이었어요.' },
-            { evaluator: '그냥희', comment: '팀워크 질문에서 좋은 답변을 들었어요.' },
+            {
+                id: 1,
+                score: 4.2,
+                name: '몰라희',
+                comment: '차분하고 준비된 모습이 인상적이었어요.',
+            },
+            { id: 2, score: 4.2, name: '그냥희', comment: '팀워크 질문에서 좋은 답변을 들었어요.' },
         ],
     },
 ];
@@ -162,7 +167,9 @@ function DocumentEvaluationPage() {
                         ) ?? null
                     }
                     documentList={
-                        documents.find((document) => document.id === selectedApplicantId) ?? null
+                        documents.find(
+                            (document) => document.applicantId === selectedApplicantId,
+                        ) ?? null
                     }
                 />
             </div>

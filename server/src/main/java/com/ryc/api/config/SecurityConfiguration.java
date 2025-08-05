@@ -80,11 +80,12 @@ public class SecurityConfiguration {
                     .requestMatchers(
                         HttpMethod.GET,
                         "/api/v2/application/form",
-                        "/api/v2/clubs/*",
                         "/api/v2/clubs",
-                        "/clubs/{club-id}/announcements",
-                        "/clubs/{club-id}/announcements/*",
-                        "/api/v2/clubs/*/announcements/*/interview-slots")
+                        "/api/v2/clubs/*",
+                        "/api/v2/clubs/*/announcements/*/interview-slots",
+                        "/api/v2/clubs/*/announcements",
+                        "/api/v2/announcements/*",
+                        "/api/v2/announcements/*/application-form")
                     .permitAll()
                     .anyRequest()
                     .authenticated());

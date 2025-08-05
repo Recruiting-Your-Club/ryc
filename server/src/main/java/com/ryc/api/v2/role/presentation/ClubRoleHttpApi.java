@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.presentation.dto.response.AdminsGetResponse;
 import com.ryc.api.v2.role.presentation.dto.response.RoleDemandResponse;
 import com.ryc.api.v2.role.service.ClubRoleService;
@@ -57,6 +58,7 @@ public class ClubRoleHttpApi {
   }
 
   @GetMapping("clubs/{clubId}/users")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "동아리 내 사용자 조회", description = "동아리 내 모든 사용자의 정보를 조회합니다.")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공"),
@@ -65,14 +67,12 @@ public class ClubRoleHttpApi {
         description = "접근 권한이 없음. 동아리 멤버가 아님",
         content = @Content(schema = @Schema(hidden = true))),
   })
-  public ResponseEntity<List<AdminsGetResponse>> getAdminsInClub(
-      @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
-
-    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    return ResponseEntity.ok(clubRoleService.getAdminsInClub(dto));
+  public ResponseEntity<List<AdminsGetResponse>> getAdminsInClub(@PathVariable String clubId) {
+    return ResponseEntity.ok(clubRoleService.getAdminsInClub(clubId));
   }
 
   @DeleteMapping("clubs/{clubId}/users/{userId}")
+  @HasRole(Role.OWNER)
   @Operation(
       summary = "동아리 내 사용자 삭제",
       description = "해당 기능은 동아리 회장만 수행할 수 있습니다. userId를 가진 사용자는 더 이상 동아리에서 활동하지 못하게 됩니다.")
@@ -95,9 +95,7 @@ public class ClubRoleHttpApi {
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable String clubId,
       @PathVariable String userId) {
-
-    ClubRoleSecuredDto dto = new ClubRoleSecuredDto(userDetail.getId(), clubId);
-    clubRoleService.deleteRole(dto, userId);
+    clubRoleService.deleteRole(userDetail.getId(), clubId, userId);
     return ResponseEntity.noContent().build();
   }
 }

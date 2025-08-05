@@ -1,14 +1,8 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
 
-import lombok.RequiredArgsConstructor;
-
-@Component
-@RequiredArgsConstructor
 public class PeriodMapper {
 
   /** PeriodVO to Domain */

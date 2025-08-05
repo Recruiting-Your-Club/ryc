@@ -1,7 +1,10 @@
 package com.ryc.api.v2.applicant.infra.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
+import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
 import lombok.*;
@@ -25,4 +28,12 @@ public class ApplicantEntity extends BaseEntity {
 
   @Column(nullable = false)
   private String announcementId;
+
+  @Enumerated(EnumType.STRING)
+  private ApplicantStatus status;
+
+  @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ApplicantPersonalInfoEntity> personalInfos;
+
+  private Boolean isDeleted;
 }

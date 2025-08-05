@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,8 +15,8 @@ import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCr
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationUpdateResponse;
 import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
 import com.ryc.api.v2.Interview.service.InterviewService;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
+import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.role.domain.enums.Role;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -54,7 +53,8 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/reservations")
+  @GetMapping("announcements/{announcement-id}/interview-slots/reservations")
+  @HasRole(Role.MEMBER)
   @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜에 대한 면접자들의 정보를 조회합니다.")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "면접 정보 조회 성공"),
@@ -64,15 +64,12 @@ public class InterviewHttpApi {
         content = @Content(schema = @Schema(hidden = true)))
   })
   public ResponseEntity<List<InterviewInfoGetResponse>> getInterviewInfo(
-      @AuthenticationPrincipal CustomUserDetail userDetails,
-      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @Parameter(description = "면접 날짜", example = "2023-10-01", required = true)
           @RequestParam("interview-date")
           LocalDate interviewDate) {
-    ClubRoleSecuredDto clubRoleSecuredDto = new ClubRoleSecuredDto(userDetails.getId(), clubId);
     List<InterviewInfoGetResponse> response =
-        interviewService.getInterviewInfo(clubRoleSecuredDto, announcementId, interviewDate);
+        interviewService.getInterviewInfo(announcementId, interviewDate);
     return ResponseEntity.ok(response);
   }
 
@@ -103,7 +100,8 @@ public class InterviewHttpApi {
     return ResponseEntity.created(location).body(response);
   }
 
-  @PatchMapping("clubs/{club-id}/interview-reservations/{reservation-id}")
+  @PatchMapping("interview-reservations/{reservation-id}")
+  @HasRole(Role.MEMBER)
   @Operation(
       summary = "면접 예약 수정",
       description =
@@ -120,13 +118,10 @@ public class InterviewHttpApi {
         content = @Content(schema = @Schema(hidden = true)))
   })
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
-      @AuthenticationPrincipal CustomUserDetail userDetails,
-      @PathVariable("club-id") String clubId,
       @PathVariable("reservation-id") String reservationId,
       @RequestBody InterviewReservationUpdatedRequest body) {
-    ClubRoleSecuredDto clubRoleSecuredDto = new ClubRoleSecuredDto(userDetails.getId(), clubId);
     InterviewReservationUpdateResponse response =
-        interviewService.changeInterviewReservation(clubRoleSecuredDto, reservationId, body);
+        interviewService.changeInterviewReservation(reservationId, body);
     return ResponseEntity.ok(response);
   }
 }

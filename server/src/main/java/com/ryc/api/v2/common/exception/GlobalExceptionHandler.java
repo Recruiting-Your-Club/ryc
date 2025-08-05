@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import jakarta.validation.ConstraintViolationException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
@@ -34,7 +37,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ClubException.class)
   public ResponseEntity<Object> handleClubException(ClubException e) {
     ErrorCode errorCode = e.getErrorCode();
-    return handleExceptionInternal(errorCode, e.getMessage());
+    return handleExceptionInternal(errorCode);
   }
 
   // DataIntegrityViolationException은 JPA에서 중복된 데이터 삽입 시 발생하는 예외
@@ -42,6 +45,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleDataIntegrityViolationException(
       DataIntegrityViolationException e) {
     ErrorCode errorCode = CommonErrorCode.DUPLICATE_RESOURCE;
+    return handleExceptionInternal(errorCode);
+  }
+
+  @ExceptionHandler(BusinessRuleException.class)
+  public ResponseEntity<Object> handleBusinessRuleException(BusinessRuleException e) {
+    ErrorCode errorCode = e.getErrorCode();
     return handleExceptionInternal(errorCode);
   }
 
@@ -53,13 +62,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(NoSuchElementException.class)
-  public ResponseEntity<Object> handleIllegalArgumentException(NoSuchElementException e) {
+  public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e) {
     ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
     return handleExceptionInternal(errorCode, e.getMessage());
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e) {
+    ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+    return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
     return handleExceptionInternal(errorCode, e.getMessage());
   }

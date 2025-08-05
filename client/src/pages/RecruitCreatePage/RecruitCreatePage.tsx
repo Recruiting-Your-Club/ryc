@@ -75,6 +75,7 @@ function RecruitCreatePage() {
         containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }, [activeStep]);
 
+    //FIX: 따로 컴포넌트로 빼기
     const stepComponent = (step: number) => {
         switch (step) {
             case 0:

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Checkbox, Input, Radio, Text } from '@ssoc/ui';
 
 import type { ClubApplyPersonalInfoPageProps } from '../types';
@@ -8,6 +10,7 @@ import {
     inputSx,
     labelContainer,
     labelSx,
+    s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
 
 function ClubApplyPersonalInfoPage({
@@ -20,6 +23,7 @@ function ClubApplyPersonalInfoPage({
     touched,
     onBlur,
     onFocus,
+    questionRefs,
 }: ClubApplyPersonalInfoPageProps) {
     //props destruction
     //lib hooks
@@ -54,17 +58,16 @@ function ClubApplyPersonalInfoPage({
                         <div
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.questionTitle] = element;
+                                }
+                            }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                    {question.questionTitle}
-                                </Text>
+                                <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
-                                    <Text
-                                        type="bodyRegular"
-                                        color="warning"
-                                        sx={{ display: 'inline' }}
-                                    >
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
                                     </Text>
                                 )}
@@ -72,6 +75,7 @@ function ClubApplyPersonalInfoPage({
                             <Radio
                                 name={`question-${question.questionTitle}`}
                                 orientation="vertical"
+                                size="sm"
                                 options={
                                     question.options?.map((option) => ({
                                         label: option,
@@ -89,17 +93,16 @@ function ClubApplyPersonalInfoPage({
                         <div
                             key={question.questionTitle}
                             css={clubApplyPersonalQuestionForm(false)}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.questionTitle] = element;
+                                }
+                            }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                    {question.questionTitle}
-                                </Text>
+                                <Text type="bodyRegular">{question.questionTitle}</Text>
                                 {question.isRequired && (
-                                    <Text
-                                        type="bodyRegular"
-                                        color="warning"
-                                        sx={{ display: 'inline' }}
-                                    >
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
                                     </Text>
                                 )}
@@ -131,15 +134,16 @@ function ClubApplyPersonalInfoPage({
                             hasError && touched[question.questionTitle],
                         )}
                         tabIndex={-1}
-                        onFocus={() => onFocus(question.questionTitle)}
-                        onBlur={() => onBlur(question.questionTitle)}
+                        ref={(element) => {
+                            if (questionRefs.current) {
+                                questionRefs.current[question.questionTitle] = element;
+                            }
+                        }}
                     >
                         <div css={labelContainer}>
-                            <Text type="bodyRegular" sx={{ display: 'inline' }}>
-                                {question.questionTitle}
-                            </Text>
+                            <Text type="bodyRegular">{question.questionTitle}</Text>
                             {question.isRequired && (
-                                <Text type="bodyRegular" color="warning" sx={{ display: 'inline' }}>
+                                <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                     *
                                 </Text>
                             )}

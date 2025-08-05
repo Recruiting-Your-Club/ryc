@@ -8,7 +8,7 @@ import {
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
-import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
+import { documentList, interviewEmptyEvaluations } from '@constants/applicantDialog';
 import React, { useCallback, useState } from 'react';
 import {
     cardGroup,

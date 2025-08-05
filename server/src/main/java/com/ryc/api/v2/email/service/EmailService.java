@@ -15,15 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.Interview.service.InterviewService;
-import com.ryc.api.v2.common.aop.annotation.HasRole;
-import com.ryc.api.v2.common.aop.dto.ClubRoleSecuredDto;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
-import com.ryc.api.v2.role.domain.enums.Role;
 
 @Service
 public class EmailService {
@@ -50,40 +47,30 @@ public class EmailService {
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto, String announcementId, EmailSendRequest body) {
-
+      String adminId, String clubId, String announcementId, EmailSendRequest body) {
     List<Email> emails =
         body.recipients().stream()
             .map(
                 recipient ->
                     Email.initialize(
-                        clubRoleSecuredDto.adminId(),
-                        recipient,
-                        body.subject(),
-                        body.content(),
-                        clubRoleSecuredDto.clubId(),
-                        announcementId))
+                        adminId, recipient, body.subject(), body.content(), clubId, announcementId))
             .toList();
 
     return saveAll(emails);
   }
 
   @Transactional
-  @HasRole(Role.MEMBER)
   public List<EmailSendResponse> createInterviewDateEmails(
-      ClubRoleSecuredDto clubRoleSecuredDto,
-      String announcementId,
-      InterviewEmailSendRequest body) {
+      String adminId, String clubId, String announcementId, InterviewEmailSendRequest body) {
 
     interviewService.createInterviewSlot(
-        clubRoleSecuredDto.adminId(), announcementId, body.numberOfPeopleByInterviewDateRequests());
+        adminId, announcementId, body.numberOfPeopleByInterviewDateRequests());
 
     List<Email> emails =
         createEmailsWithEachLink(
-            clubRoleSecuredDto.clubId(),
-            clubRoleSecuredDto.adminId(),
+            clubId,
+            adminId,
             announcementId,
             body.emailSendRequest()
                 .recipients(), // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요

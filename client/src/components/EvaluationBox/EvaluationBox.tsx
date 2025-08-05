@@ -1,6 +1,7 @@
 import EditPencil from '@assets/images/edit-pencil.svg';
 import Trash from '@assets/images/trash.svg';
 import { Button, Divider, Rating, Text } from '@components';
+import { PersonalScoreCard } from '@components/PersonalScoreCard';
 import { TextArea } from '@components/_common/TextArea';
 import React, { useState } from 'react';
 import {
@@ -33,6 +34,8 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
     // form hooks
     // query hooks
     // calculated values
+    const hasComments = (evaluation?.comments?.length ?? 0) > 0;
+
     // handlers
     // effects
     return (
@@ -55,10 +58,21 @@ function EvaluationBox({ evaluation, height }: EvaluationBoxProps) {
                     </div>
                 </div>
                 <Divider />
-                <div css={perStarScoreGroup(false)}>
-                    <Text as="span" type="captionSemibold">
-                        등록된 평가가 없습니다.
-                    </Text>
+                <div css={perStarScoreGroup(hasComments)}>
+                    {evaluation && evaluation.comments.length > 0 ? (
+                        evaluation.comments.map((evaluator) => (
+                            <PersonalScoreCard
+                                key={evaluator.id}
+                                score={evaluator.score}
+                                name={evaluator.name}
+                                comment={evaluator.comment}
+                            />
+                        ))
+                    ) : (
+                        <Text as="span" type="captionSemibold">
+                            등록된 평가가 없습니다.
+                        </Text>
+                    )}
                 </div>
                 <div css={userSavedEvaluation}>
                     <div css={s_myEvaluationTitleContainer}>

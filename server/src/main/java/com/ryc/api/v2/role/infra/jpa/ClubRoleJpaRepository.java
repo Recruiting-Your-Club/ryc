@@ -33,6 +33,13 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
   boolean existsOwnerRoleByAdminIdAndClubId(
       @Param("adminId") String adminId, @Param("clubId") String clubId);
 
+  @Query("""
+    SELECT COUNT(r)
+    FROM ClubRoleEntity r
+    WHERE r.club.id = :clubId
+""")
+  long countManagerAndMemberByClubId(@Param("clubId") String clubId);
+
   void deleteByAdminId(String adminId);
 
   @Query(
