@@ -29,7 +29,7 @@
         "announcementStatus": "CLOSED",
         "announcementType": "LIMITED_TIME",
         "applicationStartDate": "2025-07-29T09:00",
-        "applicationEndDate": "2025-08-01T18:00",
+        "applicationEndDate": "2025-08-07T18:00",
         "tags": ["AI", "머신러닝", "딥러닝", "데이터분석"]
     }
 ]
