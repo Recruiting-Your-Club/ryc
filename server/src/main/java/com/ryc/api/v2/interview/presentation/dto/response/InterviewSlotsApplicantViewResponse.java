@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-public record InterviewSlotsGetResponse(
+public record InterviewSlotsApplicantViewResponse(
     @Schema(description = "동아리 이름") String clubName,
     @Schema(description = "동아리 카테고리") String clubCategory,
     @Schema(description = "동아리 이미지 URL") String clubImageUrl,

@@ -14,7 +14,7 @@ import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpd
 import com.ryc.api.v2.interview.presentation.dto.response.InterviewInfoGetResponse;
 import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationCreateResponse;
 import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationUpdateResponse;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewSlotsGetResponse;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewSlotsApplicantViewResponse;
 import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 
@@ -35,7 +35,7 @@ public class InterviewHttpApi {
 
   private final InterviewService interviewService;
 
-  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
+  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/applicants")
   @Operation(summary = "면접 시간대 조회", description = "지원자가 특정 동아리의 공고에 대한 면접 시간대를 조회합니다.")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "면접 시간대 조회 성공"),
@@ -44,32 +44,12 @@ public class InterviewHttpApi {
         description = "동아리 또는 공고를 찾을 수 없음",
         content = @Content(schema = @Schema(hidden = true)))
   })
-  public ResponseEntity<InterviewSlotsGetResponse> getInterviewSlots(
+  public ResponseEntity<InterviewSlotsApplicantViewResponse> getInterviewSlotsForApplicant(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @RequestParam("applicant-id") String applicantId) {
-    InterviewSlotsGetResponse response =
-        interviewService.getInterviewSlots(clubId, announcementId, applicantId);
-    return ResponseEntity.ok(response);
-  }
-
-  @GetMapping("announcements/{announcement-id}/interview-slots/reservations")
-  @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜에 대한 면접자들의 정보를 조회합니다.")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "면접 정보 조회 성공"),
-    @ApiResponse(
-        responseCode = "403",
-        description = "동아리 회장 또는 동아리원이 아닙니다.",
-        content = @Content(schema = @Schema(hidden = true)))
-  })
-  public ResponseEntity<List<InterviewInfoGetResponse>> getInterviewInfo(
-      @PathVariable("announcement-id") String announcementId,
-      @Parameter(description = "면접 날짜", example = "2023-10-01", required = true)
-          @RequestParam("interview-date")
-          LocalDate interviewDate) {
-    List<InterviewInfoGetResponse> response =
-        interviewService.getInterviewInfo(announcementId, interviewDate);
+    InterviewSlotsApplicantViewResponse response =
+        interviewService.getInterviewSlotsForApplicant(clubId, announcementId, applicantId);
     return ResponseEntity.ok(response);
   }
 
@@ -98,6 +78,26 @@ public class InterviewHttpApi {
             .buildAndExpand(response.id())
             .toUri();
     return ResponseEntity.created(location).body(response);
+  }
+
+  @GetMapping("announcements/{announcement-id}/interview-slots/reservations")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 날짜에 대한 면접자들의 정보를 조회합니다.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "면접 정보 조회 성공"),
+    @ApiResponse(
+        responseCode = "403",
+        description = "동아리 회장 또는 동아리원이 아닙니다.",
+        content = @Content(schema = @Schema(hidden = true)))
+  })
+  public ResponseEntity<List<InterviewInfoGetResponse>> getInterviewInfoForAdmin(
+      @PathVariable("announcement-id") String announcementId,
+      @Parameter(description = "면접 날짜", example = "2023-10-01", required = true)
+          @RequestParam("interview-date")
+          LocalDate interviewDate) {
+    List<InterviewInfoGetResponse> response =
+        interviewService.getInterviewInfo(announcementId, interviewDate);
+    return ResponseEntity.ok(response);
   }
 
   @PatchMapping("interview-reservations/{reservation-id}")

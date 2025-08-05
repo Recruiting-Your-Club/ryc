@@ -9,4 +9,6 @@ import lombok.Builder;
 public record InterviewInfoGetResponse(
     @Schema(description = "면접 슬롯 정보") InterviewSlotGetResponse interviewSlotGetResponse,
     @Schema(description = "면접 예약 정보 목록")
-        List<InterviewReservationGetResponse> interviewReservations) {}
+        List<InterviewReservationGetResponse> interviewReservations,
+    @Schema(description = "면접 미지정자 지원자 목록")
+        List<UnReservedApplicantGetResponse> unReservedApplicants) {}
