@@ -20,6 +20,9 @@ export interface CardBoxProps {
     passedApplicantList: MergedStepApplicant[];
     failedApplicantList: MergedStepApplicant[];
     handleOpen: (applicant: MergedStepApplicant) => void;
+    handleApplicantStatus: (applicantIds: string[], newStatus: string) => void;
+    statusLabel: { label: string; status: string }[];
+    statusInOwnStep: { pass: string; fail: string };
     height?: string;
     sx?: CSSObject;
 }

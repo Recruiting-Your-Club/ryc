@@ -30,6 +30,9 @@ function CardBox({
     passedApplicantList,
     failedApplicantList,
     handleOpen,
+    handleApplicantStatus,
+    statusLabel,
+    statusInOwnStep,
     height,
     sx,
 }: CardBoxProps) {
@@ -37,8 +40,8 @@ function CardBox({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedPassEmails, setSelectedPassEmails] = useState<string[]>([]);
-    const [selectedFailEmails, setSelectedFailEmails] = useState<string[]>([]);
+    const [selectedPassApplicantIds, setSelectedPassApplicantIds] = useState<string[]>([]);
+    const [selectedFailApplicantIds, setSelectedFailApplicantIds] = useState<string[]>([]);
     const [fail, setFail] = useState<boolean>(false);
 
     // form hooks
@@ -60,28 +63,32 @@ function CardBox({
 
     // handlers
     const handleSelectAllPass = () => {
-        if (selectedPassEmails.length === passedApplicantList.length) {
-            setSelectedPassEmails([]);
+        if (selectedPassApplicantIds.length === passedApplicantList.length) {
+            setSelectedPassApplicantIds([]);
         } else {
-            setSelectedPassEmails(passedApplicantList.map((applicant) => applicant.email));
+            setSelectedPassApplicantIds(
+                passedApplicantList.map((applicant) => applicant.applicantId),
+            );
         }
     };
     const handleSelectAllFail = () => {
-        if (selectedFailEmails.length === failedApplicantList.length) {
-            setSelectedFailEmails([]);
+        if (selectedFailApplicantIds.length === failedApplicantList.length) {
+            setSelectedFailApplicantIds([]);
         } else {
-            setSelectedFailEmails(failedApplicantList.map((applicant) => applicant.email));
+            setSelectedFailApplicantIds(
+                failedApplicantList.map((applicant) => applicant.applicantId),
+            );
         }
     };
 
-    const handlePassCheckbox = (email: string, checked: boolean) => {
-        setSelectedPassEmails((prev) =>
-            checked ? [...prev, email] : prev.filter((e) => e !== email),
+    const handlePassCheckbox = (applicantId: string, checked: boolean) => {
+        setSelectedPassApplicantIds((prev) =>
+            checked ? [...prev, applicantId] : prev.filter((id) => id !== applicantId),
         );
     };
-    const handleFailCheckbox = (email: string, checked: boolean) => {
-        setSelectedFailEmails((prev) =>
-            checked ? [...prev, email] : prev.filter((e) => e !== email),
+    const handleFailCheckbox = (applicantId: string, checked: boolean) => {
+        setSelectedFailApplicantIds((prev) =>
+            checked ? [...prev, applicantId] : prev.filter((id) => id !== applicantId),
         );
     };
 
@@ -114,30 +121,75 @@ function CardBox({
                         </Dropdown.Trigger>
                         <Dropdown.Content offsetX={6.2} offsetY={10} sx={s_dropdownContent}>
                             <Dropdown.Group>
-                                <Dropdown.Sub>
-                                    <Dropdown.SubTrigger inset sx={s_dropdownSubTrigger}>
-                                        <Text as="text" type="subCaptionRegular">
-                                            단계 이동
-                                        </Text>
-                                    </Dropdown.SubTrigger>
-                                    <Dropdown.SubContent align="top" sx={s_dropdownSubContent}>
-                                        <Dropdown.Group>
-                                            <Dropdown.Item inset sx={s_dropdownSubItem}>
+                                {!fail && (
+                                    <>
+                                        <Dropdown.Sub>
+                                            <Dropdown.SubTrigger inset sx={s_dropdownSubTrigger}>
                                                 <Text as="text" type="subCaptionRegular">
-                                                    면접
+                                                    단계 이동
                                                 </Text>
-                                            </Dropdown.Item>
-                                            <Dropdown.Seperator sx={s_dropdownSeparator} />
-                                            <Dropdown.Item inset sx={s_dropdownSubItem}>
-                                                <Text as="text" type="subCaptionRegular">
-                                                    최종 합격
-                                                </Text>
-                                            </Dropdown.Item>
-                                        </Dropdown.Group>
-                                    </Dropdown.SubContent>
-                                </Dropdown.Sub>
-                                <Dropdown.Seperator sx={s_dropdownSeparator} />
-                                <Dropdown.Item inset sx={s_dropdownItem}>
+                                            </Dropdown.SubTrigger>
+                                            <Dropdown.SubContent
+                                                align="top"
+                                                sx={s_dropdownSubContent}
+                                            >
+                                                <Dropdown.Group>
+                                                    <Dropdown.Item
+                                                        inset
+                                                        sx={s_dropdownSubItem}
+                                                        onClick={() =>
+                                                            handleApplicantStatus(
+                                                                selectedPassApplicantIds,
+                                                                statusLabel[0].status,
+                                                            )
+                                                        }
+                                                    >
+                                                        <Text as="text" type="subCaptionRegular">
+                                                            {statusLabel[0].label}
+                                                        </Text>
+                                                    </Dropdown.Item>
+                                                    {statusLabel.length === 2 && (
+                                                        <>
+                                                            <Dropdown.Seperator
+                                                                sx={s_dropdownSeparator}
+                                                            />
+                                                            <Dropdown.Item
+                                                                inset
+                                                                sx={s_dropdownSubItem}
+                                                                onClick={() =>
+                                                                    handleApplicantStatus(
+                                                                        selectedPassApplicantIds,
+                                                                        statusLabel[1].status,
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Text
+                                                                    as="text"
+                                                                    type="subCaptionRegular"
+                                                                >
+                                                                    {statusLabel[1].label}
+                                                                </Text>
+                                                            </Dropdown.Item>
+                                                        </>
+                                                    )}
+                                                </Dropdown.Group>
+                                            </Dropdown.SubContent>
+                                        </Dropdown.Sub>
+                                        <Dropdown.Seperator sx={s_dropdownSeparator} />
+                                    </>
+                                )}
+                                <Dropdown.Item
+                                    inset
+                                    sx={s_dropdownItem}
+                                    onClick={() =>
+                                        handleApplicantStatus(
+                                            fail
+                                                ? selectedFailApplicantIds
+                                                : selectedPassApplicantIds,
+                                            fail ? statusInOwnStep.pass : statusInOwnStep.fail,
+                                        )
+                                    }
+                                >
                                     {fail ? (
                                         <Text as="text" type="subCaptionRegular" color="primary">
                                             합격 처리
@@ -161,8 +213,10 @@ function CardBox({
                                     onClick={fail ? handleSelectAllFail : handleSelectAllPass}
                                 >
                                     <Text as="text" type="subCaptionRegular">
-                                        {(fail ? selectedFailEmails : selectedPassEmails).length ===
-                                        passedApplicantList.length
+                                        {(fail
+                                            ? selectedFailApplicantIds
+                                            : selectedPassApplicantIds
+                                        ).length === passedApplicantList.length
                                             ? '전체 선택 해제'
                                             : '전체 선택'}
                                     </Text>
@@ -178,11 +232,12 @@ function CardBox({
                     <div css={s_cardGroup}>
                         {filteredNames(passedApplicantList).map((applicant) => (
                             <ApplicantCard
-                                key={applicant.email}
+                                key={applicant.applicantId}
                                 applicant={applicant}
-                                checked={(fail ? selectedFailEmails : selectedPassEmails).includes(
-                                    applicant.email,
-                                )}
+                                checked={(fail
+                                    ? selectedFailApplicantIds
+                                    : selectedPassApplicantIds
+                                ).includes(applicant.applicantId)}
                                 onChange={fail ? handleFailCheckbox : handlePassCheckbox}
                                 onClick={() => handleOpen(applicant as MergedStepApplicant)}
                             />
@@ -193,11 +248,12 @@ function CardBox({
                     <div css={s_cardGroup}>
                         {filteredNames(failedApplicantList).map((applicant) => (
                             <ApplicantCard
-                                key={applicant.email}
+                                key={applicant.applicantId}
                                 applicant={applicant}
-                                checked={(fail ? selectedFailEmails : selectedPassEmails).includes(
-                                    applicant.email,
-                                )}
+                                checked={(fail
+                                    ? selectedFailApplicantIds
+                                    : selectedPassApplicantIds
+                                ).includes(applicant.applicantId)}
                                 onChange={fail ? handleFailCheckbox : handlePassCheckbox}
                                 onClick={() => handleOpen(applicant as MergedStepApplicant)}
                             />
