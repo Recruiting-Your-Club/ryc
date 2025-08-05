@@ -30,7 +30,7 @@ function ClubDetailPage() {
             },
             {
                 title: '모집 공고',
-                page: <RecruitmentPage clubId={clubId || '1'} />,
+                page: <RecruitmentPage />,
                 width: '6.4rem',
             },
         ],
