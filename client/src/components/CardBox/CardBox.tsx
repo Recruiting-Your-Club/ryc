@@ -37,8 +37,9 @@ function CardBox({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
-    const [pass, setPass] = useState<boolean>(false);
+    const [selectedPassEmails, setSelectedPassEmails] = useState<string[]>([]);
+    const [selectedFailEmails, setSelectedFailEmails] = useState<string[]>([]);
+    const [fail, setFail] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -58,20 +59,34 @@ function CardBox({
     );
 
     // handlers
-    const handleSelectAll = () => {
-        if (selectedEmails.length === passedApplicantList.length) {
-            setSelectedEmails([]);
+    const handleSelectAllPass = () => {
+        if (selectedPassEmails.length === passedApplicantList.length) {
+            setSelectedPassEmails([]);
         } else {
-            setSelectedEmails(passedApplicantList.map((applicant) => applicant.email));
+            setSelectedPassEmails(passedApplicantList.map((applicant) => applicant.email));
+        }
+    };
+    const handleSelectAllFail = () => {
+        if (selectedFailEmails.length === failedApplicantList.length) {
+            setSelectedFailEmails([]);
+        } else {
+            setSelectedFailEmails(failedApplicantList.map((applicant) => applicant.email));
         }
     };
 
-    const handleCheckbox = (email: string, checked: boolean) => {
-        setSelectedEmails((prev) => (checked ? [...prev, email] : prev.filter((e) => e !== email)));
+    const handlePassCheckbox = (email: string, checked: boolean) => {
+        setSelectedPassEmails((prev) =>
+            checked ? [...prev, email] : prev.filter((e) => e !== email),
+        );
+    };
+    const handleFailCheckbox = (email: string, checked: boolean) => {
+        setSelectedFailEmails((prev) =>
+            checked ? [...prev, email] : prev.filter((e) => e !== email),
+        );
     };
 
     const handleToggle = () => {
-        setPass((prev) => !prev);
+        setFail((prev) => !prev);
     };
 
     return (
@@ -86,10 +101,10 @@ function CardBox({
                         sx={s_textToggle(step)}
                         leftText="합격자"
                         rightText="불합격자"
-                        isChecked={pass}
+                        isChecked={fail}
                         handleToggle={handleToggle}
-                        leftSx={s_textToggleLeft(pass, step)}
-                        rightSx={s_textToggleRight(pass, step)}
+                        leftSx={s_textToggleLeft(fail, step)}
+                        rightSx={s_textToggleRight(fail, step)}
                     />
                     <Dropdown>
                         <Dropdown.Trigger asChild>
@@ -123,9 +138,15 @@ function CardBox({
                                 </Dropdown.Sub>
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
                                 <Dropdown.Item inset sx={s_dropdownItem}>
-                                    <Text as="text" type="subCaptionRegular" color="warning">
-                                        불합격 처리
-                                    </Text>
+                                    {fail ? (
+                                        <Text as="text" type="subCaptionRegular" color="primary">
+                                            합격 처리
+                                        </Text>
+                                    ) : (
+                                        <Text as="text" type="subCaptionRegular" color="warning">
+                                            불합격 처리
+                                        </Text>
+                                    )}
                                 </Dropdown.Item>
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
                                 <Dropdown.Item inset sx={s_dropdownItem}>
@@ -134,9 +155,14 @@ function CardBox({
                                     </Text>
                                 </Dropdown.Item>
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
-                                <Dropdown.Item inset sx={s_dropdownItem} onClick={handleSelectAll}>
+                                <Dropdown.Item
+                                    inset
+                                    sx={s_dropdownItem}
+                                    onClick={fail ? handleSelectAllFail : handleSelectAllPass}
+                                >
                                     <Text as="text" type="subCaptionRegular">
-                                        {selectedEmails.length === passedApplicantList.length
+                                        {(fail ? selectedFailEmails : selectedPassEmails).length ===
+                                        passedApplicantList.length
                                             ? '전체 선택 해제'
                                             : '전체 선택'}
                                     </Text>
@@ -148,27 +174,31 @@ function CardBox({
             </div>
             <Divider sx={s_divider} />
             <div css={s_cardGroupWrapper}>
-                {!pass && (
+                {!fail && (
                     <div css={s_cardGroup}>
                         {filteredNames(passedApplicantList).map((applicant) => (
                             <ApplicantCard
                                 key={applicant.email}
                                 applicant={applicant}
-                                checked={selectedEmails.includes(applicant.email)}
-                                onChange={handleCheckbox}
+                                checked={(fail ? selectedFailEmails : selectedPassEmails).includes(
+                                    applicant.email,
+                                )}
+                                onChange={fail ? handleFailCheckbox : handlePassCheckbox}
                                 onClick={() => handleOpen(applicant as MergedStepApplicant)}
                             />
                         ))}
                     </div>
                 )}
-                {pass && (
+                {fail && (
                     <div css={s_cardGroup}>
                         {filteredNames(failedApplicantList).map((applicant) => (
                             <ApplicantCard
                                 key={applicant.email}
                                 applicant={applicant}
-                                checked={selectedEmails.includes(applicant.email)}
-                                onChange={handleCheckbox}
+                                checked={(fail ? selectedFailEmails : selectedPassEmails).includes(
+                                    applicant.email,
+                                )}
+                                onChange={fail ? handleFailCheckbox : handlePassCheckbox}
                                 onClick={() => handleOpen(applicant as MergedStepApplicant)}
                             />
                         ))}
