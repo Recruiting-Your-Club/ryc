@@ -4,30 +4,36 @@ import { RecruitCard, RecruitDialog, Text } from '@components';
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
 import { announcementQueries } from '@api/queryFactory';
-import { RecruitmentPageProps } from '../\btypes';
 import { useClubStore } from '@stores/clubStore';
+import { useParams } from 'react-router-dom';
 
-function RecruitmentPage({ clubId }: RecruitmentPageProps) {
+function RecruitmentPage() {
+    // prop destruction
     const { open, openDialog, closeDialog } = useDialog();
-    const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string | null>(null);
 
+    // lib hooks
+    const { id: clubId } = useParams<{ id: string }>();
+    const { setApplicationPeriod } = useClubStore();
+    // initial values
+    // state, ref, querystring hooks
+    const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
+    // form hooks
+    // query hooks
     const {
         data: announcements,
         isLoading,
         error,
-    } = useQuery(announcementQueries.getAnnouncementList(clubId));
-
-    const { data: selectedAnnouncementDetail, isLoading: isDetailLoading } = useQuery({
-        ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId || ''),
+    } = useQuery({
+        ...announcementQueries.getAnnouncementList(clubId || ''),
+        enabled: !!clubId,
     });
-    const { setApplicationPeriod } = useClubStore();
 
-    useEffect(() => {
-        if (selectedAnnouncementDetail) {
-            setApplicationPeriod(selectedAnnouncementDetail.applicationPeriod);
-        }
-    }, [selectedAnnouncementDetail, setApplicationPeriod]);
-
+    const { data: selectedAnnouncementDetail } = useQuery({
+        ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId),
+        enabled: !!selectedAnnouncementId,
+    });
+    // calculated values
+    // handlers
     const handleCardClick = (announcementId: string) => {
         setSelectedAnnouncementId(announcementId);
         openDialog();
@@ -35,8 +41,22 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
 
     const handleDialogClose = () => {
         closeDialog();
-        setSelectedAnnouncementId(null);
+        setSelectedAnnouncementId('');
     };
+    //effects
+    useEffect(() => {
+        if (selectedAnnouncementDetail) {
+            setApplicationPeriod(selectedAnnouncementDetail.applicationPeriod);
+        }
+    }, [selectedAnnouncementDetail, setApplicationPeriod]);
+
+    if (!clubId) {
+        return (
+            <div css={recruitmentContainer}>
+                <Text>유효한 동아리 ID가 없습니다.</Text>
+            </div>
+        );
+    }
 
     if (isLoading) {
         return (
@@ -57,8 +77,8 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
     return (
         <>
             <div css={recruitmentContainer}>
-                {announcements ? (
-                    announcements?.map((announcement) => (
+                {announcements && announcements.length > 0 ? (
+                    announcements.map((announcement) => (
                         <div css={recruitCell} key={announcement.announcementId}>
                             <RecruitCard
                                 title={announcement.title}
