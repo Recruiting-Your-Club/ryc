@@ -17,7 +17,7 @@ import { Text, Button } from '@components/_common/';
 import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import type { Answer, QuestionType } from './types';
+import type { Answer, QuestionType, QuestionOption, QuestionResponse } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
@@ -25,6 +25,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
 import { getDeadlineInfo } from '@utils/compareTime';
+import { getCategory } from '@utils/changeCategory';
 
 function ClubApplyPage() {
     // prop destruction
@@ -34,13 +35,10 @@ function ClubApplyPage() {
         useClubStore();
 
     // query hooks
-    const { data: announcementDetail, isLoading: announcementLoading } = useSuspenseQuery({
-        ...announcementQueries.getAnnouncementDetail(announcementId || ''),
-    });
 
-    const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery({
-        ...announcementQueries.getApplicationForm(announcementId || ''),
-    });
+    const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
+        announcementQueries.getApplicationForm(announcementId || ''),
+    );
 
     // initial values
     const { displayText } = getDeadlineInfo(applicationPeriod.endDate);
@@ -48,39 +46,56 @@ function ClubApplyPage() {
     // state, ref, querystring hooks
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
-    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState<boolean>(false);
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<string>('사전질문');
 
     // 사전질문 데이터
+    //initial values
     const clubPersonalQuestions = useMemo(
         () =>
-            applicationForm?.preQuestions?.map((question: any) => ({
+            applicationForm?.personalInfoQuestions.map((question) => {
+                return {
+                    id: question,
+                    label: question === 'NAME' ? '이름' : '이메일',
+                    type: 'SHORT_ANSWER' as QuestionType,
+                    isRequired: true,
+                };
+            }),
+        [applicationForm],
+    );
+
+    const clubPreQuestions = useMemo(
+        () =>
+            applicationForm?.preQuestions?.map((question) => ({
                 id: question.id,
-                questionTitle: question.label,
+                label: question.label,
                 type: question.type as QuestionType,
-                options: question.options?.map((opt: any) => opt.option) ?? [],
+                options: question.options,
                 isRequired: question.isRequired,
             })) || [],
         [applicationForm],
     );
 
+    const clubPersonalInfoQuestions = [...clubPersonalQuestions, ...clubPreQuestions];
+
     // 자기소개서 질문 데이터
     const detailQuestions = useMemo(
         () =>
-            applicationForm?.applicationQuestions?.map((question: any) => ({
+            applicationForm?.applicationQuestions?.map((question) => ({
                 id: question.id,
-                questionTitle: question.label,
-                description: question.description || question.label,
+                label: question.label,
+                description: question.description,
+                type: question.type as QuestionType,
                 isRequired: question.isRequired,
             })) || [],
         [applicationForm],
     );
 
     const allQuestions = useMemo(
-        () => [...clubPersonalQuestions, ...detailQuestions],
-        [clubPersonalQuestions, detailQuestions],
+        () => [...clubPersonalInfoQuestions, ...detailQuestions],
+        [clubPersonalInfoQuestions, detailQuestions],
     );
 
     // calculated values
@@ -109,12 +124,10 @@ function ClubApplyPage() {
         return allQuestions
             .filter((question) => question.isRequired)
             .every((question) => {
-                const answer = answers.find(
-                    (answer) => answer.questionTitle === question.questionTitle,
-                );
+                const answer = answers.find((answer) => answer.questionTitle === question.label);
                 if (!answer || !answer.value.trim()) return false;
-                if (VALIDATION_PATTERNS[question.questionTitle as ValidationKey]) {
-                    return !getValidationError(question.questionTitle, answer.value);
+                if (VALIDATION_PATTERNS[question.label as ValidationKey]) {
+                    return !getValidationError(question.label, answer.value);
                 }
                 return true;
             });
@@ -127,6 +140,7 @@ function ClubApplyPage() {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
+
     // handlers
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
@@ -139,8 +153,8 @@ function ClubApplyPage() {
     const handleAnswerChange = (questionTitle: string, value: string) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
-            const question = clubPersonalQuestions.find(
-                (question) => question.questionTitle === questionTitle,
+            const question = clubPersonalInfoQuestions.find(
+                (question) => question.label === questionTitle,
             );
 
             // 체크박스인 경우
@@ -157,9 +171,7 @@ function ClubApplyPage() {
                 id: questionTitle,
                 value,
                 questionTitle,
-                type: clubPersonalQuestions.some(
-                    (question) => question.questionTitle === questionTitle,
-                )
+                type: clubPersonalInfoQuestions.some((question) => question.label === questionTitle)
                     ? 'personal'
                     : 'detail',
             };
@@ -201,7 +213,7 @@ function ClubApplyPage() {
             page: (
                 <ClubApplyPersonalInfoPage
                     answers={answers}
-                    clubPersonalQuestions={clubPersonalQuestions}
+                    clubPersonalQuestions={clubPersonalInfoQuestions}
                     onAnswerChange={handleAnswerChange}
                     containerStyle={applyFormContainer}
                     getValidationError={getValidationError}
@@ -249,31 +261,15 @@ function ClubApplyPage() {
         setCompletedQuestions(completedCount);
     }, [answers, getValidationError]);
 
-    if (announcementLoading || formLoading) {
-        return (
-            <div css={clubApplyPage}>
-                <Text>지원서 정보를 불러오는 중...</Text>
-            </div>
-        );
-    }
-
-    if (!announcementDetail || !applicationForm) {
-        return (
-            <div css={clubApplyPage}>
-                <Text>지원서 정보를 찾을 수 없습니다.</Text>
-            </div>
-        );
-    }
-
     return (
         <div css={clubApplyPage}>
             <div css={clubApplyPageMainContainer}>
                 <div css={clubLogoAndNameContainer}>
-                    <img src={clubLogo} alt="clubLogo" css={svgContainer} />
+                    {clubLogo && <img src={clubLogo} alt="로고" css={svgContainer} />}
                     <div css={clubNameContainer}>
                         <Text type="h3Semibold">{clubName}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            {clubCategory}동아리
+                            {getCategory(clubCategory)}
                         </Text>
                     </div>
                 </div>
@@ -300,8 +296,9 @@ function ClubApplyPage() {
 
             <div css={submitCardContainer}>
                 <ClubSubmitCard
-                    clubName={announcementDetail.title}
-                    tag={announcementDetail.target}
+                    clubName={clubName}
+                    category={clubCategory}
+                    description={clubDescription}
                     deadline={displayText}
                     personalQuestions={clubPersonalQuestions}
                     detailQuestions={detailQuestions}
