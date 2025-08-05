@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { RecruitCard, RecruitDialog, Text } from '@components';
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
@@ -21,9 +21,12 @@ function RecruitmentPage({ clubId }: RecruitmentPageProps) {
         ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId || ''),
     });
     const { setApplicationPeriod } = useClubStore();
-    setApplicationPeriod(
-        selectedAnnouncementDetail?.applicationPeriod || { startDate: '', endDate: '' },
-    );
+
+    useEffect(() => {
+        if (selectedAnnouncementDetail) {
+            setApplicationPeriod(selectedAnnouncementDetail.applicationPeriod);
+        }
+    }, [selectedAnnouncementDetail, setApplicationPeriod]);
 
     const handleCardClick = (announcementId: string) => {
         setSelectedAnnouncementId(announcementId);
