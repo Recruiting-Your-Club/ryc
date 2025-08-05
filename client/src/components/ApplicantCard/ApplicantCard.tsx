@@ -24,7 +24,7 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
     // calculated values
     const getEvaluationState = (): string => {
         const totalEvaluatorCount = applicant.totalEvaluatorCount;
-        const completedEvaluatorCount = applicant.totalEvaluatorCount;
+        const completedEvaluatorCount = applicant.completedEvaluatorCount;
 
         if (completedEvaluatorCount === totalEvaluatorCount)
             return `평가 완료 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
