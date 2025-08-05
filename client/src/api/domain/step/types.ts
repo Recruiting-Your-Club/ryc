@@ -1,14 +1,13 @@
-import type { Applicant } from '../applicant/types';
-
-export interface StepApplicant extends Applicant {
-    state: string;
-    applicationDate: string;
-    completedEvaluatorCount: number;
-    totalEvaluatorCount: number;
-    averageScore: number;
-}
-
+export type EvaluationType = 'document' | 'interview';
 type RecruitmentStep = 'DOCUMENT' | 'INTERVIEW' | 'FINAL';
+
+export interface StepApplicant {
+    applicantId: string;
+    name: string;
+    email: string;
+    status: string;
+    submittedAt: string;
+}
 
 export interface Step {
     process: RecruitmentStep[];

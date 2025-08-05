@@ -14,4 +14,17 @@ async function getAllStepApplicants(): Promise<StepApplicant[]> {
     return response as StepApplicant[];
 }
 
-export { getTotalSteps, getAllStepApplicants };
+async function updateStepApplicantsStatus({
+    applicantId,
+    status,
+}: {
+    applicantId: string;
+    status: string;
+}): Promise<void> {
+    await httpRequest.patch({
+        url: `step-applicants/${applicantId}/status`,
+        body: { status },
+    });
+}
+
+export { getTotalSteps, getAllStepApplicants, updateStepApplicantsStatus };
