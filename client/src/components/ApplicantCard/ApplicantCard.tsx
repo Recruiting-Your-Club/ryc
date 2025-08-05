@@ -34,7 +34,7 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
 
     // handlers
     const handleChange = (checked: boolean) => {
-        onChange(applicant.email, checked);
+        onChange(applicant.applicantId, checked);
     };
 
     // effects
