@@ -1,4 +1,5 @@
 import type { CSSObject } from '@emotion/react';
+import type { Dispatch, SetStateAction } from 'react';
 
 export type Step = 'normal' | 'final';
 
