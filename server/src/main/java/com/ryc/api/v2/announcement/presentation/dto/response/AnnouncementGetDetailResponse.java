@@ -18,6 +18,7 @@ import lombok.Builder;
  * @param summaryDescription 요약 설명
  * @param detailDescription 상세 설명
  * @param target 대상
+ * @param field 모집분야
  * @param announcementStatus 공고 상태
  * @param announcementType 공고 유형
  * @param hasInterview 인터뷰 여부
@@ -39,6 +40,7 @@ public record AnnouncementGetDetailResponse(
     @Schema(description = "요약 설명", example = "코딩 동아리에서 신입 회원을 모집합니다.") String summaryDescription,
     @Schema(description = "상세 설명", example = "자세한 모집 내용은 다음과 같습니다...") String detailDescription,
     @Schema(description = "대상", example = "컴퓨터공학과 학생") String target,
+    @Schema(description = "모집 분야", example = "벡엔드") String field,
     @Schema(description = "공고 상태", example = "RECRUITING") AnnouncementStatus announcementStatus,
     @Schema(description = "공고 유형", example = "ALWAYS_OPEN") AnnouncementType announcementType,
     @Schema(description = "인터뷰 여부", example = "true") Boolean hasInterview,
@@ -83,6 +85,7 @@ public record AnnouncementGetDetailResponse(
         .summaryDescription(announcement.getSummaryDescription())
         .detailDescription(announcement.getDetailDescription())
         .target(announcement.getTarget())
+            .field(announcement.getField())
         .announcementStatus(announcement.getAnnouncementStatus())
         .announcementType(announcement.getAnnouncementType())
         .hasInterview(announcement.getHasInterview())
