@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Text, Checkbox, Radio } from '@components/_common';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
-import { getAnswer } from '../utils';
+import { getAnswer, getPlaceholder } from '../utils';
 import {
     clubApplyPersonalQuestionForm,
     helperTextSx,
@@ -29,22 +29,6 @@ function ClubApplyPersonalInfoPage({
     // state, ref, querystring hooks
 
     //calculated values
-    const getPlaceholder = (label: string) => {
-        switch (label) {
-            case '학번':
-                return 'ex) 19011069';
-            case '이름':
-                return 'ex) 홍길동, John Smith';
-            case '생년월일':
-                return 'ex) 990101';
-            case '전화번호':
-                return 'ex) 01012345678';
-            case '전공':
-                return 'ex) 소프트웨어학과';
-            default:
-                return '';
-        }
-    };
 
     //handlers
     //effects
@@ -54,16 +38,16 @@ function ClubApplyPersonalInfoPage({
                 if (question.type === 'SINGLE_CHOICE') {
                     return (
                         <div
-                            key={question.questionTitle}
+                            key={question.id}
                             css={clubApplyPersonalQuestionForm(false)}
                             ref={(element) => {
                                 if (questionRefs.current) {
-                                    questionRefs.current[question.questionTitle] = element;
+                                    questionRefs.current[question.label] = element;
                                 }
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.questionTitle}</Text>
+                                <Text type="bodyRegular">{question.label}</Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -71,17 +55,17 @@ function ClubApplyPersonalInfoPage({
                                 )}
                             </div>
                             <Radio
-                                name={`question-${question.questionTitle}`}
+                                name={`question-${question.label}`}
                                 orientation="vertical"
                                 options={
                                     question.options?.map((option) => ({
-                                        label: option,
-                                        value: option,
+                                        label: option.option,
+                                        value: option.option,
                                     })) || []
                                 }
                                 size="sm"
-                                value={getAnswer(answers, question.questionTitle)}
-                                onChange={(value) => onAnswerChange(question.questionTitle, value)}
+                                value={getAnswer(answers, question.label)}
+                                onChange={(value) => onAnswerChange(question.label, value)}
                             />
                         </div>
                     );
@@ -89,57 +73,55 @@ function ClubApplyPersonalInfoPage({
                 if (question.type === 'MULTIPLE_CHOICE') {
                     return (
                         <div
-                            key={question.questionTitle}
+                            key={question.id}
                             css={clubApplyPersonalQuestionForm(false)}
                             ref={(element) => {
                                 if (questionRefs.current) {
-                                    questionRefs.current[question.questionTitle] = element;
+                                    questionRefs.current[question.label] = element;
                                 }
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.questionTitle}</Text>
+                                <Text type="bodyRegular">{question.label}</Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
                                     </Text>
                                 )}
                             </div>
-                            {question.options.map((option) => (
+                            {question?.options?.map((option) => (
                                 <Checkbox.Root
-                                    key={option}
-                                    isChecked={getAnswer(answers, question.questionTitle)?.includes(
-                                        option,
+                                    key={option.id}
+                                    isChecked={getAnswer(answers, question.label)?.includes(
+                                        option.option,
                                     )}
-                                    onChange={() => onAnswerChange(question.questionTitle, option)}
+                                    onChange={() => onAnswerChange(question.label, option.option)}
                                 >
                                     <Checkbox.HiddenInput />
                                     <Checkbox.Control />
-                                    <Checkbox.Label>{option}</Checkbox.Label>
+                                    <Checkbox.Label>{option.option}</Checkbox.Label>
                                 </Checkbox.Root>
                             ))}
                         </div>
                     );
                 }
                 const hasError = getValidationError(
-                    question.questionTitle,
-                    getAnswer(answers, question.questionTitle),
+                    question.label,
+                    getAnswer(answers, question.label),
                 );
                 return (
                     <div
-                        key={question.questionTitle}
-                        css={clubApplyPersonalQuestionForm(
-                            hasError && touched[question.questionTitle],
-                        )}
+                        key={question.id}
+                        css={clubApplyPersonalQuestionForm(hasError && touched[question.label])}
                         tabIndex={-1}
                         ref={(element) => {
                             if (questionRefs.current) {
-                                questionRefs.current[question.questionTitle] = element;
+                                questionRefs.current[question.label] = element;
                             }
                         }}
                     >
                         <div css={labelContainer}>
-                            <Text type="bodyRegular">{question.questionTitle}</Text>
+                            <Text type="bodyRegular">{question.label}</Text>
                             {question.isRequired && (
                                 <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                     *
@@ -150,23 +132,21 @@ function ClubApplyPersonalInfoPage({
                             variant="lined"
                             labelSx={labelSx}
                             inputSx={inputSx}
-                            value={getAnswer(answers, question.questionTitle)}
-                            onChange={(event) =>
-                                onAnswerChange(question.questionTitle, event.target.value)
-                            }
-                            error={hasError && touched[question.questionTitle]}
-                            onFocus={() => onFocus(question.questionTitle)}
-                            onBlur={() => onBlur(question.questionTitle)}
+                            value={getAnswer(answers, question.label)}
+                            onChange={(event) => onAnswerChange(question.label, event.target.value)}
+                            error={hasError && touched[question.label]}
+                            onFocus={() => onFocus(question.label)}
+                            onBlur={() => onBlur(question.label)}
                             helperText={
-                                touched[question.questionTitle]
+                                touched[question.label]
                                     ? getErrorMessage(
-                                          question.questionTitle,
-                                          getAnswer(answers, question.questionTitle),
+                                          question.label,
+                                          getAnswer(answers, question.label),
                                       )
                                     : undefined
                             }
                             helperSx={helperTextSx}
-                            placeholder={getPlaceholder(question.questionTitle)}
+                            placeholder={getPlaceholder(question.label)}
                         />
                     </div>
                 );
