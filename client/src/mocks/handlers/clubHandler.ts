@@ -5,7 +5,7 @@ import type { AllClub, Club } from '@api/domain/club/types';
 import { BASE_URL } from '@constants/api';
 
 const clubHandler = [
-    http.get(`${BASE_URL}clubs/all`, () => {
+    http.get(`${BASE_URL}clubs`, () => {
         return HttpResponse.json(allClubList as AllClub[], { status: 200 });
     }),
     http.get(`${BASE_URL}clubs/:id`, () => {
