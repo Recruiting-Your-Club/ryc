@@ -49,8 +49,7 @@ public record AnnouncementUpdateRequest(
     @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
         @NotBlank(message = "target shouldn't be blank")
         String target,
-    @Schema(description = "모집 분야", example = "백엔드")
-        @NotBlank(message = "target shouldn't be blank")
+    @Schema(description = "모집 분야", example = "백엔드") @NotBlank(message = "target shouldn't be blank")
         String field,
     @Schema(description = "공고 타입", example = "LIMITED_TIME")
         @NotNull(message = "announcementType shouldn't be null")

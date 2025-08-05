@@ -66,7 +66,7 @@ public record AnnouncementUpdateResponse(
         .announcementStatus(announcement.getAnnouncementStatus())
         .activityPeriod(announcement.getActivityPeriod())
         .target(announcement.getTarget())
-            .field(announcement.getField())
+        .field(announcement.getField())
         .announcementType(announcement.getAnnouncementType())
         .hasInterview(announcement.getHasInterview())
         .application(application)

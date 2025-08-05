@@ -85,7 +85,7 @@ public record AnnouncementGetDetailResponse(
         .summaryDescription(announcement.getSummaryDescription())
         .detailDescription(announcement.getDetailDescription())
         .target(announcement.getTarget())
-            .field(announcement.getField())
+        .field(announcement.getField())
         .announcementStatus(announcement.getAnnouncementStatus())
         .announcementType(announcement.getAnnouncementType())
         .hasInterview(announcement.getHasInterview())

@@ -45,7 +45,7 @@ public record AnnouncementGetAllResponse(
         .title(announcement.getTitle())
         .summaryDescription(announcement.getSummaryDescription())
         .target(announcement.getTarget())
-            .field(announcement.getField())
+        .field(announcement.getField())
         .announcementStatus(announcement.getAnnouncementStatus())
         .announcementType(announcement.getAnnouncementType())
         .applicationStartDate(
