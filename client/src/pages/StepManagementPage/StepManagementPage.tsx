@@ -227,6 +227,7 @@ function StepManagementPage() {
                             : [statusLabel[FINAL_STEP_IN_TWO]]
                     }
                     statusInOwnStep={statusInOwnStep[DOCUMENT_STEP]}
+                    onEmailDialogOpen={setIsEmailOpen}
                 />
                 {isThreeStepProcess && (
                     <CardBox
@@ -239,6 +240,7 @@ function StepManagementPage() {
                         handleApplicantStatus={handleStatusUpdate}
                         statusLabel={[statusLabel[DOCUMENT_STEP], statusLabel[FINAL_STEP_IN_THREE]]}
                         statusInOwnStep={statusInOwnStep[INTERVIEW_STEP]}
+                        onEmailDialogOpen={setIsInterviewOpen}
                     />
                 )}
                 <CardBox
@@ -255,6 +257,7 @@ function StepManagementPage() {
                             : [statusLabel[DOCUMENT_STEP]]
                     }
                     statusInOwnStep={statusInOwnStep.at(-1)!}
+                    onEmailDialogOpen={setIsEmailOpen}
                 />
                 {selectedApplicant && (
                     <ApplicantDialog
@@ -266,13 +269,10 @@ function StepManagementPage() {
                         handleClose={handleClose}
                     />
                 )}
-                <Button onClick={() => setIsInterviewOpen(true)}>면접일정설정</Button>
                 <InterviewSettingDialog
                     open={isInterviewOpen}
                     handleClose={handleInterviewSettingClose}
                 />
-
-                <Button onClick={() => setIsEmailOpen(true)}>이메일</Button>
                 <PlainEmailDialog open={isEmailOpen} handleClose={handleEmailClose} />
             </div>
         </div>

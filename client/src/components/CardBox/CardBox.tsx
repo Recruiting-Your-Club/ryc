@@ -33,6 +33,7 @@ function CardBox({
     handleApplicantStatus,
     statusLabel,
     statusInOwnStep,
+    onEmailDialogOpen,
     height,
     sx,
 }: CardBoxProps) {
@@ -201,7 +202,11 @@ function CardBox({
                                     )}
                                 </Dropdown.Item>
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
-                                <Dropdown.Item inset sx={s_dropdownItem}>
+                                <Dropdown.Item
+                                    inset
+                                    sx={s_dropdownItem}
+                                    onClick={() => onEmailDialogOpen(true)}
+                                >
                                     <Text as="text" type="subCaptionRegular">
                                         전체 이메일 보내기
                                     </Text>
