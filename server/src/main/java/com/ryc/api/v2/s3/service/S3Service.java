@@ -3,12 +3,18 @@ package com.ryc.api.v2.s3.service;
 import com.ryc.api.v2.s3.domain.FileMetaData;
 import com.ryc.api.v2.s3.domain.FileMetaDataRepository;
 import com.ryc.api.v2.s3.domain.FileType;
-import com.ryc.api.v2.s3.presentation.dto.request.PresignedUrlRequest;
-import com.ryc.api.v2.s3.presentation.dto.response.PresignedUrlResponse;
+import com.ryc.api.v2.s3.presentation.dto.request.UploadUrlRequest;
+import com.ryc.api.v2.s3.presentation.dto.request.UploadConfirmRequest;
+import com.ryc.api.v2.s3.presentation.dto.response.UploadUrlResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
@@ -21,6 +27,7 @@ import java.util.UUID;
 public class S3Service {
 
     private final S3Presigner presigner;
+    private final S3Client s3Client;
     private final FileMetaDataRepository fileMetaDataRepository;
 
     private final String CLUB_PATH = "public/clubs";
@@ -34,7 +41,7 @@ public class S3Service {
     private String cdnDomain;
 
     @Transactional
-    public PresignedUrlResponse getUploadPresignedUrl(PresignedUrlRequest request, String userId) {
+    public UploadUrlResponse getUploadPresignedUrl(UploadUrlRequest request, String userId) {
 
         // 1. String to enum && contentType validate
         FileType fileType = FileType.from(request.fileType());
@@ -61,10 +68,27 @@ public class S3Service {
 
         String presignedUrl = presigner.presignPutObject(presignRequest).url().toString();
 
-        return PresignedUrlResponse.builder()
+        return UploadUrlResponse.builder()
                 .presignedUrl(presignedUrl)
                 .fileMetadataId(savedFileMetaData.getId())
                 .build();
+    }
+
+    @Transactional
+    public void confirmUpload(UploadConfirmRequest request) {
+        FileMetaData fileMetaData = fileMetaDataRepository.findById(request.fileMetadataId());
+
+        HeadObjectRequest objectRequest = HeadObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileMetaData.getFilePath())
+                .build();
+        try {
+            HeadObjectResponse response = s3Client.headObject(objectRequest);
+            fileMetaDataRepository.save(fileMetaData.confirmUpload(response.contentLength()));
+        } catch(NoSuchKeyException e){
+            fileMetaDataRepository.save(fileMetaData.issueFailUpload());
+            throw new RuntimeException("file not found");
+        }
     }
 
     private String generateS3Key(FileType fileType, String associatedId, String fileName) {

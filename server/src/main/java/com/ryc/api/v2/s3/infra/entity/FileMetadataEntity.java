@@ -42,4 +42,15 @@ public class FileMetadataEntity extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private FileStatus status;
+
+  public void update(FileMetadataEntity entity) {
+    this.filePath = entity.getFilePath();
+    this.originalFileName = entity.getOriginalFileName();
+    this.contentType = entity.getContentType();
+    this.fileSize = entity.getFileSize();
+    this.fileType = entity.getFileType();
+    this.associatedId = entity.getAssociatedId();
+    this.uploadedByUserId = entity.getUploadedByUserId();
+    this.status = entity.getStatus();
+  }
 }
