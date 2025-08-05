@@ -1,21 +1,21 @@
-package com.ryc.api.v2.Interview.infra;
+package com.ryc.api.v2.interview.infra;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.Interview.domain.InterviewRepository;
-import com.ryc.api.v2.Interview.domain.InterviewReservation;
-import com.ryc.api.v2.Interview.domain.InterviewSlot;
-import com.ryc.api.v2.Interview.infra.entity.InterviewReservationEntity;
-import com.ryc.api.v2.Interview.infra.entity.InterviewSlotEntity;
-import com.ryc.api.v2.Interview.infra.jpa.InterviewReservationJpaRepository;
-import com.ryc.api.v2.Interview.infra.jpa.InterviewSlotJpaRepository;
-import com.ryc.api.v2.Interview.infra.mapper.InterviewReservationMapper;
-import com.ryc.api.v2.Interview.infra.mapper.InterviewSlotMapper;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.interview.domain.InterviewRepository;
+import com.ryc.api.v2.interview.domain.InterviewReservation;
+import com.ryc.api.v2.interview.domain.InterviewSlot;
+import com.ryc.api.v2.interview.infra.entity.InterviewReservationEntity;
+import com.ryc.api.v2.interview.infra.entity.InterviewSlotEntity;
+import com.ryc.api.v2.interview.infra.jpa.InterviewReservationJpaRepository;
+import com.ryc.api.v2.interview.infra.jpa.InterviewSlotJpaRepository;
+import com.ryc.api.v2.interview.infra.mapper.InterviewReservationMapper;
+import com.ryc.api.v2.interview.infra.mapper.InterviewSlotMapper;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.presentation;
+package com.ryc.api.v2.interview.presentation;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -8,14 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
-import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationUpdatedRequest;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewInfoGetResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationCreateResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewReservationUpdateResponse;
-import com.ryc.api.v2.Interview.presentation.dto.response.InterviewSlotsGetResponse;
-import com.ryc.api.v2.Interview.service.InterviewService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewInfoGetResponse;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationCreateResponse;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationUpdateResponse;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewSlotsGetResponse;
+import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 import io.swagger.v3.oas.annotations.Operation;

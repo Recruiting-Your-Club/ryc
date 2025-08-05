@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.domain;
+package com.ryc.api.v2.interview.domain;
 
 import java.time.LocalDate;
 import java.util.List;

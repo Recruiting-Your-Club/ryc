@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.presentation.dto.response;
+package com.ryc.api.v2.interview.presentation.dto.response;
 
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 

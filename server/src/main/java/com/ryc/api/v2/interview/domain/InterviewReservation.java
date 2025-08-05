@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.domain;
+package com.ryc.api.v2.interview.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.service;
+package com.ryc.api.v2.interview.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,13 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.Interview.domain.InterviewRepository;
-import com.ryc.api.v2.Interview.domain.InterviewReservation;
-import com.ryc.api.v2.Interview.domain.InterviewSlot;
-import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationRequest;
-import com.ryc.api.v2.Interview.presentation.dto.request.InterviewReservationUpdatedRequest;
-import com.ryc.api.v2.Interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
-import com.ryc.api.v2.Interview.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
@@ -21,6 +14,13 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.interview.domain.InterviewRepository;
+import com.ryc.api.v2.interview.domain.InterviewReservation;
+import com.ryc.api.v2.interview.domain.InterviewSlot;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
+import com.ryc.api.v2.interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
+import com.ryc.api.v2.interview.presentation.dto.response.*;
 
 import lombok.RequiredArgsConstructor;
 

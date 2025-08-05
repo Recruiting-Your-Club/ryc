@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.infra.entity;
+package com.ryc.api.v2.interview.infra.entity;
 
 import java.util.List;
 

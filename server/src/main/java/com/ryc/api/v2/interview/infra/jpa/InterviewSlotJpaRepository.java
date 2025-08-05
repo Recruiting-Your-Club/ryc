@@ -1,4 +1,4 @@
-package com.ryc.api.v2.Interview.infra.jpa;
+package com.ryc.api.v2.interview.infra.jpa;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
-import com.ryc.api.v2.Interview.infra.entity.InterviewSlotEntity;
+import com.ryc.api.v2.interview.infra.entity.InterviewSlotEntity;
 
 public interface InterviewSlotJpaRepository extends JpaRepository<InterviewSlotEntity, String> {
 

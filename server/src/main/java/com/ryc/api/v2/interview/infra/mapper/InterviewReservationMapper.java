@@ -1,11 +1,11 @@
-package com.ryc.api.v2.Interview.infra.mapper;
+package com.ryc.api.v2.interview.infra.mapper;
 
-import com.ryc.api.v2.Interview.domain.InterviewReservation;
-import com.ryc.api.v2.Interview.infra.entity.InterviewReservationEntity;
-import com.ryc.api.v2.Interview.infra.entity.InterviewSlotEntity;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.infra.entity.ApplicantEntity;
 import com.ryc.api.v2.applicant.infra.mapper.ApplicantMapper;
+import com.ryc.api.v2.interview.domain.InterviewReservation;
+import com.ryc.api.v2.interview.infra.entity.InterviewReservationEntity;
+import com.ryc.api.v2.interview.infra.entity.InterviewSlotEntity;
 
 public class InterviewReservationMapper {
 
