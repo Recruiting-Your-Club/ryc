@@ -1,302 +1,212 @@
 [
     {
-        "id": 1,
+        "applicantId": "1",
         "name": "김영수",
         "email": "ys.kim@example.com",
-        "state": "DOCUMENT_PASS",
-        "applicationDate": "2025-07-15",
-        "completedEvaluatorCount": 4,
-        "totalEvaluatorCount": 5,
-        "averageScore": 3.8
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-07-15"
     },
     {
-        "id": 2,
+        "applicantId": "2",
         "name": "박지은",
         "email": "je.park@example.com",
-        "state": "DOCUMENT_FAIL",
-        "applicationDate": "2025-07-16",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 5,
-        "averageScore": 2.1
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-07-16"
     },
     {
-        "id": 3,
+        "applicantId": "3",
         "name": "이준호",
         "email": "jh.lee@example.com",
-        "state": "INTERVIEW_PASS",
-        "applicationDate": "2025-07-12",
-        "completedEvaluatorCount": 8,
-        "totalEvaluatorCount": 9,
-        "averageScore": 4.5
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-07-12"
     },
     {
-        "id": 4,
+        "applicantId": "4",
         "name": "정수빈",
         "email": "sb.jung@example.com",
-        "state": "INTERVIEW_FAIL",
-        "applicationDate": "2025-07-14",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 7,
-        "averageScore": 1.9
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-07-14"
     },
     {
-        "id": 5,
+        "applicantId": "5",
         "name": "최민재",
         "email": "mj.choi@example.com",
-        "state": "FINAL_PASS",
-        "applicationDate": "2025-07-10",
-        "completedEvaluatorCount": 10,
-        "totalEvaluatorCount": 10,
-        "averageScore": 4.9
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-07-10"
     },
     {
-        "id": 6,
+        "applicantId": "6",
         "name": "한지민",
         "email": "jm.han@example.com",
-        "state": "FINAL_FAIL",
-        "applicationDate": "2025-07-11",
-        "completedEvaluatorCount": 9,
-        "totalEvaluatorCount": 10,
-        "averageScore": 2.7
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-07-11"
     },
     {
-        "id": 7,
+        "applicantId": "7",
         "name": "김태현",
         "email": "th.kim@example.com",
-        "state": "DOCUMENT_PASS",
-        "applicationDate": "2025-07-13",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 5,
-        "averageScore": 4.1
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-07-13"
     },
     {
-        "id": 8,
+        "applicantId": "8",
         "name": "이서연",
         "email": "sy.lee@example.com",
-        "state": "DOCUMENT_FAIL",
-        "applicationDate": "2025-07-18",
-        "completedEvaluatorCount": 3,
-        "totalEvaluatorCount": 5,
-        "averageScore": 1.5
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-07-18"
     },
     {
-        "id": 9,
+        "applicantId": "9",
         "name": "박서준",
         "email": "sj.park@example.com",
-        "state": "INTERVIEW_PASS",
-        "applicationDate": "2025-07-09",
-        "completedEvaluatorCount": 9,
-        "totalEvaluatorCount": 9,
-        "averageScore": 4.8
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-07-09"
     },
     {
-        "id": 10,
+        "applicantId": "10",
         "name": "최유진",
         "email": "yj.choi@example.com",
-        "state": "INTERVIEW_FAIL",
-        "applicationDate": "2025-07-17",
-        "completedEvaluatorCount": 7,
-        "totalEvaluatorCount": 8,
-        "averageScore": 2.3
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-07-17"
     },
     {
-        "id": 11,
+        "applicantId": "11",
         "name": "김민준",
         "email": "mj.kim@example.com",
-        "state": "FINAL_PASS",
-        "applicationDate": "2025-07-08",
-        "completedEvaluatorCount": 10,
-        "totalEvaluatorCount": 10,
-        "averageScore": 4.7
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-07-08"
     },
     {
-        "id": 12,
+        "applicantId": "12",
         "name": "정소윤",
         "email": "sy.jung@example.com",
-        "state": "FINAL_FAIL",
-        "applicationDate": "2025-07-20",
-        "completedEvaluatorCount": 8,
-        "totalEvaluatorCount": 10,
-        "averageScore": 2.9
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-07-20"
     },
     {
-        "id": 13,
+        "applicantId": "13",
         "name": "강하윤",
         "email": "hy.kang@example.com",
-        "state": "DOCUMENT_PASS",
-        "applicationDate": "2025-07-21",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 5,
-        "averageScore": 4.3
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-07-21"
     },
     {
-        "id": 14,
+        "applicantId": "14",
         "name": "윤서현",
         "email": "sh.yun@example.com",
-        "state": "DOCUMENT_FAIL",
-        "applicationDate": "2025-07-22",
-        "completedEvaluatorCount": 4,
-        "totalEvaluatorCount": 5,
-        "averageScore": 1.8
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-07-22"
     },
     {
-        "id": 15,
+        "applicantId": "15",
         "name": "송지원",
         "email": "jw.song@example.com",
-        "state": "INTERVIEW_PASS",
-        "applicationDate": "2025-07-19",
-        "completedEvaluatorCount": 8,
-        "totalEvaluatorCount": 8,
-        "averageScore": 4.6
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-07-19"
     },
     {
-        "id": 16,
+        "applicantId": "16",
         "name": "오지훈",
         "email": "jh.oh@example.com",
-        "state": "INTERVIEW_FAIL",
-        "applicationDate": "2025-07-23",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 7,
-        "averageScore": 2.0
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-07-23"
     },
     {
-        "id": 17,
+        "applicantId": "17",
         "name": "장민서",
         "email": "ms.jang@example.com",
-        "state": "FINAL_PASS",
-        "applicationDate": "2025-07-24",
-        "completedEvaluatorCount": 10,
-        "totalEvaluatorCount": 10,
-        "averageScore": 4.9
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-07-24"
     },
     {
-        "id": 18,
+        "applicantId": "18",
         "name": "임동현",
         "email": "dh.im@example.com",
-        "state": "FINAL_FAIL",
-        "applicationDate": "2025-07-25",
-        "completedEvaluatorCount": 9,
-        "totalEvaluatorCount": 10,
-        "averageScore": 2.6
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-07-25"
     },
     {
-        "id": 19,
+        "applicantId": "19",
         "name": "배수지",
         "email": "sj.bae@example.com",
-        "state": "DOCUMENT_PASS",
-        "applicationDate": "2025-07-26",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 5,
-        "averageScore": 4.0
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-07-26"
     },
     {
-        "id": 20,
+        "applicantId": "20",
         "name": "고아름",
         "email": "ar.go@example.com",
-        "state": "DOCUMENT_FAIL",
-        "applicationDate": "2025-07-27",
-        "completedEvaluatorCount": 3,
-        "totalEvaluatorCount": 5,
-        "averageScore": 1.7
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-07-27"
     },
     {
-        "id": 21,
+        "applicantId": "21",
         "name": "김다희",
         "email": "dh.kim@example.com",
-        "state": "INTERVIEW_PASS",
-        "applicationDate": "2025-07-28",
-        "completedEvaluatorCount": 9,
-        "totalEvaluatorCount": 9,
-        "averageScore": 4.7
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-07-28"
     },
     {
-        "id": 22,
+        "applicantId": "22",
         "name": "정현우",
         "email": "hw.jung@example.com",
-        "state": "INTERVIEW_FAIL",
-        "applicationDate": "2025-07-29",
-        "completedEvaluatorCount": 7,
-        "totalEvaluatorCount": 8,
-        "averageScore": 2.1
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-07-29"
     },
     {
-        "id": 23,
+        "applicantId": "23",
         "name": "박채원",
         "email": "cw.park@example.com",
-        "state": "FINAL_PASS",
-        "applicationDate": "2025-07-30",
-        "completedEvaluatorCount": 10,
-        "totalEvaluatorCount": 10,
-        "averageScore": 4.8
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-07-30"
     },
     {
-        "id": 24,
+        "applicantId": "24",
         "name": "이민기",
         "email": "mg.lee@example.com",
-        "state": "FINAL_FAIL",
-        "applicationDate": "2025-07-31",
-        "completedEvaluatorCount": 8,
-        "totalEvaluatorCount": 10,
-        "averageScore": 2.8
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-07-31"
     },
     {
-        "id": 25,
+        "applicantId": "25",
         "name": "주예린",
         "email": "yr.joo@example.com",
-        "state": "DOCUMENT_PASS",
-        "applicationDate": "2025-08-01",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 5,
-        "averageScore": 4.2
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-08-01"
     },
     {
-        "id": 26,
+        "applicantId": "26",
         "name": "손준혁",
         "email": "jh.son@example.com",
-        "state": "DOCUMENT_FAIL",
-        "applicationDate": "2025-08-02",
-        "completedEvaluatorCount": 4,
-        "totalEvaluatorCount": 5,
-        "averageScore": 1.9
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-02"
     },
     {
-        "id": 27,
+        "applicantId": "27",
         "name": "홍지훈",
         "email": "jh.hong@example.com",
-        "state": "INTERVIEW_PASS",
-        "applicationDate": "2025-08-03",
-        "completedEvaluatorCount": 8,
-        "totalEvaluatorCount": 8,
-        "averageScore": 4.5
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-03"
     },
     {
-        "id": 28,
+        "applicantId": "28",
         "name": "서유나",
         "email": "yn.seo@example.com",
-        "state": "INTERVIEW_FAIL",
-        "applicationDate": "2025-08-04",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 7,
-        "averageScore": 2.2
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-04"
     },
     {
-        "id": 29,
+        "applicantId": "29",
         "name": "한서연",
         "email": "sy.han@example.com",
-        "state": "FINAL_PASS",
-        "applicationDate": "2025-08-05",
-        "completedEvaluatorCount": 10,
-        "totalEvaluatorCount": 10,
-        "averageScore": 4.9
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-05"
     },
     {
-        "id": 30,
+        "applicantId": "30",
         "name": "신동윤",
         "email": "dy.shin@example.com",
-        "state": "FINAL_FAIL",
-        "applicationDate": "2025-08-06",
-        "completedEvaluatorCount": 9,
-        "totalEvaluatorCount": 10,
-        "averageScore": 2.5
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-08-06"
     }
 ]
