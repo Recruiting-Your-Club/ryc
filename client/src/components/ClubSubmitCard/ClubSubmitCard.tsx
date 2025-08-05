@@ -23,9 +23,9 @@ function ClubSubmitCard({
     detailQuestions,
     allQuestionsCount,
     completedQuestionsCount,
-    requiredQuestionsCount,
     requiredQuestionsCompleted,
     answers,
+    logo,
     onQuestionFocus,
     onSubmit,
 }: ClubSubmitCardProps) {
@@ -36,7 +36,7 @@ function ClubSubmitCard({
     // form hooks
     // query hooks
     // calculated values
-    const { diffDay } = getDeadlineInfo(deadline);
+    const { diffDay, displayText } = getDeadlineInfo(deadline);
 
     // handlers
     // effects
@@ -44,7 +44,7 @@ function ClubSubmitCard({
         <div css={clubApplySubmitCardContainer}>
             <div css={clubSubmitCard}>
                 <div css={clubSubmitCardLogo}>
-                    <Ryc css={svgContainer} />
+                    <img src={logo} alt="로고" css={svgContainer} />
                     {deadline && (
                         <Text
                             color="caption"
@@ -52,7 +52,7 @@ function ClubSubmitCard({
                             sx={deadlineText(diffDay)}
                             noWrap
                         >
-                            {deadline}
+                            {displayText}
                         </Text>
                     )}
                 </div>
