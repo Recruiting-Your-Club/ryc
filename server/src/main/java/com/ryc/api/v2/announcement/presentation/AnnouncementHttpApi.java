@@ -1,18 +1,26 @@
 package com.ryc.api.v2.announcement.presentation;
 
+import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.announcement.presentation.dto.response.*;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
@@ -23,10 +31,16 @@ import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v2")
 @Tag(name = "공고")
-public interface AnnouncementHttpApi {
+public class AnnouncementHttpApi {
+
+  private final AnnouncementService announcementService;
+  private final ApplicationFormService applicationFormService;
 
   @PostMapping("/clubs/{club-id}/announcements")
   @HasRole(Role.MEMBER)
@@ -50,23 +64,37 @@ public interface AnnouncementHttpApi {
         "FORBIDDEN_NOT_CLUB_MEMBER",
         "INVALID_PARAMETER"
       })
-  ResponseEntity<AnnouncementCreateResponse> create(
+  public ResponseEntity<AnnouncementCreateResponse> create(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable("club-id") String clubId,
-      @Valid @RequestBody AnnouncementCreateRequest body);
+      @Valid @RequestBody AnnouncementCreateRequest body) {
+    AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
+
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/api/v2/clubs/{club-id}/announcements/{announcement-id}")
+            .buildAndExpand(clubId, response.announcementId())
+            .toUri();
+
+    return ResponseEntity.created(location).body(response);
+  }
 
   @GetMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 목록 조회")
-  ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
-      @PathVariable("club-id") String clubId);
+  public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
+      @PathVariable("club-id") String clubId) {
+    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
+  }
 
   @GetMapping("/announcements/{announcement-id}")
   @Operation(summary = "공고 상세 조회")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("announcement-id") String announcementId);
+  public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
+      @PathVariable("announcement-id") String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
+  }
 
   @PutMapping("/clubs/{club-id}/announcements/{announcement-id}")
   @HasRole(Role.MEMBER)
@@ -97,16 +125,22 @@ public interface AnnouncementHttpApi {
         "INVALID_PARAMETER",
         "RESOURCE_NOT_FOUND"
       })
-  ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
+  public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
-      @Valid @RequestBody AnnouncementUpdateRequest body);
+      @Valid @RequestBody AnnouncementUpdateRequest body) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(announcementService.updateAnnouncement(body, announcementId, clubId));
+  }
 
   @Operation(summary = "지원폼 조회")
   @GetMapping("/announcements/{announcement-id}/application-form")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  ResponseEntity<ApplicationFormResponse> getApplicationForm(
-      @PathVariable("announcement-id") String announcementId);
+  public ResponseEntity<ApplicationFormResponse> getApplicationForm(
+      @PathVariable("announcement-id") String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
+  }
 }
