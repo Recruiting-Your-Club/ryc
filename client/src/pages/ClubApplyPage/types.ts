@@ -3,20 +3,18 @@ import type { RefObject } from 'react';
 
 export type PageAnswer = 'personal' | 'detail';
 export type QuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_ANSWER';
-
-export interface PersonalQuestion {
+export type QuestionOption = {
     id: string;
-    questionTitle: string;
+    option: string;
+};
+
+export interface QuestionResponse {
+    id: string;
+    label: string;
     type: QuestionType;
-    options: string[];
+    options?: QuestionOption[];
     isRequired: boolean;
-}
-
-export interface DetailQuestion {
-    id: string;
-    questionTitle: string;
-    description: string;
-    isRequired: boolean;
+    description?: string;
 }
 
 export interface Answer {
@@ -28,7 +26,7 @@ export interface Answer {
 
 export interface ClubApplyPersonalInfoPageProps {
     answers: Answer[];
-    clubPersonalQuestions: PersonalQuestion[];
+    clubPersonalQuestions: QuestionResponse[];
     onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
@@ -41,7 +39,7 @@ export interface ClubApplyPersonalInfoPageProps {
 
 export interface ClubApplyDetailQuestionPageProps {
     answers: Answer[];
-    clubDetailQuestions: DetailQuestion[];
+    clubDetailQuestions: QuestionResponse[];
     onAnswerChange: (questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
     touched: { [key: string]: boolean };
