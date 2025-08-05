@@ -3,8 +3,9 @@ import type { Answer } from '@pages/ClubApplyPage/types';
 
 export interface ClubSubmitCardProps {
     clubName: string;
-    tag: string;
+    category: string;
     deadline: string;
+    description: string;
     personalQuestions: PersonalQuestion[];
     detailQuestions: DetailQuestion[];
     completedQuestionsCount: number;
