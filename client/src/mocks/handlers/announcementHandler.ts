@@ -10,8 +10,7 @@ const announcementHandler = [
     }),
 
     http.get(`${BASE_URL}announcements/:announcementId`, () => {
-        // 배열의 첫 번째 요소를 반환 (실제로는 ID에 따라 필터링해야 함)
-        return HttpResponse.json(announcementDetail[0], { status: 200 });
+        return HttpResponse.json(announcementDetail, { status: 200 });
     }),
 
     http.get(`${BASE_URL}announcements/:announcementId/application-form`, () => {
