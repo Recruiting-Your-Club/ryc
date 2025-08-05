@@ -1,15 +1,21 @@
 export interface ApplicationForm {
-    applicationQuestions: Question[];
-    preQuestions: Question[];
+    applicationQuestions: QuestionResponse[];
+    preQuestions: QuestionResponse[];
     personalInfoQuestions: string[];
 }
 
-export interface Question {
+export interface QuestionOption {
+    id: string;
+    option: string;
+}
+
+export interface QuestionResponse {
     id: string;
     type: string;
     label: string;
     isRequired: boolean;
-    options?: string[];
+    options?: QuestionOption[];
+    description?: string;
 }
 
 export interface AnnouncementSummary {
