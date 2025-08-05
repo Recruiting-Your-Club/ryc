@@ -1,15 +1,15 @@
 package com.ryc.api.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.HandlerMethod;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
@@ -39,30 +39,71 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class SwaggerConfiguration {
 
+  /*
+   * HTTP 메서드와 경로를 저장하는 레코드 클래스입니다.
+   */
+  private record HttpOperation(String method, String path) {}
+
+  /*
+   * Swagger API 응답 예시를 저장하는 레코드 클래스입니다.
+   */
   private record ExampleResponse(String name, ApiResponse item) {}
+
+  private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+  private final Set<String> whitelistAllPaths;
+  private final Set<String> whitelistGetPaths;
+  private final Set<String> whitelistPostPaths;
+
+  /*
+   * SwaggerConfiguration 생성자입니다.
+   * 이 생성자는 애플리케이션 설정 파일에서 화이트리스트 경로를 읽어와
+   * 각 경로를 슬래시("/")로 시작하도록 보장합니다.
+   */
+  public SwaggerConfiguration(
+      @Value("${SECURITY_WHITELIST_ALL_PATHS}") String[] whitelistAllPaths,
+      @Value("${SECURITY_WHITELIST_GET_PATHS}") String[] whitelistGetPaths,
+      @Value("${SECURITY_WHITELIST_POST_PATHS}") String[] whitelistPostPaths) {
+    this.whitelistAllPaths =
+        Arrays.stream(whitelistAllPaths)
+            .map(path -> path.startsWith("/") ? path : "/" + path)
+            .collect(Collectors.toSet());
+
+    this.whitelistGetPaths =
+        Arrays.stream(whitelistGetPaths)
+            .map(path -> path.startsWith("/") ? path : "/" + path)
+            .collect(Collectors.toSet());
+
+    this.whitelistPostPaths =
+        Arrays.stream(whitelistPostPaths)
+            .map(path -> path.startsWith("/") ? path : "/" + path)
+            .collect(Collectors.toSet());
+  }
 
   @Bean
   public OpenAPI openAPI() {
     String jwt = "JWT";
-    SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
     SecurityScheme securityScheme =
         new SecurityScheme()
             .name(jwt)
             .type(SecurityScheme.Type.HTTP)
             .scheme("bearer")
             .bearerFormat("JWT");
-
     Components components = new Components().addSecuritySchemes(jwt, securityScheme);
+    Info apiInfo =
+        new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
 
-    return new OpenAPI()
-        .info(apiInfo())
-        .addSecurityItem(securityRequirement)
-        .components(components);
+    return new OpenAPI().info(apiInfo).components(components);
   }
 
   @Bean
   public OperationCustomizer operationCustomizer() {
     return (operation, handlerMethod) -> {
+
+      // HTTP 메서드와 경로를 추출하여 보안이 필요한 API에 JWT 보안 요구 사항을 추가합니다.
+      HttpOperation httpOperation = extractHttpOperation(handlerMethod);
+      if (!isWhitelistPath(httpOperation)) {
+        operation.addSecurityItem(new SecurityRequirement().addList("JWT"));
+      }
 
       // 조건: @ApiErrorCodeExample 어노테이션이 붙은 API만 적용
       ApiErrorCodeExample apiErrorCodeExample =
@@ -88,8 +129,92 @@ public class SwaggerConfiguration {
     };
   }
 
-  private Info apiInfo() {
-    return new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
+  /*
+   * HandlerMethod에서 HTTP 메서드와 경로를 추출하는 메서드입니다.
+   * 클래스 레벨의 RequestMapping과 메서드 레벨의 RequestMapping을 결합하여
+   * 최종적인 HTTP 메서드와 경로를 반환합니다.
+   */
+  private HttpOperation extractHttpOperation(HandlerMethod handlerMethod) {
+    RequestMapping classMapping = handlerMethod.getBeanType().getAnnotation(RequestMapping.class);
+
+    GetMapping getMapping = handlerMethod.getMethodAnnotation(GetMapping.class);
+    if (getMapping != null) {
+      String path = extractPath(classMapping, getMapping.value());
+      return new HttpOperation("GET", path);
+    }
+
+    PostMapping postMapping = handlerMethod.getMethodAnnotation(PostMapping.class);
+    if (postMapping != null) {
+      String path = extractPath(classMapping, postMapping.value());
+      return new HttpOperation("POST", path);
+    }
+
+    PutMapping putMapping = handlerMethod.getMethodAnnotation(PutMapping.class);
+    if (putMapping != null) {
+      String path = extractPath(classMapping, putMapping.value());
+      return new HttpOperation("PUT", path);
+    }
+
+    DeleteMapping deleteMapping = handlerMethod.getMethodAnnotation(DeleteMapping.class);
+    if (deleteMapping != null) {
+      String path = extractPath(classMapping, deleteMapping.value());
+      return new HttpOperation("DELETE", path);
+    }
+
+    PatchMapping patchMapping = handlerMethod.getMethodAnnotation(PatchMapping.class);
+    if (patchMapping != null) {
+      String path = extractPath(classMapping, patchMapping.value());
+      return new HttpOperation("PATCH", path);
+    }
+
+    return new HttpOperation("UNKNOWN", "");
+  }
+
+  /*
+   * 클래스 경로와 메서드 경로를 결합하여 최종 경로를 생성합니다.
+   * 이 메서드는 중복된 슬래시("//")를 제거하여 정확한 경로를 반환합니다.
+   */
+  private String extractPath(RequestMapping classMapping, String[] methodPath) {
+    String classPath = "";
+
+    if (classMapping != null && classMapping.value().length > 0) {
+      classPath = classMapping.value()[0];
+    }
+
+    if (methodPath.length == 0) {
+      return classPath.startsWith("/") ? classPath : "/" + classPath;
+    }
+
+    String path = (classPath + "/" + methodPath[0]).replaceAll("//+", "/");
+    return path.startsWith("/") ? path : "/" + path;
+  }
+
+  /*
+   * 주어진 HTTP 메서드와 경로가 화이트리스트에 포함되어 있는지 확인합니다.
+   */
+  private boolean isWhitelistPath(HttpOperation httpOperation) {
+    String path = httpOperation.path();
+
+    for (String whitePath : whitelistAllPaths) {
+      if (antPathMatcher.match(whitePath, path)) {
+        return true;
+      }
+    }
+
+    if (httpOperation.method().equals("GET")) {
+      for (String whitePath : whitelistGetPaths) {
+        if (antPathMatcher.match(whitePath, path)) {
+          return true;
+        }
+      }
+    } else if (httpOperation.method().equals("POST")) {
+      for (String whitePath : whitelistPostPaths) {
+        if (antPathMatcher.match(whitePath, path)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /*
