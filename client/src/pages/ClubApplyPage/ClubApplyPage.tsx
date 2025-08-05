@@ -12,19 +12,17 @@ import {
     clubApplyTabContainer,
     s_submitButtonSx,
 } from './ClubApplyPage.style';
-import Ryc from '@assets/images/Ryc.svg';
 import { Text, Button } from '@components/_common/';
 import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import type { Answer, QuestionType, QuestionOption, QuestionResponse } from './types';
+import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
-import { getDeadlineInfo } from '@utils/compareTime';
 import { getCategory } from '@utils/changeCategory';
 
 function ClubApplyPage() {
@@ -33,16 +31,12 @@ function ClubApplyPage() {
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubLogo, clubCategory, clubDescription, clubStatus, applicationPeriod } =
         useClubStore();
-
     // query hooks
-
     const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
     );
 
     // initial values
-    const { displayText } = getDeadlineInfo(applicationPeriod.endDate);
-
     // state, ref, querystring hooks
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [completedQuestions, setCompletedQuestions] = useState<number>(0);
@@ -52,7 +46,6 @@ function ClubApplyPage() {
     const [activeTab, setActiveTab] = useState<string>('사전질문');
 
     // 사전질문 데이터
-    //initial values
     const clubPersonalQuestions = useMemo(
         () =>
             applicationForm?.personalInfoQuestions.map((question) => {
@@ -299,13 +292,14 @@ function ClubApplyPage() {
                     clubName={clubName}
                     category={clubCategory}
                     description={clubDescription}
-                    deadline={displayText}
+                    deadline={applicationPeriod.endDate}
                     personalQuestions={clubPersonalQuestions}
                     detailQuestions={detailQuestions}
                     completedQuestionsCount={completedQuestions}
                     requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
                     answers={answers}
+                    logo={clubLogo}
                     onQuestionFocus={handleQuestionFocus}
                     requiredQuestionsCompleted={requiredQuestionsCompleted}
                     allQuestionsCount={allQuestions.length}
