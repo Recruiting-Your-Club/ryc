@@ -24,7 +24,6 @@ function ClubDetailPage() {
     const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
         useClubStore();
     // initial values
-    console.log(title, category, clubLogo, description, status);
     const navigationItem = useMemo(
         () => [
             {
