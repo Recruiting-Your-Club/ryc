@@ -5,7 +5,7 @@ import interviewEvaluationSummary from '../data/evaluation/interviewEvaluationSu
 import applicationEvaluationDetail from '../data/evaluation/applicationEvaluationDetail.json';
 import interviewEvaluationDetail from '../data/evaluation/interviewEvaluationDetail.json';
 
-import type { Evaluation, EvaluationSummary } from '@api/domain/evaluation/types';
+import type { EvaluationSummary } from '@api/domain/evaluation/types';
 
 const evaluationHandler = [
     http.post(`${BASE_URL}evaluation/applications/summary`, async ({ request }) => {
@@ -32,18 +32,18 @@ const evaluationHandler = [
         return HttpResponse.json(filtered, { status: 200 });
     }),
 
-    http.post(`${BASE_URL}evaluation/applicants/search`, async ({ request }) => {
+    http.post(`${BASE_URL}evaluation/applications/search`, async ({ request }) => {
         const { applicantIdList } = (await request.json()) as {
             applicantIdList: string[];
         };
 
-        const filteredEntries = Object.entries(applicationEvaluationDetail).filter(
-            ([applicantId]) => applicantIdList.includes(applicantId),
-        );
+        const filteredEntries = Object.entries(
+            applicationEvaluationDetail.evaluationsByApplicant,
+        ).filter(([applicantId]) => applicantIdList.includes(applicantId));
 
         const filtered = Object.fromEntries(filteredEntries);
 
-        return HttpResponse.json(filtered, { status: 200 });
+        return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
     }),
 
     http.post(`${BASE_URL}evaluation/interviews/search`, async ({ request }) => {
@@ -51,13 +51,13 @@ const evaluationHandler = [
             applicantIdList: string[];
         };
 
-        const filteredEntries = Object.entries(interviewEvaluationDetail).filter(([applicantId]) =>
-            applicantIdList.includes(applicantId),
-        );
+        const filteredEntries = Object.entries(
+            interviewEvaluationDetail.evaluationsByApplicant,
+        ).filter(([applicantId]) => applicantIdList.includes(applicantId));
 
         const filtered = Object.fromEntries(filteredEntries);
 
-        return HttpResponse.json(filtered, { status: 200 });
+        return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
     }),
 ];
 
