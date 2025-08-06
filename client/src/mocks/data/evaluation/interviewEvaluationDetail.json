@@ -11,7 +11,7 @@
                     "evaluatorName": "이유진",
                     "score": 3,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -29,7 +29,7 @@
                     "evaluatorName": "정지훈",
                     "score": 2,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -54,7 +54,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "팀워크 능력이 좋습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -72,7 +72,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -90,7 +90,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
@@ -106,7 +106,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -124,7 +124,7 @@
                     "evaluatorName": "정지훈",
                     "score": 5,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -142,7 +142,7 @@
                     "evaluatorName": "최은지",
                     "score": 5,
                     "comment": "팀워크 능력이 좋습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -167,7 +167,7 @@
                     "evaluatorName": "이유진",
                     "score": 2,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -192,7 +192,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -210,7 +210,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -228,7 +228,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -253,7 +253,7 @@
                     "evaluatorName": "이유진",
                     "score": 3,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -271,7 +271,7 @@
                     "evaluatorName": "정지훈",
                     "score": 3,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 }
             ]
@@ -287,7 +287,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -305,7 +305,7 @@
                     "evaluatorName": "정지훈",
                     "score": 5,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -323,7 +323,7 @@
                     "evaluatorName": "최은지",
                     "score": 5,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -348,7 +348,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -366,7 +366,7 @@
                     "evaluatorName": "정지훈",
                     "score": 3,
                     "comment": "기본 지식이 탄탄합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -391,7 +391,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -409,7 +409,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -427,7 +427,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -452,7 +452,7 @@
                     "evaluatorName": "이유진",
                     "score": 1,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
@@ -468,7 +468,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -486,7 +486,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -504,7 +504,7 @@
                     "evaluatorName": "최은지",
                     "score": 3,
                     "comment": "팀워크 능력이 좋습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
@@ -520,7 +520,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -538,7 +538,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -556,7 +556,7 @@
                     "evaluatorName": "최은지",
                     "score": 5,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -581,7 +581,7 @@
                     "evaluatorName": "이유진",
                     "score": 3,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -599,7 +599,7 @@
                     "evaluatorName": "정지훈",
                     "score": 2,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -624,7 +624,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "프로젝트 경험이 풍부합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -642,7 +642,7 @@
                     "evaluatorName": "정지훈",
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -660,7 +660,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "질문을 잘 이해하고 답변합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -685,7 +685,7 @@
                     "evaluatorName": "이유진",
                     "score": 3,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -703,7 +703,7 @@
                     "evaluatorName": "정지훈",
                     "score": 3,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -721,7 +721,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
@@ -737,7 +737,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "프로젝트 경험이 풍부합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -755,7 +755,7 @@
                     "evaluatorName": "정지훈",
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -773,7 +773,7 @@
                     "evaluatorName": "최은지",
                     "score": 5,
                     "comment": "질문을 잘 이해하고 답변합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -798,7 +798,7 @@
                     "evaluatorName": "이유진",
                     "score": 2,
                     "comment": "팀워크 능력이 좋습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -823,7 +823,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -841,7 +841,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -859,7 +859,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -884,7 +884,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -902,7 +902,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -920,7 +920,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
@@ -936,7 +936,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -954,7 +954,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "프로젝트 경험이 풍부합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -972,7 +972,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -997,7 +997,7 @@
                     "evaluatorName": "이유진",
                     "score": 2,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1015,7 +1015,7 @@
                     "evaluatorName": "정지훈",
                     "score": 2,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1040,7 +1040,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "팀워크 능력이 좋습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1058,7 +1058,7 @@
                     "evaluatorName": "정지훈",
                     "score": 3,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1076,7 +1076,7 @@
                     "evaluatorName": "최은지",
                     "score": 3,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1101,7 +1101,7 @@
                     "evaluatorName": "이유진",
                     "score": 3,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1119,7 +1119,7 @@
                     "evaluatorName": "정지훈",
                     "score": 3,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 }
             ]
@@ -1135,7 +1135,7 @@
                     "evaluatorName": "이유진",
                     "score": 1,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1160,7 +1160,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1178,7 +1178,7 @@
                     "evaluatorName": "정지훈",
                     "score": 5,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1196,7 +1196,7 @@
                     "evaluatorName": "최은지",
                     "score": 5,
                     "comment": "경험이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1221,7 +1221,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1239,7 +1239,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1257,7 +1257,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "기본 지식이 탄탄합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
@@ -1273,7 +1273,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1291,7 +1291,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1309,7 +1309,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1334,7 +1334,7 @@
                     "evaluatorName": "이유진",
                     "score": 3,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1352,7 +1352,7 @@
                     "evaluatorName": "정지훈",
                     "score": 2,
                     "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1377,7 +1377,7 @@
                     "evaluatorName": "이유진",
                     "score": 5,
                     "comment": "팀워크 능력이 좋습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1395,7 +1395,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "기본 지식이 탄탄합니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1413,7 +1413,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1438,7 +1438,7 @@
                     "evaluatorName": "이유진",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
                 {
@@ -1456,7 +1456,7 @@
                     "evaluatorName": "정지훈",
                     "score": 4,
                     "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
                 {
@@ -1474,7 +1474,7 @@
                     "evaluatorName": "최은지",
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "APPLICANT",
+                    "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
