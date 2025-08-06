@@ -25,41 +25,24 @@ function MainCard({
 }: MainCardProps) {
     // prop destruction
     // lib hooks
-    const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
-        useClubStore();
     // initial values
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
     const clubTagList = clubTags.map((tag) => `#${tag.name} `);
-
-    // effects
-    useEffect(() => {
-        setClubName(title);
-        setClubLogo(imageURL);
-        setClubCategory(category);
-        setClubDescription(description);
-        setClubStatus(status);
-    }, [
-        title,
-        imageURL,
-        category,
-        description,
-        status,
-        setClubName,
-        setClubLogo,
-        setClubCategory,
-        setClubDescription,
-        setClubStatus,
-    ]);
-
     // handlers
     // effects
     return (
         <Link
             to={link}
-            state={{ title: title, category: category, clubLogo: imageURL }}
+            state={{
+                title: title,
+                category: category,
+                clubLogo: imageURL,
+                description: description,
+                status: status,
+            }}
             css={cardContainer}
         >
             <div css={cardHeaderContainer}>
