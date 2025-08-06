@@ -70,19 +70,11 @@ public class InterviewSlot {
         .build();
   }
 
-  public InterviewReservation getInterviewReservationById(String reservationId) {
-    return this.interviewReservations.stream()
-        .filter(reservation -> reservation.getId().equals(reservationId))
-        .findFirst()
-        .orElseThrow(
-            () -> new InterviewException(InterviewErrorCode.INTERVIEW_RESERVATION_NOT_FOUND));
-  }
-
   public InterviewSlot removeInterviewReservationById(InterviewReservation reservation) {
     List<InterviewReservation> newInterviewReservations =
         new ArrayList<>(this.interviewReservations);
-
     newInterviewReservations.remove(reservation);
+
     return InterviewSlot.builder()
         .id(this.id)
         .creatorId(this.creatorId)
@@ -91,6 +83,14 @@ public class InterviewSlot {
         .period(this.period)
         .interviewReservations(List.copyOf(newInterviewReservations))
         .build();
+  }
+
+  public InterviewReservation getInterviewReservationById(String reservationId) {
+    return this.interviewReservations.stream()
+        .filter(reservation -> reservation.getId().equals(reservationId))
+        .findFirst()
+        .orElseThrow(
+            () -> new InterviewException(InterviewErrorCode.INTERVIEW_RESERVATION_NOT_FOUND));
   }
 
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.

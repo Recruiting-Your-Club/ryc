@@ -4,6 +4,11 @@ import java.util.List;
 
 public interface InterviewRepository {
 
+  /*
+   * 인터뷰 슬롯을 저장합니다.
+   * @param interviewSlot 저장할 인터뷰 슬롯
+   * interviewSlot의 List<InterviewReservation> 필드 또한 함께 저장됩니다.
+   */
   InterviewSlot saveInterviewSlot(InterviewSlot interviewSlot);
 
   List<InterviewSlot> saveAllInterviewSlot(List<InterviewSlot> interviewSlots);
@@ -13,7 +18,4 @@ public interface InterviewRepository {
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
 
   InterviewSlot findInterviewSlotByReservationId(String interviewReservationId);
-
-  InterviewReservation saveInterviewReservation(
-      InterviewReservation reservation, InterviewSlot slot);
 }

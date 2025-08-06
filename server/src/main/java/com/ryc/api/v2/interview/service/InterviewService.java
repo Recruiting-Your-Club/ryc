@@ -13,6 +13,8 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
 import com.ryc.api.v2.interview.domain.InterviewReservation;
 import com.ryc.api.v2.interview.domain.InterviewSlot;
@@ -124,41 +126,41 @@ public class InterviewService {
 
     // 새로운 예약 정보를 저장합니다.
     InterviewSlot updatedInterviewSlot = interviewSlot.addInterviewReservations(reservation, false);
-    interviewRepository.saveInterviewSlot(updatedInterviewSlot);
+    InterviewSlot savedInterviewSlot = interviewRepository.saveInterviewSlot(updatedInterviewSlot);
 
-    InterviewReservation savedReservation =
-        interviewRepository.saveInterviewReservation(reservation, interviewSlot);
-    return new InterviewReservationCreateResponse(savedReservation.getId());
+    for (InterviewReservation r : savedInterviewSlot.getInterviewReservations()) {
+      if (r.getApplicant().getId().equals(applicant.getId())) {
+        return new InterviewReservationCreateResponse(r.getId());
+      }
+    }
+
+    throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
   }
 
   @Transactional
   public InterviewReservationUpdateResponse changeInterviewReservation(
       String reservationId, InterviewReservationUpdatedRequest body) {
-    // 기존 면접 슬롯 조회
+    // 기존 면접 슬롯과 예약 정보 조회
     InterviewSlot oldInterviewSlot =
         interviewRepository.findInterviewSlotByReservationId(reservationId);
-
-    // 기존 면접 슬롯에서 예약 정보 조회
     InterviewReservation reservation = oldInterviewSlot.getInterviewReservationById(reservationId);
 
     // 기존 면접 슬롯에서 예약 정보 제거
     InterviewSlot removedInterviewReservation =
         oldInterviewSlot.removeInterviewReservationById(reservation);
-    interviewRepository.saveInterviewSlot(removedInterviewReservation);
-
-    // 새로운 면접 슬롯 조회
-    InterviewSlot newInterviewSlot =
-        interviewRepository.findInterviewSlotByIdForUpdate(body.interviewSlotId());
 
     // 새로운 면접 슬롯에 예약 정보 추가
+    InterviewSlot newInterviewSlot =
+        interviewRepository.findInterviewSlotByIdForUpdate(body.interviewSlotId());
     InterviewSlot updatedInterviewSlot =
         newInterviewSlot.addInterviewReservations(reservation, true);
-    InterviewReservation savedReservation =
-        interviewRepository.saveInterviewReservation(reservation, updatedInterviewSlot);
 
-    InterviewSlotGetResponse slotGetResponse = createInterviewSlotResponse(newInterviewSlot);
+    interviewRepository.saveInterviewSlot(removedInterviewReservation);
+    interviewRepository.saveInterviewSlot(updatedInterviewSlot);
+
+    InterviewSlotGetResponse slotGetResponse = createInterviewSlotResponse(updatedInterviewSlot);
     return InterviewReservationUpdateResponse.builder()
-        .interviewReservationId(savedReservation.getId())
+        .interviewReservationId(reservation.getId())
         .interviewSlot(slotGetResponse)
         .build();
   }

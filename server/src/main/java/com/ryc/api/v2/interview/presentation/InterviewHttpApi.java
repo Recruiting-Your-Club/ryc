@@ -28,16 +28,15 @@ public class InterviewHttpApi {
 
   @GetMapping("announcements/{announcement-id}/interview-slots")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 면접 시간대를 조회합니다.")
+  @Operation(summary = "면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   public ResponseEntity<List<InterviewSlotGetResponse>> getInterviewSlotsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<InterviewSlotGetResponse> responses =
-        interviewService.getInterviewSlots(announcementId);
+    List<InterviewSlotGetResponse> responses = interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
 
-  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/applicants")
-  @Operation(summary = "면접 시간대 조회", description = "지원자가 특정 공고에 대한 면접 시간대를 조회합니다.")
+  @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
+  @Operation(summary = "면접 시간대 조회", description = "지원자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   public ResponseEntity<InterviewSlotsApplicantViewResponse> getInterviewSlotsForApplicant(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
@@ -49,7 +48,7 @@ public class InterviewHttpApi {
 
   @GetMapping("announcements/{announcement-id}/interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 Interview Slot에 대한 면접자들의 정보를 조회합니다.")
+  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 정보를 조회합니다.")
   public ResponseEntity<InterviewReservationAdminViewResponse> getInterviewInfoForAdmin(
       @PathVariable("announcement-id") String announcementId,
       @PathVariable("interview-slot-id") String interviewSlotId) {

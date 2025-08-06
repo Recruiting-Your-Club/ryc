@@ -7,13 +7,10 @@ import org.springframework.stereotype.Repository;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
-import com.ryc.api.v2.interview.domain.InterviewReservation;
 import com.ryc.api.v2.interview.domain.InterviewSlot;
-import com.ryc.api.v2.interview.infra.entity.InterviewReservationEntity;
 import com.ryc.api.v2.interview.infra.entity.InterviewSlotEntity;
 import com.ryc.api.v2.interview.infra.jpa.InterviewReservationJpaRepository;
 import com.ryc.api.v2.interview.infra.jpa.InterviewSlotJpaRepository;
-import com.ryc.api.v2.interview.infra.mapper.InterviewReservationMapper;
 import com.ryc.api.v2.interview.infra.mapper.InterviewSlotMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -63,15 +60,5 @@ public class InterviewRepositoryImpl implements InterviewRepository {
             .findInterviewSlotById(interviewReservationId)
             .orElseThrow(() -> new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_NOT_FOUND));
     return InterviewSlotMapper.toDomain(entity);
-  }
-
-  @Override
-  public InterviewReservation saveInterviewReservation(
-      InterviewReservation reservation, InterviewSlot slot) {
-    InterviewSlotEntity slotEntity = InterviewSlotMapper.toEntity(slot);
-    InterviewReservationEntity entity =
-        InterviewReservationMapper.toEntity(reservation, slotEntity);
-    InterviewReservationEntity savedEntity = interviewReservationJpaRepository.save(entity);
-    return InterviewReservationMapper.toDomain(savedEntity);
   }
 }
