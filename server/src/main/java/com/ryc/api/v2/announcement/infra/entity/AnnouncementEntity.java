@@ -43,6 +43,8 @@ public class AnnouncementEntity extends BaseEntity {
 
   private String target;
 
+  private String field;
+
   @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
   @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -74,6 +76,7 @@ public class AnnouncementEntity extends BaseEntity {
     this.hasInterview = announcement.getHasInterview();
     this.detailDescription = announcement.getDetailDescription();
     this.target = announcement.getTarget();
+    this.field = announcement.getField();
     this.announcementType = announcement.getAnnouncementType();
     this.activityPeriod = announcement.getActivityPeriod();
     this.announcementStatus = announcement.getAnnouncementStatus();

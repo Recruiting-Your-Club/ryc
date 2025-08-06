@@ -24,6 +24,7 @@ public class AdminService {
         .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + id));
   }
 
+  @Transactional(readOnly = true)
   public AdminEmailDuplicatedResponse checkEmailDuplicate(String email) {
     boolean isDuplicated = adminRepository.existsByEmail(email);
     return new AdminEmailDuplicatedResponse(isDuplicated);

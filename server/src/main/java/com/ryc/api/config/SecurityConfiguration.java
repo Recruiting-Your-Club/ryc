@@ -1,5 +1,6 @@
 package com.ryc.api.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,16 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+
+  @Value("${SECURITY_WHITELIST_ALL_METHOD_PATHS}")
+  private String[] whitelistAllPaths;
+
+  @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}")
+  private String[] whitelistGetPaths;
+
+  @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}")
+  private String[] whitelistPostPaths;
+
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtTokenManager jwtTokenManager;
@@ -62,30 +73,11 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             request ->
                 request
-                    .requestMatchers(
-                        "/api/health",
-                        "/api/v2/auth/*",
-                        "/swagger-ui/*",
-                        "/swagger-ui.html",
-                        "/webjars/**",
-                        "/v2/**",
-                        "/v3/**",
-                        "/swagger-resources/**")
+                    .requestMatchers(whitelistAllPaths)
                     .permitAll()
-                    .requestMatchers(
-                        HttpMethod.POST,
-                        "/api/v2/application",
-                        "/api/v2/interview-slots/*/reservations")
+                    .requestMatchers(HttpMethod.POST, whitelistPostPaths)
                     .permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/api/v2/application/form",
-                        "/api/v2/clubs",
-                        "/api/v2/clubs/*",
-                        "/api/v2/clubs/*/announcements/*/interview-slots",
-                        "/api/v2/clubs/*/announcements",
-                        "/api/v2/announcements/*",
-                        "/api/v2/announcements/*/application-form")
+                    .requestMatchers(HttpMethod.GET, whitelistGetPaths)
                     .permitAll()
                     .anyRequest()
                     .authenticated());
