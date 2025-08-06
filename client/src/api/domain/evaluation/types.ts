@@ -11,7 +11,7 @@ export interface EvaluationData {
     evaluatorName: string;
     score: number;
     comment: string;
-    evaluationType: 'APPLICANT' | 'INTERVIEW';
+    evaluationType: 'APPLICATION' | 'INTERVIEW';
     isMyEvaluation: boolean;
 }
 
