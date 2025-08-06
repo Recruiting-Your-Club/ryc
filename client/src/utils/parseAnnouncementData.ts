@@ -56,6 +56,7 @@ export const parseAnnouncementData = (announcementDetaildata: Announcement) => {
                 detailDescription: announcementDetaildata?.detailDescription,
                 images: announcementDetaildata?.images,
                 announcementStatus: '모집중',
+                announcementStatusVariant: 'progress',
             };
         case 'CLOSED':
             return {
@@ -66,6 +67,7 @@ export const parseAnnouncementData = (announcementDetaildata: Announcement) => {
                 detailDescription: announcementDetaildata?.detailDescription,
                 images: announcementDetaildata?.images,
                 announcementStatus: '마감',
+                announcementStatusVariant: 'end',
             };
         case 'UPCOMING':
             return {
@@ -76,6 +78,7 @@ export const parseAnnouncementData = (announcementDetaildata: Announcement) => {
                 detailDescription: announcementDetaildata?.detailDescription,
                 images: announcementDetaildata?.images,
                 announcementStatus: '모집전',
+                announcementStatusVariant: 'primary',
             };
         default:
             return {
@@ -85,6 +88,7 @@ export const parseAnnouncementData = (announcementDetaildata: Announcement) => {
                 detailDescription: announcementDetaildata?.detailDescription,
                 images: announcementDetaildata?.images,
                 announcementStatus: '미정',
+                announcementStatusVariant: 'primary',
             };
     }
 };
