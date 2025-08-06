@@ -1,8 +1,9 @@
 package com.ryc.api.v2.interview.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,7 @@ public class InterviewService {
             .toList();
 
     List<InterviewSlot> savedInterviewSlots =
-        interviewRepository.saveAllInterviewSLot(interviewSlots);
+        interviewRepository.saveAllInterviewSlot(interviewSlots);
     return savedInterviewSlots.stream().map(InterviewSlot::getId).toList();
   }
 
@@ -106,65 +107,34 @@ public class InterviewService {
   }
 
   /*
-   * 한 날짜에 해당하는 면접 슬롯과 면접 예약 목록을 조회
+   * 관리자가 특정 면접 슬롯에 대한 예약 정보를 조회합니다.
+   * 이 메서드는 면접 슬롯 ID를 기준으로 해당 면접 슬롯의 예약 정보를 조회하고,
+   * 면접 예약이 없는 지원자 목록을 생성하여 응답합니다.
    */
   @Transactional(readOnly = true)
-  public List<InterviewInfoGetResponse> getInterviewInfo(
-      /*
+  public InterviewReservationAdminViewResponse getInterviewReservationsForAdmin(
+      String announcementId, String interviewSlotId) {
+    InterviewSlot targetInterviewSlot =
+        interviewRepository.findInterviewSlotByIdForUpdate(interviewSlotId);
+    List<InterviewReservation> reservations = targetInterviewSlot.getInterviewReservations();
 
+    // 면접 예약 정보를 담을 응답 리스트 생성
+    List<InterviewReservationGetResponse> reservationResponses =
+        reservations.stream().map(this::createReservationResponse).toList();
 
-      면접 미지정자에 대한 응답 값도 추가하기
+    List<InterviewSlot> allInterviewSlots =
+        interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
+    List<Applicant> allApplicants = applicantRepository.findAllByAnnouncementId(announcementId);
 
+    // 면접 예약이 없는 지원자 목록을 생성
+    List<UnReservedApplicantGetResponse> unReservedApplicantGetResponses =
+        createUnReservedApplicantResponse(allInterviewSlots, allApplicants);
 
-
-       */
-      String announcementId, LocalDate interviewDate) {
-    List<InterviewSlot> interviewSlots =
-        interviewRepository.findInterviewSlotsByAnnouncementIdAndDate(
-            announcementId, interviewDate);
-    List<InterviewInfoGetResponse> responses = new ArrayList<>(); // 최종 반환할 응답 리스트
-
-    for (InterviewSlot slot : interviewSlots) {
-      List<InterviewReservation> reservations = slot.getInterviewReservations();
-
-      // 면접 슬롯 정보를 담을 응답 객체
-      InterviewSlotGetResponse slotResponse =
-          InterviewSlotGetResponse.builder()
-              .id(slot.getId())
-              .period(PeriodResponse.from(slot.getPeriod()))
-              .maxNumberOfPeople(slot.getMaxNumberOfPeople())
-              .currentNumberOfPeople(reservations.size())
-              .build();
-
-      // 면접 예약 정보를 담을 응답 리스트
-      List<InterviewReservationGetResponse> reservationResponses = new ArrayList<>();
-
-      for (InterviewReservation reservation : reservations) {
-        Applicant applicant = reservation.getApplicant();
-
-        // 면접 예약 정보를 담을 응답 객체
-        InterviewReservationGetResponse reservationResponse =
-            InterviewReservationGetResponse.builder()
-                .interviewReservationId(reservation.getId())
-                .applicantId(applicant.getId())
-                .applicantEmail(applicant.getEmail())
-                .applicantName(applicant.getName())
-                .build();
-
-        reservationResponses.add(reservationResponse);
-      }
-
-      // 최종 응답 객체 생성
-      InterviewInfoGetResponse response =
-          InterviewInfoGetResponse.builder()
-              .interviewSlotGetResponse(slotResponse)
-              .interviewReservations(reservationResponses)
-              .build();
-
-      responses.add(response);
-    }
-
-    return responses;
+    return InterviewReservationAdminViewResponse.builder()
+        .interviewSlotId(interviewSlotId)
+        .interviewReservations(reservationResponses)
+        .unReservedApplicants(unReservedApplicantGetResponses)
+        .build();
   }
 
   @Transactional
@@ -205,5 +175,47 @@ public class InterviewService {
         .interviewReservationId(savedReservation.getId())
         .interviewSlot(slotGetResponse)
         .build();
+  }
+
+  private InterviewReservationGetResponse createReservationResponse(
+      InterviewReservation reservation) {
+    Applicant applicant = reservation.getApplicant();
+
+    return InterviewReservationGetResponse.builder()
+        .interviewReservationId(reservation.getId())
+        .applicantId(applicant.getId())
+        .applicantEmail(applicant.getEmail())
+        .applicantName(applicant.getName())
+        .build();
+  }
+
+  /*
+   * 모든 면접 슬롯과 모든 지원자를 기반으로 면접 예약이 없는 지원자 목록을 생성합니다.
+   * 이 메서드는 모든 면접 슬롯과 지원자를 조회하여
+   * 면접 예약이 없는 지원자들을 필터링하여 응답을 생성합니다
+   */
+  private List<UnReservedApplicantGetResponse> createUnReservedApplicantResponse(
+      List<InterviewSlot> allInterviewSlots, List<Applicant> allApplicants) {
+    List<UnReservedApplicantGetResponse> responses = new ArrayList<>();
+    Set<String> reservedApplicantIds = new HashSet<>();
+
+    for (InterviewSlot interviewSlot : allInterviewSlots) {
+      for (InterviewReservation reservation : interviewSlot.getInterviewReservations()) {
+        reservedApplicantIds.add(reservation.getApplicant().getId());
+      }
+    }
+
+    for (Applicant applicant : allApplicants) {
+      if (!reservedApplicantIds.contains(applicant.getId())) {
+        responses.add(
+            UnReservedApplicantGetResponse.builder()
+                .applicantId(applicant.getId())
+                .applicantName(applicant.getName())
+                .applicantEmail(applicant.getEmail())
+                .build());
+      }
+    }
+
+    return responses;
   }
 }

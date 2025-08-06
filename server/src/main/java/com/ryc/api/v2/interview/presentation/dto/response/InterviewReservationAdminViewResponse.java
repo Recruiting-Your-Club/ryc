@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-public record InterviewInfoGetResponse(
-    @Schema(description = "면접 슬롯 정보") InterviewSlotGetResponse interviewSlotGetResponse,
+public record InterviewReservationAdminViewResponse(
+    @Schema(description = "면접 슬롯 ID") String interviewSlotId,
     @Schema(description = "면접 예약 정보 목록")
         List<InterviewReservationGetResponse> interviewReservations,
     @Schema(description = "면접 미지정자 지원자 목록")
