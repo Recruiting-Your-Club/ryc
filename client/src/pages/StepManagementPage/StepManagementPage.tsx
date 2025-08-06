@@ -53,8 +53,10 @@ function StepManagementPage() {
     // calculated values
     const isThreeStepProcess = totalSteps.process.length === 3;
 
-    const documentStepApplicants = stepApplicantList.filter((applicant) =>
-        ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(applicant.status),
+    const documentStepApplicants = stepApplicantList.filter(
+        (applicant) =>
+            ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(applicant.status) ||
+            (!isThreeStepProcess && ['FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status)),
     );
     const interviewStepApplicants = stepApplicantList.filter((applicant) =>
         ['INTERVIEW_PASS', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status),
@@ -136,7 +138,6 @@ function StepManagementPage() {
                     applicant.status === 'DOCUMENT_FAIL' ||
                     (!isThreeStepProcess &&
                         (applicant.status === 'FINAL_PASS' || applicant.status === 'FINAL_FAIL'));
-
                 const summaryList = isDocumentStep
                     ? documentEvaluationSummaryList
                     : interviewEvaluationSummaryList;
