@@ -16,18 +16,29 @@ import {
 import { useDialog } from '@hooks/useDialog';
 import { useRouter } from '@hooks/useRouter';
 import { useLocation } from 'react-router-dom';
+import { getDeadlineInfo } from '@utils/compareTime';
+import { useClubStore } from '@stores/clubStore';
 
 function RecruitmentPage() {
+    // prop destruction
+    // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
     const { goTo } = useRouter();
     const location = useLocation();
-    const [imageUrl, setImageUrl] = useState<string>();
-
+    const { applicationPeriod } = useClubStore();
     const { clubBoxData, parsedAnnouncementData } = location.state;
-
+    // initial values
+    const { isExpired } = getDeadlineInfo(applicationPeriod?.endDate || '');
+    // state, ref, querystring hooks
+    const [imageUrl, setImageUrl] = useState<string>();
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
     const handleImageClick = (url: string) => {
         setImageUrl(url);
     };
+    // effects
 
     return (
         <div css={recruitmentContainer}>
@@ -42,7 +53,7 @@ function RecruitmentPage() {
                                 {parsedAnnouncementData.clubName}
                             </Text>
                             <Tag
-                                variant="progress"
+                                variant={parsedAnnouncementData.announcementStatusVariant}
                                 text={parsedAnnouncementData.announcementStatus}
                             />
                         </div>
@@ -52,6 +63,7 @@ function RecruitmentPage() {
                             onClick={() =>
                                 goTo(`/announcements/${parsedAnnouncementData.id}/application`)
                             }
+                            disabled={isExpired}
                             sx={applyButtonAtDesktop}
                         >
                             지원하기
