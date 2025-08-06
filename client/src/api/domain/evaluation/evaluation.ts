@@ -1,5 +1,5 @@
 import { httpRequest } from '@api/common/httpRequest';
-import type { EvaluationSummary } from './types';
+import type { Evaluation, EvaluationSummary } from './types';
 
 async function postApplicationEvaluationSummary(params: {
     clubId: string;
@@ -27,4 +27,35 @@ async function postInterviewEvaluationSummary(params: {
     });
 }
 
-export { postApplicationEvaluationSummary, postInterviewEvaluationSummary };
+async function postDetailApplicationEvaluation(params: {
+    clubId: string;
+    applicantIdList: string[];
+}): Promise<Evaluation> {
+    return await httpRequest.post({
+        url: `evaluation/applications/search`,
+        body: params,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
+        },
+    });
+}
+
+async function postDetailInterviewEvaluation(params: {
+    clubId: string;
+    applicantIdList: string[];
+}): Promise<Evaluation> {
+    return await httpRequest.post({
+        url: `evaluation/interviews/search`,
+        body: params,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
+        },
+    });
+}
+
+export {
+    postApplicationEvaluationSummary,
+    postInterviewEvaluationSummary,
+    postDetailApplicationEvaluation,
+    postDetailInterviewEvaluation,
+};
