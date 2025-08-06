@@ -5,16 +5,31 @@ import announcementDetail from '../data/announcement/announcementDetail.json';
 import announcementApplicationForm from '../data/announcement/announcementApplicationForm.json';
 
 const announcementHandler = [
-    http.get(`${BASE_URL}clubs/:clubId/announcements`, () => {
-        return HttpResponse.json(announcementAllList, { status: 200 });
+    http.get(`${BASE_URL}clubs/:clubId/announcements`, ({ params }) => {
+        const clubId = params.clubId;
+        const announcements = announcementAllList.filter(
+            (announcement) => announcement.clubId === clubId,
+        );
+
+        return HttpResponse.json(announcements, { status: 200 });
     }),
 
-    http.get(`${BASE_URL}announcements/:announcementId`, () => {
-        return HttpResponse.json(announcementDetail, { status: 200 });
+    http.get(`${BASE_URL}announcements/:announcementId`, ({ params }) => {
+        const announcementId = params.announcementId;
+        const announcement = announcementDetail.find(
+            (announcement) => announcement.id === announcementId,
+        );
+
+        return HttpResponse.json(announcement, { status: 200 });
     }),
 
-    http.get(`${BASE_URL}announcements/:announcementId/application-form`, () => {
-        return HttpResponse.json(announcementApplicationForm, { status: 200 });
+    http.get(`${BASE_URL}announcements/:announcementId/application-form`, ({ params }) => {
+        const announcementId = params.announcementId;
+        const applicationForm = announcementApplicationForm.find(
+            (applicationForm) => applicationForm.id === announcementId,
+        );
+
+        return HttpResponse.json(applicationForm, { status: 200 });
     }),
 ];
 
