@@ -14,14 +14,18 @@ import {
 import { useRouter } from '@hooks/useRouter';
 import { useNavigate } from 'react-router-dom';
 import { parseAnnouncementClubBoxData, parseAnnouncementData } from '@utils/parseAnnouncementData';
+import { getDeadlineInfo } from '@utils/compareTime';
 
 function RecruitDialog(props: RecruitmentDialogProps) {
     // prop destruction
     const { open, handleClose, announcementDetaildata } = props;
+    // lib hooks
     const { goTo } = useRouter();
     const navigate = useNavigate();
-    // calculated values
+    // initial values
+    const applicationEndDate = announcementDetaildata?.applicationPeriod?.endDate;
     const images = announcementDetaildata?.images || [];
+    const { isExpired } = getDeadlineInfo(applicationEndDate || '');
     const clubBoxData = announcementDetaildata
         ? parseAnnouncementClubBoxData(announcementDetaildata)
         : [];
@@ -29,6 +33,11 @@ function RecruitDialog(props: RecruitmentDialogProps) {
     const parsedAnnouncementData = announcementDetaildata
         ? parseAnnouncementData(announcementDetaildata)
         : [];
+
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     // handlers
     const handleFullPageView = () => {
         handleClose?.();
@@ -36,6 +45,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
             state: { clubBoxData, parsedAnnouncementData },
         });
     };
+    //effects
 
     return (
         <Dialog
@@ -82,6 +92,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                     }}
                     sx={applyButton}
                     zIndex={10}
+                    disabled={isExpired}
                 >
                     지원하기
                 </Button>
