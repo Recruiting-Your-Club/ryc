@@ -41,7 +41,7 @@ function Tooltip({
         >
             {children}
             {!disabled && visible && (
-                <div css={[tooltipStyle(direction), tooltipSx]}>{content}</div>
+                <span css={[tooltipStyle(direction, content.length), tooltipSx]}>{content}</span>
             )}
         </div>
     );
