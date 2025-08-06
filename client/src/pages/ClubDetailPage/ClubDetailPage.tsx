@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { ClubNavigation, Text } from '@components';
 import {
@@ -13,14 +13,18 @@ import { RecruitmentPage } from './RecruitmentPage';
 import { ClubIntroPage } from './ClubIntroPage';
 import { useLocation } from 'react-router-dom';
 import { getCategory } from '@utils/changeCategory';
+import { useClubStore } from '@stores/clubStore';
 
 function ClubDetailPage() {
     // prop destruction
     const location = useLocation();
-    const { title, category, clubLogo } = location.state;
+    const { title, category, clubLogo, description, status } = location.state;
     const { id: clubId } = useParams<{ id: string }>();
     // lib hooks
+    const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
+        useClubStore();
     // initial values
+    console.log(title, category, clubLogo, description, status);
     const navigationItem = useMemo(
         () => [
             {
@@ -43,6 +47,13 @@ function ClubDetailPage() {
     // calculated values
     // handlers
     // effects
+    useEffect(() => {
+        setClubName(title);
+        setClubLogo(clubLogo);
+        setClubCategory(category);
+        setClubDescription(description);
+        setClubStatus(status);
+    }, [title, clubLogo, category, description, status]);
 
     return (
         <div css={clubDetailPageContainer}>
