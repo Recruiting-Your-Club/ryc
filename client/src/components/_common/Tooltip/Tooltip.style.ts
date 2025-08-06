@@ -62,7 +62,7 @@ export const positionStyles: Record<Direction, CSSObject> = {
     `,
 };
 
-export const tooltipStyle = (direction: Direction) => css`
+export const tooltipStyle = (direction: Direction, contentLength: number) => css`
     position: absolute;
     background-color: ${theme.colors.black};
     color: ${theme.colors.white};
@@ -70,6 +70,12 @@ export const tooltipStyle = (direction: Direction) => css`
     border-radius: 5px;
     min-width: 10rem;
     white-space: nowrap;
+    ${contentLength > 50 &&
+    css`
+        width: 40rem;
+        max-width: 40rem;
+        white-space: normal;
+    `}
     z-index: 999;
     animation: ${fadeInScale} 0.2s ease-in-out;
     ${theme.typography.subCaptionRegular};
