@@ -1,5 +1,5 @@
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
-import { StepApplicant } from '@api/domain/step/types';
+import type { StepApplicant } from '@api/domain/step/types';
 import type { evaluation } from '@constants/applicantDialog';
 
 export type EvaluationType = (typeof evaluation)[number];
