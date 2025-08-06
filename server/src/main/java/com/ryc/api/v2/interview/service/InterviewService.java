@@ -1,6 +1,5 @@
 package com.ryc.api.v2.interview.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +51,26 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
+  public List<InterviewSlotGetResponse> getInterviewSlotsForAdmin(String announcementId) {
+    List<InterviewSlot> interviewSlots =
+        interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
+
+    return interviewSlots.stream()
+        .map(
+            interviewSlot -> {
+              PeriodResponse periodResponse = PeriodResponse.from(interviewSlot.getPeriod());
+
+              return InterviewSlotGetResponse.builder()
+                  .id(interviewSlot.getId())
+                  .period(periodResponse)
+                  .maxNumberOfPeople(interviewSlot.getMaxNumberOfPeople())
+                  .currentNumberOfPeople(interviewSlot.getInterviewReservations().size())
+                  .build();
+            })
+        .toList();
+  }
+
+  @Transactional(readOnly = true)
   public InterviewSlotsApplicantViewResponse getInterviewSlotsForApplicant(
       String clubId, String announcementId, String applicantId) {
 
@@ -86,26 +105,6 @@ public class InterviewService {
         .build();
   }
 
-  @Transactional
-  public InterviewReservationCreateResponse reservationInterview(
-      String slotId, InterviewReservationRequest body) {
-
-    // 요청된 면접 일정을 가져옵니다.
-    InterviewSlot interviewSlot = interviewRepository.findInterviewSlotByIdForUpdate(slotId);
-
-    // 지원자의 예약 정보를 생성합니다.
-    Applicant applicant = applicantRepository.findById(body.applicantId());
-    InterviewReservation reservation = InterviewReservation.initialize(applicant);
-
-    // 새로운 예약 정보를 저장합니다.
-    InterviewSlot updatedInterviewSlot = interviewSlot.addInterviewReservations(reservation, false);
-    interviewRepository.saveInterviewSlot(updatedInterviewSlot);
-
-    InterviewReservation savedReservation =
-        interviewRepository.saveInterviewReservation(reservation, interviewSlot);
-    return new InterviewReservationCreateResponse(savedReservation.getId());
-  }
-
   /*
    * 관리자가 특정 면접 슬롯에 대한 예약 정보를 조회합니다.
    * 이 메서드는 면접 슬롯 ID를 기준으로 해당 면접 슬롯의 예약 정보를 조회하고,
@@ -135,6 +134,26 @@ public class InterviewService {
         .interviewReservations(reservationResponses)
         .unReservedApplicants(unReservedApplicantGetResponses)
         .build();
+  }
+
+  @Transactional
+  public InterviewReservationCreateResponse reservationInterview(
+      String slotId, InterviewReservationRequest body) {
+
+    // 요청된 면접 일정을 가져옵니다.
+    InterviewSlot interviewSlot = interviewRepository.findInterviewSlotByIdForUpdate(slotId);
+
+    // 지원자의 예약 정보를 생성합니다.
+    Applicant applicant = applicantRepository.findById(body.applicantId());
+    InterviewReservation reservation = InterviewReservation.initialize(applicant);
+
+    // 새로운 예약 정보를 저장합니다.
+    InterviewSlot updatedInterviewSlot = interviewSlot.addInterviewReservations(reservation, false);
+    interviewRepository.saveInterviewSlot(updatedInterviewSlot);
+
+    InterviewReservation savedReservation =
+        interviewRepository.saveInterviewReservation(reservation, interviewSlot);
+    return new InterviewReservationCreateResponse(savedReservation.getId());
   }
 
   @Transactional
@@ -196,7 +215,7 @@ public class InterviewService {
    */
   private List<UnReservedApplicantGetResponse> createUnReservedApplicantResponse(
       List<InterviewSlot> allInterviewSlots, List<Applicant> allApplicants) {
-    List<UnReservedApplicantGetResponse> responses = new ArrayList<>();
+
     Set<String> reservedApplicantIds = new HashSet<>();
 
     for (InterviewSlot interviewSlot : allInterviewSlots) {
@@ -205,17 +224,15 @@ public class InterviewService {
       }
     }
 
-    for (Applicant applicant : allApplicants) {
-      if (!reservedApplicantIds.contains(applicant.getId())) {
-        responses.add(
-            UnReservedApplicantGetResponse.builder()
-                .applicantId(applicant.getId())
-                .applicantName(applicant.getName())
-                .applicantEmail(applicant.getEmail())
-                .build());
-      }
-    }
-
-    return responses;
+    return allApplicants.stream()
+        .filter(applicant -> !reservedApplicantIds.contains(applicant.getId()))
+        .map(
+            applicant ->
+                UnReservedApplicantGetResponse.builder()
+                    .applicantId(applicant.getId())
+                    .applicantName(applicant.getName())
+                    .applicantEmail(applicant.getEmail())
+                    .build())
+        .toList();
   }
 }

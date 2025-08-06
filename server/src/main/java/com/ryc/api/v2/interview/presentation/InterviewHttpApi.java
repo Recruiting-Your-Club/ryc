@@ -1,6 +1,7 @@
 package com.ryc.api.v2.interview.presentation;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationAdminViewResponse;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationCreateResponse;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewReservationUpdateResponse;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewSlotsApplicantViewResponse;
+import com.ryc.api.v2.interview.presentation.dto.response.*;
 import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 
@@ -28,14 +26,35 @@ public class InterviewHttpApi {
 
   private final InterviewService interviewService;
 
+  @GetMapping("announcements/{announcement-id}/interview-slots")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 면접 시간대를 조회합니다.")
+  public ResponseEntity<List<InterviewSlotGetResponse>> getInterviewSlotsForAdmin(
+      @PathVariable("announcement-id") String announcementId) {
+    List<InterviewSlotGetResponse> responses =
+        interviewService.getInterviewSlotsForAdmin(announcementId);
+    return ResponseEntity.ok(responses);
+  }
+
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots/applicants")
-  @Operation(summary = "면접 시간대 조회", description = "지원자가 특정 동아리의 공고에 대한 면접 시간대를 조회합니다.")
+  @Operation(summary = "면접 시간대 조회", description = "지원자가 특정 공고에 대한 면접 시간대를 조회합니다.")
   public ResponseEntity<InterviewSlotsApplicantViewResponse> getInterviewSlotsForApplicant(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @RequestParam("applicant-id") String applicantId) {
     InterviewSlotsApplicantViewResponse response =
         interviewService.getInterviewSlotsForApplicant(clubId, announcementId, applicantId);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("announcements/{announcement-id}/interview-slots/{interview-slot-id}/reservations")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 Interview Slot에 대한 면접자들의 정보를 조회합니다.")
+  public ResponseEntity<InterviewReservationAdminViewResponse> getInterviewInfoForAdmin(
+      @PathVariable("announcement-id") String announcementId,
+      @PathVariable("interview-slot-id") String interviewSlotId) {
+    InterviewReservationAdminViewResponse response =
+        interviewService.getInterviewReservationsForAdmin(announcementId, interviewSlotId);
     return ResponseEntity.ok(response);
   }
 
@@ -53,17 +72,6 @@ public class InterviewHttpApi {
             .buildAndExpand(response.id())
             .toUri();
     return ResponseEntity.created(location).body(response);
-  }
-
-  @GetMapping("announcements/{announcement-id}/interview-slots/{interview-slot-id}/reservations")
-  @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 Interview Slot에 대한 면접자들의 정보를 조회합니다.")
-  public ResponseEntity<InterviewReservationAdminViewResponse> getInterviewInfoForAdmin(
-      @PathVariable("announcement-id") String announcementId,
-      @PathVariable("interview-slot-id") String interviewSlotId) {
-    InterviewReservationAdminViewResponse response =
-        interviewService.getInterviewReservationsForAdmin(announcementId, interviewSlotId);
-    return ResponseEntity.ok(response);
   }
 
   @PatchMapping("interview-reservations/{reservation-id}")
