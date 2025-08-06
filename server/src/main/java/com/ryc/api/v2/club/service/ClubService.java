@@ -36,7 +36,9 @@ public class ClubService {
   public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
     Club previousClub = clubRepository.findById(clubId);
 
-    if (body.name() != null && clubRepository.existsByName(body.name())) {
+    if (body.name() != null
+        && !previousClub.getName().equals(body.name())
+        && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 

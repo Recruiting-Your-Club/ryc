@@ -60,9 +60,9 @@ public class SwaggerConfiguration {
    * 각 경로를 슬래시("/")로 시작하도록 보장합니다.
    */
   public SwaggerConfiguration(
-      @Value("${SECURITY_WHITELIST_ALL_PATHS}") String[] whitelistAllPaths,
-      @Value("${SECURITY_WHITELIST_GET_PATHS}") String[] whitelistGetPaths,
-      @Value("${SECURITY_WHITELIST_POST_PATHS}") String[] whitelistPostPaths) {
+      @Value("${SECURITY_WHITELIST_ALL_METHOD_PATHS}") String[] whitelistAllPaths,
+      @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}") String[] whitelistGetPaths,
+      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPaths) {
     this.whitelistAllPaths =
         Arrays.stream(whitelistAllPaths)
             .map(path -> path.startsWith("/") ? path : "/" + path)

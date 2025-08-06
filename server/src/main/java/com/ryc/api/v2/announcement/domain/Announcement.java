@@ -28,6 +28,7 @@ public class Announcement {
   private final String detailDescription;
   private final String summaryDescription;
   private final String target;
+  private final String field;
   private final List<Tag> tags;
   private final List<AnnouncementImage> images;
   private final AnnouncementStatus announcementStatus;
@@ -77,6 +78,7 @@ public class Announcement {
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
             .target(request.target())
+            .field(request.field())
             .tags(tags)
             .hasInterview(request.hasInterview())
             .images(images)
@@ -121,6 +123,7 @@ public class Announcement {
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
             .target(request.target())
+            .field(request.field())
             .hasInterview(request.hasInterview())
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
@@ -149,6 +152,7 @@ public class Announcement {
         .detailDescription(this.detailDescription)
         .summaryDescription(this.summaryDescription)
         .target(this.target)
+        .target(this.field)
         .hasInterview(this.hasInterview)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
