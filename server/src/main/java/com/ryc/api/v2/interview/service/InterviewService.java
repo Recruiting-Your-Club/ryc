@@ -1,5 +1,6 @@
 package com.ryc.api.v2.interview.service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,22 +52,13 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
-  public List<InterviewSlotGetResponse> getInterviewSlotsForAdmin(String announcementId) {
+  public List<InterviewSlotGetResponse> getInterviewSlots(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
 
     return interviewSlots.stream()
-        .map(
-            interviewSlot -> {
-              PeriodResponse periodResponse = PeriodResponse.from(interviewSlot.getPeriod());
-
-              return InterviewSlotGetResponse.builder()
-                  .id(interviewSlot.getId())
-                  .period(periodResponse)
-                  .maxNumberOfPeople(interviewSlot.getMaxNumberOfPeople())
-                  .currentNumberOfPeople(interviewSlot.getInterviewReservations().size())
-                  .build();
-            })
+        .map(this::createInterviewSlotResponse)
+        .sorted(Comparator.comparing(slot -> slot.period().startDate()))
         .toList();
   }
 
@@ -75,25 +67,8 @@ public class InterviewService {
       String clubId, String announcementId, String applicantId) {
 
     Club club = clubRepository.findById(clubId);
-    List<InterviewSlot> interviewSlots =
-        interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
     String applicantEmail = applicantRepository.findEmailById(applicantId);
-
-    List<InterviewSlotGetResponse> slotResponses =
-        interviewSlots.stream()
-            .map(
-                slot -> {
-                  PeriodResponse periodResponse = PeriodResponse.from(slot.getPeriod());
-                  int size = slot.getInterviewReservations().size();
-
-                  return InterviewSlotGetResponse.builder()
-                      .id(slot.getId())
-                      .period(periodResponse)
-                      .maxNumberOfPeople(slot.getMaxNumberOfPeople())
-                      .currentNumberOfPeople(size)
-                      .build();
-                })
-            .toList();
+    List<InterviewSlotGetResponse> slotResponses = getInterviewSlots(announcementId);
 
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
@@ -181,18 +156,22 @@ public class InterviewService {
     InterviewReservation savedReservation =
         interviewRepository.saveInterviewReservation(reservation, updatedInterviewSlot);
 
-    PeriodResponse periodResponse = PeriodResponse.from(newInterviewSlot.getPeriod());
-    InterviewSlotGetResponse slotGetResponse =
-        InterviewSlotGetResponse.builder()
-            .id(newInterviewSlot.getId())
-            .period(periodResponse)
-            .maxNumberOfPeople(newInterviewSlot.getMaxNumberOfPeople())
-            .currentNumberOfPeople(newInterviewSlot.getInterviewReservations().size())
-            .build();
-
+    InterviewSlotGetResponse slotGetResponse = createInterviewSlotResponse(newInterviewSlot);
     return InterviewReservationUpdateResponse.builder()
         .interviewReservationId(savedReservation.getId())
         .interviewSlot(slotGetResponse)
+        .build();
+  }
+
+  private InterviewSlotGetResponse createInterviewSlotResponse(InterviewSlot slot) {
+    PeriodResponse periodResponse = PeriodResponse.from(slot.getPeriod());
+    int size = slot.getInterviewReservations().size();
+
+    return InterviewSlotGetResponse.builder()
+        .id(slot.getId())
+        .period(periodResponse)
+        .maxNumberOfPeople(slot.getMaxNumberOfPeople())
+        .currentNumberOfPeople(size)
         .build();
   }
 

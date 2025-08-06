@@ -32,7 +32,7 @@ public class InterviewHttpApi {
   public ResponseEntity<List<InterviewSlotGetResponse>> getInterviewSlotsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
     List<InterviewSlotGetResponse> responses =
-        interviewService.getInterviewSlotsForAdmin(announcementId);
+        interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
 
