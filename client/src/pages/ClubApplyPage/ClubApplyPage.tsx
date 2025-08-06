@@ -269,7 +269,7 @@ function ClubApplyPage() {
 
                 <div css={mobileQuestionStatus}>
                     <QuestionDropdown
-                        personalQuestions={clubPersonalQuestions}
+                        personalQuestions={clubPersonalInfoQuestions}
                         detailQuestions={detailQuestions}
                         completedQuestionsCount={completedQuestions}
                         answers={answers}
@@ -293,7 +293,7 @@ function ClubApplyPage() {
                     category={clubCategory}
                     description={clubDescription}
                     deadline={applicationPeriod.endDate}
-                    personalQuestions={clubPersonalQuestions}
+                    personalQuestions={clubPersonalInfoQuestions}
                     detailQuestions={detailQuestions}
                     completedQuestionsCount={completedQuestions}
                     requiredQuestionsCount={requiredQuestionsCount}
