@@ -8,7 +8,7 @@
         "announcementStatus": "RECRUITING",
         "announcementType": "LIMITED_TIME",
         "applicationStartDate": "2025-06-01T09:00",
-        "applicationEndDate": "2025-06-30T18:00",
+        "applicationEndDate": "2025-08-30T18:00",
         "tags": ["연극", "공연", "워크숍"]
     },
     {
@@ -20,7 +20,7 @@
         "announcementStatus": "RECRUITING",
         "announcementType": "LIMITED_TIME",
         "applicationStartDate": "2025-06-01T09:00",
-        "applicationEndDate": "2025-06-30T18:00",
+        "applicationEndDate": "2025-08-12T18:00",
         "tags": ["문화", "체험활동", "국제교류"]
     },
     {
@@ -32,7 +32,7 @@
         "announcementStatus": "RECRUITING",
         "announcementType": "LIMITED_TIME",
         "applicationStartDate": "2025-06-01T09:00",
-        "applicationEndDate": "2025-06-30T18:00",
+        "applicationEndDate": "2025-08-07T18:00",
         "tags": ["리그참가", "축구", "체육"]
     },
     {
@@ -44,7 +44,7 @@
         "announcementStatus": "RECRUITING",
         "announcementType": "LIMITED_TIME",
         "applicationStartDate": "2025-06-01T09:00",
-        "applicationEndDate": "2025-06-30T18:00",
+        "applicationEndDate": "2025-09-30T18:00",
         "tags": ["알고리즘", "코딩스터디", "프로그래밍"]
     },
     {
