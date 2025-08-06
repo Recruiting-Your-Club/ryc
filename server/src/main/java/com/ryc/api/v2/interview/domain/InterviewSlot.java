@@ -5,6 +5,8 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
@@ -89,8 +91,7 @@ public class InterviewSlot {
     return this.interviewReservations.stream()
         .filter(reservation -> reservation.getId().equals(reservationId))
         .findFirst()
-        .orElseThrow(
-            () -> new InterviewException(InterviewErrorCode.INTERVIEW_RESERVATION_NOT_FOUND));
+        .orElseThrow(() -> new EntityNotFoundException("Interview slot not found"));
   }
 
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
