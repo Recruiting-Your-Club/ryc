@@ -2,7 +2,7 @@ import ChevronLeft from '@assets/images/chevronLeft.svg';
 import ChevronRight from '@assets/images/chevronRight.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { Button, Dialog, Divider, DocumentBox, PersonalScoreCard, Rating, Text } from '@components';
-import { evaluation } from '@constants/ApplicantDialog';
+import { evaluation } from '@constants/applicantDialog';
 import React, { useState } from 'react';
 import {
     chevronSvgCss,
@@ -27,20 +27,35 @@ import type { ApplicantDialogProps } from './types';
 function ApplicantDialog({
     open,
     handleClose,
-    name,
-    email,
+    applicant,
+    evaluationLabels,
     documentList,
     evaluations,
+    isThreeStepProcess,
 }: ApplicantDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
+    const initialIndex =
+        applicant.status === 'DOCUMENT_PASS' || applicant.status === 'DOCUMENT_FAIL'
+            ? 0
+            : applicant.status === 'INTERVIEW_PASS' || applicant.status === 'INTERVIEW_FAIL'
+              ? 1
+              : applicant.status === 'FINAL_PASS' || applicant.status === 'FINAL_FAIL'
+                ? isThreeStepProcess
+                    ? 1
+                    : 0
+                : 0;
+
     // state, ref, querystring hooks
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
     // form hooks
     // query hooks
     // calculated values
+    const currentEvaluation = evaluations[currentIndex];
+    const currentLabel = evaluationLabels[currentIndex];
+
     // handlers
     const goPrev = () => {
         if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
@@ -50,7 +65,6 @@ function ApplicantDialog({
         if (currentIndex < evaluation.length - 1) setCurrentIndex((prev) => prev + 1);
     };
 
-    const currentEvaluation = evaluations[currentIndex];
     // effects
 
     return (
@@ -67,7 +81,7 @@ function ApplicantDialog({
             <Dialog.Content sx={contentCss}>
                 <div css={contentHeader}>
                     <Text as="span" type="h3Bold" textAlign="start">
-                        {name}
+                        {applicant.name}
                     </Text>
                     <Text
                         as="span"
@@ -76,7 +90,7 @@ function ApplicantDialog({
                         color="caption"
                         sx={{ paddingTop: '0.1rem' }}
                     >
-                        {email}
+                        {applicant.email}
                     </Text>
                 </div>
                 <Divider width="full" />
@@ -126,7 +140,7 @@ function ApplicantDialog({
                                         onClick={goPrev}
                                     />
                                     <Text as="span" type="captionBold">
-                                        {currentEvaluation.type}
+                                        {currentLabel}
                                     </Text>
                                     <ChevronRight
                                         css={chevronSvgCss(currentIndex < evaluations.length - 1)}
@@ -144,7 +158,7 @@ function ApplicantDialog({
                                         평균 평점
                                     </Text>
                                     <Rating
-                                        key={currentEvaluation.type}
+                                        key={currentEvaluation.averageScore}
                                         value={currentEvaluation.averageScore}
                                         totalStars={5}
                                         size="lg"
@@ -161,15 +175,17 @@ function ApplicantDialog({
                                 </div>
                                 <Divider />
                                 <div
-                                    css={perStarScoreGroup(currentEvaluation.evaluators.length > 0)}
+                                    css={perStarScoreGroup(
+                                        currentEvaluation.completedEvaluatorCount !== 0,
+                                    )}
                                 >
-                                    {currentEvaluation.evaluators.length > 0 ? (
-                                        currentEvaluation.evaluators.map((evaluator) => (
+                                    {currentEvaluation.completedEvaluatorCount !== 0 ? (
+                                        currentEvaluation.evaluationDatas.map((evaluation) => (
                                             <PersonalScoreCard
-                                                key={evaluator.id}
-                                                score={evaluator.score}
-                                                name={evaluator.name}
-                                                comment={evaluator.comment}
+                                                key={evaluation.evaluationId}
+                                                score={evaluation.score}
+                                                name={evaluation.evaluatorName}
+                                                comment={evaluation.comment}
                                             />
                                         ))
                                     ) : (

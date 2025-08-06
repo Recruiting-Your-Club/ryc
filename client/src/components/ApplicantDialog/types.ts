@@ -1,4 +1,6 @@
-import type { evaluation } from '@constants/ApplicantDialog';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import { StepApplicant } from '@api/domain/step/types';
+import type { evaluation } from '@constants/applicantDialog';
 
 export type EvaluationType = (typeof evaluation)[number];
 
@@ -22,8 +24,9 @@ export interface Evaluation {
 export interface ApplicantDialogProps {
     open: boolean;
     handleClose: () => void;
-    name: string;
-    email: string;
+    applicant: StepApplicant;
+    evaluationLabels: string[];
     documentList: Document[];
-    evaluations: Evaluation[];
+    evaluations: EvaluationDataWithSummary[];
+    isThreeStepProcess: boolean;
 }

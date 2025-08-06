@@ -7,7 +7,7 @@ import {
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
-import { documentList, interviewEmptyEvaluations } from '@constants/ApplicantDialog';
+import { documentList, interviewEmptyEvaluations } from '@constants/applicantDialog';
 import React, { useMemo, useState } from 'react';
 import {
     s_input,
@@ -16,7 +16,7 @@ import {
     s_stepManagementPageContainer,
     s_topContainer,
 } from './StepManagementPage.style';
-import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { stepQueries, evaluationQueries } from '@api/queryFactory';
 import type { StepApplicant } from '@api/domain/step/types';
 import { stepMutations } from '@api/mutationFactory';
@@ -25,8 +25,10 @@ import {
     DOCUMENT_STEP,
     FINAL_STEP_IN_THREE,
     FINAL_STEP_IN_TWO,
+    INITIAL_EVALUATION_SUMMARY,
     INTERVIEW_STEP,
 } from '@constants/stepManagementPage';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
 
 const CLUB_ID = 'example-42';
 
@@ -74,6 +76,35 @@ function StepManagementPage() {
             type: 'interview',
         }),
     );
+    const { data: documentEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: CLUB_ID,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'document',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            [
+                'DOCUMENT_PASS',
+                'DOCUMENT_FAIL',
+                'INTERVIEW_PASS',
+                'INTERVIEW_FAIL',
+                'FINAL_PASS',
+                'FINAL_FAIL',
+            ].includes(selectedApplicant.status),
+    });
+    const { data: interviewEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: CLUB_ID,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'interview',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            ['INTERVIEW_PASS', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
+                selectedApplicant.status,
+            ),
+    });
 
     const statusLabel = isThreeStepProcess
         ? [
@@ -146,6 +177,30 @@ function StepManagementPage() {
             ),
         }),
     };
+
+    const documentEvaluations =
+        documentEvaluationDetail?.evaluationsByApplicant?.[selectedApplicant?.applicantId ?? ''] ??
+        INITIAL_EVALUATION_SUMMARY;
+
+    const interviewEvaluations =
+        interviewEvaluationDetail?.evaluationsByApplicant?.[selectedApplicant?.applicantId ?? ''] ??
+        INITIAL_EVALUATION_SUMMARY;
+
+    const isOnlyDocumentStatus = ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(
+        selectedApplicant?.status ?? '',
+    );
+
+    const evaluations: EvaluationDataWithSummary[] = isOnlyDocumentStatus
+        ? [documentEvaluations]
+        : isThreeStepProcess
+          ? [documentEvaluations, interviewEvaluations]
+          : [documentEvaluations];
+
+    const dialogEvaluationLabels: string[] = isOnlyDocumentStatus
+        ? ['서류평가']
+        : isThreeStepProcess
+          ? ['서류평가', '면접평가']
+          : ['서류평가'];
 
     // handlers
     const handleOpen = (applicant: StepApplicant) => {
@@ -261,10 +316,11 @@ function StepManagementPage() {
                 />
                 {selectedApplicant && (
                     <ApplicantDialog
-                        name={selectedApplicant.name}
-                        email={selectedApplicant.email}
+                        applicant={selectedApplicant}
                         documentList={documentList}
-                        evaluations={interviewEmptyEvaluations}
+                        evaluations={evaluations}
+                        evaluationLabels={dialogEvaluationLabels}
+                        isThreeStepProcess={isThreeStepProcess}
                         open={isOpen}
                         handleClose={handleClose}
                     />
