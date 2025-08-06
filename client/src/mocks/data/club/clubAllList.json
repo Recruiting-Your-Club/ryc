@@ -1,7 +1,7 @@
 [
     {
         "id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
-        "name": "PATCH API 테스트 동아리",
+        "name": "연극 동아리",
         "shortDescription": "연극을 사랑하는 사람들의 모임",
         "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
         "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
@@ -65,7 +65,7 @@
     },
     {
         "id": "e5f6a7b8-c9d0-1234-5678-efabcd567890",
-        "name": "코딩이야",
+        "name": "봉사가 좋아",
         "shortDescription": "봉사활동 동아리",
         "imageUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",
         "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",

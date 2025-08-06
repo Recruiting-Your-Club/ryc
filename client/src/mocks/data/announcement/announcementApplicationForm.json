@@ -1,89 +1,472 @@
-{
-    "applicationQuestions": [
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174000",
-            "type": "LONG_ANSWER",
-            "label": "EN#에 지원한 동기가 무엇인가요?",
-            "description": "EN#에 지원하게 된 계기와 동기를 자유롭게 작성해주세요.",
-            "isRequired": true,
-            "options": []
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174001",
-            "type": "LONG_ANSWER",
-            "label": "EN#에서 기대하는 활동을 작성해주세요.",
-            "description": "EN#에서 하고 싶은 활동이나 목표를 자유롭게 작성해주세요.",
-            "isRequired": true,
-            "options": []
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174002",
-            "type": "LONG_ANSWER",
-            "label": "프로젝트 경험이 있다면 자세히 설명해주세요.",
-            "description": "참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
-            "isRequired": false,
-            "options": []
-        }
-    ],
-    "preQuestions": [
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174005",
-            "type": "SHORT_ANSWER",
-            "label": "생년월일",
-            "description": "YYYY-MM-DD 형식으로 입력해주세요.",
-            "isRequired": true,
-            "options": []
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174006",
-            "type": "SHORT_ANSWER",
-            "label": "전화번호",
-            "description": "010-0000-0000 형식으로 입력해주세요.",
-            "isRequired": true,
-            "options": []
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174007",
-            "type": "SINGLE_CHOICE",
-            "label": "성별",
-            "description": "성별을 선택해주세요.",
-            "isRequired": true,
-            "options": [
-                {
-                    "id": "opt-005",
-                    "option": "남"
-                },
-                {
-                    "id": "opt-006",
-                    "option": "여"
-                }
-            ]
-        },
-        {
-            "id": "e23e4567-e89b-12d3-a456-426614174008",
-            "type": "MULTIPLE_CHOICE",
-            "label": "전공",
-            "description": "관련 전공을 선택해주세요. (여러 개 선택 가능)",
-            "isRequired": true,
-            "options": [
-                {
-                    "id": "opt-007",
-                    "option": "소프트웨어학과"
-                },
-                {
-                    "id": "opt-008",
-                    "option": "컴퓨터공학과"
-                },
-                {
-                    "id": "opt-009",
-                    "option": "정보보호학과"
-                },
-                {
-                    "id": "opt-010",
-                    "option": "기타"
-                }
-            ]
-        }
-    ],
-    "personalInfoQuestions": ["NAME", "EMAIL"]
-}
+[
+    {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "applicationQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174000",
+                "type": "LONG_ANSWER",
+                "label": "연극에 관심을 가지게 된 계기와 동아리에 지원하게 된 이유를 적어주세요.",
+                "description": "연극을 처음 접하게 된 계기와 이 동아리에 지원하게 된 구체적인 이유를 자세히 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174001",
+                "type": "LONG_ANSWER",
+                "label": "동아리에서 하고 싶은 역할이나 기여하고 싶은 부분이 있다면 적어주세요.",
+                "description": "배우, 연출, 무대기술, 조명, 음향 등 어떤 역할을 하고 싶은지, 또는 동아리에 어떤 기여를 할 수 있는지 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174002",
+                "type": "LONG_ANSWER",
+                "label": "연극 활동 경험이나 관련 경험이 있다면 적어주세요.",
+                "description": "학교 연극, 동아리 활동, 연극 수업 등 연극과 관련된 경험이 있다면 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
+                "isRequired": false,
+                "options": []
+            }
+        ],
+        "preQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174005",
+                "type": "SHORT_ANSWER",
+                "label": "생년월일",
+                "description": "YYYY-MM-DD 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174006",
+                "type": "SHORT_ANSWER",
+                "label": "전화번호",
+                "description": "010-0000-0000 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174007",
+                "type": "SINGLE_CHOICE",
+                "label": "성별",
+                "description": "성별을 선택해주세요.",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-005",
+                        "option": "남"
+                    },
+                    {
+                        "id": "opt-006",
+                        "option": "여"
+                    }
+                ]
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174008",
+                "type": "MULTIPLE_CHOICE",
+                "label": "희망 역할",
+                "description": "동아리에서 하고 싶은 역할을 선택해주세요. (여러 개 선택 가능)",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-007",
+                        "option": "배우"
+                    },
+                    {
+                        "id": "opt-008",
+                        "option": "연출"
+                    },
+                    {
+                        "id": "opt-009",
+                        "option": "무대기술"
+                    },
+                    {
+                        "id": "opt-010",
+                        "option": "조명/음향"
+                    },
+                    {
+                        "id": "opt-011",
+                        "option": "기타"
+                    }
+                ]
+            }
+        ],
+        "personalInfoQuestions": ["NAME", "EMAIL"]
+    },
+    {
+        "id": "123e4567-e89b-12d3-a456-426614174001",
+        "applicationQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174003",
+                "type": "LONG_ANSWER",
+                "label": "가장 관심 있는 국가나 문화권과 그 이유를 적어주세요.",
+                "description": "특별히 관심 있는 국가나 문화권이 있다면 그 이유와 함께 자세히 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174004",
+                "type": "LONG_ANSWER",
+                "label": "동아리 활동을 통해 얻고 싶은 것과 기여하고 싶은 부분을 적어주세요.",
+                "description": "문화 탐방 활동을 통해 얻고 싶은 것과 동아리에 기여할 수 있는 부분을 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174005",
+                "type": "LONG_ANSWER",
+                "label": "해외 여행 경험이나 문화 체험 경험이 있다면 적어주세요.",
+                "description": "해외 여행, 문화 체험, 언어 학습 등 관련 경험이 있다면 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
+                "isRequired": false,
+                "options": []
+            }
+        ],
+        "preQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174009",
+                "type": "SHORT_ANSWER",
+                "label": "생년월일",
+                "description": "YYYY-MM-DD 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174010",
+                "type": "SHORT_ANSWER",
+                "label": "전화번호",
+                "description": "010-0000-0000 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174011",
+                "type": "SINGLE_CHOICE",
+                "label": "성별",
+                "description": "성별을 선택해주세요.",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-012",
+                        "option": "남"
+                    },
+                    {
+                        "id": "opt-013",
+                        "option": "여"
+                    }
+                ]
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174012",
+                "type": "MULTIPLE_CHOICE",
+                "label": "관심 문화 분야",
+                "description": "관심 있는 문화 분야를 선택해주세요. (여러 개 선택 가능)",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-014",
+                        "option": "음식 문화"
+                    },
+                    {
+                        "id": "opt-015",
+                        "option": "전통 예술"
+                    },
+                    {
+                        "id": "opt-016",
+                        "option": "역사/문화재"
+                    },
+                    {
+                        "id": "opt-017",
+                        "option": "현대 문화"
+                    },
+                    {
+                        "id": "opt-018",
+                        "option": "기타"
+                    }
+                ]
+            }
+        ],
+        "personalInfoQuestions": ["NAME", "EMAIL"]
+    },
+    {
+        "id": "123e4567-e89b-12d3-a456-426614174002",
+        "applicationQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174006",
+                "type": "LONG_ANSWER",
+                "label": "축구를 시작하게 된 계기와 동아리에 지원하게 된 이유를 적어주세요.",
+                "description": "축구를 처음 접하게 된 계기와 이 동아리에 지원하게 된 구체적인 이유를 자세히 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174007",
+                "type": "LONG_ANSWER",
+                "label": "선호하는 포지션이나 하고 싶은 역할이 있다면 적어주세요.",
+                "description": "공격수, 미드필더, 수비수, 골키퍼 등 선호하는 포지션이나 하고 싶은 역할을 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174008",
+                "type": "LONG_ANSWER",
+                "label": "축구 경력이나 스포츠 활동 경험이 있다면 적어주세요.",
+                "description": "축구 팀 활동, 스포츠 동아리, 체육 활동 등 관련 경험이 있다면 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
+                "isRequired": false,
+                "options": []
+            }
+        ],
+        "preQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174013",
+                "type": "SHORT_ANSWER",
+                "label": "생년월일",
+                "description": "YYYY-MM-DD 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174014",
+                "type": "SHORT_ANSWER",
+                "label": "전화번호",
+                "description": "010-0000-0000 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174015",
+                "type": "SINGLE_CHOICE",
+                "label": "성별",
+                "description": "성별을 선택해주세요.",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-019",
+                        "option": "남"
+                    },
+                    {
+                        "id": "opt-020",
+                        "option": "여"
+                    }
+                ]
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174016",
+                "type": "MULTIPLE_CHOICE",
+                "label": "선호 포지션",
+                "description": "선호하는 포지션을 선택해주세요. (여러 개 선택 가능)",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-021",
+                        "option": "공격수"
+                    },
+                    {
+                        "id": "opt-022",
+                        "option": "미드필더"
+                    },
+                    {
+                        "id": "opt-023",
+                        "option": "수비수"
+                    },
+                    {
+                        "id": "opt-024",
+                        "option": "골키퍼"
+                    },
+                    {
+                        "id": "opt-025",
+                        "option": "상관없음"
+                    }
+                ]
+            }
+        ],
+        "personalInfoQuestions": ["NAME", "EMAIL"]
+    },
+    {
+        "id": "123e4567-e89b-12d3-a456-426614174003",
+        "applicationQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174009",
+                "type": "LONG_ANSWER",
+                "label": "프로그래밍을 시작하게 된 계기와 알고리즘에 관심을 가지게 된 이유를 적어주세요.",
+                "description": "프로그래밍을 처음 접하게 된 계기와 알고리즘에 관심을 가지게 된 구체적인 이유를 자세히 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174010",
+                "type": "LONG_ANSWER",
+                "label": "동아리 활동을 통해 얻고 싶은 것과 기여하고 싶은 부분을 적어주세요.",
+                "description": "알고리즘 스터디와 대회 참가를 통해 얻고 싶은 것과 동아리에 기여할 수 있는 부분을 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174011",
+                "type": "LONG_ANSWER",
+                "label": "프로그래밍 언어나 알고리즘 대회 경험이 있다면 적어주세요.",
+                "description": "사용할 수 있는 프로그래밍 언어, 알고리즘 대회 참가 경험, 프로젝트 경험 등을 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
+                "isRequired": false,
+                "options": []
+            }
+        ],
+        "preQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174017",
+                "type": "SHORT_ANSWER",
+                "label": "생년월일",
+                "description": "YYYY-MM-DD 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174018",
+                "type": "SHORT_ANSWER",
+                "label": "전화번호",
+                "description": "010-0000-0000 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174019",
+                "type": "SINGLE_CHOICE",
+                "label": "성별",
+                "description": "성별을 선택해주세요.",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-026",
+                        "option": "남"
+                    },
+                    {
+                        "id": "opt-027",
+                        "option": "여"
+                    }
+                ]
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174020",
+                "type": "MULTIPLE_CHOICE",
+                "label": "사용 가능한 언어",
+                "description": "사용할 수 있는 프로그래밍 언어를 선택해주세요. (여러 개 선택 가능)",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-028",
+                        "option": "Python"
+                    },
+                    {
+                        "id": "opt-029",
+                        "option": "Java"
+                    },
+                    {
+                        "id": "opt-030",
+                        "option": "C++"
+                    },
+                    {
+                        "id": "opt-031",
+                        "option": "JavaScript"
+                    },
+                    {
+                        "id": "opt-032",
+                        "option": "기타"
+                    }
+                ]
+            }
+        ],
+        "personalInfoQuestions": ["NAME", "EMAIL"]
+    },
+    {
+        "id": "123e4567-e89b-12d3-a456-426614174004",
+        "applicationQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174012",
+                "type": "LONG_ANSWER",
+                "label": "봉사활동에 관심을 가지게 된 계기와 동아리에 지원하게 된 이유를 적어주세요.",
+                "description": "봉사활동에 관심을 가지게 된 계기와 이 동아리에 지원하게 된 구체적인 이유를 자세히 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174013",
+                "type": "LONG_ANSWER",
+                "label": "동아리 활동을 통해 얻고 싶은 것과 기여하고 싶은 부분을 적어주세요.",
+                "description": "봉사활동을 통해 얻고 싶은 것과 동아리에 기여할 수 있는 부분을 작성해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174014",
+                "type": "LONG_ANSWER",
+                "label": "이전 봉사활동 경험이나 사회봉사에 대한 생각을 적어주세요.",
+                "description": "이전 봉사활동 경험이나 사회봉사에 대한 개인적인 생각과 경험을 자세히 작성해주세요. (없다면 작성하지 않으셔도 됩니다.)",
+                "isRequired": false,
+                "options": []
+            }
+        ],
+        "preQuestions": [
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174021",
+                "type": "SHORT_ANSWER",
+                "label": "생년월일",
+                "description": "YYYY-MM-DD 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174022",
+                "type": "SHORT_ANSWER",
+                "label": "전화번호",
+                "description": "010-0000-0000 형식으로 입력해주세요.",
+                "isRequired": true,
+                "options": []
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174023",
+                "type": "SINGLE_CHOICE",
+                "label": "성별",
+                "description": "성별을 선택해주세요.",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-033",
+                        "option": "남"
+                    },
+                    {
+                        "id": "opt-034",
+                        "option": "여"
+                    }
+                ]
+            },
+            {
+                "id": "e23e4567-e89b-12d3-a456-426614174024",
+                "type": "MULTIPLE_CHOICE",
+                "label": "관심 봉사 분야",
+                "description": "관심 있는 봉사 분야를 선택해주세요. (여러 개 선택 가능)",
+                "isRequired": true,
+                "options": [
+                    {
+                        "id": "opt-035",
+                        "option": "노인복지"
+                    },
+                    {
+                        "id": "opt-036",
+                        "option": "환경보호"
+                    },
+                    {
+                        "id": "opt-037",
+                        "option": "교육봉사"
+                    },
+                    {
+                        "id": "opt-038",
+                        "option": "재난구호"
+                    },
+                    {
+                        "id": "opt-039",
+                        "option": "기타"
+                    }
+                ]
+            }
+        ],
+        "personalInfoQuestions": ["NAME", "EMAIL"]
+    }
+]

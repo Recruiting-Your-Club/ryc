@@ -1,35 +1,62 @@
 [
     {
         "announcementId": "123e4567-e89b-12d3-a456-426614174000",
+        "clubId": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
         "title": "2025년도 상반기 신입 모집",
-        "summaryDescription": "코딩 동아리에서 신입 회원을 모집합니다.",
-        "target": "컴퓨터공학과 학생",
+        "summaryDescription": "연극 동아리에서 신입 회원을 모집합니다.",
+        "target": "연극에 관심 있는 모든 학생",
         "announcementStatus": "RECRUITING",
         "announcementType": "LIMITED_TIME",
         "applicationStartDate": "2025-06-01T09:00",
         "applicationEndDate": "2025-06-30T18:00",
-        "tags": ["프로그래밍", "웹개발", "백엔드"]
+        "tags": ["연극", "공연", "워크숍"]
     },
     {
-        "announcementId": "456e7890-e89b-12d3-a456-426614174001",
-        "title": "디자인 스튜디오 동아리 모집",
-        "summaryDescription": "창의적인 디자인을 함께 만들어갈 멤버를 찾습니다.",
-        "target": "디자인학과 학생",
+        "announcementId": "123e4567-e89b-12d3-a456-426614174001",
+        "clubId": "b2c3d4e5-f6a7-8901-2345-bcdefa234567",
+        "title": "2025년도 세계문화탐방단 신입 모집",
+        "summaryDescription": "세계문화탐방단에서 신입 회원을 모집합니다.",
+        "target": "세계 문화에 관심 있는 모든 학생",
         "announcementStatus": "RECRUITING",
-        "announcementType": "ALWAYS_OPEN",
-        "applicationStartDate": "2025-07-29T10:00",
-        "applicationEndDate": "2025-08-15T17:00",
-        "tags": ["디자인", "UI/UX", "그래픽디자인"]
+        "announcementType": "LIMITED_TIME",
+        "applicationStartDate": "2025-06-01T09:00",
+        "applicationEndDate": "2025-06-30T18:00",
+        "tags": ["문화", "체험활동", "국제교류"]
     },
     {
-        "announcementId": "789e0123-e89b-12d3-a456-426614174002",
-        "title": "AI 연구 동아리 신입 모집",
-        "summaryDescription": "인공지능과 머신러닝에 관심 있는 학생들을 모집합니다.",
-        "target": "전산학과, 수학과 학생",
-        "announcementStatus": "CLOSED",
+        "announcementId": "123e4567-e89b-12d3-a456-426614174002",
+        "clubId": "c3d4e5f6-a7b8-9012-3456-cdefab345678",
+        "title": "FC UNIV 2025년도 신입 선수 모집",
+        "summaryDescription": "FC UNIV에서 신입 선수를 모집합니다.",
+        "target": "축구에 관심 있는 모든 학생",
+        "announcementStatus": "RECRUITING",
         "announcementType": "LIMITED_TIME",
-        "applicationStartDate": "2025-07-29T09:00",
-        "applicationEndDate": "2025-08-07T18:00",
-        "tags": ["AI", "머신러닝", "딥러닝", "데이터분석"]
+        "applicationStartDate": "2025-06-01T09:00",
+        "applicationEndDate": "2025-06-30T18:00",
+        "tags": ["리그참가", "축구", "체육"]
+    },
+    {
+        "announcementId": "123e4567-e89b-12d3-a456-426614174003",
+        "clubId": "d4e5f6a7-b8c9-0123-4567-defabc456789",
+        "title": "알고리즘 마스터즈 2025년도 신입 회원 모집",
+        "summaryDescription": "알고리즘 마스터즈에서 신입 회원을 모집합니다.",
+        "target": "프로그래밍에 관심 있는 모든 학생",
+        "announcementStatus": "RECRUITING",
+        "announcementType": "LIMITED_TIME",
+        "applicationStartDate": "2025-06-01T09:00",
+        "applicationEndDate": "2025-06-30T18:00",
+        "tags": ["알고리즘", "코딩스터디", "프로그래밍"]
+    },
+    {
+        "announcementId": "123e4567-e89b-12d3-a456-426614174004",
+        "clubId": "e5f6a7b8-c9d0-1234-5678-efabcd567890",
+        "title": "봉사가 좋아 2025년도 신입 회원 모집",
+        "summaryDescription": "봉사가 좋아에서 신입 회원을 모집합니다.",
+        "target": "봉사활동에 관심 있는 모든 학생",
+        "announcementStatus": "RECRUITING",
+        "announcementType": "LIMITED_TIME",
+        "applicationStartDate": "2025-06-01T09:00",
+        "applicationEndDate": "2025-06-30T18:00",
+        "tags": ["봉사", "지역연계", "사회봉사"]
     }
 ]
