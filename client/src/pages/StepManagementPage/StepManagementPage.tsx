@@ -306,7 +306,7 @@ function StepManagementPage() {
                     passedApplicantList={stepApplicantGroups.finalPassed}
                     failedApplicantList={stepApplicantGroups.finalFailed}
                     handleOpen={handleOpen}
-                    handleApplicantStatus={() => handleStatusUpdate}
+                    handleApplicantStatus={handleStatusUpdate}
                     statusLabel={
                         isThreeStepProcess
                             ? [statusLabel[DOCUMENT_STEP], statusLabel[INTERVIEW_STEP]]
