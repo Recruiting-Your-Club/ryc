@@ -26,10 +26,14 @@ import {
     DOCUMENT_STEP,
     FINAL_STEP_IN_THREE,
     FINAL_STEP_IN_TWO,
-    INITIAL_EVALUATION_SUMMARY,
     INTERVIEW_STEP,
 } from '@constants/stepManagementPage';
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import {
+    getEvaluations,
+    groupStepApplicants,
+    mergeApplicantWithSummary,
+} from './utils/stepApplicant';
 
 const CLUB_ID = 'example-42';
 
@@ -65,6 +69,7 @@ function StepManagementPage() {
 
     const documentApplicantIds = documentStepApplicants.map((applicant) => applicant.applicantId);
     const interviewApplicantIds = interviewStepApplicants.map((applicant) => applicant.applicantId);
+
     const { data: documentEvaluationSummaryList = [] } = useSuspenseQuery(
         evaluationQueries.evaluationSummary({
             clubId: CLUB_ID,
@@ -133,76 +138,42 @@ function StepManagementPage() {
 
     const mergedStepApplicantList = useMemo(
         () =>
-            stepApplicantList.map((applicant) => {
-                const isDocumentStep =
-                    applicant.status === 'DOCUMENT_PASS' ||
-                    applicant.status === 'DOCUMENT_FAIL' ||
-                    (!isThreeStepProcess &&
-                        (applicant.status === 'FINAL_PASS' || applicant.status === 'FINAL_FAIL'));
-                const summaryList = isDocumentStep
-                    ? documentEvaluationSummaryList
-                    : interviewEvaluationSummaryList;
-
-                const summary = summaryList.find(
-                    (summary) => summary.applicantId === applicant.applicantId,
-                );
-
-                return {
-                    ...applicant,
-                    completedEvaluatorCount: summary?.completedEvaluatorCount ?? 0,
-                    totalEvaluatorCount: summary?.totalEvaluatorCount ?? 0,
-                    averageScore: summary?.averageScore ?? 0,
-                };
-            }),
+            mergeApplicantWithSummary(
+                stepApplicantList,
+                documentEvaluationSummaryList,
+                interviewEvaluationSummaryList,
+                isThreeStepProcess,
+            ),
         [stepApplicantList, documentEvaluationSummaryList, interviewEvaluationSummaryList],
     );
 
-    const stepApplicantGroups = {
-        documentPassed: mergedStepApplicantList.filter(
-            (applicant) => applicant.status === 'DOCUMENT_PASS',
-        ),
-        documentFailed: mergedStepApplicantList.filter(
-            (applicant) => applicant.status === 'DOCUMENT_FAIL',
-        ),
-        finalPassed: mergedStepApplicantList.filter(
-            (applicant) => applicant.status === 'FINAL_PASS',
-        ),
-        finalFailed: mergedStepApplicantList.filter(
-            (applicant) => applicant.status === 'FINAL_FAIL',
-        ),
-        ...(isThreeStepProcess && {
-            interviewPassed: mergedStepApplicantList.filter(
-                (applicant) => applicant.status === 'INTERVIEW_PASS',
-            ),
-            interviewFailed: mergedStepApplicantList.filter(
-                (applicant) => applicant.status === 'INTERVIEW_FAIL',
-            ),
-        }),
-    };
+    const stepApplicantGroups = useMemo(
+        () => groupStepApplicants(mergedStepApplicantList, isThreeStepProcess),
+        [mergedStepApplicantList],
+    );
 
-    const documentEvaluations =
-        documentEvaluationDetail?.evaluationsByApplicant?.[selectedApplicant?.applicantId ?? ''] ??
-        INITIAL_EVALUATION_SUMMARY;
+    const documentEvaluations = getEvaluations(
+        documentEvaluationDetail,
+        selectedApplicant?.applicantId,
+    );
 
-    const interviewEvaluations =
-        interviewEvaluationDetail?.evaluationsByApplicant?.[selectedApplicant?.applicantId ?? ''] ??
-        INITIAL_EVALUATION_SUMMARY;
+    const interviewEvaluations = getEvaluations(
+        interviewEvaluationDetail,
+        selectedApplicant?.applicantId,
+    );
 
     const isOnlyDocumentStatus = ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(
         selectedApplicant?.status ?? '',
     );
+    const isInterviewIncluded = !isOnlyDocumentStatus && isThreeStepProcess;
 
-    const evaluations: EvaluationDataWithSummary[] = isOnlyDocumentStatus
-        ? [documentEvaluations]
-        : isThreeStepProcess
-          ? [documentEvaluations, interviewEvaluations]
-          : [documentEvaluations];
+    const evaluationsInDialog: EvaluationDataWithSummary[] = isInterviewIncluded
+        ? [documentEvaluations, interviewEvaluations]
+        : [documentEvaluations];
 
-    const dialogEvaluationLabels: string[] = isOnlyDocumentStatus
-        ? ['서류평가']
-        : isThreeStepProcess
-          ? ['서류평가', '면접평가']
-          : ['서류평가'];
+    const dialogEvaluationLabels: string[] = isInterviewIncluded
+        ? ['서류평가', '면접평가']
+        : ['서류평가'];
 
     // handlers
     const handleOpen = (applicant: StepApplicant) => {
@@ -320,7 +291,7 @@ function StepManagementPage() {
                     <ApplicantDialog
                         applicant={selectedApplicant}
                         documentList={documentList}
-                        evaluations={evaluations}
+                        evaluations={evaluationsInDialog}
                         evaluationLabels={dialogEvaluationLabels}
                         isThreeStepProcess={isThreeStepProcess}
                         open={isOpen}
