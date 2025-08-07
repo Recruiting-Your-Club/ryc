@@ -1,10 +1,9 @@
-import { InterviewEvaluationPage } from '@pages/InterviewEvaluationPage';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
-    ClubSearchPage,
+    InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
     NotFoundPage,
@@ -18,9 +17,18 @@ const router = createBrowserRouter([
         element: <ManagerLayout />,
         children: [
             { index: true, element: <TestPage /> },
-            { path: '*', element: <NotFoundPage /> },
-            { path: 'test', element: <TestPage /> },
+            { path: 'announcements', element: <LoginPage /> },
+            { path: 'announcements/create', element: <ClubCreatePage /> },
+            { path: 'announcements/edit', element: <ClubCreatePage /> },
+
+            { path: 'applicants', element: <ClubCreatePage /> },
+
             { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
+            { path: 'document-evaluation', element: <ClubCreatePage /> },
+
+            { path: 'interviewee-schedule"', element: <LoginPage /> },
+
+            { path: 'settings', element: <LoginPage /> },
         ],
     },
     {
@@ -32,8 +40,7 @@ const router = createBrowserRouter([
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
-            { path: 'club-search', element: <ClubSearchPage /> },
-            { path: 'myclub', element: <MyClubPage /> },
+            { path: 'myClub', element: <MyClubPage /> },
         ],
     },
 ]);

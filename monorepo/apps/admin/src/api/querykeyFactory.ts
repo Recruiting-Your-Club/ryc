@@ -27,6 +27,10 @@ const myClubKeys = {
     all: ['clubs'] as const,
 };
 
+const announcementKeys = {
+    listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
+};
+
 const interviewKeys = {
     allInterviewSchedules: ['interviewschedules'] as const,
     allInterviewees: ['interviewees'] as const,
@@ -35,4 +39,4 @@ const interviewKeys = {
     evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
 };
 
-export { myClubKeys, interviewKeys };
+export { myClubKeys, interviewKeys, announcementKeys };
