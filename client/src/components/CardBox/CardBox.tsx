@@ -1,7 +1,7 @@
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
 import { ApplicantCard, Button, Divider, Dropdown, Text } from '@components';
 import { TextToggle } from '@components/_common';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     s_boxContainer,
     s_cardGroup,
@@ -62,6 +62,8 @@ function CardBox({
         [searchText],
     );
 
+    const isDisable = (fail ? failedApplicantList : passedApplicantList).length === 0;
+
     // handlers
     const handleSelectAllPass = () => {
         if (selectedPassApplicantIds.length === passedApplicantList.length) {
@@ -97,6 +99,12 @@ function CardBox({
         setFail((prev) => !prev);
     };
 
+    //effects
+    useEffect(() => {
+        setSelectedPassApplicantIds([]);
+        setSelectedFailApplicantIds([]);
+    }, [passedApplicantList, failedApplicantList]);
+
     return (
         <div css={[s_boxContainer(height, step), sx]}>
             <div css={s_titleGroup}>
@@ -125,7 +133,11 @@ function CardBox({
                                 {!fail && (
                                     <>
                                         <Dropdown.Sub>
-                                            <Dropdown.SubTrigger inset sx={s_dropdownSubTrigger}>
+                                            <Dropdown.SubTrigger
+                                                inset
+                                                disabled={isDisable}
+                                                sx={s_dropdownSubTrigger}
+                                            >
                                                 <Text as="text" type="subCaptionRegular">
                                                     단계 이동
                                                 </Text>
@@ -182,6 +194,7 @@ function CardBox({
                                 <Dropdown.Item
                                     inset
                                     sx={s_dropdownItem}
+                                    disabled={isDisable}
                                     onClick={() =>
                                         handleApplicantStatus(
                                             fail
@@ -206,6 +219,7 @@ function CardBox({
                                     inset
                                     sx={s_dropdownItem}
                                     onClick={() => onEmailDialogOpen(true)}
+                                    disabled={isDisable}
                                 >
                                     <Text as="text" type="subCaptionRegular">
                                         전체 이메일 보내기
@@ -216,12 +230,14 @@ function CardBox({
                                     inset
                                     sx={s_dropdownItem}
                                     onClick={fail ? handleSelectAllFail : handleSelectAllPass}
+                                    disabled={isDisable}
                                 >
                                     <Text as="text" type="subCaptionRegular">
                                         {(fail
                                             ? selectedFailApplicantIds
                                             : selectedPassApplicantIds
-                                        ).length === passedApplicantList.length
+                                        ).length ===
+                                        (fail ? failedApplicantList : passedApplicantList).length
                                             ? '전체 선택 해제'
                                             : '전체 선택'}
                                     </Text>
