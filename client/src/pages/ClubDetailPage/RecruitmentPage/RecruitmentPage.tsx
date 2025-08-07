@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { RecruitCard, RecruitDialog, Text } from '@components';
+import { ClubDetailRecruitmentLoadingPage } from '@pages/LoadingPage';
 import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
 import { announcementQueries } from '@api/queryFactory';
@@ -50,20 +51,8 @@ function RecruitmentPage() {
         }
     }, [selectedAnnouncementDetail, setApplicationPeriod]);
 
-    if (!clubId) {
-        return (
-            <div css={recruitmentContainer}>
-                <Text>유효한 동아리 ID가 없습니다.</Text>
-            </div>
-        );
-    }
-
     if (isLoading) {
-        return (
-            <div css={recruitmentContainer}>
-                <Text>공고 목록을 불러오는 중...</Text>
-            </div>
-        );
+        return <ClubDetailRecruitmentLoadingPage />;
     }
 
     if (error) {
@@ -104,4 +93,4 @@ function RecruitmentPage() {
     );
 }
 
-export { RecruitmentPage };
+export default RecruitmentPage;
