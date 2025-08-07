@@ -44,3 +44,10 @@ export const s_input = css`
     background-color: ${theme.colors.white};
     box-shadow: 0px 0px 3px 0px rgba(${hexToRgb(theme.colors.black)}, 0.15);
 `;
+
+export const s_searchSvgButton = css`
+    &:hover {
+        cursor: default;
+        color: ${theme.colors.gray[600]};
+    }
+`;

@@ -12,6 +12,7 @@ import React, { useMemo, useState } from 'react';
 import {
     s_input,
     s_searchBarContainer,
+    s_searchSvgButton,
     s_stepBoxContainer,
     s_stepManagementPageContainer,
     s_topContainer,
@@ -258,7 +259,7 @@ function StepManagementPage() {
                     <Input
                         variant="transparent"
                         endNode={
-                            <Button variant="text" size="s">
+                            <Button variant="text" size="s" sx={s_searchSvgButton}>
                                 <Search width="1.5rem" height="1.5rem" />
                             </Button>
                         }
