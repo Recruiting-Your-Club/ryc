@@ -34,12 +34,14 @@ import {
     groupStepApplicants,
     mergeApplicantWithSummary,
 } from './utils/stepApplicant';
+import { useToast } from '@hooks/useToast';
 
 const CLUB_ID = 'example-42';
 
 function StepManagementPage() {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
@@ -195,6 +197,11 @@ function StepManagementPage() {
     };
 
     const handleStatusUpdate = (applicantIds: string[], newStatus: string) => {
+        if (applicantIds.length === 0) {
+            toast('지원자를 선택해주세요!', { toastTheme: 'black', type: 'error' });
+            return;
+        }
+
         applicantIds.forEach((id) => {
             updateStatus(
                 { applicantId: id, status: newStatus },
