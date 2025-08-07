@@ -24,6 +24,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
 import { getCategory } from '@utils/changeCategory';
+import { ClubApplyLoadingPage } from '@pages/LoadingPage';
 
 function ClubApplyPage() {
     // prop destruction
@@ -254,6 +255,10 @@ function ClubApplyPage() {
         setCompletedQuestions(completedCount);
     }, [answers, getValidationError]);
 
+    if (formLoading) {
+        return <ClubApplyLoadingPage />;
+    }
+
     return (
         <div css={clubApplyPage}>
             <div css={clubApplyPageMainContainer}>
@@ -329,4 +334,4 @@ function ClubApplyPage() {
     );
 }
 
-export { ClubApplyPage };
+export default ClubApplyPage;
