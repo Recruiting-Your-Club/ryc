@@ -38,7 +38,7 @@ function ApplicantDialog({
     const initialIndex = getInitialIndex();
 
     // state, ref, querystring hooks
-    const [currentIndex, setCurrentIndex] = useState(() => initialIndex);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
     // form hooks
     // query hooks
