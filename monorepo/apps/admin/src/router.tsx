@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router';
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
+    ClubEditPage,
     InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
@@ -17,6 +18,9 @@ const router = createBrowserRouter([
         element: <ManagerLayout />,
         children: [
             { index: true, element: <TestPage /> },
+
+            { path: 'clubs', element: <ClubEditPage /> },
+
             { path: 'announcements', element: <LoginPage /> },
             { path: 'announcements/create', element: <ClubCreatePage /> },
             { path: 'announcements/edit', element: <ClubCreatePage /> },
