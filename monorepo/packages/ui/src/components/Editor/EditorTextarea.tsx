@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import { textareaContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
-import type { EditorProps } from './types';
+import type { TextareaProps } from './types';
 
-function EditorTextarea({ height, radius, sx }: EditorProps) {
+function EditorTextarea({ height, radius, value, onChange, sx }: TextareaProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -15,6 +15,10 @@ function EditorTextarea({ height, radius, sx }: EditorProps) {
     // query hooks
     // calculated values
     // handlers
+    const handleInput = () => {
+        const html = editorRef.current?.innerHTML || '';
+        onChange?.(html);
+    };
     // effects
     useEffect(() => {
         // textarea 내에 존재한 마지막 커서 기억을 위한 함수
@@ -34,11 +38,18 @@ function EditorTextarea({ height, radius, sx }: EditorProps) {
         return () => document.removeEventListener('mousedown', handleMouseDown);
     }, []);
 
+    useEffect(() => {
+        if (editorRef.current && value !== undefined && editorRef.current.innerHTML !== value) {
+            editorRef.current.innerHTML = value;
+        }
+    }, [value]);
+
     return (
         <>
             <div
                 contentEditable
                 suppressContentEditableWarning
+                onInput={handleInput}
                 css={[textareaContainer(height, radius), sx]}
                 ref={editorRef}
             />
