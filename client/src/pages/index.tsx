@@ -11,3 +11,4 @@ export * from './MyClubPage';
 export * from './DocumentEvaluationPage';
 export * from './ClubCreatePage';
 export * from './LoadingPage';
+export * from './ClubApplyPage/ClubApplySuccessPage';
