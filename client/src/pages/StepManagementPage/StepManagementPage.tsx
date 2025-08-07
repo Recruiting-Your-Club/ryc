@@ -7,7 +7,7 @@ import {
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
-import { documentList, interviewEmptyEvaluations } from '@constants/applicantDialog';
+import { documentList } from '@constants/applicantDialog';
 import React, { useMemo, useState } from 'react';
 import {
     s_input,

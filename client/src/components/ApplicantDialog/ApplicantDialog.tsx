@@ -2,7 +2,6 @@ import ChevronLeft from '@assets/images/chevronLeft.svg';
 import ChevronRight from '@assets/images/chevronRight.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { Button, Dialog, Divider, DocumentBox, PersonalScoreCard, Rating, Text } from '@components';
-import { evaluation } from '@constants/applicantDialog';
 import React, { useState } from 'react';
 import {
     chevronSvgCss,
@@ -36,25 +35,24 @@ function ApplicantDialog({
     // prop destruction
     // lib hooks
     // initial values
-    const initialIndex =
-        applicant.status === 'DOCUMENT_PASS' || applicant.status === 'DOCUMENT_FAIL'
-            ? 0
-            : applicant.status === 'INTERVIEW_PASS' || applicant.status === 'INTERVIEW_FAIL'
-              ? 1
-              : applicant.status === 'FINAL_PASS' || applicant.status === 'FINAL_FAIL'
-                ? isThreeStepProcess
-                    ? 1
-                    : 0
-                : 0;
+    const initialIndex = getInitialIndex();
 
     // state, ref, querystring hooks
-    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+    const [currentIndex, setCurrentIndex] = useState(() => initialIndex);
 
     // form hooks
     // query hooks
     // calculated values
     const currentEvaluation = evaluations[currentIndex];
     const currentLabel = evaluationLabels[currentIndex];
+    const hasEvaluation = currentEvaluation.completedEvaluatorCount > 0;
+
+    function getInitialIndex() {
+        if (applicant.status.startsWith('DOCUMENT')) return 0;
+        if (applicant.status.startsWith('INTERVIEW')) return 1;
+        if (applicant.status.startsWith('FINAL')) return isThreeStepProcess ? 1 : 0;
+        return 0;
+    }
 
     // handlers
     const goPrev = () => {
@@ -62,7 +60,7 @@ function ApplicantDialog({
     };
 
     const goNext = () => {
-        if (currentIndex < evaluation.length - 1) setCurrentIndex((prev) => prev + 1);
+        if (currentIndex < evaluations.length - 1) setCurrentIndex((prev) => prev + 1);
     };
 
     // effects
@@ -174,12 +172,8 @@ function ApplicantDialog({
                                     </Text>
                                 </div>
                                 <Divider />
-                                <div
-                                    css={perStarScoreGroup(
-                                        currentEvaluation.completedEvaluatorCount !== 0,
-                                    )}
-                                >
-                                    {currentEvaluation.completedEvaluatorCount !== 0 ? (
+                                <div css={perStarScoreGroup(hasEvaluation)}>
+                                    {hasEvaluation ? (
                                         currentEvaluation.evaluationDatas.map((evaluation) => (
                                             <PersonalScoreCard
                                                 key={evaluation.evaluationId}

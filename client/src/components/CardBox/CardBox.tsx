@@ -1,7 +1,7 @@
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
 import { ApplicantCard, Button, Divider, Dropdown, Text } from '@components';
 import { TextToggle } from '@components/_common';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     s_boxContainer,
     s_cardGroup,
@@ -48,52 +48,56 @@ function CardBox({
     // form hooks
     // query hooks
     // calculated values
-    const normalizeQuery = (name: string) => {
-        return name.toLowerCase().replace(/\s+/g, '');
-    }; // 엄밀히 말하면 util 함수에 해당
-
-    const filteredNames = useCallback(
+    const searchApplicants = useCallback(
         (applicantList: MergedStepApplicant[]) => {
-            const normalizedQuery = normalizeQuery(searchText);
             return applicantList.filter((applicant) =>
-                normalizeQuery(applicant.name).includes(normalizedQuery),
+                applicant.name.toLowerCase().includes(searchText.toLowerCase()),
             );
         },
         [searchText],
     );
 
-    const isDisable = (fail ? failedApplicantList : passedApplicantList).length === 0;
+    const selectedGroup = useMemo(
+        () =>
+            fail
+                ? {
+                      list: failedApplicantList,
+                      ids: selectedFailApplicantIds,
+                      setIds: setSelectedFailApplicantIds,
+                  }
+                : {
+                      list: passedApplicantList,
+                      ids: selectedPassApplicantIds,
+                      setIds: setSelectedPassApplicantIds,
+                  },
+        [
+            fail,
+            failedApplicantList,
+            selectedFailApplicantIds,
+            passedApplicantList,
+            selectedPassApplicantIds,
+        ],
+    );
+
+    const isDisabled = selectedGroup.list.length === 0;
 
     // handlers
-    const handleSelectAllPass = () => {
-        if (selectedPassApplicantIds.length === passedApplicantList.length) {
-            setSelectedPassApplicantIds([]);
+    const handleSelectAll = () => {
+        if (selectedGroup.ids.length === selectedGroup.list.length) {
+            selectedGroup.setIds([]);
         } else {
-            setSelectedPassApplicantIds(
-                passedApplicantList.map((applicant) => applicant.applicantId),
-            );
-        }
-    };
-    const handleSelectAllFail = () => {
-        if (selectedFailApplicantIds.length === failedApplicantList.length) {
-            setSelectedFailApplicantIds([]);
-        } else {
-            setSelectedFailApplicantIds(
-                failedApplicantList.map((applicant) => applicant.applicantId),
-            );
+            selectedGroup.setIds(selectedGroup.list.map((applicant) => applicant.applicantId));
         }
     };
 
-    const handlePassCheckbox = (applicantId: string, checked: boolean) => {
-        setSelectedPassApplicantIds((prev) =>
-            checked ? [...prev, applicantId] : prev.filter((id) => id !== applicantId),
-        );
-    };
-    const handleFailCheckbox = (applicantId: string, checked: boolean) => {
-        setSelectedFailApplicantIds((prev) =>
-            checked ? [...prev, applicantId] : prev.filter((id) => id !== applicantId),
-        );
-    };
+    const handleCheckbox = useCallback(
+        (applicantId: string, checked: boolean) => {
+            selectedGroup.setIds((prev) =>
+                checked ? [...prev, applicantId] : prev.filter((id) => id !== applicantId),
+            );
+        },
+        [selectedGroup],
+    );
 
     const handleToggle = () => {
         setFail((prev) => !prev);
@@ -135,7 +139,7 @@ function CardBox({
                                         <Dropdown.Sub>
                                             <Dropdown.SubTrigger
                                                 inset
-                                                disabled={isDisable}
+                                                disabled={isDisabled}
                                                 sx={s_dropdownSubTrigger}
                                             >
                                                 <Text as="text" type="subCaptionRegular">
@@ -194,12 +198,10 @@ function CardBox({
                                 <Dropdown.Item
                                     inset
                                     sx={s_dropdownItem}
-                                    disabled={isDisable}
+                                    disabled={isDisabled}
                                     onClick={() =>
                                         handleApplicantStatus(
-                                            fail
-                                                ? selectedFailApplicantIds
-                                                : selectedPassApplicantIds,
+                                            selectedGroup.ids,
                                             fail ? statusInOwnStep.pass : statusInOwnStep.fail,
                                         )
                                     }
@@ -219,7 +221,7 @@ function CardBox({
                                     inset
                                     sx={s_dropdownItem}
                                     onClick={() => onEmailDialogOpen(true)}
-                                    disabled={isDisable}
+                                    disabled={isDisabled}
                                 >
                                     <Text as="text" type="subCaptionRegular">
                                         전체 이메일 보내기
@@ -229,15 +231,11 @@ function CardBox({
                                 <Dropdown.Item
                                     inset
                                     sx={s_dropdownItem}
-                                    onClick={fail ? handleSelectAllFail : handleSelectAllPass}
-                                    disabled={isDisable}
+                                    onClick={handleSelectAll}
+                                    disabled={isDisabled}
                                 >
                                     <Text as="text" type="subCaptionRegular">
-                                        {(fail
-                                            ? selectedFailApplicantIds
-                                            : selectedPassApplicantIds
-                                        ).length ===
-                                        (fail ? failedApplicantList : passedApplicantList).length
+                                        {selectedGroup.ids.length === selectedGroup.list.length
                                             ? '전체 선택 해제'
                                             : '전체 선택'}
                                     </Text>
@@ -249,38 +247,17 @@ function CardBox({
             </div>
             <Divider sx={s_divider} />
             <div css={s_cardGroupWrapper}>
-                {!fail && (
-                    <div css={s_cardGroup}>
-                        {filteredNames(passedApplicantList).map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.applicantId}
-                                applicant={applicant}
-                                checked={(fail
-                                    ? selectedFailApplicantIds
-                                    : selectedPassApplicantIds
-                                ).includes(applicant.applicantId)}
-                                onChange={fail ? handleFailCheckbox : handlePassCheckbox}
-                                onClick={() => handleOpen(applicant as MergedStepApplicant)}
-                            />
-                        ))}
-                    </div>
-                )}
-                {fail && (
-                    <div css={s_cardGroup}>
-                        {filteredNames(failedApplicantList).map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.applicantId}
-                                applicant={applicant}
-                                checked={(fail
-                                    ? selectedFailApplicantIds
-                                    : selectedPassApplicantIds
-                                ).includes(applicant.applicantId)}
-                                onChange={fail ? handleFailCheckbox : handlePassCheckbox}
-                                onClick={() => handleOpen(applicant as MergedStepApplicant)}
-                            />
-                        ))}
-                    </div>
-                )}
+                <div css={s_cardGroup}>
+                    {searchApplicants(selectedGroup.list).map((applicant) => (
+                        <ApplicantCard
+                            key={applicant.applicantId}
+                            applicant={applicant}
+                            checked={selectedGroup.ids.includes(applicant.applicantId)}
+                            onChange={handleCheckbox}
+                            onClick={() => handleOpen(applicant as MergedStepApplicant)}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
