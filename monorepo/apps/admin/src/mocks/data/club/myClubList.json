@@ -1,72 +1,52 @@
 [
     {
-      "id": "club-001",
-      "name": "엔샵",
-      "shortDescription": "뮤지컬을 사랑하는 사람들이 모여 함께 공연을 만들어가는 동아리입니다. 노래, 춤, 연기 모두 환영해요!",
-      "imageUrl": "https://cdn-icons-png.flaticon.com/128/5949/5949033.png",
-      "thumbnailUrl": "https://example.com/images/harmony_thumb.jpg",
-      "category": "PERFORMANCE_ARTS",
-      "clubTags": [
-        { "name": "뮤지컬" },
-        { "name": "공연" },
-        { "name": "노래" }
-      ],
-      "announcementStatus": "UPCOMING"
+        "id": "club-001",
+        "name": "엔샵",
+        "shortDescription": "뮤지컬을 사랑하는 사람들이 모여 함께 공연을 만들어가는 동아리입니다. 노래, 춤, 연기 모두 환영해요!",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/5949/5949033.png",
+        "thumbnailUrl": "https://example.com/images/harmony_thumb.jpg",
+        "category": "PERFORMANCE_ARTS",
+        "clubTags": [{ "name": "뮤지컬" }, { "name": "공연" }, { "name": "노래" }],
+        "announcementStatus": "UPCOMING"
     },
     {
-      "id": "club-002",
-      "name": "코딩 크루",
-      "shortDescription": "다양한 프로그래밍 언어를 배우고 프로젝트를 함께 개발하는 IT 동아리입니다. 초보자도 환영!",
-      "imageUrl": "https://cdn-icons-png.flaticon.com/128/17774/17774752.png",
-      "thumbnailUrl": "https://example.com/images/byte_thumb.jpg",
-      "category": "ACADEMIC",
-      "clubTags": [
-        { "name": "코딩" },
-        { "name": "개발" },
-        { "name": "IT" }
-      ],
-      "announcementStatus": "ONGOING"
+        "id": "club-002",
+        "name": "코딩 크루",
+        "shortDescription": "다양한 프로그래밍 언어를 배우고 프로젝트를 함께 개발하는 IT 동아리입니다. 초보자도 환영!",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/17774/17774752.png",
+        "thumbnailUrl": "https://example.com/images/byte_thumb.jpg",
+        "category": "ACADEMIC",
+        "clubTags": [{ "name": "코딩" }, { "name": "개발" }, { "name": "IT" }],
+        "announcementStatus": "ONGOING"
     },
     {
-      "id": "club-003",
-      "name": "여행 동아리",
-      "shortDescription": "국내외 숨겨진 명소를 찾아 떠나는 여행 동아리입니다. 함께 추억을 만들어요!",
-      "imageUrl": "https://cdn-icons-png.flaticon.com/128/5949/5949033.png",
-      "thumbnailUrl": "https://example.com/images/travel_thumb.jpg",
-      "category": "HOBBY",
-      "clubTags": [
-        { "name": "여행" },
-        { "name": "아웃도어" },
-        { "name": "탐방" }
-      ],
-      "announcementStatus": "UPCOMING"
+        "id": "club-003",
+        "name": "여행 동아리",
+        "shortDescription": "국내외 숨겨진 명소를 찾아 떠나는 여행 동아리입니다. 함께 추억을 만들어요!",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/5949/5949033.png",
+        "thumbnailUrl": "https://example.com/images/travel_thumb.jpg",
+        "category": "HOBBY",
+        "clubTags": [{ "name": "여행" }, { "name": "아웃도어" }, { "name": "탐방" }],
+        "announcementStatus": "UPCOMING"
     },
     {
-      "id": "club-004",
-      "name": "밴드 동아리 '에코'alkdjalksdjalksjdlksajdlkjaslkdjlkajsd",
-      "shortDescription": "각자의 악기로 밴드를 결성하고 라이브 공연을 꿈꾸는 동아리입니다. 락, 팝 등 장르 불문!",
-      "imageUrl": "https://cdn-icons-png.flaticon.com/128/8535/8535637.png",
-      "thumbnailUrl": "https://example.com/images/echo_thumb.jpg",
-      "category": "PERFORMANCE_ARTS",
-      "clubTags": [
-        { "name": "밴드" },
-        { "name": "음악" },
-        { "name": "공연" }
-      ],
-      "announcementStatus": "UPCOMING"
+        "id": "club-004",
+        "name": "밴드 동아리 '에코'alkdjalksdjalksjdlksajdlkjaslkdjlkajsd",
+        "shortDescription": "각자의 악기로 밴드를 결성하고 라이브 공연을 꿈꾸는 동아리입니다. 락, 팝 등 장르 불문!",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/8535/8535637.png",
+        "thumbnailUrl": "https://example.com/images/echo_thumb.jpg",
+        "category": "PERFORMANCE_ARTS",
+        "clubTags": [{ "name": "밴드" }, { "name": "음악" }, { "name": "공연" }],
+        "announcementStatus": "UPCOMING"
     },
     {
-      "id": "club-005",
-      "name": "독서 토론 '지식의 숲'",
-      "shortDescription": "다양한 분야의 책을 읽고 자유롭게 토론하며 지식을 나누는 독서 동아리입니다.",
-      "imageUrl": "https://cdn-icons-png.flaticon.com/128/14062/14062170.png",
-      "thumbnailUrl": "https://example.com/images/book_thumb.jpg",
-      "category": "ACADEMIC",
-      "clubTags": [
-        { "name": "독서" },
-        { "name": "토론" },
-        { "name": "인문학" }
-      ],
-      "announcementStatus": "CLOSED"
+        "id": "club-005",
+        "name": "독서 토론 '지식의 숲'",
+        "shortDescription": "다양한 분야의 책을 읽고 자유롭게 토론하며 지식을 나누는 독서 동아리입니다.",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/14062/14062170.png",
+        "thumbnailUrl": "https://example.com/images/book_thumb.jpg",
+        "category": "ACADEMIC",
+        "clubTags": [{ "name": "독서" }, { "name": "토론" }, { "name": "인문학" }],
+        "announcementStatus": "CLOSED"
     }
-  ]
+]
