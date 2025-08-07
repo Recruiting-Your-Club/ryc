@@ -25,6 +25,7 @@ import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
 import { getCategory } from '@utils/changeCategory';
 import { ClubApplyLoadingPage } from '@pages/LoadingPage';
+import { useRouter } from '@hooks/useRouter';
 
 function ClubApplyPage() {
     // prop destruction
@@ -32,6 +33,7 @@ function ClubApplyPage() {
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubLogo, clubCategory, clubDescription, clubStatus, applicationPeriod } =
         useClubStore();
+    const { goTo } = useRouter();
     // query hooks
     const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
@@ -188,6 +190,7 @@ function ClubApplyPage() {
         // TODO: 실제 제출 로직 구현
         console.log('제출된 답변:', answers);
         setIsSubmitDialogOpen(false);
+        goTo(`success`);
     };
 
     const handleQuestionFocus = (questionTitle: string, tab: string) => {
