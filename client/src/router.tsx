@@ -15,6 +15,7 @@ import {
     StepManagementPage,
     TestPage,
     RecruitmentLoadingPage,
+    ClubApplySuccessPage,
 } from './pages';
 
 const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
                         <LazyClubApplyPage />
                     </Suspense>
                 ),
+            },
+            {
+                path: ':announcementId/application/success',
+                element: <ClubApplySuccessPage />,
             },
         ],
     },
