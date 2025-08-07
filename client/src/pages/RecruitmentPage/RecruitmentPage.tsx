@@ -108,4 +108,4 @@ function RecruitmentPage() {
     );
 }
 
-export { RecruitmentPage };
+export default RecruitmentPage;
