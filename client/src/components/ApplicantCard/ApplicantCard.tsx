@@ -13,6 +13,7 @@ import {
     s_timeCircleSvg,
 } from './ApplicantCard.style';
 import type { ApplicantCardProps } from './types';
+import dayjs from 'dayjs';
 
 function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardProps) {
     // prop destruction
@@ -62,7 +63,10 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
             <Card.BottomBody sx={s_bottom}>
                 <span css={s_dateWrapper}>
                     <TimeCircle css={s_timeCircleSvg} />
-                    <Card.DescriptionText description={applicant.submittedAt} sx={s_dateText} />
+                    <Card.DescriptionText
+                        description={dayjs(applicant.submittedAt).format('YYYY-MM-DD')}
+                        sx={s_dateText}
+                    />
                 </span>
             </Card.BottomBody>
             <Divider sx={s_divider} />
