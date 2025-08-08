@@ -8,8 +8,14 @@ import {
     s_sucecessDescriptionContainer,
 } from './ClubApplySuccessPage.style';
 import { Button, Text } from '@components/_common';
+import { useApplicationStore } from '@stores/applicationStore';
+import { useClubStore } from '@stores/clubStore';
+import { useRouter } from '@hooks/useRouter';
 
 function ClubApplySuccessPage() {
+    const { clubName, clubField } = useClubStore();
+    const { userName, userEmail } = useApplicationStore();
+    const { goTo } = useRouter();
     return (
         <div css={s_applicationSuccessPageContainer}>
             <div css={s_sucecessDescriptionContainer}>
@@ -34,14 +40,14 @@ function ClubApplySuccessPage() {
                     </Text>
                 </div>
                 <div css={s_applicationUserInfoValue}>
-                    <Text type="bodyRegular">홍길동</Text>
-                    <Text type="bodyRegular">example@gmail.com</Text>
-                    <Text type="bodyRegular">EN#</Text>
-                    <Text type="bodyRegular">신입부원</Text>
+                    <Text type="bodyRegular">{userName}</Text>
+                    <Text type="bodyRegular">{userEmail}</Text>
+                    <Text type="bodyRegular">{clubName}</Text>
+                    <Text type="bodyRegular">{clubField}</Text>
                 </div>
             </div>
             <div css={s_goToHomeButtonWrapper}>
-                <Button size="full" color="primary">
+                <Button size="full" color="primary" onClick={() => goTo('/')}>
                     홈으로 이동
                 </Button>
             </div>
