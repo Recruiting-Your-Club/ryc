@@ -1,5 +1,7 @@
 package com.ryc.api.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.ryc.api.v2.security.exception.RestAuthenticationEntryPoint;
 import com.ryc.api.v2.security.exception.TokenAccessDeniedHandler;
@@ -75,13 +78,12 @@ public class SecurityConfiguration {
                 request
                     .requestMatchers(whitelistAllPaths)
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, whitelistPostPaths)
+                    .requestMatchers(regexMatchers(whitelistPostPaths, HttpMethod.POST))
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, whitelistGetPaths)
+                    .requestMatchers(regexMatchers(whitelistGetPaths, HttpMethod.GET))
                     .permitAll()
                     .anyRequest()
                     .authenticated());
-
     return http.build();
   }
 
@@ -94,5 +96,16 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(
       AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  private RequestMatcher[] regexMatchers(String[] regexes, HttpMethod method) {
+    return Arrays.stream(regexes)
+        .map(
+            pattern ->
+                (RequestMatcher)
+                    request ->
+                        request.getMethod().equals(method.name())
+                            && request.getRequestURI().matches(pattern))
+        .toArray(RequestMatcher[]::new);
   }
 }
