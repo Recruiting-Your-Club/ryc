@@ -1,13 +1,14 @@
 import ssoc from '@assets/images/ssoc.png';
 import React, { useState } from 'react';
 
-import { Button } from '@ssoc/ui';
+import { Button, Divider } from '@ssoc/ui';
 import { Editor, Image, ImageDialog, Input, Select, Text } from '@ssoc/ui';
 
 import { ClubBox, FileUpLoader, ImageRegister } from '../../components';
 import type { ClubBoxItem } from '../../components/ClubBox/types';
 import club from '../../mocks/data/club/clubDetail.json';
 import {
+    s_buttonWrapper,
     s_clubDetailPageContainer,
     s_clubHeader,
     s_clubHeaderTextContainer,
@@ -167,20 +168,33 @@ function ClubEditPage() {
                     <div css={s_editButtonContainer}>
                         {isEditMode ? (
                             <>
-                                <Button variant="text" onClick={() => setIsEditMode(!isEditMode)}>
+                                <Button
+                                    variant="text"
+                                    sx={s_buttonWrapper}
+                                    onClick={() => setIsEditMode(!isEditMode)}
+                                >
                                     저장
                                 </Button>
-                                <Button variant="text" onClick={() => setIsEditMode(!isEditMode)}>
+                                <Button
+                                    variant="text"
+                                    sx={s_buttonWrapper}
+                                    onClick={() => setIsEditMode(!isEditMode)}
+                                >
                                     취소
                                 </Button>
                             </>
                         ) : (
-                            <Button variant="text" onClick={() => setIsEditMode(!isEditMode)}>
+                            <Button
+                                variant="text"
+                                sx={s_buttonWrapper}
+                                onClick={() => setIsEditMode(!isEditMode)}
+                            >
                                 수정
                             </Button>
                         )}
                     </div>
                 </div>
+                <Divider sx={{ marginBottom: '3rem', marginTop: '1rem' }} />
                 <ClubBox
                     data={clubData}
                     isEditMode={isEditMode}

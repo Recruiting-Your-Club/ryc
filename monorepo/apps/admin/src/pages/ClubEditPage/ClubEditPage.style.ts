@@ -25,11 +25,9 @@ export const s_contentContainer = css`
 export const s_clubHeader = css`
     display: flex;
     align-items: center;
-    height: 10rem;
+    height: 7rem;
     gap: 1rem;
     padding: 0 1rem;
-    margin-bottom: 4rem;
-    border-bottom: 1px solid ${theme.colors.gray[200]};
 `;
 export const s_editButtonContainer = css`
     display: flex;
@@ -37,7 +35,9 @@ export const s_editButtonContainer = css`
     height: 100%;
     justify-content: end;
     align-items: end;
-    margin-bottom: 1rem;
+`;
+export const s_buttonWrapper = css`
+    padding-bottom: 0;
 `;
 export const s_clubImage = css`
     width: 6rem;
