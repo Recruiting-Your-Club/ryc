@@ -6,6 +6,8 @@ import docApplicantDetailList from '../data/applicant/docApplicantDetailList.jso
 import docApplicantList from '../data/applicant/docApplicantList.json';
 import docEvaluationList from '../data/applicant/docEvaluationList.json';
 import documentList from '../data/applicant/documentList.json';
+import recentDocumentList from '../data/applicant/recentDocumentList.json';
+import applicantDocumentList from '../data/applicant/applicantDocumentList.json';
 
 const userId = MOCK_USER_ID; // 임시
 
@@ -20,7 +22,7 @@ const applicantHandler = [
         return HttpResponse.json(detail as ApplicantDetail, { status: 200 });
     }),
     http.get(`${BASE_URL}documents/:id`, ({ params }) => {
-        const detail = documentList.find((document) => document.applicantId === Number(params.id));
+        const detail = documentList.find((document) => document.applicantId === params.id);
         return HttpResponse.json(detail as Document, { status: 200 });
     }),
     http.get(`${BASE_URL}doc-evaluation/:id`, ({ params }) => {
@@ -85,6 +87,34 @@ const applicantHandler = [
             targetComment.comment = body.comment;
 
             return HttpResponse.json(targetComment, { status: 200 });
+        },
+    ),
+    http.post(`${BASE_URL}document/search`, async ({ request }) => {
+        const { applicantIdList } = (await request.json()) as {
+            applicantIdList: string[];
+        };
+
+        const filteredEntries = Object.entries(recentDocumentList.documentsByApplicant).filter(
+            ([applicantId]) => applicantIdList.includes(applicantId),
+        );
+
+        const filtered = Object.fromEntries(filteredEntries);
+
+        return HttpResponse.json(filtered, { status: 200 });
+    }),
+    http.get(
+        `${BASE_URL}announcements/:announcementId/applicants/:applicantId`,
+        ({ request, params }) => {
+            const { applicantId } = params as {
+                applicantId: string;
+            };
+            const clubId = request.headers.get('X-CLUB-ID');
+
+            const document = applicantDocumentList.find(
+                (document) => document.applicantId === applicantId,
+            );
+
+            return HttpResponse.json(document, { status: 200 });
         },
     ),
 ];

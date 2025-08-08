@@ -31,8 +31,11 @@ const clubKeys = {
 const applicantKeys = {
     allApplicants: ['applicants'] as const,
     applicantDetail: (id: number) => ['applicant-detail', id] as const,
-    documentDetail: (id: number) => ['document-detail', id] as const,
+    documentDetail: (clubId: string, applicantIds: string[]) =>
+        ['document-detail', clubId, ...applicantIds] as const,
     evaluationDetail: (id: number) => ['doc-evaluation-detail', id] as const,
+    applicantDocument: (announcementId: string, applicantId: string, clubId: string) =>
+        ['applicant-document', announcementId, applicantId, clubId] as const,
 };
 
 const stepKeys = {

@@ -1,0 +1,1365 @@
+[
+    {
+        "applicantId": "1",
+        "name": "홍길동",
+        "email": "gildong.hong@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T10:00:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202412345" },
+            { "questionType": "PHONE_NUMBER", "value": "010-1234-5678" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile1.jpg" },
+            { "questionType": "NAME", "value": "홍길동" },
+            { "questionType": "EMAIL", "value": "gildong.hong@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "지원 동기에 대해 자세히 작성해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "귀사의 혁신적인 기술력에 매료되어 지원하게 되었습니다. 저의 역량을 발휘하여 회사 성장에 기여하고 싶습니다. 특히, 제가 진행했던 프로젝트 경험을 통해 문제 해결 능력을 키웠으며, 이러한 경험을 바탕으로 귀사의 당면 과제를 해결하는 데 도움이 될 수 있다고 확신합니다. 사용자 경험을 최적화하는 데 깊은 관심을 가지고 있으며, 함께 성장하는 팀의 일원이 되기를 희망합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "2",
+        "name": "김영희",
+        "email": "younghee.kim@email.com",
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-08-08T10:05:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202398765" },
+            { "questionType": "PHONE_NUMBER", "value": "010-9876-5432" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile2.jpg" },
+            { "questionType": "NAME", "value": "김영희" },
+            { "questionType": "EMAIL", "value": "younghee.kim@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React", "Spring"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "가장 도전적인 프로젝트 경험과 해결 방법을 서술해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "이전 프로젝트에서 대규모 데이터 처리 시스템을 구축할 때 성능 최적화 문제가 발생했습니다. 초기에는 비효율적인 쿼리로 인해 응답 속도가 매우 느렸습니다. 저는 이 문제를 해결하기 위해 데이터베이스 인덱스를 재설계하고, 비동기 처리를 도입했습니다. 그 결과, 응답 속도를 50% 이상 향상시킬 수 있었으며, 이는 팀 전체의 생산성에도 긍정적인 영향을 주었습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "3",
+        "name": "박철수",
+        "email": "chulsoo.park@email.com",
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-08-08T10:10:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202254321" },
+            { "questionType": "PHONE_NUMBER", "value": "010-5555-1234" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile3.jpg" },
+            { "questionType": "NAME", "value": "박철수" },
+            { "questionType": "EMAIL", "value": "chulsoo.park@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_park.pdf"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신의 장단점을 기술하고, 단점을 보완하기 위해 어떤 노력을 해왔는지 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저의 장점은 문제 해결을 위한 끊임없는 탐구력입니다. 단점은 때때로 너무 완벽주의를 추구하여 마감 기한에 쫓기는 경우가 있다는 점입니다. 이를 보완하기 위해, 저는 프로젝트 초기 단계부터 일정 관리를 철저히 하고, 중요한 부분부터 우선순위를 정하여 작업을 진행하는 습관을 들였습니다. 또한, 동료들과 정기적인 피드백을 주고받으며 현실적인 목표를 설정하는 노력을 해왔습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "4",
+        "name": "이은지",
+        "email": "eunji.lee@email.com",
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-08T10:15:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202111111" },
+            { "questionType": "PHONE_NUMBER", "value": "010-2222-3333" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile4.jpg" },
+            { "questionType": "NAME", "value": "이은지" },
+            { "questionType": "EMAIL", "value": "eunji.lee@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ4",
+                "questionLabel": "가장 자신있는 프로그래밍 언어",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "JavaScript",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "귀사의 제품/서비스에 대한 개선 아이디어를 제안하고, 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "귀사의 모바일 애플리케이션의 UX를 개선할 수 있다고 생각합니다. 현재 검색 기능이 다소 복잡하게 느껴질 수 있어, 사용자 친화적인 필터링 옵션과 실시간 검색 기능을 추가하면 사용자의 편의성을 크게 높일 수 있을 것입니다. 이는 사용자가 원하는 정보를 더 빠르게 찾을 수 있도록 도와 재방문율과 만족도를 높이는 효과를 가져올 것입니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "5",
+        "name": "최민준",
+        "email": "minjun.choi@email.com",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T10:20:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202099999" },
+            { "questionType": "PHONE_NUMBER", "value": "010-8888-7777" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile5.jpg" },
+            { "questionType": "NAME", "value": "최민준" },
+            { "questionType": "EMAIL", "value": "minjun.choi@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["대전"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_choi.zip"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "팀워크 경험과 본인의 역할을 구체적으로 기술해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "대학 시절 팀 프로젝트에서 저는 백엔드 개발을 담당했습니다. 팀원들과의 소통을 위해 매일 아침 스탠드업 미팅을 주도하고, 이슈가 발생했을 때 해결 방안을 함께 모색했습니다. 특히, 팀원 간 기술 격차를 줄이기 위해 스터디를 제안하고, 서로의 코드를 리뷰하며 코드 품질을 높이는 데 기여했습니다. 이러한 경험을 통해 팀의 목표 달성을 위해 협력하는 것의 중요성을 깨달았습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "6",
+        "name": "한지수",
+        "email": "jisoo.han@email.com",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T10:25:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "201987654" },
+            { "questionType": "PHONE_NUMBER", "value": "010-3333-4444" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile6.jpg" },
+            { "questionType": "NAME", "value": "한지수" },
+            { "questionType": "EMAIL", "value": "jisoo.han@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["Angular", "Spring"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 생각하는 이상적인 개발 문화와 그 이유를 서술해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "제가 생각하는 이상적인 개발 문화는 '자율성'과 '책임감'이 공존하는 문화입니다. 개발자 개인이 자신의 업무에 대한 주도권을 가지고, 새로운 기술을 탐구하고 적용할 수 있는 환경이 중요하다고 생각합니다. 동시에, 자신의 코드와 결과물에 대한 책임감을 가지고 동료들과 협력하여 프로젝트를 성공적으로 이끌어가는 문화가 가장 효율적이고 긍정적인 결과를 가져온다고 믿습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "7",
+        "name": "정우진",
+        "email": "woojin.jung@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T10:30:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202456789" },
+            { "questionType": "PHONE_NUMBER", "value": "010-4444-5555" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile7.jpg" },
+            { "questionType": "NAME", "value": "정우진" },
+            { "questionType": "EMAIL", "value": "woojin.jung@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "5,500만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "개발자로서 가장 중요하게 생각하는 역량 3가지를 꼽고 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "첫째, 문제 해결 능력입니다. 예상치 못한 문제에 직면했을 때 논리적으로 접근하고 효율적인 해결책을 찾는 것이 중요합니다. 둘째, 지속적인 학습 능력입니다. 빠르게 변화하는 기술 트렌드에 발맞추기 위해 끊임없이 배우고 새로운 지식을 습득하는 태도가 필요합니다. 셋째, 커뮤니케이션 능력입니다. 팀원들과 효과적으로 소통하고, 아이디어를 명확하게 전달하며 협업하는 것이 성공적인 프로젝트의 핵심이라고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "8",
+        "name": "윤아름",
+        "email": "areum.yoon@email.com",
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-08T10:35:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202322334" },
+            { "questionType": "PHONE_NUMBER", "value": "010-6666-7777" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile8.jpg" },
+            { "questionType": "NAME", "value": "윤아름" },
+            { "questionType": "EMAIL", "value": "areum.yoon@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React", "Angular"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "이전에 속했던 팀/조직에서 겪었던 갈등 상황과 해결 과정을 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "이전 프로젝트에서 팀원 간의 의견 차이로 인해 갈등이 발생했습니다. 각자 다른 기술 스택을 선호했기 때문입니다. 저는 중재자 역할을 맡아 팀원들의 의견을 경청하고, 각 기술의 장단점을 정리하여 객관적인 자료를 제시했습니다. 최종적으로는 프로젝트의 요구사항과 팀의 목표에 가장 적합한 기술을 함께 선택하여 갈등을 해결하고, 팀원들이 모두 납득할 수 있는 결론을 도출했습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "9",
+        "name": "강태현",
+        "email": "taehyun.kang@email.com",
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-08-08T10:40:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202287654" },
+            { "questionType": "PHONE_NUMBER", "value": "010-7777-8888" },
+            { "questionType": "PROFILE_IMAGE", "value": "https://example.com/images/profile9.jpg" },
+            { "questionType": "NAME", "value": "강태현" },
+            { "questionType": "EMAIL", "value": "taehyun.kang@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_kang.pdf"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신의 성장 경험 중 가장 기억에 남는 경험과 그 과정에서 얻은 교훈을 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "개인 프로젝트를 진행하며 복잡한 알고리즘을 구현해야 했을 때, 예상치 못한 오류에 직면하여 몇 주간 해결하지 못했습니다. 하지만 포기하지 않고 관련 논문과 오픈소스 코드를 분석하며 해결책을 찾아냈습니다. 이 경험을 통해 기술적인 어려움에 부딪혔을 때, 혼자 고민하기보다는 다양한 자료를 탐색하고 끈기 있게 문제를 해결하는 것이 중요하다는 교훈을 얻었습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "10",
+        "name": "서지원",
+        "email": "jiwon.seo@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T10:45:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202134567" },
+            { "questionType": "PHONE_NUMBER", "value": "010-9999-0000" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile10.jpg"
+            },
+            { "questionType": "NAME", "value": "서지원" },
+            { "questionType": "EMAIL", "value": "jiwon.seo@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["Spring"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 가장 잘한다고 생각하는 기술 역량을 중심으로 자기소개를 해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저는 백엔드 개발자로서 Spring Framework를 활용한 API 개발에 강점을 가지고 있습니다. 특히 대용량 트래픽을 처리하는 시스템 설계와 데이터베이스 최적화에 대한 경험이 풍부합니다. 효율적인 코드 작성과 안정적인 시스템 운영을 위해 노력하며, 클린 코드와 TDD(Test-Driven Development) 원칙을 준수합니다. 이러한 역량을 바탕으로 귀사의 서비스 안정성과 성능 향상에 크게 기여할 수 있다고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "11",
+        "name": "임나영",
+        "email": "nayoung.lim@email.com",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T10:50:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202023456" },
+            { "questionType": "PHONE_NUMBER", "value": "010-1122-3344" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile11.jpg"
+            },
+            { "questionType": "NAME", "value": "임나영" },
+            { "questionType": "EMAIL", "value": "nayoung.lim@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "4,800만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 지원한 직무에 필요한 역량은 무엇이라고 생각하며, 이를 위해 어떤 노력을 해왔는지 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "제가 지원한 UI/UX 디자이너 직무에 가장 필요한 역량은 '사용자 공감 능력'이라고 생각합니다. 사용자의 입장에서 불편함을 느끼는 지점을 찾아내고, 이를 개선하기 위한 해결책을 디자인하는 것이 중요하기 때문입니다. 저는 이 역량을 키우기 위해 다양한 사용자 인터뷰를 진행하고, A/B 테스트를 통해 데이터를 기반으로 디자인을 개선하는 경험을 쌓았습니다. 이러한 경험을 통해 사용자 중심의 디자인을 실현할 수 있다고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "12",
+        "name": "고준혁",
+        "email": "junhyuk.go@email.com",
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-08-08T10:55:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "201976543" },
+            { "questionType": "PHONE_NUMBER", "value": "010-5566-7788" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile12.jpg"
+            },
+            { "questionType": "NAME", "value": "고준혁" },
+            { "questionType": "EMAIL", "value": "junhyuk.go@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["대전"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["Vue"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 생각하는 가장 중요한 개발 원칙은 무엇이며, 그 이유는 무엇인가요?",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저는 '유지보수 용이성'이 가장 중요한 개발 원칙이라고 생각합니다. 코드는 한 번 작성되면 끝이 아니라, 지속적으로 개선되고 확장되어야 하기 때문입니다. 유지보수가 용이한 코드를 작성하기 위해 저는 항상 클린 코드 원칙을 준수하고, 명확한 변수명과 함수명을 사용하며, 주석을 통해 코드의 의도를 명확히 전달하는 노력을 합니다. 이는 장기적으로 프로젝트의 안정성과 생산성을 높이는 데 기여한다고 믿습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "13",
+        "name": "문소연",
+        "email": "soyeon.moon@email.com",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T11:00:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202354321" },
+            { "questionType": "PHONE_NUMBER", "value": "010-8899-0011" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile13.jpg"
+            },
+            { "questionType": "NAME", "value": "문소연" },
+            { "questionType": "EMAIL", "value": "soyeon.moon@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_moon.zip"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "직무와 관련된 최신 기술 동향에 대해 아는 바를 설명하고, 본인의 의견을 덧붙여 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "최근 AI 기술이 개발 프로세스에 통합되면서 'AI 기반 코드 생성 및 디버깅'이 주목받고 있습니다. 저는 이러한 기술이 개발자의 생산성을 크게 향상시킬 수 있다고 생각합니다. 단순히 코드를 생성하는 것을 넘어, 반복적이고 단순한 작업을 자동화함으로써 개발자가 더 창의적이고 복잡한 문제 해결에 집중할 수 있는 환경을 만들어 줄 것입니다. 저 역시 이러한 기술을 적극적으로 활용하여 업무 효율을 높이고 싶습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "14",
+        "name": "전동현",
+        "email": "donghyun.jeon@email.com",
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-08T11:05:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202267890" },
+            { "questionType": "PHONE_NUMBER", "value": "010-1133-5577" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile14.jpg"
+            },
+            { "questionType": "NAME", "value": "전동현" },
+            { "questionType": "EMAIL", "value": "donghyun.jeon@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["부산"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "6,000만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "본인이 기여한 오픈소스 프로젝트나 개인 프로젝트 경험을 구체적으로 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저는 'Weather-App'이라는 개인 프로젝트를 진행했습니다. 이 프로젝트는 사용자의 현재 위치를 기반으로 실시간 날씨 정보를 제공하는 웹 애플리케이션입니다. React와 OpenWeatherMap API를 사용하여 프론트엔드를 구축하고, Node.js로 백엔드 서버를 구현했습니다. 이 프로젝트를 통해 API 연동, 비동기 데이터 처리, 그리고 컴포넌트 기반 개발에 대한 깊은 이해를 얻을 수 있었습니다. 또한, Git을 활용한 버전 관리와 배포 과정까지 혼자 힘으로 완성하여 개발의 전반적인 과정을 경험했습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "15",
+        "name": "배수현",
+        "email": "suhyun.bae@email.com",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T11:10:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202198765" },
+            { "questionType": "PHONE_NUMBER", "value": "010-2244-6688" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile15.jpg"
+            },
+            { "questionType": "NAME", "value": "배수현" },
+            { "questionType": "EMAIL", "value": "suhyun.bae@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["Angular", "Vue", "Spring"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "데이터 분석가로서 가장 중요하다고 생각하는 역량과 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "데이터 분석가에게 가장 중요한 역량은 '문제 정의 능력'이라고 생각합니다. 단순히 데이터를 수집하고 분석하는 것을 넘어, 비즈니스 문제를 정확히 이해하고 해결하기 위한 가설을 세우는 것이 데이터 분석의 시작이자 가장 중요한 단계이기 때문입니다. 문제 정의가 명확해야 올바른 데이터를 선택하고, 유의미한 분석 결과를 도출할 수 있습니다. 저는 이러한 역량을 바탕으로 귀사의 성장에 실질적인 도움을 줄 수 있다고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "16",
+        "name": "장민우",
+        "email": "minwoo.jang@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T11:15:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202011223" },
+            { "questionType": "PHONE_NUMBER", "value": "010-3355-7799" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile16.jpg"
+            },
+            { "questionType": "NAME", "value": "장민우" },
+            { "questionType": "EMAIL", "value": "minwoo.jang@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "5,300만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "직무 관련 경험을 포함하여 본인이 가진 강점을 서술해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저의 가장 큰 강점은 빠른 학습 능력과 적응력입니다. 새로운 기술이나 개발 환경에 빠르게 적응하여 능숙하게 활용하는 능력이 뛰어나다고 생각합니다. 이전 회사에서 새로운 프로젝트에 투입되었을 때, 팀이 사용하던 기술 스택에 익숙하지 않았지만, 한 달 안에 관련 서적과 온라인 강의를 통해 핵심 개념을 익히고 프로젝트에 기여했습니다. 이러한 강점을 바탕으로 귀사의 기술 환경에 빠르게 적응하여 즉시 성과를 낼 수 있습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "17",
+        "name": "오지훈",
+        "email": "jihun.oh@email.com",
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-08-08T11:20:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "201944556" },
+            { "questionType": "PHONE_NUMBER", "value": "010-4466-8800" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile17.jpg"
+            },
+            { "questionType": "NAME", "value": "오지훈" },
+            { "questionType": "EMAIL", "value": "jihun.oh@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React", "Angular"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_oh.pdf"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "프로젝트를 진행하며 겪었던 기술적 난관과 이를 극복한 경험을 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "이전 프로젝트에서 특정 모듈의 성능 병목 현상이 발생하여 사용자 경험에 부정적인 영향을 미쳤습니다. 원인을 파악하기 위해 로그를 분석하고 프로파일링 도구를 사용하여 병목 지점을 정확히 찾아냈습니다. 이후 캐싱 전략을 도입하고, 데이터베이스 쿼리를 최적화하여 성능을 획기적으로 개선했습니다. 이 경험을 통해 문제의 근본적인 원인을 찾아 해결하는 디버깅 역량과 성능 최적화에 대한 실질적인 경험을 쌓았습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "18",
+        "name": "김다정",
+        "email": "dajung.kim@email.com",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T11:25:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202377889" },
+            { "questionType": "PHONE_NUMBER", "value": "010-5577-9911" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile18.jpg"
+            },
+            { "questionType": "NAME", "value": "김다정" },
+            { "questionType": "EMAIL", "value": "dajung.kim@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["부산"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "협업 과정에서 본인이 가장 중요하게 생각하는 것은 무엇이며, 그 이유는 무엇인가요?",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "협업 과정에서 가장 중요하게 생각하는 것은 '적극적인 소통'입니다. 팀원들 간의 명확한 의사소통은 오해를 줄이고, 프로젝트의 목표를 일치시키는 데 필수적이기 때문입니다. 저는 정기적인 미팅 외에도, 슬랙이나 지라 같은 협업 툴을 활용하여 실시간으로 진행 상황을 공유하고, 필요한 경우 직접 찾아가서 논의하는 것을 주저하지 않습니다. 이러한 적극적인 소통이 팀의 시너지를 극대화한다고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "19",
+        "name": "윤서연",
+        "email": "seoyeon.yoon@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T11:30:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202288990" },
+            { "questionType": "PHONE_NUMBER", "value": "010-6688-0022" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile19.jpg"
+            },
+            { "questionType": "NAME", "value": "윤서연" },
+            { "questionType": "EMAIL", "value": "seoyeon.yoon@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["Vue", "Spring"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "5,200만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "입사 후 어떤 목표를 가지고 있으며, 어떻게 달성할 계획인지 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "입사 후 1년 안에 귀사의 서비스 핵심 기능을 완벽히 이해하고, 제가 맡은 분야에서 신뢰받는 개발자가 되는 것이 목표입니다. 이를 위해 초기에는 코드 리뷰에 적극적으로 참여하고, 사내 문서들을 꼼꼼히 읽으며 기존 코드베이스를 학습할 것입니다. 이후에는 팀의 기술 스택에 대한 깊은 이해를 바탕으로 성능 개선이나 새로운 기능 개발에 주도적으로 참여하여 성과를 만들어내겠습니다. 장기적으로는 팀의 기술 리더로 성장하고 싶습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "20",
+        "name": "이정호",
+        "email": "jeongho.lee@email.com",
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-08T11:35:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202100112" },
+            { "questionType": "PHONE_NUMBER", "value": "010-7799-1133" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile20.jpg"
+            },
+            { "questionType": "NAME", "value": "이정호" },
+            { "questionType": "EMAIL", "value": "jeongho.lee@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_lee.pdf"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 가장 열정을 가지고 몰입했던 경험과 그 과정에서 배운 점을 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "대학교 졸업 프로젝트 때, 실시간 스트리밍 서비스를 개발하는 데 깊이 몰입했습니다. 밤샘 코딩을 할 정도로 열정을 쏟았지만, 예상치 못한 서버 부하 문제에 직면했습니다. 이 문제를 해결하기 위해 부하 테스트를 직접 수행하고, 로드밸런싱 기술을 적용하는 등 다양한 방법을 시도했습니다. 이 과정에서 이론으로만 알던 지식을 실제로 적용하며 기술적인 성장을 이룰 수 있었고, 실패를 두려워하지 않는 도전 정신을 배웠습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "21",
+        "name": "송은지",
+        "email": "eunji.song@email.com",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T11:40:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202022334" },
+            { "questionType": "PHONE_NUMBER", "value": "010-8800-2244" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile21.jpg"
+            },
+            { "questionType": "NAME", "value": "송은지" },
+            { "questionType": "EMAIL", "value": "eunji.song@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "본인이 생각하는 가장 성공적인 마케팅 캠페인 사례를 들고, 그 이유를 분석해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "본인이 생각하는 가장 성공적인 마케팅 캠페인 사례를 들고, 그 이유를 분석해 주세요.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "22",
+        "name": "정우성",
+        "email": "woosung.jung@email.com",
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-08-08T11:45:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "201933445" },
+            { "questionType": "PHONE_NUMBER", "value": "010-9911-3355" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile22.jpg"
+            },
+            { "questionType": "NAME", "value": "정우성" },
+            { "questionType": "EMAIL", "value": "woosung.jung@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React", "Spring"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "5,800만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 리더 역할을 맡아 프로젝트를 성공적으로 이끌었던 경험을 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "졸업 작품 프로젝트에서 팀장을 맡아 팀원들의 역할 분담과 일정 관리를 담당했습니다. 초기에는 팀원들의 의견이 통일되지 않아 어려움을 겪었지만, 매주 정기적인 회의를 통해 각자의 아이디어를 자유롭게 나누도록 격려했습니다. 저는 최종 결정을 내리기보다는 팀원들의 합의를 이끌어내는 데 집중했고, 이를 통해 팀원들이 각자 맡은 역할에 책임감을 가지고 참여하게 되었습니다. 그 결과, 프로젝트를 성공적으로 마무리하고 우수한 평가를 받았습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "23",
+        "name": "신현아",
+        "email": "hyuna.shin@email.com",
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-08T11:50:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202455667" },
+            { "questionType": "PHONE_NUMBER", "value": "010-0022-4466" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile23.jpg"
+            },
+            { "questionType": "NAME", "value": "신현아" },
+            { "questionType": "EMAIL", "value": "hyuna.shin@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["대전"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_shin.pdf"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 생각하는 가장 중요한 IT 트렌드와 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저는 '클라우드 컴퓨팅'이 가장 중요한 IT 트렌드라고 생각합니다. 기업의 비즈니스 확장성과 효율성을 극대화하는 핵심 기술이기 때문입니다. 특히, 서버리스(Serverless) 아키텍처는 개발자가 인프라 관리에 신경 쓰지 않고 비즈니스 로직에만 집중할 수 있게 하여 개발 속도를 높이고 운영 비용을 절감하는 효과를 가져옵니다. 저는 클라우드 기술을 활용한 프로젝트 경험이 있으며, 이러한 역량으로 귀사의 클라우드 환경 구축에 기여하고 싶습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "24",
+        "name": "박서준",
+        "email": "seojun.park@email.com",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T11:55:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202377889" },
+            { "questionType": "PHONE_NUMBER", "value": "010-1122-3344" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile24.jpg"
+            },
+            { "questionType": "NAME", "value": "박서준" },
+            { "questionType": "EMAIL", "value": "seojun.park@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React", "Vue"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "협의 후 결정",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "귀사에 입사하여 어떤 방식으로 기여하고 싶은지 구체적으로 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저는 귀사의 웹 서비스 성능을 개선하는 데 기여하고 싶습니다. 특히, 제가 가진 프론트엔드 최적화 경험을 활용하여 초기 로딩 속도를 단축하고, 사용자 인터페이스의 반응성을 높이는 데 집중하겠습니다. 이를 위해 웹팩(Webpack) 설정 최적화, 이미지 압축, 코드 스플리팅 등 다양한 기술을 적용해 보고 싶습니다. 또한, 정기적인 사용자 데이터 분석을 통해 성능 개선 효과를 측정하고, 지속적으로 서비스를 발전시키는 데 기여하겠습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "25",
+        "name": "권은진",
+        "email": "eunjin.kwon@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T12:00:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202288990" },
+            { "questionType": "PHONE_NUMBER", "value": "010-3344-5566" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile25.jpg"
+            },
+            { "questionType": "NAME", "value": "권은진" },
+            { "questionType": "EMAIL", "value": "eunjin.kwon@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_kwon.zip"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 생각하는 가장 중요한 업무 윤리와 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "제가 가장 중요하게 생각하는 업무 윤리는 '책임감'입니다. 자신이 맡은 업무에 대해 끝까지 책임지고, 최선을 다해 완성하는 태도가 전문가로서 필수적이라고 생각합니다. 만약 예상치 못한 문제가 발생하더라도, 이를 숨기기보다는 솔직하게 공유하고 팀원들과 함께 해결 방안을 찾는 책임감 있는 자세가 중요합니다. 이러한 책임감이 바탕이 되어야 신뢰를 쌓고, 팀의 목표 달성에 기여할 수 있다고 믿습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "26",
+        "name": "김진영",
+        "email": "jinyoung.kim@email.com",
+        "status": "DOCUMENT_PASS",
+        "submittedAt": "2025-08-08T12:05:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202100112" },
+            { "questionType": "PHONE_NUMBER", "value": "010-4455-6677" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile26.jpg"
+            },
+            { "questionType": "NAME", "value": "김진영" },
+            { "questionType": "EMAIL", "value": "jinyoung.kim@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["Spring", "Vue"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "이전에 속했던 팀에서 자신이 맡았던 역할을 자세히 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "이전 프로젝트에서 저는 백엔드 팀의 일원으로, 주로 RESTful API를 설계하고 구현하는 역할을 맡았습니다. 사용자 인증 및 결제 시스템을 담당하여, Spring Security와 JPA를 활용해 안전하고 효율적인 API를 개발했습니다. 또한, 팀의 코드 리뷰에 적극적으로 참여하여 코드 품질을 유지하는 데 기여했습니다. 이러한 경험을 통해 협업과 분산 시스템 개발에 대한 이해도를 높일 수 있었습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "27",
+        "name": "이성민",
+        "email": "sungmin.lee@email.com",
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-08-08T12:10:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202022334" },
+            { "questionType": "PHONE_NUMBER", "value": "010-5566-7788" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile27.jpg"
+            },
+            { "questionType": "NAME", "value": "이성민" },
+            { "questionType": "EMAIL", "value": "sungmin.lee@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "4,900만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_lee2.pdf"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "이전 프로젝트에서 발생한 실패 경험과 그로부터 얻은 교훈을 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "이전 프로젝트에서 초기 설계 단계에 충분한 시간을 투자하지 않아, 후반부에 큰 구조적 결함이 발견되어 프로젝트를 재정비해야 하는 상황이 발생했습니다. 이 실패를 통해 프로젝트의 성공은 견고한 **설계**에서 시작된다는 중요한 교훈을 얻었습니다. 이후로는 개발을 시작하기 전에 팀원들과 함께 충분히 논의하고, 예상되는 문제점을 미리 파악하여 더 효율적인 설계안을 만드는 데 집중하게 되었습니다. 이러한 경험은 제가 더 신중하고 체계적인 개발자가 되는 데 큰 도움이 되었습니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "28",
+        "name": "황민서",
+        "email": "minseo.hwang@email.com",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T12:15:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202377889" },
+            { "questionType": "PHONE_NUMBER", "value": "010-6677-8899" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile28.jpg"
+            },
+            { "questionType": "NAME", "value": "황민서" },
+            { "questionType": "EMAIL", "value": "minseo.hwang@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ1",
+                "questionLabel": "희망 근무지",
+                "questionType": "SINGLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["서울", "부산", "대전"],
+                "textAnswer": "",
+                "selectedOptionIds": ["서울"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React"],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 생각하는 가장 효율적인 개발 방법론과 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "저는 '애자일(Agile) 개발 방법론'이 가장 효율적이라고 생각합니다. 급변하는 시장 환경에 유연하게 대응하고, 고객의 피드백을 빠르게 반영하여 제품을 개선할 수 있기 때문입니다. 특히, 짧은 주기(Sprint)로 개발을 진행하고 정기적으로 결과를 공유함으로써 팀원 모두가 목표에 집중하고 책임감을 가질 수 있습니다. 저의 적극적인 소통과 협업 능력이 애자일 방법론과 잘 맞다고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "29",
+        "name": "강태민",
+        "email": "taemin.kang@email.com",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T12:20:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202111223" },
+            { "questionType": "PHONE_NUMBER", "value": "010-7788-9900" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile29.jpg"
+            },
+            { "questionType": "NAME", "value": "강태민" },
+            { "questionType": "EMAIL", "value": "taemin.kang@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ3",
+                "questionLabel": "포트폴리오",
+                "questionType": "FILE",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "",
+                "selectedOptionIds": [],
+                "fileUrl": "https://example.com/files/portfolio_kang2.zip"
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "귀사에 지원하기 위해 특별히 준비한 것이 있다면 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "귀사에서 주력으로 사용하는 기술 스택인 Node.js와 TypeScript에 대한 이해를 높이기 위해 관련 강의를 수강하고 개인 프로젝트를 진행했습니다. 특히, 귀사의 서비스가 가진 특징을 분석하여, 예상되는 트래픽 증가에 대비한 확장성 있는 아키텍처를 설계하는 것에 초점을 맞췄습니다. 이를 통해 귀사의 기술 환경에 빠르게 적응하고, 서비스 발전에 즉각적으로 기여할 수 있는 준비를 마쳤다고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    },
+    {
+        "applicantId": "30",
+        "name": "윤지현",
+        "email": "jihyun.yoon@email.com",
+        "status": "INTERVIEW_PASS",
+        "submittedAt": "2025-08-08T12:25:00Z",
+        "personalInfos": [
+            { "questionType": "STUDENT_ID", "value": "202022334" },
+            { "questionType": "PHONE_NUMBER", "value": "010-8899-0011" },
+            {
+                "questionType": "PROFILE_IMAGE",
+                "value": "https://example.com/images/profile30.jpg"
+            },
+            { "questionType": "NAME", "value": "윤지현" },
+            { "questionType": "EMAIL", "value": "jihyun.yoon@email.com" }
+        ],
+        "preQuestionAnswers": [
+            {
+                "questionId": "preQ2",
+                "questionLabel": "사용 경험이 있는 기술 스택",
+                "questionType": "MULTIPLE_CHOICE",
+                "isRequired": true,
+                "questionOptions": ["React", "Angular", "Vue", "Spring"],
+                "textAnswer": "",
+                "selectedOptionIds": ["React", "Angular", "Vue"],
+                "fileUrl": ""
+            },
+            {
+                "questionId": "preQ4",
+                "questionLabel": "희망 연봉",
+                "questionType": "SHORT_ANSWER",
+                "isRequired": false,
+                "questionOptions": [],
+                "textAnswer": "5,100만 원",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ],
+        "applicationQuestionAnswers": [
+            {
+                "questionId": "appQ1",
+                "questionLabel": "자신이 가장 중요하게 생각하는 코딩 습관과 그 이유를 설명해 주세요.",
+                "questionType": "LONG_ANSWER",
+                "isRequired": true,
+                "questionOptions": [],
+                "textAnswer": "제가 가장 중요하게 생각하는 코딩 습관은 '코드 리뷰'입니다. 코드 리뷰는 단순히 오류를 찾아내는 것을 넘어, 팀원 간의 기술적 지식을 공유하고 더 나은 코드를 함께 고민하는 과정이기 때문입니다. 저는 코드 리뷰를 통해 다른 사람의 관점에서 코드를 바라보는 시야를 넓힐 수 있었고, 코드 품질을 높이는 데 큰 도움을 받았습니다. 이러한 협업 과정은 제 개인의 성장뿐만 아니라 팀 전체의 기술력 향상에 필수적이라고 생각합니다.",
+                "selectedOptionIds": [],
+                "fileUrl": ""
+            }
+        ]
+    }
+]

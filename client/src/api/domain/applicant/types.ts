@@ -10,8 +10,8 @@ export interface ApplicantDetail extends Applicant {
 }
 
 export interface Document {
-    applicantId: number;
-    detail: { id: number; question: string; answer: string }[];
+    applicantId: string;
+    detail: { id: string; question: string; answer: string }[];
 }
 
 export interface Evaluation {
@@ -33,4 +33,43 @@ export interface CommentWithIsUser extends Comment {
 
 export interface EvaluationWithIsMine extends Omit<Evaluation, 'comments'> {
     comments: CommentWithIsUser[];
+}
+
+export interface DocumentDetail {
+    id: string;
+    question: string;
+    answer: string;
+}
+
+export interface DocumentAll {
+    documentsByApplicant: {
+        [applicantId: string]: DocumentDetail[];
+    };
+}
+
+export interface ApplicantDocument {
+    applicantId: string;
+    name: string;
+    email: string;
+    status: string;
+    submittedAt: string;
+    personalInfos?: PersonalInfo[];
+    preQuestionAnswers?: QuestionAnswer[];
+    applicationQuestionAnswers?: QuestionAnswer[];
+}
+
+export interface PersonalInfo {
+    questionType: string;
+    value: string;
+}
+
+export interface QuestionAnswer {
+    questionId: string;
+    questionLabel: string;
+    questionType: string;
+    isRequired: boolean;
+    questionOptions?: string[][];
+    textAnswer?: string;
+    selectedOptionIds?: string[];
+    fileUrl?: string;
 }
