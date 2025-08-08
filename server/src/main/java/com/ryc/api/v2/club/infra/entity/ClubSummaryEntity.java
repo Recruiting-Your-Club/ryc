@@ -12,15 +12,13 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClubSummaryEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+  @Id private String id;
 
   @Column(nullable = false)
   private String title;
 
   @Column(nullable = false)
-  private String value;
+  private String content;
 
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)

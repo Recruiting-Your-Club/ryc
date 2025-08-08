@@ -37,7 +37,7 @@ public class ClubEntity extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String imageUrl;
 
-  @Column(columnDefinition = "varchar(500)")
+  @Column(length = 500)
   private String thumbnailUrl;
 
   @Enumerated(EnumType.STRING)

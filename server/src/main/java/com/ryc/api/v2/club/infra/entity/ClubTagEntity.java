@@ -12,9 +12,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClubTagEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+  @Id private String id;
 
   @Column(nullable = false)
   private String name;

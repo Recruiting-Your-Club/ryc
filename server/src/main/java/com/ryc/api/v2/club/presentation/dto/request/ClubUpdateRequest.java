@@ -2,6 +2,7 @@ package com.ryc.api.v2.club.presentation.dto.request;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,9 +27,9 @@ public record ClubUpdateRequest(
               "RELIGION"
             })
         String category,
-    @Schema(description = "동아리 태그 리스트") List<ClubTagRequest> clubTags,
-    @Schema(description = "동아리 요약 리스트") List<ClubSummaryRequest> clubSummaries,
-    @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImageRequest> clubDetailImages) {
+    @Valid @Schema(description = "동아리 태그 리스트") List<ClubTagRequest> clubTags,
+    @Valid @Schema(description = "동아리 요약 리스트") List<ClubSummaryRequest> clubSummaries,
+    @Valid @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImageRequest> clubDetailImages) {
 
   public ClubUpdateRequest {
     clubTags = clubTags == null ? List.of() : clubTags;

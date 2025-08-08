@@ -12,14 +12,12 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClubDetailImageEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+  @Id private String id;
 
-  @Column(nullable = false, columnDefinition = "VARCHAR(500)")
+  @Column(nullable = false, length = 500)
   private String imageUrl;
 
-  @Column(nullable = false, columnDefinition = "VARCHAR(500)")
+  @Column(nullable = false, length = 500)
   private String thumbnailUrl;
 
   @Setter

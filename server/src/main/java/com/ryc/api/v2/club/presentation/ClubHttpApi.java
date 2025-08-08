@@ -49,7 +49,7 @@ public class ClubHttpApi {
     ClubCreateResponse response = clubFacade.createClub(userDetail.getId(), body);
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/v2/clubs/{club-id}")
+            .path("{club-id}")
             .buildAndExpand(response.clubId())
             .toUri();
     return ResponseEntity.created(location).body(response);
@@ -57,7 +57,9 @@ public class ClubHttpApi {
 
   @PutMapping("/{id}")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "동아리 수정 API", description = "ID에 해당하는 동아리를 수정합니다. 수정하고싶은 필드만 포함시켜주세요.")
+  @Operation(
+      summary = "동아리 수정 API",
+      description = "ID에 해당하는 동아리를 수정합니다. 요청 본문에는 필요한 필드를 모두 포함해야 합니다.")
   @ApiErrorCodeExample(
       value = {ClubErrorCode.class, PermissionErrorCode.class, CommonErrorCode.class},
       include = {

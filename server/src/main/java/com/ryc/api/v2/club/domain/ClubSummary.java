@@ -14,13 +14,13 @@ public class ClubSummary {
 
   private final String id;
   private final String title;
-  private final String value;
+  private final String content;
 
   public static ClubSummary initialize(ClubSummaryRequest request) {
     return ClubSummary.builder()
         .id(request.id())
         .title(request.title())
-        .value(request.value())
+        .content(request.content())
         .build();
   }
 }
