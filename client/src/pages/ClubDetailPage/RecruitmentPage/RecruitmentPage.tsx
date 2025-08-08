@@ -14,7 +14,7 @@ function RecruitmentPage() {
 
     // lib hooks
     const { id: clubId } = useParams<{ id: string }>();
-    const { setApplicationPeriod } = useClubStore();
+    const { setApplicationPeriod, setClubField } = useClubStore();
     // initial values
     // state, ref, querystring hooks
     const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
@@ -48,8 +48,9 @@ function RecruitmentPage() {
     useEffect(() => {
         if (selectedAnnouncementDetail) {
             setApplicationPeriod(selectedAnnouncementDetail.applicationPeriod);
+            setClubField(selectedAnnouncementDetail.field);
         }
-    }, [selectedAnnouncementDetail, setApplicationPeriod]);
+    }, [selectedAnnouncementDetail, setApplicationPeriod, setClubField]);
 
     if (isLoading) {
         return <ClubDetailRecruitmentLoadingPage />;
