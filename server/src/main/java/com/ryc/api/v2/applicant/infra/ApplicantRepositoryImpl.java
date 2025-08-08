@@ -21,10 +21,16 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
 
   private final ApplicantJpaRepository applicantJpaRepository;
 
-  @Override
   public Applicant save(Applicant applicant) {
     return ApplicantMapper.toDomain(
         applicantJpaRepository.save(ApplicantMapper.toEntity(applicant)));
+  }
+
+  @Override
+  public String findEmailById(String id) {
+    return applicantJpaRepository
+        .findEmailById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Applicant not found with id: " + id));
   }
 
   @Override

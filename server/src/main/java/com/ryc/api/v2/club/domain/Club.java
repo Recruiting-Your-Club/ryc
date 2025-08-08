@@ -50,7 +50,7 @@ public class Club {
     this.clubSummaries = clubSummaries;
     this.clubDetailImages = clubDetailImages;
 
-    if (detailDescription.isBlank()) {
+    if (detailDescription == null || detailDescription.isBlank()) {
       this.detailDescription = shortDescription;
     } else {
       this.detailDescription = detailDescription;

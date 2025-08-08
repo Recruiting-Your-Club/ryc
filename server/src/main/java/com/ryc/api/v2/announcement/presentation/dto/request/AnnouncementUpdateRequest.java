@@ -20,6 +20,7 @@ import lombok.Builder;
  * @param summaryDescription 요약 소개
  * @param activityPeriod 활동 기간
  * @param target 모집 대상
+ * @param field 모집 분야
  * @param announcementType 공고 타입
  * @param hasInterview 면접여부
  * @param tags 태그
@@ -48,6 +49,8 @@ public record AnnouncementUpdateRequest(
     @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
         @NotBlank(message = "target shouldn't be blank")
         String target,
+    @Schema(description = "모집 분야", example = "백엔드") @NotBlank(message = "target shouldn't be blank")
+        String field,
     @Schema(description = "공고 타입", example = "LIMITED_TIME")
         @NotNull(message = "announcementType shouldn't be null")
         AnnouncementType announcementType,

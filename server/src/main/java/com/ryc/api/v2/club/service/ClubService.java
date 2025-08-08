@@ -24,12 +24,11 @@ public class ClubService {
 
   @Transactional
   public Club createClub(ClubCreateRequest body) {
-    Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
-
-    if (clubRepository.existsByName(club.getName())) {
+    if (clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
+    Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
     return clubRepository.save(club);
   }
 
@@ -37,7 +36,9 @@ public class ClubService {
   public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
     Club previousClub = clubRepository.findById(clubId);
 
-    if (body.name() != null && clubRepository.existsByName(body.name())) {
+    if (body.name() != null
+        && !previousClub.getName().equals(body.name())
+        && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 

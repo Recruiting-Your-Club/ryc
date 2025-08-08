@@ -19,6 +19,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Applicant {
+
   private final String id;
   private final String announcementId;
 
