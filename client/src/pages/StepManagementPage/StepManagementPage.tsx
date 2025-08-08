@@ -34,9 +34,11 @@ import {
     mergeApplicantWithSummary,
 } from './utils/stepApplicant';
 import { useToast } from '@hooks/useToast';
+import { emailMutations } from '@api/mutationFactory/emailMutations';
+import type { InterviewDetailInformation } from '@api/domain/email/types';
 
-const CLUB_ID = 'example-42';
-const ANNOUNCEMENT_ID = '1';
+const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
+const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
 
 function StepManagementPage() {
     // prop destruction
@@ -49,6 +51,7 @@ function StepManagementPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
+    const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
 
     // form hooks
     // query hooks
@@ -67,6 +70,9 @@ function StepManagementPage() {
 
         enabled: !!selectedApplicant?.applicantId,
     });
+
+    const { mutate: sendPlainEmail } = emailMutations.usePostPlainEmail();
+    const { mutate: sendInterviewEmail } = emailMutations.usePostInterviewEmail();
 
     // calculated values
     const isThreeStepProcess = totalSteps.process.length === 3;
@@ -241,7 +247,90 @@ function StepManagementPage() {
         });
     };
 
+    const handlePlainEmail = (subject: string, content: string) => {
+        if (!validateEmailInputs(subject, content)) return;
+
+        sendPlainEmail(
+            {
+                announcementId: ANNOUNCEMENT_ID,
+                clubId: CLUB_ID,
+                email: { recipients: emailTargetList, subject, content },
+            },
+            getEmailCallbacks(() => setIsEmailOpen(false)),
+        );
+    };
+
+    const handleInterviewEmail = (
+        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        subject: string,
+        content: string,
+    ) => {
+        if (numberOfPeopleByInterviewDates.length === 0) {
+            toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
+            return;
+        }
+        if (!validateEmailInputs(subject, content)) return;
+
+        sendInterviewEmail(
+            {
+                announcementId: ANNOUNCEMENT_ID,
+                clubId: CLUB_ID,
+                email: {
+                    numberOfPeopleByInterviewDates,
+                    emailSendRequest: { recipients: emailTargetList, subject, content },
+                },
+            },
+            getEmailCallbacks(() => setIsInterviewOpen(false)),
+        );
+    };
+
+    const handleEmailDialogOpen = (target: string) => {
+        const groupMap: Record<string, StepApplicant[]> = {
+            documentPassed: stepApplicantGroups.documentPassed,
+            documentFailed: stepApplicantGroups.documentFailed,
+            interviewPassed: stepApplicantGroups.interviewPassed ?? [],
+            interviewFailed: stepApplicantGroups.interviewFailed ?? [],
+            finalPassed: stepApplicantGroups.finalPassed,
+            finalFailed: stepApplicantGroups.finalFailed,
+        };
+
+        setEmailTargetList((groupMap[target] || []).map((applicant) => applicant.email));
+
+        if (target === 'interviewPassed') {
+            setIsInterviewOpen(true);
+        } else {
+            setIsEmailOpen(true);
+        }
+    };
+
     // effects
+    // etc
+    const getEmailCallbacks = (onClose: () => void) => {
+        return {
+            onSuccess: () => {
+                onClose();
+                toast('이메일 전송이 완료되었어요!', {
+                    type: 'success',
+                    toastTheme: 'colored',
+                });
+            },
+            onError: () => {
+                toast('이메일 전송에 실패했어요.', { type: 'error', toastTheme: 'colored' });
+            },
+        };
+    };
+
+    const validateEmailInputs = (subject: string, content: string): boolean => {
+        if (!subject.trim()) {
+            toast('이메일 제목을 입력해주세요!', { toastTheme: 'colored', type: 'error' });
+            return false;
+        }
+        if (!content.trim()) {
+            toast('이메일 내용을 입력해주세요!', { toastTheme: 'colored', type: 'error' });
+            return false;
+        }
+        return true;
+    };
 
     return (
         <div css={s_stepManagementPageContainer}>
@@ -263,7 +352,7 @@ function StepManagementPage() {
             <div css={s_stepBoxContainer}>
                 <CardBox
                     stepTitle={statusLabel[DOCUMENT_STEP].label}
-                    step="normal"
+                    step="document"
                     searchText={searchText}
                     passedApplicantList={stepApplicantGroups.documentPassed}
                     failedApplicantList={stepApplicantGroups.documentFailed}
@@ -275,12 +364,12 @@ function StepManagementPage() {
                             : [statusLabel[FINAL_STEP_IN_TWO]]
                     }
                     statusInOwnStep={statusInOwnStep[DOCUMENT_STEP]}
-                    onEmailDialogOpen={setIsEmailOpen}
+                    onEmailDialogOpen={handleEmailDialogOpen}
                 />
                 {isThreeStepProcess && (
                     <CardBox
                         stepTitle={statusLabel[INTERVIEW_STEP].label}
-                        step="normal"
+                        step="interview"
                         searchText={searchText}
                         passedApplicantList={stepApplicantGroups.interviewPassed!}
                         failedApplicantList={stepApplicantGroups.interviewFailed!}
@@ -288,7 +377,7 @@ function StepManagementPage() {
                         handleApplicantStatus={handleStatusUpdate}
                         statusLabel={[statusLabel[DOCUMENT_STEP], statusLabel[FINAL_STEP_IN_THREE]]}
                         statusInOwnStep={statusInOwnStep[INTERVIEW_STEP]}
-                        onEmailDialogOpen={setIsInterviewOpen}
+                        onEmailDialogOpen={handleEmailDialogOpen}
                     />
                 )}
                 <CardBox
@@ -305,7 +394,7 @@ function StepManagementPage() {
                             : [statusLabel[DOCUMENT_STEP]]
                     }
                     statusInOwnStep={statusInOwnStep.at(-1)!}
-                    onEmailDialogOpen={setIsEmailOpen}
+                    onEmailDialogOpen={handleEmailDialogOpen}
                 />
                 {selectedApplicant && (
                     <ApplicantDialog
@@ -325,8 +414,13 @@ function StepManagementPage() {
                 <InterviewSettingDialog
                     open={isInterviewOpen}
                     handleClose={handleInterviewSettingClose}
+                    handleInterviewEmail={handleInterviewEmail}
                 />
-                <PlainEmailDialog open={isEmailOpen} handleClose={handleEmailClose} />
+                <PlainEmailDialog
+                    open={isEmailOpen}
+                    handleClose={handleEmailClose}
+                    handlePlainEmail={handlePlainEmail}
+                />
             </div>
         </div>
     );
