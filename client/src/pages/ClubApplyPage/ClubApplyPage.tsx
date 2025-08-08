@@ -20,14 +20,16 @@ import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
 import { useApplicationStore } from '@stores/applicationStore';
 import { getCategory } from '@utils/changeCategory';
 import { ClubApplyLoadingPage } from '@pages/LoadingPage';
 import { useRouter } from '@hooks/useRouter';
-import { getPersonalQuestionLabel } from './utils';
+import { getPersonalQuestionLabel, makeAnsewerDataForSubmit } from './utils';
+import { postApplicationAnswers } from '@api/domain/announcement/announcement';
+import { ApplicationSubmissionRequest } from '@api/domain/announcement/types';
 
 function ClubApplyPage() {
     // prop destruction
@@ -95,9 +97,22 @@ function ClubApplyPage() {
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<string>('사전질문');
+    const { mutate: submitApplication, isPending: isSubmitting } = useMutation({
+        mutationFn: (data: ApplicationSubmissionRequest) =>
+            postApplicationAnswers(announcementId || '', data),
+        onSuccess: () => {
+            console.log('지원서 제출 성공!');
+            setIsSubmitDialogOpen(false);
+            goTo(`success`);
+        },
+        onError: (error) => {
+            console.error('지원서 제출 실패:', error);
+            // TODO: 에러 처리 (토스트 메시지 등)
+            setIsSubmitDialogOpen(false);
+        },
+    });
 
     // calculated values
-
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         return allQuestions.filter((question) => question.isRequired).length;
@@ -105,6 +120,9 @@ function ClubApplyPage() {
 
     const getValidationError = useCallback((questionTitle: string, value: string): boolean => {
         if (!value.trim()) return false;
+        if (!VALIDATION_PATTERNS[questionTitle as ValidationKey]) {
+            return false;
+        }
         const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
         return !pattern.test(value);
     }, []);
@@ -149,7 +167,7 @@ function ClubApplyPage() {
         setTouched((prev) => ({ ...prev, [questionTitle]: false }));
     };
 
-    const handleAnswerChange = (questionTitle: string, value: string) => {
+    const handleAnswerChange = (questionId: string, questionTitle: string, value: string) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
             const question = clubPersonalInfoQuestions.find(
@@ -174,7 +192,7 @@ function ClubApplyPage() {
             }
 
             const newAnswer: Answer = {
-                id: questionTitle,
+                id: questionId,
                 value,
                 questionTitle,
                 type: clubPersonalInfoQuestions.some((question) => question.label === questionTitle)
@@ -196,10 +214,9 @@ function ClubApplyPage() {
     };
 
     const handleConfirmSubmit = () => {
-        // TODO: 실제 제출 로직 구현
-        console.log('제출된 답변:', answers);
-        setIsSubmitDialogOpen(false);
-        goTo(`success`);
+        const answerData = makeAnsewerDataForSubmit(answers);
+        console.log('서버에 제출할 데이터:', answerData);
+        submitApplication(answerData);
     };
 
     const handleQuestionFocus = (questionTitle: string, tab: string) => {
@@ -283,7 +300,7 @@ function ClubApplyPage() {
                 userName &&
                 !answers.find((answer) => answer.questionTitle === '이름')
             ) {
-                handleAnswerChange('이름', userName);
+                handleAnswerChange(nameQuestion.id, '이름', userName);
             }
 
             // 이메일이 있으면 기존 값으로 설정
@@ -292,7 +309,7 @@ function ClubApplyPage() {
                 userEmail &&
                 !answers.find((answer) => answer.questionTitle === '이메일')
             ) {
-                handleAnswerChange('이메일', userEmail);
+                handleAnswerChange(emailQuestion.id, '이메일', userEmail);
             }
         }
     }, [clubPersonalInfoQuestions, userName, userEmail]);
@@ -358,12 +375,14 @@ function ClubApplyPage() {
                     variant="primary"
                     size="full"
                     disabled={
-                        !(requiredQuestionsCompleted || completedQuestions === allQuestions.length)
+                        !(
+                            requiredQuestionsCompleted || completedQuestions === allQuestions.length
+                        ) || isSubmitting
                     }
                     onClick={handleSubmit}
                     sx={s_submitButtonSx}
                 >
-                    제출하기
+                    {isSubmitting ? '제출 중...' : '제출하기'}
                 </Button>
             </div>
 
