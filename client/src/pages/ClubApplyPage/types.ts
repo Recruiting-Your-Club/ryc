@@ -27,7 +27,7 @@ export interface Answer {
 export interface ClubApplyPersonalInfoPageProps {
     answers: Answer[];
     clubPersonalQuestions: QuestionResponse[];
-    onAnswerChange: (questionTitle: string, value: string) => void;
+    onAnswerChange: (questionId: string, questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
@@ -40,7 +40,7 @@ export interface ClubApplyPersonalInfoPageProps {
 export interface ClubApplyDetailQuestionPageProps {
     answers: Answer[];
     clubDetailQuestions: QuestionResponse[];
-    onAnswerChange: (questionTitle: string, value: string) => void;
+    onAnswerChange: (questionId: string, questionTitle: string, value: string) => void;
     containerStyle: CSSObject;
     touched: { [key: string]: boolean };
     onBlur: (questionTitle: string) => void;
