@@ -1,7 +1,15 @@
 package com.ryc.api.v2.club.infra.mapper;
 
+import java.util.List;
+
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
+import com.ryc.api.v2.club.domain.vo.ClubSummary;
+import com.ryc.api.v2.club.domain.vo.ClubTag;
+import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
+import com.ryc.api.v2.club.infra.entity.ClubTagEntity;
 
 public class ClubMapper {
   private ClubMapper() {
@@ -9,6 +17,13 @@ public class ClubMapper {
   }
 
   public static ClubEntity toEntity(Club club) {
+    List<ClubTagEntity> clubTags =
+        club.getClubTags().stream().map(ClubTagMapper::toEntity).toList();
+    List<ClubSummaryEntity> clubSummaries =
+        club.getClubSummaries().stream().map(ClubSummaryMapper::toEntity).toList();
+    List<ClubDetailImageEntity> clubDetailImages =
+        club.getClubDetailImages().stream().map(ClubDetailImageMapper::toEntity).toList();
+
     return ClubEntity.builder()
         .id(club.getId())
         .name(club.getName())
@@ -17,13 +32,20 @@ public class ClubMapper {
         .imageUrl(club.getImageUrl())
         .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())
-        .clubTags(club.getClubTags())
-        .clubSummaries(club.getClubSummaries())
-        .clubDetailImages(club.getClubDetailImages())
+        .clubTags(clubTags)
+        .clubSummaries(clubSummaries)
+        .clubDetailImages(clubDetailImages)
         .build();
   }
 
   public static Club toDomain(ClubEntity clubEntity) {
+    List<ClubTag> clubTags =
+        clubEntity.getClubTags().stream().map(ClubTagMapper::toDomain).toList();
+    List<ClubSummary> clubSummaries =
+        clubEntity.getClubSummaries().stream().map(ClubSummaryMapper::toDomain).toList();
+    List<ClubDetailImage> clubDetailImages =
+        clubEntity.getClubDetailImages().stream().map(ClubDetailImageMapper::toDomain).toList();
+
     return Club.builder()
         .id(clubEntity.getId())
         .name(clubEntity.getName())
@@ -32,9 +54,9 @@ public class ClubMapper {
         .imageUrl(clubEntity.getImageUrl())
         .thumbnailUrl(clubEntity.getThumbnailUrl())
         .category(clubEntity.getCategory())
-        .clubTags(clubEntity.getClubTags())
-        .clubSummaries(clubEntity.getClubSummaries())
-        .clubDetailImages(clubEntity.getClubDetailImages())
+        .clubTags(clubTags)
+        .clubSummaries(clubSummaries)
+        .clubDetailImages(clubDetailImages)
         .build();
   }
 }

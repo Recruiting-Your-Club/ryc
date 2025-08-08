@@ -1,5 +1,6 @@
 package com.ryc.api.v2.interview.infra.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -37,8 +38,9 @@ public class InterviewSlotEntity extends BaseEntity {
   @Column(nullable = false)
   private PeriodVO period;
 
+  @Builder.Default
   @OneToMany(mappedBy = "interviewSlot", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<InterviewReservationEntity> interviewReservations;
+  private List<InterviewReservationEntity> interviewReservations = new ArrayList<>();
 
   public void addReservation(InterviewReservationEntity reservation) {
     reservation.setInterviewSlot(this);

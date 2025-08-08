@@ -20,9 +20,9 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.MyClubGetResponse;
 import com.ryc.api.v2.club.service.ClubAnnouncementFacade;
 import com.ryc.api.v2.club.service.ClubFacade;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
@@ -90,9 +90,9 @@ public class ClubHttpApi {
 
   @GetMapping("/my")
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
-  public ResponseEntity<List<ClubGetByAdminIdResponse>> getClubByAdminId(
+  public ResponseEntity<List<MyClubGetResponse>> getClubByAdminId(
       @AuthenticationPrincipal CustomUserDetail userDetail) {
-    List<ClubGetByAdminIdResponse> responses = clubFacade.getClubByAdminId(userDetail.getId());
+    List<MyClubGetResponse> responses = clubFacade.getClubByAdminId(userDetail.getId());
     return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
 }
