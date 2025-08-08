@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.application;
+package com.ryc.api.v2.email.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +27,8 @@ public class EmailService {
 
   private final String baseUri;
   private final String linkHtmlTemplate;
-  private final InterviewService interviewService;
   private final EmailRepository emailRepository;
+  private final InterviewService interviewService;
 
   public EmailService(
       @Value("${LOCAL_CLIENT_URL}") String baseUri,
@@ -48,53 +48,36 @@ public class EmailService {
 
   @Transactional
   public List<EmailSendResponse> createEmails(
-      String adminId, String announcementId, EmailSendRequest body) {
-
+      String adminId, String clubId, String announcementId, EmailSendRequest body) {
     List<Email> emails =
         body.recipients().stream()
             .map(
                 recipient ->
                     Email.initialize(
-                        recipient, body.subject(), body.content(), announcementId, adminId))
+                        adminId, recipient, body.subject(), body.content(), clubId, announcementId))
             .toList();
 
-    List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream()
-        .map(
-            email ->
-                EmailSendResponse.builder()
-                    .emailId(email.id())
-                    .status(email.status())
-                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
-                    .build())
-        .toList();
+    return saveAll(emails);
   }
 
   @Transactional
   public List<EmailSendResponse> createInterviewDateEmails(
-      String adminId, String announcementId, InterviewEmailSendRequest body) {
+      String adminId, String clubId, String announcementId, InterviewEmailSendRequest body) {
+
+    interviewService.createInterviewSlot(
+        adminId, announcementId, body.numberOfPeopleByInterviewDateRequests());
 
     List<Email> emails =
         createEmailsWithEachLink(
+            clubId,
             adminId,
             announcementId,
-            body.emailSendRequest().recipients(),
+            body.emailSendRequest()
+                .recipients(), // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
-    interviewService.createInterview(
-        adminId, announcementId, body.numberOfPeopleByInterviewDates());
-
-    List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream()
-        .map(
-            email ->
-                EmailSendResponse.builder()
-                    .emailId(email.id())
-                    .status(email.status())
-                    .statusUrl(String.format("api/v2/emails/%s/status", email.id()))
-                    .build())
-        .toList();
+    return saveAll(emails);
   }
 
   @Transactional(readOnly = true)
@@ -117,22 +100,40 @@ public class EmailService {
   }
 
   private List<Email> createEmailsWithEachLink(
+      String clubId,
       String adminId,
       String announcementId,
-      List<String> recipients,
+      List<String> recipientIds,
       String subject,
       String content) {
     List<Email> emails = new ArrayList<>();
 
-    for (String recipient : recipients) {
+    for (String recipient : recipientIds) {
       String link =
           String.format(
-              "%s?admin-id=%s&announcement-id=%s&recipient=%s",
-              baseUri, adminId, announcementId, recipient);
+              "%s?club-id=%s&announcement-id=%s&recipient-id=%s",
+              baseUri, clubId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 
-      emails.add(Email.initialize(recipient, subject, linkHtml + content, announcementId, adminId));
+      emails.add(
+          Email.initialize(
+              adminId, recipient, subject, linkHtml + content, clubId, announcementId));
     }
     return emails;
+  }
+
+  private List<EmailSendResponse> saveAll(List<Email> emails) {
+    List<Email> savedEmails = emailRepository.saveAll(emails);
+    return savedEmails.stream()
+        .map(
+            email -> {
+              String statusUrl = String.format("api/v2/emails/%s/status", email.getId());
+              return EmailSendResponse.builder()
+                  .emailId(email.getId())
+                  .status(email.getStatus())
+                  .statusUrl(statusUrl)
+                  .build();
+            })
+        .toList();
   }
 }
