@@ -1,7 +1,6 @@
 import type { CSSObject } from '@emotion/react';
-import type { Dispatch, SetStateAction } from 'react';
 
-export type Step = 'normal' | 'final';
+export type Step = 'document' | 'interview' | 'final';
 
 export interface MergedStepApplicant {
     applicantId: string;
@@ -24,7 +23,7 @@ export interface CardBoxProps {
     handleApplicantStatus: (applicantIds: string[], newStatus: string) => void;
     statusLabel: { label: string; status: string }[];
     statusInOwnStep: { pass: string; fail: string };
-    onEmailDialogOpen: Dispatch<SetStateAction<boolean>>;
+    onEmailDialogOpen: (target: string) => void;
     height?: string;
     sx?: CSSObject;
 }

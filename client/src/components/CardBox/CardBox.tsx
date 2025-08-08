@@ -81,6 +81,12 @@ function CardBox({
 
     const isDisabled = selectedGroup.list.length === 0;
 
+    const getEmailTargetType = (): string => {
+        if (step === 'document') return fail ? 'documentFailed' : 'documentPassed';
+        if (step === 'interview') return fail ? 'interviewFailed' : 'interviewPassed';
+        return fail ? 'finalFailed' : 'finalPassed';
+    };
+
     // handlers
     const handleSelectAll = () => {
         if (selectedGroup.ids.length === selectedGroup.list.length) {
@@ -220,7 +226,9 @@ function CardBox({
                                 <Dropdown.Item
                                     inset
                                     sx={s_dropdownItem}
-                                    onClick={() => onEmailDialogOpen(true)}
+                                    onClick={() => {
+                                        onEmailDialogOpen(getEmailTargetType());
+                                    }}
                                     disabled={isDisabled}
                                 >
                                     <Text as="text" type="subCaptionRegular">
