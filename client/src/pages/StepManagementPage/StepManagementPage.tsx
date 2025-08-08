@@ -7,7 +7,6 @@ import {
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
-import { documentList } from '@constants/applicantDialog';
 import React, { useMemo, useState } from 'react';
 import {
     s_input,
@@ -18,7 +17,7 @@ import {
     s_topContainer,
 } from './StepManagementPage.style';
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { stepQueries, evaluationQueries } from '@api/queryFactory';
+import { stepQueries, evaluationQueries, applicantQueries } from '@api/queryFactory';
 import type { StepApplicant } from '@api/domain/step/types';
 import { stepMutations } from '@api/mutationFactory';
 import { evaluationKeys, stepKeys } from '@api/querykeyFactory';
@@ -35,6 +34,7 @@ import {
     mergeApplicantWithSummary,
 } from './utils/stepApplicant';
 import { useToast } from '@hooks/useToast';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
 
 const CLUB_ID = 'example-42';
 
@@ -56,6 +56,15 @@ function StepManagementPage() {
     const { data: totalSteps = { process: [] } } = useSuspenseQuery(stepQueries.getTotalSteps());
     const { data: stepApplicantList = [] } = useSuspenseQuery(stepQueries.allStepApplicants());
     const { mutate: updateStatus } = stepMutations.useUpdateStepApplicantStatus();
+    const { data: applicantDocument } = useQuery({
+        ...applicantQueries.getApplicantDocument(
+            '1',
+            selectedApplicant?.applicantId ?? '',
+            CLUB_ID,
+        ),
+
+        enabled: !!selectedApplicant?.applicantId,
+    });
 
     // calculated values
     const isThreeStepProcess = totalSteps.process.length === 3;
@@ -297,7 +306,11 @@ function StepManagementPage() {
                 {selectedApplicant && (
                     <ApplicantDialog
                         applicant={selectedApplicant}
-                        documentList={documentList}
+                        personalInformation={applicantDocument?.personalInfos ?? []}
+                        preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                        applicationQuestionAnswers={
+                            applicantDocument?.applicationQuestionAnswers ?? []
+                        }
                         evaluations={evaluationsInDialog}
                         evaluationLabels={dialogEvaluationLabels}
                         isThreeStepProcess={isThreeStepProcess}

@@ -11,7 +11,7 @@ import {
     Rating,
     Text,
 } from '@components';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import {
     chevronSvgCss,
     contentBody,
@@ -39,6 +39,7 @@ function ApplicantDialog({
     handleClose,
     applicant,
     evaluationLabels,
+    personalInformation,
     preQuestionAnswers,
     applicationQuestionAnswers,
     evaluations,
@@ -124,6 +125,17 @@ function ApplicantDialog({
                         sx={{ paddingTop: '0.1rem' }}
                     >
                         {applicant.email}
+                        {personalInformation &&
+                            personalInformation
+                                .filter((info) =>
+                                    ['STUDENT_ID', 'PHONE_NUMBER'].includes(info.questionType),
+                                )
+                                .map((info, index) => (
+                                    <span key={info.questionType}>
+                                        {index >= 0 && ' | '}
+                                        {info.value}
+                                    </span>
+                                ))}
                     </Text>
                 </div>
                 <Divider width="full" />

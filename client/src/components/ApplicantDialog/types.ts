@@ -1,4 +1,4 @@
-import type { DocumentDetail, QuestionAnswer } from '@api/domain/applicant/types';
+import type { PersonalInfo, QuestionAnswer } from '@api/domain/applicant/types';
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicant } from '@api/domain/step/types';
 
@@ -7,6 +7,7 @@ export interface ApplicantDialogProps {
     handleClose: () => void;
     applicant: StepApplicant;
     evaluationLabels: string[];
+    personalInformation: PersonalInfo[];
     preQuestionAnswers: QuestionAnswer[];
     applicationQuestionAnswers: QuestionAnswer[];
     evaluations: EvaluationDataWithSummary[];
