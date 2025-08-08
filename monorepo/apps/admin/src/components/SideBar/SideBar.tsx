@@ -65,7 +65,7 @@ function SideBar() {
                 icon: <Club />,
                 subMenus: [
                     {
-                        menu: '동아리 소개 편집',
+                        menu: '동아리 소개 수정',
                         link: '/clubs',
                     },
                 ],
