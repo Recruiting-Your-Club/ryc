@@ -315,6 +315,7 @@ function StepManagementPage() {
                 });
             },
             onError: () => {
+                onClose();
                 toast('이메일 전송에 실패했어요.', { type: 'error', toastTheme: 'colored' });
             },
         };
