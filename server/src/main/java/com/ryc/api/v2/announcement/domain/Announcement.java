@@ -152,7 +152,7 @@ public class Announcement {
         .detailDescription(this.detailDescription)
         .summaryDescription(this.summaryDescription)
         .target(this.target)
-        .target(this.field)
+        .field(this.field)
         .hasInterview(this.hasInterview)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
