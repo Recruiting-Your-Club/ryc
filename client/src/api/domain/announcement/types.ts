@@ -1,9 +1,47 @@
-export interface ApplicationForm {
-    applicationQuestions: QuestionResponse[];
-    preQuestions: QuestionResponse[];
-    personalInfoQuestions: string[];
+/**
+ * 지원서 제출 타입
+ */
+export type PersonalInfoQuestionType =
+    | 'STUDENT_ID'
+    | 'PHONE_NUMBER'
+    | 'PROFILE_IMAGE'
+    | 'NAME'
+    | 'EMAIL';
+
+export interface PersonalInfosRequest {
+    personalInfoQuestionType: PersonalInfoQuestionType;
+    value: string;
 }
 
+export interface ApplicantRequest {
+    email: string;
+    name: string;
+    personalInfos: PersonalInfosRequest[];
+}
+
+export interface AnswerChoices {
+    optionId: string;
+}
+
+export interface AnswersRequest {
+    questionId: string;
+    textAnswer?: string;
+    fileMetadataId?: string;
+    answerChoices?: AnswerChoices[];
+}
+
+export interface ApplicationRequest {
+    answers: AnswersRequest[];
+}
+
+export interface ApplicationSubmissionRequest {
+    applicant: ApplicantRequest;
+    application: ApplicationRequest;
+}
+
+/**
+ * 지원서 폼 조회 타입
+ */
 export interface QuestionOption {
     id: string;
     option: string;
@@ -11,29 +49,41 @@ export interface QuestionOption {
 
 export interface QuestionResponse {
     id: string;
-    type: string;
     label: string;
-    isRequired: boolean;
+    type: string;
     options?: QuestionOption[];
+    isRequired: boolean;
     description?: string;
+}
+
+export interface ApplicationForm {
+    applicationQuestions: QuestionResponse[];
+    preQuestions: QuestionResponse[];
+    personalInfoQuestions: string[];
+}
+
+/**
+ * 공고 목록 조회 타입
+ */
+export interface Period {
+    startDate: string;
+    endDate: string;
 }
 
 export interface AnnouncementSummary {
     announcementId: string;
     title: string;
-    summaryDescription: string;
-    target: string;
-    announcementStatus: string;
-    announcementType: string;
-    applicationStartDate: string;
-    applicationEndDate: string;
-    tags: string[];
+    clubName: string;
+    clubLogo?: string;
+    clubCategory: string;
+    clubField: string;
+    applicationPeriod: Period;
+    isRecruiting: boolean;
 }
 
-export interface Period {
-    startDate: string;
-    endDate: string;
-}
+/**
+ * 공고 상세 조회 타입
+ */
 
 export interface Image {
     id: string;
