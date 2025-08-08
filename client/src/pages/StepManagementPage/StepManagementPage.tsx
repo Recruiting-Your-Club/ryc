@@ -34,7 +34,6 @@ import {
     mergeApplicantWithSummary,
 } from './utils/stepApplicant';
 import { useToast } from '@hooks/useToast';
-import type { QuestionAnswer } from '@api/domain/applicant/types';
 
 const CLUB_ID = 'example-42';
 
