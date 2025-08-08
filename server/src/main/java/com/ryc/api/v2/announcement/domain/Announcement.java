@@ -80,7 +80,8 @@ public class Announcement {
             .target(request.target())
             .field(request.field())
             .tags(tags)
-            .hasInterview(request.hasInterview())
+                //Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
+            .hasInterview(true)
             .images(images)
             .announcementStatus(announcementStatus)
             .announcementType(request.announcementType())
@@ -124,7 +125,7 @@ public class Announcement {
             .summaryDescription(request.summaryDescription())
             .target(request.target())
             .field(request.field())
-            .hasInterview(request.hasInterview())
+            .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
             .images(updatedImages)
@@ -153,7 +154,7 @@ public class Announcement {
         .summaryDescription(this.summaryDescription)
         .target(this.target)
         .field(this.field)
-        .hasInterview(this.hasInterview)
+        .hasInterview(true)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
         .images(this.images)
@@ -184,7 +185,6 @@ public class Announcement {
       }
     }
 
-    announcementPeriodInfo.validate(hasInterview);
     applicationForm.checkBusinessRules();
   }
 }

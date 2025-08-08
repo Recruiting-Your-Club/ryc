@@ -105,8 +105,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
     java.util.Map<String, FileMetadataEntity> fileMetadataMap =
         fileMetadataJpaRepository.findAllById(allFileMetadataIds).stream()
-            .collect(
-                Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
+            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
 
     List<AnnouncementEntity> announcementEntities =
         announcements.stream()
