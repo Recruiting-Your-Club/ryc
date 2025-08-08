@@ -44,8 +44,14 @@ import {
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
+import type { InterviewDetailInformation } from '@api/domain/email/types';
+import dayjs from 'dayjs';
 
-function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogProps) {
+function InterviewSettingDialog({
+    open,
+    handleClose,
+    handleInterviewEmail,
+}: InterviewSettingDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -94,6 +100,26 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         ],
     );
 
+    const interviewDetailInformationList = useMemo<InterviewDetailInformation[]>(() => {
+        const result: InterviewDetailInformation[] = [];
+
+        Object.entries(interviewInformation).forEach(([date, info]) => {
+            info.selectedTimeList.forEach((time) => {
+                const startDate = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
+                const endDate = dayjs(startDate)
+                    .add(Number(info.perTime), 'minute')
+                    .format('YYYY-MM-DDTHH:mm');
+
+                result.push({
+                    interviewPeriod: { startDate, endDate },
+                    numberOfPeople: Number(info.maxNumber),
+                });
+            });
+        });
+
+        return result;
+    }, [interviewInformation]);
+
     // handler
     const handleReset = () => {
         setTimeValue(DEFAULT_TIME_VALUE);
@@ -103,6 +129,11 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         setInterviewInformation({});
         setSelectedDates([]);
         setHighlightedDate([]);
+    };
+
+    const handleResetContent = () => {
+        setEmailTitle('');
+        setEmailContent('');
     };
 
     const handleDates = (newDates: string[]) => {
@@ -282,7 +313,19 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             </Editor.Root>
                         </div>
                         <div css={s_submitButtonWrapper}>
-                            <Button>이메일 보내기</Button>
+                            <Button
+                                onClick={() => {
+                                    handleInterviewEmail(
+                                        interviewDetailInformationList,
+                                        emailTitle,
+                                        emailContent,
+                                    );
+                                    handleReset();
+                                    handleResetContent();
+                                }}
+                            >
+                                이메일 보내기
+                            </Button>
                         </div>
                     </div>
                 </Dialog.Content>

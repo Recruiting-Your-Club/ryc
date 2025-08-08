@@ -1,8 +1,14 @@
+import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface InterviewSettingDialogProps {
     open: boolean;
     handleClose: () => void;
+    handleInterviewEmail: (
+        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        subject: string,
+        content: string,
+    ) => void;
 }
 
 export interface InterviewInformation {
