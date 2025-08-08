@@ -68,7 +68,7 @@ function ClubApplyDetailQuestionPage({
                             size="lg"
                             value={getAnswer(answers, question.label)}
                             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                onAnswerChange(question.label, event.target.value)
+                                onAnswerChange(question.id, question.label, event.target.value)
                             }
                             wrapperSx={s_textAreaWrapperSx}
                             textAreaSx={textAreaSx}

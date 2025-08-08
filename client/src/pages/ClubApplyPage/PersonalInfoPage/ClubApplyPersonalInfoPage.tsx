@@ -27,7 +27,6 @@ function ClubApplyPersonalInfoPage({
     //lib hooks
     // initial values
     // state, ref, querystring hooks
-
     //calculated values
 
     //handlers
@@ -65,7 +64,9 @@ function ClubApplyPersonalInfoPage({
                                 }
                                 size="sm"
                                 value={getAnswer(answers, question.label)}
-                                onChange={(value) => onAnswerChange(question.label, value)}
+                                onChange={(value) =>
+                                    onAnswerChange(question.id, question.label, value)
+                                }
                             />
                         </div>
                     );
@@ -95,7 +96,9 @@ function ClubApplyPersonalInfoPage({
                                     isChecked={getAnswer(answers, question.label)?.includes(
                                         option.option,
                                     )}
-                                    onChange={() => onAnswerChange(question.label, option.option)}
+                                    onChange={() =>
+                                        onAnswerChange(question.id, question.label, option.option)
+                                    }
                                 >
                                     <Checkbox.HiddenInput />
                                     <Checkbox.Control />
@@ -133,7 +136,9 @@ function ClubApplyPersonalInfoPage({
                             labelSx={labelSx}
                             inputSx={inputSx}
                             value={getAnswer(answers, question.label)}
-                            onChange={(event) => onAnswerChange(question.label, event.target.value)}
+                            onChange={(event) =>
+                                onAnswerChange(question.id, question.label, event.target.value)
+                            }
                             error={hasError && touched[question.label]}
                             onFocus={() => onFocus(question.label)}
                             onBlur={() => onBlur(question.label)}
