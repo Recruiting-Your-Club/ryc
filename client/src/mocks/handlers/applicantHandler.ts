@@ -6,7 +6,6 @@ import docApplicantDetailList from '../data/applicant/docApplicantDetailList.jso
 import docApplicantList from '../data/applicant/docApplicantList.json';
 import docEvaluationList from '../data/applicant/docEvaluationList.json';
 import documentList from '../data/applicant/documentList.json';
-import recentDocumentList from '../data/applicant/recentDocumentList.json';
 import applicantDocumentList from '../data/applicant/applicantDocumentList.json';
 
 const userId = MOCK_USER_ID; // 임시
@@ -89,34 +88,17 @@ const applicantHandler = [
             return HttpResponse.json(targetComment, { status: 200 });
         },
     ),
-    http.post(`${BASE_URL}document/search`, async ({ request }) => {
-        const { applicantIdList } = (await request.json()) as {
-            applicantIdList: string[];
+    http.get(`${BASE_URL}announcements/:announcementId/applicants/:applicantId`, ({ params }) => {
+        const { applicantId } = params as {
+            applicantId: string;
         };
 
-        const filteredEntries = Object.entries(recentDocumentList.documentsByApplicant).filter(
-            ([applicantId]) => applicantIdList.includes(applicantId),
+        const document = applicantDocumentList.find(
+            (document) => document.applicantId === applicantId,
         );
 
-        const filtered = Object.fromEntries(filteredEntries);
-
-        return HttpResponse.json(filtered, { status: 200 });
+        return HttpResponse.json(document, { status: 200 });
     }),
-    http.get(
-        `${BASE_URL}announcements/:announcementId/applicants/:applicantId`,
-        ({ request, params }) => {
-            const { applicantId } = params as {
-                applicantId: string;
-            };
-            const clubId = request.headers.get('X-CLUB-ID');
-
-            const document = applicantDocumentList.find(
-                (document) => document.applicantId === applicantId,
-            );
-
-            return HttpResponse.json(document, { status: 200 });
-        },
-    ),
 ];
 
 export { applicantHandler };
