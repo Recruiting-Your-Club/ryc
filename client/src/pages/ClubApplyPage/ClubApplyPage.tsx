@@ -23,16 +23,18 @@ import { useParams } from 'react-router-dom';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
+import { useApplicationStore } from '@stores/applicationStore';
 import { getCategory } from '@utils/changeCategory';
 import { ClubApplyLoadingPage } from '@pages/LoadingPage';
 import { useRouter } from '@hooks/useRouter';
+import { getPersonalQuestionLabel } from './utils';
 
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
-    const { clubName, clubLogo, clubCategory, clubDescription, clubStatus, applicationPeriod } =
-        useClubStore();
+    const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
+    const { userName, userEmail, setUserName, setUserEmail } = useApplicationStore();
     const { goTo } = useRouter();
     // query hooks
     const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
@@ -40,21 +42,13 @@ function ClubApplyPage() {
     );
 
     // initial values
-    // state, ref, querystring hooks
-    const [answers, setAnswers] = useState<Answer[]>([]);
-    const [completedQuestions, setCompletedQuestions] = useState<number>(0);
-    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState<boolean>(false);
-    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
-    const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-    const [activeTab, setActiveTab] = useState<string>('사전질문');
-
     // 사전질문 데이터
     const clubPersonalQuestions = useMemo(
         () =>
             applicationForm?.personalInfoQuestions.map((question) => {
                 return {
                     id: question,
-                    label: question === 'NAME' ? '이름' : '이메일',
+                    label: getPersonalQuestionLabel(question),
                     type: 'SHORT_ANSWER' as QuestionType,
                     isRequired: true,
                 };
@@ -94,7 +88,16 @@ function ClubApplyPage() {
         [clubPersonalInfoQuestions, detailQuestions],
     );
 
+    // state, ref, querystring hooks
+    const [answers, setAnswers] = useState<Answer[]>([]);
+    const [completedQuestions, setCompletedQuestions] = useState<number>(0);
+    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState<boolean>(false);
+    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+    const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const [activeTab, setActiveTab] = useState<string>('사전질문');
+
     // calculated values
+
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         return allQuestions.filter((question) => question.isRequired).length;
@@ -163,6 +166,13 @@ function ClubApplyPage() {
                 value = newValues.join(',');
             }
 
+            // 이름과 이메일을 applicationStore에 자동으로 저장
+            if (questionTitle === '이름') {
+                setUserName(value);
+            } else if (questionTitle === '이메일') {
+                setUserEmail(value);
+            }
+
             const newAnswer: Answer = {
                 id: questionTitle,
                 value,
@@ -177,7 +187,6 @@ function ClubApplyPage() {
                     answer.questionTitle === questionTitle ? newAnswer : answer,
                 );
             }
-
             return [...prev, newAnswer];
         });
     };
@@ -258,6 +267,36 @@ function ClubApplyPage() {
         setCompletedQuestions(completedCount);
     }, [answers, getValidationError]);
 
+    // applicationStore의 기존 값으로 폼 초기화
+    useEffect(() => {
+        if (clubPersonalInfoQuestions.length > 0) {
+            const nameQuestion = clubPersonalInfoQuestions.find(
+                (question) => question.label === '이름',
+            );
+            const emailQuestion = clubPersonalInfoQuestions.find(
+                (question) => question.label === '이메일',
+            );
+
+            // 이름이 있으면 기존 값으로 설정
+            if (
+                nameQuestion &&
+                userName &&
+                !answers.find((answer) => answer.questionTitle === '이름')
+            ) {
+                handleAnswerChange('이름', userName);
+            }
+
+            // 이메일이 있으면 기존 값으로 설정
+            if (
+                emailQuestion &&
+                userEmail &&
+                !answers.find((answer) => answer.questionTitle === '이메일')
+            ) {
+                handleAnswerChange('이메일', userEmail);
+            }
+        }
+    }, [clubPersonalInfoQuestions, userName, userEmail]);
+
     if (formLoading) {
         return <ClubApplyLoadingPage />;
     }
@@ -299,7 +338,7 @@ function ClubApplyPage() {
                 <ClubSubmitCard
                     clubName={clubName}
                     category={clubCategory}
-                    description={clubDescription}
+                    description={clubField}
                     deadline={applicationPeriod.endDate}
                     personalQuestions={clubPersonalInfoQuestions}
                     detailQuestions={detailQuestions}
