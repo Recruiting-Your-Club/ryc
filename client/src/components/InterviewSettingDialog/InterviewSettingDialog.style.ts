@@ -119,6 +119,7 @@ export const s_contentWrapper = css`
     flex-direction: column;
     min-height: 35rem;
     gap: 1rem;
+    overflow: hidden;
 `;
 
 export const s_submitButtonWrapper = css`
@@ -202,6 +203,8 @@ export const s_editorToolbar = css`
 
 export const s_editorTextarea = css`
     flex: 9.2;
+    height: 100%;
+    resize: none;
     border-radius: 8px;
     transition: border-color 0.3s ease-in-out;
     &:focus {
