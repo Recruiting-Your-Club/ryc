@@ -17,7 +17,7 @@ import {
     s_titleWrapper,
 } from './PlainEmailDialog.style';
 import type { PlainEmailDialogProps } from './types';
-function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
+function PlainEmailDialog({ open, handleClose, handlePlainEmail }: PlainEmailDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -29,6 +29,10 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
     // query hooks
     // calculated values
     // handlers
+    const handleReset = () => {
+        setEmailTitle('');
+        setEmailContent('');
+    };
     // effects
     return (
         <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
@@ -70,7 +74,14 @@ function PlainEmailDialog({ open, handleClose }: PlainEmailDialogProps) {
                 </div>
             </Dialog.Content>
             <Dialog.Action sx={s_action}>
-                <Button>이메일 보내기</Button>
+                <Button
+                    onClick={() => {
+                        handlePlainEmail(emailTitle, emailContent);
+                        handleReset();
+                    }}
+                >
+                    이메일 보내기
+                </Button>
             </Dialog.Action>
         </Dialog>
     );
