@@ -120,7 +120,6 @@ public class AnnouncementHttpApi {
         "INVALID_QUESTION_TYPE",
         "QUESTION_OPTION_REQUIRED",
         "QUESTION_OPTION_NOT_ALLOWED",
-        "CLUB_NOT_FOUND",
         "FORBIDDEN_NOT_CLUB_MEMBER",
         "INVALID_PARAMETER",
         "RESOURCE_NOT_FOUND"

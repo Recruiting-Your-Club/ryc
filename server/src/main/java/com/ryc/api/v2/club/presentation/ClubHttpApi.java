@@ -56,9 +56,9 @@ public class ClubHttpApi {
       value = {ClubErrorCode.class, PermissionErrorCode.class, CommonErrorCode.class},
       include = {
         "DUPLICATE_CLUB_NAME",
-        "CLUB_NOT_FOUND",
         "FORBIDDEN_NOT_CLUB_MEMBER",
-        "CLUB_CATEGORY_NOT_FOUND",
+        "CLUB_CATEGORY_BAD_REQUEST",
+        "RESOURCE_NOT_FOUND",
         "INVALID_PARAMETER"
       })
   public ResponseEntity<DetailClubResponse> updateClub(
@@ -77,8 +77,8 @@ public class ClubHttpApi {
   @GetMapping("/{id}")
   @Operation(summary = "동아리 상세 조회 API", description = "동아리 ID로 하나의 동아리를 조회합니다.")
   @ApiErrorCodeExample(
-      value = {ClubErrorCode.class},
-      include = {"CLUB_NOT_FOUND"})
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<DetailClubResponse> getClub(@PathVariable String id) {
     DetailClubResponse response = clubFacade.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);

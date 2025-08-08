@@ -77,7 +77,7 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public boolean isValidClubId(String clubId) {
+  public boolean existClubById(String clubId) {
     return clubRepository.existsById(clubId);
   }
 }

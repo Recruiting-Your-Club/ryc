@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
+import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.presentation.dto.response.AdminsGetResponse;
@@ -39,9 +40,9 @@ public class ClubRoleHttpApi {
   // TODO: getAdminById에 대한 ApiErrorCodeExample 추가 필요
   @ApiErrorCodeExample(
       value = {
-        ClubErrorCode.class,
+        CommonErrorCode.class,
       },
-      include = {"CLUB_NOT_FOUND"})
+      include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<RoleDemandResponse> demandRole(
       @AuthenticationPrincipal CustomUserDetail userDetail, @PathVariable String clubId) {
 
