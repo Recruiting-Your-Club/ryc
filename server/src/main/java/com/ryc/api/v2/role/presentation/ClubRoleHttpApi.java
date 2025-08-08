@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
@@ -48,7 +49,11 @@ public class ClubRoleHttpApi {
 
     RoleDemandResponse roleDemandResponse = clubRoleService.assignRole(userDetail.getId(), clubId);
     URI location =
-        URI.create(String.format("api/v2/clubs/%s/roles/%s", clubId, roleDemandResponse.roleId()));
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/api/v2/clubs/{club-id}/roles/{role-id}")
+            .buildAndExpand(clubId, roleDemandResponse.roleId())
+            .toUri();
+
     return ResponseEntity.created(location).body(roleDemandResponse);
   }
 

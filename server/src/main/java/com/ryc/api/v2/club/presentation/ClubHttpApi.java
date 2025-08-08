@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
@@ -44,8 +45,13 @@ public class ClubHttpApi {
   public ResponseEntity<ClubCreateResponse> createClub(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ClubCreateRequest body) {
+
     ClubCreateResponse response = clubFacade.createClub(userDetail.getId(), body);
-    URI location = URI.create(String.format("api/v2/clubs/%s", response.clubId()));
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/api/v2/clubs/{club-id}")
+            .buildAndExpand(response.clubId())
+            .toUri();
     return ResponseEntity.created(location).body(response);
   }
 
