@@ -13,6 +13,8 @@ interface ClubState {
     setClubDescription: (description: string) => void;
     clubStatus: string;
     setClubStatus: (status: string) => void;
+    clubField: string;
+    setClubField: (field: string) => void;
     applicationPeriod: Period;
     setApplicationPeriod: (period: Period) => void;
     clear: () => void;
@@ -31,6 +33,8 @@ export const useClubStore = create<ClubState>()(
             setClubDescription: (description) => set({ clubDescription: description }),
             clubStatus: '',
             setClubStatus: (status) => set({ clubStatus: status }),
+            clubField: '',
+            setClubField: (field) => set({ clubField: field }),
             applicationPeriod: { startDate: '', endDate: '' },
             setApplicationPeriod: (period) => set({ applicationPeriod: period }),
             clear: () =>
@@ -40,6 +44,7 @@ export const useClubStore = create<ClubState>()(
                     clubCategory: '',
                     clubDescription: '',
                     clubStatus: '',
+                    clubField: '',
                     applicationPeriod: { startDate: '', endDate: '' },
                 }),
         }),
