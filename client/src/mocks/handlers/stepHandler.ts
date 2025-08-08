@@ -10,7 +10,7 @@ const stepHandler = [
     http.get(`${BASE_URL}step/all`, () => {
         return HttpResponse.json(totalSteps as Step, { status: 200 });
     }),
-    http.get(`${BASE_URL}step-applicants/all`, () => {
+    http.get(`${BASE_URL}announcements/:announcementId/applications`, () => {
         return HttpResponse.json(stepApplicants as StepApplicant[], { status: 200 });
     }),
     http.patch(`${BASE_URL}step-applicants/:applicantId/status`, async ({ request, params }) => {

@@ -36,6 +36,7 @@ import {
 import { useToast } from '@hooks/useToast';
 
 const CLUB_ID = 'example-42';
+const ANNOUNCEMENT_ID = '1';
 
 function StepManagementPage() {
     // prop destruction
@@ -53,11 +54,13 @@ function StepManagementPage() {
     // query hooks
     const queryClient = useQueryClient();
     const { data: totalSteps = { process: [] } } = useSuspenseQuery(stepQueries.getTotalSteps());
-    const { data: stepApplicantList = [] } = useSuspenseQuery(stepQueries.allStepApplicants());
+    const { data: stepApplicantList = [] } = useSuspenseQuery(
+        stepQueries.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
+    );
     const { mutate: updateStatus } = stepMutations.useUpdateStepApplicantStatus();
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
-            '1',
+            ANNOUNCEMENT_ID,
             selectedApplicant?.applicantId ?? '',
             CLUB_ID,
         ),
@@ -215,7 +218,9 @@ function StepManagementPage() {
                 { applicantId: id, status: newStatus },
                 {
                     onSuccess: () => {
-                        queryClient.invalidateQueries({ queryKey: stepKeys.allStepApplicants });
+                        queryClient.invalidateQueries({
+                            queryKey: stepKeys.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
+                        });
                         queryClient.invalidateQueries({
                             queryKey: evaluationKeys.evaluationSummary(
                                 CLUB_ID,

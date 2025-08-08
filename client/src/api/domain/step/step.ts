@@ -7,11 +7,18 @@ async function getTotalSteps(): Promise<Step> {
     });
     return response as Step;
 }
-async function getAllStepApplicants(): Promise<StepApplicant[]> {
-    const response = await httpRequest.get({
-        url: 'step-applicants/all',
+
+async function getAllStepApplicants(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<StepApplicant[]> {
+    const { announcementId, clubId } = params;
+    return await httpRequest.get({
+        url: `announcements/${announcementId}/applications`,
+        headers: {
+            'X-CLUB-ID': clubId,
+        },
     });
-    return response as StepApplicant[];
 }
 
 async function updateStepApplicantsStatus({

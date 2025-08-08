@@ -40,7 +40,8 @@ const applicantKeys = {
 
 const stepKeys = {
     totalSteps: ['step'] as const,
-    allStepApplicants: ['step-applicants'] as const,
+    allStepApplicants: (announcementId: string, clubId: string) =>
+        ['step-applicants', announcementId, clubId] as const,
 };
 
 const evaluationKeys = {
