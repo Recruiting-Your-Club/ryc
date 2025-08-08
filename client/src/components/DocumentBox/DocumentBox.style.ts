@@ -3,16 +3,17 @@ import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';
 
 export const contentContainer = (index: number) => css`
+    width: 100%;
     display: flex;
     flex-direction: column;
     border-radius: 8px;
     padding: 1.5rem 1rem;
     word-break: keep-all;
     overflow-wrap: break-word;
-    background-color: ${theme.colors.blue[100]};
+    background-color: ${theme.colors.white};
     ${index % 2 === 0 &&
     css`
-        background-color: ${theme.colors.white};
+        background-color: ${theme.colors.blue[100]};
     `}
 `;
 
