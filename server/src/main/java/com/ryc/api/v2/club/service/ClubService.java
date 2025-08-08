@@ -65,6 +65,7 @@ public class ClubService {
   public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
     return DetailClubResponse.builder()
+        .id(club.getId())
         .name(club.getName())
         .detailDescription(club.getDetailDescription())
         .imageUrl(club.getImageUrl())
