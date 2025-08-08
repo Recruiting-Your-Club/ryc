@@ -1,6 +1,6 @@
-package com.ryc.api.v2.club.domain.vo;
+package com.ryc.api.v2.club.domain;
 
-import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
+import com.ryc.api.v2.club.presentation.dto.request.ClubDetailImageRequest;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,11 +16,11 @@ public class ClubDetailImage {
   private final String imageUrl;
   private final String thumbnailUrl;
 
-  public static ClubDetailImage initialize(String imageUrl, String thumbnailUrl) {
+  public static ClubDetailImage initialize(ClubDetailImageRequest request) {
     return ClubDetailImage.builder()
-        .id(DEFAULT_INITIAL_ID)
-        .imageUrl(imageUrl)
-        .thumbnailUrl(thumbnailUrl)
+        .id(request.id())
+        .imageUrl(request.imageUrl())
+        .thumbnailUrl(request.thumbnailUrl())
         .build();
   }
 }

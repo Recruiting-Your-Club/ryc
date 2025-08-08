@@ -1,6 +1,6 @@
-package com.ryc.api.v2.club.domain.vo;
+package com.ryc.api.v2.club.domain;
 
-import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
+import com.ryc.api.v2.club.presentation.dto.request.ClubTagRequest;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class ClubTag {
   private final String id;
   private final String name;
 
-  public static ClubTag initialize(String name) {
-    return ClubTag.builder().id(DEFAULT_INITIAL_ID).name(name).build();
+  public static ClubTag initialize(ClubTagRequest request) {
+    return ClubTag.builder().id(request.id()).name(request.name()).build();
   }
 }

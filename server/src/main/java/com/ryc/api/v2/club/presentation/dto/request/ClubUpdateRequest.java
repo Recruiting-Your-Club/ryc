@@ -2,21 +2,20 @@ package com.ryc.api.v2.club.presentation.dto.request;
 
 import java.util.List;
 
-import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
-import com.ryc.api.v2.club.domain.vo.ClubSummary;
-import com.ryc.api.v2.club.domain.vo.ClubTag;
+import jakarta.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
 public record ClubUpdateRequest(
-    @Schema(description = "동아리 이름") String name,
+    @NotBlank(message = "동아리 이름은 비워둘 수 없습니다.") @Schema(description = "동아리 이름") String name,
     @Schema(description = "동아리 요약 설명") String shortDescription,
     @Schema(description = "동아리 상세 설명") String detailDescription,
     @Schema(description = "동아리 이미지 URL") String imageUrl,
     @Schema(description = "동아리 썸네일 URL") String thumbnailUrl,
-    @Schema(
+    @NotBlank(message = "동아리 카테고리는 비워둘 수 없습니다.")
+        @Schema(
             description = "동아리 카테고리",
             allowableValues = {
               "PERFORMANCE_ARTS",
@@ -27,9 +26,9 @@ public record ClubUpdateRequest(
               "RELIGION"
             })
         String category,
-    @Schema(description = "동아리 태그 리스트") List<ClubTag> clubTags,
-    @Schema(description = "동아리 요약 리스트") List<ClubSummary> clubSummaries,
-    @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImage> clubDetailImages) {
+    @Schema(description = "동아리 태그 리스트") List<ClubTagRequest> clubTags,
+    @Schema(description = "동아리 요약 리스트") List<ClubSummaryRequest> clubSummaries,
+    @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImageRequest> clubDetailImages) {
 
   public ClubUpdateRequest {
     clubTags = clubTags == null ? List.of() : clubTags;
@@ -38,17 +37,17 @@ public record ClubUpdateRequest(
   }
 
   @Override
-  public List<ClubTag> clubTags() {
+  public List<ClubTagRequest> clubTags() {
     return List.copyOf(clubTags);
   }
 
   @Override
-  public List<ClubSummary> clubSummaries() {
+  public List<ClubSummaryRequest> clubSummaries() {
     return List.copyOf(clubSummaries);
   }
 
   @Override
-  public List<ClubDetailImage> clubDetailImages() {
+  public List<ClubDetailImageRequest> clubDetailImages() {
     return List.copyOf(clubDetailImages);
   }
 }

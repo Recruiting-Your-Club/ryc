@@ -3,9 +3,9 @@ package com.ryc.api.v2.club.infra.mapper;
 import java.util.List;
 
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
-import com.ryc.api.v2.club.domain.vo.ClubSummary;
-import com.ryc.api.v2.club.domain.vo.ClubTag;
+import com.ryc.api.v2.club.domain.ClubDetailImage;
+import com.ryc.api.v2.club.domain.ClubSummary;
+import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;

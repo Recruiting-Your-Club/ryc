@@ -1,6 +1,6 @@
 package com.ryc.api.v2.club.infra.mapper;
 
-import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
+import com.ryc.api.v2.club.domain.ClubDetailImage;
 import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
 
 public class ClubDetailImageMapper {

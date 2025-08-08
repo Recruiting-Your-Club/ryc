@@ -2,10 +2,10 @@ package com.ryc.api.v2.club.presentation.dto.response;
 
 import java.util.List;
 
+import com.ryc.api.v2.club.domain.ClubDetailImage;
+import com.ryc.api.v2.club.domain.ClubSummary;
+import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.domain.enums.Category;
-import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
-import com.ryc.api.v2.club.domain.vo.ClubSummary;
-import com.ryc.api.v2.club.domain.vo.ClubTag;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

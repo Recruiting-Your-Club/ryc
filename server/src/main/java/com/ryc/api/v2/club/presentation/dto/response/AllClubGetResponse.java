@@ -3,8 +3,8 @@ package com.ryc.api.v2.club.presentation.dto.response;
 import java.util.List;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
+import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.domain.enums.Category;
-import com.ryc.api.v2.club.domain.vo.ClubTag;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
