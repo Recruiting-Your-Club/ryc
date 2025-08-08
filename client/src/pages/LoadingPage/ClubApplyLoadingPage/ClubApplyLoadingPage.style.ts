@@ -151,6 +151,10 @@ export const skeletonQuestionDropdown = css`
     width: 120px;
     height: 40px;
     border-radius: 8px;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: 60px;
+        height: 20px;
+    }
 `;
 
 export const skeletonClubApplyTabContainer = css`
