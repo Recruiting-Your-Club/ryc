@@ -50,6 +50,7 @@ export interface Announcement {
     summaryDescription: string;
     detailDescription: string;
     target: string;
+    field: string;
     announcementStatus: string;
     announcementType: string;
     hasInterview: boolean;
