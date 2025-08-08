@@ -54,9 +54,6 @@ public record AnnouncementUpdateRequest(
     @Schema(description = "공고 타입", example = "LIMITED_TIME")
         @NotNull(message = "announcementType shouldn't be null")
         AnnouncementType announcementType,
-    @Schema(description = "면접 여부", example = "true")
-        @NotNull(message = "hasInterview shouldn't be null")
-        Boolean hasInterview,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
     @Schema(description = "공고 지원서") @Valid @NotNull(message = "applicationForm shouldn't be null")

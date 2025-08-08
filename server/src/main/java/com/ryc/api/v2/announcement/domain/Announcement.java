@@ -80,7 +80,7 @@ public class Announcement {
             .target(request.target())
             .field(request.field())
             .tags(tags)
-                //Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
+            // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
             .hasInterview(true)
             .images(images)
             .announcementStatus(announcementStatus)

@@ -25,7 +25,6 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "대상", example = "컴퓨터공학과 학생") String target,
     @Schema(description = "모집 분야", example = "백엔드") String field,
     @Schema(description = "공고 유형", example = "LIMITED_TIME") AnnouncementType announcementType,
-    @Schema(description = "인터뷰 여부", example = "true") Boolean hasInterview,
 
     // 지원서
     @Schema(description = "지원서") ApplicationFormResponse application,
@@ -68,7 +67,6 @@ public record AnnouncementUpdateResponse(
         .target(announcement.getTarget())
         .field(announcement.getField())
         .announcementType(announcement.getAnnouncementType())
-        .hasInterview(announcement.getHasInterview())
         .application(application)
         .applicationPeriod(applicationPeriod)
         .interviewPeriod(interviewPeriod)
