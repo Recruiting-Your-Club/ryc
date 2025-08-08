@@ -2,6 +2,7 @@ package com.ryc.api.v2.club.infra.mapper;
 
 import com.ryc.api.v2.club.domain.ClubDetailImage;
 import com.ryc.api.v2.club.infra.entity.ClubDetailImageEntity;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
 
 public class ClubDetailImageMapper {
 
@@ -17,11 +18,13 @@ public class ClubDetailImageMapper {
         .build();
   }
 
-  public static ClubDetailImageEntity toEntity(ClubDetailImage clubDetailImage) {
+  public static ClubDetailImageEntity toEntity(
+      ClubDetailImage clubDetailImage, ClubEntity clubEntity) {
     return ClubDetailImageEntity.builder()
         .id(clubDetailImage.getId())
         .imageUrl(clubDetailImage.getImageUrl())
         .thumbnailUrl(clubDetailImage.getThumbnailUrl())
+        .club(clubEntity)
         .build();
   }
 }

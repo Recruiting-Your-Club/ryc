@@ -1,6 +1,7 @@
 package com.ryc.api.v2.club.infra.mapper;
 
 import com.ryc.api.v2.club.domain.ClubSummary;
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
 
 public class ClubSummaryMapper {
@@ -17,11 +18,12 @@ public class ClubSummaryMapper {
         .build();
   }
 
-  public static ClubSummaryEntity toEntity(ClubSummary clubSummary) {
+  public static ClubSummaryEntity toEntity(ClubSummary clubSummary, ClubEntity clubEntity) {
     return ClubSummaryEntity.builder()
         .id(clubSummary.getId())
         .title(clubSummary.getTitle())
         .value(clubSummary.getValue())
+        .club(clubEntity)
         .build();
   }
 }

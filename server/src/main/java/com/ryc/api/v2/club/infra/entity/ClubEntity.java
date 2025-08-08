@@ -57,4 +57,19 @@ public class ClubEntity extends BaseEntity {
   private List<ClubDetailImageEntity> clubDetailImages = new ArrayList<>();
 
   @Builder.Default private Boolean deleted = Boolean.FALSE;
+
+  public void addClubTag(ClubTagEntity clubTag) {
+    clubTags.add(clubTag);
+    clubTag.setClub(this);
+  }
+
+  public void addClubSummary(ClubSummaryEntity clubSummary) {
+    clubSummaries.add(clubSummary);
+    clubSummary.setClub(this);
+  }
+
+  public void addClubDetailImage(ClubDetailImageEntity clubDetailImage) {
+    clubDetailImages.add(clubDetailImage);
+    clubDetailImage.setClub(this);
+  }
 }

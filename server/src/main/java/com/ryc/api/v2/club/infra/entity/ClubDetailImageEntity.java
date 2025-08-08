@@ -22,6 +22,7 @@ public class ClubDetailImageEntity {
   @Column(nullable = false, columnDefinition = "VARCHAR(500)")
   private String thumbnailUrl;
 
+  @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id", nullable = false)
   private ClubEntity club;

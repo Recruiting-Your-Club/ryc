@@ -22,6 +22,7 @@ public class ClubSummaryEntity {
   @Column(nullable = false)
   private String value;
 
+  @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id", nullable = false)
   private ClubEntity club;

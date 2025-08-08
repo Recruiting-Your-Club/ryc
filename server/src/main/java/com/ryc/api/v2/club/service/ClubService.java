@@ -9,8 +9,7 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 
@@ -33,7 +32,7 @@ public class ClubService {
   }
 
   @Transactional
-  public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
+  public DetailClubResponse updateClub(String clubId, ClubUpdateRequest body) {
     Club previousClub = clubRepository.findById(clubId);
 
     if (!previousClub.getName().equals(body.name()) && clubRepository.existsByName(body.name())) {
@@ -43,7 +42,8 @@ public class ClubService {
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
-    return ClubUpdateResponse.builder()
+    return DetailClubResponse.builder()
+        .id(savedClub.getId())
         .name(savedClub.getName())
         .shortDescription(savedClub.getShortDescription())
         .detailDescription(savedClub.getDetailDescription())
@@ -62,9 +62,9 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubGetResponse getClub(String clubId) {
+  public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
-    return ClubGetResponse.builder()
+    return DetailClubResponse.builder()
         .name(club.getName())
         .detailDescription(club.getDetailDescription())
         .imageUrl(club.getImageUrl())

@@ -12,30 +12,39 @@ import com.ryc.api.v2.club.infra.entity.ClubSummaryEntity;
 import com.ryc.api.v2.club.infra.entity.ClubTagEntity;
 
 public class ClubMapper {
+
   private ClubMapper() {
     // Prevent instantiation
   }
 
   public static ClubEntity toEntity(Club club) {
-    List<ClubTagEntity> clubTags =
-        club.getClubTags().stream().map(ClubTagMapper::toEntity).toList();
-    List<ClubSummaryEntity> clubSummaries =
-        club.getClubSummaries().stream().map(ClubSummaryMapper::toEntity).toList();
-    List<ClubDetailImageEntity> clubDetailImages =
-        club.getClubDetailImages().stream().map(ClubDetailImageMapper::toEntity).toList();
+    ClubEntity clubEntity =
+        ClubEntity.builder()
+            .id(club.getId())
+            .name(club.getName())
+            .shortDescription(club.getShortDescription())
+            .detailDescription(club.getDetailDescription())
+            .imageUrl(club.getImageUrl())
+            .thumbnailUrl(club.getThumbnailUrl())
+            .category(club.getCategory())
+            .build();
 
-    return ClubEntity.builder()
-        .id(club.getId())
-        .name(club.getName())
-        .shortDescription(club.getShortDescription())
-        .detailDescription(club.getDetailDescription())
-        .imageUrl(club.getImageUrl())
-        .thumbnailUrl(club.getThumbnailUrl())
-        .category(club.getCategory())
-        .clubTags(clubTags)
-        .clubSummaries(clubSummaries)
-        .clubDetailImages(clubDetailImages)
-        .build();
+    for (ClubTag clubTag : club.getClubTags()) {
+      ClubTagEntity clubTagEntity = ClubTagMapper.toEntity(clubTag, clubEntity);
+      clubEntity.addClubTag(clubTagEntity);
+    }
+
+    for (ClubSummary clubSummary : club.getClubSummaries()) {
+      ClubSummaryEntity clubSummaryEntity = ClubSummaryMapper.toEntity(clubSummary, clubEntity);
+      clubEntity.addClubSummary(clubSummaryEntity);
+    }
+
+    for (ClubDetailImage clubDetailImage : club.getClubDetailImages()) {
+      ClubDetailImageEntity clubDetailImageEntity =
+          ClubDetailImageMapper.toEntity(clubDetailImage, clubEntity);
+      clubEntity.addClubDetailImage(clubDetailImageEntity);
+    }
+    return clubEntity;
   }
 
   public static Club toDomain(ClubEntity clubEntity) {

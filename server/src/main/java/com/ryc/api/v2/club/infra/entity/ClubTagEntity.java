@@ -19,6 +19,7 @@ public class ClubTagEntity {
   @Column(nullable = false)
   private String name;
 
+  @Setter
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id", nullable = false)
   private ClubEntity club;
