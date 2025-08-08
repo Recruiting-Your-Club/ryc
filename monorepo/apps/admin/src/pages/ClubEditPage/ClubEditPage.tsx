@@ -1,12 +1,16 @@
+import type { Club } from '@api/domain/club/types';
+import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
-import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Button, Divider } from '@ssoc/ui';
 import { Editor, Image, ImageDialog, Input, Select, Text } from '@ssoc/ui';
+import { getCategory } from '@ssoc/utils';
 
 import { ClubBox, FileUpLoader, ImageRegister } from '../../components';
 import type { ClubBoxItem } from '../../components/ClubBox/types';
-import club from '../../mocks/data/club/clubDetail.json';
 import {
     s_buttonWrapper,
     s_clubDetailPageContainer,
@@ -21,54 +25,26 @@ import {
 } from './ClubEditPage.style';
 
 function ClubEditPage() {
-    const [clubData, setClubData] = useState<ClubBoxItem[]>([
-        { id: '7571e92b-f38b-4878-959c-f76ab9290ed8', title: '동아리 이름', value: 'R&D' },
-        { id: '7571e92b-f38b-4878-959c-f76ab9290ed4', title: '회장', value: '홍길동' },
-        { id: '7571e92b-f38b-4878-959c-f76ab9290ed2', title: '연락처', value: '010-1234-5678' },
-        {
-            id: '7571e92b-f38b-4878-959c-f76ab9290ed1',
-            title: '이메일',
-            value: 'gildong.hong@example.com',
-        },
-    ]);
-
-    const handleDataChange = (updatedData: ClubBoxItem[]) => {
-        setClubData(updatedData);
-    };
-
-    const handleAddItem = () => {
-        const id = crypto.randomUUID();
-        setClubData([...clubData, { id: id, title: '항목', value: '내용' }]);
-    };
-
-    const handleDeleteItem = (id: string) => {
-        setClubData(clubData.filter((item) => item.id !== id));
-    };
-
     // lib hooks
+    const { clubId } = useParams();
     // initial values
     // state, ref, querystring hooks
     const [isEditMode, setIsEditMode] = useState(false);
     const [image, setImage] = useState<string>(ssoc);
-    const [croppedImage, setCroppedImage] = useState<string>();
-    const [text, setText] = useState<string>('');
-    const [imageUrl, setImageUrl] = useState<string>();
     const [open, setOpen] = useState(false);
-
+    const [croppedImage, setCroppedImage] = useState<string>('');
+    const [clubName, setClubName] = useState<string>('');
+    const [clubCategory, setClubCategory] = useState<string>('');
+    const [introText, setIntroText] = useState<string>('');
+    const [expandedImage, setExpandedImage] = useState<string>();
+    const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[]>([]);
+    const [originClubData, setOriginClubData] = useState<Club>();
+    const [clubDetailImages, setClubDetailImages] = useState<string[]>([]);
     // form hooks
     // query hooks
+    const { data: club } = useQuery(myClubQueries.getClub('7571e92b-f38b-4878-959c-f76ab9290ed0'));
+
     // calculated values
-    const editModeIntroduce = (
-        <Editor.Root sx={{ marginTop: '5rem' }}>
-            <Editor.Toolbar />
-            <Editor.Textarea value={text} onChange={setText} sx={{ height: '100rem' }} />
-        </Editor.Root>
-    );
-    const readModeIntroduce = (
-        <div css={s_introduceContainer}>
-            <Text textAlign="start">동아리 설명입니다~~~~</Text>
-        </div>
-    );
     const editModeLogo = (
         <ImageRegister
             image={image}
@@ -87,20 +63,25 @@ function ClubEditPage() {
             css={{ borderRadius: '10px' }}
         />
     );
+    //FIXME: Select value 값 리팩토링한 Select로 바꿔줘야함
     const editModeClubNameAndCategory = (
         <>
-            <Input placeholder="동아리 이름" inputSx={{ height: '3rem' }} />
-            <Select value="하이" onValueChange={() => {}} size="s">
+            <Input
+                value={clubName}
+                onChange={(event) => setClubName(event.target.value)}
+                inputSx={{ height: '3rem' }}
+            />
+            <Select value={clubCategory} onValueChange={setClubCategory} size="s">
                 <Select.Trigger sx={{ height: '2.8rem', width: '10rem' }}>
                     <Select.Value />
                 </Select.Trigger>
                 <Select.Content>
-                    <Select.Item value="1">공연동아리</Select.Item>
-                    <Select.Item value="2">문화동아리</Select.Item>
-                    <Select.Item value="3">체육동아리</Select.Item>
-                    <Select.Item value="4">학술동아리</Select.Item>
-                    <Select.Item value="5">봉사동아리</Select.Item>
-                    <Select.Item value="6">종교동아리</Select.Item>
+                    <Select.Item value="PERFORMANCE_ARTS">공연동아리</Select.Item>
+                    <Select.Item value="CULTURE">문화동아리</Select.Item>
+                    <Select.Item value="SPORTS">체육동아리</Select.Item>
+                    <Select.Item value="ACADEMIC">학술동아리</Select.Item>
+                    <Select.Item value="VOLUNTEER">봉사동아리</Select.Item>
+                    <Select.Item value="RELIGION">종교동아리</Select.Item>
                 </Select.Content>
             </Select>
         </>
@@ -108,7 +89,7 @@ function ClubEditPage() {
     const readModeClubNameAndCategory = (
         <>
             <Text as="h4" type="h1Semibold" textAlign="start" noWrap>
-                인터페이스
+                {originClubData?.name}
             </Text>
             <Text
                 as="div"
@@ -118,11 +99,22 @@ function ClubEditPage() {
                 noWrap
                 sx={{ marginLeft: '0.4rem' }}
             >
-                {/* {getCategory(category)} */}
-                학술동아리
+                {getCategory(originClubData?.category || '')}
             </Text>
         </>
     );
+    const editModeIntroduce = (
+        <Editor.Root sx={{ marginTop: '5rem' }}>
+            <Editor.Toolbar />
+            <Editor.Textarea value={introText} onChange={setIntroText} sx={{ height: '100rem' }} />
+        </Editor.Root>
+    );
+    const readModeIntroduce = (
+        <div css={s_introduceContainer}>
+            <Text textAlign="start">{originClubData?.detailDescription}</Text>
+        </div>
+    );
+    //FIXME: 추후에 이미지 서버에서 받아와서 초기값으로 바꿔줘야함
     const editModeImageList = (
         <FileUpLoader sx={{ marginTop: '5rem' }}>
             <FileUpLoader.Button text="이미지 추가" />
@@ -132,30 +124,78 @@ function ClubEditPage() {
     const readModeImageList = (
         <>
             <div css={s_imageListContainer}>
-                {club?.clubDetailImages?.map((images) => (
+                {originClubData?.clubDetailImages?.map((image) => (
                     <button
                         css={s_imageItem}
-                        key={images.imageUrl}
+                        key={image}
                         onClick={() => {
                             setOpen(true);
-                            handleImageClick(images.imageUrl);
+                            handleImageExpanded(image);
                         }}
                     >
-                        <Image src={images.imageUrl} alt="동아리 사진" />
+                        <Image src={image} alt="동아리 사진" />
                     </button>
                 ))}
             </div>
 
-            {open && imageUrl && (
-                <ImageDialog open={open} handleClose={() => setOpen(false)} imageUrl={imageUrl} />
+            {open && expandedImage && (
+                <ImageDialog
+                    open={open}
+                    handleClose={() => setOpen(false)}
+                    imageUrl={expandedImage}
+                />
             )}
         </>
     );
     // handlers
-    const handleImageClick = (url: string) => {
-        setImageUrl(url);
+    const handleImageExpanded = (url: string) => {
+        setExpandedImage(url);
+    };
+    const handleDataChange = (updatedData: ClubBoxItem[]) => {
+        setClubSummaries(updatedData);
+    };
+
+    const handleAddItem = () => {
+        const id = crypto.randomUUID();
+        if (!clubSummaries) return;
+        setClubSummaries([...clubSummaries, { id: id, title: '항목', value: '내용' }]);
+    };
+
+    const handleDeleteItem = (id: string) => {
+        setClubSummaries(clubSummaries?.filter((item) => item.id !== id));
+    };
+    const handleCancelEdit = () => {
+        setImage(originClubData?.imageUrl || ssoc);
+        setCroppedImage(originClubData?.imageUrl || ssoc);
+    };
+    const updateClubData = () => {
+        const updatedClubData: Club = {
+            name: clubName, // 동아리 타이틀
+            category: clubCategory, // 카테고리
+            detailDescription: introText, // 동아리 소개
+            clubSummaries: clubSummaries || '', // 동아리 요약
+            imageUrl: croppedImage, // 동아리 대표 이미지
+            clubDetailImages: clubDetailImages, // 동아리 상세 이미지
+        };
+        if (originClubData === updatedClubData) {
+            //console.log('동아리 데이터 변경 없음');
+        } else {
+            setOriginClubData(updatedClubData);
+        }
+    };
+    const handleSaveEdited = () => {
+        updateClubData();
     };
     // effects
+    useEffect(() => {
+        setOriginClubData(club);
+        setClubSummaries(club?.clubSummaries || []);
+        setIntroText(club?.detailDescription || '');
+        setImage(club?.imageUrl || ssoc);
+        setClubCategory(club?.category || '');
+        setClubName(club?.name || '');
+        setClubDetailImages(club?.clubDetailImages || []);
+    }, [club]);
 
     return (
         <div css={s_clubDetailPageContainer}>
@@ -171,14 +211,20 @@ function ClubEditPage() {
                                 <Button
                                     variant="text"
                                     sx={s_buttonWrapper}
-                                    onClick={() => setIsEditMode(!isEditMode)}
+                                    onClick={() => {
+                                        setIsEditMode(!isEditMode);
+                                        handleSaveEdited();
+                                    }}
                                 >
                                     저장
                                 </Button>
                                 <Button
                                     variant="text"
                                     sx={s_buttonWrapper}
-                                    onClick={() => setIsEditMode(!isEditMode)}
+                                    onClick={() => {
+                                        setIsEditMode(!isEditMode);
+                                        handleCancelEdit();
+                                    }}
                                 >
                                     취소
                                 </Button>
@@ -196,7 +242,7 @@ function ClubEditPage() {
                 </div>
                 <Divider sx={{ marginBottom: '3rem', marginTop: '1rem' }} />
                 <ClubBox
-                    data={clubData}
+                    data={clubSummaries}
                     isEditMode={isEditMode}
                     onDataChange={handleDataChange}
                     onAddItem={handleAddItem}
