@@ -1,8 +1,17 @@
 import ChevronLeft from '@assets/images/chevronLeft.svg';
 import ChevronRight from '@assets/images/chevronRight.svg';
 import XIcon from '@assets/images/xIcon.svg';
-import { Button, Dialog, Divider, DocumentBox, PersonalScoreCard, Rating, Text } from '@components';
-import React, { useState } from 'react';
+import {
+    Button,
+    Dialog,
+    Divider,
+    DocumentBox,
+    FileDownloader,
+    PersonalScoreCard,
+    Rating,
+    Text,
+} from '@components';
+import React, { Fragment, useState } from 'react';
 import {
     chevronSvgCss,
     contentBody,
@@ -18,17 +27,20 @@ import {
     formWrapper,
     headerCss,
     perStarScoreGroup,
+    s_documentTypeTextWrapper,
     starScoreWrapper,
     titleWrapper,
 } from './ApplicantDialog.style';
 import type { ApplicantDialogProps } from './types';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
 
 function ApplicantDialog({
     open,
     handleClose,
     applicant,
     evaluationLabels,
-    documentList,
+    preQuestionAnswers,
+    applicationQuestionAnswers,
     evaluations,
     isThreeStepProcess,
 }: ApplicantDialogProps) {
@@ -53,6 +65,29 @@ function ApplicantDialog({
         if (applicant.status.startsWith('FINAL')) return isThreeStepProcess ? 1 : 0;
         return 0;
     }
+
+    const documentGroups = [
+        { label: '▶ 사전질문', documents: preQuestionAnswers ?? [] },
+        { label: '▶ 자기소개서', documents: applicationQuestionAnswers ?? [] },
+    ];
+
+    const formatAnswer = (question: QuestionAnswer): string => {
+        switch (question.questionType) {
+            case 'LONG_ANSWER':
+            case 'SHORT_ANSWER':
+                return question.textAnswer ?? '답변 미작성';
+
+            case 'SINGLE_CHOICE':
+            case 'MULTIPLE_CHOICE':
+                return question.selectedOptionIds?.join(', ') ?? '답변 미선택';
+
+            case 'FILE':
+                return question.fileUrl ?? '파일 미첨부';
+
+            default:
+                return '답변 미작성';
+        }
+    };
 
     // handlers
     const goPrev = () => {
@@ -107,14 +142,43 @@ function ApplicantDialog({
                         <div css={contentWrapper}>
                             <div css={formWrapper}>
                                 <div css={documentBoxGroup}>
-                                    {documentList.map((document, index) => (
-                                        <DocumentBox
-                                            key={index}
-                                            index={index}
-                                            question={document.question}
-                                            answer={document.answer}
-                                        />
-                                    ))}
+                                    {documentGroups.map(({ label, documents }) =>
+                                        documents.length > 0 ? (
+                                            <>
+                                                <div css={s_documentTypeTextWrapper}>
+                                                    <Text
+                                                        as="span"
+                                                        type="bodyBold"
+                                                        textAlign="start"
+                                                    >
+                                                        {label}
+                                                    </Text>
+                                                </div>
+                                                {documents.map((document, index) => (
+                                                    <DocumentBox
+                                                        key={document.questionId}
+                                                        index={index}
+                                                        question={document.questionLabel}
+                                                        answer={
+                                                            document.questionType === 'FILE' &&
+                                                            document.fileUrl ? (
+                                                                <FileDownloader
+                                                                    fileName={
+                                                                        document.fileUrl
+                                                                            .split('/')
+                                                                            .pop() || 'download'
+                                                                    }
+                                                                    fileData={document.fileUrl}
+                                                                />
+                                                            ) : (
+                                                                formatAnswer(document)
+                                                            )
+                                                        }
+                                                    />
+                                                ))}
+                                            </>
+                                        ) : null,
+                                    )}
                                 </div>
                             </div>
                         </div>
