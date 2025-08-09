@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <TestPage /> },
 
-            { path: 'clubs', element: <ClubEditPage /> },
+            { path: 'clubs/:clubId', element: <ClubEditPage /> },
 
             { path: 'announcements', element: <LoginPage /> },
             { path: 'announcements/create', element: <ClubCreatePage /> },

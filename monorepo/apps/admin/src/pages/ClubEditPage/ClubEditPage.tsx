@@ -1,4 +1,5 @@
 import type { Club } from '@api/domain/club/types';
+import { useUpdateClub } from '@api/mutationFactory';
 import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
 import { useQuery } from '@tanstack/react-query';
@@ -6,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Button, Divider } from '@ssoc/ui';
-import { Editor, Image, ImageDialog, Input, Select, Text } from '@ssoc/ui';
+import { Editor, Image, ImageDialog, Input, Select, Text, useToast } from '@ssoc/ui';
 import { getCategory } from '@ssoc/utils';
 
 import { ClubBox, FileUpLoader, ImageRegister } from '../../components';
@@ -27,6 +28,7 @@ import {
 function ClubEditPage() {
     // lib hooks
     const { clubId } = useParams();
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
     const [isEditMode, setIsEditMode] = useState(false);
@@ -42,7 +44,8 @@ function ClubEditPage() {
     const [clubDetailImages, setClubDetailImages] = useState<string[]>([]);
     // form hooks
     // query hooks
-    const { data: club } = useQuery(myClubQueries.getClub('7571e92b-f38b-4878-959c-f76ab9290ed0'));
+    const { data: club } = useQuery(myClubQueries.getClub(clubId ?? ''));
+    const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
 
     // calculated values
     const editModeLogo = (
@@ -177,14 +180,26 @@ function ClubEditPage() {
             imageUrl: croppedImage, // 동아리 대표 이미지
             clubDetailImages: clubDetailImages, // 동아리 상세 이미지
         };
-        if (originClubData === updatedClubData) {
-            //console.log('동아리 데이터 변경 없음');
-        } else {
-            setOriginClubData(updatedClubData);
-        }
+        return updatedClubData;
     };
-    const handleSaveEdited = () => {
-        updateClubData();
+    const handleSaveEdited = async () => {
+        const updatedClubData = updateClubData();
+        if (originClubData !== updatedClubData) {
+            try {
+                const response = await updateClub({ id: clubId ?? '', club: updatedClubData });
+                setOriginClubData(response);
+                toast('동아리 정보가 업데이트 되었어요.', {
+                    toastTheme: 'white',
+                    type: 'error',
+                });
+            } catch (error) {
+                toast('업데이트에 실패했습니다. 다시 시도해주세요.', {
+                    toastTheme: 'white',
+                    type: 'error',
+                });
+                console.error(error);
+            }
+        }
     };
     // effects
     useEffect(() => {
@@ -215,6 +230,7 @@ function ClubEditPage() {
                                         setIsEditMode(!isEditMode);
                                         handleSaveEdited();
                                     }}
+                                    loading={isUpdateLoading}
                                 >
                                     저장
                                 </Button>

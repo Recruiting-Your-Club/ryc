@@ -36,7 +36,12 @@ function MyClubPage() {
                 <ul css={myClubList}>
                     {myClubs.map((club) => (
                         <li key={club.id}>
-                            <Button variant="transparent" size="xl" sx={clubItem}>
+                            <Button
+                                variant="transparent"
+                                size="xl"
+                                sx={clubItem}
+                                onClick={() => goTo(`/clubs/${club.id}`)}
+                            >
                                 <Avatar radius="10px" imageURL={club.imageUrl} />
                                 <div css={clubItemText}>
                                     <Text textAlign="start">{club.name}</Text>

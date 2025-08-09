@@ -1,4 +1,4 @@
-import { getClub, getMyClub } from '@api/domain';
+import { getClub, getMyClub, updateClub } from '@api/domain';
 import { myClubKeys } from '@api/querykeyFactory';
 import { DEFAULT_STALETIME } from '@constants/staleTime';
 import { queryOptions } from '@tanstack/react-query';
