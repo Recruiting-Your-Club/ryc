@@ -15,6 +15,15 @@ import Underline from '@ssoc/assets/images/text-underline.svg';
 
 import type { Align, Option, Size } from '../components/Editor/types';
 
+export const sizeOptions = [
+    { value: '10px', label: '10px' },
+    { value: '12px', label: '12px' },
+    { value: '14px', label: '14px' },
+    { value: '16px', label: '16px' },
+    { value: '24px', label: '24px' },
+    { value: '36px', label: '36px' },
+];
+
 export const formatButtons = [
     { format: 'bold', Svg: Bold },
     { format: 'italic', Svg: Italic },

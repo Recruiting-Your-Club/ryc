@@ -29,7 +29,6 @@ const httpClient = {
 
     async createHttpRequest({ method, url, headers, body, isAuthRequire }: CreateClientOptions) {
         const fullUrl = new URL(url, BASE_URL).toString();
-
         const { accessToken } = useAuthStore.getState();
 
         const authHeaders = new Headers(headers);

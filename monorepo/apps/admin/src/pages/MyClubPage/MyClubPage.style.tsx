@@ -22,6 +22,9 @@ export const myClubList = css`
     align-items: start;
     gap: 0.5rem;
     margin-top: 1rem;
+    height: 30rem;
+    overflow-y: auto;
+    overflow-x: hidden;
 `;
 export const clubItem = css`
     display: flex;

@@ -90,7 +90,7 @@ function ImageRegister({
                     alt="profile"
                     width="100%"
                     height="100%"
-                    css={{ borderRadius: '10px' }}
+                    css={{ borderRadius: '10px', minHeight: '4rem', minWidth: '4rem' }}
                 />
                 {openTrigger && (
                     <div css={s_imageEditorDialogTriggerContainer}>

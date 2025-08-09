@@ -34,11 +34,12 @@ export const ImageEditorInput = css`
 
 export const s_imageEditorDialogTriggerContainer = css`
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: start;
     justify-content: center;
     width: 14rem;
-    z-index: 100;
+    z-index: 1000;
     background-color: white;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     padding: 1rem;
