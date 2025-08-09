@@ -12,7 +12,7 @@ export interface PersonalScoreCardProps {
     name: string;
     score: number;
     comment: string;
-    commentId: number;
+    commentId: string;
     isUser?: boolean;
     isEditable?: boolean;
     handleDelete: () => void;
