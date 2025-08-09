@@ -1,4 +1,4 @@
-import { Applicant, ApplicantDetail, Document } from '@api/domain/applicant/types';
+import type { Applicant, ApplicantDetail, Document } from '@api/domain/applicant/types';
 import { MOCK_USER_ID } from '@components/EvaluationBox/types';
 import { BASE_URL } from '@constants/api';
 import { http, HttpResponse } from 'msw';
@@ -18,10 +18,6 @@ const applicantHandler = [
             (applicant) => applicant.id === Number(params.id),
         );
         return HttpResponse.json(detail as ApplicantDetail, { status: 200 });
-    }),
-    http.get(`${BASE_URL}documents/:id`, ({ params }) => {
-        const detail = documentList.find((document) => document.applicantId === Number(params.id));
-        return HttpResponse.json(detail as Document, { status: 200 });
     }),
     http.get(`${BASE_URL}doc-evaluation/:id`, ({ params }) => {
         const evaluation = docEvaluationList.find(
