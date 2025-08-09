@@ -2,6 +2,8 @@ package com.ryc.api.v2.club.infra;
 
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.club.domain.Club;
@@ -9,8 +11,6 @@ import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
-import com.ryc.api.v2.common.exception.code.ClubErrorCode;
-import com.ryc.api.v2.common.exception.custom.ClubException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +33,7 @@ public class ClubRepositoryImpl implements ClubRepository {
     ClubEntity entity =
         clubJpaRepository
             .findById(id)
-            .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+            .orElseThrow(() -> new EntityNotFoundException("동아리를 찾을 수 없습니다."));
     return ClubMapper.toDomain(entity);
   }
 

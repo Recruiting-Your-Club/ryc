@@ -11,7 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
-import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
@@ -48,8 +47,8 @@ public class InterviewHttpApi {
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
   @Operation(summary = "지원자의 면접 시간대 조회", description = "지원자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   @ApiErrorCodeExample(
-      value = {ClubErrorCode.class, CommonErrorCode.class},
-      include = {"CLUB_NOT_FOUND", "RESOURCE_NOT_FOUND"})
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<InterviewSlotsApplicantViewResponse> getInterviewSlotsForApplicant(
       @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
