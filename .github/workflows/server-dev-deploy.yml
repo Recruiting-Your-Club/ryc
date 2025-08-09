@@ -75,7 +75,6 @@ jobs:
           rm: true
           source: ./ssoc-dev-server.jar
           target: ${{ secrets.REMOTE_APP_DIR }}
-          debug: true
 
       - name: Deploy Spring App on EC2
         run: |
