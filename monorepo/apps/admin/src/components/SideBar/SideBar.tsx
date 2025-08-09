@@ -6,8 +6,7 @@ import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import Club from '@assets/images/club.svg';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import AplicantManage from '@ssoc/assets/images/AplicantManage.svg';
 import ApplicationManage from '@ssoc/assets/images/ApplicationManage.svg';
@@ -55,7 +54,7 @@ function SideBar() {
     // prop destruction
     // lib hooks
     const location = useLocation();
-    const { clubId } = useParams();
+    const { clubId, announcementId } = useParams();
     const { goTo } = useRouter();
 
     // initial values
@@ -65,95 +64,77 @@ function SideBar() {
                 id: 1,
                 menu: '동아리 관리',
                 icon: <Club />,
-                subMenus: [
-                    {
-                        menu: '동아리 소개 수정',
-                        link: `/clubs/${clubId}`,
-                    },
-                ],
+                subMenus: [{ menu: '동아리 소개 수정', link: '/clubs' }],
             },
             {
                 id: 2,
                 menu: '공고 관리',
                 icon: <Home />,
                 subMenus: [
-                    {
-                        menu: '모집 공고',
-                        link: `/announcements/${clubId}`,
-                    },
-                    {
-                        menu: '공고 생성',
-                        link: `/announcements/create/${clubId}`,
-                    },
-                    {
-                        menu: '공고 편집',
-                        link: `/announcements/edit/${clubId}`,
-                    },
+                    { menu: '모집 공고', link: '/announcements' },
+                    { menu: '공고 생성', link: '/announcements/create' },
+                    { menu: '공고 편집', link: '/announcements/edit' },
                 ],
             },
             {
                 id: 3,
                 menu: '지원자 관리',
                 icon: <AplicantManage />,
-                subMenus: [
-                    {
-                        menu: '지원자 관리',
-                        link: `/applicants/${clubId}`,
-                    },
-                ],
+                subMenus: [{ menu: '지원자 관리', link: '/applicants' }],
             },
             {
                 id: 4,
                 menu: '평가 관리',
                 icon: <EditApplication />,
                 subMenus: [
-                    {
-                        menu: '서류 평가',
-                        link: `/interview-evaluation/${clubId}`,
-                    },
-                    {
-                        menu: '면접 평가',
-                        link: `/document-evaluation/${clubId}`,
-                    },
+                    { menu: '서류 평가', link: '/document-evaluation' },
+                    { menu: '면접 평가', link: '/interview-evaluation' },
                 ],
             },
             {
                 id: 5,
                 menu: '면접 관리',
                 icon: <ApplicationManage />,
-                subMenus: [
-                    {
-                        menu: '지원자 면접 일정 관리',
-                        link: `/interviewee-schedule/${clubId}`,
-                    },
-                ],
+                subMenus: [{ menu: '지원자 면접 일정 관리', link: '/interviewee-schedule' }],
             },
             {
                 id: 6,
                 menu: '사용자 설정',
                 icon: <UserSet />,
-                subMenus: [
-                    {
-                        menu: '사용자 권한 설정',
-                        link: `/settings/${clubId}`,
-                    },
-                ],
+                subMenus: [{ menu: '사용자 권한 설정', link: '/settings' }],
             },
         ],
         [],
     );
 
-    const getMainMenu = () => {
-        const currentPath = location.pathname;
-        const activatedMenu = navMenu.find((item) =>
-            item.subMenus.some((subMenu) => subMenu.link === currentPath),
-        );
-        return activatedMenu?.id ? activatedMenu.id : 1;
-    };
+    const getActiveSubMenu = useCallback(
+        (pathname: string) => {
+            let activeLink = '';
+            for (const main of navMenu) {
+                for (const sub of main.subMenus) {
+                    if (pathname.startsWith(sub.link) && sub.link.length > activeLink.length) {
+                        activeLink = sub.link;
+                    }
+                }
+            }
+            return activeLink;
+        },
+        [navMenu],
+    );
+
+    const getMainMenuId = useCallback(
+        (activeSubMenuLink: string) => {
+            const activatedMenu = navMenu.find((item) =>
+                item.subMenus.some((subMenu) => subMenu.link === activeSubMenuLink),
+            );
+            return activatedMenu?.id || 1;
+        },
+        [navMenu],
+    );
 
     // state, ref, querystring hooks
-    const [activeMenus, setActiveMenus] = useState<number[]>([getMainMenu()]);
-    const [activeSubMenu, setActiveSubMenu] = useState<string>(location.pathname);
+    const [activeSubMenu, setActiveSubMenu] = useState<string>(getActiveSubMenu(location.pathname));
+    const [activeMenus, setActiveMenus] = useState<number[]>([getMainMenuId(activeSubMenu)]);
     const [isExpanded, setIsExpanded] = useState(true);
     const [currentClub, setCurrentClub] = useState<string>(clubId ?? '');
     const [queryOn, setQueryOn] = useState<boolean>(false);
@@ -194,6 +175,20 @@ function SideBar() {
     }, [announcementList]);
 
     // handlers
+    const handleSubMenuClick = (link: string) => {
+        const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
+        const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
+        goTo(`${link}/${clubId}${announcementIdPath}`);
+    };
+
+    // 공고 선택하면 모집 공고로 이동
+    const handleSelectAnnouncement = (announcement: AnnouncementList) => {
+        setCurrentAnnouncement(announcement);
+        const targetPath = `/announcements/${clubId}/${announcement.announcementId}`;
+        setActiveSubMenu('/announcements');
+        goTo(targetPath);
+    };
+
     const handleCollapsed = useCallback(
         (id: number) => {
             if (!isExpanded) {
@@ -201,13 +196,12 @@ function SideBar() {
                 setActiveMenus([id]);
             } else {
                 setActiveMenus((prev) => {
-                    const openedMenu = prev.includes(id);
-                    if (openedMenu) {
-                        const closeMenu = prev.filter((menuId) => menuId !== id);
-                        return closeMenu;
+                    if (prev.includes(id)) {
+                        // 이미 열려있으면 닫는다
+                        return prev.filter((menuId) => menuId !== id);
                     } else {
-                        const openMenu = [...prev, id];
-                        return openMenu;
+                        // 닫혀있으면 연다
+                        return [...prev, id];
                     }
                 });
             }
@@ -216,6 +210,18 @@ function SideBar() {
     );
 
     //useEffect
+    useEffect(() => {
+        const newActiveSubMenu = getActiveSubMenu(location.pathname);
+        setActiveSubMenu(newActiveSubMenu);
+        const newMainMenuId = getMainMenuId(newActiveSubMenu);
+        setActiveMenus((prev) => {
+            if (prev.includes(newMainMenuId)) {
+                return prev;
+            }
+            return [...prev, newMainMenuId];
+        });
+    }, [location.pathname, getActiveSubMenu, getMainMenuId]);
+
     useEffect(() => {
         setCurrentAnnouncement(announcementList?.[0]);
     }, [announcementList]);
@@ -238,7 +244,12 @@ function SideBar() {
                                 css={clubWrapper}
                                 onClick={() => {
                                     setCurrentClub(club.id);
-                                    goTo(`/clubs/${club.id}`);
+                                    // 현재 대표 경로를 유지한 채 clubId만 교체
+                                    const representativePath = getActiveSubMenu(location.pathname);
+                                    const announcementIdParam = announcementId
+                                        ? `/${announcementId}`
+                                        : '';
+                                    goTo(`${representativePath}/${club.id}${announcementIdParam}`);
                                 }}
                             >
                                 <Tooltip content={club.name}>
@@ -264,11 +275,8 @@ function SideBar() {
                     <Button
                         variant="text"
                         onClick={() => {
-                            if (location.pathname !== `/clubs/${clubId}`) {
-                                if (!activeMenus.includes(1)) handleCollapsed(1);
-                                setActiveSubMenu(`/clubs/${clubId}`);
-                                goTo(`/clubs/${clubId}`);
-                            }
+                            if (!activeMenus.includes(1)) handleCollapsed(1);
+                            handleSubMenuClick('/clubs');
                         }}
                         sx={homeLogoTextWrapper(isExpanded)}
                     >
@@ -333,7 +341,9 @@ function SideBar() {
                                         variant="transparent"
                                         key={announcement.announcementId}
                                         sx={dropDownClubWrapper}
-                                        onClick={() => setCurrentAnnouncement(announcement)}
+                                        onClick={() => {
+                                            handleSelectAnnouncement(announcement);
+                                        }}
                                     >
                                         <Text as="div" type="captionRegular" cropped noWrap>
                                             {announcement.title}
@@ -354,7 +364,9 @@ function SideBar() {
                                         variant="transparent"
                                         key={announcement.announcementId}
                                         sx={dropDownClubWrapper}
-                                        onClick={() => setCurrentAnnouncement(announcement)}
+                                        onClick={() => {
+                                            handleSelectAnnouncement(announcement);
+                                        }}
                                     >
                                         <Text as="div" type="captionRegular" cropped noWrap>
                                             {announcement.title}
@@ -375,7 +387,9 @@ function SideBar() {
                                         variant="transparent"
                                         key={announcement.announcementId}
                                         sx={dropDownClubWrapper}
-                                        onClick={() => setCurrentAnnouncement(announcement)}
+                                        onClick={() => {
+                                            handleSelectAnnouncement(announcement);
+                                        }}
                                     >
                                         <Text as="div" type="captionRegular" cropped noWrap>
                                             {announcement.title}
@@ -383,7 +397,12 @@ function SideBar() {
                                     </Button>
                                 ))}
                             </Dropdown.Item>
-                            <Button variant="transparent" size="full" sx={createAnnouncementButton}>
+                            <Button
+                                variant="transparent"
+                                size="full"
+                                sx={createAnnouncementButton}
+                                onClick={() => handleSubMenuClick('/announcements/create')}
+                            >
                                 공고 생성
                             </Button>
                         </Dropdown.Content>
@@ -424,10 +443,7 @@ function SideBar() {
                                             <Button
                                                 key={subMenu.menu}
                                                 variant="text"
-                                                onClick={() => {
-                                                    setActiveSubMenu(subMenu.link);
-                                                    goTo(subMenu.link);
-                                                }}
+                                                onClick={() => handleSubMenuClick(subMenu.link)}
                                                 sx={menuContent(activeSubMenu === subMenu.link)}
                                             >
                                                 {subMenu.menu}

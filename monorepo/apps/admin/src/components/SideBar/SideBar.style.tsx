@@ -54,6 +54,7 @@ export const clubSideBarContainer = css`
     padding: 1rem 0.5rem 2rem 0;
     gap: 1rem;
     height: 100dvh;
+    max-height: 100dvh;
     z-index: 1001;
     background-color: ${theme.colors.white};
     border-right: 1px solid ${theme.colors.gray[200]};

@@ -19,20 +19,22 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <TestPage /> },
 
-            { path: 'clubs/:clubId', element: <ClubEditPage /> },
+            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
-            { path: 'announcements/:clubId', element: <LoginPage /> },
-            { path: 'announcements/create/:clubId', element: <ClubCreatePage /> },
-            { path: 'announcements/edit/:clubId', element: <ClubCreatePage /> },
+            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
+            { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
-            { path: 'applicants/:clubId', element: <ClubCreatePage /> },
+            { path: 'applicants/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
-            { path: 'interview-evaluation/:clubId', element: <InterviewEvaluationPage /> },
-            { path: 'document-evaluation/:clubId', element: <ClubCreatePage /> },
+            {
+                path: 'interview-evaluation/:clubId/:announcementId?',
+                element: <InterviewEvaluationPage />,
+            },
+            { path: 'document-evaluation/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
-            { path: 'interviewee-schedule/:clubId', element: <LoginPage /> },
-
-            { path: 'settings/:clubId', element: <LoginPage /> },
+            { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
         ],
     },
     {
