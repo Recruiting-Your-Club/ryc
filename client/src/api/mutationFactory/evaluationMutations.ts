@@ -1,7 +1,6 @@
 import {
     deleteEvaluation,
-    postPersonalApplicationEvaluation,
-    postPersonalInterviewEvaluation,
+    postPersonalEvaluation,
     putEvaluationScoreAndComment,
 } from '@api/domain';
 import { evaluationKeys } from '@api/querykeyFactory';
@@ -29,6 +28,7 @@ const evaluationMutations = {
             },
         });
     },
+
     useDeleteEvaluation: (applicantId: string) => {
         const queryClient = useQueryClient();
         return useMutation({
@@ -46,7 +46,7 @@ const evaluationMutations = {
             },
         });
     },
-    usePostPersonalApplicationEvaluation: () => {
+    usePostPersonalEvaluation: () => {
         const queryClient = useQueryClient();
         return useMutation({
             mutationFn: (params: {
@@ -54,35 +54,15 @@ const evaluationMutations = {
                 applicantId: string;
                 score: number;
                 comment: string;
-            }) => postPersonalApplicationEvaluation(params),
+                type: 'application' | 'interview';
+            }) => postPersonalEvaluation(params),
 
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
                     queryKey: evaluationKeys.evaluationDetail(
                         variables.clubId,
                         [variables.applicantId],
-                        'document',
-                    ),
-                });
-            },
-        });
-    },
-    usePostPersonalInterviewEvaluation: () => {
-        const queryClient = useQueryClient();
-        return useMutation({
-            mutationFn: (params: {
-                clubId: string;
-                applicantId: string;
-                score: number;
-                comment: string;
-            }) => postPersonalInterviewEvaluation(params),
-
-            onSuccess: (_, variables) => {
-                queryClient.invalidateQueries({
-                    queryKey: evaluationKeys.evaluationDetail(
-                        variables.clubId,
-                        [variables.applicantId],
-                        'interview',
+                        variables.type === 'application' ? 'document' : 'interview',
                     ),
                 });
             },

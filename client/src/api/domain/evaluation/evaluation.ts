@@ -55,27 +55,15 @@ async function postDetailInterviewEvaluation(params: {
     });
 }
 
-async function postPersonalApplicationEvaluation(params: {
+async function postPersonalEvaluation(params: {
     clubId: string;
     applicantId: string;
     score: number;
     comment: string;
+    type: 'application' | 'interview';
 }): Promise<void> {
     await httpRequest.post({
-        url: `evaluation/application`,
-        body: { applicantId: params.applicantId, score: params.score, comment: params.comment },
-        headers: { 'X-CLUB-ID': params.clubId },
-    });
-}
-
-async function postPersonalInterviewEvaluation(params: {
-    clubId: string;
-    applicantId: string;
-    score: number;
-    comment: string;
-}): Promise<void> {
-    await httpRequest.post({
-        url: `evaluation/interview`,
+        url: `evaluation/${params.type}`,
         body: { applicantId: params.applicantId, score: params.score, comment: params.comment },
         headers: { 'X-CLUB-ID': params.clubId },
     });
@@ -106,8 +94,7 @@ export {
     postInterviewEvaluationSummary,
     postDetailApplicationEvaluation,
     postDetailInterviewEvaluation,
-    postPersonalApplicationEvaluation,
-    postPersonalInterviewEvaluation,
+    postPersonalEvaluation,
     putEvaluationScoreAndComment,
     deleteEvaluation,
 };

@@ -63,8 +63,7 @@ function DocumentEvaluationPage() {
             ].includes(selectedApplicant.status),
     });
 
-    const { mutate: postApplicationComment } =
-        evaluationMutations.usePostPersonalApplicationEvaluation();
+    const { mutate: postApplicationComment } = evaluationMutations.usePostPersonalEvaluation();
     const { mutate: updateComment } = evaluationMutations.usePutEvaluation(
         selectedApplicant?.applicantId ?? '',
     );
@@ -88,9 +87,10 @@ function DocumentEvaluationPage() {
         score: number,
         comment: string,
         clubId: string,
+        type: 'application' | 'interview',
     ) => {
         postApplicationComment(
-            { applicantId, score, comment, clubId },
+            { applicantId, score, comment, clubId, type },
             getEvaluationActionCallbacks('등록'),
         );
     };
