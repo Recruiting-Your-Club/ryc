@@ -43,7 +43,6 @@ public record AnnouncementGetDetailResponse(
     @Schema(description = "모집 분야", example = "벡엔드") String field,
     @Schema(description = "공고 상태", example = "RECRUITING") AnnouncementStatus announcementStatus,
     @Schema(description = "공고 유형", example = "ALWAYS_OPEN") AnnouncementType announcementType,
-    @Schema(description = "인터뷰 여부", example = "true") Boolean hasInterview,
     @Schema(description = "활동 기간", example = "2025년 3월 ~ 12월") String activityPeriod,
     @Schema(description = "모집 인원", example = "10명") String numberOfPeople,
 
@@ -88,7 +87,6 @@ public record AnnouncementGetDetailResponse(
         .field(announcement.getField())
         .announcementStatus(announcement.getAnnouncementStatus())
         .announcementType(announcement.getAnnouncementType())
-        .hasInterview(announcement.getHasInterview())
         .activityPeriod(announcement.getActivityPeriod())
         .numberOfPeople(announcement.getNumberOfPeople())
         .applicationPeriod(applicationPeriod)

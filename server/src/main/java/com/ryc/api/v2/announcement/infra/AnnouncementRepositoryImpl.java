@@ -1,6 +1,7 @@
 package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -54,7 +55,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     List<String> fileMetadataIds =
         announcement.getImages().stream().map(image -> image.getFileMetadataId()).toList();
 
-    java.util.Map<String, FileMetadataEntity> fileMetadataMap =
+    Map<String, FileMetadataEntity> fileMetadataMap =
         fileMetadataJpaRepository.findAllById(fileMetadataIds).stream()
             .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
 
@@ -104,8 +105,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
     java.util.Map<String, FileMetadataEntity> fileMetadataMap =
         fileMetadataJpaRepository.findAllById(allFileMetadataIds).stream()
-            .collect(
-                java.util.stream.Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
+            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
 
     List<AnnouncementEntity> announcementEntities =
         announcements.stream()
