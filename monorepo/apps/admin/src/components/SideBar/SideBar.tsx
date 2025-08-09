@@ -7,6 +7,7 @@ import Club from '@assets/images/club.svg';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import AplicantManage from '@ssoc/assets/images/AplicantManage.svg';
 import ApplicationManage from '@ssoc/assets/images/ApplicationManage.svg';
@@ -54,6 +55,7 @@ function SideBar() {
     // prop destruction
     // lib hooks
     const location = useLocation();
+    const { clubId } = useParams();
     const { goTo } = useRouter();
 
     // initial values
@@ -66,7 +68,7 @@ function SideBar() {
                 subMenus: [
                     {
                         menu: '동아리 소개 수정',
-                        link: '/clubs',
+                        link: `/clubs/${clubId}`,
                     },
                 ],
             },
@@ -153,7 +155,7 @@ function SideBar() {
     const [activeMenus, setActiveMenus] = useState<number[]>([getMainMenu()]);
     const [activeSubMenu, setActiveSubMenu] = useState<string>(location.pathname);
     const [isExpanded, setIsExpanded] = useState(true);
-    const [currentClub, setCurrentClub] = useState<string>('');
+    const [currentClub, setCurrentClub] = useState<string>(clubId ?? '');
     const [queryOn, setQueryOn] = useState<boolean>(false);
     const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>();
 
@@ -213,12 +215,6 @@ function SideBar() {
 
     //useEffect
     useEffect(() => {
-        if (currentClub === '') {
-            setCurrentClub(myClub?.[0].name || '');
-        }
-    }, [currentClub, myClub]);
-
-    useEffect(() => {
         setCurrentAnnouncement(announcementList?.[0]);
     }, []);
     return (
@@ -235,12 +231,12 @@ function SideBar() {
                                 gap: '0.3rem',
                             }}
                         >
-                            <div css={clubActive(club.name === currentClub)} />
-                            <button css={clubWrapper} onClick={() => setCurrentClub(club.name)}>
+                            <div css={clubActive(club.id === currentClub)} />
+                            <button css={clubWrapper} onClick={() => setCurrentClub(club.id)}>
                                 <Tooltip content={club.name}>
                                     <img
                                         src={club.imageUrl}
-                                        alt="clubLogo"
+                                        alt="club"
                                         width="100%"
                                         height="100%"
                                         css={{ borderRadius: '10px' }}
