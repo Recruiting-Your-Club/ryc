@@ -27,6 +27,7 @@ import { MOCK_USER_ID } from './types';
 import { CLUB_ID } from '@pages/DocumentEvaluationPage';
 
 function EvaluationBox({
+    selectedApplicantId,
     evaluation,
     onPostComment,
     onDeleteComment,
@@ -68,7 +69,7 @@ function EvaluationBox({
         }
         onPostComment({
             clubId: CLUB_ID,
-            applicantId: '123', // 바꾸자
+            applicantId: selectedApplicantId || '1', // 바꾸자
             score: formState.score,
             comment: formState.comment,
         });
@@ -79,10 +80,8 @@ function EvaluationBox({
     const handleDelete = () => {
         if (!myComment) return;
         onDeleteComment({
-            clubId: CLUB_ID,
             evaluationId: myComment.evaluationId,
-            score: myComment.score,
-            comment: myComment.comment,
+            clubId: CLUB_ID,
         });
 
         // 초기화

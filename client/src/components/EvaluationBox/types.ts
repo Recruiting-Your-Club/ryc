@@ -1,5 +1,6 @@
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
 export interface EvaluationBoxProps {
+    selectedApplicantId: string | null;
     evaluation: EvaluationDataWithSummary;
     onPostComment: (args: {
         clubId: string;
@@ -7,17 +8,12 @@ export interface EvaluationBoxProps {
         score: number;
         comment: string;
     }) => void;
-    onDeleteComment: (args: {
-        clubId: string;
-        evaluationId: string;
-        score: number;
-        comment: string;
-    }) => void;
+    onDeleteComment: (args: { evaluationId: string; clubId: string }) => void;
     onUpdateComment: (args: {
-        clubId: string;
         evaluationId: string;
         score: number;
         comment: string;
+        clubId: string;
     }) => void;
     height?: string;
 }
