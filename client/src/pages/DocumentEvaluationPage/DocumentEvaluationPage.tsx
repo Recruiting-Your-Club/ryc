@@ -1,6 +1,6 @@
 import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { ApplicantList, EvaluationBox, InformationBox } from '@components';
-import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import {
     documentEvaluationPageContainer,
@@ -12,7 +12,6 @@ import { stepQueries } from '@api/queryFactory/stepQueries';
 import type { StepApplicant } from '@api/domain/step/types';
 import { evaluationMutations } from '@api/mutationFactory';
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
-import { evaluationKeys } from '@api/querykeyFactory';
 import { useToast } from '@hooks/useToast';
 
 export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
@@ -34,7 +33,6 @@ function DocumentEvaluationPage() {
 
     // form hooks
     // query hooks
-    const queryClient = useQueryClient();
     const { data: stepApplicantList = [] } = useSuspenseQuery(
         stepQueries.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
     );
@@ -93,20 +91,7 @@ function DocumentEvaluationPage() {
     ) => {
         postApplicationComment(
             { applicantId, score, comment, clubId },
-            {
-                onSuccess: () => {
-                    toast('작성하신 평가가 등록되었어요!', {
-                        type: 'success',
-                        toastTheme: 'colored',
-                    });
-                },
-                onError: () => {
-                    toast('평가 등록에 실패했어요. 잠시 후 다시 시도해주세요!', {
-                        type: 'error',
-                        toastTheme: 'colored',
-                    });
-                },
-            },
+            getEvaluationActionCallbacks('등록'),
         );
     };
 
@@ -118,41 +103,12 @@ function DocumentEvaluationPage() {
     ) => {
         updateComment(
             { evaluationId, score, comment, clubId },
-            {
-                onSuccess: () => {
-                    toast('작성하신 평가가 수정되었어요!', {
-                        type: 'success',
-                        toastTheme: 'colored',
-                    });
-                },
-                onError: () => {
-                    toast('평가 수정에 실패했어요. 잠시 후 다시 시도해주세요!', {
-                        type: 'error',
-                        toastTheme: 'colored',
-                    });
-                },
-            },
+            getEvaluationActionCallbacks('수정'),
         );
     };
 
     const handleDeleteComment = (evaluationId: string, clubId: string) => {
-        deleteComment(
-            { evaluationId, clubId },
-            {
-                onSuccess: () => {
-                    toast('작성하신 평가가 삭제되었어요!', {
-                        type: 'success',
-                        toastTheme: 'colored',
-                    });
-                },
-                onError: () => {
-                    toast('평가 삭제에 실패했어요. 잠시 후 다시 시도해주세요!', {
-                        type: 'error',
-                        toastTheme: 'colored',
-                    });
-                },
-            },
-        );
+        deleteComment({ evaluationId, clubId }, getEvaluationActionCallbacks('삭제'));
     };
 
     // effects
@@ -160,6 +116,24 @@ function DocumentEvaluationPage() {
         if (selectedApplicant === null && stepApplicantList.length > 0)
             setSelectedApplicant(stepApplicantList[0]);
     }, [stepApplicantList, selectedApplicant]);
+
+    // etc
+    const getEvaluationActionCallbacks = (status: string) => {
+        return {
+            onSuccess: () => {
+                toast(`작성하신 평가가 ${status}되었어요!`, {
+                    type: 'success',
+                    toastTheme: 'colored',
+                });
+            },
+            onError: () => {
+                toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+            },
+        };
+    };
 
     return (
         <div css={documentEvaluationPageContainer}>
