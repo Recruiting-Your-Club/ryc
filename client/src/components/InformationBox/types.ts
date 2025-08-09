@@ -1,7 +1,8 @@
-import { ApplicantDetail, Document } from '@api/domain/applicant/types';
+import type { PersonalInfo, QuestionAnswer } from '@api/domain/applicant/types';
 
 export interface InformationBoxProps {
-    applicant: ApplicantDetail;
-    document: Document;
+    personalInformation: PersonalInfo[];
+    preQuestionAnswers: QuestionAnswer[];
+    applicationQuestionAnswers: QuestionAnswer[];
     height?: string;
 }
