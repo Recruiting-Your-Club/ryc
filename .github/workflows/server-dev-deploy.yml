@@ -75,6 +75,7 @@ jobs:
           rm: true
           source: ./ssoc-dev-server.jar
           target: ${{ secrets.REMOTE_APP_DIR }}
+          debug: true
 
       - name: Deploy Spring App on EC2
         run: |
@@ -104,7 +105,6 @@ jobs:
             
             # Start new application
             echo "Starting new application..."
-            nohup java -jar "${{ env.REMOTE_APP_DIR }}/${{ env.JAR_NAME }}" > /dev/null 2>&1 &
             nohup java -jar "${{ env.REMOTE_APP_DIR }}/${{ env.JAR_NAME }}" > "${{ env.REMOTE_APP_DIR }}/app.log" 2>&1 &
             echo "Application started with PID: $!"
           EOF
