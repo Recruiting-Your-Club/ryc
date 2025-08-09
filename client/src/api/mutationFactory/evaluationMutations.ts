@@ -10,39 +10,30 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 const evaluationMutations = {
     usePutEvaluation: () => {
         return useMutation({
-            mutationFn: async (params: {
-                clubId: string;
+            mutationFn: (params: {
                 evaluationId: string;
                 score: number;
                 comment: string;
-            }) => {
-                await putEvaluationScoreAndComment(params);
-            },
+                clubId: string;
+            }) => putEvaluationScoreAndComment(params),
         });
     },
     useDeleteEvaluation: () => {
         return useMutation({
-            mutationFn: async (params: {
-                clubId: string;
-                evaluationId: string;
-                score: number;
-                comment: string;
-            }) => {
-                await deleteEvaluation(params);
-            },
+            mutationFn: (params: { evaluationId: string; clubId: string }) =>
+                deleteEvaluation(params),
         });
     },
     usePostPersonalApplicationEvaluation: () => {
         const queryClient = useQueryClient();
         return useMutation({
-            mutationFn: async (params: {
+            mutationFn: (params: {
                 clubId: string;
                 applicantId: string;
                 score: number;
                 comment: string;
-            }) => {
-                await postPersonalApplicationEvaluation(params);
-            },
+            }) => postPersonalApplicationEvaluation(params),
+
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
                     queryKey: evaluationKeys.evaluationDetail(
@@ -57,14 +48,13 @@ const evaluationMutations = {
     usePostPersonalInterviewEvaluation: () => {
         const queryClient = useQueryClient();
         return useMutation({
-            mutationFn: async (params: {
+            mutationFn: (params: {
                 clubId: string;
                 applicantId: string;
                 score: number;
                 comment: string;
-            }) => {
-                await postPersonalInterviewEvaluation(params);
-            },
+            }) => postPersonalInterviewEvaluation(params),
+
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
                     queryKey: evaluationKeys.evaluationDetail(
