@@ -1,9 +1,9 @@
-import { Applicant } from '@api/domain/applicant/types';
+import type { StepApplicant } from '@api/domain/step/types';
 
 export interface ApplicationListProps {
     title?: string;
     height?: string;
-    applicantList: Applicant[];
-    selectedApplicantId: number;
-    onSelectApplicantId: (id: number) => void;
+    applicantList: StepApplicant[];
+    selectedApplicantId: string | null;
+    onSelectApplicantId: (id: string) => void;
 }
