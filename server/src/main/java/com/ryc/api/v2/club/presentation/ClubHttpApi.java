@@ -49,7 +49,7 @@ public class ClubHttpApi {
     ClubCreateResponse response = clubFacade.createClub(userDetail.getId(), body);
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("{club-id}")
+            .path("/{id}")
             .buildAndExpand(response.clubId())
             .toUri();
     return ResponseEntity.created(location).body(response);

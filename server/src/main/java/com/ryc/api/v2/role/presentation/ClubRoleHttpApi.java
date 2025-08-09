@@ -50,7 +50,7 @@ public class ClubRoleHttpApi {
     RoleDemandResponse roleDemandResponse = clubRoleService.assignRole(userDetail.getId(), clubId);
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("{role-id}")
+            .path("{id}")
             .buildAndExpand(roleDemandResponse.roleId())
             .toUri();
 
