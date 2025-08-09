@@ -66,6 +66,9 @@ public class Announcement {
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
+    if (request.announcementType() == AnnouncementType.ALWAYS_OPEN) {
+      announcementStatus = AnnouncementStatus.RECRUITING;
+    }
 
     // 4. Announcement 생성
     Announcement announcement =
