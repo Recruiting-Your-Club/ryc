@@ -108,10 +108,10 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
     ResponseCookie cookie =
         ResponseCookie.from("refresh-token", refreshToken)
             .httpOnly(true)
-            .secure(true)
+            .secure(false)
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());

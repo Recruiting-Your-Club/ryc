@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+    paths:
+      - 'client/**'
+      - 'monorepo/**'
 
 jobs:
   build-and-deploy:
