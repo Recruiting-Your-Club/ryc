@@ -8,7 +8,8 @@ const useUpdateClub = () => {
     return useMutation({
         mutationFn: ({ id, club }: { id: string; club: Club }) => updateClub(id, club),
         onSuccess: (response, { id }) => {
-            queryClient.invalidateQueries({ queryKey: myClubKeys.detail(id) });
+            //서버에서 받은 response를 데이터로 직접 업데이트
+            queryClient.setQueryData(myClubKeys.detail(id), response);
             return response;
         },
         onError: (error) => {

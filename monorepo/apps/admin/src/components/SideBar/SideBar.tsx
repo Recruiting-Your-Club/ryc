@@ -222,9 +222,6 @@ function SideBar() {
         });
     }, [location.pathname, getActiveSubMenu, getMainMenuId]);
 
-    useEffect(() => {
-        setCurrentAnnouncement(announcementList?.[0]);
-    }, [announcementList]);
     return (
         <>
             <div css={clubSideBarContainer}>

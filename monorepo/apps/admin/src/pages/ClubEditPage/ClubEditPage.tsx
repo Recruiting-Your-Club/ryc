@@ -39,8 +39,7 @@ function ClubEditPage() {
     const [clubCategory, setClubCategory] = useState<string>('');
     const [introText, setIntroText] = useState<string>('');
     const [expandedImage, setExpandedImage] = useState<string>();
-    const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[]>([]);
-    const [originClubData, setOriginClubData] = useState<Club>();
+    const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[] | undefined>([]);
     const [clubDetailImages, setClubDetailImages] = useState<string[]>([]);
     // form hooks
     // query hooks
@@ -92,7 +91,7 @@ function ClubEditPage() {
     const readModeClubNameAndCategory = (
         <>
             <Text as="h4" type="h1Semibold" textAlign="start" noWrap>
-                {originClubData?.name}
+                {club?.name}
             </Text>
             <Text
                 as="div"
@@ -102,7 +101,7 @@ function ClubEditPage() {
                 noWrap
                 sx={{ marginLeft: '0.4rem' }}
             >
-                {getCategory(originClubData?.category || '')}
+                {getCategory(club?.category || '')}
             </Text>
         </>
     );
@@ -114,7 +113,7 @@ function ClubEditPage() {
     );
     const readModeIntroduce = (
         <div css={s_introduceContainer}>
-            <Text textAlign="start">{originClubData?.detailDescription}</Text>
+            <Text textAlign="start">{club?.detailDescription}</Text>
         </div>
     );
     //FIXME: 추후에 이미지 서버에서 받아와서 초기값으로 바꿔줘야함
@@ -127,7 +126,7 @@ function ClubEditPage() {
     const readModeImageList = (
         <>
             <div css={s_imageListContainer}>
-                {originClubData?.clubDetailImages?.map((image) => (
+                {club?.clubDetailImages?.map((image) => (
                     <button
                         css={s_imageItem}
                         key={image}
@@ -168,15 +167,20 @@ function ClubEditPage() {
         setClubSummaries(clubSummaries?.filter((item) => item.id !== id));
     };
     const handleCancelEdit = () => {
-        setImage(originClubData?.imageUrl || ssoc);
-        setCroppedImage(originClubData?.imageUrl || ssoc);
+        setClubSummaries(club?.clubSummaries || []);
+        setIntroText(club?.detailDescription || '');
+        setImage(club?.imageUrl || ssoc);
+        setCroppedImage(club?.imageUrl || ssoc);
+        setClubCategory(club?.category || '');
+        setClubName(club?.name || '');
+        setClubDetailImages(club?.clubDetailImages || []);
     };
     const updateClubData = () => {
         const updatedClubData: Club = {
             name: clubName, // 동아리 타이틀
             category: clubCategory, // 카테고리
             detailDescription: introText, // 동아리 소개
-            clubSummaries: clubSummaries || '', // 동아리 요약
+            clubSummaries: clubSummaries || [], // 동아리 요약
             imageUrl: croppedImage, // 동아리 대표 이미지
             clubDetailImages: clubDetailImages, // 동아리 상세 이미지
         };
@@ -184,10 +188,9 @@ function ClubEditPage() {
     };
     const handleSaveEdited = async () => {
         const updatedClubData = updateClubData();
-        if (originClubData !== updatedClubData) {
+        if (JSON.stringify(club) !== JSON.stringify(updatedClubData)) {
             try {
-                const response = await updateClub({ id: clubId ?? '', club: updatedClubData });
-                setOriginClubData(response);
+                await updateClub({ id: clubId ?? '', club: updatedClubData });
                 toast('동아리 정보가 업데이트 되었어요.', {
                     toastTheme: 'white',
                     type: 'success',
@@ -203,7 +206,6 @@ function ClubEditPage() {
     };
     // effects
     useEffect(() => {
-        setOriginClubData(club);
         setClubSummaries(club?.clubSummaries || []);
         setIntroText(club?.detailDescription || '');
         setImage(club?.imageUrl || ssoc);
@@ -259,7 +261,7 @@ function ClubEditPage() {
                 </div>
                 <Divider sx={{ marginBottom: '3rem', marginTop: '1rem' }} />
                 <ClubBox
-                    data={originClubData?.clubSummaries}
+                    data={clubSummaries}
                     isEditMode={isEditMode}
                     onDataChange={handleDataChange}
                     onAddItem={handleAddItem}
