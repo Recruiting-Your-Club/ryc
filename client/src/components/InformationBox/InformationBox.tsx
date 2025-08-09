@@ -6,6 +6,7 @@ import {
     contentSection,
     documentWrapper,
     personalDataWrapper,
+    s_documentTypeTextWrapper,
     s_titleText,
     textSection,
     titleSection,
@@ -44,14 +45,14 @@ function InformationBox({
         switch (question.questionType) {
             case 'LONG_ANSWER':
             case 'SHORT_ANSWER':
-                return question.textAnswer ?? '답변 미작성';
+                return question.textAnswer || '답변 미작성';
 
             case 'SINGLE_CHOICE':
             case 'MULTIPLE_CHOICE':
-                return question.selectedOptionIds?.join(', ') ?? '답변 미선택';
+                return question.selectedOptionIds?.join(', ') || '답변 미선택';
 
             case 'FILE':
-                return question.fileUrl ?? '파일 미첨부';
+                return question.fileUrl || '파일 미첨부';
 
             default:
                 return '답변 미작성';
@@ -83,29 +84,30 @@ function InformationBox({
                 />
             </div>
             <div css={contentSection}>
-                {(preQuestionAnswers || applicationQuestionAnswers) && isToggle && (
-                    <>
-                        {documentGroups.map(({ label, documents }) =>
-                            documents.length > 0 ? (
-                                <>
-                                    <div css={documentWrapper}>
-                                        <Text as="span" type="bodyBold" textAlign="start">
-                                            {label}
-                                        </Text>
-                                    </div>
-                                    {documents.map((document, index) => (
-                                        <DocumentBox
-                                            key={document.questionId}
-                                            index={index}
-                                            question={document.questionLabel}
-                                            answer={formatAnswer(document)}
-                                        />
-                                    ))}
-                                </>
-                            ) : null,
-                        )}
-                    </>
-                )}
+                {(preQuestionAnswers.length > 0 || applicationQuestionAnswers.length > 0) &&
+                    isToggle && (
+                        <div css={documentWrapper}>
+                            {documentGroups.map(({ label, documents }) =>
+                                documents.length > 0 ? (
+                                    <>
+                                        <div css={s_documentTypeTextWrapper}>
+                                            <Text as="span" type="bodyBold" textAlign="start">
+                                                {label}
+                                            </Text>
+                                        </div>
+                                        {documents.map((document, index) => (
+                                            <DocumentBox
+                                                key={document.questionId}
+                                                index={index}
+                                                question={document.questionLabel}
+                                                answer={formatAnswer(document)}
+                                            />
+                                        ))}
+                                    </>
+                                ) : null,
+                            )}
+                        </div>
+                    )}
                 {personalInformation.length > 0 && !isToggle && (
                     <div css={personalDataWrapper}>
                         <Avatar sx={avatarCss} imageURL={getPersonalValue('PROFILE_IMAGE')} />

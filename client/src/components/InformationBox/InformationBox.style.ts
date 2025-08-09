@@ -70,3 +70,8 @@ export const textSection = css`
     flex-direction: column;
     gap: 1.5rem;
 `;
+
+export const s_documentTypeTextWrapper = css`
+    align-self: flex-start;
+    padding: 0 1rem;
+`;
