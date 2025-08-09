@@ -1,6 +1,6 @@
 import { Calendar, Divider, InterviewInformationButton, Text } from '@components';
 import { convertDate } from '@utils/convertDate';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
     s_calendar,
     s_interviewInformationButtonGroupWrapper,
@@ -13,7 +13,11 @@ function InterviewTimeTable({
     interviewSchedules,
     selectedInterviewLabel,
     onSelect,
+    setSelectedLabel,
     onOpenChange,
+    sx,
+    timeContentSx,
+    listSx,
 }: InterviewTimeTableProps) {
     // prop destruction
     // lib hooks
@@ -41,14 +45,17 @@ function InterviewTimeTable({
     };
 
     const handleButtonClick = (label: string) => {
-        onSelect(label);
-        onOpenChange((prev) => !prev);
+        if (onSelect) {
+            onSelect(label); // 외부 제어
+        } else if (setSelectedLabel) {
+            setSelectedLabel(label); // 내부 기본 동작
+            onOpenChange?.(false);
+        }
     };
-
     // effects
 
     return (
-        <div css={s_interviewTimeTableContainer}>
+        <div css={[s_interviewTimeTableContainer, sx]}>
             <Calendar
                 mode="custom"
                 onSelect={handleCalendar}
@@ -60,11 +67,16 @@ function InterviewTimeTable({
                 shadow={false}
             />
             <Divider />
-            <div css={s_timeContentContainer}>
+            <div css={[s_timeContentContainer, timeContentSx]}>
                 <Text as="span" type="bodyBold" textAlign="center">
                     {highlightedDate}
                 </Text>
-                <div css={s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow))}>
+                <div
+                    css={[
+                        s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow)),
+                        listSx,
+                    ]}
+                >
                     {scheduleToShow ? (
                         scheduleToShow.interviewSets.map((schedule) => {
                             const label = `${convertDate(scheduleToShow.date)} ${schedule.name}`;

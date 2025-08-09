@@ -1,9 +1,9 @@
 import {
     getAllInterviewees,
     getAllInterviewSchedules,
-    getDocument,
     getEvaluation,
     getIntervieweeDetail,
+    updateIntervieweeSchedule,
 } from '@api/domain/interview/interview';
 import { queryOptions } from '@tanstack/react-query';
 import { interviewKeys } from '../querykeyFactory';
@@ -23,11 +23,6 @@ const interviewQueries = {
         queryOptions({
             queryKey: interviewKeys.allInterviewSchedules,
             queryFn: () => getAllInterviewSchedules(),
-        }),
-    getDocument: (id: number) =>
-        queryOptions({
-            queryKey: interviewKeys.documentDetail(id),
-            queryFn: () => getDocument(id),
         }),
     getInterviewEvaluation: (id: number) =>
         queryOptions({

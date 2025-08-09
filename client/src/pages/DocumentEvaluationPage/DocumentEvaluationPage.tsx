@@ -1,4 +1,4 @@
-import { Document, Evaluation } from '@api/domain/interview/types';
+import type { Document, Evaluation } from '@api/domain/interview/types';
 import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox, Text } from '@components';
 import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
 import type { ApplicantDetail } from '@components/InformationBox/types';
