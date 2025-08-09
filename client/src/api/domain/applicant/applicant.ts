@@ -1,5 +1,12 @@
 import { httpRequest } from '@api/common/httpRequest';
-import { Applicant, ApplicantDetail, Document, Evaluation } from './types';
+import type {
+    Applicant,
+    ApplicantDetail,
+    ApplicantDocument,
+    Document,
+    DocumentAll,
+    Evaluation,
+} from './types';
 
 async function getAllApplicants(): Promise<Applicant[]> {
     const response = await httpRequest.get({
@@ -15,7 +22,7 @@ async function getApplicantDetail(id: number): Promise<ApplicantDetail> {
     return response as ApplicantDetail;
 }
 
-async function getDocument(id: number): Promise<Document> {
+async function getDocument(id: string): Promise<Document> {
     const response = await httpRequest.get({
         url: `documents/${id}`,
     });
@@ -31,6 +38,19 @@ async function getDocumentEvaluation(id: number): Promise<Evaluation> {
     });
 
     return response as Evaluation;
+}
+
+async function postDocumentDetail(params: {
+    clubId: string;
+    applicantIdList: string[];
+}): Promise<DocumentAll> {
+    return await httpRequest.post({
+        url: `document/search`,
+        body: params,
+        headers: {
+            Authorization: 'Bearer mock-user-token-user-42', // 임시
+        },
+    });
 }
 
 async function postDocumentEvaluation(
@@ -69,12 +89,28 @@ async function updateDocumentEvaluation(
     });
 }
 
+async function getApplicantDocument(params: {
+    announcementId: string;
+    applicantId: string;
+    clubId: string;
+}): Promise<ApplicantDocument> {
+    const { announcementId, applicantId, clubId } = params;
+    return await httpRequest.get({
+        url: `announcements/${announcementId}/applicants/${applicantId}`,
+        headers: {
+            'X-CLUB-ID': clubId,
+        },
+    });
+}
+
 export {
     getAllApplicants,
     getApplicantDetail,
     getDocument,
     getDocumentEvaluation,
+    postDocumentDetail,
     postDocumentEvaluation,
     deleteDocumentEvaluation,
     updateDocumentEvaluation,
+    getApplicantDocument,
 };
