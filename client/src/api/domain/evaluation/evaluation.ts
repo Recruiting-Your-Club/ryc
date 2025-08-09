@@ -96,7 +96,7 @@ async function putEvaluationScoreAndComment(params: {
 
 async function deleteEvaluation(params: { evaluationId: string; clubId: string }): Promise<void> {
     await httpRequest.delete({
-        url: `evaluaton/${params.evaluationId}`,
+        url: `evaluation/${params.evaluationId}`,
         headers: { 'X-CLUB-ID': params.clubId },
     });
 }
