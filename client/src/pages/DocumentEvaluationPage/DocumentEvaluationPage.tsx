@@ -1,57 +1,193 @@
-import { applicantMutations } from '@api/mutationFactory/applicantMutations';
-import { applicantQueries } from '@api/queryFactory';
+import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { ApplicantList, EvaluationBox, InformationBox } from '@components';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import {
     documentEvaluationPageContainer,
     evaluationContainer,
     informationContainer,
     listContainer,
 } from './DocumentEvaluationPage.style';
+import { stepQueries } from '@api/queryFactory/stepQueries';
+import type { StepApplicant } from '@api/domain/step/types';
+import { evaluationMutations } from '@api/mutationFactory';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import { evaluationKeys } from '@api/querykeyFactory';
+import { useToast } from '@hooks/useToast';
+
+export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
+export const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
+export const INITIAL_EVALUATION_SUMMARY: EvaluationDataWithSummary = {
+    completedEvaluatorCount: 0,
+    totalEvaluatorCount: 0,
+    averageScore: 0,
+    evaluationDatas: [],
+};
 
 function DocumentEvaluationPage() {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(1);
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
 
     // form hooks
     // query hooks
-    const { data: applicantList = [] } = useSuspenseQuery(applicantQueries.allApplicants());
-    const { data: applicantDetail } = useSuspenseQuery(
-        applicantQueries.getApplicantDetail(selectedApplicantId),
+    const queryClient = useQueryClient();
+    const { data: stepApplicantList = [] } = useSuspenseQuery(
+        stepQueries.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
     );
-    const { data: document } = useSuspenseQuery(applicantQueries.getDocument(selectedApplicantId));
-    const { data: evaluation } = useSuspenseQuery(
-        applicantQueries.getDocumentEvaluation(selectedApplicantId),
+    const { data: applicantDocument } = useQuery({
+        ...applicantQueries.getApplicantDocument(
+            ANNOUNCEMENT_ID,
+            selectedApplicant?.applicantId ?? '',
+            CLUB_ID,
+        ),
+
+        enabled: !!selectedApplicant?.applicantId,
+    });
+    const { data: documentEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: CLUB_ID,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'document',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            [
+                'DOCUMENT_PASS',
+                'DOCUMENT_FAIL',
+                'INTERVIEW_PASS',
+                'INTERVIEW_FAIL',
+                'FINAL_PASS',
+                'FINAL_FAIL',
+            ].includes(selectedApplicant.status),
+    });
+
+    const { mutate: postApplicationComment } =
+        evaluationMutations.usePostPersonalApplicationEvaluation();
+    const { mutate: updateComment } = evaluationMutations.usePutEvaluation(
+        selectedApplicant?.applicantId ?? '',
     );
-    const { mutate: postComment } = applicantMutations.usePostDocumentEvaluation();
-    const { mutate: deleteComment } = applicantMutations.useDeleteDocumentEvaluation();
-    const { mutate: updateComment } = applicantMutations.useUpdateDocumentEvaluation();
+    const { mutate: deleteComment } = evaluationMutations.useDeleteEvaluation(
+        selectedApplicant?.applicantId ?? '',
+    );
 
     // calculated values
     // handlers
+    const handleSelectApplicantId = (applicantId: string) => {
+        const foundApplicant = stepApplicantList.find(
+            (applicant) => applicant.applicantId === applicantId,
+        );
+        if (foundApplicant) {
+            setSelectedApplicant(foundApplicant);
+        }
+    };
+
+    const handlePostComment = (
+        applicantId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => {
+        postApplicationComment(
+            { applicantId, score, comment, clubId },
+            {
+                onSuccess: () => {
+                    toast('작성하신 평가가 등록되었어요!', {
+                        type: 'success',
+                        toastTheme: 'colored',
+                    });
+                },
+                onError: () => {
+                    toast('평가 등록에 실패했어요. 잠시 후 다시 시도해주세요!', {
+                        type: 'error',
+                        toastTheme: 'colored',
+                    });
+                },
+            },
+        );
+    };
+
+    const handleUpdateComment = (
+        evaluationId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => {
+        updateComment(
+            { evaluationId, score, comment, clubId },
+            {
+                onSuccess: () => {
+                    toast('작성하신 평가가 수정되었어요!', {
+                        type: 'success',
+                        toastTheme: 'colored',
+                    });
+                },
+                onError: () => {
+                    toast('평가 수정에 실패했어요. 잠시 후 다시 시도해주세요!', {
+                        type: 'error',
+                        toastTheme: 'colored',
+                    });
+                },
+            },
+        );
+    };
+
+    const handleDeleteComment = (evaluationId: string, clubId: string) => {
+        deleteComment(
+            { evaluationId, clubId },
+            {
+                onSuccess: () => {
+                    toast('작성하신 평가가 삭제되었어요!', {
+                        type: 'success',
+                        toastTheme: 'colored',
+                    });
+                },
+                onError: () => {
+                    toast('평가 삭제에 실패했어요. 잠시 후 다시 시도해주세요!', {
+                        type: 'error',
+                        toastTheme: 'colored',
+                    });
+                },
+            },
+        );
+    };
+
     // effects
+    useEffect(() => {
+        if (selectedApplicant === null && stepApplicantList.length > 0)
+            setSelectedApplicant(stepApplicantList[0]);
+    }, [stepApplicantList, selectedApplicant]);
+
     return (
         <div css={documentEvaluationPageContainer}>
             <div css={listContainer}>
                 <ApplicantList
-                    applicantList={applicantList}
-                    selectedApplicantId={selectedApplicantId}
-                    onSelectApplicantId={setSelectedApplicantId}
+                    applicantList={stepApplicantList}
+                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                    onSelectApplicantId={handleSelectApplicantId}
                 />
             </div>
             <div css={informationContainer}>
-                <InformationBox applicant={applicantDetail} document={document} />
+                <InformationBox
+                    personalInformation={applicantDocument?.personalInfos ?? []}
+                    preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                    applicationQuestionAnswers={applicantDocument?.applicationQuestionAnswers ?? []}
+                />
             </div>
             <div css={evaluationContainer}>
                 <EvaluationBox
-                    evaluation={evaluation}
-                    onPostComment={postComment}
-                    onDeleteComment={deleteComment}
-                    onUpdateComment={updateComment}
+                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                    evaluation={
+                        documentEvaluationDetail?.evaluationsByApplicant?.[
+                            selectedApplicant?.applicantId ?? ''
+                        ] ?? INITIAL_EVALUATION_SUMMARY
+                    }
+                    onPostComment={handlePostComment}
+                    onDeleteComment={handleDeleteComment}
+                    onUpdateComment={handleUpdateComment}
                 />
             </div>
         </div>

@@ -67,22 +67,13 @@ function EvaluationBox({
             toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
             return;
         }
-        onPostComment({
-            clubId: CLUB_ID,
-            applicantId: selectedApplicantId || '1', // 바꾸자
-            score: formState.score,
-            comment: formState.comment,
-        });
-        toast('작성한 평가가 저장되었어요!', { type: 'info' });
+        onPostComment(selectedApplicantId || '1', formState.score, formState.comment, CLUB_ID); // 바꾸자
         handleFormState({ score: 0, comment: '' });
     };
 
     const handleDelete = () => {
         if (!myComment) return;
-        onDeleteComment({
-            evaluationId: myComment.evaluationId,
-            clubId: CLUB_ID,
-        });
+        onDeleteComment(myComment.evaluationId, CLUB_ID);
 
         // 초기화
         if (formState.commentIdForEdit === myComment.evaluationId) {
@@ -104,12 +95,7 @@ function EvaluationBox({
             return;
         }
         if (!myComment) return;
-        onUpdateComment({
-            clubId: CLUB_ID,
-            evaluationId: myComment.evaluationId,
-            score: formState.score,
-            comment: formState.comment,
-        });
+        onUpdateComment(myComment.evaluationId, formState.score, formState.comment, CLUB_ID);
         handleFormState({
             isOpenForm: false,
         });

@@ -8,7 +8,8 @@ import { evaluationKeys } from '@api/querykeyFactory';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const evaluationMutations = {
-    usePutEvaluation: () => {
+    usePutEvaluation: (applicantId: string) => {
+        const queryClient = useQueryClient();
         return useMutation({
             mutationFn: (params: {
                 evaluationId: string;
@@ -16,12 +17,33 @@ const evaluationMutations = {
                 comment: string;
                 clubId: string;
             }) => putEvaluationScoreAndComment(params),
+
+            onSuccess: (_, variables) => {
+                queryClient.invalidateQueries({
+                    queryKey: evaluationKeys.evaluationDetail(
+                        variables.clubId,
+                        [applicantId],
+                        'document',
+                    ),
+                });
+            },
         });
     },
-    useDeleteEvaluation: () => {
+    useDeleteEvaluation: (applicantId: string) => {
+        const queryClient = useQueryClient();
         return useMutation({
             mutationFn: (params: { evaluationId: string; clubId: string }) =>
                 deleteEvaluation(params),
+
+            onSuccess: (_, variables) => {
+                queryClient.invalidateQueries({
+                    queryKey: evaluationKeys.evaluationDetail(
+                        variables.clubId,
+                        [applicantId],
+                        'document',
+                    ),
+                });
+            },
         });
     },
     usePostPersonalApplicationEvaluation: () => {
