@@ -1,15 +1,23 @@
-import { Evaluation, EvaluationWithIsMine } from '@api/domain/applicant/types';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
 export interface EvaluationBoxProps {
-    evaluation: Evaluation;
+    evaluation: EvaluationDataWithSummary;
     onPostComment: (args: {
-        applicantId: number;
-        body: { score: number; comment: string };
+        clubId: string;
+        applicantId: string;
+        score: number;
+        comment: string;
     }) => void;
-    onDeleteComment: (args: { applicantId: number; commentId: number }) => void;
+    onDeleteComment: (args: {
+        clubId: string;
+        evaluationId: string;
+        score: number;
+        comment: string;
+    }) => void;
     onUpdateComment: (args: {
-        applicantId: number;
-        commentId: number;
-        body: { score: number; comment: string };
+        clubId: string;
+        evaluationId: string;
+        score: number;
+        comment: string;
     }) => void;
     height?: string;
 }

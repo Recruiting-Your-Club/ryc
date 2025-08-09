@@ -22,7 +22,9 @@ import {
     s_textarea,
     s_userEvaluation,
 } from './EvaluationBox.style';
-import { EvaluationBoxProps, MOCK_USER_ID } from './types';
+import type { EvaluationBoxProps } from './types';
+import { MOCK_USER_ID } from './types';
+import { CLUB_ID } from '@pages/DocumentEvaluationPage';
 
 function EvaluationBox({
     evaluation,
@@ -41,29 +43,22 @@ function EvaluationBox({
         score: 0,
         comment: '',
         isOpenForm: false,
-        commentIdForEdit: null as number | null,
+        commentIdForEdit: null as string | null,
     };
 
     // state, ref, querystring hooks
-    const [formStateMap, setFormStateMap] = useState<Record<number, typeof defaultState>>({}); // applicantId별로 상태 관리
+    const [formState, setFormState] = useState(defaultState); // applicantId별로 상태 관리
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
     // calculated values
-    const formState = formStateMap[evaluation.applicantId] ?? defaultState;
 
-    const commentMap = new Map(evaluation?.comments?.map((comment) => [comment.writerId, comment]));
-    const myComment = commentMap.get(currentUserId);
+    // const commentMap = new Map(evaluation?.comments?.map((comment) => [comment.writerId, comment]));
+    const myComment = evaluation.evaluationDatas.find((c) => c.isMyEvaluation);
 
     const handleFormState = (partial: Partial<typeof defaultState>) => {
-        setFormStateMap((prev) => ({
-            ...prev,
-            [evaluation.applicantId]: {
-                ...(prev[evaluation.applicantId] ?? defaultState),
-                ...partial,
-            },
-        }));
+        setFormState((prev) => ({ ...prev, ...partial }));
     };
 
     const handlePost = () => {
@@ -72,8 +67,10 @@ function EvaluationBox({
             return;
         }
         onPostComment({
-            applicantId: evaluation.applicantId,
-            body: { score: formState.score, comment: formState.comment },
+            clubId: CLUB_ID,
+            applicantId: '123', // 바꾸자
+            score: formState.score,
+            comment: formState.comment,
         });
         toast('작성한 평가가 저장되었어요!', { type: 'info' });
         handleFormState({ score: 0, comment: '' });
@@ -82,18 +79,15 @@ function EvaluationBox({
     const handleDelete = () => {
         if (!myComment) return;
         onDeleteComment({
-            applicantId: evaluation.applicantId,
-            commentId: myComment.id,
+            clubId: CLUB_ID,
+            evaluationId: myComment.evaluationId,
+            score: myComment.score,
+            comment: myComment.comment,
         });
 
         // 초기화
-        if (formState.commentIdForEdit === myComment.id) {
-            handleFormState({
-                isOpenForm: false,
-                comment: '',
-                score: 0,
-                commentIdForEdit: null,
-            });
+        if (formState.commentIdForEdit === myComment.evaluationId) {
+            setFormState(defaultState);
         }
     };
 
@@ -112,12 +106,10 @@ function EvaluationBox({
         }
         if (!myComment) return;
         onUpdateComment({
-            applicantId: evaluation.applicantId,
-            commentId: myComment.id,
-            body: {
-                score: formState.score,
-                comment: formState.comment,
-            },
+            clubId: CLUB_ID,
+            evaluationId: myComment.evaluationId,
+            score: formState.score,
+            comment: formState.comment,
         });
         handleFormState({
             isOpenForm: false,
@@ -142,7 +134,7 @@ function EvaluationBox({
                     </Text>
                     <div css={s_starScoreContainer}>
                         <Rating
-                            key={evaluation?.applicantId}
+                            key={evaluation.averageScore}
                             value={evaluation ? evaluation.averageScore : 0}
                             size="lg"
                             type="display"
@@ -153,23 +145,23 @@ function EvaluationBox({
                     </div>
                 </div>
                 <Divider />
-                <div css={perStarScoreGroup((evaluation?.comments?.length ?? 0) > 0)}>
-                    {evaluation?.comments?.length > 0 ? (
-                        evaluation.comments.map((comment) => (
+                <div css={perStarScoreGroup((evaluation?.evaluationDatas?.length ?? 0) > 0)}>
+                    {evaluation?.evaluationDatas?.length > 0 ? (
+                        evaluation.evaluationDatas.map((comment) => (
                             <PersonalScoreCard
-                                key={comment.id}
+                                key={comment.evaluationId}
                                 score={comment.score}
-                                name={comment.name}
+                                name={comment.evaluatorName}
                                 comment={comment.comment}
-                                commentId={comment.id}
-                                isUser={comment.writerId === currentUserId}
+                                commentId={comment.evaluationId}
+                                isUser={comment.isMyEvaluation}
                                 handleDelete={handleDeleteClick}
                                 onHandleForm={() =>
                                     handleFormState({
                                         isOpenForm: true,
                                         comment: comment.comment,
                                         score: comment.score,
-                                        commentIdForEdit: comment.id,
+                                        commentIdForEdit: comment.evaluationId,
                                     })
                                 }
                                 isEditable
@@ -184,7 +176,7 @@ function EvaluationBox({
             </div>
 
             {/* 등록된 평가가 없거나, 수정 버튼을 누르면 아래 Form이 열립니다. */}
-            {(!Boolean(myComment) || formState.isOpenForm) && (
+            {(!myComment || formState.isOpenForm) && (
                 <div css={s_userEvaluation}>
                     <Rating
                         key={formState.score}
