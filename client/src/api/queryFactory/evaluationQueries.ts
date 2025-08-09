@@ -37,7 +37,7 @@ const evaluationQueries = {
         type: 'document' | 'interview';
     }) =>
         queryOptions({
-            queryKey: evaluationKeys.evaluationSummary(clubId, applicantIdList, type),
+            queryKey: evaluationKeys.evaluationDetail(clubId, applicantIdList, type),
             queryFn: () => {
                 const params = { clubId, applicantIdList: applicantIdList };
 
