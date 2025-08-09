@@ -20,7 +20,7 @@ export interface AllClub {
 interface summaries {
     id: string;
     title: string;
-    value: string;
+    content: string;
 }
 
 interface ClubTag {

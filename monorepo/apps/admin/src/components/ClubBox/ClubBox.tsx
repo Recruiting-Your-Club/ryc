@@ -7,7 +7,7 @@ import { clubBoxContainer, clubBoxItem } from './ClubBox.style';
 import type { ClubBoxProps } from './types';
 
 function ClubBox({ data, isEditMode, onDataChange, onAddItem, onDeleteItem }: ClubBoxProps) {
-    const handleInputChange = (id: string, field: 'title' | 'value', newText: string) => {
+    const handleInputChange = (id: string, field: 'title' | 'content', newText: string) => {
         if (data && onDataChange) {
             const updatedData = data.map((item) =>
                 item.id === id ? { ...item, [field]: newText } : item,
@@ -30,9 +30,9 @@ function ClubBox({ data, isEditMode, onDataChange, onAddItem, onDeleteItem }: Cl
                                 placeholder="항목"
                             />
                             <Input
-                                value={item.value}
+                                value={item.content}
                                 onChange={(event) =>
-                                    handleInputChange(item.id, 'value', event.target.value)
+                                    handleInputChange(item.id, 'content', event.target.value)
                                 }
                                 placeholder="내용"
                             />
@@ -58,7 +58,7 @@ function ClubBox({ data, isEditMode, onDataChange, onAddItem, onDeleteItem }: Cl
                                 {item.title}
                             </Text>
                             <Text as="div" type="bodyRegular" textAlign="start" noWrap>
-                                {item.value}
+                                {item.content}
                             </Text>
                         </>
                     )}

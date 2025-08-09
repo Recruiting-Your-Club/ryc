@@ -79,15 +79,15 @@ function SideBar() {
                 subMenus: [
                     {
                         menu: '모집 공고',
-                        link: '/announcements',
+                        link: `/announcements/${clubId}`,
                     },
                     {
                         menu: '공고 생성',
-                        link: '/announcements/create',
+                        link: `/announcements/create/${clubId}`,
                     },
                     {
                         menu: '공고 편집',
-                        link: '/announcements/edit',
+                        link: `/announcements/edit/${clubId}`,
                     },
                 ],
             },
@@ -98,7 +98,7 @@ function SideBar() {
                 subMenus: [
                     {
                         menu: '지원자 관리',
-                        link: '/applicants',
+                        link: `/applicants/${clubId}`,
                     },
                 ],
             },
@@ -109,11 +109,11 @@ function SideBar() {
                 subMenus: [
                     {
                         menu: '서류 평가',
-                        link: '/interview-evaluation',
+                        link: `/interview-evaluation/${clubId}`,
                     },
                     {
                         menu: '면접 평가',
-                        link: '/document-evaluation',
+                        link: `/document-evaluation/${clubId}`,
                     },
                 ],
             },
@@ -124,7 +124,7 @@ function SideBar() {
                 subMenus: [
                     {
                         menu: '지원자 면접 일정 관리',
-                        link: '/interviewee-schedule',
+                        link: `/interviewee-schedule/${clubId}`,
                     },
                 ],
             },
@@ -135,7 +135,7 @@ function SideBar() {
                 subMenus: [
                     {
                         menu: '사용자 권한 설정',
-                        link: '/settings',
+                        link: `/settings/${clubId}`,
                     },
                 ],
             },
@@ -162,7 +162,9 @@ function SideBar() {
     // form hooks
     // query hooks
     const { data: myClub, isLoading: clubLoading } = useQuery(myClubQueries.all());
-    const { data: announcementList } = useQuery(announcementQueries.getListByClub('2', queryOn));
+    const { data: announcementList } = useQuery(
+        announcementQueries.getListByClub(clubId || '', queryOn),
+    );
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
@@ -216,7 +218,7 @@ function SideBar() {
     //useEffect
     useEffect(() => {
         setCurrentAnnouncement(announcementList?.[0]);
-    }, []);
+    }, [announcementList]);
     return (
         <>
             <div css={clubSideBarContainer}>
@@ -232,7 +234,13 @@ function SideBar() {
                             }}
                         >
                             <div css={clubActive(club.id === currentClub)} />
-                            <button css={clubWrapper} onClick={() => setCurrentClub(club.id)}>
+                            <button
+                                css={clubWrapper}
+                                onClick={() => {
+                                    setCurrentClub(club.id);
+                                    goTo(`/clubs/${club.id}`);
+                                }}
+                            >
                                 <Tooltip content={club.name}>
                                     <img
                                         src={club.imageUrl}
@@ -256,10 +264,10 @@ function SideBar() {
                     <Button
                         variant="text"
                         onClick={() => {
-                            if (location.pathname !== '/announcements') {
+                            if (location.pathname !== `/clubs/${clubId}`) {
                                 if (!activeMenus.includes(1)) handleCollapsed(1);
-                                setActiveSubMenu('/announcements');
-                                goTo('/announcements');
+                                setActiveSubMenu(`/clubs/${clubId}`);
+                                goTo(`/clubs/${clubId}`);
                             }
                         }}
                         sx={homeLogoTextWrapper(isExpanded)}

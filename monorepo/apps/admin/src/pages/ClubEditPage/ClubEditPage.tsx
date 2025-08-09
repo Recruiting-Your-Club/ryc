@@ -161,7 +161,7 @@ function ClubEditPage() {
     const handleAddItem = () => {
         const id = crypto.randomUUID();
         if (!clubSummaries) return;
-        setClubSummaries([...clubSummaries, { id: id, title: '항목', value: '내용' }]);
+        setClubSummaries([...clubSummaries, { id: id, title: '항목', content: '내용' }]);
     };
 
     const handleDeleteItem = (id: string) => {
@@ -190,7 +190,7 @@ function ClubEditPage() {
                 setOriginClubData(response);
                 toast('동아리 정보가 업데이트 되었어요.', {
                     toastTheme: 'white',
-                    type: 'error',
+                    type: 'success',
                 });
             } catch (error) {
                 toast('업데이트에 실패했습니다. 다시 시도해주세요.', {
@@ -207,6 +207,7 @@ function ClubEditPage() {
         setClubSummaries(club?.clubSummaries || []);
         setIntroText(club?.detailDescription || '');
         setImage(club?.imageUrl || ssoc);
+        setCroppedImage(club?.imageUrl || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
@@ -258,7 +259,7 @@ function ClubEditPage() {
                 </div>
                 <Divider sx={{ marginBottom: '3rem', marginTop: '1rem' }} />
                 <ClubBox
-                    data={clubSummaries}
+                    data={originClubData?.clubSummaries}
                     isEditMode={isEditMode}
                     onDataChange={handleDataChange}
                     onAddItem={handleAddItem}

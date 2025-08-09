@@ -21,18 +21,18 @@ const router = createBrowserRouter([
 
             { path: 'clubs/:clubId', element: <ClubEditPage /> },
 
-            { path: 'announcements', element: <LoginPage /> },
-            { path: 'announcements/create', element: <ClubCreatePage /> },
-            { path: 'announcements/edit', element: <ClubCreatePage /> },
+            { path: 'announcements/:clubId', element: <LoginPage /> },
+            { path: 'announcements/create/:clubId', element: <ClubCreatePage /> },
+            { path: 'announcements/edit/:clubId', element: <ClubCreatePage /> },
 
-            { path: 'applicants', element: <ClubCreatePage /> },
+            { path: 'applicants/:clubId', element: <ClubCreatePage /> },
 
-            { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
-            { path: 'document-evaluation', element: <ClubCreatePage /> },
+            { path: 'interview-evaluation/:clubId', element: <InterviewEvaluationPage /> },
+            { path: 'document-evaluation/:clubId', element: <ClubCreatePage /> },
 
-            { path: 'interviewee-schedule"', element: <LoginPage /> },
+            { path: 'interviewee-schedule/:clubId', element: <LoginPage /> },
 
-            { path: 'settings', element: <LoginPage /> },
+            { path: 'settings/:clubId', element: <LoginPage /> },
         ],
     },
     {

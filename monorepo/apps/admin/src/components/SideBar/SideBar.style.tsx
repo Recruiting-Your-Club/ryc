@@ -55,7 +55,7 @@ export const clubSideBarContainer = css`
     gap: 1rem;
     height: 100dvh;
     z-index: 1001;
-    background-color: ${theme.colors.gray[100]};
+    background-color: ${theme.colors.white};
     border-right: 1px solid ${theme.colors.gray[200]};
 `;
 export const addClubButton = css`
@@ -69,7 +69,7 @@ export const addClubButton = css`
     background-color: ${theme.colors.white};
     color: ${theme.colors.black};
     border-radius: 10px;
-    border: 1px solid ${theme.colors.gray[200]};
+    border: 1px solid ${theme.colors.gray[300]};
     cursor: pointer;
     transition: all 0.2s ease;
     :hover {

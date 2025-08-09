@@ -22,6 +22,7 @@ async function updateClub(id: string, club: Club): Promise<Club> {
             'X-CLUB-ID': id,
         },
         body: club,
+        isAuthRequire: true,
     });
     return response as Club;
 }
