@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import React, { isValidElement } from 'react';
 
 import { Slot, Slottable } from '../Slot/Slot';
@@ -29,16 +30,14 @@ function DropdownTrigger({
         asChild && isValidElement(children) ? <Slottable>{children}</Slottable> : children;
 
     // handlers
+    const handleClick = (e: MouseEvent) => {
+        e.stopPropagation();
+        setOpen((prev) => !prev);
+    };
+
     // effects
     return (
-        <Comp
-            css={[s_dropdownTrigger, sx]}
-            {...props}
-            forwardedRef={ref}
-            onClick={() => {
-                setOpen((prev) => !prev);
-            }}
-        >
+        <Comp css={[s_dropdownTrigger, sx]} {...props} forwardedRef={ref} onClick={handleClick}>
             {wrappedChildren}
         </Comp>
     );

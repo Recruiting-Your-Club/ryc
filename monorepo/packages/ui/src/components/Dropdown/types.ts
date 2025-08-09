@@ -20,6 +20,7 @@ export interface DropdownContentProps extends HTMLAttributes<HTMLDivElement> {
     offsetX?: number;
     offsetY?: number;
     sx?: CSSObject;
+    placement?: Placement;
     forwardedRef?: Ref<HTMLDivElement>;
 }
 
@@ -76,3 +77,4 @@ export interface DropdownTriggerProps extends ButtonHTMLAttributes<HTMLButtonEle
 }
 
 type DropdownAlign = 'top' | 'center' | 'bottom';
+export type Placement = 'bottom' | 'right';

@@ -1,20 +1,10 @@
 import type { SerializedStyles } from '@emotion/react';
 import React, { useState } from 'react';
 
+import { TOTAL_STARS_DEFAULT } from '../../constants/rating';
 import { ratingContainer } from './Rating.style';
-import type { StarSize } from './Star';
 import { Star } from './Star';
-
-const TOTAL_STARS_DEFAULT = 5;
-
-export interface RatingProps {
-    value?: number;
-    size?: StarSize;
-    totalStars?: number;
-    type?: 'click' | 'display';
-    onChange?: (rating: number) => void;
-    customCSS?: SerializedStyles;
-}
+import type { RatingProps } from './types';
 
 export function Rating({
     value = 0,
@@ -22,7 +12,7 @@ export function Rating({
     totalStars = TOTAL_STARS_DEFAULT,
     type = 'click',
     onChange,
-    customCSS,
+    sx,
 }: RatingProps) {
     const [hoverRating, setHoverRating] = useState<number | null>(value);
     const [rating, setRating] = useState<number>(value);
@@ -47,7 +37,7 @@ export function Rating({
     };
 
     return (
-        <div css={[ratingContainer, customCSS]}>
+        <div css={[ratingContainer, sx]}>
             {Array.from({ length: totalStars }, (_, index) => {
                 const starIndex = index + 1;
                 const isFilled = (hoverRating || rating) >= starIndex;
@@ -58,6 +48,7 @@ export function Rating({
                         key={starIndex}
                         filled={isFilled}
                         partialFill={partialFill}
+                        type={type}
                         size={size ?? 'md'}
                         onClick={() => handleClick(starIndex)}
                         onMouseEnter={() => handleMouseEnter(starIndex)}
