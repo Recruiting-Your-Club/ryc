@@ -106,7 +106,7 @@ function InformationBox({
                         )}
                     </>
                 )}
-                {personalInformation && !isToggle && (
+                {personalInformation.length > 0 && !isToggle && (
                     <div css={personalDataWrapper}>
                         <Avatar sx={avatarCss} imageURL={getPersonalValue('PROFILE_IMAGE')} />
                         <div css={textSection}>
