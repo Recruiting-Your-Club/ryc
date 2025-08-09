@@ -6,6 +6,7 @@ import docApplicantDetailList from '../data/applicant/docApplicantDetailList.jso
 import docApplicantList from '../data/applicant/docApplicantList.json';
 import docEvaluationList from '../data/applicant/docEvaluationList.json';
 import documentList from '../data/applicant/documentList.json';
+import applicantDocumentList from '../data/applicant/applicantDocumentList.json';
 
 const userId = MOCK_USER_ID; // 임시
 
@@ -19,6 +20,10 @@ const applicantHandler = [
         );
         return HttpResponse.json(detail as ApplicantDetail, { status: 200 });
     }),
+    // http.get(`${BASE_URL}documents/:id`, ({ params }) => {
+    //     const detail = documentList.find((document) => document.applicantId === params.id);
+    //     return HttpResponse.json(detail as Document, { status: 200 });
+    // }),
     http.get(`${BASE_URL}doc-evaluation/:id`, ({ params }) => {
         const evaluation = docEvaluationList.find(
             (evaluation) => evaluation.applicantId === Number(params.id),
@@ -83,6 +88,17 @@ const applicantHandler = [
             return HttpResponse.json(targetComment, { status: 200 });
         },
     ),
+    http.get(`${BASE_URL}announcements/:announcementId/applicants/:applicantId`, ({ params }) => {
+        const { applicantId } = params as {
+            applicantId: string;
+        };
+
+        const document = applicantDocumentList.find(
+            (document) => document.applicantId === applicantId,
+        );
+
+        return HttpResponse.json(document, { status: 200 });
+    }),
 ];
 
 export { applicantHandler };

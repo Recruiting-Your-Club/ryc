@@ -1,36 +1,36 @@
 import { http, HttpResponse } from 'msw';
 import { BASE_URL } from '@constants/api';
-import applicationEvaluationSummary from '../data/evaluation/applicationEvaluationSummary.json';
-import interviewEvaluationSummary from '../data/evaluation/interviewEvaluationSummary.json';
+// import applicationEvaluationSummary from '../data/evaluation/applicationEvaluationSummary.json';
+// import interviewEvaluationSummary from '../data/evaluation/interviewEvaluationSummary.json';
 import applicationEvaluationDetail from '../data/evaluation/applicationEvaluationDetail.json';
-import interviewEvaluationDetail from '../data/evaluation/interviewEvaluationDetail.json';
+// import interviewEvaluationDetail from '../data/evaluation/interviewEvaluationDetail.json';
 
-import type { EvaluationData, EvaluationSummary } from '@api/domain/evaluation/types';
+import type { EvaluationSummary } from '@api/domain/evaluation/types';
 
 const evaluationHandler = [
-    http.post(`${BASE_URL}evaluation/applications/summary`, async ({ request }) => {
-        const { applicantIdList } = (await request.json()) as {
-            applicantIdList: string[];
-        };
+    // http.post(`${BASE_URL}evaluation/applications/summary`, async ({ request }) => {
+    //     const { applicantIdList } = (await request.json()) as {
+    //         applicantIdList: string[];
+    //     };
 
-        const filtered = (applicationEvaluationSummary as EvaluationSummary[]).filter((summary) =>
-            applicantIdList.includes(summary.applicantId),
-        );
+    //     const filtered = (applicationEvaluationSummary as EvaluationSummary[]).filter((summary) =>
+    //         applicantIdList.includes(summary.applicantId),
+    //     );
 
-        return HttpResponse.json(filtered, { status: 200 });
-    }),
+    //     return HttpResponse.json(filtered, { status: 200 });
+    // }),
 
-    http.post(`${BASE_URL}evaluation/interviews/summary`, async ({ request }) => {
-        const { applicantIdList } = (await request.json()) as {
-            applicantIdList: string[];
-        };
+    // http.post(`${BASE_URL}evaluation/interviews/summary`, async ({ request }) => {
+    //     const { applicantIdList } = (await request.json()) as {
+    //         applicantIdList: string[];
+    //     };
 
-        const filtered = (interviewEvaluationSummary as EvaluationSummary[]).filter((summary) =>
-            applicantIdList.includes(summary.applicantId),
-        );
+    //     const filtered = (interviewEvaluationSummary as EvaluationSummary[]).filter((summary) =>
+    //         applicantIdList.includes(summary.applicantId),
+    //     );
 
-        return HttpResponse.json(filtered, { status: 200 });
-    }),
+    //     return HttpResponse.json(filtered, { status: 200 });
+    // }),
 
     http.post(`${BASE_URL}evaluation/applications/search`, async ({ request }) => {
         const { applicantIdList } = (await request.json()) as {
@@ -46,46 +46,46 @@ const evaluationHandler = [
         return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
     }),
 
-    http.post(`${BASE_URL}evaluation/interviews/search`, async ({ request }) => {
-        const { applicantIdList } = (await request.json()) as {
-            applicantIdList: string[];
-        };
+    // http.post(`${BASE_URL}evaluation/interviews/search`, async ({ request }) => {
+    //     const { applicantIdList } = (await request.json()) as {
+    //         applicantIdList: string[];
+    //     };
 
-        const filteredEntries = Object.entries(
-            interviewEvaluationDetail.evaluationsByApplicant,
-        ).filter(([applicantId]) => applicantIdList.includes(applicantId));
+    //     const filteredEntries = Object.entries(
+    //         interviewEvaluationDetail.evaluationsByApplicant,
+    //     ).filter(([applicantId]) => applicantIdList.includes(applicantId));
 
-        const filtered = Object.fromEntries(filteredEntries);
+    //     const filtered = Object.fromEntries(filteredEntries);
 
-        return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
-    }),
+    //     return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
+    // }),
 
-    http.put(`${BASE_URL}evaluation/:evaluationId`, async ({ request, params }) => {
-        const { evaluationId } = params as { evaluationId: string };
-        const { score, comment } = (await request.json()) as { score: number; comment: string };
+    // http.put(`${BASE_URL}evaluation/:evaluationId`, async ({ request, params }) => {
+    //     const { evaluationId } = params as { evaluationId: string };
+    //     const { score, comment } = (await request.json()) as { score: number; comment: string };
 
-        const entries = Object.entries(applicationEvaluationDetail.evaluationsByApplicant);
-        let found = false;
+    //     const entries = Object.entries(applicationEvaluationDetail.evaluationsByApplicant);
+    //     let found = false;
 
-        for (const [applicationId, evaluationDataWithSummary] of entries) {
-            const targetEvaluation = evaluationDataWithSummary.evaluationDatas.find(
-                (e) => e.evaluationId === evaluationId,
-            );
+    //     for (const [applicationId, evaluationDataWithSummary] of entries) {
+    //         const targetEvaluation = evaluationDataWithSummary.evaluationDatas.find(
+    //             (e) => e.evaluationId === evaluationId,
+    //         );
 
-            if (targetEvaluation) {
-                targetEvaluation.score = score;
-                targetEvaluation.comment = comment;
-                found = true;
-                break;
-            }
-        }
+    //         if (targetEvaluation) {
+    //             targetEvaluation.score = score;
+    //             targetEvaluation.comment = comment;
+    //             found = true;
+    //             break;
+    //         }
+    //     }
 
-        if (!found) {
-            return HttpResponse.json({ message: '자원을 찾을 수 없습니다.' }, { status: 404 });
-        }
+    //     if (!found) {
+    //         return HttpResponse.json({ message: '자원을 찾을 수 없습니다.' }, { status: 404 });
+    //     }
 
-        return HttpResponse.json(interviewEvaluationDetail, { status: 200 });
-    }),
+    //     return HttpResponse.json(interviewEvaluationDetail, { status: 200 });
+    // }),
 
     http.delete(`${BASE_URL}evaluation/:evaluationId`, async ({ params }) => {
         const { evaluationId } = params as { evaluationId: string };
