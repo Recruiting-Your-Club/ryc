@@ -5,7 +5,7 @@ import { BASE_URL } from '@constants/api';
 import applicationEvaluationDetail from '../data/evaluation/applicationEvaluationDetail.json';
 // import interviewEvaluationDetail from '../data/evaluation/interviewEvaluationDetail.json';
 
-import type { EvaluationSummary } from '@api/domain/evaluation/types';
+import type { EvaluationData, EvaluationSummary } from '@api/domain/evaluation/types';
 
 const evaluationHandler = [
     // http.post(`${BASE_URL}evaluation/applications/summary`, async ({ request }) => {
@@ -60,32 +60,32 @@ const evaluationHandler = [
     //     return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
     // }),
 
-    // http.put(`${BASE_URL}evaluation/:evaluationId`, async ({ request, params }) => {
-    //     const { evaluationId } = params as { evaluationId: string };
-    //     const { score, comment } = (await request.json()) as { score: number; comment: string };
+    http.put(`${BASE_URL}evaluation/:evaluationId`, async ({ request, params }) => {
+        const { evaluationId } = params as { evaluationId: string };
+        const { score, comment } = (await request.json()) as { score: number; comment: string };
 
-    //     const entries = Object.entries(applicationEvaluationDetail.evaluationsByApplicant);
-    //     let found = false;
+        const entries = Object.entries(applicationEvaluationDetail.evaluationsByApplicant);
+        let found = false;
 
-    //     for (const [applicationId, evaluationDataWithSummary] of entries) {
-    //         const targetEvaluation = evaluationDataWithSummary.evaluationDatas.find(
-    //             (e) => e.evaluationId === evaluationId,
-    //         );
+        for (const [applicationId, evaluationDataWithSummary] of entries) {
+            const targetEvaluation = evaluationDataWithSummary.evaluationDatas.find(
+                (e) => e.evaluationId === evaluationId,
+            );
 
-    //         if (targetEvaluation) {
-    //             targetEvaluation.score = score;
-    //             targetEvaluation.comment = comment;
-    //             found = true;
-    //             break;
-    //         }
-    //     }
+            if (targetEvaluation) {
+                targetEvaluation.score = score;
+                targetEvaluation.comment = comment;
+                found = true;
+                break;
+            }
+        }
 
-    //     if (!found) {
-    //         return HttpResponse.json({ message: '자원을 찾을 수 없습니다.' }, { status: 404 });
-    //     }
+        if (!found) {
+            return HttpResponse.json({ message: '자원을 찾을 수 없습니다.' }, { status: 404 });
+        }
 
-    //     return HttpResponse.json(interviewEvaluationDetail, { status: 200 });
-    // }),
+        return HttpResponse.json(applicationEvaluationDetail, { status: 200 });
+    }),
 
     http.delete(`${BASE_URL}evaluation/:evaluationId`, async ({ params }) => {
         const { evaluationId } = params as { evaluationId: string };
@@ -110,6 +110,39 @@ const evaluationHandler = [
             );
 
         return HttpResponse.json(applicationEvaluationDetail, { status: 200 });
+    }),
+
+    http.post(`${BASE_URL}evaluation/application`, async ({ request }) => {
+        const { applicantId, score, comment } = (await request.json()) as {
+            applicantId: string;
+            score: number;
+            comment: string;
+        };
+
+        const [id, evaluationDataWithSummary] =
+            Object.entries(applicationEvaluationDetail.evaluationsByApplicant).find(
+                ([id]) => id === applicantId,
+            ) || [];
+
+        if (!evaluationDataWithSummary) {
+            return HttpResponse.json({ status: 404 });
+        }
+
+        const newEvaluation = {
+            evaluationId: `eval-${Date.now()}`,
+            evaluatorId: 'mock-evaluator',
+            evaluatorName: '정지훈',
+            score,
+            comment,
+            evaluationType: 'APPLICATION',
+            isMyEvaluation: true,
+        };
+
+        (evaluationDataWithSummary.evaluationDatas as EvaluationData[]).push(
+            newEvaluation as EvaluationData,
+        );
+
+        return HttpResponse.json(applicationEvaluationDetail, { status: 201 });
     }),
 ];
 
