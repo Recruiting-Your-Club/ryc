@@ -10,9 +10,9 @@ import {
 } from './DocumentEvaluationPage.style';
 import { stepQueries } from '@api/queryFactory/stepQueries';
 import type { StepApplicant } from '@api/domain/step/types';
-import { evaluationMutations } from '@api/mutationFactory';
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
 import { useToast } from '@hooks/useToast';
+import { evaluationMutations } from '@hooks/mutations/evaluationMutations';
 
 export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
 export const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
