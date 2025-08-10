@@ -7,6 +7,7 @@ import { s_fileUpLoader } from './FileUpLoader.style';
 import type { FileUpLoaderProps } from './types';
 import { useFilteredFile } from '@hooks/components/useFilteredFile';
 import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
+import { useToast } from '@hooks/useToast';
 
 function FileUpLoaderRoot({
     children,
@@ -17,10 +18,10 @@ function FileUpLoaderRoot({
 }: FileUpLoaderProps) {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
     const safeOnFilesChange = onFilesChange || (() => {});
     // state, ref, querystring hooks
-
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -43,10 +44,20 @@ function FileUpLoaderRoot({
             if (disabled) return;
             const selectedFiles = e.target.files;
             if (!selectedFiles) return;
-            filterAndSetFiles(selectedFiles, files);
+
+            const errorMessage = filterAndSetFiles(selectedFiles, files);
+            if (errorMessage) {
+                toast.error(errorMessage, {
+                    duration: 2000,
+                    sx: {
+                        minWidth: '35rem',
+                    },
+                });
+            }
+
             e.target.value = '';
         },
-        [disabled, filterAndSetFiles, files],
+        [disabled, filterAndSetFiles, files, toast],
     );
 
     //---File delete Handler---//
@@ -90,10 +101,20 @@ function FileUpLoaderRoot({
         (e: React.DragEvent<HTMLDivElement>) => {
             if (disabled) return;
             e.preventDefault();
-            filterAndSetFiles(e.dataTransfer.files, files);
+
+            const errorMessage = filterAndSetFiles(e.dataTransfer.files, files);
+            if (errorMessage) {
+                toast.error(errorMessage, {
+                    duration: 2000,
+                    sx: {
+                        minWidth: '35rem',
+                    },
+                });
+            }
+
             setIsActive(false);
         },
-        [disabled, filterAndSetFiles, files],
+        [disabled, filterAndSetFiles, files, toast],
     );
 
     const stateContextValue = useMemo(
