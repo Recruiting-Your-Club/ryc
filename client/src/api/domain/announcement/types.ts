@@ -75,12 +75,13 @@ export interface Period {
 export interface AnnouncementSummary {
     announcementId: string;
     title: string;
-    clubName: string;
-    clubLogo?: string;
-    clubCategory: string;
-    clubField: string;
+    summaryDescription: string;
+    target: string;
+    field: string;
+    announcementStatus: string;
+    announcementType: string;
     applicationPeriod: Period;
-    isRecruiting: boolean;
+    tags: string[];
 }
 
 /**
