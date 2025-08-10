@@ -1,6 +1,8 @@
 /**
  * 지원서 제출 타입
  */
+
+// 파일 첨부할때 textAnswer는 null로 보내야함
 export type PersonalInfoQuestionType =
     | 'STUDENT_ID'
     | 'PHONE_NUMBER'
@@ -25,8 +27,8 @@ export interface AnswerChoices {
 
 export interface AnswersRequest {
     questionId: string;
-    textAnswer?: string;
-    fileMetadataId?: string;
+    textAnswer: string | null;
+    fileMetadataId: string | null;
     answerChoices?: AnswerChoices[];
 }
 
