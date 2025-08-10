@@ -168,24 +168,24 @@ public class SwaggerConfiguration {
    * 클래스 경로와 메서드 경로를 결합하여 최종 경로를 생성합니다.
    * 이 메서드는 중복된 슬래시("//")를 제거하여 정확한 경로를 반환합니다.
    */
-  private String extractPath(RequestMapping classMapping, String[] methodPath) {
-    String classPath = "";
+  private String extractPath(RequestMapping classMapping, String[] methodPaths) {
+    String path = "";
 
     if (classMapping != null && classMapping.value().length > 0) {
-      classPath = classMapping.value()[0];
+      path = classMapping.value()[0];
     }
 
-    if (methodPath.length == 0) {
-      return classPath.startsWith("/") ? classPath : "/" + classPath;
+    if (methodPaths.length != 0) {
+      path += "/" + methodPaths[0];
     }
 
-    String path =
-        (classPath + "/" + methodPath[0])
-            .replaceAll("//+", "/")
+    path =
+        path.replaceAll("//+", "/")
             .replaceAll(
                 "\\{[^}]+\\}",
                 Matcher.quoteReplacement(
                     "123e4567-e89b-12d3-a456-426614174000")); // {id} 변수를 UUID 더미로 대체
+
     return path.startsWith("/") ? path : "/" + path;
   }
 
