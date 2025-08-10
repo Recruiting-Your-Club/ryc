@@ -25,20 +25,26 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
             .endDate(periodRequest.endDate())
             .build();
 
-    // 3. validate
+    // 3. checkBusinessRules
     period.validate();
     return period;
   }
 
   /**
-   * 기간 validate
+   * 기간 checkBusinessRules
    *
    * @throws IllegalArgumentException 시작날짜보다 끝 날짜가 빠른 경우
    */
-  public void validate() {
+  private void validate() {
     if (startDate.isAfter(endDate)) {
       throw new IllegalArgumentException("startDate should be before endDate");
     }
+  }
+
+  public Boolean isOverlap(Period other) {
+    return (startDate.isBefore(other.startDate) && endDate.isAfter(other.endDate))
+        || (startDate.isBefore(other.startDate) && endDate.isBefore(other.endDate))
+        || (startDate.isAfter(other.startDate) && endDate.isAfter(other.endDate));
   }
 
   /** 파라미터의 Period보다 이전 Period인지 여부 */

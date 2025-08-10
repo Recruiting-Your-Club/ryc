@@ -1,3 +1,4 @@
+import { useAuthStore } from '@stores/authStore';
 import { HttpError } from './httpError';
 import type { CreateClientOptions } from './types';
 import { BASE_URL } from '@constants/api';
@@ -27,12 +28,20 @@ const httpClient = {
 
     async createHttpRequest({ method, url, headers, body, isAuthRequire }: CreateClientOptions) {
         const fullUrl = new URL(url, BASE_URL).toString();
+
+        const {accessToken} = useAuthStore.getState();
+
+        const authHeaders = new Headers(headers)
+
+        authHeaders.set('Content-Type', 'application/json');
+
+        if(accessToken && isAuthRequire){
+            authHeaders.set('Authorization', `Bearer ${accessToken}`)
+        }
+
         const response = await fetch(fullUrl, {
             method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
+            headers: authHeaders,
             body: body ? JSON.stringify(body) : null, // body가 object -> null 대입
             credentials: isAuthRequire ? 'include' : 'omit',
         });

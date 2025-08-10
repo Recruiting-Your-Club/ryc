@@ -3,14 +3,16 @@ package com.ryc.api.v2.announcement.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Image;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
+import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -26,14 +28,17 @@ public class Announcement {
   private final String detailDescription;
   private final String summaryDescription;
   private final String target;
+  private final String field;
   private final List<Tag> tags;
-  private final List<Image> images;
+  private final List<AnnouncementImage> images;
   private final AnnouncementStatus announcementStatus;
   private final AnnouncementType announcementType;
   private final Boolean hasInterview;
   private final AnnouncementPeriodInfo announcementPeriodInfo;
-  private final AnnouncementApplication announcementApplication;
   private final String activityPeriod;
+
+  // application form
+  private final ApplicationForm applicationForm;
 
   // soft delete
   private final Boolean isDeleted;
@@ -49,25 +54,18 @@ public class Announcement {
    * @return Announcement domain
    */
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
-
-    // 1. 각 request mapping
     List<Tag> tags = request.tags().stream().map(Tag::from).toList();
 
-    List<Image> images = request.images().stream().map(Image::from).toList();
+    List<AnnouncementImage> images =
+        request.images().stream().map(AnnouncementImage::initialize).toList();
 
-    AnnouncementApplication announcementApplication =
-        AnnouncementApplication.initialize(request.application());
+    ApplicationForm applicationForm = ApplicationForm.initialize(request.applicationForm());
 
     AnnouncementPeriodInfo announcementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
 
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
-
-    // 3. 기간 값이 올바르지 않은 경우(CLOSED) Exception 발생
-    if (announcementStatus == AnnouncementStatus.CLOSED) {
-      throw new IllegalArgumentException("announcement shouldn't have closed status");
-    }
 
     // 4. Announcement 생성
     Announcement announcement =
@@ -80,12 +78,14 @@ public class Announcement {
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
             .target(request.target())
+            .field(request.field())
             .tags(tags)
-            .hasInterview(request.hasInterview())
+            // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
+            .hasInterview(true)
             .images(images)
             .announcementStatus(announcementStatus)
             .announcementType(request.announcementType())
-            .announcementApplication(announcementApplication)
+            .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
             .isDeleted(false)
             .build();
@@ -96,44 +96,41 @@ public class Announcement {
   }
 
   /**
-   * 업데이트시 사용될 정적팩토리 메소드
+   * update request to announcement domain
    *
    * @param request Update Request
    */
-  public Announcement update(AnnouncementUpdateRequest request) {
+  public static Announcement of(
+      AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
-    // 1. 각 request update
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
+    List<AnnouncementImage> updatedImages =
+        request.images().stream().map(AnnouncementImage::from).toList();
 
-    List<Image> updatedImages = request.images().stream().map(Image::from).toList();
-
+    ApplicationForm applicationForm = ApplicationForm.from(request.applicationForm());
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
-
-    AnnouncementApplication updatedAnnouncementApplication =
-        this.announcementApplication.update(request.application());
-
-    // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
     AnnouncementStatus updatedAnnouncementStatus =
         AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
 
     // 3. announcement 생성
     Announcement announcement =
         Announcement.builder()
-            .id(this.id)
+            .id(announcementId)
+            .applicationForm(applicationForm)
             .title(request.title())
-            .clubId(this.clubId)
+            .clubId(clubId)
             .numberOfPeople(request.numberOfPeople())
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
             .target(request.target())
-            .hasInterview(request.hasInterview())
+            .field(request.field())
+            .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
             .images(updatedImages)
             .announcementStatus(updatedAnnouncementStatus)
             .announcementType(request.announcementType())
-            .announcementApplication(updatedAnnouncementApplication)
             .isDeleted(false)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
@@ -156,13 +153,14 @@ public class Announcement {
         .detailDescription(this.detailDescription)
         .summaryDescription(this.summaryDescription)
         .target(this.target)
-        .hasInterview(this.hasInterview)
+        .field(this.field)
+        .hasInterview(true)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
         .images(this.images)
+        .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
-        .announcementApplication(this.announcementApplication)
         .isDeleted(false)
         .announcementPeriodInfo(this.announcementPeriodInfo)
         .build();
@@ -174,7 +172,19 @@ public class Announcement {
    * @throws IllegalArgumentException 각 객체가 유효하지 않을 경우
    */
   public void validate() {
-    announcementPeriodInfo.validate(hasInterview);
-    announcementApplication.validate();
+    // 생성시에는 모집 예정, 모집 중
+    if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
+      if (announcementStatus == AnnouncementStatus.CLOSED) {
+        throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+      }
+    }
+    // 업데이트시 모집 예정일때만 수정가능
+    else {
+      if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
+        throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+      }
+    }
+
+    applicationForm.checkBusinessRules();
   }
 }

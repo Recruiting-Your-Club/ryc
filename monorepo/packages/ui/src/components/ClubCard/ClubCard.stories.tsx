@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 
 import { ClubCard } from '.';
 
@@ -14,13 +12,6 @@ const meta: Meta<typeof ClubCard> = {
             },
         },
     },
-    decorators: [
-        (Story) => (
-            <MemoryRouter>
-                <Story />
-            </MemoryRouter>
-        ),
-    ],
 };
 
 export default meta;

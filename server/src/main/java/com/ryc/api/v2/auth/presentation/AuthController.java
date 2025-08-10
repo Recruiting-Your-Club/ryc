@@ -14,6 +14,8 @@ import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
 import com.ryc.api.v2.auth.presentation.response.TokenRefreshResponse;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
+import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
+import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.security.jwt.JwtProperties;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,12 +40,19 @@ public class AuthController {
   }
 
   @PostMapping("/register")
+  // TODO: DuplicateKeyException에 대한 예외 응답 코드 설정 필요
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"INVALID_PARAMETER"})
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
     RegisterResponse response = authService.register(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @GetMapping("/refreshToken")
+  @GetMapping("/refresh-token")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<?> refreshToken(@CookieValue("refresh-token") String refreshToken) {
     TokenRefreshResult refreshResult = authService.refreshToken(refreshToken);
 
@@ -54,7 +63,7 @@ public class AuthController {
             .secure(true)
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     return ResponseEntity.status(HttpStatus.OK)
@@ -63,6 +72,9 @@ public class AuthController {
   }
 
   @PostMapping("/logout")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<?> logout(
       @CookieValue(value = "refresh-token", required = false) String refreshToken) {
     if (refreshToken != null) {

@@ -149,6 +149,7 @@ const progressBarAnimation = keyframes`
 export const Container = css`
     position: fixed;
     padding: 0.4rem 0.4rem;
+    z-index: 10004;
 `;
 
 export const ContainerPosition: Record<ToastPosition, CSSObject> = {
@@ -196,6 +197,7 @@ export const toastStyle = (status: string, toastTheme: ToastTheme, type: Type) =
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     animation: ${status === 'entering' ? toastFadeIn : status === 'exiting' ? toastFadeOut : 'none'}
         1000ms ease forwards;
+    z-index: 10003;
 `;
 
 export const svgStyle = (type: Type) => css`

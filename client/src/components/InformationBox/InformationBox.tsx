@@ -8,8 +8,7 @@ import {
     personalDataWrapper,
     s_documentTypeTextWrapper,
     s_titleText,
-    textSection,
-    titleSection,
+    s_valueText,
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
 import type { QuestionAnswer } from '@api/domain/applicant/types';
@@ -70,8 +69,8 @@ function InformationBox({
     }
 
     return (
-        <div css={boxContainer(height)}>
-            <div css={titleSection}>
+        <div css={s_boxContainer(height)}>
+            <div css={s_titleSection}>
                 <Text as="span" type="captionSemibold" textAlign="start" sx={s_titleText}>
                     지원자 정보
                 </Text>
@@ -140,6 +139,13 @@ function InformationBox({
                                     </Text>
                                 ))}
                         </div>
+                    </div>
+                )}
+                {!isVisible && (
+                    <div css={s_invisibleText}>
+                        <Text as="span" type="captionSemibold" textAlign="center" sx={s_titleText}>
+                            지원자 정보가 없습니다.
+                        </Text>
                     </div>
                 )}
             </div>

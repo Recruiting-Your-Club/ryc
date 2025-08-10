@@ -29,7 +29,7 @@ export const clubApplyPage = css`
 export const clubApplyPageMainContainer = css`
     width: 100%;
     height: 100%;
-    max-width: 90rem;
+    max-width: 95rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,6 +37,7 @@ export const clubApplyPageMainContainer = css`
     background-color: ${theme.colors.white};
     border: 1px solid ${theme.colors.gray[200]};
     border-radius: 10px;
+    position: relative;
     @media (max-width: ${theme.breakpoint.tablet}) {
         width: 80%;
         padding: 1rem 4rem;
@@ -68,14 +69,20 @@ export const clubLogoAndNameContainer = css`
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 100%;
+    width: 90%;
     max-width: 80rem;
     max-height: 4.5rem;
-    margin: 1rem 0;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        margin-top: 2rem;
+    }
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         gap: 1rem;
         height: 3rem;
+        margin-top: 2rem;
     }
 `;
 
@@ -83,43 +90,22 @@ export const clubNameContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 0.5rem;
 `;
 
 export const clubApplyTabContainer = css`
-    width: 100%;
+    width: 90%;
     max-width: 80rem;
     display: flex;
-    gap: 1rem;
-    border-bottom: 1px solid ${theme.colors.gray[300]};
-    margin-top: 2rem;
-
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        margin-top: 1rem;
-        gap: 0.5rem;
-    }
+    flex-direction: column;
 `;
 
-export const clubApplyTabName = css`
-    ${theme.typography.subCaptionRegular};
-    color: ${theme.colors.gray[400]};
-    padding: 0;
-`;
-
-export const applyFormContainer = (index: number) => css`
+export const applyFormContainer = css`
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 80rem;
-
-    ${index === 0 &&
-    css`
-        justify-content: space-between;
-    `}
-    ${index === 1 &&
-    css`
-        gap: 1.5rem;
-    `};
-    margin: 3rem 0;
+    margin: 2rem 0;
 
     @media (max-width: ${theme.breakpoint.mobile}) {
         margin: 2.5rem 0;
@@ -157,13 +143,28 @@ export const submitButtonContainer = css`
     }
 `;
 
+export const s_submitButtonSx = css`
+    height: 4rem;
+`;
+
 export const mobileQuestionStatus = css`
-    display: none;
-    margin-left: auto;
+    position: absolute;
+    right: 5rem;
+    top: 10.5rem;
+    display: flex;
     align-items: center;
+    gap: 0.5rem;
+    display: none;
+
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;
-        gap: 0.5rem;
+        right: 8rem;
+        top: 10rem;
+    }
+
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        right: 5rem;
+        top: 8.3rem;
     }
 `;
 

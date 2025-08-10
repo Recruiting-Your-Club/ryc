@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
+import com.ryc.api.v2.applicationForm.presentation.request.ApplicationFormCreateRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -19,11 +20,11 @@ import lombok.Builder;
  * @param summaryDescription 요약 소개
  * @param activityPeriod 활동 기간
  * @param target 모집 대상
+ * @param field 모집 분야
  * @param announcementType 고객 타입
- * @param hasInterview 인터뷰 여부
  * @param tags 태그
  * @param images 이미지
- * @param application 공고 지원서
+ * @param applicationForm 공고 지원서
  */
 @Builder
 public record AnnouncementCreateRequest(
@@ -47,18 +48,20 @@ public record AnnouncementCreateRequest(
     @NotBlank(message = "target shouldn't be blank")
         @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
         String target,
+    @NotBlank(message = "field shouldn't be blank") @Schema(description = "모집 분야", example = "백엔드")
+        String field,
     @NotNull(message = "announcementType shouldn't be null")
         @Schema(description = "공고 타입", example = "LIMITED_TIME")
         AnnouncementType announcementType,
-    @NotNull(message = "startDate shouldn't be null")
-        @Schema(description = "면접 여부", example = "true")
-        Boolean hasInterview,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
-    @NotNull(message = "application shouldn't be null") @Valid @Schema(description = "공고 지원서")
-        AnnouncementApplicationRequest application,
+    @NotNull(message = "applicationForm shouldn't be null")
+        @Schema(description = "공고 지원서")
+        @Valid
+        @NotNull
+        ApplicationFormCreateRequest applicationForm,
     @NotNull(message = "images shouldn't be null")
-        List<@NotNull(message = "image shouldn't be null") ImageRequest> images) {
+        List<@NotNull(message = "image shouldn't be null") ImageCreateRequest> images) {
 
   // @Schema는 get함수에 사용해야 작동함.
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
@@ -68,7 +71,7 @@ public record AnnouncementCreateRequest(
   }
 
   @Override
-  public List<ImageRequest> images() {
+  public List<ImageCreateRequest> images() {
     return List.copyOf(images);
   }
 }

@@ -2,6 +2,7 @@ package com.ryc.api.v2.role.domain;
 
 import java.util.List;
 
+import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
 
 public interface ClubRoleRepository {
@@ -10,9 +11,13 @@ public interface ClubRoleRepository {
 
   List<ClubRole> findRolesByClubId(String clubId);
 
+  List<Club> findClubsByAdminId(String adminId);
+
   boolean existsByAdminIdAndClubId(String adminId, String clubId);
 
   boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
 
   void deleteByUserId(String adminId);
+
+  int countManagerAndMemberByClubId(String clubId);
 }

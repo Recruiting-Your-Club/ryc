@@ -53,7 +53,8 @@ function EvaluationBox({
     // query hooks
     // calculated values
     const myComment = evaluation.evaluationDatas.find((c) => c.isMyEvaluation);
-
+  
+    // handlers
     const handleFormState = (partial: Partial<typeof defaultState>) => {
         setFormState((prev) => ({ ...prev, ...partial }));
     };
@@ -108,7 +109,7 @@ function EvaluationBox({
             isOpenForm: false,
         });
     };
-
+    
     // effects
 
     return (

@@ -15,7 +15,7 @@ import { useRouter } from '@hooks/useRouter';
 
 function RecruitDialog(props: RecruitmentDialogProps) {
     // prop destruction
-    const { open, handleClose, link = 'recruitment' } = props;
+    const { open, handleClose, link = '/apply' } = props;
     const { goTo } = useRouter();
     // lib hooks
     // initial values

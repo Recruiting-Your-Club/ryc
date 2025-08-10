@@ -2,21 +2,22 @@ package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
+import com.ryc.api.v2.announcement.domain.AnnouncementImage;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
-import com.ryc.api.v2.announcement.infra.entity.AnnouncementApplicationEntity;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
-import com.ryc.api.v2.announcement.infra.mapper.AnnouncementApplicationMapper;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
-import com.ryc.api.v2.club.infra.jpa.ClubJpaRepository;
+import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
+import com.ryc.api.v2.s3.infra.jpa.FileMetadataJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,17 +25,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   private final AnnouncementJpaRepository announcementJpaRepository;
-  private final AnnouncementApplicationJpaRepository announcementApplicationJpaRepository;
-  private final AnnouncementMapper announcementMapper;
-  private final AnnouncementApplicationMapper announcementApplicationMapper;
-  private final ClubJpaRepository clubJpaRepository;
+  private final FileMetadataJpaRepository fileMetadataJpaRepository; // FileMetadataJpaRepository 추가
 
   @Override
   public List<Announcement> findAllByClubId(String clubId) {
     List<AnnouncementEntity> announcementEntities =
         announcementJpaRepository.findAllByClubId(clubId);
 
-    return announcementEntities.stream().map(announcementMapper::toDomain).toList();
+    return announcementEntities.stream().map(AnnouncementMapper::toDomain).toList();
   }
 
   /**
@@ -43,58 +41,84 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
    * @param id announcementId
    */
   @Override
-  public Announcement findByIdWithApplication(String id) {
+  public Announcement findById(String id) {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
 
-    /** todo n+1 해결 필요 */
-    AnnouncementApplicationEntity applicationEntity =
-        announcementApplicationJpaRepository
-            .findByAnnouncementEntityId(announcementEntity.getId())
-            .orElseThrow(() -> new EntityNotFoundException("announcementApplication not found"));
-
-    return announcementMapper.toDomain(announcementEntity, applicationEntity);
+    return AnnouncementMapper.toDomain(announcementEntity);
   }
 
   @Override
-  public Announcement save(Announcement announcement, ClubEntity club) {
-    // 1. domain -> entity mapping
-    AnnouncementEntity announcementEntity = announcementMapper.toEntity(announcement, club);
-    AnnouncementApplicationEntity announcementApplicationEntity =
-        announcementApplicationMapper.toEntity(
-            announcement.getAnnouncementApplication(), announcementEntity, club);
+  public Announcement save(Announcement announcement) {
+    List<String> fileMetadataIds =
+        announcement.getImages().stream().map(image -> image.getFileMetadataId()).toList();
 
-    // 2. application entity save
-    /** todo FK를 가진 application에서 OneToOne mapping을 진행해서 application을 저장하는 것이 옳은 방법인지 고민 필요. */
-    AnnouncementApplicationEntity savedAnnouncementApplicationEntity =
-        announcementApplicationJpaRepository.save(announcementApplicationEntity);
+    Map<String, FileMetadataEntity> fileMetadataMap =
+        fileMetadataJpaRepository.findAllById(fileMetadataIds).stream()
+            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
 
-    return announcementMapper.toDomain(savedAnnouncementApplicationEntity.getAnnouncementEntity());
+    // create
+    if (announcement.getId().equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
+      AnnouncementEntity announcementEntity =
+          AnnouncementMapper.toEntity(announcement, fileMetadataMap);
+      announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
+      announcementEntity.getImages().forEach(image -> image.setAnnouncement(announcementEntity));
+
+      AnnouncementEntity savedAnnouncement = announcementJpaRepository.save(announcementEntity);
+      return AnnouncementMapper.toDomain(savedAnnouncement);
+    }
+    // update
+    else {
+      AnnouncementEntity announcementEntity =
+          announcementJpaRepository
+              .findById(announcement.getId())
+              .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+
+      AnnouncementEntity updatedInfoEntity =
+          AnnouncementMapper.toEntity(announcement, fileMetadataMap);
+      announcementEntity.update(updatedInfoEntity);
+      announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
+
+      AnnouncementEntity savedAnnouncement = announcementJpaRepository.save(announcementEntity);
+
+      return AnnouncementMapper.toDomain(savedAnnouncement);
+    }
   }
 
   @Override
   public List<Announcement> findAllByIsDeleted(Boolean isDeleted) {
     return announcementJpaRepository.findAllByIsDeleted(isDeleted).stream()
-        .map(announcementMapper::toDomain)
+        .map(AnnouncementMapper::toDomain)
         .toList();
   }
 
   @Override
-  public void saveAll(
-      List<Announcement> announcements,
-      Map<String, ClubEntity> clubs) { // List<ClubEntity> clubs) {
+  public void saveAll(List<Announcement> announcements) {
+    List<String> allFileMetadataIds =
+        announcements.stream()
+            .flatMap(ann -> ann.getImages().stream())
+            .map(AnnouncementImage::getFileMetadataId)
+            .distinct()
+            .toList();
+
+    java.util.Map<String, FileMetadataEntity> fileMetadataMap =
+        fileMetadataJpaRepository.findAllById(allFileMetadataIds).stream()
+            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
 
     List<AnnouncementEntity> announcementEntities =
         announcements.stream()
-            .map(
-                domain -> {
-                  ClubEntity clubProxy = clubs.get(domain.getClubId());
-                  return announcementMapper.toEntity(domain, clubProxy);
-                })
+            .map(domain -> AnnouncementMapper.toEntity(domain, fileMetadataMap))
             .toList();
 
+    announcementEntities.forEach(
+        announcementEntity -> {
+          announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
+          announcementEntity
+              .getImages()
+              .forEach(image -> image.setAnnouncement(announcementEntity));
+        });
     announcementJpaRepository.saveAll(announcementEntities);
   }
 

@@ -6,6 +6,7 @@ import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
+import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -22,11 +23,11 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "공고 상태", example = "RECRUITING") AnnouncementStatus announcementStatus,
     @Schema(description = "활동 기간", example = "2025년 3월 ~ 12월") String activityPeriod,
     @Schema(description = "대상", example = "컴퓨터공학과 학생") String target,
+    @Schema(description = "모집 분야", example = "백엔드") String field,
     @Schema(description = "공고 유형", example = "LIMITED_TIME") AnnouncementType announcementType,
-    @Schema(description = "인터뷰 여부", example = "true") Boolean hasInterview,
 
     // 지원서
-    @Schema(description = "지원서") AnnouncementApplicationResponse application,
+    @Schema(description = "지원서") ApplicationFormResponse application,
 
     // 기간정보
     @Schema(description = "지원 기간") PeriodResponse applicationPeriod,
@@ -39,8 +40,8 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "태그", example = "[\"TAG1\", \"TAG2\"]") List<String> tags) {
 
   public static AnnouncementUpdateResponse from(Announcement announcement) {
-    AnnouncementApplicationResponse application =
-        AnnouncementApplicationResponse.from(announcement.getAnnouncementApplication());
+    ApplicationFormResponse application =
+        ApplicationFormResponse.from(announcement.getApplicationForm());
     PeriodResponse applicationPeriod =
         PeriodResponse.from(announcement.getAnnouncementPeriodInfo().applicationPeriod());
     PeriodResponse interviewPeriod =
@@ -64,8 +65,8 @@ public record AnnouncementUpdateResponse(
         .announcementStatus(announcement.getAnnouncementStatus())
         .activityPeriod(announcement.getActivityPeriod())
         .target(announcement.getTarget())
+        .field(announcement.getField())
         .announcementType(announcement.getAnnouncementType())
-        .hasInterview(announcement.getHasInterview())
         .application(application)
         .applicationPeriod(applicationPeriod)
         .interviewPeriod(interviewPeriod)

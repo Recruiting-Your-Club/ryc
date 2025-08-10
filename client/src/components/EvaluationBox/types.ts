@@ -1,4 +1,5 @@
 import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+
 export interface EvaluationBoxProps {
     selectedApplicantId: string | null;
     evaluation: EvaluationDataWithSummary;

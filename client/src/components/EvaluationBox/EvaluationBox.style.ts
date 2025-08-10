@@ -81,6 +81,7 @@ export const perStarScoreGroup = (empty?: boolean) => css`
     flex-direction: column;
     padding: 1rem 0.5rem;
     overflow-y: auto;
+
     ${!empty &&
     css`
         align-items: center;

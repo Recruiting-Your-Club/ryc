@@ -1,4 +1,4 @@
-import type { evaluation } from '@constants/ApplicantDialog';
+import type { evaluation } from '@constants/applicantDialog';
 
 export type EvaluationType = (typeof evaluation)[number];
 

@@ -16,7 +16,7 @@ import {
     DEFAULT_START_TIME,
     DEFAULT_TIME_VALUE,
     INITIAL_FORM,
-} from '@constants/InterviewSettingDialog';
+} from '@constants/interviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     calendarCss,
