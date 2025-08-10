@@ -22,12 +22,18 @@ export interface Answer {
     value: string;
     questionTitle: string;
     type: PageAnswer;
+    optionIds?: string[];
 }
 
 export interface ClubApplyPersonalInfoPageProps {
     answers: Answer[];
     clubPersonalQuestions: QuestionResponse[];
-    onAnswerChange: (questionId: string, questionTitle: string, value: string) => void;
+    onAnswerChange: (
+        questionId: string,
+        questionTitle: string,
+        value: string,
+        optionText?: string,
+    ) => void;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
