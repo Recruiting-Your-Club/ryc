@@ -1,4 +1,4 @@
 export type SelectedLabel = {
     label: string;
-    interviewSetId: number | null;
+    interviewSlotId: string | null;
 };

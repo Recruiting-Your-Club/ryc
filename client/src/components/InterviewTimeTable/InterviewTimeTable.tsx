@@ -8,9 +8,10 @@ import {
     s_timeContentContainer,
 } from './InterviewTimeTable.style';
 import type { InterviewTimeTableProps } from './types';
+import dayjs from 'dayjs';
 
 function InterviewTimeTable({
-    interviewSchedules,
+    interviewSlots,
     selectedInterviewLabel,
     onSelect,
     setSelectedLabel,
@@ -24,20 +25,23 @@ function InterviewTimeTable({
     // initial values
     // state, ref, querystring hooks
     const [highlightedDate, setHighlightedDate] = useState<string>(() => {
-        if (interviewSchedules.length > 0 && interviewSchedules[0].date)
-            return interviewSchedules[0].date;
+        if (interviewSlots.length > 0 && interviewSlots[0].period.startDate)
+            return dayjs(interviewSlots[0].period.startDate).format('YYYY-MM-DD');
         return '';
     });
 
     // form hooks
     // query hooks
     // calculated values
-    const scheduleMap = useMemo(() => {
-        return new Map(interviewSchedules.map((schedule) => [schedule.date, schedule]));
-    }, [interviewSchedules]);
-    const scheduleToShow = scheduleMap.get(highlightedDate);
+    const slotsMap = useMemo(() => {
+        return new Map(interviewSlots.map((slot) => [slot.period.startDate, slot]));
+    }, [interviewSlots]);
+    // const slotsToShow = slotsMap.get(highlightedDate);
+    const slotsToShow = interviewSlots.filter(
+        (slot) => dayjs(slot.period.startDate).format('YYYY-MM-DD') === highlightedDate,
+    );
 
-    const enabledDates = interviewSchedules.map((schedule) => schedule.date);
+    const enabledDates = interviewSlots.map((slot) => slot.period.startDate);
 
     // handlers
     const handleCalendar = (newSelected: string[]) => {
@@ -71,23 +75,21 @@ function InterviewTimeTable({
                 <Text as="span" type="bodyBold" textAlign="center">
                     {highlightedDate}
                 </Text>
-                <div
-                    css={[
-                        s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow)),
-                        listSx,
-                    ]}
-                >
-                    {scheduleToShow ? (
-                        scheduleToShow.interviewSets.map((schedule) => {
-                            const label = `${convertDate(scheduleToShow.date)} ${schedule.name}`;
+                <div css={[s_interviewInformationButtonGroupWrapper(Boolean(slotsToShow)), listSx]}>
+                    {slotsToShow.length > 0 ? (
+                        slotsToShow.map((slot) => {
+                            const startTime = dayjs(slot.period.startDate).format('HH:mm');
+                            const endTime = dayjs(slot.period.endDate).format('HH:mm');
+                            const label = `${highlightedDate} ${startTime}~${endTime}`;
+
                             return (
                                 <InterviewInformationButton
-                                    key={label}
+                                    key={slot.id}
                                     label={label}
-                                    startTime={schedule.startTime}
-                                    endTime={schedule.endTime}
-                                    onClick={() => handleButtonClick(label)}
-                                    isSelected={selectedInterviewLabel === label}
+                                    startTime={startTime}
+                                    endTime={endTime}
+                                    onClick={() => handleButtonClick(slot.id)}
+                                    isSelected={selectedInterviewLabel === slot.id}
                                 />
                             );
                         })

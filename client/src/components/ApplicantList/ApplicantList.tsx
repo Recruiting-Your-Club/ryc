@@ -12,6 +12,7 @@ import {
 } from './ApplicantList.style';
 import type { ApplicationListProps } from './types';
 import type { Applicant } from '@api/domain/applicant/types';
+import type { StepApplicant } from '@api/domain/step/types';
 
 function ApplicantList({
     title = '지원자 목록',
@@ -33,14 +34,14 @@ function ApplicantList({
     // query hooks
     // calculated values
     const searchApplicants = useCallback(
-        (applicants: Applicant[]) => {
+        (applicants: StepApplicant[]) => {
             return applicants.filter((value) =>
                 value.name.toLowerCase().includes(searchText.toLowerCase()),
             );
         },
         [searchText],
     );
-    const visibleApplicants: Applicant[] = searchApplicants(applicantList);
+    const visibleApplicants: StepApplicant[] = searchApplicants(applicantList);
 
     // handlers
     // effects
@@ -71,10 +72,10 @@ function ApplicantList({
                     {visibleApplicants.length > 0 ? (
                         visibleApplicants.map((applicant) => (
                             <ApplicantMiniCard
-                                key={applicant.id}
+                                key={applicant.applicantId}
                                 applicant={applicant}
-                                onClick={() => onSelectApplicantId(applicant.id)}
-                                isActivated={selectedApplicantId === applicant.id}
+                                onClick={() => onSelectApplicantId(applicant.applicantId)}
+                                isActivated={selectedApplicantId === applicant.applicantId}
                             />
                         ))
                     ) : (

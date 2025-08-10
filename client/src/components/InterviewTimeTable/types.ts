@@ -1,9 +1,9 @@
-import type { InterviewSchedule } from '@api/domain/interview/types';
+import type { InterviewSlot } from '@api/domain/interview/types';
 import type { CSSObject } from '@emotion/react';
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface InterviewTimeTableProps {
-    interviewSchedules: InterviewSchedule[];
+    interviewSlots: InterviewSlot[];
     selectedInterviewLabel: string;
     onSelect?: (label: string) => void;
     setSelectedLabel?: Dispatch<SetStateAction<string>>;
