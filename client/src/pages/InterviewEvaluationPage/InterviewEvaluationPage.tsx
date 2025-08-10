@@ -11,6 +11,7 @@ import {
     s_selectionContainer,
 } from './InterviewEvaluationPage.style';
 import { getInitialId } from './utils/getInitialId';
+import { applicantQueries } from '@api/queryFactory/applicantQueries';
 
 function InterviewEvaluationPage() {
     // prop destruction
@@ -30,7 +31,7 @@ function InterviewEvaluationPage() {
     const { data: intervieweeDetail } = useSuspenseQuery(
         interviewQueries.getIntervieweeDetail(selectedApplicantId),
     );
-    const { data: document } = useSuspenseQuery(interviewQueries.getDocument(selectedApplicantId));
+    const { data: document } = useSuspenseQuery(applicantQueries.getDocument(selectedApplicantId));
     const { data: evaluation } = useSuspenseQuery(
         interviewQueries.getInterviewEvaluation(selectedApplicantId),
     );

@@ -1,0 +1,29 @@
+{
+    "unreservedApplicants": [
+        {
+            "applicantId": "6",
+            "applicantEmail": "jisoo.han@email.com",
+            "applicantName": "한지수"
+        },
+        {
+            "applicantId": "21",
+            "applicantEmail": "eunji.song@email.com",
+            "applicantName": "송은지"
+        },
+        {
+            "applicantId": "22",
+            "applicantEmail": "woosung.jung@email.com",
+            "applicantName": "정우성"
+        },
+        {
+            "applicantId": "24",
+            "applicantEmail": "seojun.park@email.com",
+            "applicantName": "박서준"
+        },
+        {
+            "applicantId": "27",
+            "applicantEmail": "sungmin.lee@email.com",
+            "applicantName": "이성민"
+        }
+    ]
+}
