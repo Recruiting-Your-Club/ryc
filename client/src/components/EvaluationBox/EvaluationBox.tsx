@@ -23,7 +23,6 @@ import {
     s_userEvaluation,
 } from './EvaluationBox.style';
 import type { EvaluationBoxProps } from './types';
-import { MOCK_USER_ID } from './types';
 import { CLUB_ID } from '@pages/DocumentEvaluationPage';
 
 function EvaluationBox({
@@ -39,7 +38,6 @@ function EvaluationBox({
     const { toast } = useToast();
 
     // initial values
-    const currentUserId = MOCK_USER_ID;
     const defaultState = {
         score: 0,
         comment: '',
@@ -54,8 +52,6 @@ function EvaluationBox({
     // form hooks
     // query hooks
     // calculated values
-
-    // const commentMap = new Map(evaluation?.comments?.map((comment) => [comment.writerId, comment]));
     const myComment = evaluation.evaluationDatas.find((c) => c.isMyEvaluation);
 
     const handleFormState = (partial: Partial<typeof defaultState>) => {
@@ -83,7 +79,7 @@ function EvaluationBox({
 
         // 초기화
         if (formState.commentIdForEdit === myComment.evaluationId) {
-            setFormState(defaultState);
+            handleFormState(defaultState);
         }
     };
 
@@ -105,7 +101,6 @@ function EvaluationBox({
         handleFormState({
             isOpenForm: false,
         });
-        toast('작성한 평가가 수정되었어요!', { type: 'info' });
     };
 
     const handleCancelEdit = () => {
