@@ -1,9 +1,9 @@
-export interface Announcements {
+export interface Announcement {
     announcementId: string;
     title: string;
 }
 
-export interface DetailAnnouncements {
+export interface DetailAnnouncement {
     id: string;
     title: string; //공고 제목
     summaryDescription: string; //공고 요약 설명 (공고 카드)
