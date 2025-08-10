@@ -11,13 +11,12 @@ export const getAnswer = (answers: Answer[], questionTitle: string): string => {
     if (!answer) return '';
 
     // 옵션 질문인 경우
-    if (answer.optionIds && answer.optionIds.length > 0) {
-        // 체크박스인 경우
-        if (answer.optionIds.length > 1) {
-            return answer.optionIds.join(',');
+    if (answer.optionIds) {
+        if (answer.optionIds.length === 1) {
+            return answer.optionIds[0];
         }
-        // 라디오 버튼 경우
-        return answer.optionIds[0];
+
+        return answer.optionIds.join(',');
     }
 
     // 일반 입력 질문인 경우
