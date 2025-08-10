@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.domain.FileMetaDataRepository;
+import com.ryc.api.v2.file.domain.FileStatus;
 import com.ryc.api.v2.file.domain.event.FileMoveEvent;
 import com.ryc.api.v2.file.domain.event.FileMoveRequest;
 import com.ryc.api.v2.file.infra.S3FileStorage;
@@ -96,49 +97,81 @@ public class FileService {
     return String.format(fileDomainType.getPrefix(), associatedId, sanitizedFileName);
   }
 
-  /**
-   * file의 소유권 (associatedId) 등록
-   *
-   * @param fileMetaDataIds
-   * @param associatedId
-   */
-  public void claimOwnership(List<String> fileMetaDataIds, String associatedId, boolean isSync) {
-    if (fileMetaDataIds.isEmpty()) return;
-
-    // 1. 요청 Id List로 파일 Metadata 불러오기
-    List<FileMetaData> newFiles = fileMetaDataRepository.findAllById(fileMetaDataIds);
-
-    // size가 다른경우 잘못된 요청
-    if (newFiles.size() != fileMetaDataIds.size()) {
-      throw new RuntimeException("file not found");
+  private List<FileMetaData> processAssociatedFiles(List<String> fileIds, String associatedId) {
+    // 1. 요청된 파일 목록 유효성 검증
+    List<FileMetaData> newFiles = fileMetaDataRepository.findAllById(fileIds);
+    if (newFiles.size() != fileIds.size()) {
+      // TODO: exception
     }
 
-    List<FileMoveRequest> fileMoveRequests = new ArrayList<>();
-
-    // 2. 기존 연관 객체의 파일 불러오기
+    // 2. 기존에 연결되어 있는 파일 조회
+    List<FileMetaData> existingFiles = fileMetaDataRepository.findAllByAssociatedId(associatedId);
     Map<String, FileMetaData> existingFileMap =
-        fileMetaDataRepository.findAllByAssociatedId(associatedId).stream()
-            .collect(Collectors.toMap(FileMetaData::getId, Function.identity()));
+        existingFiles.stream().collect(Collectors.toMap(FileMetaData::getId, Function.identity()));
 
-    // 3. 기존 파일 삭제 처리
+    // 3. 기존 파일 중 제거되지 못한 파일 제거
     List<FileMetaData> filesToUpdate =
         existingFileMap.values().stream()
-            .filter(fileMetaData -> !fileMetaDataIds.contains(fileMetaData.getId()))
+            .filter(fileMetaData -> !fileIds.contains(fileMetaData.getId()))
             .map(FileMetaData::delete)
             .collect(Collectors.toCollection(ArrayList::new));
 
-    // 4. 새로운 파 순서 업데이트 및 associatedId 변경
+    // 4. 새로운 파일 목록 순서 업데이트, moveRequest처리
     IntStream.range(0, newFiles.size())
         .forEach(
             i -> {
-              FileMetaData fileMetaData = newFiles.get(i);
-
-              if (existingFileMap.containsKey(fileMetaData.getId())) {
-                filesToUpdate.add(fileMetaData.updateDisplayOrder(i));
+              FileMetaData newFile = newFiles.get(i);
+              if (existingFileMap.containsKey(newFile.getId())) {
+                filesToUpdate.add(newFile.updateDisplayOrder(i));
               } else {
-                fileMetaData = fileMetaData.claimOwnership(associatedId, i);
-                filesToUpdate.add(fileMetaData);
-                fileMoveRequests.add(
+                filesToUpdate.add(newFile.claimOwnership(associatedId, i));
+              }
+            });
+
+    return filesToUpdate;
+  }
+
+  @Transactional
+  public void claimOwnershipSync(List<String> fileMetaDataIds, String associatedId) {
+    if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
+
+    List<FileMetaData> filesToUpdate = processAssociatedFiles(fileMetaDataIds, associatedId);
+
+    for (int i = 0; i < filesToUpdate.size(); i++) {
+      FileMetaData fileMetaData = filesToUpdate.get(i);
+
+      if (fileMetaData.getStatus() == FileStatus.MOVE_REQUESTED) {
+        String tempS3Key = fileMetaData.getFilePath();
+        String finalS3Key =
+            generateFinalS3Key(
+                fileMetaData.getFileDomainType(), associatedId, fileMetaData.getOriginalFileName());
+
+        try {
+          s3FileStorage.moveFile(tempS3Key, finalS3Key);
+          s3FileStorage.deleteFile(tempS3Key);
+
+          filesToUpdate.set(i, fileMetaData.issueFileMoveSuccess(finalS3Key));
+        } catch (Exception e) {
+          filesToUpdate.set(i, fileMetaData.issueFileMoveFail());
+        }
+      }
+    }
+
+    fileMetaDataRepository.saveAll(filesToUpdate);
+  }
+
+  @Transactional
+  public void claimOwnershipAsync(List<String> fileMetaDataIds, String associatedId) {
+    if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
+
+    List<FileMetaData> filesToUpdate = processAssociatedFiles(fileMetaDataIds, associatedId);
+
+    // 1. dlqpsxm todtjd
+    List<FileMoveRequest> moveRequests =
+        filesToUpdate.stream()
+            .filter(fileMetaData -> fileMetaData.getStatus() == FileStatus.MOVE_REQUESTED)
+            .map(
+                fileMetaData ->
                     FileMoveRequest.builder()
                         .fileMetadataId(fileMetaData.getId())
                         .tempS3Key(fileMetaData.getFilePath())
@@ -147,20 +180,15 @@ public class FileService {
                                 fileMetaData.getFileDomainType(),
                                 associatedId,
                                 fileMetaData.getOriginalFileName()))
-                        .build());
-              }
-            });
+                        .build())
+            .toList();
 
-    // 5. 파일 이동 동기/비동기 분기 처리
-    if (isSync) {
-      for (FileMoveRequest fileMoveRequest : fileMoveRequests) {
-        s3FileStorage.moveFile(fileMoveRequest.tempS3Key(), fileMoveRequest.finalS3Key());
-        s3FileStorage.deleteFile(fileMoveRequest.tempS3Key());
-      }
-    } else {
-      eventPublisher.publishEvent(new FileMoveEvent(this, fileMoveRequests));
+    // 2. 이벤트 발행
+    if (!moveRequests.isEmpty()) {
+      eventPublisher.publishEvent(new FileMoveEvent(this, moveRequests));
     }
-    // 6. 저장
+
+    // 3. 저장
     fileMetaDataRepository.saveAll(filesToUpdate);
   }
 
