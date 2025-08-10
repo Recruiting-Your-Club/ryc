@@ -64,11 +64,11 @@ public class Announcement {
     AnnouncementPeriodInfo announcementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
 
+    AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
+
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
-    if (request.announcementType() == AnnouncementType.ALWAYS_OPEN) {
-      announcementStatus = AnnouncementStatus.RECRUITING;
-    }
+    AnnouncementStatus announcementStatus =
+        AnnouncementStatus.from(announcementPeriodInfo, announcementType);
 
     // 4. Announcement 생성
     Announcement announcement =
@@ -87,7 +87,7 @@ public class Announcement {
             .hasInterview(true)
             .images(images)
             .announcementStatus(announcementStatus)
-            .announcementType(request.announcementType())
+            .announcementType(announcementType)
             .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
             .isDeleted(false)
@@ -113,8 +113,10 @@ public class Announcement {
     ApplicationForm applicationForm = ApplicationForm.from(request.applicationForm());
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
+    AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
+
     AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
+        AnnouncementStatus.from(updatedAnnouncementPeriodInfo, announcementType);
 
     // 3. announcement 생성
     Announcement announcement =
@@ -133,7 +135,7 @@ public class Announcement {
             .tags(updatedTags)
             .images(updatedImages)
             .announcementStatus(updatedAnnouncementStatus)
-            .announcementType(request.announcementType())
+            .announcementType(announcementType)
             .isDeleted(false)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
@@ -146,7 +148,7 @@ public class Announcement {
   /** status 갱신 메소드 */
   public Announcement updateStatus() {
     AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(this.announcementPeriodInfo);
+        AnnouncementStatus.from(this.announcementPeriodInfo, this.announcementType);
 
     return Announcement.builder()
         .id(this.id)

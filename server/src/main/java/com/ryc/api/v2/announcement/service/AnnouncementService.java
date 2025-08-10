@@ -11,7 +11,6 @@ import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
@@ -77,11 +76,7 @@ public class AnnouncementService {
 
     // 2.공고 상태 업데이트
     List<Announcement> updatedAnnouncements =
-        announcements.stream()
-            .filter(
-                announcement -> announcement.getAnnouncementType() != AnnouncementType.ALWAYS_OPEN)
-            .map(Announcement::updateStatus)
-            .toList();
+        announcements.stream().map(Announcement::updateStatus).toList();
 
     // 3. 공고 저장
     announcementRepository.saveAll(updatedAnnouncements);
