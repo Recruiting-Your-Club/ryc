@@ -2,17 +2,19 @@ package com.ryc.api.v2.club.presentation.dto.response;
 
 import java.util.List;
 
+import com.ryc.api.v2.club.domain.ClubDetailImage;
+import com.ryc.api.v2.club.domain.ClubSummary;
+import com.ryc.api.v2.club.domain.ClubTag;
 import com.ryc.api.v2.club.domain.enums.Category;
-import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
-import com.ryc.api.v2.club.domain.vo.ClubSummary;
-import com.ryc.api.v2.club.domain.vo.ClubTag;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-public record ClubGetResponse(
+public record DetailClubResponse(
+    @Schema(description = "동아리 ID") String id,
     @Schema(description = "동아리 이름") String name,
+    @Schema(description = "동아리 짧은 설명") String shortDescription,
     @Schema(description = "동아리 상세 설명") String detailDescription,
     @Schema(description = "동아리 이미지 URL") String imageUrl,
     @Schema(description = "동아리 썸네일 URL") String thumbnailUrl,

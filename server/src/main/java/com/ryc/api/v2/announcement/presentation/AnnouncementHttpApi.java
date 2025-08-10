@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,7 +26,6 @@ import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,9 +63,7 @@ public class AnnouncementHttpApi {
         "INVALID_PARAMETER"
       })
   public ResponseEntity<AnnouncementCreateResponse> create(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id") String clubId,
-      @Valid @RequestBody AnnouncementCreateRequest body) {
+      @PathVariable("club-id") String clubId, @Valid @RequestBody AnnouncementCreateRequest body) {
     AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     URI location =
@@ -120,7 +116,6 @@ public class AnnouncementHttpApi {
         "INVALID_QUESTION_TYPE",
         "QUESTION_OPTION_REQUIRED",
         "QUESTION_OPTION_NOT_ALLOWED",
-        "CLUB_NOT_FOUND",
         "FORBIDDEN_NOT_CLUB_MEMBER",
         "INVALID_PARAMETER",
         "RESOURCE_NOT_FOUND"

@@ -9,7 +9,7 @@ import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
+import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
@@ -74,17 +74,22 @@ public class ClubRoleService {
   }
 
   @Transactional(readOnly = true)
-  public List<ClubGetByAdminIdResponse> getClubByAdminId(String adminId) {
+  public List<DetailClubResponse> getMyClubs(String adminId) {
     List<Club> clubs = clubRoleRepository.findClubsByAdminId(adminId);
     return clubs.stream()
         .map(
             club ->
-                ClubGetByAdminIdResponse.builder()
+                DetailClubResponse.builder()
                     .id(club.getId())
                     .name(club.getName())
                     .shortDescription(club.getShortDescription())
+                    .detailDescription(club.getDetailDescription())
                     .imageUrl(club.getImageUrl())
                     .thumbnailUrl(club.getThumbnailUrl())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .clubSummaries(club.getClubSummaries())
+                    .clubDetailImages(club.getClubDetailImages())
                     .build())
         .toList();
   }
