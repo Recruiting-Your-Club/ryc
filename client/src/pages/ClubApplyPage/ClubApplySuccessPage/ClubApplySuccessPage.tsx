@@ -5,7 +5,9 @@ import {
     s_applicationUserInfoLabel,
     s_applicationUserInfoValue,
     s_goToHomeButtonWrapper,
-    s_sucecessDescriptionContainer,
+    s_successDescriptionTextSx,
+    s_successSubDescriptionTextSx,
+    s_successDescriptionContainer,
 } from './ClubApplySuccessPage.style';
 import { Button, Text } from '@components/_common';
 import { useApplicationStore } from '@stores/applicationStore';
@@ -18,9 +20,11 @@ function ClubApplySuccessPage() {
     const { goTo } = useRouter();
     return (
         <div css={s_applicationSuccessPageContainer}>
-            <div css={s_sucecessDescriptionContainer}>
-                <Text type="h2Bold">지원서가 성공적으로 접수되었습니다!</Text>
-                <Text type="h4Semibold" color="helper">
+            <div css={s_successDescriptionContainer}>
+                <Text type="h2Bold" sx={s_successDescriptionTextSx}>
+                    지원서가 성공적으로 접수되었습니다!
+                </Text>
+                <Text type="h4Semibold" color="helper" sx={s_successSubDescriptionTextSx}>
                     지원 결과는 서류 접수 기간이 끝나는 대로 등록된 이메일로 발송됩니다.
                 </Text>
             </div>
