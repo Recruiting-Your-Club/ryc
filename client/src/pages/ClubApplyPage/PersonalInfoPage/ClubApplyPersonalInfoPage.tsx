@@ -59,13 +59,19 @@ function ClubApplyPersonalInfoPage({
                                 options={
                                     question.options?.map((option) => ({
                                         label: option.option,
-                                        value: option.option,
+                                        value: option.id,
                                     })) || []
                                 }
                                 size="sm"
                                 value={getAnswer(answers, question.label)}
                                 onChange={(value) =>
-                                    onAnswerChange(question.id, question.label, value)
+                                    onAnswerChange(
+                                        question.id,
+                                        question.label,
+                                        value,
+                                        question.options?.find((option) => option.id === value)
+                                            ?.option || '',
+                                    )
                                 }
                             />
                         </div>
@@ -94,10 +100,15 @@ function ClubApplyPersonalInfoPage({
                                 <Checkbox.Root
                                     key={option.id}
                                     isChecked={getAnswer(answers, question.label)?.includes(
-                                        option.option,
+                                        option.id,
                                     )}
                                     onChange={() =>
-                                        onAnswerChange(question.id, question.label, option.option)
+                                        onAnswerChange(
+                                            question.id,
+                                            question.label,
+                                            option.id,
+                                            option.option,
+                                        )
                                     }
                                 >
                                     <Checkbox.HiddenInput />
