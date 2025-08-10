@@ -13,8 +13,8 @@ import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
 import com.ryc.api.v2.application.infra.jpa.ApplicationJpaRepository;
 import com.ryc.api.v2.application.infra.mapper.ApplicationMapper;
-import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
-import com.ryc.api.v2.s3.infra.jpa.FileMetadataJpaRepository;
+import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
+import com.ryc.api.v2.file.infra.jpa.FileMetadataJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
