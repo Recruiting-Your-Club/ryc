@@ -101,13 +101,11 @@ function ClubApplyPage() {
         mutationFn: (data: ApplicationSubmissionRequest) =>
             postApplicationAnswers(announcementId || '', data),
         onSuccess: () => {
-            console.log('지원서 제출 성공!');
             setIsSubmitDialogOpen(false);
             goTo(`success`);
         },
         onError: (error) => {
             console.error('지원서 제출 실패:', error);
-            // TODO: 에러 처리 (토스트 메시지 등)
             setIsSubmitDialogOpen(false);
         },
     });
@@ -167,7 +165,12 @@ function ClubApplyPage() {
         setTouched((prev) => ({ ...prev, [questionTitle]: false }));
     };
 
-    const handleAnswerChange = (questionId: string, questionTitle: string, value: string) => {
+    const handleAnswerChange = (
+        questionId: string,
+        questionTitle: string,
+        value: string,
+        optionText?: string,
+    ) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
             const question = clubPersonalInfoQuestions.find(
@@ -177,14 +180,60 @@ function ClubApplyPage() {
             // 체크박스인 경우
             if (question?.type === 'MULTIPLE_CHOICE') {
                 const currentValues = existingAnswer?.value?.split(',') || [];
-                const isCurrentlyChecked = currentValues.includes(value);
-                const newValues = isCurrentlyChecked
-                    ? currentValues.filter((currentValue) => currentValue !== value)
-                    : [...currentValues, value];
-                value = newValues.join(',');
+                const currentOptionIds = existingAnswer?.optionIds || [];
+
+                const isCurrentlyChecked = currentValues.includes(optionText || value);
+                let newValues: string;
+                let newOptionIds: string[];
+
+                if (isCurrentlyChecked) {
+                    // 체크 해제
+                    newValues = currentValues
+                        .filter((currentValue) => currentValue !== (optionText || value))
+                        .join(',');
+                    newOptionIds = currentOptionIds.filter((id) => id !== value);
+                } else {
+                    // 체크 추가
+                    newValues = [...currentValues, optionText || value].join(',');
+                    newOptionIds = [...currentOptionIds, value];
+                }
+
+                value = newValues;
+
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value,
+                    questionTitle,
+                    type: 'detail',
+                    optionIds: newOptionIds,
+                };
+
+                if (existingAnswer) {
+                    return prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                }
+                return [...prev, newAnswer];
             }
 
-            // 이름과 이메일을 applicationStore에 자동으로 저장
+            // 라디오 버튼인 경우
+            if (question?.type === 'SINGLE_CHOICE') {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: optionText || value,
+                    questionTitle,
+                    type: 'detail',
+                    optionIds: [value],
+                };
+
+                if (existingAnswer) {
+                    return prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                }
+                return [...prev, newAnswer];
+            }
+
             if (questionTitle === '이름') {
                 setUserName(value);
             } else if (questionTitle === '이메일') {
@@ -215,7 +264,6 @@ function ClubApplyPage() {
 
     const handleConfirmSubmit = () => {
         const answerData = makeAnsewerDataForSubmit(answers);
-        console.log('서버에 제출할 데이터:', answerData);
         submitApplication(answerData);
     };
 
@@ -294,7 +342,6 @@ function ClubApplyPage() {
                 (question) => question.label === '이메일',
             );
 
-            // 이름이 있으면 기존 값으로 설정
             if (
                 nameQuestion &&
                 userName &&
@@ -303,7 +350,6 @@ function ClubApplyPage() {
                 handleAnswerChange(nameQuestion.id, '이름', userName);
             }
 
-            // 이메일이 있으면 기존 값으로 설정
             if (
                 emailQuestion &&
                 userEmail &&
@@ -382,7 +428,7 @@ function ClubApplyPage() {
                     onClick={handleSubmit}
                     sx={s_submitButtonSx}
                 >
-                    {isSubmitting ? '제출 중...' : '제출하기'}
+                    {isSubmitting ? '제출중...' : '제출하기'}
                 </Button>
             </div>
 
