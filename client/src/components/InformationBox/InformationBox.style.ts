@@ -71,23 +71,7 @@ export const s_textGroup = css`
     gap: 1.5rem;
 `;
 
-export const s_textContainer = css`
-    display: flex;
-    gap: 1rem;
-`;
-
-export const s_labelText = css`
-    width: 6rem;
-`;
-
-export const s_valueText = css`
-    flex: 1;
-`;
-
-export const s_invisibleText = css`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+export const s_documentTypeTextWrapper = css`
+    align-self: flex-start;
+    padding: 0 1rem;
 `;
