@@ -16,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 import com.ryc.api.v2.club.domain.enums.Category;
-import com.ryc.api.v2.club.domain.vo.ClubDetailImage;
 import com.ryc.api.v2.club.domain.vo.ClubSummary;
 import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.common.entity.BaseEntity;
@@ -47,12 +46,6 @@ public class ClubEntity extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String detailDescription;
 
-  @Column(columnDefinition = "TEXT")
-  private String imageUrl;
-
-  @Column(columnDefinition = "varchar(500)")
-  private String thumbnailUrl;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private Category category;
@@ -66,11 +59,6 @@ public class ClubEntity extends BaseEntity {
   @ElementCollection
   @CollectionTable(name = "club_summaries", joinColumns = @JoinColumn(name = "club_id"))
   private List<ClubSummary> clubSummaries = new ArrayList<>();
-
-  @Builder.Default
-  @ElementCollection
-  @CollectionTable(name = "club_detail_images", joinColumns = @JoinColumn(name = "club_id"))
-  private List<ClubDetailImage> clubDetailImages = new ArrayList<>();
 
   @Builder.Default private Boolean deleted = Boolean.FALSE;
 }

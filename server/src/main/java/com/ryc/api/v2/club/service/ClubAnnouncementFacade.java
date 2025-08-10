@@ -10,6 +10,7 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.presentation.dto.response.AllClubGetResponse;
+import com.ryc.api.v2.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ public class ClubAnnouncementFacade {
 
   private final ClubService clubService;
   private final AnnouncementService announcementService;
+  private final FileService fileService;
 
   @Transactional(readOnly = true)
   public List<AllClubGetResponse> getAllClubWithAnnouncementStatus() {
@@ -34,8 +36,6 @@ public class ClubAnnouncementFacade {
                   .id(club.getId())
                   .name(club.getName())
                   .shortDescription(club.getShortDescription())
-                  .imageUrl(club.getImageUrl())
-                  .thumbnailUrl(club.getThumbnailUrl())
                   .category(club.getCategory())
                   .clubTags(club.getClubTags())
                   .announcementStatus(status)

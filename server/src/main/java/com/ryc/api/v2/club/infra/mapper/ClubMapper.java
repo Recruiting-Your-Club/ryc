@@ -14,12 +14,9 @@ public class ClubMapper {
         .name(club.getName())
         .shortDescription(club.getShortDescription())
         .detailDescription(club.getDetailDescription())
-        .imageUrl(club.getImageUrl())
-        .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .clubSummaries(club.getClubSummaries())
-        .clubDetailImages(club.getClubDetailImages())
         .build();
   }
 
@@ -29,12 +26,9 @@ public class ClubMapper {
         .name(clubEntity.getName())
         .shortDescription(clubEntity.getShortDescription())
         .detailDescription(clubEntity.getDetailDescription())
-        .imageUrl(clubEntity.getImageUrl())
-        .thumbnailUrl(clubEntity.getThumbnailUrl())
         .category(clubEntity.getCategory())
         .clubTags(clubEntity.getClubTags())
         .clubSummaries(clubEntity.getClubSummaries())
-        .clubDetailImages(clubEntity.getClubDetailImages())
         .build();
   }
 }
