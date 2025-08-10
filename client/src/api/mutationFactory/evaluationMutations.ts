@@ -5,17 +5,31 @@ import {
 } from '@api/domain';
 import { evaluationKeys } from '@api/querykeyFactory';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+interface DeletePersonalEvaluation {
+    evaluationId: string;
+    clubId: string;
+}
+
+interface PutEvaluation {
+    evaluationId: string;
+    score: number;
+    comment: string;
+    clubId: string;
+}
+
+interface PostPersonalEvaluation {
+    clubId: string;
+    applicantId: string;
+    score: number;
+    comment: string;
+    type: 'application' | 'interview';
+}
 
 const evaluationMutations = {
     usePutEvaluation: (applicantId: string) => {
         const queryClient = useQueryClient();
         return useMutation({
-            mutationFn: (params: {
-                evaluationId: string;
-                score: number;
-                comment: string;
-                clubId: string;
-            }) => putEvaluationScoreAndComment(params),
+            mutationFn: (params: PutEvaluation) => putEvaluationScoreAndComment(params),
 
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
@@ -32,8 +46,7 @@ const evaluationMutations = {
     useDeleteEvaluation: (applicantId: string) => {
         const queryClient = useQueryClient();
         return useMutation({
-            mutationFn: (params: { evaluationId: string; clubId: string }) =>
-                deleteEvaluation(params),
+            mutationFn: (params: DeletePersonalEvaluation) => deleteEvaluation(params),
 
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
@@ -49,13 +62,7 @@ const evaluationMutations = {
     usePostPersonalEvaluation: () => {
         const queryClient = useQueryClient();
         return useMutation({
-            mutationFn: (params: {
-                clubId: string;
-                applicantId: string;
-                score: number;
-                comment: string;
-                type: 'application' | 'interview';
-            }) => postPersonalEvaluation(params),
+            mutationFn: (params: PostPersonalEvaluation) => postPersonalEvaluation(params),
 
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
