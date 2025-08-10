@@ -79,7 +79,7 @@ function EvaluationBox({
 
         // 초기화
         if (formState.commentIdForEdit === myComment.evaluationId) {
-            handleFormState(defaultState);
+            setFormState(defaultState);
         }
     };
 
