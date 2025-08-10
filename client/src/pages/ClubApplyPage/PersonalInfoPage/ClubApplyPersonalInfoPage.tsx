@@ -96,26 +96,29 @@ function ClubApplyPersonalInfoPage({
                                     </Text>
                                 )}
                             </div>
-                            {question?.options?.map((option) => (
-                                <Checkbox.Root
-                                    key={option.id}
-                                    isChecked={getAnswer(answers, question.label)?.includes(
-                                        option.id,
-                                    )}
-                                    onChange={() =>
-                                        onAnswerChange(
-                                            question.id,
-                                            question.label,
-                                            option.id,
-                                            option.option,
-                                        )
-                                    }
-                                >
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control />
-                                    <Checkbox.Label>{option.option}</Checkbox.Label>
-                                </Checkbox.Root>
-                            ))}
+                            {question?.options?.map((option) => {
+                                const currentAnswers = getAnswer(answers, question.label);
+                                const isChecked = currentAnswers.includes(option.id);
+
+                                return (
+                                    <Checkbox.Root
+                                        key={option.id}
+                                        isChecked={isChecked}
+                                        onChange={() =>
+                                            onAnswerChange(
+                                                question.id,
+                                                question.label,
+                                                option.id,
+                                                option.option,
+                                            )
+                                        }
+                                    >
+                                        <Checkbox.HiddenInput />
+                                        <Checkbox.Control />
+                                        <Checkbox.Label>{option.option}</Checkbox.Label>
+                                    </Checkbox.Root>
+                                );
+                            })}
                         </div>
                     );
                 }

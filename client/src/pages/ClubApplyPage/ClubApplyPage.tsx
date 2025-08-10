@@ -18,7 +18,7 @@ import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
 import type { Answer, QuestionType } from './types';
 import type { ValidationKey } from './constants';
-import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
+import { VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQueries } from '@api/queryFactory';
@@ -166,30 +166,25 @@ function ClubApplyPage() {
 
             // 체크박스인 경우
             if (question?.type === 'MULTIPLE_CHOICE') {
-                const currentValues = existingAnswer?.value?.split(',') || [];
                 const currentOptionIds = existingAnswer?.optionIds || [];
+                const isCurrentlyChecked = currentOptionIds.includes(value);
 
-                const isCurrentlyChecked = currentValues.includes(optionText || value);
-                let newValues: string;
                 let newOptionIds: string[];
 
                 if (isCurrentlyChecked) {
                     // 체크 해제
-                    newValues = currentValues
-                        .filter((currentValue) => currentValue !== (optionText || value))
-                        .join(',');
                     newOptionIds = currentOptionIds.filter((id) => id !== value);
                 } else {
                     // 체크 추가
-                    newValues = [...currentValues, optionText || value].join(',');
                     newOptionIds = [...currentOptionIds, value];
                 }
 
-                value = newValues;
+                // value는 optionIds를 쉼표로 연결한 문자열로 설정
+                const newValues = newOptionIds.join(',');
 
                 const newAnswer: Answer = {
                     id: questionId,
-                    value,
+                    value: newValues,
                     questionTitle,
                     type: 'detail',
                     optionIds: newOptionIds,
