@@ -1,5 +1,6 @@
 package com.ryc.api.v2.file.service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -90,7 +91,9 @@ public class FileService {
   private String generateFinalS3Key(
       FileDomainType fileDomainType, String associatedId, String fileName) {
     String newFileName = String.format("%s_%s", UUID.randomUUID(), fileName);
-    return String.format(fileDomainType.getPrefix(), associatedId, newFileName);
+    String sanitizedFileName = sanitizeFileName(newFileName);
+
+    return String.format(fileDomainType.getPrefix(), associatedId, sanitizedFileName);
   }
 
   /**
@@ -167,6 +170,12 @@ public class FileService {
     // 2. uuid 기반 파일명
     String uuid = UUID.randomUUID().toString();
 
-    return String.format("temp/%s/%s/%s", datePath, uuid, fileName);
+    String sanitizedFileName = sanitizeFileName(fileName);
+
+    return String.format("temp/%s/%s_%s", datePath, uuid, sanitizedFileName);
+  }
+
+  private String sanitizeFileName(String fileName) {
+    return new File(fileName).getName().replaceAll("[^a-zA-Z0-9._-]", "_");
   }
 }
