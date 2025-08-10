@@ -2,10 +2,8 @@ type FormState = {
     isOpenForm: boolean;
     comment: string;
     score: number;
-    commentIdForEdit: number | null;
+    commentIdForEdit: string | null;
 };
-
-// type OnOpenForm = (nextState: Partial<FormState>) => void;
 
 export interface PersonalScoreCardProps {
     image?: string;
