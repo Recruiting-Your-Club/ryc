@@ -60,10 +60,10 @@ public class AuthController {
     ResponseCookie cookie =
         ResponseCookie.from("refresh-token", refreshResult.refreshToken())
             .httpOnly(true)
-            .secure(true)
+            .secure(false)
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     return ResponseEntity.status(HttpStatus.OK)
