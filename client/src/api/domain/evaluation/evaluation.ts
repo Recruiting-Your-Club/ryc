@@ -1,5 +1,5 @@
 import { httpRequest } from '@api/common/httpRequest';
-import type { Evaluation, EvaluationSummary } from './types';
+import type { Evaluation, EvaluationSummary, MyEvaluationStatus } from './types';
 
 async function postApplicationEvaluationSummary(params: {
     clubId: string;
@@ -9,6 +9,7 @@ async function postApplicationEvaluationSummary(params: {
         url: `evaluation/applications/summary`,
         body: params,
         headers: {
+            'X-CLUB-ID': params.clubId,
             Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
     });
@@ -22,6 +23,7 @@ async function postInterviewEvaluationSummary(params: {
         url: `evaluation/interviews/summary`,
         body: params,
         headers: {
+            'X-CLUB-ID': params.clubId,
             Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
     });
@@ -89,6 +91,18 @@ async function deleteEvaluation(params: { evaluationId: string; clubId: string }
     });
 }
 
+async function postMyEvaluationStatus(params: {
+    applicantIdList: string[];
+    clubId: string;
+    type: 'application' | 'interview';
+}): Promise<MyEvaluationStatus> {
+    return await httpRequest.post({
+        url: `evaluation/${params.type}s/my-status`,
+        body: { applicantIdList: params.applicantIdList },
+        headers: { 'X-CLUB-ID': params.clubId },
+    });
+}
+
 export {
     postApplicationEvaluationSummary,
     postInterviewEvaluationSummary,
@@ -97,4 +111,5 @@ export {
     postPersonalEvaluation,
     putEvaluationScoreAndComment,
     deleteEvaluation,
+    postMyEvaluationStatus,
 };

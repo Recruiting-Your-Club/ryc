@@ -27,3 +27,12 @@ export interface Evaluation {
         [applicantId: string]: EvaluationDataWithSummary;
     };
 }
+
+export interface MyEvaluationStatus {
+    applicantEvaluationStatuses: PerEvaluationStatus[];
+}
+
+export interface PerEvaluationStatus {
+    applicantId: string;
+    isEvaluated: boolean;
+}

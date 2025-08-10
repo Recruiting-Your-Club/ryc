@@ -44,6 +44,11 @@ const evaluationKeys = {
         ['evaluation-summary', clubId, ...applicantIds, type] as const,
     evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
         ['evaluation-detail', clubId, ...applicantIds, type] as const,
+    myEvaluationStatus: (
+        clubId: string,
+        applicantIds: string[],
+        type: 'application' | 'interview',
+    ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
 };
 
 export { clubKeys, applicantKeys, stepKeys, evaluationKeys };

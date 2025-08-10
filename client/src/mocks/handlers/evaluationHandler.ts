@@ -4,8 +4,13 @@ import { BASE_URL } from '@constants/api';
 // import interviewEvaluationSummary from '../data/evaluation/interviewEvaluationSummary.json';
 import applicationEvaluationDetail from '../data/evaluation/applicationEvaluationDetail.json';
 // import interviewEvaluationDetail from '../data/evaluation/interviewEvaluationDetail.json';
+import myApplicationEvaluationStatus from '../data/evaluation/myApplicationEvaluationStatus.json';
 
-import type { EvaluationData, EvaluationSummary } from '@api/domain/evaluation/types';
+import type {
+    EvaluationData,
+    EvaluationSummary,
+    MyEvaluationStatus,
+} from '@api/domain/evaluation/types';
 
 const evaluationHandler = [
     // http.post(`${BASE_URL}evaluation/applications/summary`, async ({ request }) => {
@@ -143,6 +148,20 @@ const evaluationHandler = [
         );
 
         return HttpResponse.json(applicationEvaluationDetail, { status: 201 });
+    }),
+
+    http.post(`${BASE_URL}evaluation/:type/my-status`, async ({ request, params }) => {
+        const { type } = params as { type: 'applications' | 'interviews' };
+        const { applicantIdList } = (await request.json()) as { applicantIdList: string[] };
+
+        const filtered: MyEvaluationStatus = {
+            applicantEvaluationStatuses:
+                myApplicationEvaluationStatus.applicantEvaluationStatuses.filter((status) =>
+                    applicantIdList.includes(status.applicantId),
+                ),
+        };
+
+        return HttpResponse.json(filtered, { status: 200 });
     }),
 ];
 
