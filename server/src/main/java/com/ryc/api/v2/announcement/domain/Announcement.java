@@ -29,7 +29,6 @@ public class Announcement {
   private final String summaryDescription;
   private final String target;
   private final List<Tag> tags;
-  private final List<AnnouncementImage> images;
   private final AnnouncementStatus announcementStatus;
   private final AnnouncementType announcementType;
   private final Boolean hasInterview;
@@ -55,9 +54,6 @@ public class Announcement {
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
     List<Tag> tags = request.tags().stream().map(Tag::from).toList();
 
-    List<AnnouncementImage> images =
-        request.images().stream().map(AnnouncementImage::initialize).toList();
-
     ApplicationForm applicationForm = ApplicationForm.initialize(request.applicationForm());
 
     AnnouncementPeriodInfo announcementPeriodInfo =
@@ -79,7 +75,6 @@ public class Announcement {
             .target(request.target())
             .tags(tags)
             .hasInterview(request.hasInterview())
-            .images(images)
             .announcementStatus(announcementStatus)
             .announcementType(request.announcementType())
             .applicationForm(applicationForm)
@@ -101,8 +96,6 @@ public class Announcement {
       AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
-    List<AnnouncementImage> updatedImages =
-        request.images().stream().map(AnnouncementImage::from).toList();
 
     ApplicationForm applicationForm = ApplicationForm.from(request.applicationForm());
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
@@ -124,7 +117,6 @@ public class Announcement {
             .hasInterview(request.hasInterview())
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
-            .images(updatedImages)
             .announcementStatus(updatedAnnouncementStatus)
             .announcementType(request.announcementType())
             .isDeleted(false)
@@ -152,7 +144,6 @@ public class Announcement {
         .hasInterview(this.hasInterview)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
-        .images(this.images)
         .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)

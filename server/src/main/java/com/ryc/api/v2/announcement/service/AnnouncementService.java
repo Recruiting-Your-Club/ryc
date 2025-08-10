@@ -1,7 +1,6 @@
 package com.ryc.api.v2.announcement.service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +17,9 @@ import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllR
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
 import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class AnnouncementService {
 
   private final AnnouncementRepository announcementRepository;
+  private final FileService fileService;
 
   @Transactional
   public AnnouncementCreateResponse createAnnouncement(
@@ -34,6 +37,8 @@ public class AnnouncementService {
     Announcement announcement = Announcement.initialize(request, clubId);
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
+
+    fileService.claimOwnership(request.images(), savedAnnouncement.getId(), false);
 
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
   }
@@ -52,8 +57,18 @@ public class AnnouncementService {
     // 공고 ID로 공고 조회
     Announcement announcement = announcementRepository.findById(announcementId);
 
+    List<FileGetResponse> imageResponses =
+        fileService.findAllByAssociatedId(announcementId).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.ANNOUNCEMENT_IMAGE)
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
+            .toList();
+
     // 도메인 객체를 상세 응답 DTO로 변환
-    return AnnouncementGetDetailResponse.from(announcement);
+    return AnnouncementGetDetailResponse.of(announcement, imageResponses);
   }
 
   @Transactional
@@ -66,7 +81,19 @@ public class AnnouncementService {
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
 
-    return AnnouncementUpdateResponse.from(updatedAnnouncement);
+    fileService.claimOwnership(request.images(), updateAnnouncement.getId(), true);
+
+    List<FileGetResponse> imageResponses =
+        fileService.findAllByAssociatedId(announcementId).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.ANNOUNCEMENT_IMAGE)
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
+            .toList();
+
+    return AnnouncementUpdateResponse.of(updatedAnnouncement, imageResponses);
   }
 
   @Transactional
