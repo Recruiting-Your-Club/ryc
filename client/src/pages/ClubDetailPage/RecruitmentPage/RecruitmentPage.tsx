@@ -7,6 +7,7 @@ import { useDialog } from '@hooks/useDialog';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
 import { useParams } from 'react-router-dom';
+import { useApplicationStore } from '@stores/applicationStore';
 
 function RecruitmentPage() {
     // prop destruction
@@ -15,6 +16,7 @@ function RecruitmentPage() {
     // lib hooks
     const { id: clubId } = useParams<{ id: string }>();
     const { setApplicationPeriod, setClubField } = useClubStore();
+    const { clear: applicationStoreClear } = useApplicationStore();
     // initial values
     // state, ref, querystring hooks
     const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
@@ -46,6 +48,7 @@ function RecruitmentPage() {
     };
     //effects
     useEffect(() => {
+        applicationStoreClear();
         if (selectedAnnouncementDetail) {
             setApplicationPeriod(selectedAnnouncementDetail.applicationPeriod);
             setClubField(selectedAnnouncementDetail.field);
@@ -73,7 +76,7 @@ function RecruitmentPage() {
                             <RecruitCard
                                 title={announcement.title}
                                 content={announcement.summaryDescription}
-                                deadline={announcement.applicationEndDate}
+                                deadline={announcement.applicationPeriod?.endDate}
                                 hashtags={announcement.tags}
                                 onClick={() => handleCardClick(announcement.announcementId)}
                             />
