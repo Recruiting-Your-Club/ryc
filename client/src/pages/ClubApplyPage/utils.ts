@@ -1,9 +1,9 @@
 import {
-    AnswersRequest,
     ApplicationSubmissionRequest,
     PersonalInfoQuestionType,
 } from '@api/domain/announcement/types';
 import type { Answer } from './types';
+import { ERROR_MESSAGES, VALIDATION_PATTERNS, ValidationKey } from './constants';
 
 export const getAnswer = (answers: Answer[], questionTitle: string): string => {
     const answer = answers.find((answer) => answer.questionTitle === questionTitle);
@@ -22,6 +22,21 @@ export const getAnswer = (answers: Answer[], questionTitle: string): string => {
 
     // 일반 입력 질문인 경우
     return answer.value || '';
+};
+
+export const getValidationError = (questionTitle: string, value: string): boolean => {
+    if (!value.trim()) return false;
+    if (!VALIDATION_PATTERNS[questionTitle as ValidationKey]) {
+        return false;
+    }
+    const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
+    return !pattern.test(value);
+};
+
+export const getErrorMessage = (questionTitle: string, value: string): string | undefined => {
+    return getValidationError(questionTitle, value)
+        ? ERROR_MESSAGES[questionTitle as ValidationKey]
+        : undefined;
 };
 
 export const getPersonalQuestionLabel = (questionTitle: string) => {

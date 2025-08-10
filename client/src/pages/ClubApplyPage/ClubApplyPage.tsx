@@ -27,7 +27,12 @@ import { useApplicationStore } from '@stores/applicationStore';
 import { getCategory } from '@utils/changeCategory';
 import { ClubApplyLoadingPage } from '@pages/LoadingPage';
 import { useRouter } from '@hooks/useRouter';
-import { getPersonalQuestionLabel, makeAnsewerDataForSubmit } from './utils';
+import {
+    getErrorMessage,
+    getPersonalQuestionLabel,
+    getValidationError,
+    makeAnsewerDataForSubmit,
+} from './utils';
 import { postApplicationAnswers } from '@api/domain/announcement/announcement';
 import { ApplicationSubmissionRequest } from '@api/domain/announcement/types';
 
@@ -115,24 +120,6 @@ function ClubApplyPage() {
     const requiredQuestionsCount = useMemo(() => {
         return allQuestions.filter((question) => question.isRequired).length;
     }, [allQuestions]);
-
-    const getValidationError = useCallback((questionTitle: string, value: string): boolean => {
-        if (!value.trim()) return false;
-        if (!VALIDATION_PATTERNS[questionTitle as ValidationKey]) {
-            return false;
-        }
-        const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
-        return !pattern.test(value);
-    }, []);
-
-    const getErrorMessage = useCallback(
-        (questionTitle: string, value: string): string | undefined => {
-            return getValidationError(questionTitle, value)
-                ? ERROR_MESSAGES[questionTitle as ValidationKey]
-                : undefined;
-        },
-        [getValidationError],
-    );
 
     // 필수 질문 완료 여부 계산
     const requiredQuestionsCompleted = useMemo(() => {
