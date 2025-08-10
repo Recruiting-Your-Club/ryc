@@ -15,7 +15,4 @@ export interface PersonalScoreCardProps {
     isEditable?: boolean;
     handleDelete: () => void;
     onHandleForm: (nextState: Partial<FormState>) => void;
-    // onScore: (value: number) => void;
-    // onComment: (value: string) => void;
-    // onCommentId: (value: number) => void;
 }
