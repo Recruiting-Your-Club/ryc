@@ -29,7 +29,7 @@ public class ApplicantHttpApi {
 
   private final ApplicantService applicantService;
 
-  @PostMapping("applicants/{id}")
+  @PatchMapping("/applicants/{id}/status")
   @HasRole(Role.MEMBER)
   @Operation(summary = "지원자 상태 변경")
   @ApiErrorCodeExample(
@@ -38,16 +38,16 @@ public class ApplicantHttpApi {
   public ResponseEntity<Void> changeApplicantStatus(
       @PathVariable String id, @Valid @RequestBody ApplicantStatusRequest statusRequest) {
     applicantService.changeApplicantStatus(id, statusRequest);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("announcements/{announcement-id}/applications")
+  @GetMapping("announcements/{announcement-id}/applicants")
   @HasRole(Role.MEMBER)
   @Operation(summary = "공고 지원자 목록 조회")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<ApplicantGetResponse>> getApplicationsByAnnouncementId(
+  public ResponseEntity<List<ApplicantGetResponse>> getApplicants(
       @PathVariable("announcement-id") String announcementId,
       @RequestParam(value = "status", required = false)
           @Schema(
@@ -60,8 +60,7 @@ public class ApplicantHttpApi {
                 "FINAL_FAIL",
               })
           String status) {
-    List<ApplicantGetResponse> response =
-        applicantService.getApplicationsByAnnouncementId(announcementId, status);
+    List<ApplicantGetResponse> response = applicantService.getApplicants(announcementId, status);
     return ResponseEntity.ok(response);
   }
 }

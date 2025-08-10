@@ -50,6 +50,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 
   @Override
   public Map<String, LocalDateTime> findCreatedAtByApplicantIds(List<String> applicantIds) {
+    if (applicantIds == null || applicantIds.isEmpty()) {
+      return Map.of();
+    }
+
     List<Object[]> objects = applicationJpaRepository.findCreatedAtByApplicantIds(applicantIds);
     return objects.stream()
         .collect(

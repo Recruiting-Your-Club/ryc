@@ -33,8 +33,7 @@ public class ApplicantService {
   }
 
   @Transactional(readOnly = true)
-  public List<ApplicantGetResponse> getApplicationsByAnnouncementId(
-      String announcementId, String status) {
+  public List<ApplicantGetResponse> getApplicants(String announcementId, String status) {
     List<Applicant> applicants;
 
     // 1. status 변환
