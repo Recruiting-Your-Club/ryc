@@ -10,8 +10,11 @@ import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
@@ -27,6 +30,7 @@ public class ClubRoleService {
   private final ClubRoleRepository clubRoleRepository;
   private final ClubRepository clubRepository;
   private final AdminService adminService;
+  private final FileService fileService;
 
   @Transactional
   public RoleDemandResponse assignRole(String userId, String clubId) {
@@ -76,6 +80,13 @@ public class ClubRoleService {
   @Transactional(readOnly = true)
   public List<ClubGetByAdminIdResponse> getClubByAdminId(String adminId) {
     List<Club> clubs = clubRoleRepository.findClubsByAdminId(adminId);
+    FileGetResponse fileGetResponse =
+        fileService.findAllByAssociatedId(adminId).stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
+            .findFirst()
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .orElse(null);
+
     return clubs.stream()
         .map(
             club ->
@@ -83,8 +94,7 @@ public class ClubRoleService {
                     .id(club.getId())
                     .name(club.getName())
                     .shortDescription(club.getShortDescription())
-                    .imageUrl(club.getImageUrl())
-                    .thumbnailUrl(club.getThumbnailUrl())
+                    .image(fileGetResponse)
                     .build())
         .toList();
   }
