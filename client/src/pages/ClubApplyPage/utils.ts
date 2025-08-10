@@ -7,7 +7,21 @@ import type { Answer } from './types';
 
 export const getAnswer = (answers: Answer[], questionTitle: string): string => {
     const answer = answers.find((answer) => answer.questionTitle === questionTitle);
-    return answer?.value || '';
+
+    if (!answer) return '';
+
+    // 옵션 질문인 경우
+    if (answer.optionIds && answer.optionIds.length > 0) {
+        // 체크박스인 경우
+        if (answer.optionIds.length > 1) {
+            return answer.optionIds.join(',');
+        }
+        // 라디오 버튼 경우
+        return answer.optionIds[0];
+    }
+
+    // 일반 입력 질문인 경우
+    return answer.value || '';
 };
 
 export const getPersonalQuestionLabel = (questionTitle: string) => {
@@ -71,10 +85,10 @@ export const makeAnsewerDataForSubmit = (answers: Answer[]): ApplicationSubmissi
         return questionType && answer.questionTitle !== '이름' && answer.questionTitle !== '이메일';
     });
 
-    // 자기소개서 질문 데이터 (개인정보 질문이 아닌 것들)
+    // 자기소개서 질문 데이터 (개인정보 질문이 아닌 것들 + 옵션 질문들)
     const applicationAnswers = answers.filter((answer) => {
         const questionType = getPersonalInfoQuestionType(answer.questionTitle);
-        return !questionType;
+        return !questionType || answer.optionIds;
     });
 
     const applicantData = {
@@ -91,9 +105,12 @@ export const makeAnsewerDataForSubmit = (answers: Answer[]): ApplicationSubmissi
     const applicationData = {
         answers: applicationAnswers.map((answer) => ({
             questionId: answer.id === null ? '' : answer.id,
-            textAnswer: answer.value,
-            fileMetadataId: '',
-            answerChoices: [],
+            textAnswer: answer.optionIds ? null : answer.value,
+            fileMetadataId: null,
+            answerChoices:
+                answer.optionIds?.map((optionId) => ({
+                    optionId: optionId,
+                })) || [],
         })),
     };
 
