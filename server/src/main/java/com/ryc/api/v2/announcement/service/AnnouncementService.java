@@ -38,8 +38,7 @@ public class AnnouncementService {
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
-    fileService.claimOwnership(request.images(), savedAnnouncement.getId(), false);
-
+    fileService.claimOwnershipAsync(request.images(), savedAnnouncement.getId());
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
   }
 
@@ -81,8 +80,7 @@ public class AnnouncementService {
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
 
-    fileService.claimOwnership(request.images(), updateAnnouncement.getId(), true);
-
+    fileService.claimOwnershipSync(request.images(), updateAnnouncement.getId());
     List<FileGetResponse> imageResponses =
         fileService.findAllByAssociatedId(announcementId).stream()
             .filter(
