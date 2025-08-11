@@ -38,11 +38,10 @@ const applicationKeys = {
 };
 
 const announcementKeys = {
-    all: ['announcement'] as const,
-    lists: (clubId: string) => [...announcementKeys.all, 'list', clubId] as const,
-    detail: (id: string) => ['detail', id] as const,
+    lists: (clubId: string) => ['list', clubId] as const,
+    detail: (announcementId: string) => ['detail', announcementId] as const,
     postApplicationAnswers: (announcementId: string) =>
-        [...announcementKeys.all, 'post-application-answers', announcementId] as const,
+        ['post-application-answers', announcementId] as const,
 };
 
 export { clubKeys, myClubKeys, applicationKeys, announcementKeys };
