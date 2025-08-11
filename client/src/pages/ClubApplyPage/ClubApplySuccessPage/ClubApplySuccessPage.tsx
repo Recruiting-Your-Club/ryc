@@ -13,11 +13,18 @@ import { Button, Text } from '@components/_common';
 import { useApplicationStore } from '@stores/applicationStore';
 import { useClubStore } from '@stores/clubStore';
 import { useRouter } from '@hooks/useRouter';
+import { useParams } from 'react-router-dom';
 
 function ClubApplySuccessPage() {
+    const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubField } = useClubStore();
-    const { userName, userEmail } = useApplicationStore();
+    const { getAnswers } = useApplicationStore();
+    const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
+
+    const userName = applicationAnswers.find((answer) => answer.questionTitle === '이름')?.value;
+    const userEmail = applicationAnswers.find((answer) => answer.questionTitle === '이메일')?.value;
+
     return (
         <div css={s_applicationSuccessPageContainer}>
             <div css={s_successDescriptionContainer}>
