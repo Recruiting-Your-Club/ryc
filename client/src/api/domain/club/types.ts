@@ -29,15 +29,3 @@ export interface Club {
     clubSummaries: summaries[];
     clubDetailImages: images[];
 }
-
-export interface TempClub {
-    id: string;
-    name: string;
-    detailDescription: string;
-    imageUrl: string;
-    thumbnailUrl: string;
-    category: string;
-    clubTags: ClubTag[];
-    clubSummaries: summaries[];
-    clubDetailImages: images[];
-}

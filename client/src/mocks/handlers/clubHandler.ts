@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import allClubList from '../data/club/clubAllList.json';
 import clubDetail from '../data/club/clubDetail.json';
-import type { AllClub, Club, TempClub } from '@api/domain/club/types';
+import type { AllClub, Club } from '@api/domain/club/types';
 import { BASE_URL } from '@constants/api';
 
 const clubHandler = [
@@ -15,7 +15,7 @@ const clubHandler = [
         const clubId = params.id;
         const club = clubDetail.find((club) => club.id === clubId);
 
-        return HttpResponse.json(club as TempClub, { status: 200 });
+        return HttpResponse.json(club as Club, { status: 200 });
     }),
 ];
 
