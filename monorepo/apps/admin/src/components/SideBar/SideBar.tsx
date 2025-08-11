@@ -225,6 +225,7 @@ function SideBar() {
     return (
         <>
             <div css={clubSideBarContainer}>
+                <div css={{maxHeight: '70rem', overflowY: 'hidden'}}>
                 {!clubLoading &&
                     myClub?.map((club) => (
                         <div
@@ -261,6 +262,7 @@ function SideBar() {
                             </button>
                         </div>
                     ))}
+                    </div>
                 <Tooltip content="동아리 생성">
                     <button css={addClubButton} onClick={() => goTo('/club-create')}>
                         +
