@@ -35,6 +35,8 @@ function RecruitmentPage() {
         ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId),
         enabled: !!selectedAnnouncementId,
     });
+
+    console.log(selectedAnnouncementDetail?.applicationPeriod);
     // calculated values
     // handlers
     const handleCardClick = (announcementId: string) => {
@@ -48,9 +50,11 @@ function RecruitmentPage() {
     };
     //effects
     useEffect(() => {
-        applicationStoreClear();
         if (selectedAnnouncementDetail) {
-            setApplicationPeriod(selectedAnnouncementDetail.applicationPeriod);
+            setApplicationPeriod({
+                startDate: selectedAnnouncementDetail.applicationPeriod.startDate,
+                endDate: selectedAnnouncementDetail.applicationPeriod.endDate,
+            });
             setClubField(selectedAnnouncementDetail.field);
         }
     }, [selectedAnnouncementDetail, setApplicationPeriod, setClubField]);
@@ -76,7 +80,7 @@ function RecruitmentPage() {
                             <RecruitCard
                                 title={announcement.title}
                                 content={announcement.summaryDescription}
-                                deadline={announcement.applicationPeriod?.endDate}
+                                deadline={announcement.applicationEndDate}
                                 hashtags={announcement.tags}
                                 onClick={() => handleCardClick(announcement.announcementId)}
                             />
