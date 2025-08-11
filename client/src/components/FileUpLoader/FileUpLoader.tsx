@@ -5,7 +5,7 @@ import { FileUpLoaderButton } from './FileUpLoaderButton';
 import { FileUpLoaderHelperText } from './FileUpLoaderHelperText';
 import { s_fileUpLoader } from './FileUpLoader.style';
 import type { FileUpLoaderProps } from './types';
-import { useFilteredFile } from '@hooks/components/useFilteredFile';
+import { useFileUpLoader } from '@hooks/components/useFileUpLoader';
 import { FileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 import { useToast } from '@hooks/useToast';
 
@@ -15,6 +15,7 @@ function FileUpLoaderRoot({
     disabled = false,
     files = [],
     onFilesChange,
+    maxFileCount = 20,
 }: FileUpLoaderProps) {
     // prop destruction
     // lib hooks
@@ -25,7 +26,8 @@ function FileUpLoaderRoot({
     const [isActive, setIsActive] = useState<boolean>(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { filterAndSetFiles } = useFilteredFile(safeOnFilesChange, files.length);
+    const { filterAndSetFiles, getErrorMessageByFileCount, getErrorMessageByFileType } =
+        useFileUpLoader(safeOnFilesChange);
 
     // form hooks
     // query hooks
@@ -42,22 +44,50 @@ function FileUpLoaderRoot({
     const handleChangeFile = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             if (disabled) return;
-            const selectedFiles = e.target.files;
-            if (!selectedFiles) return;
+            const fileList = e.target.files;
+            if (!fileList) return;
+            const selected = Array.from(fileList);
 
-            const errorMessage = filterAndSetFiles(selectedFiles, files);
-            if (errorMessage) {
-                toast.error(errorMessage, {
+            const errorMessageByFileType = getErrorMessageByFileType(selected);
+            if (errorMessageByFileType) {
+                toast.error(errorMessageByFileType, {
                     duration: 2000,
                     sx: {
                         minWidth: '35rem',
                     },
                 });
+                e.target.value = '';
+                return;
             }
 
+            const errorMessageByFileCount = getErrorMessageByFileCount(
+                files.length,
+                selected.length,
+                maxFileCount,
+            );
+            if (errorMessageByFileCount) {
+                toast.error(errorMessageByFileCount, {
+                    duration: 2000,
+                    sx: {
+                        minWidth: '35rem',
+                    },
+                });
+                e.target.value = '';
+                return;
+            }
+
+            filterAndSetFiles(selected, files);
             e.target.value = '';
         },
-        [disabled, filterAndSetFiles, files, toast],
+        [
+            disabled,
+            filterAndSetFiles,
+            files,
+            toast,
+            maxFileCount,
+            getErrorMessageByFileType,
+            getErrorMessageByFileCount,
+        ],
     );
 
     //---File delete Handler---//
@@ -101,20 +131,43 @@ function FileUpLoaderRoot({
         (e: React.DragEvent<HTMLDivElement>) => {
             if (disabled) return;
             e.preventDefault();
-
-            const errorMessage = filterAndSetFiles(e.dataTransfer.files, files);
-            if (errorMessage) {
-                toast.error(errorMessage, {
+            setIsActive(false);
+            const dropped = Array.from(e.dataTransfer.files);
+            const errorMessageByFileType = getErrorMessageByFileType(dropped);
+            if (errorMessageByFileType) {
+                toast.error(errorMessageByFileType, {
                     duration: 2000,
                     sx: {
                         minWidth: '35rem',
                     },
                 });
+                return;
             }
-
-            setIsActive(false);
+            const errorMessageByFileCount = getErrorMessageByFileCount(
+                files.length,
+                dropped.length,
+                maxFileCount,
+            );
+            if (errorMessageByFileCount) {
+                toast.error(errorMessageByFileCount, {
+                    duration: 2000,
+                    sx: {
+                        minWidth: '35rem',
+                    },
+                });
+                return;
+            }
+            filterAndSetFiles(dropped, files);
         },
-        [disabled, filterAndSetFiles, files, toast],
+        [
+            disabled,
+            files,
+            toast,
+            maxFileCount,
+            filterAndSetFiles,
+            getErrorMessageByFileType,
+            getErrorMessageByFileCount,
+        ],
     );
 
     const stateContextValue = useMemo(
