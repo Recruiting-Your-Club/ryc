@@ -34,12 +34,6 @@ public class ClubEntity extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String detailDescription;
 
-  @Column(columnDefinition = "TEXT")
-  private String imageUrl;
-
-  @Column(length = 500)
-  private String thumbnailUrl;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private Category category;
@@ -52,10 +46,6 @@ public class ClubEntity extends BaseEntity {
   @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ClubSummaryEntity> clubSummaries = new ArrayList<>();
 
-  @Builder.Default
-  @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<ClubDetailImageEntity> clubDetailImages = new ArrayList<>();
-
   @Builder.Default private Boolean deleted = Boolean.FALSE;
 
   public void addClubTag(ClubTagEntity clubTag) {
@@ -66,10 +56,5 @@ public class ClubEntity extends BaseEntity {
   public void addClubSummary(ClubSummaryEntity clubSummary) {
     clubSummaries.add(clubSummary);
     clubSummary.setClub(this);
-  }
-
-  public void addClubDetailImage(ClubDetailImageEntity clubDetailImage) {
-    clubDetailImages.add(clubDetailImage);
-    clubDetailImage.setClub(this);
   }
 }

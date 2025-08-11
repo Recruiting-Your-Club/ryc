@@ -3,6 +3,7 @@ package com.ryc.api.v2.applicant.domain.enums;
 import java.util.stream.Stream;
 
 public enum ApplicantStatus {
+  // TODO: PENDING 제거
   PENDING,
   DOCUMENT_PASS,
   DOCUMENT_FAIL,

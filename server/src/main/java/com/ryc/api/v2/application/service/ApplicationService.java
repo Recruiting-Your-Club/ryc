@@ -1,5 +1,6 @@
 package com.ryc.api.v2.application.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -14,7 +15,9 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
+import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantPersonalInfoCreateRequest;
 import com.ryc.api.v2.application.common.exception.code.ApplicationCreateErrorCode;
+import com.ryc.api.v2.application.domain.Answer;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
 import com.ryc.api.v2.application.presentation.dto.request.ApplicationSubmissionRequest;
@@ -23,7 +26,9 @@ import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissio
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationSummaryResponse;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.applicationForm.domain.ApplicationFormRepository;
+import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +40,7 @@ public class ApplicationService {
   private final ApplicationRepository applicationRepository;
   private final ApplicantRepository applicantRepository;
   private final ApplicationFormRepository applicationFormRepository;
+  private final FileService fileService;
 
   @Transactional
   public ApplicationSubmissionResponse submitApplication(
@@ -58,6 +64,21 @@ public class ApplicationService {
 
     Applicant savedApplicant = applicantRepository.save(applicant);
 
+    String profileImage =
+        applicationSubmissionRequest.applicant().personalInfos().stream()
+            .filter(
+                personalInfo ->
+                    personalInfo.personalInfoQuestionType()
+                        == PersonalInfoQuestionType.PROFILE_IMAGE)
+            .findFirst()
+            .map(ApplicantPersonalInfoCreateRequest::value)
+            .orElse(null);
+
+    List<String> fileIdsToClaim = new ArrayList<>();
+    // TODO: 문제점 - 임시 저장시 File상태는 ATTACHED상태가 아니기 때문에 스케쥴러에 의해 정리됨 해당 문제를 어떻게 해결할지
+    if (profileImage != null) {
+      fileIdsToClaim.add(profileImage);
+    }
     // 4. 지원서 객체 생성 및 비즈니스 룰 검사
     Application application =
         Application.initialize(applicationSubmissionRequest.application(), applicant.getId());
@@ -65,6 +86,13 @@ public class ApplicationService {
     application.checkBusinessRules(announcement.getApplicationForm());
 
     Application savedApplication = applicationRepository.save(application, savedApplicant.getId());
+
+    Map<String, String> fileIdsInAnswer =
+        savedApplication.getAnswers().stream()
+            .filter(answer -> answer.getFileMetadataId() != null)
+            .collect(Collectors.toMap(Answer::getFileMetadataId, Answer::getId));
+
+    // 5. 파일 소유권
 
     return ApplicationSubmissionResponse.of(savedApplicant.getId(), savedApplication.getId());
   }
