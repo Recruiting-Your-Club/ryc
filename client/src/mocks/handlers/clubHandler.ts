@@ -8,9 +8,7 @@ const clubHandler = [
     http.get(`${BASE_URL}clubs`, () => {
         return HttpResponse.json(allClubList as AllClub[], { status: 200 });
     }),
-    // http.get(`${BASE_URL}clubs/:id`, () => {
-    //     return HttpResponse.json(clubDetail as Club, { status: 200 });
-    // }),
+
     http.get(`${BASE_URL}clubs/:id`, ({ params }) => {
         const clubId = params.id;
         const club = clubDetail.find((club) => club.id === clubId);
