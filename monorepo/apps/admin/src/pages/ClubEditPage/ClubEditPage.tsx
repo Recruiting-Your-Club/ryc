@@ -30,6 +30,12 @@ function ClubEditPage() {
     const { clubId } = useParams();
     const { toast } = useToast();
     // initial values
+    const defaultClubSummaries = [
+        { id: crypto.randomUUID(), title: '회장', content: '미정' },
+        { id: crypto.randomUUID(), title: '동아리방', content: '미정' },
+        { id: crypto.randomUUID(), title: '연락처', content: '미정' },
+        { id: crypto.randomUUID(), title: '정기모임', content: '미정' },
+    ];
     // state, ref, querystring hooks
     const [isEditMode, setIsEditMode] = useState(false);
     const [image, setImage] = useState<string>(ssoc);
@@ -39,7 +45,7 @@ function ClubEditPage() {
     const [clubCategory, setClubCategory] = useState<string>('');
     const [introText, setIntroText] = useState<string>('');
     const [expandedImage, setExpandedImage] = useState<string>();
-    const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[] | undefined>([]);
+    const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[]>(defaultClubSummaries);
     const [clubDetailImages, setClubDetailImages] = useState<string[]>([]);
     // form hooks
     // query hooks
@@ -167,7 +173,7 @@ function ClubEditPage() {
         setClubSummaries(clubSummaries?.filter((item) => item.id !== id));
     };
     const handleCancelEdit = () => {
-        setClubSummaries(club?.clubSummaries || []);
+        setClubSummaries(club?.clubSummaries || defaultClubSummaries);
         setIntroText(club?.detailDescription || '');
         setImage(club?.imageUrl || ssoc);
         setCroppedImage(club?.imageUrl || ssoc);
@@ -206,13 +212,15 @@ function ClubEditPage() {
     };
     // effects
     useEffect(() => {
-        setClubSummaries(club?.clubSummaries || []);
         setIntroText(club?.detailDescription || '');
         setImage(club?.imageUrl || ssoc);
         setCroppedImage(club?.imageUrl || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
+        if (club?.clubSummaries && clubSummaries.length > 0) {
+            setClubSummaries(club?.clubSummaries);
+        }
     }, [club]);
 
     return (
