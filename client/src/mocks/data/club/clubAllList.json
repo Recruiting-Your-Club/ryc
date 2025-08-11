@@ -13,7 +13,8 @@
             {
                 "name": "워크숍"
             }
-        ]
+        ],
+        "announcementStatus": "RECRUITING"
     },
     {
         "id": "b2c3d4e5-f6a7-8901-2345-bcdefa234567",
@@ -29,7 +30,8 @@
             {
                 "name": "체험활동"
             }
-        ]
+        ],
+        "announcementStatus": "RECRUITING"
     },
     {
         "id": "c3d4e5f6-a7b8-9012-3456-cdefab345678",
@@ -45,7 +47,8 @@
             {
                 "name": "축구"
             }
-        ]
+        ],
+        "announcementStatus": "CLOSED"
     },
     {
         "id": "d4e5f6a7-b8c9-0123-4567-defabc456789",
@@ -61,7 +64,8 @@
             {
                 "name": "코딩스터디"
             }
-        ]
+        ],
+        "announcementStatus": "UPCOMING"
     },
     {
         "id": "e5f6a7b8-c9d0-1234-5678-efabcd567890",
@@ -77,6 +81,7 @@
             {
                 "name": "지역연계"
             }
-        ]
+        ],
+        "announcementStatus": "EMPTY"
     }
 ]
