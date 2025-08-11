@@ -41,7 +41,8 @@ function ClubApplyPage() {
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
-    const { userName, userEmail, setUserName, setUserEmail } = useApplicationStore();
+    const { getAnswers, setAnswers: setApplicationAnswers } = useApplicationStore();
+    const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
     // query hooks
     const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
@@ -164,6 +165,8 @@ function ClubApplyPage() {
                 (question) => question.label === questionTitle,
             );
 
+            let newAnswers: Answer[];
+
             // 체크박스인 경우
             if (question?.type === 'MULTIPLE_CHOICE') {
                 const currentOptionIds = existingAnswer?.optionIds || [];
@@ -191,15 +194,15 @@ function ClubApplyPage() {
                 };
 
                 if (existingAnswer) {
-                    return prev.map((answer) =>
+                    newAnswers = prev.map((answer) =>
                         answer.questionTitle === questionTitle ? newAnswer : answer,
                     );
+                } else {
+                    newAnswers = [...prev, newAnswer];
                 }
-                return [...prev, newAnswer];
             }
-
             // 라디오 버튼인 경우
-            if (question?.type === 'SINGLE_CHOICE') {
+            else if (question?.type === 'SINGLE_CHOICE') {
                 const newAnswer: Answer = {
                     id: questionId,
                     value: optionText || value,
@@ -209,34 +212,38 @@ function ClubApplyPage() {
                 };
 
                 if (existingAnswer) {
-                    return prev.map((answer) =>
+                    newAnswers = prev.map((answer) =>
                         answer.questionTitle === questionTitle ? newAnswer : answer,
                     );
+                } else {
+                    newAnswers = [...prev, newAnswer];
                 }
-                return [...prev, newAnswer];
+            }
+            // 일반 텍스트 입력인 경우
+            else {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value,
+                    questionTitle,
+                    type: clubPersonalInfoQuestions.some(
+                        (question) => question.label === questionTitle,
+                    )
+                        ? 'personal'
+                        : 'detail',
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
             }
 
-            if (questionTitle === '이름') {
-                setUserName(value);
-            } else if (questionTitle === '이메일') {
-                setUserEmail(value);
-            }
+            setApplicationAnswers(announcementId || '', newAnswers);
 
-            const newAnswer: Answer = {
-                id: questionId,
-                value,
-                questionTitle,
-                type: clubPersonalInfoQuestions.some((question) => question.label === questionTitle)
-                    ? 'personal'
-                    : 'detail',
-            };
-
-            if (existingAnswer) {
-                return prev.map((answer) =>
-                    answer.questionTitle === questionTitle ? newAnswer : answer,
-                );
-            }
-            return [...prev, newAnswer];
+            return newAnswers;
         });
     };
 
@@ -316,31 +323,11 @@ function ClubApplyPage() {
 
     // applicationStore의 기존 값으로 폼 초기화
     useEffect(() => {
-        if (clubPersonalInfoQuestions.length > 0) {
-            const nameQuestion = clubPersonalInfoQuestions.find(
-                (question) => question.label === '이름',
-            );
-            const emailQuestion = clubPersonalInfoQuestions.find(
-                (question) => question.label === '이메일',
-            );
-
-            if (
-                nameQuestion &&
-                userName &&
-                !answers.find((answer) => answer.questionTitle === '이름')
-            ) {
-                handleAnswerChange(nameQuestion.id, '이름', userName);
-            }
-
-            if (
-                emailQuestion &&
-                userEmail &&
-                !answers.find((answer) => answer.questionTitle === '이메일')
-            ) {
-                handleAnswerChange(emailQuestion.id, '이메일', userEmail);
-            }
+        if (clubPersonalInfoQuestions.length > 0 && applicationAnswers.length > 0) {
+            // applicationStore에 저장된 답변으로 폼 초기화
+            setAnswers(applicationAnswers);
         }
-    }, [clubPersonalInfoQuestions, userName, userEmail]);
+    }, [clubPersonalInfoQuestions, applicationAnswers]);
 
     if (formLoading) {
         return <ClubApplyLoadingPage />;
