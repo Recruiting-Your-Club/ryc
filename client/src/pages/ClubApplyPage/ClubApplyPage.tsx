@@ -16,7 +16,7 @@ import { Text, Button } from '@components/_common/';
 import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import type { Answer, QuestionType } from './types';
+import type { Answer, PersonalQuestionType, QuestionType } from './types';
 import type { ValidationKey } from './constants';
 import { VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
@@ -57,7 +57,7 @@ function ClubApplyPage() {
                 return {
                     id: question,
                     label: getPersonalQuestionLabel(question),
-                    type: 'SHORT_ANSWER' as QuestionType,
+                    type: question as PersonalQuestionType,
                     isRequired: true,
                 };
             }),
