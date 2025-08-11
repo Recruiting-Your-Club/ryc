@@ -67,10 +67,6 @@ export interface ApplicationForm {
 /**
  * 공고 목록 조회 타입
  */
-export interface Period {
-    startDate: string;
-    endDate: string;
-}
 
 export interface AnnouncementSummary {
     announcementId: string;
@@ -80,13 +76,19 @@ export interface AnnouncementSummary {
     field: string;
     announcementStatus: string;
     announcementType: string;
-    applicationPeriod: Period;
+    applicationStartDate: string;
+    applicationEndDate: string;
     tags: string[];
 }
 
 /**
  * 공고 상세 조회 타입
  */
+
+export interface Period {
+    startDate: string;
+    endDate: string;
+}
 
 export interface Image {
     id: string;
