@@ -50,7 +50,7 @@ public class FileMetaDataRepositoryImpl implements FileMetaDataRepository {
   }
 
   @Override
-  public List<FileMetaData> findAllById(List<String> fileMetaDataIds) {
+  public List<FileMetaData> findAllByIdIn(List<String> fileMetaDataIds) {
     return fileMetadataJpaRepository.findAllById(fileMetaDataIds).stream()
         .filter(entity -> !entity.isDeleted())
         .map(FileMetaDataMapper::toDomain)
@@ -90,5 +90,15 @@ public class FileMetaDataRepositoryImpl implements FileMetaDataRepository {
         });
 
     return fileMetadataMap.values().stream().map(FileMetaDataMapper::toDomain).toList();
+  }
+
+  @Override
+  public List<FileMetaData> findAllByAssociatedIdIn(List<String> associatedIds) {
+    return fileMetadataJpaRepository
+        .findAllByAssociatedIdInOrderByDisplayOrderAsc(associatedIds)
+        .stream()
+        .filter(entity -> !entity.isDeleted())
+        .map(FileMetaDataMapper::toDomain)
+        .toList();
   }
 }

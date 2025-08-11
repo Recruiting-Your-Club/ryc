@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.application;
+package com.ryc.api.v2.email.service;
 
 import java.util.List;
 
@@ -34,27 +34,28 @@ public class EmailSenderService {
 
       try {
         MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
-        helper.setTo(mail.recipient());
-        helper.setSubject(mail.subject());
-        helper.setText(mail.content(), true);
+        helper.setTo(mail.getRecipient());
+        helper.setSubject(mail.getSubject());
+        helper.setText(mail.getContent(), true);
 
         mailSender.send(msg);
 
-        log.info("이메일 전송 완료: {}", mail.recipient());
+        log.info("이메일 전송 완료: {}", mail.getRecipient());
         emailService.updateStatus(mail, EmailSentStatus.SENT);
 
       } catch (MailException e) {
-        if (mail.retryCount() >= 3) {
-          log.warn("이메일 재시도 초과로 실패: {}, 재시도 횟수: {}", mail.recipient(), mail.retryCount());
+        if (mail.getRetryCount() >= 3) {
+          log.warn("이메일 재시도 초과로 실패: {}, 재시도 횟수: {}", mail.getRecipient(), mail.getRetryCount());
           emailService.updateStatus(mail, EmailSentStatus.FAILURE);
 
         } else {
-          log.error("이메일 전송 실패. 10초 후 재시도 예정: {}, 재시도 횟수: {}", mail.recipient(), mail.retryCount());
+          log.error(
+              "이메일 전송 실패. 10초 후 재시도 예정: {}, 재시도 횟수: {}", mail.getRecipient(), mail.getRetryCount());
           emailService.incrementRetryCount(mail);
         }
 
       } catch (MessagingException e) {
-        log.error("이메일 메시지 생성 실패: {}, 오류: {}", mail.recipient(), e.getMessage());
+        log.error("이메일 메시지 생성 실패: {}, 오류: {}", mail.getRecipient(), e.getMessage());
         emailService.updateStatus(mail, EmailSentStatus.FAILURE);
       }
     }

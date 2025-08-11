@@ -99,7 +99,7 @@ public class FileService {
 
   private List<FileMetaData> processAssociatedFiles(List<String> fileIds, String associatedId) {
     // 1. 요청된 파일 목록 유효성 검증
-    List<FileMetaData> newFiles = fileMetaDataRepository.findAllById(fileIds);
+    List<FileMetaData> newFiles = fileMetaDataRepository.findAllByIdIn(fileIds);
     if (newFiles.size() != fileIds.size()) {
       // TODO: exception
     }
@@ -205,5 +205,9 @@ public class FileService {
 
   private String sanitizeFileName(String fileName) {
     return new File(fileName).getName().replaceAll("[^a-zA-Z0-9._-]", "_");
+  }
+
+  public List<FileMetaData> findAllByAssociatedIdIn(List<String> associatedIds) {
+    return fileMetaDataRepository.findAllByAssociatedIdIn(associatedIds);
   }
 }

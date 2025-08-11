@@ -1,13 +1,11 @@
 package com.ryc.api.config;
 
-import org.apache.catalina.authenticator.BasicAuthenticator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
@@ -28,10 +26,7 @@ public class S3Config {
     AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(accessKey, secretKey);
     Region region = Region.of(this.region);
 
-    return S3Client.builder()
-            .credentialsProvider(() -> awsBasicCredentials)
-            .region(region)
-        .build();
+    return S3Client.builder().credentialsProvider(() -> awsBasicCredentials).region(region).build();
   }
 
   @Bean
@@ -40,9 +35,8 @@ public class S3Config {
     Region region = Region.of(this.region);
 
     return S3Presigner.builder()
-            .credentialsProvider(() -> awsBasicCredentials)
-            .region(region)
+        .credentialsProvider(() -> awsBasicCredentials)
+        .region(region)
         .build();
   }
-
 }

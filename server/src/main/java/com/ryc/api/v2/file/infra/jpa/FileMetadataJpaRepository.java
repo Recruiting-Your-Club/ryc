@@ -10,4 +10,7 @@ import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
 @Repository
 public interface FileMetadataJpaRepository extends JpaRepository<FileMetadataEntity, String> {
   List<FileMetadataEntity> findAllByAssociatedIdOrderByDisplayOrderAsc(String associatedId);
+
+  List<FileMetadataEntity> findAllByAssociatedIdInOrderByDisplayOrderAsc(
+      List<String> fileMetaDataIds);
 }

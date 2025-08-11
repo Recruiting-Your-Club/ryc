@@ -28,6 +28,6 @@ public enum Category {
         return c;
       }
     }
-    throw new ClubException(ClubErrorCode.CLUB_CATEGORY_NOT_FOUND);
+    throw new ClubException(ClubErrorCode.CLUB_CATEGORY_BAD_REQUEST);
   }
 }

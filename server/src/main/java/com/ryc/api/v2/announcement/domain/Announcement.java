@@ -28,6 +28,7 @@ public class Announcement {
   private final String detailDescription;
   private final String summaryDescription;
   private final String target;
+  private final String field;
   private final List<Tag> tags;
   private final AnnouncementStatus announcementStatus;
   private final AnnouncementType announcementType;
@@ -73,8 +74,10 @@ public class Announcement {
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
             .target(request.target())
+            .field(request.field())
             .tags(tags)
-            .hasInterview(request.hasInterview())
+            // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
+            .hasInterview(true)
             .announcementStatus(announcementStatus)
             .announcementType(request.announcementType())
             .applicationForm(applicationForm)
@@ -114,7 +117,8 @@ public class Announcement {
             .detailDescription(request.detailDescription())
             .summaryDescription(request.summaryDescription())
             .target(request.target())
-            .hasInterview(request.hasInterview())
+            .field(request.field())
+            .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
             .announcementStatus(updatedAnnouncementStatus)
@@ -141,7 +145,8 @@ public class Announcement {
         .detailDescription(this.detailDescription)
         .summaryDescription(this.summaryDescription)
         .target(this.target)
-        .hasInterview(this.hasInterview)
+        .field(this.field)
+        .hasInterview(true)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
         .applicationForm(this.applicationForm)
@@ -171,7 +176,6 @@ public class Announcement {
       }
     }
 
-    announcementPeriodInfo.validate(hasInterview);
     applicationForm.checkBusinessRules();
   }
 }

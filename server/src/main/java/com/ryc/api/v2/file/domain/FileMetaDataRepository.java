@@ -7,9 +7,11 @@ public interface FileMetaDataRepository {
 
   FileMetaData findById(String id);
 
-  List<FileMetaData> findAllById(List<String> fileMetaDataIds);
+  List<FileMetaData> findAllByIdIn(List<String> fileMetaDataIds);
 
   List<FileMetaData> findAllByAssociatedId(String associatedId);
 
   List<FileMetaData> saveAll(List<FileMetaData> fileMetaDataList);
+
+  List<FileMetaData> findAllByAssociatedIdIn(List<String> associatedIds);
 }

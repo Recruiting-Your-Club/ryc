@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ryc.api.v2.club.domain.enums.Category;
-import com.ryc.api.v2.club.domain.vo.ClubSummary;
-import com.ryc.api.v2.club.domain.vo.ClubTag;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 
 import lombok.Builder;
@@ -61,31 +59,18 @@ public class Club {
   }
 
   public Club update(ClubUpdateRequest clubUpdateRequest) {
-    String newName = clubUpdateRequest.name() == null ? this.name : clubUpdateRequest.name();
-    String newShortDescription =
-        clubUpdateRequest.shortDescription() == null
-            ? this.shortDescription
-            : clubUpdateRequest.shortDescription();
-    String newDetailDescription =
-        clubUpdateRequest.detailDescription() == null
-            ? this.detailDescription
-            : clubUpdateRequest.detailDescription();
-    Category newCategory =
-        clubUpdateRequest.category() == null
-            ? this.category
-            : Category.from(clubUpdateRequest.category());
+    Category newCategory = Category.from(clubUpdateRequest.category());
+
     List<ClubTag> newClubTags =
-        clubUpdateRequest.clubTags().isEmpty() ? this.clubTags : clubUpdateRequest.clubTags();
+        clubUpdateRequest.clubTags().stream().map(ClubTag::initialize).toList();
     List<ClubSummary> newClubSummaries =
-        clubUpdateRequest.clubSummaries().isEmpty()
-            ? this.clubSummaries
-            : clubUpdateRequest.clubSummaries();
+        clubUpdateRequest.clubSummaries().stream().map(ClubSummary::initialize).toList();
 
     return Club.builder()
         .id(this.id)
-        .name(newName)
-        .shortDescription(newShortDescription)
-        .detailDescription(newDetailDescription)
+        .name(clubUpdateRequest.name())
+        .shortDescription(clubUpdateRequest.shortDescription())
+        .detailDescription(clubUpdateRequest.detailDescription())
         .category(newCategory)
         .clubTags(newClubTags)
         .clubSummaries(newClubSummaries)

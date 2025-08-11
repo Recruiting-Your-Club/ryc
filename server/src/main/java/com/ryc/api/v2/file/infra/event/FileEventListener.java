@@ -42,7 +42,7 @@ public class FileEventListener {
 
     // 2. 조회 커리 한번만 수행
     Map<String, FileMetaData> fileMetaDataMap =
-        fileMetaDataRepository.findAllById(fileIds).stream()
+        fileMetaDataRepository.findAllByIdIn(fileIds).stream()
             .collect(java.util.stream.Collectors.toMap(FileMetaData::getId, Function.identity()));
 
     // 3. event처리

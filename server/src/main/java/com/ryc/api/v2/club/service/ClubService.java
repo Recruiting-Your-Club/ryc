@@ -10,8 +10,7 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
@@ -30,14 +29,13 @@ public class ClubService {
 
   @Transactional
   public Club createClub(ClubCreateRequest body) {
+    if (clubRepository.existsByName(body.name())) {
+      throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
+    }
     Club club = Club.initialize(body.name(), body.category());
 
     List<String> imageIds = new ArrayList<>();
     imageIds.add(body.representativeImage());
-
-    if (clubRepository.existsByName(club.getName())) {
-      throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
-    }
 
     Club savedClub = clubRepository.save(club);
     fileService.claimOwnershipAsync(imageIds, savedClub.getId());
@@ -45,17 +43,17 @@ public class ClubService {
   }
 
   @Transactional
-  public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
+  public DetailClubResponse updateClub(String clubId, ClubUpdateRequest body) {
     Club previousClub = clubRepository.findById(clubId);
 
-    if (body.name() != null && clubRepository.existsByName(body.name())) {
+    if (!previousClub.getName().equals(body.name()) && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
-    List<String> imageIds = new ArrayList<>(body.clubImages());
+    List<String> imageIds = new ArrayList<>(body.clubDetailImages());
 
     imageIds.add(body.representativeImage());
 
@@ -75,7 +73,8 @@ public class ClubService {
             .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
             .toList();
 
-    return ClubUpdateResponse.builder()
+    return DetailClubResponse.builder()
+        .id(savedClub.getId())
         .name(savedClub.getName())
         .representativeImage(representativeImage)
         .shortDescription(savedClub.getShortDescription())
@@ -93,7 +92,7 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubGetResponse getClub(String clubId) {
+  public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
     FileGetResponse representativeImage =
         fileService.findAllByAssociatedId(clubId).stream()
@@ -102,7 +101,8 @@ public class ClubService {
             .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
             .orElse(null);
 
-    return ClubGetResponse.builder()
+    return DetailClubResponse.builder()
+        .id(club.getId())
         .name(club.getName())
         .detailDescription(club.getDetailDescription())
         .category(club.getCategory())
@@ -113,7 +113,7 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public boolean isValidClubId(String clubId) {
+  public boolean existClubById(String clubId) {
     return clubRepository.existsById(clubId);
   }
 }

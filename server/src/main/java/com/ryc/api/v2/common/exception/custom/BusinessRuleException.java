@@ -3,7 +3,6 @@ package com.ryc.api.v2.common.exception.custom;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class BusinessRuleException extends RuntimeException {
@@ -17,7 +16,7 @@ public class BusinessRuleException extends RuntimeException {
   }
 
   public String getFormattedMessage() {
-    if(params == null) {
+    if (params == null) {
       return errorCode.getMessage();
     }
 
