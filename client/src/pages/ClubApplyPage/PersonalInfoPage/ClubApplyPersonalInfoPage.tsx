@@ -1,5 +1,5 @@
-import React from 'react';
-import { Input, Text, Checkbox, Radio } from '@components/_common';
+import React, { useState } from 'react';
+import { Input, Text, Checkbox, Radio, ImageRegister } from '@components/_common';
 import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer, getPlaceholder } from '../utils';
 import {
@@ -10,6 +10,7 @@ import {
     labelSx,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
+import { FileUpLoader } from '@components';
 
 function ClubApplyPersonalInfoPage({
     answers,
@@ -27,6 +28,7 @@ function ClubApplyPersonalInfoPage({
     //lib hooks
     // initial values
     // state, ref, querystring hooks
+    const [files, setFiles] = useState<File[]>([]);
     //calculated values
 
     //handlers
@@ -34,7 +36,30 @@ function ClubApplyPersonalInfoPage({
     return (
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
-                if (question.type === 'SINGLE_CHOICE') {
+                if (question.type === 'PROFILE_IMAGE') {
+                    return (
+                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <FileUpLoader
+                                sx={{ width: '100%', marginTop: 0 }}
+                                files={files}
+                                onFilesChange={setFiles}
+                                maxFileCount={1}
+                            >
+                                <FileUpLoader.HelperText>ss</FileUpLoader.HelperText>
+                                <FileUpLoader.Button />
+                                <FileUpLoader.Box />
+                            </FileUpLoader>
+                        </div>
+                    );
+                } else if (question.type === 'SINGLE_CHOICE') {
                     return (
                         <div
                             key={question.id}
@@ -76,8 +101,7 @@ function ClubApplyPersonalInfoPage({
                             />
                         </div>
                     );
-                }
-                if (question.type === 'MULTIPLE_CHOICE') {
+                } else if (question.type === 'MULTIPLE_CHOICE') {
                     return (
                         <div
                             key={question.id}
@@ -121,54 +145,55 @@ function ClubApplyPersonalInfoPage({
                             })}
                         </div>
                     );
-                }
-                const hasError = getValidationError(
-                    question.label,
-                    getAnswer(answers, question.label),
-                );
-                return (
-                    <div
-                        key={question.id}
-                        css={clubApplyPersonalQuestionForm(hasError && touched[question.label])}
-                        tabIndex={-1}
-                        ref={(element) => {
-                            if (questionRefs.current) {
-                                questionRefs.current[question.label] = element;
-                            }
-                        }}
-                    >
-                        <div css={labelContainer}>
-                            <Text type="bodyRegular">{question.label}</Text>
-                            {question.isRequired && (
-                                <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
-                                    *
-                                </Text>
-                            )}
+                } else {
+                    const hasError = getValidationError(
+                        question.label,
+                        getAnswer(answers, question.label),
+                    );
+                    return (
+                        <div
+                            key={question.id}
+                            css={clubApplyPersonalQuestionForm(hasError && touched[question.label])}
+                            tabIndex={-1}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.label] = element;
+                                }
+                            }}
+                        >
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <Input
+                                variant="lined"
+                                labelSx={labelSx}
+                                inputSx={inputSx}
+                                value={getAnswer(answers, question.label)}
+                                onChange={(event) =>
+                                    onAnswerChange(question.id, question.label, event.target.value)
+                                }
+                                error={hasError && touched[question.label]}
+                                onFocus={() => onFocus(question.label)}
+                                onBlur={() => onBlur(question.label)}
+                                helperText={
+                                    touched[question.label]
+                                        ? getErrorMessage(
+                                              question.label,
+                                              getAnswer(answers, question.label),
+                                          )
+                                        : undefined
+                                }
+                                helperSx={helperTextSx}
+                                placeholder={getPlaceholder(question.label)}
+                            />
                         </div>
-                        <Input
-                            variant="lined"
-                            labelSx={labelSx}
-                            inputSx={inputSx}
-                            value={getAnswer(answers, question.label)}
-                            onChange={(event) =>
-                                onAnswerChange(question.id, question.label, event.target.value)
-                            }
-                            error={hasError && touched[question.label]}
-                            onFocus={() => onFocus(question.label)}
-                            onBlur={() => onBlur(question.label)}
-                            helperText={
-                                touched[question.label]
-                                    ? getErrorMessage(
-                                          question.label,
-                                          getAnswer(answers, question.label),
-                                      )
-                                    : undefined
-                            }
-                            helperSx={helperTextSx}
-                            placeholder={getPlaceholder(question.label)}
-                        />
-                    </div>
-                );
+                    );
+                }
             })}
         </div>
     );
