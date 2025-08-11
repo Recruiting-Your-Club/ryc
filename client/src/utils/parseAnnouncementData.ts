@@ -1,6 +1,47 @@
 import { Announcement } from '@api/domain/announcement/types';
 
 export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcement) => {
+    const applicationStartDate = announcementDetaildata.applicationPeriod.startDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+    const applicationEndDate = announcementDetaildata.applicationPeriod.endDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+
+    const interviewStartDate = announcementDetaildata.interviewPeriod.startDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+    const interviewEndDate = announcementDetaildata.interviewPeriod.endDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+
+    const documentResultStartDate = announcementDetaildata.documentResultPeriod.startDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+    const documentResultEndDate = announcementDetaildata.documentResultPeriod.endDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+
+    const finalResultStartDate = announcementDetaildata.finalResultPeriod.startDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+    const finalResultEndDate = announcementDetaildata.finalResultPeriod.endDate
+        ?.split('T')[0]
+        .slice(2)
+        .replace(/-/g, '.');
+
+    const applicationPeriod = `${applicationStartDate} ~ ${applicationEndDate}`;
+    const interviewPeriod = `${interviewStartDate} ~ ${interviewEndDate}`;
+    const documentResultPeriod = `${documentResultStartDate} ~ ${documentResultEndDate}`;
+    const finalResultPeriod = `${finalResultStartDate} ~ ${finalResultEndDate}`;
+
     return [
         {
             title: '모집 정원',
@@ -19,28 +60,20 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
             value: announcementDetaildata?.hasInterview ? '있음' : '없음',
         },
         {
-            title: '서류 접수 기간',
-            value: announcementDetaildata?.applicationPeriod
-                ? `${announcementDetaildata.applicationPeriod.startDate?.split('T')[0] || '-'} ~ ${announcementDetaildata.applicationPeriod.endDate?.split('T')[0] || '-'}`
-                : '미정',
+            title: '서류 접수',
+            value: applicationPeriod ? applicationPeriod : '미정',
         },
         {
             title: '면접 기간',
-            value: announcementDetaildata?.interviewPeriod
-                ? `${announcementDetaildata.interviewPeriod.startDate?.split('T')[0] || '-'} ~ ${announcementDetaildata.interviewPeriod.endDate?.split('T')[0] || '-'}`
-                : '미정',
+            value: interviewPeriod ? interviewPeriod : '미정',
         },
         {
-            title: '서류 합격 발표',
-            value: announcementDetaildata?.documentResultPeriod
-                ? `${announcementDetaildata.documentResultPeriod.startDate?.split('T')[0] || '-'} ~ ${announcementDetaildata.documentResultPeriod.endDate?.split('T')[0] || '-'}`
-                : '미정',
+            title: '서류 발표',
+            value: documentResultPeriod ? documentResultPeriod : '미정',
         },
         {
             title: '최종 합격',
-            value: announcementDetaildata?.finalResultPeriod
-                ? `${announcementDetaildata.finalResultPeriod.startDate?.split('T')[0] || '-'} ~ ${announcementDetaildata.finalResultPeriod.endDate?.split('T')[0] || '-'}`
-                : '미정',
+            value: finalResultPeriod ? finalResultPeriod : '미정',
         },
     ];
 };
