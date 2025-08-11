@@ -3,6 +3,12 @@ import type { RefObject } from 'react';
 
 export type PageAnswer = 'personal' | 'detail';
 export type QuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_ANSWER';
+export type PersonalQuestionType =
+    | 'NAME'
+    | 'EMAIL'
+    | 'STUDENT_ID'
+    | 'PHONE_NUMBER'
+    | 'PROFILE_IMAGE';
 export type QuestionOption = {
     id: string;
     option: string;
@@ -11,7 +17,7 @@ export type QuestionOption = {
 export interface QuestionResponse {
     id: string;
     label: string;
-    type: QuestionType;
+    type: QuestionType | PersonalQuestionType;
     options?: QuestionOption[];
     isRequired: boolean;
     description?: string;
