@@ -53,7 +53,9 @@ function ClubApplyPersonalInfoPage({
                                 onFilesChange={setFiles}
                                 maxFileCount={1}
                             >
-                                <FileUpLoader.HelperText>ss</FileUpLoader.HelperText>
+                                <FileUpLoader.HelperText>
+                                    1개의 이미지 파일만 넣어주세요.
+                                </FileUpLoader.HelperText>
                                 <FileUpLoader.Button />
                                 <FileUpLoader.Box />
                             </FileUpLoader>
