@@ -22,3 +22,4 @@ export * from './PasswordInput';
 export * from './Toast';
 export * from './Tooltip';
 export * from './ImageDialog';
+export * from './FileUpLoader';
