@@ -1,33 +1,30 @@
+import {
+    PersonalInfoQuestionType,
+    QuestionOption,
+    QuestionType,
+} from '@api/domain/announcement/types';
 import type { CSSObject } from '@emotion/react';
 import type { RefObject } from 'react';
 
 export type PageAnswer = 'personal' | 'detail';
-export type QuestionType = 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'SHORT_ANSWER';
-export type PersonalQuestionType =
-    | 'NAME'
-    | 'EMAIL'
-    | 'STUDENT_ID'
-    | 'PHONE_NUMBER'
-    | 'PROFILE_IMAGE';
-export type QuestionOption = {
-    id: string;
-    option: string;
-};
+
+export type FileRecord = Record<string, File[]>;
 
 export interface QuestionResponse {
     id: string;
     label: string;
-    type: QuestionType | PersonalQuestionType;
+    type: QuestionType | PersonalInfoQuestionType;
     options?: QuestionOption[];
     isRequired: boolean;
     description?: string;
 }
-
+/* 페이지에서 쓰는 답변 타입 (view model) */
 export interface Answer {
     id: string;
     value: string;
     questionTitle: string;
-    type: PageAnswer;
+    pageAnswerType: PageAnswer;
+    questionType: QuestionType | PersonalInfoQuestionType;
     optionIds?: string[];
 }
 
