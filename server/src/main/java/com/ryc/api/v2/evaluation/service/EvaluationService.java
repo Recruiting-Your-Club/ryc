@@ -2,14 +2,15 @@ package com.ryc.api.v2.evaluation.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
@@ -74,8 +75,14 @@ public class EvaluationService {
             .collect(Collectors.groupingBy(Evaluation::getEvaluateeId))
             .entrySet()
             .stream()
-            .map(entry -> buildEvaluationsOfApplicant(
-                entry.getKey(), entry.getValue(), evaluatorIdToNameMap, currentAdminId, totalEvaluatorCount))
+            .map(
+                entry ->
+                    buildEvaluationsOfApplicant(
+                        entry.getKey(),
+                        entry.getValue(),
+                        evaluatorIdToNameMap,
+                        currentAdminId,
+                        totalEvaluatorCount))
             .toList();
 
     return new EvaluationSearchResponse(response);
@@ -112,7 +119,7 @@ public class EvaluationService {
       return createEmptyEvaluationOverviewResponse(body.applicantIdList(), totalEvaluatorCount);
 
     Map<String, List<Evaluation>> groupedByEvaluateeId =
-        evaluations.stream().collect(Collectors.groupingBy(com.ryc.api.v2.evaluation.domain.Evaluation::getEvaluateeId));
+        evaluations.stream().collect(Collectors.groupingBy(Evaluation::getEvaluateeId));
 
     List<EvaluationOverviewSearchResponse.OverviewData> overviewDataList =
         groupedByEvaluateeId.entrySet().stream()
@@ -169,7 +176,7 @@ public class EvaluationService {
   private Map<String, String> getEvaluatorIdToNameMap(List<Evaluation> evaluations) {
     // evaluatorId 수집 (중복 evaluatorId 제거)
     Set<String> evaluatorIds =
-        evaluations.stream().map(com.ryc.api.v2.evaluation.domain.Evaluation::getEvaluatorId).collect(Collectors.toSet());
+        evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
 
     // Admin 이름 매핑 조회
     return adminRepository.findAdminNamesByIds(evaluatorIds.stream().toList());
@@ -203,6 +210,10 @@ public class EvaluationService {
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
                             evaluatorIdToNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
+                        .evaluatorImage(
+                            findEvaluatorImage(evaluation.getEvaluatorId()).orElse(null))
+                        .isEvaluatorImagePresent(
+                            findEvaluatorImage(evaluation.getEvaluatorId()).isPresent())
                         .score(evaluation.getScore())
                         .comment(evaluation.getComment())
                         .evaluationType(evaluation.getType().name())
@@ -217,6 +228,22 @@ public class EvaluationService {
         .averageScore(averageScore)
         .evaluationDetails(evaluationDetails)
         .build();
+  }
+
+  /**
+   * TODO: 중복 DB 조회로 인한 성능 문제로, 추후 캐싱으로 코드 수정 평가자의 이미지 존재 여부, 존재 시 imageUrl을 반환하기 위한 메서드
+   *
+   * @param evaluatorId
+   * @return Optional<String> evaluatorImage
+   */
+  private Optional<String> findEvaluatorImage(String evaluatorId) {
+    Admin evaluator =
+        adminRepository
+            .findById(evaluatorId)
+            .orElseThrow(() -> new EntityNotFoundException("Admin not found or deleted"));
+
+    String imageUrl = evaluator.getImageUrl();
+    return (imageUrl != null && !imageUrl.isEmpty()) ? Optional.of(imageUrl) : Optional.empty();
   }
 
   /**
@@ -252,16 +279,17 @@ public class EvaluationService {
     final int completedEvaluatorCount = 0;
     final BigDecimal averageScore = BigDecimal.ZERO;
 
-    List<EvaluationSearchResponse.EvaluationsOfApplicant> response = 
+    List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
         applicantIds.stream()
-            .map(applicantId ->
-                EvaluationSearchResponse.EvaluationsOfApplicant.builder()
-                    .applicantId(applicantId)
-                    .completedEvaluatorCount(completedEvaluatorCount)
-                    .totalEvaluatorCount(totalEvaluatorCount)
-                    .averageScore(averageScore)
-                    .evaluationDetails(List.of())
-                    .build())
+            .map(
+                applicantId ->
+                    EvaluationSearchResponse.EvaluationsOfApplicant.builder()
+                        .applicantId(applicantId)
+                        .completedEvaluatorCount(completedEvaluatorCount)
+                        .totalEvaluatorCount(totalEvaluatorCount)
+                        .averageScore(averageScore)
+                        .evaluationDetails(List.of())
+                        .build())
             .toList();
 
     return new EvaluationSearchResponse(response);
