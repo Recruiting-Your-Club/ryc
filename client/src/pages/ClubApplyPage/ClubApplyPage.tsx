@@ -16,7 +16,7 @@ import { Text, Button } from '@components/_common/';
 import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import type { Answer, PersonalQuestionType, QuestionType } from './types';
+import type { Answer, PageAnswer } from './types';
 import type { ValidationKey } from './constants';
 import { VALIDATION_PATTERNS } from './constants';
 import { useParams } from 'react-router-dom';
@@ -34,7 +34,11 @@ import {
     makeAnsewerDataForSubmit,
 } from './utils';
 import { postApplicationAnswers } from '@api/domain/announcement/announcement';
-import { ApplicationSubmissionRequest } from '@api/domain/announcement/types';
+import {
+    ApplicationSubmissionRequest,
+    PersonalInfoQuestionType,
+    QuestionType,
+} from '@api/domain/announcement/types';
 
 function ClubApplyPage() {
     // prop destruction
@@ -51,13 +55,14 @@ function ClubApplyPage() {
 
     // initial values
     // 사전질문 데이터
+
     const clubPersonalQuestions = useMemo(
         () =>
-            applicationForm?.personalInfoQuestions.map((question) => {
+            applicationForm?.personalInfoQuestionTypes?.map((question) => {
                 return {
                     id: question,
                     label: getPersonalQuestionLabel(question),
-                    type: question as PersonalQuestionType,
+                    type: question as PersonalInfoQuestionType,
                     isRequired: true,
                 };
             }),
@@ -106,9 +111,9 @@ function ClubApplyPage() {
     const { mutate: submitApplication, isPending: isSubmitting } = useMutation({
         mutationFn: (data: ApplicationSubmissionRequest) =>
             postApplicationAnswers(announcementId || '', data),
-        onSuccess: () => {
+        onSuccess: (response) => {
             setIsSubmitDialogOpen(false);
-            goTo(`success`);
+            goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
         onError: (error) => {
             console.error('지원서 제출 실패:', error);
@@ -175,21 +180,19 @@ function ClubApplyPage() {
                 let newOptionIds: string[];
 
                 if (isCurrentlyChecked) {
-                    // 체크 해제
                     newOptionIds = currentOptionIds.filter((id) => id !== value);
                 } else {
-                    // 체크 추가
                     newOptionIds = [...currentOptionIds, value];
                 }
 
-                // value는 optionIds를 쉼표로 연결한 문자열로 설정
                 const newValues = newOptionIds.join(',');
 
                 const newAnswer: Answer = {
                     id: questionId,
                     value: newValues,
                     questionTitle,
-                    type: 'detail',
+                    pageAnswerType: 'detail',
+                    questionType: question.type,
                     optionIds: newOptionIds,
                 };
 
@@ -207,8 +210,41 @@ function ClubApplyPage() {
                     id: questionId,
                     value: optionText || value,
                     questionTitle,
-                    type: 'detail',
+                    pageAnswerType: 'detail',
+                    questionType: question.type,
                     optionIds: [value],
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
+            } else if (question?.type === 'PROFILE_IMAGE') {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: value,
+                    questionTitle,
+                    pageAnswerType: 'personal',
+                    questionType: question.type,
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
+            } else if (question?.type === 'FILE') {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: value,
+                    questionTitle,
+                    pageAnswerType: 'personal',
+                    questionType: question.type,
                 };
 
                 if (existingAnswer) {
@@ -225,11 +261,12 @@ function ClubApplyPage() {
                     id: questionId,
                     value,
                     questionTitle,
-                    type: clubPersonalInfoQuestions.some(
+                    pageAnswerType: clubPersonalInfoQuestions.some(
                         (question) => question.label === questionTitle,
                     )
-                        ? 'personal'
-                        : 'detail',
+                        ? ('personal' as PageAnswer)
+                        : ('detail' as PageAnswer),
+                    questionType: question?.type as QuestionType | PersonalInfoQuestionType,
                 };
 
                 if (existingAnswer) {
@@ -321,10 +358,8 @@ function ClubApplyPage() {
         setCompletedQuestions(completedCount);
     }, [answers, getValidationError]);
 
-    // applicationStore의 기존 값으로 폼 초기화
     useEffect(() => {
         if (clubPersonalInfoQuestions.length > 0 && applicationAnswers.length > 0) {
-            // applicationStore에 저장된 답변으로 폼 초기화
             setAnswers(applicationAnswers);
         }
     }, [clubPersonalInfoQuestions, applicationAnswers]);
@@ -370,7 +405,7 @@ function ClubApplyPage() {
                 <ClubSubmitCard
                     clubName={clubName}
                     category={clubCategory}
-                    description={clubField}
+                    field={clubField}
                     deadline={applicationPeriod.endDate}
                     personalQuestions={clubPersonalInfoQuestions}
                     detailQuestions={detailQuestions}
@@ -379,6 +414,7 @@ function ClubApplyPage() {
                     onSubmit={handleSubmit}
                     answers={answers}
                     logo={clubLogo}
+                    isSubmitting={isSubmitting}
                     onQuestionFocus={handleQuestionFocus}
                     requiredQuestionsCompleted={requiredQuestionsCompleted}
                     allQuestionsCount={allQuestions.length}
@@ -389,6 +425,7 @@ function ClubApplyPage() {
                 <Button
                     variant="primary"
                     size="full"
+                    loading={isSubmitting}
                     disabled={
                         !(
                             requiredQuestionsCompleted || completedQuestions === allQuestions.length
@@ -397,12 +434,13 @@ function ClubApplyPage() {
                     onClick={handleSubmit}
                     sx={s_submitButtonSx}
                 >
-                    {isSubmitting ? '제출중...' : '제출하기'}
+                    제출하기
                 </Button>
             </div>
 
             <SubmitDialog
                 open={isSubmitDialogOpen}
+                isSubmitting={isSubmitting}
                 onConfirm={handleConfirmSubmit}
                 onClose={() => setIsSubmitDialogOpen(false)}
             />
