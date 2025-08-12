@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Checkbox, Input, Radio, Text } from '@ssoc/ui';
+import { FileUpLoader } from '@ssoc/ui';
 
-import type { ClubApplyPersonalInfoPageProps } from '../types';
-import { getAnswer } from '../utils';
+import type { ClubApplyPersonalInfoPageProps, FileRecord } from '../types';
+import { getAnswer, getPlaceholder } from '../utils';
 import {
     clubApplyPersonalQuestionForm,
     helperTextSx,
     inputSx,
     labelContainer,
     labelSx,
+    s_fileUploaderSx,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
 
@@ -29,43 +31,93 @@ function ClubApplyPersonalInfoPage({
     //lib hooks
     // initial values
     // state, ref, querystring hooks
-
+    const [filesByQuestion, setFilesByQuestion] = useState<FileRecord>({});
     //calculated values
-    const getPlaceholder = (label: string) => {
-        switch (label) {
-            case '학번':
-                return 'ex) 19011069';
-            case '이름':
-                return 'ex) 홍길동, John Smith';
-            case '생년월일':
-                return 'ex) 990101';
-            case '전화번호':
-                return 'ex) 01012345678';
-            case '전공':
-                return 'ex) 소프트웨어학과';
-            default:
-                return '';
-        }
-    };
 
     //handlers
     //effects
     return (
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
-                if (question.type === 'SINGLE_CHOICE') {
+                if (question.type === 'PROFILE_IMAGE') {
+                    return (
+                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <FileUpLoader
+                                sx={s_fileUploaderSx}
+                                files={filesByQuestion[question.id] ?? []}
+                                onFilesChange={(newFiles: File[]) => {
+                                    setFilesByQuestion((prev) => ({
+                                        ...prev,
+                                        [question.id]: newFiles,
+                                    }));
+                                    const first = newFiles[0];
+                                    const value = first ? first.name : ''; // fileMetadataId 저장
+                                    onAnswerChange(question.id, question.label, value);
+                                }}
+                                maxFileCount={1}
+                            >
+                                <FileUpLoader.HelperText>
+                                    1개의 이미지 파일만 넣어주세요.
+                                </FileUpLoader.HelperText>
+                                <FileUpLoader.Button />
+                                <FileUpLoader.Box />
+                            </FileUpLoader>
+                        </div>
+                    );
+                } else if (question.type === 'FILE') {
+                    return (
+                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <FileUpLoader
+                                sx={s_fileUploaderSx}
+                                files={filesByQuestion[question.id] ?? []}
+                                onFilesChange={(newFiles: File[]) => {
+                                    setFilesByQuestion((prev) => ({
+                                        ...prev,
+                                        [question.id]: newFiles,
+                                    }));
+                                    const first = newFiles[0];
+                                    const value = first ? first.name : ''; // fileMetadataId 저장
+                                    onAnswerChange(question.id, question.label, value);
+                                }}
+                                maxFileCount={20}
+                            >
+                                <FileUpLoader.HelperText>
+                                    최대 20개의 파일을 첨부할 수 있습니다.
+                                </FileUpLoader.HelperText>
+                                <FileUpLoader.Button />
+                                <FileUpLoader.Box />
+                            </FileUpLoader>
+                        </div>
+                    );
+                } else if (question.type === 'SINGLE_CHOICE') {
                     return (
                         <div
-                            key={question.questionTitle}
+                            key={question.id}
                             css={clubApplyPersonalQuestionForm(false)}
                             ref={(element) => {
                                 if (questionRefs.current) {
-                                    questionRefs.current[question.questionTitle] = element;
+                                    questionRefs.current[question.label] = element;
                                 }
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.questionTitle}</Text>
+                                <Text type="bodyRegular">{question.label}</Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -73,103 +125,121 @@ function ClubApplyPersonalInfoPage({
                                 )}
                             </div>
                             <Radio
-                                name={`question-${question.questionTitle}`}
+                                name={`question-${question.label}`}
                                 orientation="vertical"
-                                size="sm"
                                 options={
                                     question.options?.map((option) => ({
-                                        label: option,
-                                        value: option,
+                                        label: option.option,
+                                        value: option.id,
                                     })) || []
                                 }
-                                value={getAnswer(answers, question.questionTitle)}
-                                onChange={(value) => onAnswerChange(question.questionTitle, value)}
+                                size="sm"
+                                value={getAnswer(answers, question.label)}
+                                onChange={(value) =>
+                                    onAnswerChange(
+                                        question.id,
+                                        question.label,
+                                        value,
+                                        question.options?.find((option) => option.id === value)
+                                            ?.option || '',
+                                    )
+                                }
                             />
                         </div>
                     );
-                }
-                if (question.type === 'MULTIPLE_CHOICE') {
+                } else if (question.type === 'MULTIPLE_CHOICE') {
                     return (
                         <div
-                            key={question.questionTitle}
+                            key={question.id}
                             css={clubApplyPersonalQuestionForm(false)}
                             ref={(element) => {
                                 if (questionRefs.current) {
-                                    questionRefs.current[question.questionTitle] = element;
+                                    questionRefs.current[question.label] = element;
                                 }
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.questionTitle}</Text>
+                                <Text type="bodyRegular">{question.label}</Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
                                     </Text>
                                 )}
                             </div>
-                            {question.options.map((option) => (
-                                <Checkbox.Root
-                                    key={option}
-                                    isChecked={getAnswer(answers, question.questionTitle)?.includes(
-                                        option,
-                                    )}
-                                    onChange={() => onAnswerChange(question.questionTitle, option)}
-                                >
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Control />
-                                    <Checkbox.Label>{option}</Checkbox.Label>
-                                </Checkbox.Root>
-                            ))}
+                            {question?.options?.map((option) => {
+                                const currentAnswers = getAnswer(answers, question.label);
+                                const isChecked = currentAnswers.includes(option.id);
+
+                                return (
+                                    <Checkbox.Root
+                                        key={option.id}
+                                        isChecked={isChecked}
+                                        onChange={() =>
+                                            onAnswerChange(
+                                                question.id,
+                                                question.label,
+                                                option.id,
+                                                option.option,
+                                            )
+                                        }
+                                    >
+                                        <Checkbox.HiddenInput />
+                                        <Checkbox.Control />
+                                        <Checkbox.Label>{option.option}</Checkbox.Label>
+                                    </Checkbox.Root>
+                                );
+                            })}
+                        </div>
+                    );
+                } else {
+                    const hasError = getValidationError(
+                        question.label,
+                        getAnswer(answers, question.label),
+                    );
+                    return (
+                        <div
+                            key={question.id}
+                            css={clubApplyPersonalQuestionForm(hasError && touched[question.label])}
+                            tabIndex={-1}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.label] = element;
+                                }
+                            }}
+                        >
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <Input
+                                variant="lined"
+                                labelSx={labelSx}
+                                inputSx={inputSx}
+                                value={getAnswer(answers, question.label)}
+                                onChange={(event) =>
+                                    onAnswerChange(question.id, question.label, event.target.value)
+                                }
+                                error={hasError && touched[question.label]}
+                                onFocus={() => onFocus(question.label)}
+                                onBlur={() => onBlur(question.label)}
+                                helperText={
+                                    touched[question.label]
+                                        ? getErrorMessage(
+                                              question.label,
+                                              getAnswer(answers, question.label),
+                                          )
+                                        : undefined
+                                }
+                                helperSx={helperTextSx}
+                                placeholder={getPlaceholder(question.label)}
+                            />
                         </div>
                     );
                 }
-                const hasError = getValidationError(
-                    question.questionTitle,
-                    getAnswer(answers, question.questionTitle),
-                );
-                return (
-                    <div
-                        key={question.questionTitle}
-                        css={clubApplyPersonalQuestionForm(
-                            hasError && touched[question.questionTitle],
-                        )}
-                        tabIndex={-1}
-                        ref={(element) => {
-                            if (questionRefs.current) {
-                                questionRefs.current[question.questionTitle] = element;
-                            }
-                        }}
-                    >
-                        <div css={labelContainer}>
-                            <Text type="bodyRegular">{question.questionTitle}</Text>
-                            {question.isRequired && (
-                                <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
-                                    *
-                                </Text>
-                            )}
-                        </div>
-                        <Input
-                            variant="lined"
-                            labelSx={labelSx}
-                            inputSx={inputSx}
-                            value={getAnswer(answers, question.questionTitle)}
-                            onChange={(e) => onAnswerChange(question.questionTitle, e.target.value)}
-                            error={hasError && touched[question.questionTitle]}
-                            onFocus={() => onFocus(question.questionTitle)}
-                            onBlur={() => onBlur(question.questionTitle)}
-                            helperText={
-                                touched[question.questionTitle]
-                                    ? getErrorMessage(
-                                          question.questionTitle,
-                                          getAnswer(answers, question.questionTitle),
-                                      )
-                                    : undefined
-                            }
-                            helperSx={helperTextSx}
-                            placeholder={getPlaceholder(question.questionTitle)}
-                        />
-                    </div>
-                );
             })}
         </div>
     );
