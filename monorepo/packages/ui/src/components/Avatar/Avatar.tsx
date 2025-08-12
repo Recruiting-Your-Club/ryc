@@ -4,7 +4,7 @@ import BasicImage from '@ssoc/assets/images/basicImage.png';
 
 import { s_shape, s_size } from './Avatar.style';
 
-export type AvatarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';
+export type AvatarSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
 export type AvatarShape = 'square' | 'round';
 
 interface AvatarProps {
