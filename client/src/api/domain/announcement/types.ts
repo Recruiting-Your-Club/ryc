@@ -10,6 +10,13 @@ export type PersonalInfoQuestionType =
     | 'NAME'
     | 'EMAIL';
 
+export type QuestionType =
+    | 'SINGLE_CHOICE'
+    | 'MULTIPLE_CHOICE'
+    | 'SHORT_ANSWER'
+    | 'FILE'
+    | 'LONG_ANSWER';
+
 export interface PersonalInfosRequest {
     personalInfoQuestionType: PersonalInfoQuestionType;
     value: string;
@@ -41,6 +48,11 @@ export interface ApplicationSubmissionRequest {
     application: ApplicationRequest;
 }
 
+export interface ApplicationSubmissionResponse {
+    applicantId: ApplicantRequest;
+    applicationId: ApplicationRequest;
+}
+
 /**
  * 지원서 폼 조회 타입
  */
@@ -59,9 +71,10 @@ export interface QuestionResponse {
 }
 
 export interface ApplicationForm {
+    id: string;
     applicationQuestions: QuestionResponse[];
     preQuestions: QuestionResponse[];
-    personalInfoQuestions: string[];
+    personalInfoQuestionTypes: PersonalInfoQuestionType[];
 }
 
 /**
