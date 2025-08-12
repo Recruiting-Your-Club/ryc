@@ -1,5 +1,6 @@
 package com.ryc.api.v2.application.infra;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,9 +49,16 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
   }
 
   @Override
-  public List<Application> findAllByApplicantIdIn(List<String> applicantIds) {
-    return applicationJpaRepository.findAllByApplicantIdIn(applicantIds).stream()
-        .map(ApplicationMapper::toDomain)
-        .collect(Collectors.toList());
+  public Map<String, LocalDateTime> findCreatedAtByApplicantIds(List<String> applicantIds) {
+    if (applicantIds == null || applicantIds.isEmpty()) {
+      return Map.of();
+    }
+
+    List<Object[]> objects = applicationJpaRepository.findCreatedAtByApplicantIds(applicantIds);
+    return objects.stream()
+        .collect(
+            Collectors.toMap(
+                object -> (String) object[0], // applicantId
+                object -> (LocalDateTime) object[1])); // createdAt
   }
 }
