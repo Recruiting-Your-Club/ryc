@@ -91,7 +91,7 @@
                 ]
             }
         ],
-        "personalInfoQuestions": ["NAME", "EMAIL", "PROFILE_IMAGE"]
+        "personalInfoQuestionTypes": ["NAME", "EMAIL", "PROFILE_IMAGE"]
     },
     {
         "id": "123e4567-e89b-12d3-a456-426614174001",
@@ -185,7 +185,7 @@
                 ]
             }
         ],
-        "personalInfoQuestions": ["NAME", "EMAIL"]
+        "personalInfoQuestionTypes": ["NAME", "EMAIL"]
     },
     {
         "id": "123e4567-e89b-12d3-a456-426614174002",
@@ -279,7 +279,7 @@
                 ]
             }
         ],
-        "personalInfoQuestions": ["NAME", "EMAIL"]
+        "personalInfoQuestionTypes": ["NAME", "EMAIL"]
     },
     {
         "id": "123e4567-e89b-12d3-a456-426614174003",
@@ -373,7 +373,7 @@
                 ]
             }
         ],
-        "personalInfoQuestions": ["NAME", "EMAIL"]
+        "personalInfoQuestionTypes": ["NAME", "EMAIL"]
     },
     {
         "id": "123e4567-e89b-12d3-a456-426614174004",
@@ -467,6 +467,6 @@
                 ]
             }
         ],
-        "personalInfoQuestions": ["NAME", "EMAIL"]
+        "personalInfoQuestionTypes": ["NAME", "EMAIL"]
     }
 ]
