@@ -2,7 +2,6 @@ package com.ryc.api.v2.evaluation.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,16 +69,14 @@ public class EvaluationService {
     Map<String, String> evaluatorIdToNameMap = getEvaluatorIdToNameMap(evaluations);
 
     // applicantId 별로 평가 데이터를 생성
-    Map<String, EvaluationSearchResponse.ApplicantEvaluations> response =
+    List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
         evaluations.stream()
-            .collect(
-                Collectors.groupingBy(
-                    Evaluation::getEvaluateeId,
-                    Collectors.collectingAndThen(
-                        Collectors.toList(),
-                        list ->
-                            buildApplicantEvaluations(
-                                list, evaluatorIdToNameMap, currentAdminId, totalEvaluatorCount))));
+            .collect(Collectors.groupingBy(Evaluation::getEvaluateeId))
+            .entrySet()
+            .stream()
+            .map(entry -> buildEvaluationsOfApplicant(
+                entry.getKey(), entry.getValue(), evaluatorIdToNameMap, currentAdminId, totalEvaluatorCount))
+            .toList();
 
     return new EvaluationSearchResponse(response);
   }
@@ -115,7 +112,7 @@ public class EvaluationService {
       return createEmptyEvaluationOverviewResponse(body.applicantIdList(), totalEvaluatorCount);
 
     Map<String, List<Evaluation>> groupedByEvaluateeId =
-        evaluations.stream().collect(Collectors.groupingBy(Evaluation::getEvaluateeId));
+        evaluations.stream().collect(Collectors.groupingBy(com.ryc.api.v2.evaluation.domain.Evaluation::getEvaluateeId));
 
     List<EvaluationOverviewSearchResponse.OverviewData> overviewDataList =
         groupedByEvaluateeId.entrySet().stream()
@@ -172,7 +169,7 @@ public class EvaluationService {
   private Map<String, String> getEvaluatorIdToNameMap(List<Evaluation> evaluations) {
     // evaluatorId 수집 (중복 evaluatorId 제거)
     Set<String> evaluatorIds =
-        evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
+        evaluations.stream().map(com.ryc.api.v2.evaluation.domain.Evaluation::getEvaluatorId).collect(Collectors.toSet());
 
     // Admin 이름 매핑 조회
     return adminRepository.findAdminNamesByIds(evaluatorIds.stream().toList());
@@ -187,7 +184,8 @@ public class EvaluationService {
    * @param totalEvaluatorCount 해당 동아리의 전체 평가자 수
    * @return ApplicantEvaluations DTO
    */
-  private EvaluationSearchResponse.ApplicantEvaluations buildApplicantEvaluations(
+  private EvaluationSearchResponse.EvaluationsOfApplicant buildEvaluationsOfApplicant(
+      String applicantId,
       List<Evaluation> evaluations,
       Map<String, String> evaluatorIdToNameMap,
       String currentAdminId,
@@ -196,11 +194,11 @@ public class EvaluationService {
     int completedEvaluatorCount = evaluations.size();
     BigDecimal averageScore = calculateAverageScore(evaluations, completedEvaluatorCount);
 
-    List<EvaluationSearchResponse.EvaluationData> evaluationDatas =
+    List<EvaluationSearchResponse.EvaluationDetail> evaluationDetails =
         evaluations.stream()
             .map(
                 evaluation ->
-                    EvaluationSearchResponse.EvaluationData.builder()
+                    EvaluationSearchResponse.EvaluationDetail.builder()
                         .evaluationId(evaluation.getId())
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
@@ -212,11 +210,12 @@ public class EvaluationService {
                         .build())
             .toList();
 
-    return EvaluationSearchResponse.ApplicantEvaluations.builder()
+    return EvaluationSearchResponse.EvaluationsOfApplicant.builder()
+        .applicantId(applicantId)
         .completedEvaluatorCount(completedEvaluatorCount)
         .totalEvaluatorCount(totalEvaluatorCount)
         .averageScore(averageScore)
-        .evaluationDatas(evaluationDatas)
+        .evaluationDetails(evaluationDetails)
         .build();
   }
 
@@ -253,17 +252,17 @@ public class EvaluationService {
     final int completedEvaluatorCount = 0;
     final BigDecimal averageScore = BigDecimal.ZERO;
 
-    Map<String, EvaluationSearchResponse.ApplicantEvaluations> response = new HashMap<>();
-    for (String applicantId : applicantIds) {
-      response.put(
-          applicantId,
-          EvaluationSearchResponse.ApplicantEvaluations.builder()
-              .completedEvaluatorCount(completedEvaluatorCount)
-              .totalEvaluatorCount(totalEvaluatorCount)
-              .averageScore(averageScore)
-              .evaluationDatas(List.of())
-              .build());
-    }
+    List<EvaluationSearchResponse.EvaluationsOfApplicant> response = 
+        applicantIds.stream()
+            .map(applicantId ->
+                EvaluationSearchResponse.EvaluationsOfApplicant.builder()
+                    .applicantId(applicantId)
+                    .completedEvaluatorCount(completedEvaluatorCount)
+                    .totalEvaluatorCount(totalEvaluatorCount)
+                    .averageScore(averageScore)
+                    .evaluationDetails(List.of())
+                    .build())
+            .toList();
 
     return new EvaluationSearchResponse(response);
   }

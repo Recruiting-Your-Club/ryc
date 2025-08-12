@@ -58,6 +58,7 @@ public record EvaluationSearchResponse(
         @Schema(description = "지원자별 평가 정보 Map (Key = applicantId, Value = 평가 정보)")
         List<EvaluationsOfApplicant> evaluationsOfApplicants) {
 
+    @Builder
     public record EvaluationsOfApplicant(
             @Schema(description = "지원자 id", example = "3") String applicantId,
             @Schema(description = "평가를 완료한 평가자 수", example = "3") int completedEvaluatorCount,
