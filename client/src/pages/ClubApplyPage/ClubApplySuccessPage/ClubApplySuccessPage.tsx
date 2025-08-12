@@ -51,10 +51,10 @@ function ClubApplySuccessPage() {
                     </Text>
                 </div>
                 <div css={s_applicationUserInfoValue}>
-                    <Text type="bodyRegular">{userName}</Text>
-                    <Text type="bodyRegular">{userEmail}</Text>
-                    <Text type="bodyRegular">{clubName}</Text>
-                    <Text type="bodyRegular">{clubField}</Text>
+                    <Text type="bodyRegular">{userName || '-'}</Text>
+                    <Text type="bodyRegular">{userEmail || '-'}</Text>
+                    <Text type="bodyRegular">{clubName || '-'}</Text>
+                    <Text type="bodyRegular">{clubField || '-'}</Text>
                 </div>
             </div>
             <div css={s_goToHomeButtonWrapper}>
