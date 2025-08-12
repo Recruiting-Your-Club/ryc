@@ -1,8 +1,7 @@
 package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
-
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +40,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+            .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
     return AnnouncementMapper.toDomain(announcementEntity);
   }
@@ -61,7 +60,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
       AnnouncementEntity announcementEntity =
           announcementJpaRepository
               .findById(announcement.getId())
-              .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+              .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
       AnnouncementEntity updatedInfoEntity = AnnouncementMapper.toEntity(announcement);
       announcementEntity.update(updatedInfoEntity);

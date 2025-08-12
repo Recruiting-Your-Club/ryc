@@ -1,6 +1,6 @@
 package com.ryc.api.v2.common.aop.aspect;
 
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,7 +25,7 @@ public class ClubAspect {
     String clubId = extractParameters(signature.getParameterNames(), joinPoint.getArgs());
 
     if (!clubService.existClubById(clubId)) {
-      throw new EntityNotFoundException("동아리를 찾을 수 없습니다.");
+      throw new NoSuchElementException("동아리를 찾을 수 없습니다.");
     }
   }
 

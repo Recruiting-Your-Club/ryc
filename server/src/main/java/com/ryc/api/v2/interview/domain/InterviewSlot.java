@@ -4,8 +4,7 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
@@ -54,10 +53,10 @@ public class InterviewSlot {
     if (maxNumberOfPeople == interviewReservations.size()) {
       if (allowOverMax) {
         maxCount++;
+      } else {
+        // 예약이 꽉 찼고, 추가 예약을 허용하지 않는 경우 예외 발생
+        throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
       }
-
-      // 예약이 꽉 찼고, 추가 예약을 허용하지 않는 경우 예외 발생
-      throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
     newInterviewReservations.add(newReservation);
@@ -91,7 +90,7 @@ public class InterviewSlot {
     return this.interviewReservations.stream()
         .filter(reservation -> reservation.getId().equals(reservationId))
         .findFirst()
-        .orElseThrow(() -> new EntityNotFoundException("Interview slot not found"));
+        .orElseThrow(() -> new NoSuchElementException("Interview slot not found"));
   }
 
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
