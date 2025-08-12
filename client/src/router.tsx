@@ -73,7 +73,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: ':announcementId/application/success',
+                path: ':announcementId/application/success/:applicantId/:applicationId',
                 element: <ClubApplySuccessPage />,
             },
         ],
