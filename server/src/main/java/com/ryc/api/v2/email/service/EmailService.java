@@ -111,7 +111,7 @@ public class EmailService {
     for (String recipient : recipientIds) {
       String link =
           String.format(
-              "%s?club-id=%s&announcement-id=%s&recipient-id=%s",
+              "%s/clubs/%s/announcements/%s/applicants/%s",
               baseUri, clubId, announcementId, recipient);
       String linkHtml = String.format(linkHtmlTemplate, link);
 
