@@ -37,7 +37,13 @@ function MainCard({
     return (
         <Link
             to={link}
-            state={{ title: title, category: category, clubLogo: imageURL }}
+            state={{
+                title: title,
+                category: category,
+                clubLogo: imageURL,
+                description: description,
+                status: status,
+            }}
             css={cardContainer}
         >
             <div css={cardHeaderContainer}>
