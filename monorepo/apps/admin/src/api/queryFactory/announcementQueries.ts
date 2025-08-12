@@ -5,6 +5,7 @@ import { DEFAULT_STALETIME, PREFETCH_STALETIME } from '@constants/staleTime';
 import { queryOptions } from '@tanstack/react-query';
 
 const announcementQueries = {
+    //FIX: 나중에 api 호출 시 느리면 적용할 옵션입니다.
     //prefetch/loader에서 쓸 list 기본 옵션
     listOpts: (clubId: string) =>
         queryOptions({

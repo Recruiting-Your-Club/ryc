@@ -38,7 +38,7 @@ type PersonalInfoQuestion = 'STUDENT_ID' | 'PHONE_NUMBER' | 'PROFILE_IMAGE' | 'N
 
 interface ApplicationQuestion {
     id: string;
-    type: string;
+    type: QuestionType;
     label: string;
     isRequired: boolean;
     subLabel: string;
@@ -46,7 +46,7 @@ interface ApplicationQuestion {
 
 interface PreQuestion {
     id: string;
-    type: string;
+    type: QuestionType;
     label: string;
     isRequired: boolean;
     options: Option[];
@@ -59,3 +59,5 @@ interface Option {
 interface Image {
     fileMetaData: string;
 }
+
+type QuestionType = 'FILE' | 'MULTIPLE_CHOICE' | 'SINGLE_CHOICE' | 'LONG_ANSWER' | 'SHORT_ANSWER';
