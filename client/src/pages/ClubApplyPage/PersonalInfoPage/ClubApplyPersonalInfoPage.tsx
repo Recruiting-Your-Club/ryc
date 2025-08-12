@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Text, Checkbox, Radio, ImageRegister } from '@components/_common';
-import type { ClubApplyPersonalInfoPageProps } from '../types';
+import type { ClubApplyPersonalInfoPageProps, FileRecord } from '../types';
 import { getAnswer, getPlaceholder } from '../utils';
 import {
     clubApplyPersonalQuestionForm,
@@ -8,6 +8,7 @@ import {
     inputSx,
     labelContainer,
     labelSx,
+    s_fileUploaderSx,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
 import { FileUpLoader } from '@components';
@@ -28,7 +29,7 @@ function ClubApplyPersonalInfoPage({
     //lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [files, setFiles] = useState<File[]>([]);
+    const [filesByQuestion, setFilesByQuestion] = useState<FileRecord>({});
     //calculated values
 
     //handlers
@@ -48,13 +49,54 @@ function ClubApplyPersonalInfoPage({
                                 )}
                             </div>
                             <FileUpLoader
-                                sx={{ width: '100%', marginTop: 0 }}
-                                files={files}
-                                onFilesChange={setFiles}
+                                sx={s_fileUploaderSx}
+                                files={filesByQuestion[question.id] ?? []}
+                                onFilesChange={(newFiles) => {
+                                    setFilesByQuestion((prev) => ({
+                                        ...prev,
+                                        [question.id]: newFiles,
+                                    }));
+                                    const first = newFiles[0];
+                                    const value = first ? first.name : ''; // fileMetadataId 저장
+                                    onAnswerChange(question.id, question.label, value);
+                                }}
                                 maxFileCount={1}
                             >
                                 <FileUpLoader.HelperText>
                                     1개의 이미지 파일만 넣어주세요.
+                                </FileUpLoader.HelperText>
+                                <FileUpLoader.Button />
+                                <FileUpLoader.Box />
+                            </FileUpLoader>
+                        </div>
+                    );
+                } else if (question.type === 'FILE') {
+                    return (
+                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <FileUpLoader
+                                sx={s_fileUploaderSx}
+                                files={filesByQuestion[question.id] ?? []}
+                                onFilesChange={(newFiles) => {
+                                    setFilesByQuestion((prev) => ({
+                                        ...prev,
+                                        [question.id]: newFiles,
+                                    }));
+                                    const first = newFiles[0];
+                                    const value = first ? first.name : ''; // fileMetadataId 저장
+                                    onAnswerChange(question.id, question.label, value);
+                                }}
+                                maxFileCount={20}
+                            >
+                                <FileUpLoader.HelperText>
+                                    최대 20개의 파일을 첨부할 수 있습니다.
                                 </FileUpLoader.HelperText>
                                 <FileUpLoader.Button />
                                 <FileUpLoader.Box />
