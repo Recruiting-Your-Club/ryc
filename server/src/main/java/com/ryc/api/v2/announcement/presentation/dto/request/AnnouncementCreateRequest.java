@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.applicationForm.presentation.request.ApplicationFormCreateRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,8 +50,11 @@ public record AnnouncementCreateRequest(
     @NotBlank(message = "field shouldn't be blank") @Schema(description = "모집 분야", example = "백엔드")
         String field,
     @NotNull(message = "announcementType shouldn't be null")
-        @Schema(description = "공고 타입", example = "LIMITED_TIME")
-        AnnouncementType announcementType,
+        @Schema(
+            description = "공고 타입",
+            example = "LIMITED_TIME",
+            allowableValues = {"ALWAYS_OPEN", "LIMITED_TIME"})
+        String announcementType,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
     @NotNull(message = "applicationForm shouldn't be null")

@@ -1,7 +1,6 @@
 package com.ryc.api.v2.application.presentation;
 
 import java.net.URI;
-import java.util.List;
 
 import jakarta.validation.Valid;
 
@@ -12,7 +11,6 @@ import com.ryc.api.v2.application.common.exception.code.ApplicationCreateErrorCo
 import com.ryc.api.v2.application.presentation.dto.request.ApplicationSubmissionRequest;
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationGetResponse;
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissionResponse;
-import com.ryc.api.v2.application.presentation.dto.response.ApplicationSummaryResponse;
 import com.ryc.api.v2.application.service.ApplicationService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
@@ -26,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/announcements/{announcement-id}/applications")
-@Tag(name = "지원")
+@Tag(name = "지원서")
 public class ApplicationHttpApi {
   private final ApplicationService applicationService;
 
@@ -57,20 +55,6 @@ public class ApplicationHttpApi {
                 "/api/v2/announcements/%s/applications/%s",
                 announcementId, response.applicationId()));
     return ResponseEntity.created(location).body(response);
-  }
-
-  @GetMapping
-  @HasRole(Role.MEMBER)
-  @Operation(summary = "공고 지원서 목록 조회", operationId = "getApplications")
-  @ApiErrorCodeExample(
-      value = {CommonErrorCode.class},
-      include = {"RESOURCE_NOT_FOUND"})
-  public ResponseEntity<List<ApplicationSummaryResponse>> getApplicationsByAnnouncementId(
-      @PathVariable("announcement-id") String announcementId,
-      @RequestParam(value = "status", required = false) String status) {
-    List<ApplicationSummaryResponse> response =
-        applicationService.getApplicationsByAnnouncementId(announcementId, status);
-    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{applicant-id}")
