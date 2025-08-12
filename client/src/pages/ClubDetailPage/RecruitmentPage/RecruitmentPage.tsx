@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { RecruitCard, RecruitDialog, Text } from '@components';
+import { Button } from '@components/_common';
+import { useRouter } from '@hooks/useRouter';
 import { ClubDetailRecruitmentLoadingPage } from '@pages/LoadingPage';
-import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
+import {
+    recruitCell,
+    recruitmentContainer,
+    s_noRecruitmentContainer,
+} from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
 import { announcementQueries } from '@api/queryFactory';
 import { useClubStore } from '@stores/clubStore';
@@ -14,9 +20,9 @@ function RecruitmentPage() {
     const { open, openDialog, closeDialog } = useDialog();
 
     // lib hooks
+    const { goTo } = useRouter();
     const { id: clubId } = useParams<{ id: string }>();
     const { setApplicationPeriod, setClubField } = useClubStore();
-    const { clear: applicationStoreClear } = useApplicationStore();
     // initial values
     // state, ref, querystring hooks
     const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
@@ -36,7 +42,6 @@ function RecruitmentPage() {
         enabled: !!selectedAnnouncementId,
     });
 
-    console.log(selectedAnnouncementDetail?.applicationPeriod);
     // calculated values
     // handlers
     const handleCardClick = (announcementId: string) => {
@@ -65,7 +70,7 @@ function RecruitmentPage() {
 
     if (error) {
         return (
-            <div css={recruitmentContainer}>
+            <div css={recruitmentContainer(false)}>
                 <Text>공고 목록을 불러오는 중 오류가 발생했습니다.</Text>
             </div>
         );
@@ -73,7 +78,7 @@ function RecruitmentPage() {
 
     return (
         <>
-            <div css={recruitmentContainer}>
+            <div css={recruitmentContainer(announcements && announcements.length > 0)}>
                 {announcements && announcements.length > 0 ? (
                     announcements.map((announcement) => (
                         <div css={recruitCell} key={announcement.announcementId}>
@@ -87,7 +92,12 @@ function RecruitmentPage() {
                         </div>
                     ))
                 ) : (
-                    <Text>등록된 공고가 없습니다.</Text>
+                    <div css={s_noRecruitmentContainer}>
+                        <Text>현재 이 동아리에서 등록한 공고가 없습니다.</Text>
+                        <Button variant="primary" onClick={() => goTo('/')}>
+                            다른 동아리 둘러보기
+                        </Button>
+                    </div>
                 )}
             </div>
             {open && selectedAnnouncementDetail && (
