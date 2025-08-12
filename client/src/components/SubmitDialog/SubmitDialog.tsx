@@ -10,7 +10,7 @@ import {
 } from './SubmiDialog.style';
 import type { SubmitDialogProps } from './types';
 
-function SubmitDialog({ open, onConfirm, onClose }: SubmitDialogProps) {
+function SubmitDialog({ open, isSubmitting, onConfirm, onClose }: SubmitDialogProps) {
     return (
         <Dialog open={open} handleClose={onClose} size="sm">
             <Dialog.Content>
@@ -31,7 +31,12 @@ function SubmitDialog({ open, onConfirm, onClose }: SubmitDialogProps) {
             </Dialog.Content>
             <Dialog.Action>
                 <div css={submitDialogButtonContainer}>
-                    <Button variant="primary" size="full" onClick={onConfirm}>
+                    <Button
+                        loading={isSubmitting}
+                        variant="primary"
+                        size="full"
+                        onClick={onConfirm}
+                    >
                         예
                     </Button>
                     <Button variant="outlined" size="full" onClick={onClose}>
