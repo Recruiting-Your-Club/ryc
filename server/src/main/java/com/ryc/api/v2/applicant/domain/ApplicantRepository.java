@@ -17,4 +17,6 @@ public interface ApplicantRepository {
   List<Applicant> findAllByAnnouncementIdAndStatus(String announcementId, ApplicantStatus status);
 
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
+
+  List<String> convertEmailsToIds(String announcementId, List<String> emails);
 }

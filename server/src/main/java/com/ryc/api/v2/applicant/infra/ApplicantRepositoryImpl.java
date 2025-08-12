@@ -60,4 +60,9 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   public Boolean existsByAnnouncementIdAndEmail(String announcementId, String email) {
     return applicantJpaRepository.existsByAnnouncementIdAndEmail(announcementId, email);
   }
+
+  @Override
+  public List<String> convertEmailsToIds(String announcementId, List<String> emails) {
+    return applicantJpaRepository.findIdsByAnnouncementIdAndEmails(announcementId, emails);
+  }
 }

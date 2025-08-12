@@ -52,6 +52,7 @@ public class EmailHttpApi {
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 
+  // TODO: 해당 API는 인터뷰 도메인으로 이전 후 삭제 예정
   @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails/interviews")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
