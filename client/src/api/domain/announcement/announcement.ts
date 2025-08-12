@@ -4,6 +4,7 @@ import {
     Announcement,
     AnnouncementSummary,
     ApplicationSubmissionRequest,
+    ApplicationSubmissionResponse,
 } from './types';
 
 async function getApplicationForm(announcementId: string): Promise<ApplicationForm> {
@@ -16,11 +17,12 @@ async function getApplicationForm(announcementId: string): Promise<ApplicationFo
 async function postApplicationAnswers(
     announcementId: string,
     data: ApplicationSubmissionRequest,
-): Promise<void> {
-    await httpRequest.post({
+): Promise<ApplicationSubmissionResponse> {
+    const response = await httpRequest.post({
         url: `announcements/${announcementId}/applications`,
         body: data,
     });
+    return response as ApplicationSubmissionResponse;
 }
 
 async function getAnnouncementList(clubId: string): Promise<AnnouncementSummary[]> {
