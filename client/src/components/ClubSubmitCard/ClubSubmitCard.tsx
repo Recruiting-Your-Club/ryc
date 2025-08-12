@@ -18,7 +18,7 @@ function ClubSubmitCard({
     clubName,
     category,
     deadline,
-    description,
+    field,
     personalQuestions,
     detailQuestions,
     allQuestionsCount,
@@ -26,6 +26,7 @@ function ClubSubmitCard({
     requiredQuestionsCompleted,
     answers,
     logo,
+    isSubmitting,
     onQuestionFocus,
     onSubmit,
 }: ClubSubmitCardProps) {
@@ -64,7 +65,7 @@ function ClubSubmitCard({
                         {getCategory(category)}
                     </Text>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
-                        {description}
+                        {field}
                     </Text>
                     <QuestionDropdown
                         completedQuestionsCount={completedQuestionsCount}
@@ -78,6 +79,7 @@ function ClubSubmitCard({
                 </div>
                 <Button
                     size="full"
+                    loading={isSubmitting}
                     disabled={
                         !(
                             requiredQuestionsCompleted ||

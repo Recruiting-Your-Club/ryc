@@ -5,7 +5,7 @@ export interface ClubSubmitCardProps {
     clubName: string;
     category: string;
     deadline: string;
-    description: string;
+    field: string;
     personalQuestions: QuestionResponse[];
     detailQuestions: QuestionResponse[];
     completedQuestionsCount: number;
@@ -14,6 +14,7 @@ export interface ClubSubmitCardProps {
     allQuestionsCount: number;
     answers: Answer[];
     logo: string;
+    isSubmitting: boolean;
     onQuestionFocus: (questionTitle: string, tab: string) => void;
     onSubmit?: () => void;
 }
