@@ -5,12 +5,9 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
@@ -67,7 +64,11 @@ public class EvaluationService {
     if (totalEvaluatorCount == 0 || evaluations.isEmpty())
       return createEmptyEvaluationResponse(body.applicantIdList(), totalEvaluatorCount);
 
-    Map<String, String> evaluatorIdToNameMap = getEvaluatorIdToNameMap(evaluations);
+    // 평가자 아이디 - 이름 매핑
+    Map<String, String> evaluatorNameMap = getEvaluatorNameMap(evaluations);
+
+    // 평가자 아이디 - 썸네일 url 매핑
+    Map<String, String> evaluatorThumbnailMap = getEvaluatorThumbnailMap(evaluations);
 
     // applicantId 별로 평가 데이터를 생성
     List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
@@ -80,7 +81,8 @@ public class EvaluationService {
                     buildEvaluationsOfApplicant(
                         entry.getKey(),
                         entry.getValue(),
-                        evaluatorIdToNameMap,
+                        evaluatorNameMap,
+                        evaluatorThumbnailMap,
                         currentAdminId,
                         totalEvaluatorCount))
             .toList();
@@ -173,7 +175,7 @@ public class EvaluationService {
    * @param evaluations 평가 데이터 리스트
    * @return evaluatorId -> evaluatorName 매핑 Map
    */
-  private Map<String, String> getEvaluatorIdToNameMap(List<Evaluation> evaluations) {
+  private Map<String, String> getEvaluatorNameMap(List<Evaluation> evaluations) {
     // evaluatorId 수집 (중복 evaluatorId 제거)
     Set<String> evaluatorIds =
         evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
@@ -183,10 +185,23 @@ public class EvaluationService {
   }
 
   /**
+   * 평가자 ID를 기준으로 썸네일 이미지 URL을 매핑한 Map을 반환합니다.
+   *
+   * @param evaluations 평가 데이터 리스트
+   * @return evaluatorId -> evaluatorThumbnailUrl 매핑 Map
+   */
+  private Map<String, String> getEvaluatorThumbnailMap(List<Evaluation> evaluations) {
+    Set<String> evaluatorIds =
+        evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
+
+    return adminRepository.findThumbnailUrlByIds(evaluatorIds.stream().toList());
+  }
+
+  /**
    * 지원자 1명에 대한 평가 요약 및 상세 정보를 생성합니다.
    *
    * @param evaluations 평가 데이터 리스트
-   * @param evaluatorIdToNameMap evaluatorId → evaluatorName 매핑 Map
+   * @param evaluatorNameMap evaluatorId → evaluatorName 매핑 Map
    * @param currentAdminId 현재 로그인한 동아리원(평가자) ID
    * @param totalEvaluatorCount 해당 동아리의 전체 평가자 수
    * @return ApplicantEvaluations DTO
@@ -194,7 +209,8 @@ public class EvaluationService {
   private EvaluationSearchResponse.EvaluationsOfApplicant buildEvaluationsOfApplicant(
       String applicantId,
       List<Evaluation> evaluations,
-      Map<String, String> evaluatorIdToNameMap,
+      Map<String, String> evaluatorNameMap,
+      Map<String, String> evaluatorThumbnailMap,
       String currentAdminId,
       int totalEvaluatorCount) {
 
@@ -209,11 +225,11 @@ public class EvaluationService {
                         .evaluationId(evaluation.getId())
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
-                            evaluatorIdToNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
+                            evaluatorNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
                         .evaluatorThumbnailUrl(
-                            findEvaluatorThumbnailUrl(evaluation.getEvaluatorId()).orElse(null))
+                            evaluatorThumbnailMap.getOrDefault(evaluation.getEvaluatorId(), ""))
                         .isEvaluatorImagePresent(
-                            findEvaluatorThumbnailUrl(evaluation.getEvaluatorId()).isPresent())
+                            evaluatorThumbnailMap.containsKey(evaluation.getEvaluatorId()))
                         .score(evaluation.getScore())
                         .comment(evaluation.getComment())
                         .evaluationType(evaluation.getType().name())
@@ -228,22 +244,6 @@ public class EvaluationService {
         .averageScore(averageScore)
         .evaluationDetails(evaluationDetails)
         .build();
-  }
-
-  /**
-   * TODO: 중복 DB 조회로 인한 성능 문제로, 추후 캐싱으로 코드 수정 평가자의 이미지 존재 여부, 존재 시 imageUrl을 반환하기 위한 메서드
-   *
-   * @param evaluatorId
-   * @return Optional<String> evaluatorImage
-   */
-  private Optional<String> findEvaluatorThumbnailUrl(String evaluatorId) {
-    Admin evaluator =
-        adminRepository
-            .findById(evaluatorId)
-            .orElseThrow(() -> new EntityNotFoundException("Admin not found or deleted"));
-
-    String imageUrl = evaluator.getThumbnailUrl();
-    return (imageUrl != null && !imageUrl.isEmpty()) ? Optional.of(imageUrl) : Optional.empty();
   }
 
   /**

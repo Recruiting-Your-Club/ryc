@@ -42,7 +42,7 @@ import lombok.Builder;
                                   "evaluationId": "evaluation-456",
                                   "evaluatorId": "admin-456",
                                   "evaluatorName": "홍길동",
-                                  "evaluatorThumbnailUrl": null,
+                                  "evaluatorThumbnailUrl": "",
                                   "isEvaluatorImagePresent": false,
                                   "score": 4.0,
                                   "comment": "내용이 충실합니다.",
