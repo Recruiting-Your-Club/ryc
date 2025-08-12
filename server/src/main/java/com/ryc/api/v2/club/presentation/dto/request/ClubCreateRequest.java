@@ -20,5 +20,4 @@ public record ClubCreateRequest(
               "RELIGION"
             })
         String category,
-    String imageUrl,
-    String thumbnailUrl) {}
+    String representativeImage) {}

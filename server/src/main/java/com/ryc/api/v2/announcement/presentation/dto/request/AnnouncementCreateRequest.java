@@ -63,7 +63,7 @@ public record AnnouncementCreateRequest(
         @NotNull
         ApplicationFormCreateRequest applicationForm,
     @NotNull(message = "images shouldn't be null")
-        List<@NotNull(message = "image shouldn't be null") ImageCreateRequest> images) {
+        List<@NotNull(message = "image shouldn't be blank") String> images) {
 
   // @Schema는 get함수에 사용해야 작동함.
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
@@ -73,7 +73,7 @@ public record AnnouncementCreateRequest(
   }
 
   @Override
-  public List<ImageCreateRequest> images() {
+  public List<String> images() {
     return List.copyOf(images);
   }
 }

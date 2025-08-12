@@ -8,6 +8,7 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -57,9 +58,10 @@ public record AnnouncementGetDetailResponse(
 
     // 기타 정보
     @Schema(description = "태그 목록", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]") List<String> tags,
-    @Schema(description = "이미지 목록") List<ImageResponse> images) {
+    @Schema(description = "이미지 목록") List<FileGetResponse> images) {
   /** 도메인 객체에서 응답 DTO를 생성하는 팩토리 메서드 */
-  public static AnnouncementGetDetailResponse from(Announcement announcement) {
+  public static AnnouncementGetDetailResponse of(
+      Announcement announcement, List<FileGetResponse> images) {
     if (announcement == null) {
       return null;
     }
@@ -67,8 +69,6 @@ public record AnnouncementGetDetailResponse(
     AnnouncementPeriodInfo periodInfo = announcement.getAnnouncementPeriodInfo();
 
     List<String> tags = announcement.getTags().stream().map(Tag::label).toList();
-    List<ImageResponse> images =
-        announcement.getImages().stream().map(ImageResponse::from).toList();
 
     ApplicationFormResponse application =
         ApplicationFormResponse.from(announcement.getApplicationForm());

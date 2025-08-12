@@ -13,8 +13,11 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
 import com.ryc.api.v2.interview.domain.InterviewReservation;
 import com.ryc.api.v2.interview.domain.InterviewSlot;
@@ -32,6 +35,7 @@ public class InterviewService {
   private final InterviewRepository interviewRepository;
   private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
+  private final FileService fileService;
 
   @Transactional
   public List<String> createInterviewSlot(
@@ -71,13 +75,20 @@ public class InterviewService {
     Club club = clubRepository.findById(clubId);
     String applicantEmail = applicantRepository.findEmailById(applicantId);
     List<InterviewSlotGetResponse> slotResponses = getInterviewSlots(announcementId);
+    FileGetResponse representativeImage =
+        fileService.findAllByAssociatedId(clubId).stream()
+            .filter(fileMetaData -> fileMetaData.getFileDomainType() == FileDomainType.CLUB_PROFILE)
+            .findFirst()
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
+            .orElse(null);
 
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
-        .clubImageUrl(club.getImageUrl())
-        .clubThumbnailUrl(club.getThumbnailUrl())
         .interviewSlots(slotResponses)
+        .representativeImage(representativeImage)
         .applicantEmail(applicantEmail)
         .build();
   }

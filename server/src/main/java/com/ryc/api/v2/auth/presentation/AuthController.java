@@ -49,7 +49,7 @@ public class AuthController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @GetMapping("/refreshToken")
+  @GetMapping("/refresh-token")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
@@ -63,7 +63,7 @@ public class AuthController {
             .secure(true)
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     return ResponseEntity.status(HttpStatus.OK)

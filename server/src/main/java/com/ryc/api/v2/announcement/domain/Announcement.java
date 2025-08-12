@@ -30,7 +30,6 @@ public class Announcement {
   private final String target;
   private final String field;
   private final List<Tag> tags;
-  private final List<AnnouncementImage> images;
   private final AnnouncementStatus announcementStatus;
   private final AnnouncementType announcementType;
   private final Boolean hasInterview;
@@ -55,9 +54,6 @@ public class Announcement {
    */
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
     List<Tag> tags = request.tags().stream().map(Tag::from).toList();
-
-    List<AnnouncementImage> images =
-        request.images().stream().map(AnnouncementImage::initialize).toList();
 
     ApplicationForm applicationForm = ApplicationForm.initialize(request.applicationForm());
 
@@ -85,7 +81,6 @@ public class Announcement {
             .tags(tags)
             // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
             .hasInterview(true)
-            .images(images)
             .announcementStatus(announcementStatus)
             .announcementType(announcementType)
             .applicationForm(applicationForm)
@@ -107,8 +102,6 @@ public class Announcement {
       AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
-    List<AnnouncementImage> updatedImages =
-        request.images().stream().map(AnnouncementImage::from).toList();
 
     ApplicationForm applicationForm = ApplicationForm.from(request.applicationForm());
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
@@ -133,7 +126,6 @@ public class Announcement {
             .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
-            .images(updatedImages)
             .announcementStatus(updatedAnnouncementStatus)
             .announcementType(announcementType)
             .isDeleted(false)
@@ -162,7 +154,6 @@ public class Announcement {
         .hasInterview(true)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
-        .images(this.images)
         .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)

@@ -60,7 +60,7 @@ public record AnnouncementUpdateRequest(
     @Schema(description = "공고 지원서") @Valid @NotNull(message = "applicationForm shouldn't be null")
         ApplicationFormUpdateRequest applicationForm,
     @Schema(description = "이미지 목록") @NotNull(message = "images shouldn't be null")
-        List<@Valid @NotNull(message = "image shouldn't be null") ImageUpdateRequest> images) {
+        List<@Valid @NotNull(message = "image shouldn't be null") String> images) {
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
   @Override
   public List<String> tags() {
@@ -68,7 +68,7 @@ public record AnnouncementUpdateRequest(
   }
 
   @Override
-  public List<ImageUpdateRequest> images() {
+  public List<String> images() {
     return List.copyOf(images);
   }
 }
