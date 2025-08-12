@@ -1,20 +1,23 @@
-import { ClubApplyPage } from '@pages/ClubApplyPage';
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 
 import { UserLayout } from './layouts';
 import {
+    ClubApplyLoadingPage,
     DetailLoadingPage,
     LoginPage,
     MainLoadingPage,
-    RecruitmentPage,
+    RecruitmentLoadingPage,
     RegisterPage,
     ReservationPage,
     TestPage,
 } from './pages';
+import { ClubApplySuccessPage } from './pages/ClubApplyPage/ClubApplySuccessPage/ClubApplySuccessPage';
 
 const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
 const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'));
+const LazyRecruitmentPage = lazy(() => import('./pages/RecruitmentPage/RecruitmentPage'));
+const LazyClubApplyPage = lazy(() => import('./pages/ClubApplyPage/ClubApplyPage'));
 
 const router = createBrowserRouter([
     {
@@ -39,11 +42,37 @@ const router = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            { path: 'apply', element: <ClubApplyPage /> },
+
             { path: 'test', element: <TestPage /> },
-            { path: 'detail/recruitment', element: <RecruitmentPage /> },
         ],
     },
+    {
+        path: '/announcements',
+        element: <UserLayout />,
+        children: [
+            {
+                path: ':announcementId',
+                element: (
+                    <Suspense fallback={<RecruitmentLoadingPage />}>
+                        <LazyRecruitmentPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':announcementId/application',
+                element: (
+                    <Suspense fallback={<ClubApplyLoadingPage />}>
+                        <LazyClubApplyPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':announcementId/application/success/:applicantId/:applicationId',
+                element: <ClubApplySuccessPage />,
+            },
+        ],
+    },
+
     {
         path: '/reservation',
         element: <ReservationPage />,
