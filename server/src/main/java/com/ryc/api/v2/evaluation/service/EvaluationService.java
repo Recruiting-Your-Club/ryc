@@ -210,10 +210,10 @@ public class EvaluationService {
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
                             evaluatorIdToNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
-                        .evaluatorImage(
-                            findEvaluatorImage(evaluation.getEvaluatorId()).orElse(null))
+                        .evaluatorThumbnailUrl(
+                            findEvaluatorThumbnailUrl(evaluation.getEvaluatorId()).orElse(null))
                         .isEvaluatorImagePresent(
-                            findEvaluatorImage(evaluation.getEvaluatorId()).isPresent())
+                            findEvaluatorThumbnailUrl(evaluation.getEvaluatorId()).isPresent())
                         .score(evaluation.getScore())
                         .comment(evaluation.getComment())
                         .evaluationType(evaluation.getType().name())
@@ -236,13 +236,13 @@ public class EvaluationService {
    * @param evaluatorId
    * @return Optional<String> evaluatorImage
    */
-  private Optional<String> findEvaluatorImage(String evaluatorId) {
+  private Optional<String> findEvaluatorThumbnailUrl(String evaluatorId) {
     Admin evaluator =
         adminRepository
             .findById(evaluatorId)
             .orElseThrow(() -> new EntityNotFoundException("Admin not found or deleted"));
 
-    String imageUrl = evaluator.getImageUrl();
+    String imageUrl = evaluator.getThumbnailUrl();
     return (imageUrl != null && !imageUrl.isEmpty()) ? Optional.of(imageUrl) : Optional.empty();
   }
 

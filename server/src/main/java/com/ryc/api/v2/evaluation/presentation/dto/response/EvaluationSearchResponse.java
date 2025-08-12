@@ -31,7 +31,7 @@ import lombok.Builder;
                                   "evaluationId": "evaluation-123",
                                   "evaluatorId": "admin-123",
                                   "evaluatorName": "조상준",
-                                  "evaluatorImage": "https://example.com/profile1.jpg",
+                                  "evaluatorThumbnailUrl": "https://example.com/profile1.jpg",
                                   "isEvaluatorImagePresent": true,
                                   "score": 4.5,
                                   "comment": "지원서를 읽고 감명 받았습니다.",
@@ -42,7 +42,7 @@ import lombok.Builder;
                                   "evaluationId": "evaluation-456",
                                   "evaluatorId": "admin-456",
                                   "evaluatorName": "홍길동",
-                                  "evaluatorImage": null,
+                                  "evaluatorThumbnailUrl": null,
                                   "isEvaluatorImagePresent": false,
                                   "score": 4.0,
                                   "comment": "내용이 충실합니다.",
@@ -74,8 +74,8 @@ public record EvaluationSearchResponse(
       @Schema(description = "평가 ID", example = "evaluation-123") String evaluationId,
       @Schema(description = "평가자 ID", example = "admin-123") String evaluatorId,
       @Schema(description = "평가자 이름", example = "조상준") String evaluatorName,
-      @Schema(description = "평가자 프로필 이미지", example = "https://example.com/profile1.jpg\"")
-          String evaluatorImage,
+      @Schema(description = "평가자 프로필 썸네일 이미지", example = "https://example.com/profile1.jpg\"")
+          String evaluatorThumbnailUrl,
       @Schema(description = "평가자 프로필 존재여부", example = "true") boolean isEvaluatorImagePresent,
       @Schema(description = "평가 점수", example = "4.5") BigDecimal score,
       @Schema(description = "평가 코멘트", example = "지원서를 읽고 감명 받았습니다.") String comment,
