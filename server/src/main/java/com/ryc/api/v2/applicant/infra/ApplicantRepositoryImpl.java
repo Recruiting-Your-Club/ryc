@@ -2,9 +2,8 @@ package com.ryc.api.v2.applicant.infra;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +33,7 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   public String findEmailById(String id) {
     return applicantJpaRepository
         .findEmailById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Applicant not found with id: " + id));
+        .orElseThrow(() -> new NoSuchElementException("Applicant not found with id: " + id));
   }
 
   @Override
@@ -42,7 +41,7 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
     return applicantJpaRepository
         .findById(id)
         .map(ApplicantMapper::toDomain)
-        .orElseThrow(() -> new EntityNotFoundException("Applicant not found"));
+        .orElseThrow(() -> new NoSuchElementException("Applicant not found with id: " + id));
   }
 
   @Override
