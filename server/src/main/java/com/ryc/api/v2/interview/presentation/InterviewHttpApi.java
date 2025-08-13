@@ -32,7 +32,7 @@ public class InterviewHttpApi {
 
   private final InterviewService interviewService;
 
-  @GetMapping("announcements/{announcement-id}/interview-slots")
+  @GetMapping("admin/announcements/{announcement-id}/interview-slots")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   @ApiErrorCodeExample(
@@ -58,7 +58,7 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("interview-slots/{interview-slot-id}/reservations")
+  @GetMapping("admin/interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 예약자들 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 예약 정보를 조회합니다.")
   @ApiErrorCodeExample(
@@ -71,9 +71,9 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("announcements/{announcement-id}/unreserved-applicants")
+  @GetMapping("admin/announcements/{announcement-id}/interviews/unreserved-applicants")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 미예약 지원자 조회", description = "동아리 관리자가 면접을 예약하지 않은 지원자들을 조회합니다.")
+  @Operation(summary = "면접 미예약자들 조회", description = "동아리 관리자가 면접을 예약하지 않은 지원자들을 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
@@ -103,7 +103,7 @@ public class InterviewHttpApi {
     return ResponseEntity.created(location).body(response);
   }
 
-  @PatchMapping("interview-reservations/{reservation-id}")
+  @PatchMapping("admin/interview-reservations/{reservation-id}")
   @HasRole(Role.MEMBER)
   @Operation(
       summary = "면접 예약 수정",
