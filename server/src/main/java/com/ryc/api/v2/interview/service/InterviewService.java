@@ -1,9 +1,7 @@
 package com.ryc.api.v2.interview.service;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,35 +91,25 @@ public class InterviewService {
         .build();
   }
 
-  /*
-   * 관리자가 특정 면접 슬롯에 대한 예약 정보를 조회합니다.
-   * 이 메서드는 면접 슬롯 ID를 기준으로 해당 면접 슬롯의 예약 정보를 조회하고,
-   * 면접 예약이 없는 지원자 목록을 생성하여 응답합니다.
-   */
   @Transactional(readOnly = true)
-  public InterviewReservationAdminViewResponse getInterviewReservationsForAdmin(
-      String announcementId, String interviewSlotId) {
-    InterviewSlot targetInterviewSlot =
-        interviewRepository.findInterviewSlotByIdForUpdate(interviewSlotId);
-    List<InterviewReservation> reservations = targetInterviewSlot.getInterviewReservations();
+  public List<InterviewReservationGetResponse> getInterviewReservations(
+      String interviewSlotId) {
+    InterviewSlot interviewSlot = interviewRepository.findInterviewSlotById(interviewSlotId);
+    List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
 
-    // 면접 예약 정보를 담을 응답 리스트 생성
-    List<InterviewReservationGetResponse> reservationResponses =
-        reservations.stream().map(this::createReservationResponse).toList();
+    return reservations.stream()
+        .map(
+            reservation -> {
+              Applicant applicant = reservation.getApplicant();
 
-    List<InterviewSlot> allInterviewSlots =
-        interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
-    List<Applicant> allApplicants = applicantRepository.findAllByAnnouncementId(announcementId);
-
-    // 면접 예약이 없는 지원자 목록을 생성
-    List<UnReservedApplicantGetResponse> unReservedApplicantGetResponses =
-        createUnReservedApplicantResponse(allInterviewSlots, allApplicants);
-
-    return InterviewReservationAdminViewResponse.builder()
-        .interviewSlotId(interviewSlotId)
-        .interviewReservations(reservationResponses)
-        .unReservedApplicants(unReservedApplicantGetResponses)
-        .build();
+              return InterviewReservationGetResponse.builder()
+                  .interviewReservationId(reservation.getId())
+                  .applicantId(applicant.getId())
+                  .applicantEmail(applicant.getEmail())
+                  .applicantName(applicant.getName())
+                  .build();
+            })
+        .toList();
   }
 
   @Transactional
@@ -186,45 +174,5 @@ public class InterviewService {
         .maxNumberOfPeople(slot.getMaxNumberOfPeople())
         .currentNumberOfPeople(size)
         .build();
-  }
-
-  private InterviewReservationGetResponse createReservationResponse(
-      InterviewReservation reservation) {
-    Applicant applicant = reservation.getApplicant();
-
-    return InterviewReservationGetResponse.builder()
-        .interviewReservationId(reservation.getId())
-        .applicantId(applicant.getId())
-        .applicantEmail(applicant.getEmail())
-        .applicantName(applicant.getName())
-        .build();
-  }
-
-  /*
-   * 모든 면접 슬롯과 모든 지원자를 기반으로 면접 예약이 없는 지원자 목록을 생성합니다.
-   * 이 메서드는 모든 면접 슬롯과 지원자를 조회하여
-   * 면접 예약이 없는 지원자들을 필터링하여 응답을 생성합니다
-   */
-  private List<UnReservedApplicantGetResponse> createUnReservedApplicantResponse(
-      List<InterviewSlot> allInterviewSlots, List<Applicant> allApplicants) {
-
-    Set<String> reservedApplicantIds = new HashSet<>();
-
-    for (InterviewSlot interviewSlot : allInterviewSlots) {
-      for (InterviewReservation reservation : interviewSlot.getInterviewReservations()) {
-        reservedApplicantIds.add(reservation.getApplicant().getId());
-      }
-    }
-
-    return allApplicants.stream()
-        .filter(applicant -> !reservedApplicantIds.contains(applicant.getId()))
-        .map(
-            applicant ->
-                UnReservedApplicantGetResponse.builder()
-                    .applicantId(applicant.getId())
-                    .applicantName(applicant.getName())
-                    .applicantEmail(applicant.getEmail())
-                    .build())
-        .toList();
   }
 }

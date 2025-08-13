@@ -15,6 +15,8 @@ public interface InterviewRepository {
 
   List<InterviewSlot> findInterviewSlotsByAnnouncementId(String announcementId);
 
+  InterviewSlot findInterviewSlotById(String interviewSlotId);
+
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
 
   InterviewSlot findInterviewSlotByReservationId(String interviewReservationId);

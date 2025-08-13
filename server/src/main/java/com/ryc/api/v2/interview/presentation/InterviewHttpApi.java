@@ -58,17 +58,16 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("announcements/{announcement-id}/interview-slots/{interview-slot-id}/reservations")
+  @GetMapping("interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 정보를 조회합니다.")
+  @Operation(summary = "면접 예약 정보 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 정보를 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND"})
-  public ResponseEntity<InterviewReservationAdminViewResponse> getInterviewInfoForAdmin(
-      @PathVariable("announcement-id") String announcementId,
+  public ResponseEntity<List<InterviewReservationGetResponse>> getInterviewReservationsForAdmin(
       @PathVariable("interview-slot-id") String interviewSlotId) {
-    InterviewReservationAdminViewResponse response =
-        interviewService.getInterviewReservationsForAdmin(announcementId, interviewSlotId);
+    List<InterviewReservationGetResponse> response =
+        interviewService.getInterviewReservations(interviewSlotId);
     return ResponseEntity.ok(response);
   }
 
