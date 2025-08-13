@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 function InterviewTimeTable({
     interviewSlots,
-    selectedInterviewLabel,
+    selectedInterviewSlotId,
     onSelect,
     setSelectedLabel,
     onOpenChange,
@@ -33,15 +33,17 @@ function InterviewTimeTable({
     // form hooks
     // query hooks
     // calculated values
-    const slotsMap = useMemo(() => {
-        return new Map(interviewSlots.map((slot) => [slot.period.startDate, slot]));
-    }, [interviewSlots]);
+    // const slotsMap = useMemo(() => {
+    //     return new Map(interviewSlots.map((slot) => [slot.period.startDate, slot]));
+    // }, [interviewSlots]);
     // const slotsToShow = slotsMap.get(highlightedDate);
     const slotsToShow = interviewSlots.filter(
         (slot) => dayjs(slot.period.startDate).format('YYYY-MM-DD') === highlightedDate,
     );
 
-    const enabledDates = interviewSlots.map((slot) => slot.period.startDate);
+    const enabledDates = interviewSlots.map((slot) =>
+        dayjs(slot.period.startDate).format('YYYY-MM-DD'),
+    );
 
     // handlers
     const handleCalendar = (newSelected: string[]) => {
@@ -80,7 +82,7 @@ function InterviewTimeTable({
                         slotsToShow.map((slot) => {
                             const startTime = dayjs(slot.period.startDate).format('HH:mm');
                             const endTime = dayjs(slot.period.endDate).format('HH:mm');
-                            const label = `${highlightedDate} ${startTime}~${endTime}`;
+                            const label = `${dayjs(highlightedDate).format('MM.DD')} ${startTime}`;
 
                             return (
                                 <InterviewInformationButton
@@ -88,8 +90,8 @@ function InterviewTimeTable({
                                     label={label}
                                     startTime={startTime}
                                     endTime={endTime}
-                                    onClick={() => handleButtonClick(slot.id)}
-                                    isSelected={selectedInterviewLabel === slot.id}
+                                    onClick={() => handleButtonClick(label)}
+                                    isSelected={selectedInterviewSlotId === slot.id}
                                 />
                             );
                         })

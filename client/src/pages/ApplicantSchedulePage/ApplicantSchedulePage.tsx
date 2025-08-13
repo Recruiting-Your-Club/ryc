@@ -28,6 +28,7 @@ import { interviewMutations } from '@hooks/mutations/interviewMutations';
 import type {
     ApplicantForInterviewSlot,
     ApplicantReservedInterview,
+    InterviewSlot,
 } from '@api/domain/interview/types';
 import type { SelectedLabel } from './types';
 import Alert from '@assets/images/alert.svg';
@@ -149,15 +150,13 @@ function ApplicantSchedulePage() {
             setSlot0Id(interviewSlots[0]?.id ?? '');
             setSlot1Id(interviewSlots[1]?.id ?? '');
 
-            setSelectedInterviewLabel(getInitialInterviewLabel()); // 밑 두 줄은 정확히는 아이디가 null이 아니어도됨
-            setSelectedStandardInterviewLabel(getInitialInterviewLabel());
+            setSelectedInterviewLabel(getInitialInterviewLabel(interviewSlots?.[1])); // 밑 두 줄은 정확히는 아이디가 null이 아니어도됨
+            setSelectedStandardInterviewLabel(getInitialInterviewLabel(interviewSlots?.[0]));
         }
     }, [interviewSlots]);
 
     //etc
-    function getInitialInterviewLabel(): SelectedLabel {
-        const slot = interviewSlots?.[0];
-
+    function getInitialInterviewLabel(slot: InterviewSlot | null): SelectedLabel {
         if (slot) {
             const date = convertDate(dayjs(slot.period.startDate).format('YYYY-MM-DD'));
             const name = dayjs(slot.period.startDate).format('HH:mm');
@@ -214,7 +213,7 @@ function ApplicantSchedulePage() {
                             <Dropdown.Content offsetX={11.7} offsetY={42} sx={s_dropdownContent}>
                                 <InterviewTimeTable
                                     interviewSlots={interviewSlots}
-                                    selectedInterviewLabel={selectedInterviewLabel.label}
+                                    selectedInterviewSlotId={selectedInterviewLabel.interviewSlotId}
                                     onSelect={handleSelectLabel}
                                     onOpenChange={setOpen}
                                     listSx={s_buttonGroup}
@@ -260,7 +259,9 @@ function ApplicantSchedulePage() {
                             <Dropdown.Content offsetX={11.7} offsetY={42}>
                                 <InterviewTimeTable
                                     interviewSlots={interviewSlots}
-                                    selectedInterviewLabel={selectedStandardInterviewLabel.label}
+                                    selectedInterviewSlotId={
+                                        selectedStandardInterviewLabel.interviewSlotId
+                                    }
                                     onSelect={handleSelectStandardLabel}
                                     onOpenChange={setStandardOpen}
                                     listSx={s_buttonGroup}
