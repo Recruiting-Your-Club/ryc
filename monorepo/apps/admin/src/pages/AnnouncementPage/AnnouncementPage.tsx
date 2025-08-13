@@ -15,36 +15,46 @@ import {
 } from './AnnouncementPage.style';
 import { DetailQuestionPage } from './DetailQuestionPage/DetailQuestionPage';
 import { PersonalQuestionPage } from './PersonalQuestionPage/PersonalQuestionPage';
-import type { QuestionType } from './types';
+import { RecruitmentPage } from './RecruitmenPage/RecruitmentPage';
+import type { AnnouncementInfoPageProps, QuestionType } from './types';
 import { DetailQuestion } from './types';
 
 export const clubData = {
-    announcementId: '213123',
+    id: '213123',
     title: 'EN# (Enjoy C#)',
-    description: '',
+    detailDescription: '',
+    summaryDescription: 'En#에서 프론트엔드 분야 신입 부원을 모집합니다!',
     target: '1,2학년',
-    tag: '학술동아리',
-    numberOfPeople: 0,
-    announcementPeriod: [
-        {
-            start: '2025-05-03T03:13:11.173Z',
-            end: '2025-06-29T03:13:11.173Z',
-        },
+    field: '학술동아리',
+    numberOfPeople: '0명',
+    activityPeriod: '한 학기',
+    announcementType: 'ALWAYS_OPEN' as const,
+    announcementStatus: 'RECRUITING' as const,
+    images: [
+        'https://ticketimage.interpark.com/Play/image/large/24/24013437_p.gif',
+        'https://images.unsplash.com/photo-1496989981497-27d69cdad83e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fCVFQiU4RiU5OSVFQyU5NSU4NCVFQiVBNiVBQ3xlbnwwfHwwfHx8MA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1673795753320-a9df2df4461e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Mnx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1745605443047-ea774bf4a77f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzMnx8fGVufDB8fHx8fA%3D%3D',
+        'https://d32gkk464bsqbe.cloudfront.net/JTI08fg3oWjuMKWf6pO94MCxv5M=/400x300/company-profiles/o/b23a5925970125281c7ad70138c1bee3d79df7ca.png',
     ],
-    applicationPeriod: [
-        {
-            start: '2025-05-03T03:13:11.173Z',
-            end: '2025-05-03T03:13:11.173Z',
-        },
-    ],
-    interviewPeriod: [
-        {
-            start: '2025-05-03T03:13:11.173Z',
-            end: '2025-05-03T03:13:11.173Z',
-        },
-    ],
-    resultAnnouncementDate: '2025-06-30T15:00:00.000Z',
-    durationDate: '한 학기',
+    applicationPeriod: {
+        startDate: '2025-05-03T03:13:11.173Z',
+        endDate: '2025-06-29T03:13:11.173Z',
+    },
+    documentResultPeriod: {
+        startDate: '2025-05-03T03:13:11.173Z',
+        endDate: '2025-05-03T03:13:11.173Z',
+    },
+
+    interviewPeriod: {
+        startDate: '2025-05-03T03:13:11.173Z',
+        endDate: '2025-05-03T03:13:11.173Z',
+    },
+
+    finalResultPeriod: {
+        startDate: '2025-06-30T15:00:00.000Z',
+        endDate: '2025-06-30T15:00:00.000Z',
+    },
     application: {
         applicationQuestions: [
             {
@@ -114,7 +124,10 @@ export const clubData = {
 };
 
 function AnnouncementPage() {
+    const { application, ...recruitment } = clubData;
     const [activeTab, setActiveTab] = useState<string>('모집공고');
+
+    // 모집공고 데이터
 
     // 사전질문 데이터
     const personalQuestions = useMemo(
@@ -145,7 +158,7 @@ function AnnouncementPage() {
     const navigateItem = [
         {
             title: '모집공고',
-            page: <div></div>,
+            page: <RecruitmentPage {...recruitment} />,
             width: '5.8rem',
         },
         {
@@ -178,7 +191,7 @@ function AnnouncementPage() {
                     <div css={s_clubNameContainer}>
                         <Text type="h3Semibold">{clubData.title}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            {clubData.tag}
+                            {clubData.field}
                         </Text>
                     </div>
                 </div>

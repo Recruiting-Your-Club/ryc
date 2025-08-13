@@ -11,10 +11,10 @@ export interface AnnouncementInfoPageProps {
     id: string;
     title: string;
     summaryDescription: string;
-    detailDesription: string;
+    detailDescription: string;
     target: string;
     field: string;
-    announcementsStatus: 'UPCOMING' | 'RECRUITING' | 'CLOSED' | 'EMPTY';
+    announcementStatus: 'UPCOMING' | 'RECRUITING' | 'CLOSED' | 'EMPTY';
     announcementType: 'ALWAYS_OPEN' | 'LIMITED_TIME';
     activityPeriod: string;
     numberOfPeople: string;
@@ -22,6 +22,7 @@ export interface AnnouncementInfoPageProps {
     interviewPeriod: Period; //면접 날짜
     documentResultPeriod: Period; // 서류평가 결과
     finalResultPeriod: Period; //최종 결과
+    images: string[];
 }
 
 export interface PersonalInfoPageProps {

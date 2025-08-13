@@ -13,3 +13,5 @@ export * from './InterviewTimeTable';
 export * from './PersonalScoreCard';
 export * from './SideBar';
 export * from './ClubNavigation';
+export * from './ClubBox';
+export * from './ImageDialog';
