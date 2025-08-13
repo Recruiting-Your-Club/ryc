@@ -23,3 +23,4 @@ export * from './Toast';
 export * from './Tooltip';
 export * from './ImageDialog';
 export * from './Select';
+export * from './ConfirmDialog';

@@ -1,0 +1,122 @@
+{
+    "clubName": "엔샵",
+    "clubCategory": "ACADEMIC",
+    "clubImageUrl": "https://example.com/images/algo_club.svg",
+    "representativeImage": {
+        "id": "rep_img_algo_xyz",
+        "url": "https://example.com/images/algorithm_banner.png",
+        "originalFileName": "algorithm_main.png",
+        "contentType": "image/png"
+    },
+    "slotByDateResponses": [
+        {
+            "date": "2025-08-10",
+            "interviewDuration": 60,
+            "interviewSlots": [
+                {
+                    "id": "slot_0910_1",
+                    "period": {
+                        "startDate": "2025-08-10T10:00",
+                        "endDate": "2025-08-10T11:00"
+                    },
+                    "maxNumberOfPeople": 5,
+                    "currentNumberOfPeople": 2
+                },
+                {
+                    "id": "slot_0910_2",
+                    "period": {
+                        "startDate": "2025-08-10T11:00",
+                        "endDate": "2025-08-10T12:00"
+                    },
+                    "maxNumberOfPeople": 5,
+                    "currentNumberOfPeople": 5
+                },
+                {
+                    "id": "slot_0910_3",
+                    "period": {
+                        "startDate": "2025-08-10T12:00",
+                        "endDate": "2025-08-10T13:00"
+                    },
+                    "maxNumberOfPeople": 5,
+                    "currentNumberOfPeople": 0
+                }
+            ]
+        },
+        {
+            "date": "2025-08-11",
+            "interviewDuration": 60,
+            "interviewSlots": [
+                {
+                    "id": "slot_0911_1",
+                    "period": {
+                        "startDate": "2025-08-11T14:00",
+                        "endDate": "2025-08-11T15:00"
+                    },
+                    "maxNumberOfPeople": 10,
+                    "currentNumberOfPeople": 8
+                },
+                {
+                    "id": "slot_0911_2",
+                    "period": {
+                        "startDate": "2025-08-11T15:00",
+                        "endDate": "2025-08-11T16:00"
+                    },
+                    "maxNumberOfPeople": 10,
+                    "currentNumberOfPeople": 1
+                },
+                {
+                    "id": "slot_0911_3",
+                    "period": {
+                        "startDate": "2025-08-11T16:00",
+                        "endDate": "2025-08-11T17:00"
+                    },
+                    "maxNumberOfPeople": 8,
+                    "currentNumberOfPeople": 8
+                },
+                {
+                    "id": "slot_0911_4",
+                    "period": {
+                        "startDate": "2025-08-11T17:00",
+                        "endDate": "2025-08-11T18:00"
+                    },
+                    "maxNumberOfPeople": 8,
+                    "currentNumberOfPeople": 3
+                }
+            ]
+        },
+        {
+            "date": "2025-08-12",
+            "interviewDuration": 60,
+            "interviewSlots": [
+                {
+                    "id": "slot_0912_1",
+                    "period": {
+                        "startDate": "2025-08-12T09:00",
+                        "endDate": "2025-08-12T10:00"
+                    },
+                    "maxNumberOfPeople": 4,
+                    "currentNumberOfPeople": 1
+                },
+                {
+                    "id": "slot_0912_2",
+                    "period": {
+                        "startDate": "2025-08-12T10:00",
+                        "endDate": "2025-08-12T11:00"
+                    },
+                    "maxNumberOfPeople": 4,
+                    "currentNumberOfPeople": 4
+                },
+                {
+                    "id": "slot_0912_3",
+                    "period": {
+                        "startDate": "2025-08-12T11:00",
+                        "endDate": "2025-08-12T12:00"
+                    },
+                    "maxNumberOfPeople": 6,
+                    "currentNumberOfPeople": 0
+                }
+            ]
+        }
+    ],
+    "applicantEmail": "lee.algo@example.com"
+}

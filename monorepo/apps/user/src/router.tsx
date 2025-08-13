@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: '/reservation',
+        path: '/clubs/:clubId/:announcements/:announcementId/applicants/:applicantId',
         element: <ReservationPage />,
     },
 ]);

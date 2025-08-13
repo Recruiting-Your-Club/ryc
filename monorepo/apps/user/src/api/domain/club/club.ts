@@ -1,5 +1,5 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { AllClub, Club } from './types';
+import type { AllClub, Club, ClubInterviewSchedule, SubmitReservationResponse } from './types';
 
 async function getAllClubs(): Promise<AllClub[]> {
     const response = await httpRequest.get({
@@ -13,5 +13,28 @@ async function getClub(id: string): Promise<Club> {
     });
     return response as Club;
 }
+async function getClubReservation(
+    clubId: string,
+    announcementId: string,
+    applicantId: string,
+): Promise<ClubInterviewSchedule> {
+    const response = await httpRequest.get({
+        url: `clubs/${clubId}/announcements/${announcementId}/applicants/${applicantId}`,
+    });
+    return response as ClubInterviewSchedule;
+}
 
-export { getAllClubs, getClub };
+async function submitInterviewReservation(slotId: string, applicantId: string): Promise<SubmitReservationResponse> {
+    const response = await httpRequest.post({
+        url: `interview-slot/${slotId}/reservations`,
+        headers: {
+            'interview-slot-id': slotId,
+        },
+        body: {
+            applicantId: applicantId,
+        },
+    });
+    return response as SubmitReservationResponse;
+}
+
+export { getAllClubs, getClub, getClubReservation, submitInterviewReservation };

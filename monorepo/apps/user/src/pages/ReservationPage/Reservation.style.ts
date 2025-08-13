@@ -32,9 +32,11 @@ export const s_leftContainer = css`
     display: flex;
     flex-direction: column;
     align-items: start;
-    flex: 1;
     @media (min-width: ${theme.breakpoint.tabletMini}) {
         border-right: 1px solid ${theme.colors.gray[200]};
+    }
+    @media (min-width: ${theme.breakpoint.tablet}) {
+        flex: 1;
     }
 `;
 export const s_clubInfoWrapper = css`
@@ -113,18 +115,23 @@ export const s_timeContainer = css`
         padding: 1rem 2rem;
     }
 `;
-export const s_timeButton = css`
+export const s_timeButton = (isSelected: boolean) => css`
+    ${theme.typography.captionRegular}
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+    white-space: nowrap;
     padding: 0.5rem 1rem;
+    height: 3.6rem;
+    background-color: transparent;
+    border-radius: 8px;
     border: 1px solid ${theme.colors.gray[200]};
-    :hover {
-        color: white;
-        background-color: ${theme.colors.default};
-        border: none;
-        cursor: pointer;
-    }
+    ${isSelected &&
+    css`
+        background-color: ${theme.colors.blue[100]};
+        color: ${theme.colors.blue[200]};
+    `}
 `;
 
 export const s_reserveButtonWrapper = css`
