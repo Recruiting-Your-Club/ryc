@@ -2,16 +2,14 @@ package com.ryc.api.v2.evaluation.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
@@ -27,6 +25,7 @@ public class EvaluationService {
   private final EvaluationRepository evaluationRepository;
   private final AdminRepository adminRepository;
   private final ClubRoleRepository clubRoleRepository;
+  private final ApplicantRepository applicantRepository;
 
   @Transactional
   public ApplicationEvaluationResponse evaluateApplication(
@@ -67,39 +66,41 @@ public class EvaluationService {
     if (totalEvaluatorCount == 0 || evaluations.isEmpty())
       return createEmptyEvaluationResponse(body.applicantIdList(), totalEvaluatorCount);
 
-    Map<String, String> evaluatorIdToNameMap = getEvaluatorIdToNameMap(evaluations);
+    // 평가자 아이디 - 이름 매핑
+    Map<String, String> evaluatorNameMap = getEvaluatorNameMap(evaluations);
+
+    // 평가자 아이디 - 썸네일 url 매핑
+    Map<String, String> evaluatorThumbnailMap = getEvaluatorThumbnailMap(evaluations);
 
     // applicantId 별로 평가 데이터를 생성
-    Map<String, EvaluationSearchResponse.ApplicantEvaluations> response =
+    List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
         evaluations.stream()
-            .collect(
-                Collectors.groupingBy(
-                    Evaluation::getEvaluateeId,
-                    Collectors.collectingAndThen(
-                        Collectors.toList(),
-                        list ->
-                            buildApplicantEvaluations(
-                                list, evaluatorIdToNameMap, currentAdminId, totalEvaluatorCount))));
+            .collect(Collectors.groupingBy(Evaluation::getEvaluateeId))
+            .entrySet()
+            .stream()
+            .map(
+                entry ->
+                    buildEvaluationsOfApplicant(
+                        entry.getKey(),
+                        entry.getValue(),
+                        evaluatorNameMap,
+                        evaluatorThumbnailMap,
+                        currentAdminId,
+                        totalEvaluatorCount))
+            .toList();
 
     return new EvaluationSearchResponse(response);
   }
 
   @Transactional(readOnly = true)
   public MyEvaluationStatusSearchResponse findMyEvaluationStatusForApplicants(
-      MyEvaluationStatusSearchRequest body, String currentAdminId, EvaluationType type) {
+      String currentAdminId, String announcementId, EvaluationType type) {
+
+    List<String> applicantIds = applicantRepository.findAllIdByAnnouncementId(announcementId);
     List<String> evaluatedApplicantIds =
-        evaluationRepository.findEvaluatedApplicantIds(
-            currentAdminId, type, body.applicantIdList());
+        evaluationRepository.findEvaluatedApplicantIds(currentAdminId, type, applicantIds);
 
-    List<MyEvaluationStatusSearchResponse.ApplicantEvaluationStatus> applicantEvaluationStatuses =
-        evaluatedApplicantIds.stream()
-            .map(
-                applicantId ->
-                    new MyEvaluationStatusSearchResponse.ApplicantEvaluationStatus(
-                        applicantId, evaluatedApplicantIds.contains(applicantId)))
-            .toList();
-
-    return new MyEvaluationStatusSearchResponse(applicantEvaluationStatuses);
+    return new MyEvaluationStatusSearchResponse(evaluatedApplicantIds);
   }
 
   @Transactional(readOnly = true)
@@ -169,7 +170,7 @@ public class EvaluationService {
    * @param evaluations 평가 데이터 리스트
    * @return evaluatorId -> evaluatorName 매핑 Map
    */
-  private Map<String, String> getEvaluatorIdToNameMap(List<Evaluation> evaluations) {
+  private Map<String, String> getEvaluatorNameMap(List<Evaluation> evaluations) {
     // evaluatorId 수집 (중복 evaluatorId 제거)
     Set<String> evaluatorIds =
         evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
@@ -179,32 +180,51 @@ public class EvaluationService {
   }
 
   /**
+   * 평가자 ID를 기준으로 썸네일 이미지 URL을 매핑한 Map을 반환합니다.
+   *
+   * @param evaluations 평가 데이터 리스트
+   * @return evaluatorId -> evaluatorThumbnailUrl 매핑 Map
+   */
+  private Map<String, String> getEvaluatorThumbnailMap(List<Evaluation> evaluations) {
+    Set<String> evaluatorIds =
+        evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
+
+    return adminRepository.findThumbnailUrlByIds(evaluatorIds.stream().toList());
+  }
+
+  /**
    * 지원자 1명에 대한 평가 요약 및 상세 정보를 생성합니다.
    *
    * @param evaluations 평가 데이터 리스트
-   * @param evaluatorIdToNameMap evaluatorId → evaluatorName 매핑 Map
+   * @param evaluatorNameMap evaluatorId → evaluatorName 매핑 Map
    * @param currentAdminId 현재 로그인한 동아리원(평가자) ID
    * @param totalEvaluatorCount 해당 동아리의 전체 평가자 수
    * @return ApplicantEvaluations DTO
    */
-  private EvaluationSearchResponse.ApplicantEvaluations buildApplicantEvaluations(
+  private EvaluationSearchResponse.EvaluationsOfApplicant buildEvaluationsOfApplicant(
+      String applicantId,
       List<Evaluation> evaluations,
-      Map<String, String> evaluatorIdToNameMap,
+      Map<String, String> evaluatorNameMap,
+      Map<String, String> evaluatorThumbnailMap,
       String currentAdminId,
       int totalEvaluatorCount) {
 
     int completedEvaluatorCount = evaluations.size();
     BigDecimal averageScore = calculateAverageScore(evaluations, completedEvaluatorCount);
 
-    List<EvaluationSearchResponse.EvaluationData> evaluationDatas =
+    List<EvaluationSearchResponse.EvaluationDetail> evaluationDetails =
         evaluations.stream()
             .map(
                 evaluation ->
-                    EvaluationSearchResponse.EvaluationData.builder()
+                    EvaluationSearchResponse.EvaluationDetail.builder()
                         .evaluationId(evaluation.getId())
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
-                            evaluatorIdToNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
+                            evaluatorNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
+                        .evaluatorThumbnailUrl(
+                            evaluatorThumbnailMap.getOrDefault(evaluation.getEvaluatorId(), ""))
+                        .isEvaluatorImagePresent(
+                            evaluatorThumbnailMap.containsKey(evaluation.getEvaluatorId()))
                         .score(evaluation.getScore())
                         .comment(evaluation.getComment())
                         .evaluationType(evaluation.getType().name())
@@ -212,11 +232,12 @@ public class EvaluationService {
                         .build())
             .toList();
 
-    return EvaluationSearchResponse.ApplicantEvaluations.builder()
+    return EvaluationSearchResponse.EvaluationsOfApplicant.builder()
+        .applicantId(applicantId)
         .completedEvaluatorCount(completedEvaluatorCount)
         .totalEvaluatorCount(totalEvaluatorCount)
         .averageScore(averageScore)
-        .evaluationDatas(evaluationDatas)
+        .evaluationDetails(evaluationDetails)
         .build();
   }
 
@@ -253,17 +274,18 @@ public class EvaluationService {
     final int completedEvaluatorCount = 0;
     final BigDecimal averageScore = BigDecimal.ZERO;
 
-    Map<String, EvaluationSearchResponse.ApplicantEvaluations> response = new HashMap<>();
-    for (String applicantId : applicantIds) {
-      response.put(
-          applicantId,
-          EvaluationSearchResponse.ApplicantEvaluations.builder()
-              .completedEvaluatorCount(completedEvaluatorCount)
-              .totalEvaluatorCount(totalEvaluatorCount)
-              .averageScore(averageScore)
-              .evaluationDatas(List.of())
-              .build());
-    }
+    List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
+        applicantIds.stream()
+            .map(
+                applicantId ->
+                    EvaluationSearchResponse.EvaluationsOfApplicant.builder()
+                        .applicantId(applicantId)
+                        .completedEvaluatorCount(completedEvaluatorCount)
+                        .totalEvaluatorCount(totalEvaluatorCount)
+                        .averageScore(averageScore)
+                        .evaluationDetails(List.of())
+                        .build())
+            .toList();
 
     return new EvaluationSearchResponse(response);
   }

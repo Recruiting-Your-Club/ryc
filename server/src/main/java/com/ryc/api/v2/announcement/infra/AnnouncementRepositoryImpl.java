@@ -11,6 +11,7 @@ import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
+import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.file.infra.jpa.FileMetadataJpaRepository;
 
@@ -95,5 +96,16 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   @Override
   public List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds) {
     return announcementJpaRepository.getStatusesByClubIds(clubIds);
+  }
+
+  @Override
+  public boolean imageAllowed(String announcementId) {
+    return announcementJpaRepository
+        .findById(announcementId)
+        .filter(announcementEntity -> !announcementEntity.getIsDeleted())
+        .orElseThrow(() -> new EntityNotFoundException("announcement not found"))
+        .getApplicationForm()
+        .getPersonalInfoQuestions()
+        .contains(PersonalInfoQuestionType.PROFILE_IMAGE);
   }
 }
