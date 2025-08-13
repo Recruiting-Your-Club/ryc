@@ -256,15 +256,18 @@ function CardBox({
             <Divider sx={s_divider} />
             <div css={s_cardGroupWrapper}>
                 <div css={s_cardGroup}>
-                    {searchApplicants(selectedGroup.list).map((applicant) => (
-                        <ApplicantCard
-                            key={applicant.applicantId}
-                            applicant={applicant}
-                            checked={selectedGroup.ids.includes(applicant.applicantId)}
-                            onChange={handleCheckbox}
-                            onClick={() => handleOpen(applicant as MergedStepApplicant)}
-                        />
-                    ))}
+                    {searchApplicants(selectedGroup.list)
+                        .slice()
+                        .sort((prev, next) => (next.averageScore ?? 0) - (prev.averageScore ?? 0))
+                        .map((applicant) => (
+                            <ApplicantCard
+                                key={applicant.applicantId}
+                                applicant={applicant}
+                                checked={selectedGroup.ids.includes(applicant.applicantId)}
+                                onChange={handleCheckbox}
+                                onClick={() => handleOpen(applicant as MergedStepApplicant)}
+                            />
+                        ))}
                 </div>
             </div>
         </div>
