@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class EvaluationService {
   private final EvaluationRepository evaluationRepository;
   private final AdminRepository adminRepository;
   private final ClubRoleRepository clubRoleRepository;
+  private final ApplicantRepository applicantRepository;
 
   @Transactional
   public ApplicationEvaluationResponse evaluateApplication(
@@ -92,20 +94,12 @@ public class EvaluationService {
 
   @Transactional(readOnly = true)
   public MyEvaluationStatusSearchResponse findMyEvaluationStatusForApplicants(
-      MyEvaluationStatusSearchRequest body, String currentAdminId, EvaluationType type) {
-    List<String> evaluatedApplicantIds =
-        evaluationRepository.findEvaluatedApplicantIds(
-            currentAdminId, type, body.applicantIdList());
+      String currentAdminId, String announcementId, EvaluationType type) {
 
-    List<MyEvaluationStatusSearchResponse.ApplicantEvaluationStatus> applicantEvaluationStatuses =
-        evaluatedApplicantIds.stream()
-            .map(
-                applicantId ->
-                    new MyEvaluationStatusSearchResponse.ApplicantEvaluationStatus(
-                        applicantId, evaluatedApplicantIds.contains(applicantId)))
-            .toList();
+    List<String> applicantIds = applicantRepository.findAllIdByAnnouncementId(announcementId);
+    List<String> evaluatedApplicantIds = evaluationRepository.findEvaluatedApplicantIds(currentAdminId, type, applicantIds);
 
-    return new MyEvaluationStatusSearchResponse(applicantEvaluationStatuses);
+    return new MyEvaluationStatusSearchResponse(evaluatedApplicantIds);
   }
 
   @Transactional(readOnly = true)

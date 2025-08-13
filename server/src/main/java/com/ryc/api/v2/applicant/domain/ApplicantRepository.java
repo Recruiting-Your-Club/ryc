@@ -15,6 +15,8 @@ public interface ApplicantRepository {
 
   List<Applicant> findAllByAnnouncementId(String announcementId);
 
+  List<String> findAllIdByAnnouncementId(String announcementId);
+
   List<Applicant> findAllByAnnouncementIdAndStatus(String announcementId, ApplicantStatus status);
 
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
