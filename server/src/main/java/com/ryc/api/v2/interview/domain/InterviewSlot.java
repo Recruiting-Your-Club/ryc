@@ -2,10 +2,10 @@ package com.ryc.api.v2.interview.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import com.ryc.api.v2.announcement.domain.vo.Period;
-import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
 
@@ -29,9 +29,12 @@ public class InterviewSlot {
       String creatorId,
       String announcementId,
       Integer maxNumberOfPeople,
-      PeriodRequest periodRequest) {
+      LocalDateTime start,
+      Integer interviewDuration) {
 
-    Period period = Period.from(periodRequest);
+    Period period =
+        Period.builder().startDate(start).endDate(start.plusMinutes(interviewDuration)).build();
+
     return InterviewSlot.builder()
         .id(DEFAULT_INITIAL_ID)
         .creatorId(creatorId)

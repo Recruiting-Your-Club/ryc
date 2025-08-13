@@ -47,7 +47,8 @@ public class InterviewService {
                         adminId,
                         announcementId,
                         request.numberOfPeople(),
-                        request.interviewPeriod()))
+                        request.start(),
+                        request.interviewDuration()))
             .toList();
 
     List<InterviewSlot> savedInterviewSlots =
@@ -174,7 +175,7 @@ public class InterviewService {
   public InterviewReservationUpdateResponse changeInterviewReservation(
       String applicantId, InterviewReservationUpdatedRequest body) {
 
-    InterviewReservation reservation = null;
+    InterviewReservation reservation;
 
     // 기존 면접 슬롯이 있는지 확인하고, 해당 슬롯에서 지원자의 예약을 제거합니다.
     Optional<InterviewSlot> interviewSlotOptional =
