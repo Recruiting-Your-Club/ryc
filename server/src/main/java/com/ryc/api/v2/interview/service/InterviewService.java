@@ -1,5 +1,7 @@
 package com.ryc.api.v2.interview.service;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,7 +70,7 @@ public class InterviewService {
         .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
         .entrySet()
         .stream()
-        .map(entry -> new InterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
+        .map(entry -> createInterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
         .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
         .toList();
   }
@@ -216,6 +218,18 @@ public class InterviewService {
         .period(periodResponse)
         .maxNumberOfPeople(slot.getMaxNumberOfPeople())
         .currentNumberOfPeople(size)
+        .build();
+  }
+
+  private InterviewSlotsByDateResponse createInterviewSlotsByDateResponse(
+      LocalDate date, List<InterviewSlotResponse> slotResponses) {
+    PeriodResponse period = slotResponses.get(0).period();
+    long interviewDuration = Duration.between(period.startDate(), period.endDate()).toMinutes();
+
+    return InterviewSlotsByDateResponse.builder()
+        .date(date)
+        .interviewDuration((int) interviewDuration)
+        .interviewSlots(slotResponses)
         .build();
   }
 }

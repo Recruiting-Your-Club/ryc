@@ -5,11 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 public record InterviewSlotsByDateResponse(
     @Schema(description = "날짜") LocalDate date,
+    @Schema(description = "면접 당 진행 시간") Integer interviewDuration,
     @Schema(description = "날짜 별 면접 슬롯 정보") List<InterviewSlotResponse> interviewSlots) {
 
+  @Builder
   public InterviewSlotsByDateResponse {
     if (interviewSlots != null) {
       interviewSlots =

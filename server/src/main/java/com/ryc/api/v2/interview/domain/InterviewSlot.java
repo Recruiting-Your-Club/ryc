@@ -35,6 +35,10 @@ public class InterviewSlot {
     Period period =
         Period.builder().startDate(start).endDate(start.plusMinutes(interviewDuration)).build();
 
+    if (!period.startDate().toLocalDate().equals(period.endDate().toLocalDate())) {
+      throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_PERIOD_INVALID);
+    }
+
     return InterviewSlot.builder()
         .id(DEFAULT_INITIAL_ID)
         .creatorId(creatorId)
