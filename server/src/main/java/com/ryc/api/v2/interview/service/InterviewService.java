@@ -56,13 +56,19 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
-  public List<InterviewSlotGetResponse> getInterviewSlots(String announcementId) {
+  public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
 
-    return interviewSlots.stream()
-        .map(this::createInterviewSlotResponse)
-        .sorted(Comparator.comparing(slot -> slot.period().startDate()))
+    List<InterviewSlotResponse> slots =
+        interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
+
+    return slots.stream()
+        .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
+        .entrySet()
+        .stream()
+        .map(entry -> new InterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
+        .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
         .toList();
   }
 
@@ -72,7 +78,9 @@ public class InterviewService {
 
     Club club = clubRepository.findById(clubId);
     String applicantEmail = applicantRepository.findEmailById(applicantId);
-    List<InterviewSlotGetResponse> slotResponses = getInterviewSlots(announcementId);
+
+    List<InterviewSlotsByDateResponse> slotResponses = getInterviewSlots(announcementId);
+
     FileGetResponse representativeImage =
         fileService.findAllByAssociatedId(clubId).stream()
             .filter(fileMetaData -> fileMetaData.getFileDomainType() == FileDomainType.CLUB_PROFILE)
@@ -85,7 +93,7 @@ public class InterviewService {
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
-        .interviewSlots(slotResponses)
+        .slotByDateResponses(slotResponses)
         .representativeImage(representativeImage)
         .applicantEmail(applicantEmail)
         .build();
@@ -183,18 +191,18 @@ public class InterviewService {
     interviewRepository.saveInterviewSlot(removedInterviewReservation);
     interviewRepository.saveInterviewSlot(updatedInterviewSlot);
 
-    InterviewSlotGetResponse slotGetResponse = createInterviewSlotResponse(updatedInterviewSlot);
+    InterviewSlotResponse slotGetResponse = createInterviewSlotResponse(updatedInterviewSlot);
     return InterviewReservationUpdateResponse.builder()
         .interviewReservationId(reservation.getId())
         .interviewSlot(slotGetResponse)
         .build();
   }
 
-  private InterviewSlotGetResponse createInterviewSlotResponse(InterviewSlot slot) {
+  private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {
     PeriodResponse periodResponse = PeriodResponse.from(slot.getPeriod());
     int size = slot.getInterviewReservations().size();
 
-    return InterviewSlotGetResponse.builder()
+    return InterviewSlotResponse.builder()
         .id(slot.getId())
         .period(periodResponse)
         .maxNumberOfPeople(slot.getMaxNumberOfPeople())

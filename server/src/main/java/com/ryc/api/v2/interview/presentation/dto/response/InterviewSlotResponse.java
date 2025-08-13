@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-public record InterviewSlotGetResponse(
+public record InterviewSlotResponse(
     @Schema(description = "면접 슬롯 ID") String id,
     @Schema(description = "면접 기간 정보") PeriodResponse period,
     @Schema(description = "최대 인원 수") Integer maxNumberOfPeople,

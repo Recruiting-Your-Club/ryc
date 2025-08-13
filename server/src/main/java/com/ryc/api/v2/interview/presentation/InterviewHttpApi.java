@@ -38,9 +38,10 @@ public class InterviewHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<InterviewSlotGetResponse>> getInterviewSlotsForAdmin(
+  public ResponseEntity<List<InterviewSlotsByDateResponse>> getInterviewSlotsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<InterviewSlotGetResponse> responses = interviewService.getInterviewSlots(announcementId);
+    List<InterviewSlotsByDateResponse> responses =
+        interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
 
@@ -108,7 +109,7 @@ public class InterviewHttpApi {
   @Operation(
       summary = "면접 예약 수정",
       description =
-          "동아리 관리자가 지원자의 면접 일정을 수정합니다.\n 만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
+          "동아리 관리자가 지원자의 면접 일정을 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
       value = {
         PermissionErrorCode.class,
