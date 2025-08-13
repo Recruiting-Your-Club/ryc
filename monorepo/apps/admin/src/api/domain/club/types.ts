@@ -23,7 +23,13 @@ export interface DetailClubResponse {
     clubDetailImages: clubDetailImages[];
 }
 
-type category = 'PERFORMANCE_ARTS' | 'CULTURE' | 'SPORTS' | 'ACADEMIC' | 'VOLUNTEER' | 'RELIGION';
+export type category =
+    | 'PERFORMANCE_ARTS'
+    | 'CULTURE'
+    | 'SPORTS'
+    | 'ACADEMIC'
+    | 'VOLUNTEER'
+    | 'RELIGION';
 
 type clubTag = {
     id: string;

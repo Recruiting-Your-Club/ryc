@@ -1,11 +1,11 @@
 import { myClubQueries } from '@api/queryFactory';
 import { ClubNavigation } from '@components';
+import { CATEGORY_LABEL } from '@constants/category';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Ryc from '@ssoc/assets/images/Ryc.svg';
-import { Text } from '@ssoc/ui';
+import { Avatar, Text } from '@ssoc/ui';
 
 import {
     s_announcementPage,
@@ -14,13 +14,11 @@ import {
     s_clubApplyTabContainer,
     s_clubLogoAndNameContainer,
     s_clubNameContainer,
-    s_svgContainer,
 } from './AnnouncementPage.style';
 import { DetailQuestionPage } from './DetailQuestionPage/DetailQuestionPage';
 import { PersonalQuestionPage } from './PersonalQuestionPage/PersonalQuestionPage';
 import { RecruitmentPage } from './RecruitmenPage/RecruitmentPage';
-import type { AnnouncementInfoPageProps, QuestionType } from './types';
-import { DetailQuestion } from './types';
+import type { QuestionType } from './types';
 
 export const announcementData = {
     id: '213123',
@@ -217,11 +215,11 @@ function AnnouncementPage() {
         <div css={s_announcementPage}>
             <div css={s_announcementPageMainContainer}>
                 <div css={s_clubLogoAndNameContainer}>
-                    <Ryc css={s_svgContainer} />
+                    <Avatar radius="10px" imageURL={club.representativeImage?.url} />
                     <div css={s_clubNameContainer}>
                         <Text type="h3Semibold">{club.name}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            {club.category}
+                            {CATEGORY_LABEL[club.category]}
                         </Text>
                     </div>
                 </div>
