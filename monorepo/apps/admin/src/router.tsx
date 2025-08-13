@@ -23,7 +23,7 @@ const router = createBrowserRouter([
             { path: 'test', element: <TestPage /> },
             { path: ':clubId', element: <TestPage /> },
             { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
-            { path: 'announcement-test', element: <AnnouncementPage /> },
+            { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
         ],
     },
     {

@@ -1,5 +1,8 @@
+import { myClubQueries } from '@api/queryFactory';
 import { ClubNavigation } from '@components';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import Ryc from '@ssoc/assets/images/Ryc.svg';
 import { Text } from '@ssoc/ui';
@@ -19,7 +22,7 @@ import { RecruitmentPage } from './RecruitmenPage/RecruitmentPage';
 import type { AnnouncementInfoPageProps, QuestionType } from './types';
 import { DetailQuestion } from './types';
 
-export const clubData = {
+export const announcementData = {
     id: '213123',
     title: '프론트엔드 모집',
     detailDescription: `EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교 프로그래밍 학술
@@ -148,15 +151,18 @@ export const clubData = {
 };
 
 function AnnouncementPage() {
-    const { application, ...recruitment } = clubData;
+    const { application, ...recruitment } = announcementData;
     const [activeTab, setActiveTab] = useState<string>('모집공고');
+    const { clubId } = useParams<{ clubId: string }>();
+
+    const { data: club } = useSuspenseQuery(myClubQueries.detail(clubId ?? ''));
 
     // 모집공고 데이터
 
     // 사전질문 데이터
     const personalQuestions = useMemo(
         () =>
-            clubData.application.preQuestions.map((question) => ({
+            announcementData.application.preQuestions.map((question) => ({
                 id: question.id,
                 label: question.label,
                 type: question.type as QuestionType,
@@ -169,7 +175,7 @@ function AnnouncementPage() {
     // 자기소개서 질문 데이터
     const detailQuestions = useMemo(
         () =>
-            clubData.application.applicationQuestions.map((question) => ({
+            announcementData.application.applicationQuestions.map((question) => ({
                 id: question.id,
                 type: question.type as QuestionType,
                 label: question.label,
@@ -213,9 +219,9 @@ function AnnouncementPage() {
                 <div css={s_clubLogoAndNameContainer}>
                     <Ryc css={s_svgContainer} />
                     <div css={s_clubNameContainer}>
-                        <Text type="h3Semibold">EN# (Enjoy C#)</Text>
+                        <Text type="h3Semibold">{club.name}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            학술동아리
+                            {club.category}
                         </Text>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { MyClubResponse } from './types';
+import type { DetailClubResponse, MyClubResponse } from './types';
 
 async function getMyClub(): Promise<MyClubResponse[]> {
     const response = await httpRequest.get({
@@ -9,4 +9,11 @@ async function getMyClub(): Promise<MyClubResponse[]> {
     return response as MyClubResponse[];
 }
 
-export { getMyClub };
+async function getDetailClub(clubId: string): Promise<DetailClubResponse> {
+    const response = await httpRequest.get({
+        url: `clubs/${clubId}`,
+    });
+    return response as DetailClubResponse;
+}
+
+export { getMyClub, getDetailClub };
