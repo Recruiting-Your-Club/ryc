@@ -1,4 +1,5 @@
 import { ClubBox, ImageDialog } from '@components';
+import { toTagProps } from '@constants/status';
 import React, { useState } from 'react';
 
 import { Button, Image, Tag, Text } from '@ssoc/ui';
@@ -44,6 +45,8 @@ function RecruitmentPage({
         'https://d32gkk464bsqbe.cloudfront.net/JTI08fg3oWjuMKWf6pO94MCxv5M=/400x300/company-profiles/o/b23a5925970125281c7ad70138c1bee3d79df7ca.png',
     ];
 
+    const { text, variant } = toTagProps(announcementStatus);
+
     // state, ref, querystring hooks
     const [openDialog, setOpenDialog] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
@@ -61,14 +64,14 @@ function RecruitmentPage({
             <div css={s_contentContainer}>
                 <div css={s_contentHeader}>
                     <Text as="h1" type="h1Semibold" textAlign="start">
-                        프론트엔드 모집
+                        {title}
                     </Text>
                     <div css={s_headerSubContainer}>
                         <div css={s_clubNameContainer}>
                             <Text as="h4" type="h4Light" color="caption">
-                                EN#
+                                {summaryDescription}
                             </Text>
-                            <Tag variant="progress" text="모집중" />
+                            <Tag variant={variant} text={text} />
                         </div>
                     </div>
                 </div>
@@ -76,34 +79,7 @@ function RecruitmentPage({
                 <div css={s_contentBody}>
                     <ClubBox />
                     <Text textAlign="start" sx={s_textContainer}>
-                        ` EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교 프로그래밍 학술
-                        동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재 다양한 언어와
-                        기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.최종적으로
-                        실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로 하고
-                        있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교 프로그래밍
-                        학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재 다양한
-                        언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
-                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
-                        하고 있습니다. ` 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
-                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동
-                        중입니다.최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을
-                        목표로 하고 있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교
-                        프로그래밍 학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
-                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
-                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
-                        하고 있습니다. ` 스택을 공부하며, WEB과 APP 분야에서 활발히 활동
-                        중입니다.최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을
-                        목표로 하고 있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교
-                        프로그래밍 학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
-                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
-                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
-                        하고 있습니다. ` 스택을 공부하며, WEB과 APP 분야에서 활발히 활동
-                        중입니다.최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을
-                        목표로 하고 있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교
-                        프로그래밍 학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
-                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
-                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
-                        하고 있습니다. `
+                        {detailDescription}
                     </Text>
 
                     <div css={s_imageListContainer}>

@@ -21,8 +21,35 @@ import { DetailQuestion } from './types';
 
 export const clubData = {
     id: '213123',
-    title: 'EN# (Enjoy C#)',
-    detailDescription: '',
+    title: '프론트엔드 모집',
+    detailDescription: ` EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교 프로그래밍 학술
+                        동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재 다양한 언어와
+                        기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.최종적으로
+                        실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로 하고
+                        있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교 프로그래밍
+                        학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재 다양한
+                        언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
+                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
+                        하고 있습니다. 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
+                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동
+                        중입니다.최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을
+                        목표로 하고 있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교
+                        프로그래밍 학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
+                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
+                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
+                        하고 있습니다.  스택을 공부하며, WEB과 APP 분야에서 활발히 활동
+                        중입니다.최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을
+                        목표로 하고 있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교
+                        프로그래밍 학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
+                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
+                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
+                        하고 있습니다. 스택을 공부하며, WEB과 APP 분야에서 활발히 활동
+                        중입니다.최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을
+                        목표로 하고 있습니다. EN#은 설립된 지 올해로 23년 된 역사 깊은 세종대학교
+                        프로그래밍 학술 동아리입니다. ‘C#을 즐기자’라는 목적으로 설립된 EN#은 현재
+                        다양한 언어와 기술 스택을 공부하며, WEB과 APP 분야에서 활발히 활동 중입니다.
+                        최종적으로 실제 자기만의 WEB, APP서비스를 구현하여 운영하는 경험을 목표로
+                        하고 있습니다. `,
     summaryDescription: 'En#에서 프론트엔드 분야 신입 부원을 모집합니다!',
     target: '1,2학년',
     field: '학술동아리',
@@ -189,7 +216,7 @@ function AnnouncementPage() {
                 <div css={s_clubLogoAndNameContainer}>
                     <Ryc css={s_svgContainer} />
                     <div css={s_clubNameContainer}>
-                        <Text type="h3Semibold">{clubData.title}</Text>
+                        <Text type="h3Semibold">EN# (Enjoy C#)</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
                             {clubData.field}
                         </Text>
