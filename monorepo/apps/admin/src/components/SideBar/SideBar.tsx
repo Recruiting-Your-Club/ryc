@@ -225,44 +225,44 @@ function SideBar() {
     return (
         <>
             <div css={clubSideBarContainer}>
-                <div css={{maxHeight: '70rem', overflowY: 'hidden'}}>
-                {!clubLoading &&
-                    myClub?.map((club) => (
-                        <div
-                            key={club.id}
-                            css={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                width: '100%',
-                                gap: '0.3rem',
-                            }}
-                        >
-                            <div css={clubActive(club.id === currentClub)} />
-                            <button
-                                css={clubWrapper}
-                                onClick={() => {
-                                    setCurrentClub(club.id);
-                                    // 현재 대표 경로를 유지한 채 clubId만 교체
-                                    const representativePath = getActiveSubMenu(location.pathname);
-                                    const announcementIdParam = announcementId
-                                        ? `/${announcementId}`
-                                        : '';
-                                    goTo(`${representativePath}/${club.id}${announcementIdParam}`);
+                <div css={{ maxHeight: '70rem', overflowY: 'hidden' }}>
+                    {!clubLoading &&
+                        myClub?.map((club) => (
+                            <div
+                                key={club.id}
+                                css={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    gap: '0.3rem',
                                 }}
                             >
-                                <Tooltip content={club.name}>
-                                    <img
-                                        src={club.imageUrl}
-                                        alt="club"
-                                        width="100%"
-                                        height="100%"
-                                        css={{ borderRadius: '10px' }}
-                                    />
-                                </Tooltip>
-                            </button>
-                        </div>
-                    ))}
-                    </div>
+                                <div css={clubActive(club.id === currentClub)} />
+                                <button
+                                    css={clubWrapper}
+                                    onClick={() => {
+                                        setCurrentClub(club.id);
+                                        // 현재 대표 경로를 유지한 채 clubId만 교체
+                                        const representativePath = getActiveSubMenu(location.pathname);
+                                        const announcementIdParam = announcementId
+                                            ? `/${announcementId}`
+                                            : '';
+                                        goTo(`${representativePath}/${club.id}${announcementIdParam}`);
+                                    }}
+                                >
+                                    <Tooltip content={club.name}>
+                                        <img
+                                            src={club.imageUrl}
+                                            alt="club"
+                                            width="100%"
+                                            height="100%"
+                                            css={{ borderRadius: '10px' }}
+                                        />
+                                    </Tooltip>
+                                </button>
+                            </div>
+                        ))}
+                </div>
                 <Tooltip content="동아리 생성">
                     <button css={addClubButton} onClick={() => goTo('/club-create')}>
                         +
