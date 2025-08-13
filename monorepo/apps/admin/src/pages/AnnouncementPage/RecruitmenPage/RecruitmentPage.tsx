@@ -1,7 +1,7 @@
 import { ClubBox, ImageDialog } from '@components';
 import { toTagProps } from '@constants/status';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Button, Image, Tag, Text } from '@ssoc/ui';
 
@@ -57,11 +57,34 @@ function RecruitmentPage({
     const formatDate = (date?: string) => (date ? dayjs(date).format('YY.MM.DD') : '-');
 
     const formatPeriod = (period: { startDate: string; endDate: string }) => {
-        const samdDay = dayjs(period.startDate).isSame(period.endDate, 'day');
-        return samdDay
+        const sameDay = dayjs(period.startDate).isSame(period.endDate, 'day');
+        return sameDay
             ? formatDate(period.startDate)
             : `${formatDate(period.startDate)} ~ ${formatDate(period.endDate)} `;
     };
+
+    const clubBoxData = useMemo(
+        () => [
+            { title: '모집 대상', value: target },
+            { title: '모집 분야', value: field },
+            { title: '활동 기간', value: activityPeriod },
+            { title: '모집 인원', value: numberOfPeople },
+            { title: '서류 접수 기간', value: formatPeriod(applicationPeriod) },
+            { title: '서류 결과 발표', value: formatPeriod(documentResultPeriod) },
+            { title: '면접 일정', value: formatPeriod(interviewPeriod) },
+            { title: '최종 결과 발표', value: formatPeriod(finalResultPeriod) },
+        ],
+        [
+            target,
+            field,
+            activityPeriod,
+            numberOfPeople,
+            applicationPeriod,
+            documentResultPeriod,
+            interviewPeriod,
+            finalResultPeriod,
+        ],
+    );
     // handlers
     const handleImageClick = (url: string) => {
         setImageUrl(url);
@@ -71,22 +94,8 @@ function RecruitmentPage({
     return (
         <div css={s_recruitmentContainer}>
             <div css={s_contentContainer}>
-                <div css={s_contentHeader}>
-                    <Text as="h1" type="h1Semibold" textAlign="start">
-                        {title}
-                    </Text>
-                    <div css={s_headerSubContainer}>
-                        <div css={s_clubNameContainer}>
-                            <Text as="h4" type="h4Light" color="caption">
-                                {summaryDescription}
-                            </Text>
-                            <Tag variant={variant} text={text} />
-                        </div>
-                    </div>
-                </div>
-
                 <div css={s_contentBody}>
-                    <ClubBox />
+                    <ClubBox data={clubBoxData} />
                     <Text textAlign="start" sx={s_textContainer}>
                         {detailDescription}
                     </Text>

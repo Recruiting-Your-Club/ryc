@@ -4,15 +4,21 @@ import theme from '@ssoc/styles';
 
 export const s_announcementPage = css`
     width: 100%;
-    height: 100%;
-    min-height: 115rem;
+    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 3rem;
     padding: 2rem;
     padding-bottom: 0;
+    position: relative;
     background-color: ${theme.colors.gray[100]};
+
+    //FIXME: 스크롤 끊김 현상 발생
+    //아래 속성 지우면 layout/contentContentLayout overflow-y auto; 속성에 의해 배경색이 안칠해짐
+    overflow-y: auto;
+
     @media (max-width: ${theme.breakpoint.tablet}) {
         flex-direction: column;
         padding: 1rem;
@@ -29,7 +35,8 @@ export const s_announcementPage = css`
 
 export const s_announcementPageMainContainer = css`
     width: 100%;
-    height: 100%;
+    //height: 100%;
+    min-height: 100vh;
     max-width: 95rem;
     display: flex;
     flex-direction: column;
@@ -113,66 +120,8 @@ export const s_applyFormContainer = css`
     }
 `;
 
-export const s_submitButtonContainer = css`
-    width: 100%;
-    height: 4rem;
-    display: none;
-    box-shadow: 0px 0px 4px 2px rgba(55, 53, 47, 0.4);
-    border-radius: 10px;
-    top: 93%;
-    opacity: 0.9;
-
-    @media (max-width: ${theme.breakpoint.tablet}) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        width: 65%;
-        padding: 0.75rem 0;
-        top: 95%;
-    }
-
-    @media (max-width: ${theme.breakpoint.tabletMini}) {
-        width: 60%;
-        padding: 0.7rem 0;
-    }
-
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        width: 80%;
-        padding: 0.5rem 0;
-        top: 93%;
-    }
-`;
-
 export const s_submitButtonSx = css`
     height: 4rem;
-`;
-
-export const s_mobileQuestionStatus = css`
-    position: absolute;
-    right: 5rem;
-    top: 10.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    display: none;
-
-    @media (max-width: ${theme.breakpoint.tablet}) {
-        display: flex;
-        right: 8rem;
-        top: 10rem;
-    }
-
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        right: 5rem;
-        top: 8.3rem;
-    }
-`;
-
-export const s_submitCardContainer = css`
-    position: sticky;
-    top: 8rem;
-    align-self: flex-start;
 `;
 
 export const s_arrowIcon = css`

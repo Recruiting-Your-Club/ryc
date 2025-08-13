@@ -48,24 +48,12 @@ export const s_contentBody = css`
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 10rem;
+    gap: 5rem;
 `;
 export const s_textContainer = css`
     padding: 0 2rem;
 `;
 
-export const s_applyButtonAtMobile = css`
-    position: fixed;
-    bottom: 1rem;
-    left: 0;
-    right: 0;
-    padding: 0 4rem;
-    z-index: 100;
-    opacity: 0.9;
-    @media (min-width: ${theme.breakpoint.mobile}) {
-        display: none;
-    }
-`;
 export const s_imageListContainer = css`
     display: grid;
     justify-content: center;
