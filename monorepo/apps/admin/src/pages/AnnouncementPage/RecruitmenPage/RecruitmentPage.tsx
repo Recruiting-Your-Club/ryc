@@ -1,5 +1,6 @@
 import { ClubBox, ImageDialog } from '@components';
 import { toTagProps } from '@constants/status';
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
 import { Button, Image, Tag, Text } from '@ssoc/ui';
@@ -53,6 +54,14 @@ function RecruitmentPage({
     // form hooks
     // query hooks
     // calculated values
+    const formatDate = (date?: string) => (date ? dayjs(date).format('YY.MM.DD') : '-');
+
+    const formatPeriod = (period: { startDate: string; endDate: string }) => {
+        const samdDay = dayjs(period.startDate).isSame(period.endDate, 'day');
+        return samdDay
+            ? formatDate(period.startDate)
+            : `${formatDate(period.startDate)} ~ ${formatDate(period.endDate)} `;
+    };
     // handlers
     const handleImageClick = (url: string) => {
         setImageUrl(url);
