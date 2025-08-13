@@ -1,7 +1,7 @@
 package com.ryc.api.v2.interview.service;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +67,7 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
-  public InterviewSlotsApplicantViewResponse getInterviewSlotsForApplicant(
+  public InterviewSlotsApplicantViewResponse getInterviewSlotsApplicantView(
       String clubId, String announcementId, String applicantId) {
 
     Club club = clubRepository.findById(clubId);
@@ -92,23 +92,49 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
-  public List<InterviewReservationGetResponse> getInterviewReservations(
-      String interviewSlotId) {
+  public List<InterviewReservationGetResponse> getInterviewReservations(String interviewSlotId) {
     InterviewSlot interviewSlot = interviewRepository.findInterviewSlotById(interviewSlotId);
     List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
+    List<InterviewReservationGetResponse> responses = new ArrayList<>();
 
-    return reservations.stream()
+    for (InterviewReservation reservation : reservations) {
+      Applicant applicant = reservation.getApplicant();
+
+      InterviewReservationGetResponse response =
+          InterviewReservationGetResponse.builder()
+              .interviewReservationId(reservation.getId())
+              .applicantId(applicant.getId())
+              .applicantEmail(applicant.getEmail())
+              .applicantName(applicant.getName())
+              .build();
+      responses.add(response);
+    }
+    return responses;
+  }
+
+  @Transactional(readOnly = true)
+  public List<UnReservedApplicantGetResponse> getUnReservedApplicants(String announcementId) {
+    List<InterviewSlot> interviewSlots =
+        interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
+    Set<Applicant> applicants =
+        new HashSet<>(applicantRepository.findAllByAnnouncementId(announcementId));
+
+    Set<String> reservedApplicantIds =
+        interviewSlots.stream()
+            .flatMap(slot -> slot.getInterviewReservations().stream())
+            .map(reservation -> reservation.getApplicant().getId())
+            .collect(Collectors.toSet());
+
+    applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
+
+    return applicants.stream()
         .map(
-            reservation -> {
-              Applicant applicant = reservation.getApplicant();
-
-              return InterviewReservationGetResponse.builder()
-                  .interviewReservationId(reservation.getId())
-                  .applicantId(applicant.getId())
-                  .applicantEmail(applicant.getEmail())
-                  .applicantName(applicant.getName())
-                  .build();
-            })
+            applicant ->
+                UnReservedApplicantGetResponse.builder()
+                    .applicantId(applicant.getId())
+                    .applicantEmail(applicant.getEmail())
+                    .applicantName(applicant.getName())
+                    .build())
         .toList();
   }
 

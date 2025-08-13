@@ -54,13 +54,13 @@ public class InterviewHttpApi {
       @PathVariable("announcement-id") String announcementId,
       @RequestParam("applicant-id") String applicantId) {
     InterviewSlotsApplicantViewResponse response =
-        interviewService.getInterviewSlotsForApplicant(clubId, announcementId, applicantId);
+        interviewService.getInterviewSlotsApplicantView(clubId, announcementId, applicantId);
     return ResponseEntity.ok(response);
   }
 
   @GetMapping("interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 예약 정보 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 정보를 조회합니다.")
+  @Operation(summary = "면접 예약자들 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 예약 정보를 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND"})
@@ -68,6 +68,19 @@ public class InterviewHttpApi {
       @PathVariable("interview-slot-id") String interviewSlotId) {
     List<InterviewReservationGetResponse> response =
         interviewService.getInterviewReservations(interviewSlotId);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("announcements/{announcement-id}/unreserved-applicants")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 미예약 지원자 조회", description = "동아리 관리자가 면접을 예약하지 않은 지원자들을 조회합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
+  public ResponseEntity<List<UnReservedApplicantGetResponse>> getUnReservedApplicants(
+      @PathVariable("announcement-id") String announcementId) {
+    List<UnReservedApplicantGetResponse> response =
+        interviewService.getUnReservedApplicants(announcementId);
     return ResponseEntity.ok(response);
   }
 
