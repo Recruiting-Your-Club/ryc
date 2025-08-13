@@ -3,9 +3,8 @@ package com.ryc.api.v2.application.infra;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +44,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     return applicationJpaRepository
         .findByApplicantId(applicantId)
         .map(ApplicationMapper::toDomain)
-        .orElseThrow(() -> new EntityNotFoundException("Application not found"));
+        .orElseThrow(() -> new NoSuchElementException("Application not found"));
   }
 
   @Override

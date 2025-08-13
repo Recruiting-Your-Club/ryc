@@ -2,10 +2,9 @@ package com.ryc.api.v2.file.infra;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +32,7 @@ public class FileMetaDataRepositoryImpl implements FileMetaDataRepository {
       FileMetadataEntity fileMetadataEntity =
           fileMetadataJpaRepository
               .findById(fileMetaData.getId())
-              .orElseThrow(() -> new EntityNotFoundException("fileMetaData not found"));
+              .orElseThrow(() -> new NoSuchElementException("fileMetaData not found"));
 
       fileMetadataEntity.update(FileMetaDataMapper.toEntity(fileMetaData));
       return FileMetaDataMapper.toDomain(fileMetadataEntity);
@@ -46,7 +45,7 @@ public class FileMetaDataRepositoryImpl implements FileMetaDataRepository {
         fileMetadataJpaRepository
             .findById(id)
             .filter(entity -> !entity.isDeleted())
-            .orElseThrow(() -> new EntityNotFoundException("fileMetaData not found")));
+            .orElseThrow(() -> new NoSuchElementException("fileMetaData not found")));
   }
 
   @Override
@@ -79,7 +78,7 @@ public class FileMetaDataRepositoryImpl implements FileMetaDataRepository {
 
     // 3. 둘이 개수 안맞으면 잘못된 요청
     if (fileMetaDataList.size() != fileMetadataMap.size()) {
-      throw new EntityNotFoundException("fileMetaData not found");
+      throw new NoSuchElementException("fileMetaData not found");
     }
 
     // 4. update
