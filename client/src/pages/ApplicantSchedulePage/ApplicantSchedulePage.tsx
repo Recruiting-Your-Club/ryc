@@ -69,11 +69,11 @@ function ApplicantSchedulePage() {
     );
     const { data: slot0Applicants } = useQuery({
         ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slot0Id ?? '', CLUB_ID),
-        enabled: !!slot0Id,
+        enabled: !!slot0Id && slot0Id !== '',
     });
     const { data: slot1Applicants } = useQuery({
-        ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slot0Id ?? '', CLUB_ID),
-        enabled: !!slot1Id,
+        ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slot1Id ?? '', CLUB_ID),
+        enabled: !!slot1Id && slot1Id !== '',
     });
     const { data: unreservedApplicants } = useSuspenseQuery(
         interviewQueries.unreservedApplicant(ANNOUNCEMENT_ID, CLUB_ID),
@@ -90,6 +90,7 @@ function ApplicantSchedulePage() {
         (
             getTargetLabelId: () => string | null,
             setTargetLabel: Dispatch<SetStateAction<SelectedLabel>>,
+            setSlotId: Dispatch<SetStateAction<string | null>>,
             setDropdown: Dispatch<SetStateAction<boolean>>,
         ) =>
         (label: string) => {
@@ -104,18 +105,21 @@ function ApplicantSchedulePage() {
                 return;
             }
             setTargetLabel({ label, interviewSlotId: newSetId });
+            setSlotId(newSetId);
             setDropdown(false);
         };
 
     const handleSelectLabel = labelSelectHandler(
         () => selectedStandardInterviewLabel.interviewSlotId,
         setSelectedInterviewLabel,
+        setSlot1Id,
         setOpen,
     );
 
     const handleSelectStandardLabel = labelSelectHandler(
         () => selectedInterviewLabel.interviewSlotId,
         setSelectedStandardInterviewLabel,
+        setSlot0Id,
         setStandardOpen,
     );
 

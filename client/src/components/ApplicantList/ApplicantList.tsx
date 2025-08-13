@@ -11,7 +11,6 @@ import {
     s_titleContainer,
 } from './ApplicantList.style';
 import type { ApplicationListProps } from './types';
-import type { Applicant } from '@api/domain/applicant/types';
 import type { StepApplicant } from '@api/domain/step/types';
 
 function ApplicantList({
