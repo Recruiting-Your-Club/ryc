@@ -1,51 +1,9 @@
 import { httpRequest } from '../../common/httpRequest';
 import type {
-    Evaluation,
     InterviewApplicant,
-    Interviewee,
-    IntervieweeDetail,
-    InterviewSchedule,
     InterviewSlot,
     UnreservedApplicant,
 } from './types';
-
-async function getAllInterviewSchedules(): Promise<InterviewSchedule[]> {
-    const response = await httpRequest.get({
-        url: `interviewschedules/all`,
-    });
-    return response as InterviewSchedule[];
-}
-
-async function getAllInterviewees(): Promise<Interviewee[]> {
-    const response = await httpRequest.get({
-        url: `interviewees/all`,
-    });
-    return response as Interviewee[];
-}
-
-async function getIntervieweeDetail(id: number): Promise<IntervieweeDetail> {
-    const response = await httpRequest.get({
-        url: `interviewees/${id}`,
-    });
-    return response as IntervieweeDetail;
-}
-
-async function getEvaluation(id: number): Promise<Evaluation> {
-    const response = await httpRequest.get({
-        url: `interviewer/${id}`,
-    });
-    return response as Evaluation;
-}
-
-async function updateIntervieweeSchedule(
-    intervieweeId: number,
-    body: { interviewSetId: number | null },
-): Promise<void> {
-    await httpRequest.put({
-        url: `interviewees/${intervieweeId}`,
-        body: body,
-    });
-}
 
 async function getInterviewSlot(params: {
     announcementId: string;
@@ -91,11 +49,6 @@ async function patchInterviewReservation(params: {
 }
 
 export {
-    getAllInterviewSchedules,
-    getAllInterviewees,
-    getEvaluation,
-    getIntervieweeDetail,
-    updateIntervieweeSchedule,
     getInterviewSlot,
     getInterviewInformation,
     getUnreservedApplicant,

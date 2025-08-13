@@ -41,10 +41,6 @@ const applicantKeys = {
 };
 
 const interviewKeys = {
-    allInterviewSchedules: ['interviewschedules'] as const,
-    allInterviewees: ['interviewees'] as const,
-    intervieweeDetail: (id: number) => ['interviewee-detail', id] as const,
-    evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
     interviewSlot: (announcementId: string, clubId: string) =>
         ['interview-slot', announcementId, clubId] as const,
     interviewInformation: (announcementId: string, interviewSlotId: string, clubId: string) =>
