@@ -5,11 +5,11 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
@@ -97,7 +97,8 @@ public class EvaluationService {
       String currentAdminId, String announcementId, EvaluationType type) {
 
     List<String> applicantIds = applicantRepository.findAllIdByAnnouncementId(announcementId);
-    List<String> evaluatedApplicantIds = evaluationRepository.findEvaluatedApplicantIds(currentAdminId, type, applicantIds);
+    List<String> evaluatedApplicantIds =
+        evaluationRepository.findEvaluatedApplicantIds(currentAdminId, type, applicantIds);
 
     return new MyEvaluationStatusSearchResponse(evaluatedApplicantIds);
   }

@@ -55,9 +55,9 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   @Override
   public List<String> findAllIdByAnnouncementId(String announcementId) {
     return applicantJpaRepository.findAllByAnnouncementId(announcementId).stream()
-            .map(ApplicantMapper::toDomain)
-            .map(Applicant::getId)
-            .toList();
+        .map(ApplicantMapper::toDomain)
+        .map(Applicant::getId)
+        .toList();
   }
 
   @Override

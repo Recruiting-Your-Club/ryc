@@ -98,7 +98,7 @@ public class EvaluationHttpApi {
           @AuthenticationPrincipal CustomUserDetail userDetail) {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
-                userDetail.getId(), announcementId, EvaluationType.APPLICATION);
+            userDetail.getId(), announcementId, EvaluationType.APPLICATION);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
