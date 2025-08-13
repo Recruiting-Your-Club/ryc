@@ -103,7 +103,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     return announcementJpaRepository
         .findById(announcementId)
         .filter(announcementEntity -> !announcementEntity.getIsDeleted())
-        .orElseThrow(() -> new EntityNotFoundException("announcement not found"))
+        .orElseThrow(() -> new NoSuchElementException("announcement not found"))
         .getApplicationForm()
         .getPersonalInfoQuestions()
         .contains(PersonalInfoQuestionType.PROFILE_IMAGE);
