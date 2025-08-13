@@ -125,7 +125,7 @@ function CardBox({
                     <TextToggle
                         size="sm"
                         sx={s_textToggle(step)}
-                        leftText="합격자"
+                        leftText={step.startsWith('final') ? '합격자' : '대기자'}
                         rightText="불합격자"
                         isChecked={fail}
                         handleToggle={handleToggle}

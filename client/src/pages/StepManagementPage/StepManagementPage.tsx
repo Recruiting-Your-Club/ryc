@@ -137,11 +137,11 @@ function StepManagementPage() {
         ? [
               { label: '서류', status: 'DOCUMENT_PASS' },
               { label: '면접 평가', status: 'INTERVIEW_PASS' },
-              { label: '최종 합격', status: 'FINAL_PASS' },
+              { label: '최종', status: 'FINAL_PASS' },
           ]
         : [
               { label: '지원서 접수', status: 'DOCUMENT_PASS' },
-              { label: '최종 합격', status: 'FINAL_PASS' },
+              { label: '최종', status: 'FINAL_PASS' },
           ];
 
     const statusInOwnStep = isThreeStepProcess
