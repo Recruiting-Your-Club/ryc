@@ -2,6 +2,7 @@ package com.ryc.api.v2.interview.infra;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -65,14 +66,9 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public InterviewSlot findInterviewSlotByReservationId(String interviewReservationId) {
-    InterviewSlotEntity entity =
-        interviewReservationJpaRepository
-            .findInterviewSlotById(interviewReservationId)
-            .orElseThrow(
-                () ->
-                    new EntityNotFoundException(
-                        "Interview slot not found for reservation ID: " + interviewReservationId));
-    return InterviewSlotMapper.toDomain(entity);
+  public Optional<InterviewSlot> findInterviewSlotByApplicantId(String applicantId) {
+    return interviewReservationJpaRepository
+        .findSlotByApplicantId(applicantId)
+        .map(InterviewSlotMapper::toDomain);
   }
 }

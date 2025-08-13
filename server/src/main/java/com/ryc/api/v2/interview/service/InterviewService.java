@@ -172,26 +172,34 @@ public class InterviewService {
 
   @Transactional
   public InterviewReservationUpdateResponse changeInterviewReservation(
-      String reservationId, InterviewReservationUpdatedRequest body) {
-    // 기존 면접 슬롯과 예약 정보 조회
-    InterviewSlot oldInterviewSlot =
-        interviewRepository.findInterviewSlotByReservationId(reservationId);
-    InterviewReservation reservation = oldInterviewSlot.getInterviewReservationById(reservationId);
+      String applicantId, InterviewReservationUpdatedRequest body) {
 
-    // 기존 면접 슬롯에서 예약 정보 제거
-    InterviewSlot removedInterviewReservation =
-        oldInterviewSlot.removeInterviewReservationById(reservation);
+    InterviewReservation reservation = null;
+
+    // 기존 면접 슬롯이 있는지 확인하고, 해당 슬롯에서 지원자의 예약을 제거합니다.
+    Optional<InterviewSlot> interviewSlotOptional =
+        interviewRepository.findInterviewSlotByApplicantId(applicantId);
+
+    if (interviewSlotOptional.isPresent()) {
+      InterviewSlot slot = interviewSlotOptional.get();
+
+      reservation = slot.getInterviewReservationByApplicantId(applicantId);
+
+      InterviewSlot updatedSlot = slot.removeReservation(reservation);
+      interviewRepository.saveInterviewSlot(updatedSlot);
+    } else {
+
+      Applicant applicant = applicantRepository.findById(applicantId);
+      reservation = InterviewReservation.initialize(applicant);
+    }
 
     // 새로운 면접 슬롯에 예약 정보 추가
-    InterviewSlot newInterviewSlot =
+    InterviewSlot newSlot =
         interviewRepository.findInterviewSlotByIdForUpdate(body.interviewSlotId());
-    InterviewSlot updatedInterviewSlot =
-        newInterviewSlot.addInterviewReservations(reservation, true);
+    InterviewSlot updatedSlot = newSlot.addInterviewReservations(reservation, true);
+    InterviewSlot savedSlot = interviewRepository.saveInterviewSlot(updatedSlot);
 
-    interviewRepository.saveInterviewSlot(removedInterviewReservation);
-    interviewRepository.saveInterviewSlot(updatedInterviewSlot);
-
-    InterviewSlotResponse slotGetResponse = createInterviewSlotResponse(updatedInterviewSlot);
+    InterviewSlotResponse slotGetResponse = createInterviewSlotResponse(savedSlot);
     return InterviewReservationUpdateResponse.builder()
         .interviewReservationId(reservation.getId())
         .interviewSlot(slotGetResponse)

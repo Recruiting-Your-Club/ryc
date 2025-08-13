@@ -104,12 +104,12 @@ public class InterviewHttpApi {
     return ResponseEntity.created(location).body(response);
   }
 
-  @PatchMapping("admin/interview-reservations/{reservation-id}")
+  @PutMapping("admin/applicants/{applicant-id}/interview-reservation")
   @HasRole(Role.MEMBER)
   @Operation(
-      summary = "면접 예약 수정",
+      summary = "면접 예약 정보 수정",
       description =
-          "동아리 관리자가 지원자의 면접 일정을 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
+          "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
       value = {
         PermissionErrorCode.class,
@@ -120,10 +120,10 @@ public class InterviewHttpApi {
         "RESOURCE_NOT_FOUND",
       })
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
-      @PathVariable("reservation-id") String reservationId,
+      @PathVariable("applicant-id") String applicantId,
       @Valid @RequestBody InterviewReservationUpdatedRequest body) {
     InterviewReservationUpdateResponse response =
-        interviewService.changeInterviewReservation(reservationId, body);
+        interviewService.changeInterviewReservation(applicantId, body);
     return ResponseEntity.ok(response);
   }
 }

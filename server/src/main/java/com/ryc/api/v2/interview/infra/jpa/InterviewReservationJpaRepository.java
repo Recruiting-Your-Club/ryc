@@ -10,10 +10,11 @@ import com.ryc.api.v2.interview.infra.entity.InterviewSlotEntity;
 
 public interface InterviewReservationJpaRepository
     extends JpaRepository<InterviewReservationEntity, String> {
-
   @Query(
       """
-SELECT r.interviewSlot FROM InterviewReservationEntity r WHERE r.id = :interviewReservationId
-""")
-  Optional<InterviewSlotEntity> findInterviewSlotById(String interviewReservationId);
+        select r.interviewSlot
+        from InterviewReservationEntity r
+        where r.applicant.id = :applicantId
+    """)
+  Optional<InterviewSlotEntity> findSlotByApplicantId(String applicantId);
 }
