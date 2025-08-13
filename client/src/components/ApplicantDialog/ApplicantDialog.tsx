@@ -61,10 +61,16 @@ function ApplicantDialog({
     const hasEvaluation = currentEvaluation.completedEvaluatorCount > 0;
 
     function getInitialIndex() {
-        if (applicant.status.startsWith('DOCUMENT')) return 0;
-        if (applicant.status.startsWith('INTERVIEW')) return 1;
-        if (applicant.status.startsWith('FINAL')) return isThreeStepProcess ? 1 : 0;
-        return 0;
+        switch (true) {
+            case applicant.status.startsWith('DOCUMENT'):
+                return 0;
+            case applicant.status.startsWith('INTERVIEW'):
+                return 1;
+            case applicant.status.startsWith('FINAL'):
+                return isThreeStepProcess ? 1 : 0;
+            default:
+                return 0;
+        }
     }
 
     const documentGroups = [
