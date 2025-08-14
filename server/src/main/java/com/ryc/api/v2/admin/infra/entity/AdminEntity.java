@@ -2,6 +2,8 @@ package com.ryc.api.v2.admin.infra.entity;
 
 import jakarta.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+
 import com.ryc.api.v2.admin.domain.AdminDefaultRole;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
@@ -9,6 +11,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "admins")
+@SQLDelete(sql = "UPDATE clubs SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,5 +36,5 @@ public class AdminEntity extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private AdminDefaultRole adminDefaultRole;
 
-  private Boolean deleted;
+  private Boolean isDeleted;
 }

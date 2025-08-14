@@ -13,7 +13,7 @@ public class AdminMapper {
         .imageUrl(admin.getImageUrl())
         .thumbnailUrl(admin.getThumbnailUrl())
         .adminDefaultRole(admin.getAdminDefaultRole())
-        .deleted(admin.getDeleted())
+        .isDeleted(admin.getDeleted())
         .build();
   }
 
@@ -26,7 +26,7 @@ public class AdminMapper {
         .imageUrl(adminEntity.getImageUrl())
         .thumbnailUrl(adminEntity.getThumbnailUrl())
         .adminDefaultRole(adminEntity.getAdminDefaultRole())
-        .deleted(adminEntity.getDeleted())
+        .deleted(adminEntity.getIsDeleted())
         .build();
   }
 }
