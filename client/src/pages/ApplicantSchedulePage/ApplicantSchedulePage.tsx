@@ -127,6 +127,7 @@ function ApplicantSchedulePage() {
         interviewees: ApplicantReservedInterview[] | ApplicantForInterviewSlot[],
         applicantId: string,
         targetSlotId: string,
+        currentSlotId: string,
         resetSelectedId: Dispatch<SetStateAction<string>>,
     ) => {
         const selected = interviewees.find(
@@ -134,17 +135,14 @@ function ApplicantSchedulePage() {
         );
         if (!selected) return;
 
-        if ('interviewReservationId' in selected) {
-            const reserved = selected as ApplicantReservedInterview;
-            updateIntervieweeList({
-                reservationId: reserved.interviewReservationId,
-                interviewSlotId: targetSlotId,
-                clubId: CLUB_ID,
-            });
-        } else {
-            // 임시
-            console.warn('이 타입에는 예약 ID가 없습니다.');
-        }
+        const reserved = selected as ApplicantReservedInterview;
+        updateIntervieweeList({
+            applicantId: reserved.applicantId,
+            interviewSlotId: targetSlotId,
+            clubId: CLUB_ID,
+            oldInterviewSlotId: currentSlotId,
+        });
+
         resetSelectedId('');
     };
 
@@ -233,6 +231,7 @@ function ApplicantSchedulePage() {
                                 standardInterviewees,
                                 selectedStandardIntervieweeId,
                                 selectedInterviewLabel.interviewSlotId ?? '',
+                                selectedStandardInterviewLabel.interviewSlotId ?? '',
                                 setSelectedStandardIntervieweeId,
                             )
                         }
@@ -241,6 +240,7 @@ function ApplicantSchedulePage() {
                                 intervieweesToMove,
                                 selectedIntervieweeId,
                                 selectedStandardInterviewLabel.interviewSlotId ?? '',
+                                selectedInterviewLabel.interviewSlotId ?? '',
                                 setSelectedIntervieweeId,
                             )
                         }
@@ -281,6 +281,7 @@ function ApplicantSchedulePage() {
                                 unreservedApplicants.unreservedApplicants,
                                 unreservedIntervieweeId,
                                 selectedStandardInterviewLabel.interviewSlotId ?? '',
+                                '',
                                 setUnreservedIntervieweeId,
                             )
                         }
@@ -289,6 +290,7 @@ function ApplicantSchedulePage() {
                                 standardInterviewees,
                                 selectedStandardIntervieweeId,
                                 '',
+                                selectedStandardInterviewLabel.interviewSlotId ?? '',
                                 setSelectedStandardIntervieweeId,
                             )
                         }

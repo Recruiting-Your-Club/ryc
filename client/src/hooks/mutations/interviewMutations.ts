@@ -1,11 +1,13 @@
 import { patchInterviewReservation } from '@api/domain';
 import { interviewKeys } from '@api/querykeyFactory';
+import { ANNOUNCEMENT_ID } from '@pages/ApplicantSchedulePage';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface PatchInterviewReservation {
-    reservationId: string;
+    applicantId: string;
     interviewSlotId: string;
     clubId: string;
+    oldInterviewSlotId: string;
 }
 
 const interviewMutations = {
@@ -16,11 +18,21 @@ const interviewMutations = {
             onSuccess: (_, variables) => {
                 queryClient.invalidateQueries({
                     queryKey: interviewKeys.interviewInformation(
-                        variables.reservationId,
+                        ANNOUNCEMENT_ID,
                         variables.interviewSlotId,
                         variables.clubId,
                     ),
                 });
+
+                  if (variables.oldInterviewSlotId) {
+                    queryClient.invalidateQueries({
+                        queryKey: interviewKeys.interviewInformation(
+                            ANNOUNCEMENT_ID,
+                            variables.oldInterviewSlotId,
+                            variables.clubId,
+                        ),
+                    });
+                }
             },
         });
     },

@@ -1,9 +1,5 @@
 import { httpRequest } from '../../common/httpRequest';
-import type {
-    InterviewApplicant,
-    InterviewSlot,
-    UnreservedApplicant,
-} from './types';
+import type { InterviewApplicant, InterviewSlot, UnreservedApplicant } from './types';
 
 async function getInterviewSlot(params: {
     announcementId: string;
@@ -37,12 +33,13 @@ async function getUnreservedApplicant(params: {
 }
 
 async function patchInterviewReservation(params: {
-    reservationId: string;
+    applicantId: string;
     interviewSlotId: string;
     clubId: string;
+    oldInterviewSlotId: string;
 }): Promise<void> {
     await httpRequest.patch({
-        url: `interview-reservations/${params.reservationId}`,
+        url: `interview-reservations/${params.applicantId}`,
         body: { interviewSlotId: params.interviewSlotId },
         headers: { 'X-CLUB-ID': params.clubId },
     });

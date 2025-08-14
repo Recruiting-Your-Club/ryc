@@ -30,8 +30,8 @@ const interviewHandler = [
         return HttpResponse.json(unreservedApplicants, { status: 200 });
     }),
 
-    http.patch(`${BASE_URL}interview-reservations/:reservationId`, async ({ params, request }) => {
-        const { reservationId } = params as { reservationId: string };
+    http.patch(`${BASE_URL}interview-reservations/:applicantId`, async ({ params, request }) => {
+        const { applicantId } = params as { applicantId: string };
         const { interviewSlotId: newSlotId } = (await request.json()) as {
             interviewSlotId: string;
         };
@@ -43,7 +43,7 @@ const interviewHandler = [
         for (let i = 0; i < interviewApplicants.length; i++) {
             const slot = interviewApplicants[i];
             const index = slot.interviewReservations.findIndex(
-                (reservation) => reservation.interviewReservationId === reservationId,
+                (reservation) => reservation.applicantId === applicantId,
             );
             if (index !== -1) {
                 fromSlotIndex = i;
@@ -65,7 +65,7 @@ const interviewHandler = [
         interviewApplicants[fromSlotIndex].interviewReservations.splice(reservationIndex, 1);
         toSlot.interviewReservations.push(movedReservation);
 
-        return HttpResponse.json({ interviewApplicants }, { status: 200 });
+        return HttpResponse.json(interviewApplicants, { status: 200 });
     }),
 ];
 
