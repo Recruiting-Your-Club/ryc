@@ -103,6 +103,13 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
+  public InterviewSlotPeopleCountResponse getCountByInterviewSlot(String interviewSlotId) {
+    InterviewSlot slot = interviewRepository.findInterviewSlotById(interviewSlotId);
+    return new InterviewSlotPeopleCountResponse(
+        slot.getMaxNumberOfPeople(), slot.getInterviewReservations().size());
+  }
+
+  @Transactional(readOnly = true)
   public List<InterviewReservationGetResponse> getInterviewReservations(String interviewSlotId) {
     InterviewSlot interviewSlot = interviewRepository.findInterviewSlotById(interviewSlotId);
     List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();

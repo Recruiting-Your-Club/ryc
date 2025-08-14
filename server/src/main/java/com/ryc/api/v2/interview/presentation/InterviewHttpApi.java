@@ -59,6 +59,18 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping("interview-slots/{interview-slot-id}/people/count")
+  @Operation(summary = "면접 슬롯의 예약 인원 수 조회", description = "지원자가 특정 면접 슬롯에 대해 예약된 인원 수를 조회합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<InterviewSlotPeopleCountResponse> getCountByInterviewSlot(
+      @PathVariable("interview-slot-id") String interviewSlotId) {
+    InterviewSlotPeopleCountResponse response =
+        interviewService.getCountByInterviewSlot(interviewSlotId);
+    return ResponseEntity.ok(response);
+  }
+
   @GetMapping("admin/interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 예약자들 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 예약 정보를 조회합니다.")
