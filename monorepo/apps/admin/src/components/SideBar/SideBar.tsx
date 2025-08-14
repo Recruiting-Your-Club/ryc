@@ -64,7 +64,7 @@ function SideBar() {
                 id: 1,
                 menu: '동아리 관리',
                 icon: <Club />,
-                subMenus: [{ menu: '동아리 소개 수정', link: '/clubs' }],
+                subMenus: [{ menu: '동아리 소개', link: '/clubs' }],
             },
             {
                 id: 2,
