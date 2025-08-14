@@ -68,13 +68,15 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   }
 
   @Override
-  public Boolean existsByAnnouncementIdAndEmail(String announcementId, String email) {
-    return applicantJpaRepository.existsByAnnouncementIdAndEmail(announcementId, email);
+  public List<Applicant> findByEmails(List<String> emails) {
+    return applicantJpaRepository.findAllByEmailIn(emails).stream()
+        .map(ApplicantMapper::toDomain)
+        .collect(Collectors.toList());
   }
 
   @Override
-  public List<String> convertEmailsToIds(String announcementId, List<String> emails) {
-    return applicantJpaRepository.findIdsByAnnouncementIdAndEmails(announcementId, emails);
+  public Boolean existsByAnnouncementIdAndEmail(String announcementId, String email) {
+    return applicantJpaRepository.existsByAnnouncementIdAndEmail(announcementId, email);
   }
 
   @Override

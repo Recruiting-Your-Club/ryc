@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
@@ -24,12 +23,5 @@ public interface ApplicantJpaRepository extends JpaRepository<ApplicantEntity, S
 
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
 
-  @Query(
-      """
-      SELECT a.id FROM ApplicantEntity a
-            WHERE a.announcementId = :announcementId
-            AND a.email IN :emails
-      """)
-  List<String> findIdsByAnnouncementIdAndEmails(
-      @Param("announcementId") String announcementId, @Param("emails") List<String> emails);
+  List<ApplicantEntity> findAllByEmailIn(List<String> emails);
 }

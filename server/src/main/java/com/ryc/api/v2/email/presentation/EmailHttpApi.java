@@ -66,7 +66,7 @@ public class EmailHttpApi {
       @PathVariable String announcementId,
       @Valid @RequestBody InterviewEmailSendRequest body) {
     List<EmailSendResponse> responses =
-        emailService.createInterviewDateEmails(userDetail.getId(), clubId, announcementId, body);
+        emailService.createInterviewEmails(userDetail.getId(), clubId, announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 }

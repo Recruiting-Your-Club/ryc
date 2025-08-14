@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
@@ -65,22 +66,21 @@ public class EmailService {
   }
 
   @Transactional
-  public List<EmailSendResponse> createInterviewDateEmails(
+  public List<EmailSendResponse> createInterviewEmails(
       String adminId, String clubId, String announcementId, InterviewEmailSendRequest body) {
 
     interviewService.createInterviewSlot(
         adminId, announcementId, body.numberOfPeopleByInterviewDateRequests());
 
-    List<String> applicantIds =
-        applicantRepository.convertEmailsToIds(
-            announcementId, body.emailSendRequest().recipients());
+    List<Applicant> applicants =
+        applicantRepository.findByEmails(body.emailSendRequest().recipients());
 
     List<Email> emails =
         createEmailsWithEachLink(
             clubId,
             adminId,
             announcementId,
-            applicantIds,
+            applicants,
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
@@ -110,21 +110,21 @@ public class EmailService {
       String clubId,
       String adminId,
       String announcementId,
-      List<String> recipientIds,
+      List<Applicant> applicants,
       String subject,
       String content) {
     List<Email> emails = new ArrayList<>();
 
-    for (String recipient : recipientIds) {
+    for (Applicant applicant : applicants) {
       String link =
           String.format(
               "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
-              baseUri, clubId, announcementId, recipient);
+              baseUri, clubId, announcementId, applicant.getId());
       String linkHtml = String.format(linkHtmlTemplate, link);
 
       emails.add(
           Email.initialize(
-              adminId, recipient, subject, linkHtml + content, clubId, announcementId));
+              adminId, applicant.getEmail(), subject, linkHtml + content, clubId, announcementId));
     }
     return emails;
   }
