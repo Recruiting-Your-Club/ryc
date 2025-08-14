@@ -1,6 +1,5 @@
 import { Calendar, Divider, InterviewInformationButton, Text } from '@components';
-import { convertDate } from '@utils/convertDate';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
     s_calendar,
     s_interviewInformationButtonGroupWrapper,
