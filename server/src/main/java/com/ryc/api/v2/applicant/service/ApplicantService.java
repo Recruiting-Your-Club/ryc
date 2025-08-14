@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.applicant.domain.Applicant;
+import com.ryc.api.v2.applicant.domain.ApplicantPersonalInfo;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantStatusRequest;
 import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantGetResponse;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
+import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +26,7 @@ public class ApplicantService {
 
   private final ApplicantRepository applicantRepository;
   private final ApplicationRepository applicationRepository;
+  private final FileService fileService;
 
   @Transactional
   public void changeApplicantStatus(String applicantId, ApplicantStatusRequest statusRequest) {
@@ -57,11 +62,36 @@ public class ApplicantService {
     Map<String, LocalDateTime> createdAts =
         applicationRepository.findCreatedAtByApplicantIds(applicantIds);
 
-    // 5. DTO로 조립
+    // 5. 프로필 이미지 파일 수집 및 프라이빗 URL 매핑
+    List<String> profileFileIds =
+        applicants.stream()
+            .flatMap(applicant -> applicant.getPersonalInfos().stream())
+            .filter(personalInfo -> personalInfo.getQuestionType() == PersonalInfoQuestionType.PROFILE_IMAGE)
+            .map(ApplicantPersonalInfo::getValue)
+            .filter(id -> id != null && !id.isBlank())
+            .distinct()
+            .toList();
+
+    Map<String, FileGetResponse> fileMap =
+        profileFileIds.isEmpty()
+            ? Map.of()
+            : fileService.getPrivateFileResponsesForFileIds(profileFileIds);
+
+    // 6. DTO로 조립 (프로필 이미지 포함)
     return applicants.stream()
         .map(
             applicant -> {
               LocalDateTime submittedAt = createdAts.get(applicant.getId());
+
+              String profileFileId =
+                  applicant.getPersonalInfos().stream()
+                      .filter(personalInfo -> personalInfo.getQuestionType() == PersonalInfoQuestionType.PROFILE_IMAGE)
+                      .map(ApplicantPersonalInfo::getValue)
+                      .filter(value -> value != null && !value.isBlank())
+                      .findFirst()
+                      .orElse(null);
+              FileGetResponse profileImage =
+                  profileFileId == null ? null : fileMap.get(profileFileId);
 
               return ApplicantGetResponse.builder()
                   .applicantId(applicant.getId())
@@ -69,6 +99,7 @@ public class ApplicantService {
                   .email(applicant.getEmail())
                   .status(applicant.getStatus())
                   .submittedAt(submittedAt)
+                  .profileImage(profileImage)
                   .build();
             })
         .toList();
