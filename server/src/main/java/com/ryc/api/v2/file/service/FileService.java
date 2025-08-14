@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.domain.FileMetaDataRepository;
@@ -90,19 +91,35 @@ public class FileService {
   }
 
   private String generateFinalS3Key(
-      FileDomainType fileDomainType, String associatedId, String fileName) {
-    String newFileName = String.format("%s_%s", UUID.randomUUID(), fileName);
-    String sanitizedFileName = sanitizeFileName(newFileName);
-
-    return String.format(fileDomainType.getPrefix(), associatedId, sanitizedFileName);
+      FileDomainType fileDomainType, String associatedId, String fileId, String fileName) {
+    // ensure key uniqueness and traceability by including fileId
+    String sanitizedFileName = sanitizeFileName(fileName);
+    String finalFileName = String.format("%s_%s", fileId, sanitizedFileName);
+    return String.format(fileDomainType.getPrefix(), associatedId, finalFileName);
   }
 
   private List<FileMetaData> processAssociatedFiles(List<String> fileIds, String associatedId) {
+    return processAssociatedFiles(fileIds, associatedId, null);
+  }
+
+  private void validateExpectedType(List<FileMetaData> files, FileDomainType expectedType) {
+    if (expectedType == null) return;
+    boolean anyMismatch = files.stream().anyMatch(f -> f.getFileDomainType() != expectedType);
+    if (anyMismatch) {
+      throw new IllegalArgumentException("fileDomainType mismatch with expectedType");
+    }
+  }
+
+  private List<FileMetaData> processAssociatedFiles(
+      List<String> fileIds, String associatedId, FileDomainType expectedType) {
     // 1. 요청된 파일 목록 유효성 검증
     List<FileMetaData> newFiles = fileMetaDataRepository.findAllByIdIn(fileIds);
     if (newFiles.size() != fileIds.size()) {
-      // TODO: exception
+      throw new IllegalArgumentException("Some fileMetadataIds do not exist");
     }
+
+    // 1-1. 기대 타입 검증
+    validateExpectedType(newFiles, expectedType);
 
     // 2. 기존에 연결되어 있는 파일 조회
     List<FileMetaData> existingFiles = fileMetaDataRepository.findAllByAssociatedId(associatedId);
@@ -133,9 +150,16 @@ public class FileService {
 
   @Transactional
   public void claimOwnershipSync(List<String> fileMetaDataIds, String associatedId) {
+    claimOwnershipSync(fileMetaDataIds, associatedId, null);
+  }
+
+  @Transactional
+  public void claimOwnershipSync(
+      List<String> fileMetaDataIds, String associatedId, FileDomainType expectedType) {
     if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
 
-    List<FileMetaData> filesToUpdate = processAssociatedFiles(fileMetaDataIds, associatedId);
+    List<FileMetaData> filesToUpdate =
+        processAssociatedFiles(fileMetaDataIds, associatedId, expectedType);
 
     for (int i = 0; i < filesToUpdate.size(); i++) {
       FileMetaData fileMetaData = filesToUpdate.get(i);
@@ -144,7 +168,10 @@ public class FileService {
         String tempS3Key = fileMetaData.getFilePath();
         String finalS3Key =
             generateFinalS3Key(
-                fileMetaData.getFileDomainType(), associatedId, fileMetaData.getOriginalFileName());
+                fileMetaData.getFileDomainType(),
+                associatedId,
+                fileMetaData.getId(),
+                fileMetaData.getOriginalFileName());
 
         try {
           s3FileStorage.moveFile(tempS3Key, finalS3Key);
@@ -162,11 +189,17 @@ public class FileService {
 
   @Transactional
   public void claimOwnershipAsync(List<String> fileMetaDataIds, String associatedId) {
+    claimOwnershipAsync(fileMetaDataIds, associatedId, null);
+  }
+
+  @Transactional
+  public void claimOwnershipAsync(
+      List<String> fileMetaDataIds, String associatedId, FileDomainType expectedType) {
     if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
 
-    List<FileMetaData> filesToUpdate = processAssociatedFiles(fileMetaDataIds, associatedId);
+    List<FileMetaData> filesToUpdate =
+        processAssociatedFiles(fileMetaDataIds, associatedId, expectedType);
 
-    // 1. dlqpsxm todtjd
     List<FileMoveRequest> moveRequests =
         filesToUpdate.stream()
             .filter(fileMetaData -> fileMetaData.getStatus() == FileStatus.MOVE_REQUESTED)
@@ -179,23 +212,20 @@ public class FileService {
                             generateFinalS3Key(
                                 fileMetaData.getFileDomainType(),
                                 associatedId,
+                                fileMetaData.getId(),
                                 fileMetaData.getOriginalFileName()))
                         .build())
             .toList();
 
-    // 2. 이벤트 발행
     if (!moveRequests.isEmpty()) {
       eventPublisher.publishEvent(new FileMoveEvent(this, moveRequests));
     }
 
-    // 3. 저장
     fileMetaDataRepository.saveAll(filesToUpdate);
   }
 
   private String generateTempS3Key(String fileName) {
-    // 1. 시간 기반 폴더 경로
     String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    // 2. uuid 기반 파일명
     String uuid = UUID.randomUUID().toString();
 
     String sanitizedFileName = sanitizeFileName(fileName);
@@ -209,5 +239,14 @@ public class FileService {
 
   public List<FileMetaData> findAllByAssociatedIdIn(List<String> associatedIds) {
     return fileMetaDataRepository.findAllByAssociatedIdIn(associatedIds);
+  }
+
+  public Map<String, FileGetResponse> getPrivateFileResponsesForFileIds(List<String> fileIds) {
+    if (fileIds == null || fileIds.isEmpty()) return Collections.emptyMap();
+    List<FileMetaData> metas = fileMetaDataRepository.findAllByIdIn(fileIds);
+    return metas.stream()
+        .collect(
+            Collectors.toMap(
+                FileMetaData::getId, m -> FileGetResponse.of(m, getPrivateFileGetUrl(m))));
   }
 }
