@@ -19,7 +19,7 @@ async function getClubReservation(
     applicantId: string,
 ): Promise<ClubInterviewSchedule> {
     const response = await httpRequest.get({
-        url: `clubs/${clubId}/announcements/${announcementId}/applicants/${applicantId}`,
+        url: `clubs/${clubId}/announcements/${announcementId}/interview-slots?applicant-id=${applicantId}`,
     });
     return response as ClubInterviewSchedule;
 }

@@ -44,6 +44,7 @@ function ReservationPage() {
     // form hooks   
     // query hooks
     const { data: clubReservation } = useQuery(clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''));
+    console.log(clubReservation)
     const { mutateAsync: submitInterviewReservation } = useSubmitInterviewReservation();
     // calculated values
 
@@ -82,6 +83,7 @@ function ReservationPage() {
                 toast(error.message, {
                     type: 'error'
                 })
+                console.log('error', error);
             }
         }
         setOpenConfirmDialog(false);
