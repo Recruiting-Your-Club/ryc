@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,6 +37,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(ClubException.class)
   public ResponseEntity<Object> handleClubException(ClubException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode);
+  }
+
+  @ExceptionHandler(InterviewException.class)
+  public ResponseEntity<Object> handleInterviewException(InterviewException e) {
     ErrorCode errorCode = e.getErrorCode();
     return handleExceptionInternal(errorCode);
   }
