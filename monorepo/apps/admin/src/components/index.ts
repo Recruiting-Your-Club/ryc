@@ -12,3 +12,6 @@ export * from './InterviewInformationButton';
 export * from './InterviewTimeTable';
 export * from './PersonalScoreCard';
 export * from './SideBar';
+export * from './ComponentMover';
+export * from './ApplicantList';
+export * from './ApplicantMiniCard';

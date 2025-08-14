@@ -1,3 +1,4 @@
+import { ApplicantSchedulePage } from '@pages/ApplicantSchedulePage';
 import { InterviewEvaluationPage } from '@pages/InterviewEvaluationPage';
 import { createBrowserRouter } from 'react-router';
 
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
+            { path: 'interview-slot', element: <ApplicantSchedulePage /> },
         ],
     },
     {

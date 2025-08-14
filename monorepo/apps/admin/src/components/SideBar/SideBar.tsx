@@ -59,7 +59,7 @@ function SideBar({ menu, subMenu }: SideBarProps) {
         {
             parentId: 4,
             subMenu: '시간대 별 지원자 편집',
-            link: '/manager/time-slots',
+            link: '/interview-slot',
         },
         { parentId: 4, subMenu: '면접 평가', link: '/interview-evaluation' },
         { parentId: 4, subMenu: '면접 공통 질문 설정', link: '/manager/questions' },

@@ -1,39 +1,27 @@
 import {
-    getAllInterviewees,
-    getAllInterviewSchedules,
-    getDocument,
-    getEvaluation,
-    getIntervieweeDetail,
+    getInterviewInformation,
+    getInterviewSlot,
+    getUnreservedApplicant,
 } from '@api/domain/interview/interview';
 import { queryOptions } from '@tanstack/react-query';
 
 import { interviewKeys } from '../querykeyFactory';
 
 const interviewQueries = {
-    getIntervieweeDetail: (id: number) =>
+    interviewSlot: (announcementId: string, clubId: string) =>
         queryOptions({
-            queryKey: interviewKeys.intervieweeDetail(id),
-            queryFn: () => getIntervieweeDetail(id),
+            queryKey: interviewKeys.interviewSlot(announcementId, clubId),
+            queryFn: () => getInterviewSlot({ announcementId, clubId }),
         }),
-    allInterviewees: () =>
+    interviewInformation: (announcementId: string, interviewSlotId: string, clubId: string) =>
         queryOptions({
-            queryKey: interviewKeys.allInterviewees,
-            queryFn: () => getAllInterviewees(),
+            queryKey: interviewKeys.interviewInformation(announcementId, interviewSlotId, clubId),
+            queryFn: () => getInterviewInformation({ announcementId, interviewSlotId, clubId }),
         }),
-    allInterviewSchedules: () =>
+    unreservedApplicant: (announcementId: string, clubId: string) =>
         queryOptions({
-            queryKey: interviewKeys.allInterviewSchedules,
-            queryFn: () => getAllInterviewSchedules(),
-        }),
-    getDocument: (id: number) =>
-        queryOptions({
-            queryKey: interviewKeys.documentDetail(id),
-            queryFn: () => getDocument(id),
-        }),
-    getInterviewEvaluation: (id: number) =>
-        queryOptions({
-            queryKey: interviewKeys.evaluationDetail(id),
-            queryFn: () => getEvaluation(id),
+            queryKey: interviewKeys.unreservedApplicant(announcementId, clubId),
+            queryFn: () => getUnreservedApplicant({ announcementId, clubId }),
         }),
 };
 
