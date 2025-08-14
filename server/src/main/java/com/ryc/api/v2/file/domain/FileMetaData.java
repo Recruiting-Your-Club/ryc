@@ -112,19 +112,35 @@ public class FileMetaData {
         .build();
   }
 
-  public FileMetaData issueFileMoveSuccess(String filePath) {
+  public FileMetaData issueFileMoveSuccess(String finalS3Key) {
     return FileMetaData.builder()
-        .id(id)
-        .filePath(filePath)
-        .originalFileName(originalFileName)
-        .contentType(contentType)
-        .fileSize(fileSize)
-        .fileDomainType(fileDomainType)
-        .associatedId(associatedId)
-        .uploadedByUserId(uploadedByUserId)
+        .id(this.id)
+        .filePath(finalS3Key)
+        .originalFileName(this.originalFileName)
+        .contentType(this.contentType)
+        .fileSize(this.fileSize)
+        .fileDomainType(this.fileDomainType)
+        .uploadedByUserId(this.uploadedByUserId)
+        .associatedId(this.associatedId)
+        .displayOrder(this.displayOrder)
+        .isDeleted(false)
         .status(FileStatus.ATTACHED)
-        .isDeleted(isDeleted)
-        .displayOrder(displayOrder)
+        .build();
+  }
+
+  public FileMetaData issueFileMoveFail() {
+    return FileMetaData.builder()
+        .id(this.id)
+        .filePath(this.filePath)
+        .originalFileName(this.originalFileName)
+        .contentType(this.contentType)
+        .fileSize(this.fileSize)
+        .fileDomainType(this.fileDomainType)
+        .uploadedByUserId(this.uploadedByUserId)
+        .associatedId(this.associatedId)
+        .isDeleted(false)
+        .displayOrder(this.displayOrder)
+        .status(FileStatus.MOVE_FAILED)
         .build();
   }
 
@@ -137,24 +153,9 @@ public class FileMetaData {
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
+        .isDeleted(false)
         .uploadedByUserId(uploadedByUserId)
         .status(status)
-        .isDeleted(isDeleted)
-        .displayOrder(displayOrder)
-        .build();
-  }
-
-  public FileMetaData issueFileMoveFail() {
-    return FileMetaData.builder()
-        .id(id)
-        .filePath(filePath)
-        .originalFileName(originalFileName)
-        .contentType(contentType)
-        .fileSize(fileSize)
-        .fileDomainType(fileDomainType)
-        .associatedId(associatedId)
-        .uploadedByUserId(uploadedByUserId)
-        .status(FileStatus.MOVE_FAILED)
         .isDeleted(isDeleted)
         .displayOrder(displayOrder)
         .build();
