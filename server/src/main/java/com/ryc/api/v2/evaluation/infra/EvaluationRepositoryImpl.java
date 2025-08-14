@@ -74,7 +74,6 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
   public Evaluation findEvaluationById(String evaluationId) {
     return evaluationJpaRepository
         .findById(evaluationId)
-        .filter(e -> !e.getDeleted())
         .map(EvaluationMapper::toDomain)
         .orElseThrow(() -> new NoSuchElementException("evaluationEntity not found or deleted"));
   }
