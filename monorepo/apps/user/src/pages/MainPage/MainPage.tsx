@@ -8,7 +8,7 @@ import { Button, Text } from '@ssoc/ui';
 
 import { MainCard } from '../../components/MainCard/MainCard';
 import { CLUB_CATEGORIES } from '../../constants/club';
-import { getStatus } from '../../utils/changeCategory';
+
 import {
     bannerContainer,
     categoryButton,
@@ -38,6 +38,7 @@ function MainPage() {
     // form hooks
     // query hooks
     const { data: clublist } = useSuspenseQuery(clubQueries.all());
+    console.log(clublist);
 
     // calculated values
     const filteredClubData = useMemo(() => {
@@ -122,9 +123,9 @@ function MainPage() {
                         title={club.name}
                         category={club.category}
                         description={club.shortDescription}
-                        status={getStatus(club.announcementStatus || '')}
+                        status={club.announcementStatus || ''}
                         clubTags={club.clubTags}
-                        imageURL={club.imageUrl}
+                        representativeImage={club.representativeImage}
                         link={club.id}
                     />
                 ))}

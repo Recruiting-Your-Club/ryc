@@ -16,19 +16,5 @@ const getCategory = (category: string) => {
             return '미정';
     }
 };
-const getStatus = (status: string) => {
-    switch (status) {
-        case 'RECRUITING':
-            return 'progress';
-        case 'UPCOMING':
-            return 'primary';
-        case 'CLOSED':
-            return 'end';
-        case 'EMPTY':
-            return 'primary';
-        default:
-            return 'progress';
-    }
-};
 
-export { getCategory, getStatus };
+export { getCategory };
