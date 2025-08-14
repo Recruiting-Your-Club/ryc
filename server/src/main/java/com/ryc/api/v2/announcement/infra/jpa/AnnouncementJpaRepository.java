@@ -13,7 +13,7 @@ import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 
 @Repository
 public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEntity, String> {
-  @Query("select a from AnnouncementEntity a where a.clubId = :clubId")
+  @Query("select a from AnnouncementEntity a where a.clubId = :clubId and a.isDeleted = false")
   List<AnnouncementEntity> findAllByClubId(@Param("clubId") String clubId);
 
   List<AnnouncementEntity> findAllByIsDeleted(Boolean isDeleted);

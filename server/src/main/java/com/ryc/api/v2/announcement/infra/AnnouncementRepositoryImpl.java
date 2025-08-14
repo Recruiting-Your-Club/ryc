@@ -41,6 +41,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
+            .filter(a -> !a.getIsDeleted())
             .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
     return AnnouncementMapper.toDomain(announcementEntity);
