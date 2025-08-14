@@ -13,11 +13,6 @@ export const s_announcementPage = css`
     padding: 2rem;
     padding-bottom: 0;
     position: relative;
-    background-color: ${theme.colors.gray[100]};
-
-    //FIXME: 스크롤 끊김 현상 발생
-    //아래 속성 지우면 layout/contentContentLayout overflow-y auto; 속성에 의해 배경색이 안칠해짐
-    overflow-y: auto;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         flex-direction: column;
@@ -35,7 +30,6 @@ export const s_announcementPage = css`
 
 export const s_announcementPageMainContainer = css`
     width: 100%;
-    //height: 100%;
     min-height: 100vh;
     max-width: 95rem;
     display: flex;
@@ -43,7 +37,6 @@ export const s_announcementPageMainContainer = css`
     align-items: center;
     padding: 2rem 0;
     background-color: ${theme.colors.white};
-    border: 1px solid ${theme.colors.gray[200]};
     border-radius: 10px;
     position: relative;
     @media (max-width: ${theme.breakpoint.tablet}) {
