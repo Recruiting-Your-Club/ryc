@@ -1,9 +1,9 @@
 package com.ryc.api.v2.interview.service;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +49,8 @@ public class InterviewService {
                         adminId,
                         announcementId,
                         request.numberOfPeople(),
-                        request.interviewPeriod()))
+                        request.start(),
+                        request.interviewDuration()))
             .toList();
 
     List<InterviewSlot> savedInterviewSlots =
@@ -58,23 +59,31 @@ public class InterviewService {
   }
 
   @Transactional(readOnly = true)
-  public List<InterviewSlotGetResponse> getInterviewSlots(String announcementId) {
+  public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
 
-    return interviewSlots.stream()
-        .map(this::createInterviewSlotResponse)
-        .sorted(Comparator.comparing(slot -> slot.period().startDate()))
+    List<InterviewSlotResponse> slots =
+        interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
+
+    return slots.stream()
+        .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
+        .entrySet()
+        .stream()
+        .map(entry -> createInterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
+        .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
         .toList();
   }
 
   @Transactional(readOnly = true)
-  public InterviewSlotsApplicantViewResponse getInterviewSlotsForApplicant(
+  public InterviewSlotsApplicantViewResponse getInterviewSlotsApplicantView(
       String clubId, String announcementId, String applicantId) {
 
     Club club = clubRepository.findById(clubId);
     String applicantEmail = applicantRepository.findEmailById(applicantId);
-    List<InterviewSlotGetResponse> slotResponses = getInterviewSlots(announcementId);
+
+    List<InterviewSlotsByDateResponse> slotResponses = getInterviewSlots(announcementId);
+
     FileGetResponse representativeImage =
         fileService.findAllByAssociatedId(clubId).stream()
             .filter(fileMetaData -> fileMetaData.getFileDomainType() == FileDomainType.CLUB_PROFILE)
@@ -87,41 +96,64 @@ public class InterviewService {
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
-        .interviewSlots(slotResponses)
+        .slotByDateResponses(slotResponses)
         .representativeImage(representativeImage)
         .applicantEmail(applicantEmail)
         .build();
   }
 
-  /*
-   * 관리자가 특정 면접 슬롯에 대한 예약 정보를 조회합니다.
-   * 이 메서드는 면접 슬롯 ID를 기준으로 해당 면접 슬롯의 예약 정보를 조회하고,
-   * 면접 예약이 없는 지원자 목록을 생성하여 응답합니다.
-   */
   @Transactional(readOnly = true)
-  public InterviewReservationAdminViewResponse getInterviewReservationsForAdmin(
-      String announcementId, String interviewSlotId) {
-    InterviewSlot targetInterviewSlot =
-        interviewRepository.findInterviewSlotByIdForUpdate(interviewSlotId);
-    List<InterviewReservation> reservations = targetInterviewSlot.getInterviewReservations();
+  public InterviewSlotPeopleCountResponse getCountByInterviewSlot(String interviewSlotId) {
+    InterviewSlot slot = interviewRepository.findInterviewSlotById(interviewSlotId);
+    return new InterviewSlotPeopleCountResponse(
+        slot.getMaxNumberOfPeople(), slot.getInterviewReservations().size());
+  }
 
-    // 면접 예약 정보를 담을 응답 리스트 생성
-    List<InterviewReservationGetResponse> reservationResponses =
-        reservations.stream().map(this::createReservationResponse).toList();
+  @Transactional(readOnly = true)
+  public List<InterviewReservationGetResponse> getInterviewReservations(String interviewSlotId) {
+    InterviewSlot interviewSlot = interviewRepository.findInterviewSlotById(interviewSlotId);
+    List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
+    List<InterviewReservationGetResponse> responses = new ArrayList<>();
 
-    List<InterviewSlot> allInterviewSlots =
+    for (InterviewReservation reservation : reservations) {
+      Applicant applicant = reservation.getApplicant();
+
+      InterviewReservationGetResponse response =
+          InterviewReservationGetResponse.builder()
+              .interviewReservationId(reservation.getId())
+              .applicantId(applicant.getId())
+              .applicantEmail(applicant.getEmail())
+              .applicantName(applicant.getName())
+              .build();
+      responses.add(response);
+    }
+    return responses;
+  }
+
+  @Transactional(readOnly = true)
+  public List<UnReservedApplicantGetResponse> getUnReservedApplicants(String announcementId) {
+    List<InterviewSlot> interviewSlots =
         interviewRepository.findInterviewSlotsByAnnouncementId(announcementId);
-    List<Applicant> allApplicants = applicantRepository.findAllByAnnouncementId(announcementId);
+    Set<Applicant> applicants =
+        new HashSet<>(applicantRepository.findAllByAnnouncementId(announcementId));
 
-    // 면접 예약이 없는 지원자 목록을 생성
-    List<UnReservedApplicantGetResponse> unReservedApplicantGetResponses =
-        createUnReservedApplicantResponse(allInterviewSlots, allApplicants);
+    Set<String> reservedApplicantIds =
+        interviewSlots.stream()
+            .flatMap(slot -> slot.getInterviewReservations().stream())
+            .map(reservation -> reservation.getApplicant().getId())
+            .collect(Collectors.toSet());
 
-    return InterviewReservationAdminViewResponse.builder()
-        .interviewSlotId(interviewSlotId)
-        .interviewReservations(reservationResponses)
-        .unReservedApplicants(unReservedApplicantGetResponses)
-        .build();
+    applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
+
+    return applicants.stream()
+        .map(
+            applicant ->
+                UnReservedApplicantGetResponse.builder()
+                    .applicantId(applicant.getId())
+                    .applicantEmail(applicant.getEmail())
+                    .applicantName(applicant.getName())
+                    .build())
+        .toList();
   }
 
   @Transactional
@@ -150,37 +182,47 @@ public class InterviewService {
 
   @Transactional
   public InterviewReservationUpdateResponse changeInterviewReservation(
-      String reservationId, InterviewReservationUpdatedRequest body) {
-    // 기존 면접 슬롯과 예약 정보 조회
-    InterviewSlot oldInterviewSlot =
-        interviewRepository.findInterviewSlotByReservationId(reservationId);
-    InterviewReservation reservation = oldInterviewSlot.getInterviewReservationById(reservationId);
+      String applicantId, InterviewReservationUpdatedRequest body) {
 
-    // 기존 면접 슬롯에서 예약 정보 제거
-    InterviewSlot removedInterviewReservation =
-        oldInterviewSlot.removeInterviewReservationById(reservation);
+    InterviewReservation reservation;
+
+    // 기존 면접 슬롯이 있는지 확인하고, 해당 슬롯에서 지원자의 예약을 제거합니다.
+    Optional<InterviewSlot> interviewSlotOptional =
+        interviewRepository.findInterviewSlotByApplicantIdForUpdate(applicantId);
+
+    if (interviewSlotOptional.isPresent()) {
+      InterviewSlot slot = interviewSlotOptional.get();
+
+      reservation = slot.getInterviewReservationByApplicantId(applicantId);
+
+      InterviewSlot updatedSlot = slot.removeReservation(reservation);
+      interviewRepository.saveInterviewSlot(updatedSlot);
+    } else {
+
+      Applicant applicant = applicantRepository.findById(applicantId);
+      reservation = InterviewReservation.initialize(applicant);
+    }
 
     // 새로운 면접 슬롯에 예약 정보 추가
-    InterviewSlot newInterviewSlot =
+    InterviewSlot newSlot =
         interviewRepository.findInterviewSlotByIdForUpdate(body.interviewSlotId());
-    InterviewSlot updatedInterviewSlot =
-        newInterviewSlot.addInterviewReservations(reservation, true);
+    InterviewSlot updatedSlot = newSlot.addInterviewReservations(reservation, true);
 
-    interviewRepository.saveInterviewSlot(removedInterviewReservation);
-    interviewRepository.saveInterviewSlot(updatedInterviewSlot);
+    InterviewSlot savedSlot = interviewRepository.saveInterviewSlot(updatedSlot);
+    String reservationId = savedSlot.getInterviewReservationByApplicantId(applicantId).getId();
 
-    InterviewSlotGetResponse slotGetResponse = createInterviewSlotResponse(updatedInterviewSlot);
+    InterviewSlotResponse slotGetResponse = createInterviewSlotResponse(savedSlot);
     return InterviewReservationUpdateResponse.builder()
-        .interviewReservationId(reservation.getId())
+        .interviewReservationId(reservationId)
         .interviewSlot(slotGetResponse)
         .build();
   }
 
-  private InterviewSlotGetResponse createInterviewSlotResponse(InterviewSlot slot) {
+  private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {
     PeriodResponse periodResponse = PeriodResponse.from(slot.getPeriod());
     int size = slot.getInterviewReservations().size();
 
-    return InterviewSlotGetResponse.builder()
+    return InterviewSlotResponse.builder()
         .id(slot.getId())
         .period(periodResponse)
         .maxNumberOfPeople(slot.getMaxNumberOfPeople())
@@ -188,43 +230,15 @@ public class InterviewService {
         .build();
   }
 
-  private InterviewReservationGetResponse createReservationResponse(
-      InterviewReservation reservation) {
-    Applicant applicant = reservation.getApplicant();
+  private InterviewSlotsByDateResponse createInterviewSlotsByDateResponse(
+      LocalDate date, List<InterviewSlotResponse> slotResponses) {
+    PeriodResponse period = slotResponses.get(0).period();
+    long interviewDuration = Duration.between(period.startDate(), period.endDate()).toMinutes();
 
-    return InterviewReservationGetResponse.builder()
-        .interviewReservationId(reservation.getId())
-        .applicantId(applicant.getId())
-        .applicantEmail(applicant.getEmail())
-        .applicantName(applicant.getName())
+    return InterviewSlotsByDateResponse.builder()
+        .date(date)
+        .interviewDuration((int) interviewDuration)
+        .interviewSlots(slotResponses)
         .build();
-  }
-
-  /*
-   * 모든 면접 슬롯과 모든 지원자를 기반으로 면접 예약이 없는 지원자 목록을 생성합니다.
-   * 이 메서드는 모든 면접 슬롯과 지원자를 조회하여
-   * 면접 예약이 없는 지원자들을 필터링하여 응답을 생성합니다
-   */
-  private List<UnReservedApplicantGetResponse> createUnReservedApplicantResponse(
-      List<InterviewSlot> allInterviewSlots, List<Applicant> allApplicants) {
-
-    Set<String> reservedApplicantIds = new HashSet<>();
-
-    for (InterviewSlot interviewSlot : allInterviewSlots) {
-      for (InterviewReservation reservation : interviewSlot.getInterviewReservations()) {
-        reservedApplicantIds.add(reservation.getApplicant().getId());
-      }
-    }
-
-    return allApplicants.stream()
-        .filter(applicant -> !reservedApplicantIds.contains(applicant.getId()))
-        .map(
-            applicant ->
-                UnReservedApplicantGetResponse.builder()
-                    .applicantId(applicant.getId())
-                    .applicantName(applicant.getName())
-                    .applicantEmail(applicant.getEmail())
-                    .build())
-        .toList();
   }
 }

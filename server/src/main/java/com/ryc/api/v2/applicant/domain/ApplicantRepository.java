@@ -19,6 +19,8 @@ public interface ApplicantRepository {
 
   List<Applicant> findAllByAnnouncementIdAndStatus(String announcementId, ApplicantStatus status);
 
+  List<Applicant> findByEmails(List<String> emails);
+
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
 
   Map<String, String> findApplicantImageUrlsByIds(List<String> ids);

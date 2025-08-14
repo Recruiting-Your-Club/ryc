@@ -22,4 +22,6 @@ public interface ApplicantJpaRepository extends JpaRepository<ApplicantEntity, S
       String announcementId, ApplicantStatus status);
 
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
+
+  List<ApplicantEntity> findAllByEmailIn(List<String> emails);
 }

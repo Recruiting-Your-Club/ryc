@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.applicant.domain.Applicant;
+import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
@@ -29,16 +31,19 @@ public class EmailService {
   private final String linkHtmlTemplate;
   private final EmailRepository emailRepository;
   private final InterviewService interviewService;
+  private final ApplicantRepository applicantRepository;
 
   public EmailService(
       @Value("${LOCAL_CLIENT_URL}") String baseUri,
       EmailRepository emailRepository,
       InterviewService interviewService,
+      ApplicantRepository applicantRepository,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri + "/reservation";
     this.emailRepository = emailRepository;
     this.interviewService = interviewService;
+    this.applicantRepository = applicantRepository;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     try (InputStream is = resource.getInputStream()) {
@@ -61,19 +66,21 @@ public class EmailService {
   }
 
   @Transactional
-  public List<EmailSendResponse> createInterviewDateEmails(
+  public List<EmailSendResponse> createInterviewEmails(
       String adminId, String clubId, String announcementId, InterviewEmailSendRequest body) {
 
     interviewService.createInterviewSlot(
         adminId, announcementId, body.numberOfPeopleByInterviewDateRequests());
+
+    List<Applicant> applicants =
+        applicantRepository.findByEmails(body.emailSendRequest().recipients());
 
     List<Email> emails =
         createEmailsWithEachLink(
             clubId,
             adminId,
             announcementId,
-            body.emailSendRequest()
-                .recipients(), // TODO: recipients가 아닌, ApplicantService에서 지원자 ID 주입 필요
+            applicants,
             body.emailSendRequest().subject(),
             body.emailSendRequest().content());
 
@@ -103,21 +110,21 @@ public class EmailService {
       String clubId,
       String adminId,
       String announcementId,
-      List<String> recipientIds,
+      List<Applicant> applicants,
       String subject,
       String content) {
     List<Email> emails = new ArrayList<>();
 
-    for (String recipient : recipientIds) {
+    for (Applicant applicant : applicants) {
       String link =
           String.format(
-              "%s?club-id=%s&announcement-id=%s&recipient-id=%s",
-              baseUri, clubId, announcementId, recipient);
+              "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
+              baseUri, clubId, announcementId, applicant.getId());
       String linkHtml = String.format(linkHtmlTemplate, link);
 
       emails.add(
           Email.initialize(
-              adminId, recipient, subject, linkHtml + content, clubId, announcementId));
+              adminId, applicant.getEmail(), subject, linkHtml + content, clubId, announcementId));
     }
     return emails;
   }

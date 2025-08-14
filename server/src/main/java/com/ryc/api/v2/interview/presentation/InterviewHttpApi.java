@@ -32,15 +32,16 @@ public class InterviewHttpApi {
 
   private final InterviewService interviewService;
 
-  @GetMapping("announcements/{announcement-id}/interview-slots")
+  @GetMapping("admin/announcements/{announcement-id}/interview-slots")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<InterviewSlotGetResponse>> getInterviewSlotsForAdmin(
+  public ResponseEntity<List<InterviewSlotsByDateResponse>> getInterviewSlotsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<InterviewSlotGetResponse> responses = interviewService.getInterviewSlots(announcementId);
+    List<InterviewSlotsByDateResponse> responses =
+        interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
 
@@ -54,21 +55,45 @@ public class InterviewHttpApi {
       @PathVariable("announcement-id") String announcementId,
       @RequestParam("applicant-id") String applicantId) {
     InterviewSlotsApplicantViewResponse response =
-        interviewService.getInterviewSlotsForApplicant(clubId, announcementId, applicantId);
+        interviewService.getInterviewSlotsApplicantView(clubId, announcementId, applicantId);
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("announcements/{announcement-id}/interview-slots/{interview-slot-id}/reservations")
+  @GetMapping("interview-slots/{interview-slot-id}/people/count")
+  @Operation(summary = "면접 슬롯의 예약 인원 수 조회", description = "지원자가 특정 면접 슬롯에 대해 예약된 인원 수를 조회합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<InterviewSlotPeopleCountResponse> getCountByInterviewSlot(
+      @PathVariable("interview-slot-id") String interviewSlotId) {
+    InterviewSlotPeopleCountResponse response =
+        interviewService.getCountByInterviewSlot(interviewSlotId);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("admin/interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 정보 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 정보를 조회합니다.")
+  @Operation(summary = "면접 예약자들 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 예약 정보를 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND"})
-  public ResponseEntity<InterviewReservationAdminViewResponse> getInterviewInfoForAdmin(
-      @PathVariable("announcement-id") String announcementId,
+  public ResponseEntity<List<InterviewReservationGetResponse>> getInterviewReservationsForAdmin(
       @PathVariable("interview-slot-id") String interviewSlotId) {
-    InterviewReservationAdminViewResponse response =
-        interviewService.getInterviewReservationsForAdmin(announcementId, interviewSlotId);
+    List<InterviewReservationGetResponse> response =
+        interviewService.getInterviewReservations(interviewSlotId);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("admin/announcements/{announcement-id}/interviews/unreserved-applicants")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 미예약자들 조회", description = "동아리 관리자가 면접을 예약하지 않은 지원자들을 조회합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
+  public ResponseEntity<List<UnReservedApplicantGetResponse>> getUnReservedApplicants(
+      @PathVariable("announcement-id") String announcementId) {
+    List<UnReservedApplicantGetResponse> response =
+        interviewService.getUnReservedApplicants(announcementId);
     return ResponseEntity.ok(response);
   }
 
@@ -91,12 +116,12 @@ public class InterviewHttpApi {
     return ResponseEntity.created(location).body(response);
   }
 
-  @PatchMapping("interview-reservations/{reservation-id}")
+  @PutMapping("admin/applicants/{applicant-id}/interview-reservation")
   @HasRole(Role.MEMBER)
   @Operation(
-      summary = "면접 예약 수정",
+      summary = "면접 예약 정보 수정",
       description =
-          "동아리 관리자가 지원자의 면접 일정을 수정합니다.\n 만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
+          "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
       value = {
         PermissionErrorCode.class,
@@ -107,10 +132,10 @@ public class InterviewHttpApi {
         "RESOURCE_NOT_FOUND",
       })
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
-      @PathVariable("reservation-id") String reservationId,
+      @PathVariable("applicant-id") String applicantId,
       @Valid @RequestBody InterviewReservationUpdatedRequest body) {
     InterviewReservationUpdateResponse response =
-        interviewService.changeInterviewReservation(reservationId, body);
+        interviewService.changeInterviewReservation(applicantId, body);
     return ResponseEntity.ok(response);
   }
 }

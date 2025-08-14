@@ -1,6 +1,7 @@
 package com.ryc.api.v2.interview.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InterviewRepository {
 
@@ -15,7 +16,9 @@ public interface InterviewRepository {
 
   List<InterviewSlot> findInterviewSlotsByAnnouncementId(String announcementId);
 
+  InterviewSlot findInterviewSlotById(String interviewSlotId);
+
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
 
-  InterviewSlot findInterviewSlotByReservationId(String interviewReservationId);
+  Optional<InterviewSlot> findInterviewSlotByApplicantIdForUpdate(String applicantId);
 }

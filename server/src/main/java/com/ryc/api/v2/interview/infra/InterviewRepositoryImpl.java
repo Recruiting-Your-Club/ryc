@@ -2,6 +2,7 @@ package com.ryc.api.v2.interview.infra;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -44,6 +45,16 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
+  public InterviewSlot findInterviewSlotById(String interviewSlotId) {
+    InterviewSlotEntity entity =
+        interviewSlotJpaRepository
+            .findById(interviewSlotId)
+            .orElseThrow(
+                () -> new NoSuchElementException("Interview slot not found: " + interviewSlotId));
+    return InterviewSlotMapper.toDomain(entity);
+  }
+
+  @Override
   public InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId) {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
@@ -53,14 +64,9 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public InterviewSlot findInterviewSlotByReservationId(String interviewReservationId) {
-    InterviewSlotEntity entity =
-        interviewReservationJpaRepository
-            .findInterviewSlotById(interviewReservationId)
-            .orElseThrow(
-                () ->
-                    new NoSuchElementException(
-                        "Interview slot not found for reservation ID: " + interviewReservationId));
-    return InterviewSlotMapper.toDomain(entity);
+  public Optional<InterviewSlot> findInterviewSlotByApplicantIdForUpdate(String applicantId) {
+    return interviewReservationJpaRepository
+        .findSlotByApplicantId(applicantId)
+        .map(InterviewSlotMapper::toDomain);
   }
 }
