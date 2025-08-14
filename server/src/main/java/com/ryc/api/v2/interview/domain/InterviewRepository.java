@@ -20,5 +20,5 @@ public interface InterviewRepository {
 
   InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
 
-  Optional<InterviewSlot> findInterviewSlotByApplicantId(String applicantId);
+  Optional<InterviewSlot> findInterviewSlotByApplicantIdForUpdate(String applicantId);
 }

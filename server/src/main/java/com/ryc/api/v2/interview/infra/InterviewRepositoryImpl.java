@@ -64,7 +64,7 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public Optional<InterviewSlot> findInterviewSlotByApplicantId(String applicantId) {
+  public Optional<InterviewSlot> findInterviewSlotByApplicantIdForUpdate(String applicantId) {
     return interviewReservationJpaRepository
         .findSlotByApplicantId(applicantId)
         .map(InterviewSlotMapper::toDomain);
