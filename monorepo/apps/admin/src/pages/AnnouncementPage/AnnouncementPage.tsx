@@ -187,7 +187,7 @@ function AnnouncementPage() {
         {
             title: '모집공고',
             page: <RecruitmentPage {...recruitment} />,
-            width: '5.8rem',
+            width: '5.6rem',
         },
         {
             title: '사전질문',
@@ -197,7 +197,7 @@ function AnnouncementPage() {
                     containerStyle={s_applyFormContainer}
                 />
             ),
-            width: '5.8rem',
+            width: '5.6rem',
         },
         {
             title: '자기소개서',
@@ -207,7 +207,7 @@ function AnnouncementPage() {
                     containerStyle={s_applyFormContainer}
                 />
             ),
-            width: '7.9rem',
+            width: '7.2rem',
         },
     ];
 

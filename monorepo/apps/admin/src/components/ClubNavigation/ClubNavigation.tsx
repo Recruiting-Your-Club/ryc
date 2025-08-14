@@ -34,7 +34,7 @@ function ClubNavigation(props: ClubNavigationProps) {
                 setSliderWidth(content.width);
             } else {
                 const width = parseInt(content.width);
-                position += width + 1.5;
+                position += width + 2.0;
             }
         }
     };
