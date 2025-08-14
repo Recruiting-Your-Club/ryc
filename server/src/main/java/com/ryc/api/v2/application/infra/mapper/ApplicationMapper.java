@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.infra.entity.AnswerEntity;
 import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
-import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
+import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
 
 public class ApplicationMapper {
   public static Application toDomain(ApplicationEntity entity) {

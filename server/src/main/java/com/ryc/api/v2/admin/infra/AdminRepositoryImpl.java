@@ -12,6 +12,7 @@ import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.admin.infra.jpa.AdminJpaRepository;
 import com.ryc.api.v2.admin.infra.mapper.AdminMapper;
 import com.ryc.api.v2.admin.infra.projection.AdminIdNameProjection;
+import com.ryc.api.v2.admin.infra.projection.AdminIdThumbnailProjection;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +39,19 @@ public class AdminRepositoryImpl implements AdminRepository {
   @Override
   public Optional<Admin> findById(String id) {
     return adminJpaRepository.findById(id).map(AdminMapper::toDomain);
+  }
+
+  @Override
+  public Map<String, String> findThumbnailUrlByIds(List<String> adminIds) {
+    if (adminIds == null || adminIds.isEmpty()) {
+      throw new IllegalArgumentException("adminIds must not be null or empty.");
+    }
+
+    return adminJpaRepository.findThumbnailUrlByIds(adminIds).stream()
+        .filter(projection -> projection.getId() != null && projection.getThumbnailUrl() != null)
+        .collect(
+            Collectors.toMap(
+                AdminIdThumbnailProjection::getId, AdminIdThumbnailProjection::getThumbnailUrl));
   }
 
   @Override

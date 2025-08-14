@@ -1,6 +1,6 @@
 package com.ryc.api.v2.applicationForm.infra;
 
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +22,7 @@ public class ApplicationFormRepositoryImpl implements ApplicationFormRepository 
     ApplicationFormEntity applicationFormEntity =
         applicationFormJpaRepository
             .findByAnnouncementId(id)
-            .orElseThrow(() -> new EntityNotFoundException("announcementApplication not found"));
+            .orElseThrow(() -> new NoSuchElementException("announcementApplication not found"));
 
     return ApplicationFormMapper.toDomain(applicationFormEntity);
   }

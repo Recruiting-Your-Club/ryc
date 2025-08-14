@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.admin.presentation.response.AdminEmailDuplicatedResponse;
 import com.ryc.api.v2.admin.service.AdminService;
+import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
+import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +28,9 @@ public class AdminHttpApi {
   @Operation(
       summary = "이메일 중복 확인",
       description = "주어진 이메일이 이미 사용 중인지 확인합니다. 사용 중이면 true, 아니면 false를 반환합니다.")
-  @ApiResponse(responseCode = "200", description = "이메일 중복 확인 성공")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"INVALID_PARAMETER"})
   public ResponseEntity<AdminEmailDuplicatedResponse> checkEmailDuplicate(
       @RequestParam @Email String email) {
     AdminEmailDuplicatedResponse response = adminService.checkEmailDuplicate(email);
