@@ -9,13 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementProcess;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.file.domain.FileDomainType;
@@ -130,5 +128,26 @@ public class AnnouncementService {
         });
 
     return statuses;
+  }
+
+  @Transactional(readOnly = true)
+  public AnnouncementProcessGetResponse getAnnouncementProcess(String announcementId) {
+    final List<AnnouncementProcess> defaultProcess =
+        List.of(
+            AnnouncementProcess.DOCUMENT, AnnouncementProcess.INTERVIEW, AnnouncementProcess.FINAL);
+
+    Announcement announcement = announcementRepository.findById(announcementId);
+
+    List<AnnouncementProcess> processes =
+        defaultProcess.stream()
+            .filter(process -> shouldIncludeProcess(process, announcement))
+            .toList();
+
+    return new AnnouncementProcessGetResponse(processes);
+  }
+
+  private boolean shouldIncludeProcess(AnnouncementProcess process, Announcement announcement) {
+    return process != AnnouncementProcess.INTERVIEW
+        || Boolean.TRUE.equals(announcement.getHasInterview());
   }
 }

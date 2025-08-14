@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -81,12 +80,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
-    return handleExceptionInternal(errorCode, e.getMessage());
-  }
-
-  @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
-    ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
     return handleExceptionInternal(errorCode, e.getMessage());
   }
 

@@ -1,8 +1,7 @@
 package com.ryc.api.v2.club.infra;
 
 import java.util.List;
-
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +32,7 @@ public class ClubRepositoryImpl implements ClubRepository {
     ClubEntity entity =
         clubJpaRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("동아리를 찾을 수 없습니다."));
+            .orElseThrow(() -> new NoSuchElementException("동아리를 찾을 수 없습니다."));
     return ClubMapper.toDomain(entity);
   }
 
