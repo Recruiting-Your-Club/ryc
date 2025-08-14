@@ -32,6 +32,7 @@ public class ClubRepositoryImpl implements ClubRepository {
     ClubEntity entity =
         clubJpaRepository
             .findById(id)
+            .filter(c -> !c.getIsDeleted())
             .orElseThrow(() -> new NoSuchElementException("동아리를 찾을 수 없습니다."));
     return ClubMapper.toDomain(entity);
   }
@@ -43,7 +44,10 @@ public class ClubRepositoryImpl implements ClubRepository {
 
   @Override
   public List<Club> findAll() {
-    return clubJpaRepository.findAll().stream().map(ClubMapper::toDomain).toList();
+    return clubJpaRepository.findAll().stream()
+        .filter(c -> !c.getIsDeleted())
+        .map(ClubMapper::toDomain)
+        .toList();
   }
 
   @Override
