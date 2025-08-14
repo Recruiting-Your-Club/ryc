@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.interview.domain.InterviewRepository;
@@ -61,7 +59,7 @@ public class InterviewRepositoryImpl implements InterviewRepository {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
             .findByIdForUpdate(interviewSlotId)
-            .orElseThrow(() -> new EntityNotFoundException("Interview slot not found"));
+            .orElseThrow(() -> new NoSuchElementException("Interview slot not found"));
     return InterviewSlotMapper.toDomain(entity);
   }
 

@@ -1,8 +1,7 @@
 package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
-
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +11,7 @@ import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
+import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.file.infra.jpa.FileMetadataJpaRepository;
 
@@ -41,7 +41,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+            .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
     return AnnouncementMapper.toDomain(announcementEntity);
   }
@@ -61,7 +61,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
       AnnouncementEntity announcementEntity =
           announcementJpaRepository
               .findById(announcement.getId())
-              .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+              .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
       AnnouncementEntity updatedInfoEntity = AnnouncementMapper.toEntity(announcement);
       announcementEntity.update(updatedInfoEntity);
@@ -96,5 +96,16 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   @Override
   public List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds) {
     return announcementJpaRepository.getStatusesByClubIds(clubIds);
+  }
+
+  @Override
+  public boolean imageAllowed(String announcementId) {
+    return announcementJpaRepository
+        .findById(announcementId)
+        .filter(announcementEntity -> !announcementEntity.getIsDeleted())
+        .orElseThrow(() -> new NoSuchElementException("announcement not found"))
+        .getApplicationForm()
+        .getPersonalInfoQuestions()
+        .contains(PersonalInfoQuestionType.PROFILE_IMAGE);
   }
 }

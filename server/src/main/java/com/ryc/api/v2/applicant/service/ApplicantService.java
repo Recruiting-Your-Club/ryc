@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
@@ -22,6 +23,7 @@ public class ApplicantService {
 
   private final ApplicantRepository applicantRepository;
   private final ApplicationRepository applicationRepository;
+  private final AnnouncementRepository announcementRepository;
 
   @Transactional
   public void changeApplicantStatus(String applicantId, ApplicantStatusRequest statusRequest) {
@@ -57,20 +59,46 @@ public class ApplicantService {
     Map<String, LocalDateTime> createdAts =
         applicationRepository.findCreatedAtByApplicantIds(applicantIds);
 
-    // 5. DTO로 조립
-    return applicants.stream()
-        .map(
-            applicant -> {
-              LocalDateTime submittedAt = createdAts.get(applicant.getId());
+    // 5. 이미지 수집 허용 여부 및 지원자 이미지 조회
+    final boolean imageAllowed = announcementRepository.imageAllowed(announcementId);
+    final Map<String, String> imageUrlMap =
+        applicantRepository.findApplicantImageUrlsByIds(applicantIds);
 
-              return ApplicantGetResponse.builder()
-                  .applicantId(applicant.getId())
-                  .name(applicant.getName())
-                  .email(applicant.getEmail())
-                  .status(applicant.getStatus())
-                  .submittedAt(submittedAt)
-                  .build();
-            })
+    // 6. DTO로 조립
+    return applicants.stream()
+        .map(applicant -> buildApplicantResponse(applicant, createdAts, imageAllowed, imageUrlMap))
         .toList();
+  }
+
+  /**
+   * 지원자 정보를 응답 DTO로 변환
+   *
+   * @param applicant 지원자 도메인
+   * @param createdAts 지원자별 지원서 제출 시간 매핑
+   * @param imageAllowed 공고의 이미지 수집 허용 여부
+   * @param imageUrlMap 지원자별 이미지 URL 매핑
+   * @return 지원자 정보 응답 DTO
+   */
+  private ApplicantGetResponse buildApplicantResponse(
+      Applicant applicant,
+      Map<String, LocalDateTime> createdAts,
+      boolean imageAllowed,
+      Map<String, String> imageUrlMap) {
+
+    final String applicantId = applicant.getId();
+    final LocalDateTime submittedAt = createdAts.get(applicantId);
+    final String imageUrl = imageUrlMap.getOrDefault(applicantId, "");
+
+    return ApplicantGetResponse.builder()
+        .applicantId(applicantId)
+        .name(applicant.getName())
+        .email(applicant.getEmail())
+        .imageAllowed(imageAllowed)
+        .imagePresent(!imageUrl.isEmpty())
+        .imageUrl(imageUrl)
+        .thumbnailUrl(imageUrl) // TODO: 별도 썸네일 로직 구현 필요
+        .status(applicant.getStatus())
+        .submittedAt(submittedAt)
+        .build();
   }
 }

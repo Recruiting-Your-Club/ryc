@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
@@ -115,7 +113,7 @@ public class ClubServiceImpl implements ClubService {
   public List<ClubOverviewResponse> findAllClubsOverview() {
     List<Club> clubs = clubRepository.findAllWithCategories();
 
-    if (clubs.isEmpty()) throw new EntityNotFoundException("Club not found");
+    if (clubs.isEmpty()) throw new NoSuchElementException("Club not found");
 
     List<ClubOverviewResponse> responses = new ArrayList<>();
     for (Club club : clubs) {

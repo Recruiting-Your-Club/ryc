@@ -28,4 +28,6 @@ public interface AnnouncementRepository {
   void saveAll(List<Announcement> announcements);
 
   List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds);
+
+  boolean imageAllowed(String announcementId);
 }
