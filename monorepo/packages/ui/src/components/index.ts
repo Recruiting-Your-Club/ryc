@@ -21,4 +21,5 @@ export * from './TextArea';
 export * from './PasswordInput';
 export * from './Toast';
 export * from './Tooltip';
+export * from './Table';
 export * from './ImageDialog';
