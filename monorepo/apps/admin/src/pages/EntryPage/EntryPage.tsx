@@ -10,6 +10,7 @@ import {
     s_demoImageContainer,
     s_entryButton,
     s_entryButtonContainer,
+    s_entryDescription,
     s_entryTitle,
     s_footer,
     s_main,
@@ -27,7 +28,7 @@ function EntryPage() {
                     <br />
                     쏙에서 쉽고 간편하게
                 </h1>
-                <Text type="captionSemibold" color="caption">
+                <Text type="captionSemibold" color="caption" sx={s_entryDescription}>
                     Sejong Students Of Club는 세종대학교의 동아리 지원 및 관리서비스예요. <br />
                     동아리 모집부터 지원자 관리, 면접 일정까지 쏙이 해결해드릴게요.
                 </Text>

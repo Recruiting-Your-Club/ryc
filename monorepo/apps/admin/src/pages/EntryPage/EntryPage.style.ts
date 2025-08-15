@@ -3,6 +3,17 @@ import { css, keyframes } from '@emotion/react';
 
 import theme from '@ssoc/styles';
 
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const s_container = css`
     height: 100%;
     width: 100%;
@@ -36,11 +47,16 @@ export const s_entryTitle = css`
     text-align: center;
     line-height: 1.4;
     font-weight: 700;
+    animation: ${fadeInUp} 1.5s ease-out;
+`;
+export const s_entryDescription = css`
+    animation: ${fadeInUp} 1.5s ease-out 0.3s both;
 `;
 export const s_entryButtonContainer = css`
     display: flex;
     gap: 1rem;
     ${theme.typography.h4Bold}
+    animation: ${fadeInUp} 1.5s ease-out 0.3s both;
 `;
 export const s_entryButton = css`
     display: flex;
@@ -63,12 +79,15 @@ export const s_entryButton = css`
         background-color: ${theme.colors.defaultHover};
     }
     transition: background-color 0.3s ease;
+    animation: ${fadeInUp} 1s ease-out 0.7s both;
 `;
 
 export const s_demoImageContainer = css`
     margin-top: 10rem;
     width: 82rem;
     height: 50rem;
+    animation: ${fadeInUp} 1s ease-out 1s both; // 3초 후에 애니메이션 시작
+    opacity: 0;
 `;
 export const s_demoImage = css`
     width: 100%;
