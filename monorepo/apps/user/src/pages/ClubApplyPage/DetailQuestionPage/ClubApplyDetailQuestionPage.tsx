@@ -10,7 +10,7 @@ import {
     clubApplyDetailQuestionContainer,
     s_infoIcon,
     s_labelContainer,
-    s_questionStarSx,
+    s_questionStar,
     s_questionTitleContainer,
     s_questionTitleSx,
     s_textAreaWrapperSx,
@@ -50,19 +50,17 @@ function ClubApplyDetailQuestionPage({
                             <div css={s_questionTitleContainer}>
                                 <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
                                     {question.label}
+                                    {question.isRequired && <span css={s_questionStar}>*</span>}
                                 </Text>
-                                {question.isRequired && (
-                                    <Text type="bodyRegular" color="warning" sx={s_questionStarSx}>
-                                        *
-                                    </Text>
-                                )}
                             </div>
-                            <Tooltip
-                                content={question.description || ''}
-                                direction={isTablet ? 'bottomLeft' : 'bottom'}
-                            >
-                                <InfoIcon css={s_infoIcon} />
-                            </Tooltip>
+                            {question.description && (
+                                <Tooltip
+                                    content={question.description || ''}
+                                    direction={isTablet ? 'bottomLeft' : 'bottom'}
+                                >
+                                    <InfoIcon css={s_infoIcon} />
+                                </Tooltip>
+                            )}
                         </div>
                         <TextArea
                             size="lg"
