@@ -4,6 +4,7 @@ import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
     ClubEditPage,
+    EntryPage,
     InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
@@ -17,8 +18,6 @@ const router = createBrowserRouter([
         path: '/',
         element: <ManagerLayout />,
         children: [
-            { index: true, element: <TestPage /> },
-
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
             { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
@@ -41,7 +40,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <EntryLayout />,
         children: [
-            { index: true, element: <TestPage /> },
+            { index: true, element: <EntryPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
