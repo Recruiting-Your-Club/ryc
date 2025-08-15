@@ -2,8 +2,8 @@ package com.ryc.api.v2.application.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,18 +12,23 @@ import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.applicant.domain.Applicant;
+import com.ryc.api.v2.applicant.domain.ApplicantPersonalInfo;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
-import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
+import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantPersonalInfoCreateRequest;
 import com.ryc.api.v2.application.common.exception.code.ApplicationCreateErrorCode;
+import com.ryc.api.v2.application.domain.Answer;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
 import com.ryc.api.v2.application.presentation.dto.request.ApplicationSubmissionRequest;
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationGetResponse;
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissionResponse;
-import com.ryc.api.v2.application.presentation.dto.response.ApplicationSummaryResponse;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.applicationForm.domain.ApplicationFormRepository;
+import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +40,7 @@ public class ApplicationService {
   private final ApplicationRepository applicationRepository;
   private final ApplicantRepository applicantRepository;
   private final ApplicationFormRepository applicationFormRepository;
+  private final FileService fileService;
 
   @Transactional
   public ApplicationSubmissionResponse submitApplication(
@@ -58,6 +64,16 @@ public class ApplicationService {
 
     Applicant savedApplicant = applicantRepository.save(applicant);
 
+    String profileImage =
+        applicationSubmissionRequest.applicant().personalInfos().stream()
+            .filter(
+                personalInfo ->
+                    personalInfo.personalInfoQuestionType()
+                        == PersonalInfoQuestionType.PROFILE_IMAGE)
+            .findFirst()
+            .map(ApplicantPersonalInfoCreateRequest::value)
+            .orElse(null);
+
     // 4. 지원서 객체 생성 및 비즈니스 룰 검사
     Application application =
         Application.initialize(applicationSubmissionRequest.application(), applicant.getId());
@@ -66,44 +82,26 @@ public class ApplicationService {
 
     Application savedApplication = applicationRepository.save(application, savedApplicant.getId());
 
+    Map<String, String> fileIdsInAnswer =
+        savedApplication.getAnswers().stream()
+            .filter(answer -> answer.getFileMetadataId() != null)
+            .collect(Collectors.toMap(Answer::getFileMetadataId, Answer::getId));
+
+    // 5. 파일 소유권
+    // 5-1. 프로필 이미지 소유권
+    if (profileImage != null) {
+      fileService.claimOwnershipAsync(
+          List.of(profileImage), savedApplicant.getId(), FileDomainType.APPLICATION_PROFILE);
+    }
+
+    // 5-2. 답변 파일 소유권 (answerId별)
+    // TODO: 한번에 처리하도록 변경
+    fileIdsInAnswer.forEach(
+        (fileId, answerId) ->
+            fileService.claimOwnershipAsync(
+                List.of(fileId), answerId, FileDomainType.ANSWER_ATTACHMENT));
+
     return ApplicationSubmissionResponse.of(savedApplicant.getId(), savedApplication.getId());
-  }
-
-  @Transactional(readOnly = true)
-  public List<ApplicationSummaryResponse> getApplicationsByAnnouncementId(
-      String announcementId, String status) {
-    List<Applicant> applicants;
-
-    // 1. status 변환
-    ApplicantStatus applicantStatus = ApplicantStatus.from(status);
-
-    // 2. status에 따른 공고 조회
-    if (applicantStatus == null) {
-      applicants = applicantRepository.findAllByAnnouncementId(announcementId);
-    } else {
-      applicants =
-          applicantRepository.findAllByAnnouncementIdAndStatus(announcementId, applicantStatus);
-    }
-    // 3. 해당 공고의 모든 지원자 조회
-    if (applicants.isEmpty()) {
-      return List.of();
-    }
-
-    // 4. 모든 지원자의 지원서를 한번에 조회 (N+1 방지)
-    List<String> applicantIds = applicants.stream().map(Applicant::getId).toList();
-    Map<String, Application> applicationMap =
-        applicationRepository.findAllByApplicantIdIn(applicantIds).stream()
-            .collect(Collectors.toMap(Application::getApplicantId, Function.identity()));
-
-    // 5. DTO로 조립
-    return applicants.stream()
-        .map(
-            applicant -> {
-              Application application = applicationMap.get(applicant.getId());
-              // submittedAt은 application 객체에서 가져옴
-              return ApplicationSummaryResponse.of(applicant, application.getCreatedAt());
-            })
-        .collect(Collectors.toList());
   }
 
   @Transactional(readOnly = true)
@@ -118,7 +116,29 @@ public class ApplicationService {
     ApplicationForm applicationForm =
         applicationFormRepository.findByAnnouncementId(announcementId);
 
-    // 4. DTO로 조립
-    return ApplicationGetResponse.of(applicant, application, applicationForm);
+    // 4. 파일 프라이빗 URL 매핑 준비: Answer들의 fileMetadataId + PROFILE_IMAGE 수집 후 URL 조회
+    List<String> answerFileIds =
+        application.getAnswers().stream()
+            .map(Answer::getFileMetadataId)
+            .filter(id -> id != null && !id.isBlank())
+            .toList();
+
+    // 프로필 사진 불러오기
+    List<String> personalFileIds =
+        applicant.getPersonalInfos().stream()
+            .filter(pi -> pi.getQuestionType() == PersonalInfoQuestionType.PROFILE_IMAGE)
+            .map(ApplicantPersonalInfo::getValue)
+            .filter(id -> id != null && !id.isBlank())
+            .toList();
+
+    // 모든 fileMetadataId 불러오기
+    List<String> fileMetadataIds =
+        Stream.concat(answerFileIds.stream(), personalFileIds.stream()).distinct().toList();
+
+    Map<String, FileGetResponse> fileMap =
+        fileService.getPrivateFileResponsesForFileIds(fileMetadataIds);
+
+    // 5. DTO로 조립 (파일 URL 포함)
+    return ApplicationGetResponse.of(applicant, application, applicationForm, fileMap);
   }
 }

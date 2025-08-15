@@ -1,6 +1,8 @@
 package com.ryc.api.v2.role.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +11,13 @@ import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetByAdminIdResponse;
+import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.domain.FileMetaData;
+import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.domain.vo.ClubRole;
@@ -27,6 +33,7 @@ public class ClubRoleService {
   private final ClubRoleRepository clubRoleRepository;
   private final ClubRepository clubRepository;
   private final AdminService adminService;
+  private final FileService fileService;
 
   @Transactional
   public RoleDemandResponse assignRole(String userId, String clubId) {
@@ -74,17 +81,42 @@ public class ClubRoleService {
   }
 
   @Transactional(readOnly = true)
-  public List<ClubGetByAdminIdResponse> getClubByAdminId(String adminId) {
+  public List<DetailClubResponse> getMyClubs(String adminId) {
     List<Club> clubs = clubRoleRepository.findClubsByAdminId(adminId);
+
+    List<FileMetaData> fileMetaData =
+        fileService.findAllByAssociatedIdIn(clubs.stream().map(Club::getId).toList());
+    Map<String, FileGetResponse> representativeImageMap =
+        fileMetaData.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
+            .collect(
+                Collectors.toMap(
+                    FileMetaData::getAssociatedId,
+                    image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image))));
+
+    Map<String, List<FileGetResponse>> detailImageMap =
+        fileMetaData.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
+            .collect(
+                Collectors.groupingBy(
+                    FileMetaData::getAssociatedId,
+                    Collectors.mapping(
+                        image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
+                        Collectors.toList())));
+
     return clubs.stream()
         .map(
             club ->
-                ClubGetByAdminIdResponse.builder()
+                DetailClubResponse.builder()
                     .id(club.getId())
                     .name(club.getName())
                     .shortDescription(club.getShortDescription())
-                    .imageUrl(club.getImageUrl())
-                    .thumbnailUrl(club.getThumbnailUrl())
+                    .detailDescription(club.getDetailDescription())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .clubSummaries(club.getClubSummaries())
+                    .representativeImage(representativeImageMap.get(club.getId()))
+                    .clubDetailImages(detailImageMap.get(club.getId()))
                     .build())
         .toList();
   }

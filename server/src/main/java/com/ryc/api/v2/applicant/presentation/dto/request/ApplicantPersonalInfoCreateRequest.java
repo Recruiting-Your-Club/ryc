@@ -11,4 +11,4 @@ import lombok.Builder;
 public record ApplicantPersonalInfoCreateRequest(
     @NotNull(message = "questionId shouldn't be null")
         PersonalInfoQuestionType personalInfoQuestionType,
-    @NotBlank(message = "value shouldn't be blank") String value) {}
+    @NotBlank(message = "content shouldn't be blank") String value) {}

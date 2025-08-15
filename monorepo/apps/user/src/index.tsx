@@ -17,7 +17,7 @@ dayjs.locale('ko'); // dayjs를 한국기준으로 설정
 
 async function initializeApp() {
     // 개발 환경에서 MSW 활성화
-    if (process.env.API_MOKING === 'enabled') {
+    if (process.env.API_MOCKING === 'enabled') {
         await browserServer.start();
     }
     root.render(

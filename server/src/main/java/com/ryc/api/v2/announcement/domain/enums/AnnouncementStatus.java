@@ -16,11 +16,17 @@ public enum AnnouncementStatus {
    * @param announcementPeriodInfo 공고 기간 정보
    * @return AnnouncementStatus
    */
-  public static AnnouncementStatus from(AnnouncementPeriodInfo announcementPeriodInfo) {
+  public static AnnouncementStatus from(
+      AnnouncementPeriodInfo announcementPeriodInfo, AnnouncementType type) {
     LocalDateTime now = LocalDateTime.now();
-    if (now.isBefore(announcementPeriodInfo.applicationPeriod().startDate())) {
+    LocalDateTime startDate = announcementPeriodInfo.applicationPeriod().startDate();
+    LocalDateTime endDate = announcementPeriodInfo.applicationPeriod().endDate();
+
+    if (type == AnnouncementType.ALWAYS_OPEN) {
+      return AnnouncementStatus.RECRUITING;
+    } else if (now.isBefore(startDate)) {
       return AnnouncementStatus.UPCOMING;
-    } else if (now.isBefore(announcementPeriodInfo.applicationPeriod().endDate())) {
+    } else if (now.isBefore(endDate)) {
       return AnnouncementStatus.RECRUITING;
     } else {
       return AnnouncementStatus.CLOSED;
