@@ -37,7 +37,7 @@ jobs:
       - name: Build user app
         run: |
           echo "NODE_ENV: $NODE_ENV"
-          echo "BASE_URL: $BASE_URL"`
+          echo "BASE_URL: $BASE_URL"
           echo "API_MOCKING: $API_MOCKING"
           yarn build
         working-directory: ./monorepo
