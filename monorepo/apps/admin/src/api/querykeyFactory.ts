@@ -28,11 +28,12 @@ const myClubKeys = {
 };
 
 const interviewKeys = {
-    allInterviewSchedules: ['interviewschedules'] as const,
-    allInterviewees: ['interviewees'] as const,
-    intervieweeDetail: (id: number) => ['interviewee-detail', id] as const,
-    documentDetail: (id: number) => ['document-detail', id] as const,
-    evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
+    interviewSlot: (announcementId: string, clubId: string) =>
+        ['interview-slot', announcementId, clubId] as const,
+    interviewInformation: (announcementId: string, interviewSlotId: string, clubId: string) =>
+        ['interview-information', announcementId, interviewSlotId, clubId] as const,
+    unreservedApplicant: (announcementId: string, clubId: string) =>
+        ['unreserved-applicant', announcementId, clubId] as const,
 };
 
 const applicantKeys = {
@@ -47,9 +48,12 @@ const stepKeys = {
 };
 
 const evaluationKeys = {
-    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
-        ['evaluation-summary', clubId, ...applicantIds, type] as const,
-    evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+    evaluationSummary: (
+        clubId: string,
+        applicantIds: string[],
+        type: 'application' | 'interview',
+    ) => ['evaluation-summary', clubId, ...applicantIds, type] as const,
+    evaluationDetail: (clubId: string, applicantIds: string[], type: 'application' | 'interview') =>
         ['evaluation-detail', clubId, ...applicantIds, type] as const,
     myEvaluationStatus: (
         clubId: string,

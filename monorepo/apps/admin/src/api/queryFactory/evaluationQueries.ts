@@ -16,14 +16,14 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'document' | 'interview';
+        type: 'application' | 'interview';
     }) =>
         queryOptions({
             queryKey: evaluationKeys.evaluationSummary(clubId, applicantIdList, type),
             queryFn: () => {
                 const params = { clubId, applicantIdList: applicantIdList };
 
-                return type === 'document'
+                return type === 'application'
                     ? postApplicationEvaluationSummary(params)
                     : postInterviewEvaluationSummary(params);
             },
@@ -35,14 +35,14 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'document' | 'interview';
+        type: 'application' | 'interview';
     }) =>
         queryOptions({
             queryKey: evaluationKeys.evaluationDetail(clubId, applicantIdList, type),
             queryFn: () => {
                 const params = { clubId, applicantIdList: applicantIdList };
 
-                return type === 'document'
+                return type === 'application'
                     ? postDetailApplicationEvaluation(params)
                     : postDetailInterviewEvaluation(params);
             },

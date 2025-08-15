@@ -77,6 +77,7 @@ async function putEvaluationScoreAndComment(params: {
     score: number;
     comment: string;
     clubId: string;
+    type?: 'application' | 'interview'; // 실제 api 불필요
 }): Promise<void> {
     await httpRequest.put({
         url: `evaluation/${params.evaluationId}`,
@@ -85,7 +86,11 @@ async function putEvaluationScoreAndComment(params: {
     });
 }
 
-async function deleteEvaluation(params: { evaluationId: string; clubId: string }): Promise<void> {
+async function deleteEvaluation(params: {
+    evaluationId: string;
+    clubId: string;
+    type?: 'application' | 'interview'; // 실제 api 불필요
+}): Promise<void> {
     await httpRequest.delete({
         url: `evaluation/${params.evaluationId}`,
         headers: { 'X-CLUB-ID': params.clubId },
