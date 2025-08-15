@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.applicationForm.presentation.request.ApplicationFormUpdateRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +21,6 @@ import lombok.Builder;
  * @param target 모집 대상
  * @param field 모집 분야
  * @param announcementType 공고 타입
- * @param hasInterview 면접여부
  * @param tags 태그
  * @param applicationForm 지원서
  * @param images 이미지
@@ -51,18 +49,18 @@ public record AnnouncementUpdateRequest(
         String target,
     @Schema(description = "모집 분야", example = "백엔드") @NotBlank(message = "target shouldn't be blank")
         String field,
-    @Schema(description = "공고 타입", example = "LIMITED_TIME")
+    @Schema(
+            description = "공고 타입",
+            example = "LIMITED_TIME",
+            allowableValues = {"ALWAYS_OPEN", "LIMITED_TIME"})
         @NotNull(message = "announcementType shouldn't be null")
-        AnnouncementType announcementType,
-    @Schema(description = "면접 여부", example = "true")
-        @NotNull(message = "hasInterview shouldn't be null")
-        Boolean hasInterview,
+        String announcementType,
     @NotNull(message = "tags shouldn't be null")
         List<@NotBlank(message = "tag shouldn't be blank") String> tags,
     @Schema(description = "공고 지원서") @Valid @NotNull(message = "applicationForm shouldn't be null")
         ApplicationFormUpdateRequest applicationForm,
     @Schema(description = "이미지 목록") @NotNull(message = "images shouldn't be null")
-        List<@Valid @NotNull(message = "image shouldn't be null") ImageUpdateRequest> images) {
+        List<@Valid @NotNull(message = "image shouldn't be null") String> images) {
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")
   @Override
   public List<String> tags() {
@@ -70,7 +68,7 @@ public record AnnouncementUpdateRequest(
   }
 
   @Override
-  public List<ImageUpdateRequest> images() {
+  public List<String> images() {
     return List.copyOf(images);
   }
 }

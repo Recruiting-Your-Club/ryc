@@ -1,185 +1,167 @@
-import { Document, Evaluation } from '@api/domain/interview/types';
-import { ApplicantList, ApplicantMiniCard, EvaluationBox, InformationBox, Text } from '@components';
-import type { ApplicantSummary } from '@components/ApplicantMiniCard/types';
-import type { ApplicantDetail } from '@components/InformationBox/types';
-import React, { useState } from 'react';
+import { applicantQueries, evaluationQueries } from '@api/queryFactory';
+import { ApplicantList, EvaluationBox, InformationBox } from '@components';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import {
     documentEvaluationPageContainer,
     evaluationContainer,
     informationContainer,
     listContainer,
 } from './DocumentEvaluationPage.style';
+import { stepQueries } from '@api/queryFactory/stepQueries';
+import type { StepApplicant } from '@api/domain/step/types';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import { useToast } from '@hooks/useToast';
+import { evaluationMutations } from '@hooks/mutations/evaluationMutations';
 
-export const applicantList: ApplicantSummary[] = [
-    { id: 1, name: '팥붕이', email: 'nickname@example.com' },
-    { id: 2, name: '슈붕이', email: 'test@example.com' },
-    { id: 3, name: '붕어빵', email: 'bbang@example.com' },
-];
-
-export const applicantDetails: ApplicantDetail[] = [
-    {
-        id: 1,
-        name: '팥붕이',
-        email: 'nickname@example.com',
-        studentId: '23000000',
-        phone: '010-1234-5678',
-    },
-    {
-        id: 2,
-        name: '슈붕이',
-        email: 'test@example.com',
-        studentId: '20010501',
-        phone: '010-2345-6789',
-    },
-    {
-        id: 3,
-        name: '붕어빵',
-        email: 'bbang@example.com',
-        studentId: '24000000',
-        phone: '010-3456-7890',
-    },
-];
-
-export const documents: Document[] = [
-    {
-        applicantId: 1,
-        detail: [
-            {
-                question: 'Q1. 자기소개 부탁드립니다.',
-                answer: 'ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊',
-            },
-            {
-                question: 'Q2. EN#에 지원한 이유는 무엇인가요?',
-                answer: 'ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊',
-            },
-            {
-                question:
-                    'Q3. 이전에 진행했었던 프로젝트에 대해서 설명해주세요. 없다면 앞으로 하고싶은 프로젝트에 대해 설명해주세요.',
-                answer: 'ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊 ChatGPT는 자연어 처리 기반 인공지능으로, 다양한 주제에 대해 정보를 제공하고 대화를 나눌 수 있습니다. 질문에 답하거나, 글을 작성하고, 번역 및 코드 작성까지 지원합니다. 또한 데이터 분석, 소프트웨어 개발, 학습 보조 등 다양한 분야에서 도움을 줄 수 있습니다. 고객님의 개발 공부와 진로 탐색에도 유용한 조언을 제공하며, 맞춤형 답변으로 더욱 효과적인 학습을 도와드립니다. 😊',
-            },
-        ],
-    },
-    {
-        applicantId: 2,
-        detail: [
-            {
-                question: 'Q1. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q2. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q3. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-        ],
-    },
-    {
-        applicantId: 3,
-        detail: [
-            {
-                question: 'Q1. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q2. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-            {
-                question: 'Q3. 자기소개 부탁드립니다.',
-                answer: 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ',
-            },
-        ],
-    },
-];
-
-export const evaluations: Evaluation[] = [
-    {
-        applicantId: 1,
-        averageScore: 4.5,
-        comments: [
-            { id: 1, score: 4.5, name: '조준희', comment: '매우 성실한 태도였습니다.' },
-            { id: 2, score: 4.5, name: '조존히', comment: '답변이 구체적이고 논리적이었습니다.' },
-        ],
-    },
-    {
-        applicantId: 2,
-        averageScore: 3.8,
-        comments: [
-            { id: 1, score: 3.8, name: '준', comment: '조금 긴장한 듯 보였습니다.' },
-            { id: 2, score: 3.8, name: 'aiming희', comment: '기본기는 잘 갖추고 있었음.' },
-        ],
-    },
-    {
-        applicantId: 3,
-        averageScore: 4.2,
-        comments: [
-            {
-                id: 1,
-                score: 4.2,
-                name: '몰라희',
-                comment: '차분하고 준비된 모습이 인상적이었어요.',
-            },
-            { id: 2, score: 4.2, name: '그냥희', comment: '팀워크 질문에서 좋은 답변을 들었어요.' },
-        ],
-    },
-];
+export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
+export const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
+export const INITIAL_EVALUATION_SUMMARY: EvaluationDataWithSummary = {
+    completedEvaluatorCount: 0,
+    totalEvaluatorCount: 0,
+    averageScore: 0,
+    evaluationDatas: [],
+};
 
 function DocumentEvaluationPage() {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(1);
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
 
     // form hooks
     // query hooks
+    const { data: stepApplicantList = [] } = useSuspenseQuery(
+        stepQueries.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
+    );
+    const { data: applicantDocument } = useQuery({
+        ...applicantQueries.getApplicantDocument(
+            ANNOUNCEMENT_ID,
+            selectedApplicant?.applicantId ?? '',
+            CLUB_ID,
+        ),
+
+        enabled: !!selectedApplicant?.applicantId,
+    });
+    const { data: documentEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: CLUB_ID,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'document',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            [
+                'DOCUMENT_PASS',
+                'DOCUMENT_FAIL',
+                'INTERVIEW_PASS',
+                'INTERVIEW_FAIL',
+                'FINAL_PASS',
+                'FINAL_FAIL',
+            ].includes(selectedApplicant.status),
+    });
+
+    const { mutate: postApplicationComment } = evaluationMutations.usePostPersonalEvaluation();
+    const { mutate: updateComment } = evaluationMutations.usePutEvaluation(
+        selectedApplicant?.applicantId ?? '',
+    );
+    const { mutate: deleteComment } = evaluationMutations.useDeleteEvaluation(
+        selectedApplicant?.applicantId ?? '',
+    );
+
     // calculated values
     // handlers
+    const handleSelectApplicantId = (applicantId: string) => {
+        const foundApplicant = stepApplicantList.find(
+            (applicant) => applicant.applicantId === applicantId,
+        );
+        if (foundApplicant) {
+            setSelectedApplicant(foundApplicant);
+        }
+    };
+
+    const handlePostComment = (
+        applicantId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+        type: 'application' | 'interview',
+    ) => {
+        postApplicationComment(
+            { applicantId, score, comment, clubId, type },
+            getEvaluationActionCallbacks('등록'),
+        );
+    };
+
+    const handleUpdateComment = (
+        evaluationId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => {
+        updateComment(
+            { evaluationId, score, comment, clubId },
+            getEvaluationActionCallbacks('수정'),
+        );
+    };
+
+    const handleDeleteComment = (evaluationId: string, clubId: string) => {
+        deleteComment({ evaluationId, clubId }, getEvaluationActionCallbacks('삭제'));
+    };
+
     // effects
+    useEffect(() => {
+        if (selectedApplicant === null && stepApplicantList.length > 0)
+            setSelectedApplicant(stepApplicantList[0]);
+    }, [stepApplicantList, selectedApplicant]);
+
+    // etc
+    const getEvaluationActionCallbacks = (status: string) => {
+        return {
+            onSuccess: () => {
+                toast(`작성하신 평가가 ${status}되었어요!`, {
+                    type: 'success',
+                    toastTheme: 'colored',
+                });
+            },
+            onError: () => {
+                toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+            },
+        };
+    };
+
     return (
         <div css={documentEvaluationPageContainer}>
             <div css={listContainer}>
-                <ApplicantList isList={applicantList.length !== 0}>
-                    {applicantList.length > 0 ? (
-                        applicantList.map((applicant) => (
-                            <ApplicantMiniCard
-                                key={applicant.id}
-                                applicant={applicant}
-                                onClick={() => setSelectedApplicantId(applicant.id)}
-                                isActivated={selectedApplicantId === applicant.id}
-                            />
-                        ))
-                    ) : (
-                        <Text as="span" type="captionSemibold">
-                            지원자가 없습니다.
-                        </Text>
-                    )}
-                </ApplicantList>
+                <ApplicantList
+                    applicantList={stepApplicantList}
+                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                    onSelectApplicantId={handleSelectApplicantId}
+                />
             </div>
             <div css={informationContainer}>
                 <InformationBox
-                    applicant={
-                        applicantDetails.find(
-                            (applicant) => applicant.id === selectedApplicantId,
-                        ) ?? null
-                    }
-                    documentList={
-                        documents.find(
-                            (document) => document.applicantId === selectedApplicantId,
-                        ) ?? null
-                    }
+                    personalInformation={applicantDocument?.personalInfos ?? []}
+                    preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                    applicationQuestionAnswers={applicantDocument?.applicationQuestionAnswers ?? []}
                 />
             </div>
             <div css={evaluationContainer}>
                 <EvaluationBox
+                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
                     evaluation={
-                        evaluations.find(
-                            (evaluation) => evaluation.applicantId === selectedApplicantId,
-                        ) ?? null
+                        documentEvaluationDetail?.evaluationsByApplicant?.[
+                            selectedApplicant?.applicantId ?? ''
+                        ] ?? INITIAL_EVALUATION_SUMMARY
                     }
+                    onPostComment={handlePostComment}
+                    onDeleteComment={handleDeleteComment}
+                    onUpdateComment={handleUpdateComment}
                 />
             </div>
         </div>

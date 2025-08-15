@@ -1,9 +1,6 @@
 package com.ryc.api.v2.announcement.infra.entity;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
 
@@ -47,10 +44,6 @@ public class AnnouncementEntity extends BaseEntity {
 
   @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
-  @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
-  @OrderBy("displayOrder ASC")
-  private List<AnnouncementImageEntity> images;
-
   @ElementCollection
   @OrderBy("displayOrder ASC")
   private List<TagVO> tags;
@@ -82,25 +75,6 @@ public class AnnouncementEntity extends BaseEntity {
     this.announcementStatus = announcement.getAnnouncementStatus();
     this.isDeleted = announcement.getIsDeleted();
     this.tags = announcement.getTags();
-
-    Map<String, AnnouncementImageEntity> existingImagesMap =
-        this.images.stream().collect(Collectors.toMap(AnnouncementImageEntity::getId, i -> i));
-    List<AnnouncementImageEntity> updatedImages = new ArrayList<>();
-
-    for (AnnouncementImageEntity newImage : announcement.getImages()) {
-      AnnouncementImageEntity existingImage = existingImagesMap.get(newImage.getId());
-      if (existingImage != null) {
-        existingImage.setFileMetadata(newImage.getFileMetadata());
-        existingImage.setDisplayOrder(newImage.getDisplayOrder());
-        updatedImages.add(existingImage);
-        existingImagesMap.remove(newImage.getId());
-      } else {
-        newImage.setAnnouncement(this);
-        updatedImages.add(newImage);
-      }
-    }
-    this.images.clear();
-    this.images.addAll(updatedImages);
     this.announcementPeriodInfoVO = announcement.getAnnouncementPeriodInfoVO();
 
     // applicationForm update

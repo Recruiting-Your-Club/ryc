@@ -35,14 +35,21 @@ public class ApplicantMapper {
             .map(ApplicantPersonalInfoMapper::toEntity)
             .collect(Collectors.toCollection(ArrayList::new));
 
-    return ApplicantEntity.builder()
-        .id(domain.getId())
-        .announcementId(domain.getAnnouncementId())
-        .status(domain.getStatus())
-        .isDeleted(domain.getIsDeleted())
-        .email(domain.getEmail())
-        .name(domain.getName())
-        .personalInfos(personalInfos)
-        .build();
+    ApplicantEntity applicantEntity =
+        ApplicantEntity.builder()
+            .id(domain.getId())
+            .announcementId(domain.getAnnouncementId())
+            .status(domain.getStatus())
+            .isDeleted(domain.getIsDeleted())
+            .email(domain.getEmail())
+            .name(domain.getName())
+            .personalInfos(personalInfos)
+            .build();
+
+    for (ApplicantPersonalInfoEntity infoEntity : personalInfos) {
+      infoEntity.setApplicant(applicantEntity);
+    }
+
+    return applicantEntity;
   }
 }

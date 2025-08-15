@@ -30,7 +30,6 @@ public class Announcement {
   private final String target;
   private final String field;
   private final List<Tag> tags;
-  private final List<AnnouncementImage> images;
   private final AnnouncementStatus announcementStatus;
   private final AnnouncementType announcementType;
   private final Boolean hasInterview;
@@ -56,16 +55,16 @@ public class Announcement {
   public static Announcement initialize(AnnouncementCreateRequest request, String clubId) {
     List<Tag> tags = request.tags().stream().map(Tag::from).toList();
 
-    List<AnnouncementImage> images =
-        request.images().stream().map(AnnouncementImage::initialize).toList();
-
     ApplicationForm applicationForm = ApplicationForm.initialize(request.applicationForm());
 
     AnnouncementPeriodInfo announcementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
 
+    AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
+
     // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus announcementStatus = AnnouncementStatus.from(announcementPeriodInfo);
+    AnnouncementStatus announcementStatus =
+        AnnouncementStatus.from(announcementPeriodInfo, announcementType);
 
     // 4. Announcement 생성
     Announcement announcement =
@@ -80,10 +79,10 @@ public class Announcement {
             .target(request.target())
             .field(request.field())
             .tags(tags)
-            .hasInterview(request.hasInterview())
-            .images(images)
+            // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
+            .hasInterview(true)
             .announcementStatus(announcementStatus)
-            .announcementType(request.announcementType())
+            .announcementType(announcementType)
             .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
             .isDeleted(false)
@@ -103,14 +102,14 @@ public class Announcement {
       AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
     List<Tag> updatedTags = request.tags().stream().map(Tag::from).toList();
-    List<AnnouncementImage> updatedImages =
-        request.images().stream().map(AnnouncementImage::from).toList();
 
     ApplicationForm applicationForm = ApplicationForm.from(request.applicationForm());
     AnnouncementPeriodInfo updatedAnnouncementPeriodInfo =
         AnnouncementPeriodInfo.from(request.periodInfo());
+    AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
+
     AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(updatedAnnouncementPeriodInfo);
+        AnnouncementStatus.from(updatedAnnouncementPeriodInfo, announcementType);
 
     // 3. announcement 생성
     Announcement announcement =
@@ -124,12 +123,11 @@ public class Announcement {
             .summaryDescription(request.summaryDescription())
             .target(request.target())
             .field(request.field())
-            .hasInterview(request.hasInterview())
+            .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
-            .images(updatedImages)
             .announcementStatus(updatedAnnouncementStatus)
-            .announcementType(request.announcementType())
+            .announcementType(announcementType)
             .isDeleted(false)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
@@ -142,7 +140,7 @@ public class Announcement {
   /** status 갱신 메소드 */
   public Announcement updateStatus() {
     AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(this.announcementPeriodInfo);
+        AnnouncementStatus.from(this.announcementPeriodInfo, this.announcementType);
 
     return Announcement.builder()
         .id(this.id)
@@ -152,11 +150,10 @@ public class Announcement {
         .detailDescription(this.detailDescription)
         .summaryDescription(this.summaryDescription)
         .target(this.target)
-        .target(this.field)
-        .hasInterview(this.hasInterview)
+        .field(this.field)
+        .hasInterview(true)
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
-        .images(this.images)
         .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
@@ -184,7 +181,6 @@ public class Announcement {
       }
     }
 
-    announcementPeriodInfo.validate(hasInterview);
     applicationForm.checkBusinessRules();
   }
 }

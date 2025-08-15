@@ -1,13 +1,13 @@
 package com.ryc.api.config;
 
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
 
@@ -49,32 +49,26 @@ public class SwaggerConfiguration {
    */
   private record ExampleResponse(String name, ApiResponse item) {}
 
-  private final AntPathMatcher antPathMatcher = new AntPathMatcher();
-  private final Set<String> whitelistAllPaths;
-  private final Set<String> whitelistGetPaths;
-  private final Set<String> whitelistPostPaths;
+  private final Set<String> whitelistGetPatterns;
+  private final Set<String> whitelistPostPatterns;
 
   /*
    * SwaggerConfiguration 생성자입니다.
    * 이 생성자는 애플리케이션 설정 파일에서 화이트리스트 경로를 읽어와
    * 각 경로를 슬래시("/")로 시작하도록 보장합니다.
+   * 각 경로의 변수 부분은 더미 UUID로 대체하여
+   * Swagger 문서에서 일관된 예시를 제공합니다.
    */
   public SwaggerConfiguration(
-      @Value("${SECURITY_WHITELIST_ALL_METHOD_PATHS}") String[] whitelistAllPaths,
-      @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}") String[] whitelistGetPaths,
-      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPaths) {
-    this.whitelistAllPaths =
-        Arrays.stream(whitelistAllPaths)
+      @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}") String[] whitelistGetPatterns,
+      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPatterns) {
+    this.whitelistGetPatterns =
+        Arrays.stream(whitelistGetPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
             .collect(Collectors.toSet());
 
-    this.whitelistGetPaths =
-        Arrays.stream(whitelistGetPaths)
-            .map(path -> path.startsWith("/") ? path : "/" + path)
-            .collect(Collectors.toSet());
-
-    this.whitelistPostPaths =
-        Arrays.stream(whitelistPostPaths)
+    this.whitelistPostPatterns =
+        Arrays.stream(whitelistPostPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
             .collect(Collectors.toSet());
   }
@@ -174,18 +168,24 @@ public class SwaggerConfiguration {
    * 클래스 경로와 메서드 경로를 결합하여 최종 경로를 생성합니다.
    * 이 메서드는 중복된 슬래시("//")를 제거하여 정확한 경로를 반환합니다.
    */
-  private String extractPath(RequestMapping classMapping, String[] methodPath) {
-    String classPath = "";
+  private String extractPath(RequestMapping classMapping, String[] methodPaths) {
+    String path = "";
 
     if (classMapping != null && classMapping.value().length > 0) {
-      classPath = classMapping.value()[0];
+      path = classMapping.value()[0];
     }
 
-    if (methodPath.length == 0) {
-      return classPath.startsWith("/") ? classPath : "/" + classPath;
+    if (methodPaths.length != 0) {
+      path += "/" + methodPaths[0];
     }
 
-    String path = (classPath + "/" + methodPath[0]).replaceAll("//+", "/");
+    path =
+        path.replaceAll("//+", "/")
+            .replaceAll(
+                "\\{[^}]+\\}",
+                Matcher.quoteReplacement(
+                    "123e4567-e89b-12d3-a456-426614174000")); // {id} 변수를 UUID 더미로 대체
+
     return path.startsWith("/") ? path : "/" + path;
   }
 
@@ -195,21 +195,15 @@ public class SwaggerConfiguration {
   private boolean isWhitelistPath(HttpOperation httpOperation) {
     String path = httpOperation.path();
 
-    for (String whitePath : whitelistAllPaths) {
-      if (antPathMatcher.match(whitePath, path)) {
-        return true;
-      }
-    }
-
     if (httpOperation.method().equals("GET")) {
-      for (String whitePath : whitelistGetPaths) {
-        if (antPathMatcher.match(whitePath, path)) {
+      for (String pattern : whitelistGetPatterns) {
+        if (path.matches(pattern)) {
           return true;
         }
       }
     } else if (httpOperation.method().equals("POST")) {
-      for (String whitePath : whitelistPostPaths) {
-        if (antPathMatcher.match(whitePath, path)) {
+      for (String pattern : whitelistPostPatterns) {
+        if (path.matches(pattern)) {
           return true;
         }
       }

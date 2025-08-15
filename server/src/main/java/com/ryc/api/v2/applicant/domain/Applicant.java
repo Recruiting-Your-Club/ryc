@@ -19,6 +19,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Applicant {
+
   private final String id;
   private final String announcementId;
 
@@ -40,8 +41,20 @@ public class Applicant {
         .email(request.email())
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
         .personalInfos(personalInfos)
-        .status(ApplicantStatus.PENDING)
+        .status(ApplicantStatus.DOCUMENT_PENDING)
         .isDeleted(false)
+        .build();
+  }
+
+  public Applicant updateStatus(ApplicantStatus status) {
+    return Applicant.builder()
+        .id(this.id)
+        .announcementId(this.announcementId)
+        .email(this.email)
+        .name(this.name)
+        .status(status)
+        .isDeleted(this.isDeleted)
+        .personalInfos(this.personalInfos)
         .build();
   }
 

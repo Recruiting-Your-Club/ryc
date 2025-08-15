@@ -1,7 +1,8 @@
+import { Checkbox } from '@components';
+import { Button, Input } from '@components/_common';
+import { useToast } from '@hooks/useToast';
 import type { ChangeEvent } from 'react';
 import React from 'react';
-import type { QuestionFormProps } from './types';
-import { Button, Input } from '@components/_common';
 import {
     s_addOptionButton,
     s_applicationQuestion,
@@ -11,8 +12,7 @@ import {
     s_questionOptionRow,
     s_removeOptionButton,
 } from './QuestionForm.style';
-import { Checkbox } from '@components';
-import { useToast } from '@hooks/useToast';
+import type { QuestionFormProps } from './types';
 
 function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
     // prop destruction

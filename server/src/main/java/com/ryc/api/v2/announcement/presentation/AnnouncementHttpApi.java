@@ -7,17 +7,13 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
@@ -27,7 +23,6 @@ import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,9 +60,7 @@ public class AnnouncementHttpApi {
         "INVALID_PARAMETER"
       })
   public ResponseEntity<AnnouncementCreateResponse> create(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id") String clubId,
-      @Valid @RequestBody AnnouncementCreateRequest body) {
+      @PathVariable("club-id") String clubId, @Valid @RequestBody AnnouncementCreateRequest body) {
     AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     URI location =
@@ -120,7 +113,6 @@ public class AnnouncementHttpApi {
         "INVALID_QUESTION_TYPE",
         "QUESTION_OPTION_REQUIRED",
         "QUESTION_OPTION_NOT_ALLOWED",
-        "CLUB_NOT_FOUND",
         "FORBIDDEN_NOT_CLUB_MEMBER",
         "INVALID_PARAMETER",
         "RESOURCE_NOT_FOUND"
@@ -142,5 +134,16 @@ public class AnnouncementHttpApi {
       @PathVariable("announcement-id") String announcementId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
+  }
+
+  @Operation(summary = "공고 단계(process) 정보")
+  @GetMapping("/announcements/{announcement-id}/process")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<AnnouncementProcessGetResponse> getAnnouncementProcess(
+      @PathVariable("announcement-id") String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(announcementService.getAnnouncementProcess(announcementId));
   }
 }

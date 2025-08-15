@@ -1,8 +1,7 @@
 package com.ryc.api.v2.evaluation.infra;
 
 import java.util.List;
-
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
@@ -37,14 +36,14 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
         adminJpaRepository
             .findById(evaluation.getEvaluatorId())
             .filter(entity -> !entity.getDeleted())
-            .orElseThrow(() -> new EntityNotFoundException("AdminEntity not found or deleted"));
+            .orElseThrow(() -> new NoSuchElementException("AdminEntity not found or deleted"));
 
     ApplicantEntity applicantEntity =
         applicantJpaRepository
             .findById(evaluation.getEvaluateeId())
             // TODO: applicant 논리 삭제 허용시, 아래 필터 추가
             //                        .filter(entity -> !entity.getDeleted())
-            .orElseThrow(() -> new EntityNotFoundException("ApplicantEntity not found or deleted"));
+            .orElseThrow(() -> new NoSuchElementException("ApplicantEntity not found or deleted"));
 
     EvaluationEntity evaluationEntity =
         EvaluationMapper.toEntity(evaluation, adminEntity, applicantEntity);
@@ -77,7 +76,7 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
         .findById(evaluationId)
         .filter(e -> !e.getDeleted())
         .map(EvaluationMapper::toDomain)
-        .orElseThrow(() -> new EntityNotFoundException("evaluationEntity not found or deleted"));
+        .orElseThrow(() -> new NoSuchElementException("evaluationEntity not found or deleted"));
   }
 
   @Override
