@@ -101,7 +101,12 @@ public class InterviewHttpApi {
   @Operation(summary = "지원자가 면접 예약", description = "지원자가 특정 면접 슬롯에 대해 면접을 예약합니다.")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, InterviewErrorCode.class},
-      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "INTERVIEW_SLOT_FULL"})
+      include = {
+        "INVALID_PARAMETER",
+        "RESOURCE_NOT_FOUND",
+        "INTERVIEW_SLOT_FULL",
+        "APPLICANT_ALREADY_RESERVED"
+      })
   public ResponseEntity<InterviewReservationCreateResponse> reservationInterview(
       @PathVariable("interview-slot-id") String slotId,
       @Valid @RequestBody InterviewReservationRequest body) {
@@ -123,14 +128,8 @@ public class InterviewHttpApi {
       description =
           "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
-      value = {
-        PermissionErrorCode.class,
-        CommonErrorCode.class,
-      },
-      include = {
-        "FORBIDDEN_NOT_CLUB_MEMBER",
-        "RESOURCE_NOT_FOUND",
-      })
+      value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND", "APPLICANT_ALREADY_RESERVED"})
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
       @PathVariable("applicant-id") String applicantId,
       @Valid @RequestBody InterviewReservationUpdatedRequest body) {
