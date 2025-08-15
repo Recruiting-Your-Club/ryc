@@ -1,9 +1,9 @@
 import { IntervieweeCard, InterviewTimeTable } from '@components';
+import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import Search from '@ssoc/assets/images/search.svg';
 import { Button, Dropdown, Input, Text } from '@ssoc/ui';
-import { convertDate } from '@ssoc/utils';
 
 import {
     s_intervieweeCardGroupWrapper,
@@ -16,27 +16,28 @@ import {
     s_titleContainer,
     s_titleTextAndSelectionButtonContainer,
 } from './IntervieweeList.style';
-import type { EnrichedInterviewee, IntervieweeListProps } from './types';
+import type { EnrichedInterviewee, IntervieweeListProps, SelectedLabel } from './types';
 
 function IntervieweeList({
     title = '지원자 목록',
     height,
     intervieweeList,
-    interviewSchedules,
+    interviewSlots,
     selectedApplicantId,
     onSelectApplicant,
+    onInterviewSlotId,
 }: IntervieweeListProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<string>(() => {
-        if (interviewSchedules[0]) {
-            const date = convertDate(interviewSchedules[0].date);
-            const name = interviewSchedules[0].interviewSets[0].name;
-            return `${date} ${name}`;
+    const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<SelectedLabel>(() => {
+        if (interviewSlots[0]) {
+            const date = dayjs(interviewSlots[0].period.startDate).format('MM.DD');
+            const name = dayjs(interviewSlots[0].period.startDate).format('HH:mm');
+            return { label: `${date} ${name}`, interviewSlotId: interviewSlots[0].id };
         }
-        return '면접 일정 없음';
+        return { label: '면접 일정 없음', interviewSlotId: '' };
     });
 
     const [searchText, setSearchText] = useState<string>('');
@@ -46,11 +47,10 @@ function IntervieweeList({
     // query hooks
     // calculated values
     const selectedInterviewees =
-        selectedInterviewLabel !== '면접 일정 없음'
+        selectedInterviewLabel.interviewSlotId !== ''
             ? intervieweeList.filter(
                   (interviewee) =>
-                      `${convertDate(interviewee.interviewDate)} ${interviewee.interviewName}` ===
-                      selectedInterviewLabel,
+                      interviewee.interviewName === selectedInterviewLabel.interviewSlotId,
               )
             : [];
 
@@ -70,9 +70,9 @@ function IntervieweeList({
     useEffect(() => {
         if (visibleInterviewees.length <= 0) return;
         const interviewee = visibleInterviewees.reduce((min, current) => {
-            return current.id < min.id ? current : min;
+            return current.applicantId < min.applicantId ? current : min;
         }, visibleInterviewees[0]);
-        onSelectApplicant(interviewee.id);
+        onSelectApplicant(interviewee.applicantId);
     }, [selectedInterviewLabel]);
 
     return (
@@ -85,14 +85,26 @@ function IntervieweeList({
                     <Dropdown open={open} onOpenChange={setOpen}>
                         <Dropdown.Trigger asChild>
                             <Button variant="outlined" sx={s_selectionButton}>
-                                {selectedInterviewLabel}
+                                {selectedInterviewLabel.label}
                             </Button>
                         </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={11.7} offsetY={42}>
+                        <Dropdown.Content>
                             <InterviewTimeTable
-                                interviewSchedules={interviewSchedules}
-                                selectedInterviewLabel={selectedInterviewLabel}
-                                onSelect={(label) => setSelectedInterviewLabel(label)}
+                                interviewSlots={interviewSlots}
+                                selectedInterviewSlotId={selectedInterviewLabel.interviewSlotId}
+                                onSelect={(label) => {
+                                    const matchedSlot = interviewSlots.find((slot) => {
+                                        const date = dayjs(slot.period.startDate).format('MM.DD');
+                                        const time = dayjs(slot.period.startDate).format('HH:mm');
+                                        return `${date} ${time}` === label;
+                                    });
+
+                                    setSelectedInterviewLabel({
+                                        label,
+                                        interviewSlotId: matchedSlot ? matchedSlot.id : '',
+                                    });
+                                    onInterviewSlotId(matchedSlot ? matchedSlot.id : '');
+                                }}
                                 onOpenChange={setOpen}
                             />
                         </Dropdown.Content>
@@ -118,11 +130,11 @@ function IntervieweeList({
                     {visibleInterviewees.length > 0 ? (
                         visibleInterviewees.map((interviewee) => (
                             <IntervieweeCard
-                                key={interviewee.id}
+                                key={interviewee.applicantId}
                                 name={interviewee.name}
                                 email={interviewee.email}
-                                onClick={() => onSelectApplicant(interviewee.id)}
-                                isActivated={selectedApplicantId === interviewee.id}
+                                onClick={() => onSelectApplicant(interviewee.applicantId)}
+                                isActivated={selectedApplicantId === interviewee.applicantId}
                             />
                         ))
                     ) : (

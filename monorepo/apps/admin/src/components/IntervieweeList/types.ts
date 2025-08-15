@@ -1,6 +1,12 @@
-import type { Interviewee, InterviewSchedule } from '@api/domain/interview/types';
+import type { InterviewSlot } from '@api/domain/interview/types';
+import type { StepApplicant } from '@api/domain/step/types';
 
-export interface EnrichedInterviewee extends Interviewee {
+export type SelectedLabel = {
+    label: string;
+    interviewSlotId: string | null;
+};
+
+export interface EnrichedInterviewee extends StepApplicant {
     interviewDate: string;
     interviewName: string;
     startTime: string;
@@ -11,7 +17,8 @@ export interface IntervieweeListProps {
     title?: string;
     height?: string;
     intervieweeList: EnrichedInterviewee[];
-    interviewSchedules: InterviewSchedule[];
-    selectedApplicantId: number | null;
-    onSelectApplicant: (id: number) => void;
+    interviewSlots: InterviewSlot[];
+    selectedApplicantId: string | null;
+    onSelectApplicant: (id: string) => void;
+    onInterviewSlotId: (id: string) => void;
 }
