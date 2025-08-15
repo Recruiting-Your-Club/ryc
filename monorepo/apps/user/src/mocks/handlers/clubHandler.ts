@@ -13,9 +13,12 @@ const clubHandler = [
     http.get(`${BASE_URL}clubs/:id`, () => {
         return HttpResponse.json(clubDetail as Club, { status: 200 });
     }),
-    http.get(`${BASE_URL}clubs/:clubId/announcements/:announcementId/applicants/:applicantId`, () => {
-        return HttpResponse.json(clubReservation as ClubInterviewDetails, { status: 200 });
-    }),
+    http.get(
+        `${BASE_URL}clubs/:clubId/announcements/:announcementId/applicants/:applicantId`,
+        () => {
+            return HttpResponse.json(clubReservation as ClubInterviewDetails, { status: 200 });
+        },
+    ),
 ];
 
 export { clubHandler };

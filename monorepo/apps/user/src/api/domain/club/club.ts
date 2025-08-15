@@ -24,7 +24,10 @@ async function getClubReservation(
     return response as ClubInterviewSchedule;
 }
 
-async function submitInterviewReservation(slotId: string, applicantId: string): Promise<SubmitReservationResponse> {
+async function submitInterviewReservation(
+    slotId: string,
+    applicantId: string,
+): Promise<SubmitReservationResponse> {
     const response = await httpRequest.post({
         url: `interview-slots/${slotId}/reservations`,
         headers: {

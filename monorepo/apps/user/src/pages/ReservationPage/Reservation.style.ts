@@ -172,7 +172,7 @@ export const s_checkIconWrapper = css`
     padding: 1rem;
     border-radius: 50%;
     background-color: ${theme.colors.blue[100]};
-`
+`;
 
 export const s_checkIcon = css`
     width: 100%;
@@ -214,4 +214,4 @@ export const s_svgWrapper = css`
     display: flex;
     justify-content: center;
     align-items: center;
-`
+`;

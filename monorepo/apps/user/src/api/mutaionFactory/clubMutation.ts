@@ -7,8 +7,12 @@ import type { InterviewReservationParams } from './types';
 const useSubmitInterviewReservation = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({ clubId = '', announcementId = '', applicantId = '', slotId = '', }: InterviewReservationParams) =>
-            submitInterviewReservation(slotId, applicantId),
+        mutationFn: ({
+            clubId = '',
+            announcementId = '',
+            applicantId = '',
+            slotId = '',
+        }: InterviewReservationParams) => submitInterviewReservation(slotId, applicantId),
         onSuccess: (response) => {
             return response;
         },
