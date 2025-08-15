@@ -212,9 +212,11 @@ function InterviewEvaluationPage() {
                     <EvaluationBox
                         selectedApplicantId={selectedApplicant?.applicantId ?? null}
                         evaluation={
-                            interviewEvaluationDetail?.evaluationsByApplicant?.[
-                                selectedApplicant?.applicantId ?? ''
-                            ] ?? INITIAL_EVALUATION_SUMMARY
+                            (interviewEvaluationDetail?.evaluationsOfApplicants ?? []).find(
+                                (evaluation) =>
+                                    evaluation.applicantId ===
+                                    (selectedApplicant?.applicantId ?? ''),
+                            ) ?? INITIAL_EVALUATION_SUMMARY
                         }
                         onPostComment={handlePostComment}
                         onDeleteComment={handleDeleteComment}

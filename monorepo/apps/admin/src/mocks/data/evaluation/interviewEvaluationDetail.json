@@ -1,14 +1,17 @@
 {
-    "evaluationsByApplicant": {
-        "1": {
+    "evaluationsOfApplicants": [
+        {
+            "applicantId": "1",
             "completedEvaluatorCount": 4,
             "totalEvaluatorCount": 6,
             "averageScore": 2.5,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "1-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
@@ -18,6 +21,8 @@
                     "evaluationId": "1-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -27,6 +32,8 @@
                     "evaluationId": "1-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -36,6 +43,8 @@
                     "evaluationId": "1-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -43,15 +52,18 @@
                 }
             ]
         },
-        "2": {
+        {
+            "applicantId": "2",
             "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
             "averageScore": 4.1,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "2-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
@@ -61,6 +73,8 @@
                     "evaluationId": "2-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -70,6 +84,8 @@
                     "evaluationId": "2-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
@@ -79,6 +95,8 @@
                     "evaluationId": "2-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
@@ -88,6 +106,8 @@
                     "evaluationId": "2-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -95,15 +115,18 @@
                 }
             ]
         },
-        "3": {
+        {
+            "applicantId": "3",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
             "averageScore": 4.8,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "3-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -113,6 +136,8 @@
                     "evaluationId": "3-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -122,6 +147,8 @@
                     "evaluationId": "3-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -131,6 +158,8 @@
                     "evaluationId": "3-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
@@ -140,6 +169,8 @@
                     "evaluationId": "3-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
@@ -149,6 +180,8 @@
                     "evaluationId": "3-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
@@ -156,15 +189,18 @@
                 }
             ]
         },
-        "4": {
+        {
+            "applicantId": "4",
             "completedEvaluatorCount": 2,
             "totalEvaluatorCount": 6,
             "averageScore": 1.9,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "4-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -174,6 +210,8 @@
                     "evaluationId": "4-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -181,15 +219,18 @@
                 }
             ]
         },
-        "5": {
+        {
+            "applicantId": "5",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
             "averageScore": 4.6,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "5-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -199,6 +240,8 @@
                     "evaluationId": "5-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -208,6 +251,8 @@
                     "evaluationId": "5-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
@@ -217,6 +262,8 @@
                     "evaluationId": "5-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
@@ -226,6 +273,8 @@
                     "evaluationId": "5-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -235,6 +284,8 @@
                     "evaluationId": "5-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
@@ -242,15 +293,18 @@
                 }
             ]
         },
-        "6": {
+        {
+            "applicantId": "6",
             "completedEvaluatorCount": 3,
             "totalEvaluatorCount": 6,
             "averageScore": 2.7,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "6-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -260,6 +314,8 @@
                     "evaluationId": "6-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -269,6 +325,8 @@
                     "evaluationId": "6-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
@@ -276,15 +334,18 @@
                 }
             ]
         },
-        "7": {
+        {
+            "applicantId": "7",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 5.0,
-            "evaluationDatas": [
+            "averageScore": 5,
+            "evaluationDetails": [
                 {
                     "evaluationId": "7-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -294,6 +355,8 @@
                     "evaluationId": "7-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -303,6 +366,8 @@
                     "evaluationId": "7-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -312,6 +377,8 @@
                     "evaluationId": "7-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -321,6 +388,8 @@
                     "evaluationId": "7-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -330,6 +399,8 @@
                     "evaluationId": "7-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -337,15 +408,18 @@
                 }
             ]
         },
-        "8": {
+        {
+            "applicantId": "8",
             "completedEvaluatorCount": 4,
             "totalEvaluatorCount": 6,
             "averageScore": 3.4,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "8-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -355,6 +429,8 @@
                     "evaluationId": "8-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -364,6 +440,8 @@
                     "evaluationId": "8-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
@@ -373,6 +451,8 @@
                     "evaluationId": "8-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
@@ -380,15 +460,18 @@
                 }
             ]
         },
-        "9": {
+        {
+            "applicantId": "9",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
             "averageScore": 4.2,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "9-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -398,6 +481,8 @@
                     "evaluationId": "9-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -407,6 +492,8 @@
                     "evaluationId": "9-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -416,6 +503,8 @@
                     "evaluationId": "9-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
@@ -425,6 +514,8 @@
                     "evaluationId": "9-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
@@ -434,6 +525,8 @@
                     "evaluationId": "9-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -441,15 +534,18 @@
                 }
             ]
         },
-        "10": {
+        {
+            "applicantId": "10",
             "completedEvaluatorCount": 1,
             "totalEvaluatorCount": 6,
             "averageScore": 1.1,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "10-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 1,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -457,15 +553,18 @@
                 }
             ]
         },
-        "11": {
+        {
+            "applicantId": "11",
             "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
             "averageScore": 3.9,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "11-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -475,6 +574,8 @@
                     "evaluationId": "11-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
@@ -484,6 +585,8 @@
                     "evaluationId": "11-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -493,6 +596,8 @@
                     "evaluationId": "11-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
@@ -502,6 +607,8 @@
                     "evaluationId": "11-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
@@ -509,15 +616,18 @@
                 }
             ]
         },
-        "12": {
+        {
+            "applicantId": "12",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
             "averageScore": 4.5,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "12-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -527,6 +637,8 @@
                     "evaluationId": "12-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
@@ -536,6 +648,8 @@
                     "evaluationId": "12-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -545,6 +659,8 @@
                     "evaluationId": "12-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
@@ -554,6 +670,8 @@
                     "evaluationId": "12-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -563,6 +681,8 @@
                     "evaluationId": "12-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -570,15 +690,18 @@
                 }
             ]
         },
-        "13": {
+        {
+            "applicantId": "13",
             "completedEvaluatorCount": 4,
             "totalEvaluatorCount": 6,
             "averageScore": 2.8,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "13-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
@@ -588,6 +711,8 @@
                     "evaluationId": "13-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -597,6 +722,8 @@
                     "evaluationId": "13-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -606,6 +733,8 @@
                     "evaluationId": "13-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
@@ -613,15 +742,18 @@
                 }
             ]
         },
-        "14": {
+        {
+            "applicantId": "14",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
             "averageScore": 4.3,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "14-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -631,8 +763,10 @@
                     "evaluationId": "14-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -640,8 +774,10 @@
                     "evaluationId": "14-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 5,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -649,8 +785,10 @@
                     "evaluationId": "14-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -658,8 +796,10 @@
                     "evaluationId": "14-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
-                    "score": 4,
-                    "comment": "질문을 잘 이해하고 답변합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 5,
+                    "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -667,22 +807,27 @@
                     "evaluationId": "14-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "팀워크 능력이 좋습니다.",
+                    "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "15": {
-            "completedEvaluatorCount": 5,
+        {
+            "applicantId": "15",
+            "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 3.1,
-            "evaluationDatas": [
+            "averageScore": 2.7,
+            "evaluationDetails": [
                 {
                     "evaluationId": "15-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
@@ -692,6 +837,8 @@
                     "evaluationId": "15-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -701,8 +848,10 @@
                     "evaluationId": "15-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -710,8 +859,10 @@
                     "evaluationId": "15-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 3,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -719,23 +870,39 @@
                     "evaluationId": "15-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "기본 지식이 부족해 보입니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "15-eval-6",
+                    "evaluatorId": "evaluator-6",
+                    "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "16": {
+        {
+            "applicantId": "16",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.9,
-            "evaluationDatas": [
+            "averageScore": 2.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "16-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 5,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -744,7 +911,9 @@
                     "evaluationId": "16-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 5,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -753,7 +922,9 @@
                     "evaluationId": "16-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 5,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
@@ -762,7 +933,9 @@
                     "evaluationId": "16-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 5,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -771,7 +944,9 @@
                     "evaluationId": "16-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
-                    "score": 5,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -780,24 +955,29 @@
                     "evaluationId": "16-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
-                    "score": 5,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "17": {
-            "completedEvaluatorCount": 2,
+        {
+            "applicantId": "17",
+            "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
-            "averageScore": 1.6,
-            "evaluationDatas": [
+            "averageScore": 2.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "17-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
-                    "comment": "팀워크 능력이 좋습니다.",
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -805,24 +985,62 @@
                     "evaluationId": "17-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 1,
-                    "comment": "프로젝트 경험이 풍부합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "17-eval-3",
+                    "evaluatorId": "evaluator-3",
+                    "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": true
+                },
+                {
+                    "evaluationId": "17-eval-4",
+                    "evaluatorId": "evaluator-4",
+                    "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "17-eval-5",
+                    "evaluatorId": "evaluator-5",
+                    "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "18": {
-            "completedEvaluatorCount": 6,
+        {
+            "applicantId": "18",
+            "completedEvaluatorCount": 3,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.7,
-            "evaluationDatas": [
+            "averageScore": 2.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "18-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 5,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -830,8 +1048,10 @@
                     "evaluationId": "18-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 5,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -839,50 +1059,28 @@
                     "evaluationId": "18-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 4,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
-                    "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": true
-                },
-                {
-                    "evaluationId": "18-eval-4",
-                    "evaluatorId": "evaluator-4",
-                    "evaluatorName": "김민아",
-                    "score": 5,
-                    "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": false
-                },
-                {
-                    "evaluationId": "18-eval-5",
-                    "evaluatorId": "evaluator-5",
-                    "evaluatorName": "최은지",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": false
-                },
-                {
-                    "evaluationId": "18-eval-6",
-                    "evaluatorId": "evaluator-6",
-                    "evaluatorName": "김성민",
-                    "score": 5,
-                    "comment": "성장 가능성이 엿보입니다.",
-                    "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": false
+                    "isMyEvaluation": true
                 }
             ]
         },
-        "19": {
-            "completedEvaluatorCount": 5,
+        {
+            "applicantId": "19",
+            "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 3.8,
-            "evaluationDatas": [
+            "averageScore": 2.8,
+            "evaluationDetails": [
                 {
                     "evaluationId": "19-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -891,7 +1089,9 @@
                     "evaluationId": "19-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
                     "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -900,7 +1100,9 @@
                     "evaluationId": "19-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
@@ -909,6 +1111,8 @@
                     "evaluationId": "19-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -918,23 +1122,39 @@
                     "evaluationId": "19-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "19-eval-6",
+                    "evaluatorId": "evaluator-6",
+                    "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "20": {
-            "completedEvaluatorCount": 6,
+        {
+            "applicantId": "20",
+            "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.0,
-            "evaluationDatas": [
+            "averageScore": 2.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "20-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 4,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
@@ -943,8 +1163,10 @@
                     "evaluationId": "20-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 4,
-                    "comment": "팀워크 능력이 좋습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -952,8 +1174,10 @@
                     "evaluationId": "20-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 4,
-                    "comment": "프로젝트 경험이 풍부합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -961,8 +1185,10 @@
                     "evaluationId": "20-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 4,
-                    "comment": "기본 지식이 탄탄합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -970,33 +1196,29 @@
                     "evaluationId": "20-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
-                    "score": 4,
-                    "comment": "면접 태도가 아쉽습니다.",
-                    "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": false
-                },
-                {
-                    "evaluationId": "20-eval-6",
-                    "evaluatorId": "evaluator-6",
-                    "evaluatorName": "김성민",
-                    "score": 4,
-                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "21": {
-            "completedEvaluatorCount": 4,
+        {
+            "applicantId": "21",
+            "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
-            "averageScore": 2.4,
-            "evaluationDatas": [
+            "averageScore": 4.1,
+            "evaluationDetails": [
                 {
                     "evaluationId": "21-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 2,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1004,8 +1226,10 @@
                     "evaluationId": "21-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 3,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 5,
+                    "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1013,8 +1237,10 @@
                     "evaluationId": "21-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 2,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -1022,22 +1248,38 @@
                     "evaluationId": "21-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 3,
-                    "comment": "기본 지식이 부족해 보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "21-eval-5",
+                    "evaluatorId": "evaluator-5",
+                    "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "22": {
-            "completedEvaluatorCount": 6,
+        {
+            "applicantId": "22",
+            "completedEvaluatorCount": 4,
             "totalEvaluatorCount": 6,
-            "averageScore": 3.6,
-            "evaluationDatas": [
+            "averageScore": 3.7,
+            "evaluationDetails": [
                 {
                     "evaluationId": "22-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
@@ -1047,8 +1289,10 @@
                     "evaluationId": "22-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "프로젝트 경험이 풍부합니다.",
+                    "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1056,6 +1300,8 @@
                     "evaluationId": "22-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -1065,42 +1311,29 @@
                     "evaluationId": "22-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "질문을 잘 이해하고 답변합니다.",
-                    "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": false
-                },
-                {
-                    "evaluationId": "22-eval-5",
-                    "evaluatorId": "evaluator-5",
-                    "evaluatorName": "최은지",
-                    "score": 3,
-                    "comment": "기본 지식이 부족해 보입니다.",
-                    "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": false
-                },
-                {
-                    "evaluationId": "22-eval-6",
-                    "evaluatorId": "evaluator-6",
-                    "evaluatorName": "김성민",
-                    "score": 4,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "23": {
-            "completedEvaluatorCount": 3,
+        {
+            "applicantId": "23",
+            "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 2.9,
-            "evaluationDatas": [
+            "averageScore": 3.8,
+            "evaluationDetails": [
                 {
                     "evaluationId": "23-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 3,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1108,8 +1341,10 @@
                     "evaluationId": "23-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 3,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1117,24 +1352,62 @@
                     "evaluationId": "23-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "경험이 부족해 보입니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": true
+                },
+                {
+                    "evaluationId": "23-eval-4",
+                    "evaluatorId": "evaluator-4",
+                    "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "질문을 잘 이해하고 답변합니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "23-eval-5",
+                    "evaluatorId": "evaluator-5",
+                    "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 3,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
-                    "isMyEvaluation": true
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "23-eval-6",
+                    "evaluatorId": "evaluator-6",
+                    "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
                 }
             ]
         },
-        "24": {
-            "completedEvaluatorCount": 2,
+        {
+            "applicantId": "24",
+            "completedEvaluatorCount": 4,
             "totalEvaluatorCount": 6,
-            "averageScore": 1.5,
-            "evaluationDatas": [
+            "averageScore": 2.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "24-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 1,
-                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1142,6 +1415,30 @@
                     "evaluationId": "24-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "24-eval-3",
+                    "evaluatorId": "evaluator-3",
+                    "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "기본 지식이 부족해 보입니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": true
+                },
+                {
+                    "evaluationId": "24-eval-4",
+                    "evaluatorId": "evaluator-4",
+                    "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 2,
                     "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
@@ -1149,17 +1446,20 @@
                 }
             ]
         },
-        "25": {
+        {
+            "applicantId": "25",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.9,
-            "evaluationDatas": [
+            "averageScore": 4.1,
+            "evaluationDetails": [
                 {
                     "evaluationId": "25-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 5,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1167,8 +1467,10 @@
                     "evaluationId": "25-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 5,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1176,8 +1478,10 @@
                     "evaluationId": "25-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 5,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -1185,8 +1489,10 @@
                     "evaluationId": "25-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 5,
-                    "comment": "기본 지식이 부족해 보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1194,8 +1500,10 @@
                     "evaluationId": "25-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
-                    "comment": "경험이 부족해 보입니다.",
+                    "comment": "질문을 잘 이해하고 답변합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1203,24 +1511,29 @@
                     "evaluationId": "25-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
-                    "score": 5,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "26": {
-            "completedEvaluatorCount": 5,
+        {
+            "applicantId": "26",
+            "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.3,
-            "evaluationDatas": [
+            "averageScore": 4.1,
+            "evaluationDetails": [
                 {
                     "evaluationId": "26-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1228,8 +1541,10 @@
                     "evaluationId": "26-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 5,
-                    "comment": "프로젝트 경험이 풍부합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1237,8 +1552,10 @@
                     "evaluationId": "26-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "면접 태도가 아쉽습니다.",
+                    "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -1246,8 +1563,10 @@
                     "evaluationId": "26-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1255,22 +1574,38 @@
                     "evaluationId": "26-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "기본 지식이 탄탄합니다.",
+                    "comment": "경험이 부족해 보입니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "26-eval-6",
+                    "evaluatorId": "evaluator-6",
+                    "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "27": {
+        {
+            "applicantId": "27",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
             "averageScore": 3.7,
-            "evaluationDatas": [
+            "evaluationDetails": [
                 {
                     "evaluationId": "27-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -1280,6 +1615,8 @@
                     "evaluationId": "27-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -1289,6 +1626,8 @@
                     "evaluationId": "27-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -1298,8 +1637,10 @@
                     "evaluationId": "27-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 3,
-                    "comment": "경험이 부족해 보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1307,8 +1648,10 @@
                     "evaluationId": "27-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
-                    "score": 4,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1316,24 +1659,29 @@
                     "evaluationId": "27-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
-                    "score": 4,
-                    "comment": "답변이 모호하고 핵심이 없습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
+                    "comment": "팀워크 능력이 좋습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "28": {
-            "completedEvaluatorCount": 4,
+        {
+            "applicantId": "28",
+            "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
-            "averageScore": 2.8,
-            "evaluationDatas": [
+            "averageScore": 2.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "28-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 3,
-                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "기본 지식이 탄탄합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1341,8 +1689,10 @@
                     "evaluationId": "28-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 3,
-                    "comment": "프로젝트 경험이 풍부합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1350,7 +1700,9 @@
                     "evaluationId": "28-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
-                    "score": 2,
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 3,
                     "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
@@ -1359,24 +1711,40 @@
                     "evaluationId": "28-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 3,
-                    "comment": "논리적 사고력이 뛰어납니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "성장 가능성이 엿보입니다.",
+                    "evaluationType": "INTERVIEW",
+                    "isMyEvaluation": false
+                },
+                {
+                    "evaluationId": "28-eval-5",
+                    "evaluatorId": "evaluator-5",
+                    "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 2,
+                    "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "29": {
+        {
+            "applicantId": "29",
             "completedEvaluatorCount": 6,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.6,
-            "evaluationDatas": [
+            "averageScore": 4.1,
+            "evaluationDetails": [
                 {
                     "evaluationId": "29-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
-                    "score": 5,
-                    "comment": "팀워크 능력이 좋습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "긍정적인 태도가 인상 깊습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1384,8 +1752,10 @@
                     "evaluationId": "29-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
-                    "score": 5,
-                    "comment": "프로젝트 경험이 풍부합니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "논리적 사고력이 뛰어납니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1393,8 +1763,10 @@
                     "evaluationId": "29-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "기본 지식이 탄탄합니다.",
+                    "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": true
                 },
@@ -1402,8 +1774,10 @@
                     "evaluationId": "29-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
-                    "score": 5,
-                    "comment": "면접 태도가 아쉽습니다.",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
+                    "score": 4,
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1411,8 +1785,10 @@
                     "evaluationId": "29-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "긍정적인 태도가 인상 깊습니다.",
+                    "comment": "면접 태도가 아쉽습니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1420,24 +1796,29 @@
                     "evaluationId": "29-eval-6",
                     "evaluatorId": "evaluator-6",
                     "evaluatorName": "김성민",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
-                    "comment": "질문을 잘 이해하고 답변합니다.",
+                    "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 }
             ]
         },
-        "30": {
+        {
+            "applicantId": "30",
             "completedEvaluatorCount": 5,
             "totalEvaluatorCount": 6,
-            "averageScore": 4.1,
-            "evaluationDatas": [
+            "averageScore": 4.2,
+            "evaluationDetails": [
                 {
                     "evaluationId": "30-eval-1",
                     "evaluatorId": "evaluator-1",
                     "evaluatorName": "이유진",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
-                    "comment": "성장 가능성이 엿보입니다.",
+                    "comment": "프로젝트 경험이 풍부합니다.",
                     "evaluationType": "INTERVIEW",
                     "isMyEvaluation": false
                 },
@@ -1445,6 +1826,8 @@
                     "evaluationId": "30-eval-2",
                     "evaluatorId": "evaluator-2",
                     "evaluatorName": "박서준",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 5,
                     "comment": "답변이 모호하고 핵심이 없습니다.",
                     "evaluationType": "INTERVIEW",
@@ -1454,6 +1837,8 @@
                     "evaluationId": "30-eval-3",
                     "evaluatorId": "evaluator-3",
                     "evaluatorName": "정지훈",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "기본 지식이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -1463,6 +1848,8 @@
                     "evaluationId": "30-eval-4",
                     "evaluatorId": "evaluator-4",
                     "evaluatorName": "김민아",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "경험이 부족해 보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -1472,6 +1859,8 @@
                     "evaluationId": "30-eval-5",
                     "evaluatorId": "evaluator-5",
                     "evaluatorName": "최은지",
+                    "evaluatorThumbnailUrl": "",
+                    "isEvaluatorImagePresent": false,
                     "score": 4,
                     "comment": "성장 가능성이 엿보입니다.",
                     "evaluationType": "INTERVIEW",
@@ -1479,5 +1868,5 @@
                 }
             ]
         }
-    }
+    ]
 }

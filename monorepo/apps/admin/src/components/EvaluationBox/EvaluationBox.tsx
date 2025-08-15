@@ -47,7 +47,7 @@ function EvaluationBox({
     // form hooks
     // query hooks
     // calculated values
-    const myComment = evaluation.evaluationDatas.find((c) => c.isMyEvaluation);
+    const myComment = evaluation.evaluationDetails.find((comment) => comment.isMyEvaluation);
 
     // handlers
     const handleFormState = (partial: Partial<typeof defaultState>) => {
@@ -121,9 +121,9 @@ function EvaluationBox({
                     </div>
                 </div>
                 <Divider />
-                <div css={perStarScoreGroup((evaluation?.evaluationDatas?.length ?? 0) > 0)}>
-                    {evaluation?.evaluationDatas?.length > 0 ? (
-                        evaluation.evaluationDatas.map((comment) => (
+                <div css={perStarScoreGroup((evaluation?.evaluationDetails?.length ?? 0) > 0)}>
+                    {evaluation?.evaluationDetails?.length > 0 ? (
+                        evaluation.evaluationDetails.map((comment) => (
                             <PersonalScoreCard
                                 key={comment.evaluationId}
                                 score={comment.score}

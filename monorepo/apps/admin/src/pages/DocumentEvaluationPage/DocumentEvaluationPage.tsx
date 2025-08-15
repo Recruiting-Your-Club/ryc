@@ -1,4 +1,4 @@
-import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { stepQueries } from '@api/queryFactory/stepQueries';
@@ -18,11 +18,12 @@ import {
 
 export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
 export const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
-export const INITIAL_EVALUATION_SUMMARY: EvaluationDataWithSummary = {
+export const INITIAL_EVALUATION_SUMMARY: EvaluationDetailWithSummary = {
+    applicantId: '',
     completedEvaluatorCount: 0,
     totalEvaluatorCount: 0,
     averageScore: 0,
-    evaluationDatas: [],
+    evaluationDetails: [],
 };
 
 function DocumentEvaluationPage() {
@@ -159,9 +160,10 @@ function DocumentEvaluationPage() {
                 <EvaluationBox
                     selectedApplicantId={selectedApplicant?.applicantId ?? null}
                     evaluation={
-                        documentEvaluationDetail?.evaluationsByApplicant?.[
-                            selectedApplicant?.applicantId ?? ''
-                        ] ?? INITIAL_EVALUATION_SUMMARY
+                        documentEvaluationDetail?.evaluationsOfApplicants?.find(
+                            (evaluation) =>
+                                evaluation.applicantId === (selectedApplicant?.applicantId ?? ''),
+                        ) ?? INITIAL_EVALUATION_SUMMARY
                     }
                     onPostComment={handlePostComment}
                     onDeleteComment={handleDeleteComment}

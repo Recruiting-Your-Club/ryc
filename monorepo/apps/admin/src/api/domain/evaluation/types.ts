@@ -5,27 +5,28 @@ export interface EvaluationSummary {
     averageScore: number;
 }
 
-export interface EvaluationData {
+export interface EvaluationDetail {
     evaluationId: string;
     evaluatorId: string;
     evaluatorName: string;
+    evaluatorThumbnailUrl: string;
+    isEvaluatorImagePresent: boolean;
     score: number;
     comment: string;
     evaluationType: 'APPLICATION' | 'INTERVIEW';
     isMyEvaluation: boolean;
 }
 
-export interface EvaluationDataWithSummary {
+export interface EvaluationDetailWithSummary {
+    applicantId: string;
     completedEvaluatorCount: number;
     totalEvaluatorCount: number;
     averageScore: number;
-    evaluationDatas: EvaluationData[];
+    evaluationDetails: EvaluationDetail[];
 }
 
 export interface Evaluation {
-    evaluationsByApplicant: {
-        [applicantId: string]: EvaluationDataWithSummary;
-    };
+    evaluationsOfApplicants: EvaluationDetailWithSummary[];
 }
 
 export interface MyEvaluationStatus {

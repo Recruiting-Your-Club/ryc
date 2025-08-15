@@ -1,5 +1,5 @@
 import type {
-    EvaluationData,
+    EvaluationDetail,
     EvaluationSummary,
     MyEvaluationStatus,
 } from '@api/domain/evaluation/types';
@@ -42,11 +42,9 @@ const evaluationHandler = [
             applicantIdList: string[];
         };
 
-        const filteredEntries = Object.entries(
-            applicationEvaluationDetail.evaluationsByApplicant,
-        ).filter(([applicantId]) => applicantIdList.includes(applicantId));
-
-        const filtered = Object.fromEntries(filteredEntries);
+        const filtered = applicationEvaluationDetail.evaluationsOfApplicants.filter((evaluation) =>
+            applicantIdList.includes(evaluation.applicantId),
+        );
 
         return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
     }),
@@ -56,11 +54,9 @@ const evaluationHandler = [
             applicantIdList: string[];
         };
 
-        const filteredEntries = Object.entries(
-            interviewEvaluationDetail.evaluationsByApplicant,
-        ).filter(([applicantId]) => applicantIdList.includes(applicantId));
-
-        const filtered = Object.fromEntries(filteredEntries);
+        const filtered = interviewEvaluationDetail.evaluationsOfApplicants.filter((evaluation) =>
+            applicantIdList.includes(evaluation.applicantId),
+        );
 
         return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
     }),
@@ -75,11 +71,11 @@ const evaluationHandler = [
         const evaluationDetail =
             type === 'application' ? applicationEvaluationDetail : interviewEvaluationDetail;
 
-        const entries = Object.entries(evaluationDetail.evaluationsByApplicant);
+        const entries = Object.entries(evaluationDetail.evaluationsOfApplicants);
         let found = false;
 
         for (const [applicationId, evaluationDataWithSummary] of entries) {
-            const targetEvaluation = evaluationDataWithSummary.evaluationDatas.find(
+            const targetEvaluation = evaluationDataWithSummary.evaluationDetails.find(
                 (e) => e.evaluationId === evaluationId,
             );
 
@@ -107,9 +103,9 @@ const evaluationHandler = [
         const evaluationDetail =
             type === 'application' ? applicationEvaluationDetail : interviewEvaluationDetail;
 
-        const evaluationEntry = Object.entries(evaluationDetail.evaluationsByApplicant).find(
+        const evaluationEntry = Object.entries(evaluationDetail.evaluationsOfApplicants).find(
             ([_, evalautionDataWithSummary]) =>
-                evalautionDataWithSummary.evaluationDatas.some(
+                evalautionDataWithSummary.evaluationDetails.some(
                     (evaluationdata) => evaluationdata.evaluationId === evaluationId,
                 ),
         );
@@ -120,9 +116,9 @@ const evaluationHandler = [
 
         const [applicantId, evaluationDataWithSummary] = evaluationEntry;
 
-        evaluationDataWithSummary.evaluationDatas =
-            evaluationDataWithSummary.evaluationDatas.filter(
-                (evaluationdata) => evaluationdata.evaluationId !== evaluationId,
+        evaluationDataWithSummary.evaluationDetails =
+            evaluationDataWithSummary.evaluationDetails.filter(
+                (evaluationDetail) => evaluationDetail.evaluationId !== evaluationId,
             );
 
         return HttpResponse.json(evaluationDetail, { status: 200 });
@@ -140,7 +136,7 @@ const evaluationHandler = [
             type === 'application' ? applicationEvaluationDetail : interviewEvaluationDetail;
 
         const [id, evaluationDataWithSummary] =
-            Object.entries(evaluationDetail.evaluationsByApplicant).find(
+            Object.entries(evaluationDetail.evaluationsOfApplicants).find(
                 ([id]) => id === applicantId,
             ) || [];
 
@@ -158,8 +154,8 @@ const evaluationHandler = [
             isMyEvaluation: true,
         };
 
-        (evaluationDataWithSummary.evaluationDatas as EvaluationData[]).push(
-            newEvaluation as EvaluationData,
+        (evaluationDataWithSummary.evaluationDetails as EvaluationDetail[]).push(
+            newEvaluation as EvaluationDetail,
         );
 
         return HttpResponse.json(evaluationDetail, { status: 201 });

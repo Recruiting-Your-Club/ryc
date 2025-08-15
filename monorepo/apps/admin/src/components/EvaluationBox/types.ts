@@ -1,8 +1,8 @@
-import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 
 export interface EvaluationBoxProps {
     selectedApplicantId: string | null;
-    evaluation: EvaluationDataWithSummary;
+    evaluation: EvaluationDetailWithSummary;
     onPostComment: (applicantId: string, score: number, comment: string, clubId: string) => void;
     onDeleteComment: (evaluationId: string, clubId: string) => void;
     onUpdateComment: (evaluationId: string, score: number, comment: string, clubId: string) => void;
