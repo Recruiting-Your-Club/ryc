@@ -8,10 +8,11 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRouter } from '@ssoc/hooks';
+import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
 import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
+import { BASE_URL } from '../../constants/api';
 import { usePostApplicationAnswers } from '../../hooks';
 import { useClubStore } from '../../stores';
 import { useApplicationStore } from '../../stores';
@@ -51,10 +52,25 @@ function ClubApplyPage() {
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
     const { toast } = useToast();
+    const { uploadFiles, isLoading: isFileUploading } = useFileUpload({
+        baseUrl: BASE_URL,
+        requireAuth: false,
+    });
     // query hooks
     const { data: applicationForm } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
     );
+    const { mutate: submitApplication, isPending: isSubmitting } = usePostApplicationAnswers({
+        announcementId: announcementId || '',
+        onSuccess: (response: ApplicationSubmissionResponse) => {
+            setIsSubmitDialogOpen(false);
+            goTo(`success/${response.applicantId}/${response.applicationId}`);
+        },
+        onError: () => {
+            toast.error('제출에 실패했어요.');
+            setIsSubmitDialogOpen(false);
+        },
+    });
 
     // initial values
     // 사전질문 데이터
@@ -111,17 +127,6 @@ function ClubApplyPage() {
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<string>('사전질문');
-    const { mutate: submitApplication, isPending: isSubmitting } = usePostApplicationAnswers({
-        announcementId: announcementId || '',
-        onSuccess: (response: ApplicationSubmissionResponse) => {
-            setIsSubmitDialogOpen(false);
-            goTo(`success/${response.applicantId}/${response.applicationId}`);
-        },
-        onError: () => {
-            toast.error('제출에 실패했어요.');
-            setIsSubmitDialogOpen(false);
-        },
-    });
 
     // calculated values
     // 필수 질문 개수 계산
@@ -158,6 +163,28 @@ function ClubApplyPage() {
 
     const handleFocus = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: false }));
+    };
+
+    const handleFileUpload = async (questionId: string, questionTitle: string, files: File[]) => {
+        try {
+            if (files.length === 0) {
+                // 파일이 없으면 값을 비움
+                handleAnswerChange(questionId, questionTitle, '');
+                return;
+            }
+
+            // 단일/여러 파일 모두 uploadFiles로 처리
+            const fileMetadataIds = await uploadFiles(files);
+
+            // 업로드 성공 시 fileMetadataId(s)를 답변으로 저장 (쉼표로 구분)
+            const value = fileMetadataIds.join(',');
+            handleAnswerChange(questionId, questionTitle, value);
+
+            toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
+        } catch (error) {
+            console.error('File upload failed:', error);
+            toast.error('파일 업로드에 실패했습니다.');
+        }
     };
 
     const handleAnswerChange = (
@@ -277,6 +304,7 @@ function ClubApplyPage() {
                     answers={answers}
                     clubPersonalQuestions={clubPersonalInfoQuestions}
                     onAnswerChange={handleAnswerChange}
+                    onFileUpload={handleFileUpload}
                     containerStyle={applyFormContainer}
                     getValidationError={getValidationError}
                     getErrorMessage={getErrorMessage}
@@ -284,6 +312,7 @@ function ClubApplyPage() {
                     onBlur={handleBlur}
                     onFocus={handleFocus}
                     questionRefs={questionRefs}
+                    isFileUploading={isFileUploading}
                 />
             ),
             width: '5.8rem',
