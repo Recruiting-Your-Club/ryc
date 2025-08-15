@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 interface DeletePersonalEvaluation {
     evaluationId: string;
     clubId: string;
+    type: 'application' | 'interview';
 }
 
 interface PutEvaluation {
@@ -16,6 +17,7 @@ interface PutEvaluation {
     score: number;
     comment: string;
     clubId: string;
+    type: 'application' | 'interview';
 }
 
 interface PostPersonalEvaluation {
@@ -37,7 +39,7 @@ const evaluationMutations = {
                     queryKey: evaluationKeys.evaluationDetail(
                         variables.clubId,
                         [applicantId],
-                        'document',
+                        variables.type === 'application' ? 'application' : 'interview',
                     ),
                 });
             },
@@ -54,7 +56,7 @@ const evaluationMutations = {
                     queryKey: evaluationKeys.evaluationDetail(
                         variables.clubId,
                         [applicantId],
-                        'document',
+                        variables.type === 'application' ? 'application' : 'interview',
                     ),
                 });
             },
@@ -70,7 +72,7 @@ const evaluationMutations = {
                     queryKey: evaluationKeys.evaluationDetail(
                         variables.clubId,
                         [variables.applicantId],
-                        variables.type === 'application' ? 'document' : 'interview',
+                        variables.type === 'application' ? 'application' : 'interview',
                     ),
                 });
             },
