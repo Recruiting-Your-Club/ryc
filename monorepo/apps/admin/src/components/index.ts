@@ -3,4 +3,3 @@ export * from './Footer';
 export * from './SideBar';
 export * from './ImageEditDialog';
 export * from './ImageRegister';
-export * from './FileUpLoader';
