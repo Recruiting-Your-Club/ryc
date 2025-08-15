@@ -8,6 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+  @Value("${CLIENT_URL}/")
+  private String CLIENT_URL;
+
   @Value("${DEV_CLIENT_URL}")
   private String DEV_CLIENT_URL;
 
@@ -25,6 +28,8 @@ public class WebConfig implements WebMvcConfigurer {
     registry
         .addMapping("/**")
         .allowedOrigins(
+            CLIENT_URL,
+            CLIENT_URL + "/",
             LOCAL_CLIENT_URL,
             LOCAL_CLIENT_URL + "/",
             LOCAL_CLIENT_HTTPS_URL,
