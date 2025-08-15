@@ -10,7 +10,9 @@ import {
     s_arrowDown,
     s_dropdownContent,
     s_dropdownItem,
+    s_dropdownItemSuccessTextSx,
     s_dropdownItemSx,
+    s_dropdownItemTextSx,
     s_dropdownLabelBottomSx,
     s_dropdownLabelTopSx,
     s_dropdownTriggerSx,
@@ -61,9 +63,20 @@ function QuestionDropdown({
                                 sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
-                                    {question.label}
+                                    <Text
+                                        type="captionRegular"
+                                        textAlign="left"
+                                        sx={s_dropdownItemTextSx}
+                                    >
+                                        {question.label}
+                                    </Text>
                                     {getAnswer(answers, question.label)?.trim() && (
-                                        <Text type="subCaptionRegular" color="primary">
+                                        <Text
+                                            type="subCaptionRegular"
+                                            color="primary"
+                                            textAlign="right"
+                                            sx={s_dropdownItemSuccessTextSx}
+                                        >
                                             [완료]
                                         </Text>
                                     )}
@@ -81,7 +94,13 @@ function QuestionDropdown({
                                 sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
-                                    질문{index + 1}
+                                    <Text
+                                        type="captionRegular"
+                                        textAlign="left"
+                                        sx={s_dropdownItemTextSx}
+                                    >
+                                        질문{index + 1}
+                                    </Text>
                                     {getAnswer(answers, question.label)?.trim() && (
                                         <Text type="subCaptionRegular" color="primary">
                                             [완료]
