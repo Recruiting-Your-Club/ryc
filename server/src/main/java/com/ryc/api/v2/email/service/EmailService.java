@@ -34,13 +34,13 @@ public class EmailService {
   private final ApplicantRepository applicantRepository;
 
   public EmailService(
-      @Value("${LOCAL_CLIENT_URL}") String baseUri,
+      @Value("${CLIENT_URL}") String baseUri,
       EmailRepository emailRepository,
       InterviewService interviewService,
       ApplicantRepository applicantRepository,
       ResourceLoader resourceLoader)
       throws IOException {
-    this.baseUri = baseUri + "/reservation";
+    this.baseUri = baseUri;
     this.emailRepository = emailRepository;
     this.interviewService = interviewService;
     this.applicantRepository = applicantRepository;
