@@ -30,11 +30,11 @@ jobs:
         run: yarn install
         working-directory: ./monorepo
 
-      # 4. user 앱 빌드
+      # 4. user, admin 앱 빌드
       - name: Build user app
         run: |
           echo "NODE_ENV: $NODE_ENV"
-          echo "BASE_URL: $BASE_URL"
+          echo "BASE_URL: $BASE_URL"`
           echo "API_MOCKING: $API_MOCKING"
           yarn build
         working-directory: ./monorepo
