@@ -25,6 +25,19 @@ export const getAnswer = (answers: Answer[], questionTitle: string): string => {
     return answer.value || '';
 };
 
+export const updateAnswers = (
+    prev: Answer[],
+    existingAnswer: Answer | undefined,
+    newAnswer: Answer,
+    questionTitle: string,
+): Answer[] => {
+    if (existingAnswer) {
+        return prev.map((answer) => (answer.questionTitle === questionTitle ? newAnswer : answer));
+    } else {
+        return [...prev, newAnswer];
+    }
+};
+
 export const getValidationError = (questionTitle: string, value: string): boolean => {
     if (!value.trim()) return false;
     if (!VALIDATION_PATTERNS[questionTitle as ValidationKey]) {

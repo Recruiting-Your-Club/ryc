@@ -1,19 +1,18 @@
-import { postApplicationAnswers } from '@api/domain/announcement/announcement';
 import type {
-    ApplicationSubmissionRequest,
+    ApplicationSubmissionResponse,
     PersonalInfoQuestionType,
     QuestionType,
 } from '@api/domain/announcement/types';
 import { announcementQueries } from '@api/queryFactory';
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
-import { Avatar, Button, Text } from '@ssoc/ui';
+import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
 import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
-import { ClubApplyLoadingPage } from '../../pages/LoadingPage';
+import { usePostApplicationAnswers } from '../../hooks';
 import { useClubStore } from '../../stores';
 import { useApplicationStore } from '../../stores';
 import { getCategory } from '../../utils/changeCategory';
@@ -40,6 +39,7 @@ import {
     getPersonalQuestionLabel,
     getValidationError,
     makeAnsewerDataForSubmit,
+    updateAnswers,
 } from './utils';
 
 function ClubApplyPage() {
@@ -50,8 +50,9 @@ function ClubApplyPage() {
     const { getAnswers, setAnswers: setApplicationAnswers } = useApplicationStore();
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
+    const { toast } = useToast();
     // query hooks
-    const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
+    const { data: applicationForm } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
     );
 
@@ -110,15 +111,14 @@ function ClubApplyPage() {
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<string>('사전질문');
-    const { mutate: submitApplication, isPending: isSubmitting } = useMutation({
-        mutationFn: (data: ApplicationSubmissionRequest) =>
-            postApplicationAnswers(announcementId || '', data),
-        onSuccess: (response) => {
+    const { mutate: submitApplication, isPending: isSubmitting } = usePostApplicationAnswers({
+        announcementId: announcementId || '',
+        onSuccess: (response: ApplicationSubmissionResponse) => {
             setIsSubmitDialogOpen(false);
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
-        onError: (error) => {
-            console.error('지원서 제출 실패:', error);
+        onError: () => {
+            toast.error('제출에 실패했어요.');
             setIsSubmitDialogOpen(false);
         },
     });
@@ -174,109 +174,72 @@ function ClubApplyPage() {
 
             let newAnswers: Answer[];
 
-            // 체크박스인 경우
-            if (question?.type === 'MULTIPLE_CHOICE') {
-                const currentOptionIds = existingAnswer?.optionIds || [];
-                const isCurrentlyChecked = currentOptionIds.includes(value);
+            switch (question?.type) {
+                case 'MULTIPLE_CHOICE': {
+                    const currentOptionIds = existingAnswer?.optionIds || [];
+                    const isCurrentlyChecked = currentOptionIds.includes(value);
 
-                let newOptionIds: string[];
+                    const newOptionIds = isCurrentlyChecked
+                        ? currentOptionIds.filter((id) => id !== value)
+                        : [...currentOptionIds, value];
 
-                if (isCurrentlyChecked) {
-                    newOptionIds = currentOptionIds.filter((id) => id !== value);
-                } else {
-                    newOptionIds = [...currentOptionIds, value];
+                    const newAnswer: Answer = {
+                        id: questionId,
+                        value: newOptionIds.join(','),
+                        questionTitle,
+                        pageAnswerType: 'detail',
+                        questionType: question.type,
+                        optionIds: newOptionIds,
+                    };
+
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    break;
                 }
 
-                const newValues = newOptionIds.join(',');
+                case 'SINGLE_CHOICE': {
+                    const newAnswer: Answer = {
+                        id: questionId,
+                        value: optionText || value,
+                        questionTitle,
+                        pageAnswerType: 'detail',
+                        questionType: question.type,
+                        optionIds: [value],
+                    };
 
-                const newAnswer: Answer = {
-                    id: questionId,
-                    value: newValues,
-                    questionTitle,
-                    pageAnswerType: 'detail',
-                    questionType: question.type,
-                    optionIds: newOptionIds,
-                };
-
-                if (existingAnswer) {
-                    newAnswers = prev.map((answer) =>
-                        answer.questionTitle === questionTitle ? newAnswer : answer,
-                    );
-                } else {
-                    newAnswers = [...prev, newAnswer];
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    break;
                 }
-            }
-            // 라디오 버튼인 경우
-            else if (question?.type === 'SINGLE_CHOICE') {
-                const newAnswer: Answer = {
-                    id: questionId,
-                    value: optionText || value,
-                    questionTitle,
-                    pageAnswerType: 'detail',
-                    questionType: question.type,
-                    optionIds: [value],
-                };
 
-                if (existingAnswer) {
-                    newAnswers = prev.map((answer) =>
-                        answer.questionTitle === questionTitle ? newAnswer : answer,
-                    );
-                } else {
-                    newAnswers = [...prev, newAnswer];
+                case 'PROFILE_IMAGE':
+                case 'FILE': {
+                    const newAnswer: Answer = {
+                        id: questionId,
+                        value: value,
+                        questionTitle,
+                        pageAnswerType: 'personal',
+                        questionType: question.type,
+                    };
+
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    break;
                 }
-            } else if (question?.type === 'PROFILE_IMAGE') {
-                const newAnswer: Answer = {
-                    id: questionId,
-                    value: value,
-                    questionTitle,
-                    pageAnswerType: 'personal',
-                    questionType: question.type,
-                };
 
-                if (existingAnswer) {
-                    newAnswers = prev.map((answer) =>
-                        answer.questionTitle === questionTitle ? newAnswer : answer,
-                    );
-                } else {
-                    newAnswers = [...prev, newAnswer];
-                }
-            } else if (question?.type === 'FILE') {
-                const newAnswer: Answer = {
-                    id: questionId,
-                    value: value,
-                    questionTitle,
-                    pageAnswerType: 'personal',
-                    questionType: question.type,
-                };
+                default: {
+                    // 일반 텍스트 입력인 경우
+                    const newAnswer: Answer = {
+                        id: questionId,
+                        value,
+                        questionTitle,
+                        pageAnswerType: clubPersonalInfoQuestions.some(
+                            (question) => question.label === questionTitle,
+                        )
+                            ? ('personal' as PageAnswer)
+                            : ('detail' as PageAnswer),
+                        questionType: question?.type as QuestionType | PersonalInfoQuestionType,
+                    };
 
-                if (existingAnswer) {
-                    newAnswers = prev.map((answer) =>
-                        answer.questionTitle === questionTitle ? newAnswer : answer,
-                    );
-                } else {
-                    newAnswers = [...prev, newAnswer];
-                }
-            }
-            // 일반 텍스트 입력인 경우
-            else {
-                const newAnswer: Answer = {
-                    id: questionId,
-                    value,
-                    questionTitle,
-                    pageAnswerType: clubPersonalInfoQuestions.some(
-                        (question) => question.label === questionTitle,
-                    )
-                        ? ('personal' as PageAnswer)
-                        : ('detail' as PageAnswer),
-                    questionType: question?.type as QuestionType | PersonalInfoQuestionType,
-                };
-
-                if (existingAnswer) {
-                    newAnswers = prev.map((answer) =>
-                        answer.questionTitle === questionTitle ? newAnswer : answer,
-                    );
-                } else {
-                    newAnswers = [...prev, newAnswer];
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    break;
                 }
             }
 
@@ -365,10 +328,6 @@ function ClubApplyPage() {
             setAnswers(applicationAnswers);
         }
     }, [clubPersonalInfoQuestions, applicationAnswers]);
-
-    if (formLoading) {
-        return <ClubApplyLoadingPage />;
-    }
 
     return (
         <div css={clubApplyPage}>
