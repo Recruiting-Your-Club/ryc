@@ -35,7 +35,7 @@ public class EmailHttpApi {
 
   private final EmailService emailService;
 
-  @PostMapping("/clubs/{club-id}/announcements/{announcement-id}/emails")
+  @PostMapping("/announcements/{announcement-id}/emails")
   @HasRole(Role.MEMBER)
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   @ApiErrorCodeExample(
@@ -43,11 +43,10 @@ public class EmailHttpApi {
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id") String clubId,
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     List<EmailSendResponse> responses =
-        emailService.createEmails(userDetail.getId(), clubId, announcementId, body);
+        emailService.createEmails(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 }

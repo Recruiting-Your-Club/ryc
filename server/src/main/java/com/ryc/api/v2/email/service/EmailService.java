@@ -46,7 +46,7 @@ public class EmailService {
 
   @Transactional
   public List<EmailSendResponse> createEmails(
-      String adminId, String clubId, String announcementId, EmailSendRequest body) {
+      String adminId, String announcementId, EmailSendRequest body) {
     List<Email> emails =
         body.recipients().stream()
             .map(
