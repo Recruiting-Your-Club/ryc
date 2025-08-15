@@ -20,6 +20,7 @@
         ]
     },
     "dependencies": {
+        "@channel.io/channel-web-sdk-loader": "^2.0.0",
         "@emotion/react": "^11.13.0",
         "@ssoc/assets": "workspace:*",
         "@ssoc/constants": "workspace:*",

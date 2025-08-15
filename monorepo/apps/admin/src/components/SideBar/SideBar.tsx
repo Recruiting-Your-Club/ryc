@@ -243,11 +243,15 @@ function SideBar() {
                                     onClick={() => {
                                         setCurrentClub(club.id);
                                         // 현재 대표 경로를 유지한 채 clubId만 교체
-                                        const representativePath = getActiveSubMenu(location.pathname);
+                                        const representativePath = getActiveSubMenu(
+                                            location.pathname,
+                                        );
                                         const announcementIdParam = announcementId
                                             ? `/${announcementId}`
                                             : '';
-                                        goTo(`${representativePath}/${club.id}${announcementIdParam}`);
+                                        goTo(
+                                            `${representativePath}/${club.id}${announcementIdParam}`,
+                                        );
                                     }}
                                 >
                                     <Tooltip content={club.name}>

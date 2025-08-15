@@ -1,6 +1,19 @@
-import { useState, useEffect } from 'react';
-import { Avatar, Button, Calendar, Divider, Text, ConfirmDialog, useToast } from '@ssoc/ui';
 import type { InterviewSlot } from '@api/domain/club/types';
+import { useSubmitInterviewReservation } from '@api/mutaionFactory';
+import { clubQueries } from '@api/queryFactory/clubQueries';
+import Clock from '@assets/images/clock.svg';
+import User from '@assets/images/user.svg';
+import { useQuery } from '@tanstack/react-query';
+import { getCategory } from '@utils/changeCategory';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import CalendarIcon from '@ssoc/assets/images/calendar.svg';
+import Check from '@ssoc/assets/images/check.svg';
+import theme from '@ssoc/styles';
+import { Avatar, Button, Calendar, ConfirmDialog, Divider, Text, useToast } from '@ssoc/ui';
+
 import {
     s_buttonContainer,
     s_calendarContainer,
@@ -28,18 +41,6 @@ import {
     s_timeContainer,
 } from './Reservation.style';
 
-import { useQuery } from '@tanstack/react-query';
-import { clubQueries } from '@api/queryFactory/clubQueries';
-import { useParams } from 'react-router-dom';
-import { getCategory } from '@utils/changeCategory';
-import { useSubmitInterviewReservation } from '@api/mutaionFactory';
-import Check from '@ssoc/assets/images/check.svg';
-import CalendarIcon from '@ssoc/assets/images/calendar.svg';
-import Clock from '@assets/images/clock.svg';
-import User from '@assets/images/user.svg';
-import theme from '@ssoc/styles';
-import dayjs from 'dayjs';
-
 function ReservationPage() {
     // prop destruction
     // lib hooks
@@ -54,21 +55,29 @@ function ReservationPage() {
     const [interviewDuration, setInterviewDuration] = useState<number>(0);
     const [selectedInterviewSlot, setSelectedInterviewSlot] = useState<InterviewSlot | null>(null);
     const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(true);
-    // form hooks   
+    // form hooks
     // query hooks
-    const { data: clubReservation } = useQuery(clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''));
+    const { data: clubReservation } = useQuery(
+        clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''),
+    );
     const { mutateAsync: submitInterviewReservation } = useSubmitInterviewReservation();
     // calculated values
 
     // handlers
     const handleCalendar = (selectDate: string[]) => {
         setSelectDate(selectDate);
-        setInterviewSlots(clubReservation?.slotByDateResponses.find((slot) => slot.date === selectDate.toString())?.interviewSlots ?? []);
-        setInterviewDuration(clubReservation?.slotByDateResponses.find((slot) => slot.date === selectDate.toString())?.interviewDuration ?? 0);
-    }
+        setInterviewSlots(
+            clubReservation?.slotByDateResponses.find((slot) => slot.date === selectDate.toString())
+                ?.interviewSlots ?? [],
+        );
+        setInterviewDuration(
+            clubReservation?.slotByDateResponses.find((slot) => slot.date === selectDate.toString())
+                ?.interviewDuration ?? 0,
+        );
+    };
     const handleTimeButton = (slot: InterviewSlot) => {
-        setSelectedInterviewSlot(slot)
-    }
+        setSelectedInterviewSlot(slot);
+    };
     const handleConfirmDialog = () => {
         if (!selectedInterviewSlot) {
             toast('날짜와 시간을 선택해주세요', {
@@ -77,7 +86,7 @@ function ReservationPage() {
             return;
         }
         setOpenConfirmDialog(true);
-    }
+    };
 
     const submitReservation = async () => {
         try {
@@ -85,7 +94,7 @@ function ReservationPage() {
                 clubId,
                 announcementId,
                 applicantId,
-                slotId: selectedInterviewSlot?.id ?? ''
+                slotId: selectedInterviewSlot?.id ?? '',
             });
             toast('예약이 완료되었습니다.', {
                 type: 'success',
@@ -94,16 +103,18 @@ function ReservationPage() {
         } catch (error) {
             if (error instanceof Error) {
                 toast(error.message, {
-                    type: 'error'
-                })
+                    type: 'error',
+                });
             }
         }
         setOpenConfirmDialog(false);
-    }
+    };
     // effects
     useEffect(() => {
         if (clubReservation) {
-            setPossibleReservationDate(clubReservation.slotByDateResponses.map((slot) => slot.date));
+            setPossibleReservationDate(
+                clubReservation.slotByDateResponses.map((slot) => slot.date),
+            );
             //setIsSuccessReservation(clubReservation.isReserved)
         }
     }, [clubReservation]);
@@ -116,7 +127,9 @@ function ReservationPage() {
                         <div css={s_checkIconWrapper}>
                             <Check css={s_checkIcon} />
                         </div>
-                        <Text type="h2Semibold" color='primary'>예약 완료!</Text>
+                        <Text type="h2Semibold" color="primary">
+                            예약 완료!
+                        </Text>
                         <Text type="bodyRegular" color="caption">
                             자세한 내용은 메일을 확인해주세요.
                         </Text>
@@ -124,21 +137,31 @@ function ReservationPage() {
                     <div css={s_infoContainer}>
                         <div css={s_infoBox(true)}>
                             <div css={s_svgWrapper}>
-                                <CalendarIcon width='100%' height='100%' css={{ color: theme.colors.default }} />
+                                <CalendarIcon
+                                    width="100%"
+                                    height="100%"
+                                    css={{ color: theme.colors.default }}
+                                />
                             </div>
                             <div css={s_infoTextWrapper}>
-                                <Text type="bodyRegular" textAlign='start' color='primary'>예약 날짜</Text>
-                                <Text type="h4Semibold" textAlign='start' color='primary'>
-                                    {dayjs(selectedInterviewSlot?.period.startDate).format('YYYY년 MM월 DD일 dddd')}
+                                <Text type="bodyRegular" textAlign="start" color="primary">
+                                    예약 날짜
+                                </Text>
+                                <Text type="h4Semibold" textAlign="start" color="primary">
+                                    {dayjs(selectedInterviewSlot?.period.startDate).format(
+                                        'YYYY년 MM월 DD일 dddd',
+                                    )}
                                 </Text>
                             </div>
                         </div>
                         <div css={s_infoBox(false)}>
                             <div css={s_svgWrapper}>
-                                <Clock width='100%' height='100%' />
+                                <Clock width="100%" height="100%" />
                             </div>
                             <div css={s_infoTextWrapper}>
-                                <Text type="bodyRegular" textAlign='start'>시간</Text>
+                                <Text type="bodyRegular" textAlign="start">
+                                    시간
+                                </Text>
                                 <Text type="bodySemibold">{`${dayjs(selectedInterviewSlot?.period.startDate).format('HH:mm')} ~ ${dayjs(
                                     selectedInterviewSlot?.period.endDate,
                                 ).format('HH:mm')}`}</Text>
@@ -146,10 +169,12 @@ function ReservationPage() {
                         </div>
                         <div css={s_infoBox(false)}>
                             <div css={s_svgWrapper}>
-                                <User width='100%' height='100%' />
+                                <User width="100%" height="100%" />
                             </div>
                             <div css={s_infoTextWrapper}>
-                                <Text type="bodyRegular" textAlign='start'>면접자</Text>
+                                <Text type="bodyRegular" textAlign="start">
+                                    면접자
+                                </Text>
                                 <Text type="bodySemibold">{clubReservation?.applicantName}</Text>
                             </div>
                         </div>
@@ -162,8 +187,7 @@ function ReservationPage() {
                 </div>
             </div>
         );
-    }
-    else {
+    } else {
         return (
             <div css={s_temp}>
                 <div css={s_reservationContainer}>
@@ -174,23 +198,34 @@ function ReservationPage() {
                         <div css={s_clubInfoWrapper}>
                             <Avatar radius="10px" imageURL={clubReservation?.clubImageUrl} />
                             <div css={s_clubTextWrapper}>
-                                <Text as="div" type="h4Semibold" textAlign='start' noWrap cropped>
+                                <Text as="div" type="h4Semibold" textAlign="start" noWrap cropped>
                                     {clubReservation?.clubName}
                                 </Text>
-                                <Text as="div" type="captionSemibold" color="caption" textAlign="start">
+                                <Text
+                                    as="div"
+                                    type="captionSemibold"
+                                    color="caption"
+                                    textAlign="start"
+                                >
                                     {getCategory(clubReservation?.clubCategory ?? '')}
                                 </Text>
                             </div>
                         </div>
 
                         <div css={s_descriptionWrapper}>
-                            <Text type="h4Semibold" textAlign='start'>이메일: {clubReservation?.applicantEmail}</Text>
-                            <Text type="bodySemibold" color="caption" textAlign='start'>면접 진행 시간: {interviewDuration}분</Text>
+                            <Text type="h4Semibold" textAlign="start">
+                                이메일: {clubReservation?.applicantEmail}
+                            </Text>
+                            <Text type="bodySemibold" color="caption" textAlign="start">
+                                면접 진행 시간: {interviewDuration}분
+                            </Text>
                         </div>
                     </div>
                     <div css={s_rightContainer}>
                         <div css={s_calendarContainer}>
-                            <Calendar size="md" mode='custom'
+                            <Calendar
+                                size="md"
+                                mode="custom"
                                 shadow={false}
                                 selectedDate={possibleReservationDate}
                                 onSelect={handleCalendar}
@@ -210,7 +245,9 @@ function ReservationPage() {
                                 </Text>
                             </div>
                             <Text type="captionSemibold" textAlign="end" noWrap>
-                                {selectedInterviewSlot ? `남은인원: ${selectedInterviewSlot?.currentNumberOfPeople} / ${selectedInterviewSlot?.maxNumberOfPeople}` : '시간을 선택해주세요'}
+                                {selectedInterviewSlot
+                                    ? `남은인원: ${selectedInterviewSlot?.currentNumberOfPeople} / ${selectedInterviewSlot?.maxNumberOfPeople}`
+                                    : '시간을 선택해주세요'}
                             </Text>
                         </div>
                         <Divider width="full" color="gray" weight="1" />
@@ -223,25 +260,27 @@ function ReservationPage() {
                                 >
                                     {dayjs(slot.period.startDate).format('HH:mm')}
                                 </button>
-
                             ))}
                         </div>
                         <div css={s_reserveButtonWrapper}>
-                            <Button size="full" onClick={handleConfirmDialog}>예약하기</Button>
+                            <Button size="full" onClick={handleConfirmDialog}>
+                                예약하기
+                            </Button>
                         </div>
                     </div>
                 </div>
-                {openConfirmDialog &&
+                {openConfirmDialog && (
                     <ConfirmDialog
-                        type='confirm'
+                        type="confirm"
                         open={true}
                         handleClose={() => setOpenConfirmDialog(false)}
                         actionHandler={() => submitReservation()}
                         title="예약하기"
-                        dialogSize='sm'
+                        dialogSize="sm"
                         cancelButton={true}
                         content={`${dayjs(selectedInterviewSlot?.period.startDate).format('YYYY년 MM월 DD일 HH:mm\n')} 예약하시겠습니까?`}
-                    />}
+                    />
+                )}
             </div>
         );
     }
