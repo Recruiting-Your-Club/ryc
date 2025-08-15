@@ -39,11 +39,13 @@ jobs:
           echo "NODE_ENV: $NODE_ENV"
           echo "BASE_URL: $BASE_URL"
           echo "API_MOCKING: $API_MOCKING"
+          echo "CHANNEL_PLUGIN_KEY: $CHANNEL_PLUGIN_KEY"
           yarn build
         working-directory: ./monorepo
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           API_MOCKING: disabled
+          CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
 
       # 5. AWS 자격 증명 설정
       - name: Configure AWS credentials
