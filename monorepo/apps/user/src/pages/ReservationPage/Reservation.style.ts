@@ -5,6 +5,7 @@ import theme from '@ssoc/styles';
 export const s_temp = css`
     width: 100%;
     height: 100%;
+    padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -140,3 +141,77 @@ export const s_reserveButtonWrapper = css`
         padding: 0 2rem;
     }
 `;
+
+export const s_successContainer = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    width: 100%;
+    height: 100%;
+    max-width: 40rem;
+    max-height: 60rem;
+    box-shadow: 0px 0px 30px 0px rgba(0, 27, 55, 0.1);
+    border-radius: 10px;
+`;
+
+export const s_successTitleWrapper = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+`;
+
+export const s_checkIconWrapper = css`
+    width: 7rem;
+    height: 7rem;
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: ${theme.colors.blue[100]};
+`
+
+export const s_checkIcon = css`
+    width: 100%;
+    height: 100%;
+    color: ${theme.colors.default};
+`;
+
+export const s_infoContainer = css`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+`;
+
+export const s_infoBox = (isPrimary?: boolean) => css`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background-color: ${isPrimary ? theme.colors.blue[100] : theme.colors.gray[100]};
+`;
+
+export const s_infoTextWrapper = css`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+`;
+
+export const s_buttonContainer = css`
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 2rem;
+`;
+export const s_svgWrapper = css`
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`

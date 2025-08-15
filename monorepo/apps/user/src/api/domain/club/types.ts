@@ -65,9 +65,11 @@ export interface ClubInterviewSchedule {
     clubName: string;
     clubCategory: string;
     clubImageUrl: string;
+    isReserved: boolean;
+    applicantName: string;
+    applicantEmail: string;
     representativeImage: RepresentativeImage;
     slotByDateResponses: SlotByDate[];
-    applicantEmail: string;
 }
 
 export interface SubmitReservationResponse {

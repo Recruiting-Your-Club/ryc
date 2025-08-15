@@ -1,7 +1,0 @@
-<svg viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="path-2-inside-1_705_34" fill="white">
-<path d="M2.5 2H18.5V18H2.5V2Z"/>
-</mask>
-<path class="current-color" d="M18.5 18V17H2.5V18V19H18.5V18Z" fill="currentColor" mask="url(#path-2-inside-1_705_34)"/>
-<path class="text-button" d="M14.6667 6.83334V5.83334H6.33337V6.83334M10.5 6.00001V14.1667M10.5 14.1667H9.66671M10.5 14.1667H11.3334" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

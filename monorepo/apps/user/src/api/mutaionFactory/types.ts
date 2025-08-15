@@ -4,7 +4,3 @@ export interface InterviewReservationParams {
     announcementId?: string;
     applicantId?: string;
 }
-export interface InterviewReservationError {
-    code: string;
-    message: string;
-}

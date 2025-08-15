@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom/client';
 import { globalStyles } from '@ssoc/styles';
 import theme from '@ssoc/styles';
 import { ToastProvider } from '@ssoc/ui';
-
+import 'dayjs/locale/ko';
 import App from './App';
 import { browserServer } from './mocks/server/browser';
 
