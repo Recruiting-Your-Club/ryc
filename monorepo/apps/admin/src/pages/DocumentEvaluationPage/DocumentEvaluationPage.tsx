@@ -51,7 +51,7 @@ function DocumentEvaluationPage() {
         ...evaluationQueries.evaluationDetail({
             clubId: CLUB_ID,
             applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
-            type: 'document',
+            type: 'application',
         }),
         enabled:
             !!selectedApplicant &&
@@ -89,10 +89,9 @@ function DocumentEvaluationPage() {
         score: number,
         comment: string,
         clubId: string,
-        type: 'application' | 'interview',
     ) => {
         postApplicationComment(
-            { applicantId, score, comment, clubId, type },
+            { applicantId, score, comment, clubId, type: 'application' },
             getEvaluationActionCallbacks('등록'),
         );
     };
@@ -104,13 +103,16 @@ function DocumentEvaluationPage() {
         clubId: string,
     ) => {
         updateComment(
-            { evaluationId, score, comment, clubId },
+            { evaluationId, score, comment, clubId, type: 'application' },
             getEvaluationActionCallbacks('수정'),
         );
     };
 
     const handleDeleteComment = (evaluationId: string, clubId: string) => {
-        deleteComment({ evaluationId, clubId }, getEvaluationActionCallbacks('삭제'));
+        deleteComment(
+            { evaluationId, clubId, type: 'application' },
+            getEvaluationActionCallbacks('삭제'),
+        );
     };
 
     // effects

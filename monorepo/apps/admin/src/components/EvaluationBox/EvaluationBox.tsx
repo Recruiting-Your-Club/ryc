@@ -59,13 +59,7 @@ function EvaluationBox({
             toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
             return;
         }
-        onPostComment(
-            selectedApplicantId || '',
-            formState.score,
-            formState.comment,
-            CLUB_ID,
-            'application',
-        );
+        onPostComment(selectedApplicantId || '', formState.score, formState.comment, CLUB_ID);
         handleFormState({ score: 0, comment: '' });
     };
 

@@ -1,8 +1,22 @@
-import { interviewQueries } from '@api/queryFactory';
+import type {
+    ApplicantForInterviewSlot,
+    ApplicantReservedInterview,
+} from '@api/domain/interview/types';
+import type { StepApplicant } from '@api/domain/step/types';
+import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { useMemo, useState } from 'react';
+import { evaluationMutations } from '@hooks/mutations';
+import {
+    ANNOUNCEMENT_ID,
+    CLUB_ID,
+    INITIAL_EVALUATION_SUMMARY,
+} from '@pages/DocumentEvaluationPage';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import React, { useEffect, useMemo, useState } from 'react';
+
+import { useToast } from '@ssoc/ui';
 
 import {
     s_evaluationBoxWrapper,
@@ -11,87 +25,202 @@ import {
     s_interviewInformationPageContainer,
     s_selectionContainer,
 } from './InterviewEvaluationPage.style';
-import { getInitialId } from './utils/getInitialId';
 
 function InterviewEvaluationPage() {
     // prop destruction
     // lib hooks
-    // initial values
-    const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
-    const initialId = getInitialId(intervieweelist);
+    const { toast } = useToast();
 
+    // initial values
     // state, ref, querystring hooks
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(initialId ?? 1);
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
+    const [slotId, setSlotId] = useState<string | null>(null);
 
     // form hooks
     // query hooks
-    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
-        interviewQueries.allInterviewSchedules(),
+    const { data: interviewSlots = [] } = useSuspenseQuery(
+        interviewQueries.interviewSlot(ANNOUNCEMENT_ID, CLUB_ID),
     );
-    const { data: intervieweeDetail } = useSuspenseQuery(
-        interviewQueries.getIntervieweeDetail(selectedApplicantId),
+    const { data: slotApplicants } = useQuery({
+        ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slotId ?? '', CLUB_ID),
+        enabled: !!slotId && slotId !== '',
+    });
+    const { data: applicantDocument } = useQuery({
+        ...applicantQueries.getApplicantDocument(
+            ANNOUNCEMENT_ID,
+            selectedApplicant?.applicantId ?? '',
+            CLUB_ID,
+        ),
+
+        enabled: !!selectedApplicant?.applicantId,
+    });
+    const { data: interviewEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: CLUB_ID,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'interview',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            [
+                'DOCUMENT_PASS',
+                'DOCUMENT_FAIL',
+                'INTERVIEW_PASS',
+                'INTERVIEW_FAIL',
+                'FINAL_PASS',
+                'FINAL_FAIL',
+            ].includes(selectedApplicant.status),
+    });
+
+    const { mutate: postInterviewComment } = evaluationMutations.usePostPersonalEvaluation();
+    const { mutate: updateComment } = evaluationMutations.usePutEvaluation(
+        selectedApplicant?.applicantId ?? '',
     );
-    const { data: document } = useSuspenseQuery(interviewQueries.getDocument(selectedApplicantId));
-    const { data: evaluation } = useSuspenseQuery(
-        interviewQueries.getInterviewEvaluation(selectedApplicantId),
+    const { mutate: deleteComment } = evaluationMutations.useDeleteEvaluation(
+        selectedApplicant?.applicantId ?? '',
     );
 
     // calculated values
-    const flatScheduleList = useMemo(
-        () =>
-            interviewSchedulelist.flatMap((schedule) =>
-                schedule.interviewSets.map((set) => ({
-                    ...set,
-                    date: schedule.date,
-                })),
-            ),
-        [interviewSchedulelist],
-    );
+    const finalIntervieweeList: EnrichedInterviewee[] = useMemo(() => {
+        if (!slotApplicants) return [];
 
-    const finalIntervieweeList = useMemo(
-        () =>
-            intervieweelist
-                .map((interviewee) => {
-                    const matchedSet = flatScheduleList.find(
-                        (schedule) => schedule.id === interviewee.interviewSetId,
-                    );
-                    if (!matchedSet) return null;
+        return slotApplicants.interviewReservations
+            .map((applicant) => {
+                const matchedSlot = interviewSlots.find(
+                    (slot) => slot.id === slotApplicants.interviewSlotId,
+                );
 
-                    return {
-                        ...interviewee,
-                        interviewDate: matchedSet.date,
-                        interviewName: matchedSet.name,
-                        startTime: matchedSet.startTime,
-                        endTime: matchedSet.endTime,
-                    };
-                })
-                .filter(Boolean) as EnrichedInterviewee[],
-        [intervieweelist, flatScheduleList],
-    );
+                if (!matchedSlot) return null;
+
+                return {
+                    applicantId: applicant.applicantId,
+                    name: applicant.applicantName,
+                    email: applicant.applicantEmail,
+                    status: 'INTERVIEW_PASS',
+                    submittedAt: '',
+                    interviewDate: dayjs(matchedSlot.period.startDate).format('YYYY-MM-DD'),
+                    interviewName: matchedSlot.id,
+                    startTime: dayjs(matchedSlot.period.startDate).format('HH:mm'),
+                    endTime: dayjs(matchedSlot.period.endDate).format('HH:mm'),
+                };
+            })
+            .filter((item): item is EnrichedInterviewee => item !== null);
+    }, [slotApplicants, interviewSlots]);
 
     // handlers
+    const handleSelectApplicantId = (applicantId: string) => {
+        if (!slotApplicants) return;
+
+        const foundApplicant = toStepApplicants(slotApplicants.interviewReservations).find(
+            (applicant) => applicant.applicantId === applicantId,
+        );
+
+        if (foundApplicant) {
+            setSelectedApplicant(foundApplicant);
+        }
+    };
+
+    const handlePostComment = (
+        applicantId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => {
+        postInterviewComment(
+            { applicantId, score, comment, clubId, type: 'interview' },
+            getEvaluationActionCallbacks('등록'),
+        );
+    };
+
+    const handleUpdateComment = (
+        evaluationId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => {
+        updateComment(
+            { evaluationId, score, comment, clubId, type: 'interview' },
+            getEvaluationActionCallbacks('수정'),
+        );
+    };
+
+    const handleDeleteComment = (evaluationId: string, clubId: string) => {
+        deleteComment(
+            { evaluationId, clubId, type: 'interview' },
+            getEvaluationActionCallbacks('삭제'),
+        );
+    };
+
     // effects
+    useEffect(() => {
+        if (slotId === null && interviewSlots.length > 0) {
+            setSlotId(interviewSlots[0].id ?? '');
+        }
+    }, [interviewSlots]);
+
+    // etc
+    const getEvaluationActionCallbacks = (status: string) => {
+        return {
+            onSuccess: () => {
+                toast(`작성하신 평가가 ${status}되었어요!`, {
+                    type: 'success',
+                    toastTheme: 'colored',
+                });
+            },
+            onError: () => {
+                toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+            },
+        };
+    };
+
+    const toStepApplicants = (
+        interviewees: ApplicantReservedInterview[] | ApplicantForInterviewSlot[],
+    ): StepApplicant[] => {
+        return interviewees.map(({ applicantId, applicantName, applicantEmail }) => ({
+            applicantId,
+            name: applicantName,
+            email: applicantEmail,
+            status: 'INTERVIEW_PASS',
+            submittedAt: '',
+        }));
+    };
 
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
                 <IntervieweeList
                     intervieweeList={finalIntervieweeList}
-                    interviewSchedules={interviewSchedulelist}
-                    selectedApplicantId={selectedApplicantId}
-                    onSelectApplicant={setSelectedApplicantId}
+                    interviewSlots={interviewSlots}
+                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                    onSelectApplicant={handleSelectApplicantId}
+                    onInterviewSlotId={setSlotId}
                 />
             </div>
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
                     <InformationBox
-                        applicant={intervieweeDetail}
-                        documentList={document}
-                        isVisible={interviewSchedulelist.length > 0}
+                        personalInformation={applicantDocument?.personalInfos ?? []}
+                        preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                        applicationQuestionAnswers={
+                            applicantDocument?.applicationQuestionAnswers ?? []
+                        }
                     />
                 </div>
                 <div css={s_evaluationBoxWrapper}>
-                    <EvaluationBox evaluation={evaluation} />
+                    <EvaluationBox
+                        selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                        evaluation={
+                            interviewEvaluationDetail?.evaluationsByApplicant?.[
+                                selectedApplicant?.applicantId ?? ''
+                            ] ?? INITIAL_EVALUATION_SUMMARY
+                        }
+                        onPostComment={handlePostComment}
+                        onDeleteComment={handleDeleteComment}
+                        onUpdateComment={handleUpdateComment}
+                    />
                 </div>
             </div>
         </div>
