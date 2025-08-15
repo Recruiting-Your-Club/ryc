@@ -7,8 +7,6 @@ import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 
 public interface ApplicantRepository {
 
-  String findEmailById(String id);
-
   Applicant save(Applicant applicant);
 
   Applicant findById(String id);

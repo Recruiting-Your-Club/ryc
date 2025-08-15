@@ -80,7 +80,7 @@ public class InterviewService {
       String clubId, String announcementId, String applicantId) {
 
     Club club = clubRepository.findById(clubId);
-    String applicantEmail = applicantRepository.findEmailById(applicantId);
+    Applicant applicant = applicantRepository.findById(applicantId);
 
     List<InterviewSlotsByDateResponse> slotResponses = getInterviewSlots(announcementId);
 
@@ -98,7 +98,8 @@ public class InterviewService {
         .clubCategory(club.getCategory().toString())
         .slotByDateResponses(slotResponses)
         .representativeImage(representativeImage)
-        .applicantEmail(applicantEmail)
+        .applicantEmail(applicant.getEmail())
+        .applicantName(applicant.getName())
         .build();
   }
 

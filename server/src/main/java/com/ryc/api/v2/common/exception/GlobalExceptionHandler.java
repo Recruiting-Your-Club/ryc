@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import com.ryc.api.v2.common.exception.custom.InterviewException;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +22,7 @@ import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
