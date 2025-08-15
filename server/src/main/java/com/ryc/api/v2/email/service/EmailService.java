@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +22,7 @@ import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
-import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
-import com.ryc.api.v2.interview.service.InterviewService;
 
 @Service
 public class EmailService {
@@ -30,19 +30,16 @@ public class EmailService {
   private final String baseUri;
   private final String linkHtmlTemplate;
   private final EmailRepository emailRepository;
-  private final InterviewService interviewService;
   private final ApplicantRepository applicantRepository;
 
   public EmailService(
       @Value("${CLIENT_URL}") String baseUri,
       EmailRepository emailRepository,
-      InterviewService interviewService,
       ApplicantRepository applicantRepository,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
     this.emailRepository = emailRepository;
-    this.interviewService = interviewService;
     this.applicantRepository = applicantRepository;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
@@ -62,29 +59,40 @@ public class EmailService {
                         adminId, recipient, body.subject(), body.content(), clubId, announcementId))
             .toList();
 
-    return saveAll(emails);
+    List<Email> savedEmails = emailRepository.saveAll(emails);
+    return savedEmails.stream()
+        .map(
+            email -> {
+              String statusUrl = String.format("api/v2/emails/%s/status", email.getId());
+              return EmailSendResponse.builder()
+                  .emailId(email.getId())
+                  .status(email.getStatus())
+                  .statusUrl(statusUrl)
+                  .build();
+            })
+        .toList();
   }
 
   @Transactional
-  public List<EmailSendResponse> createInterviewEmails(
-      String adminId, String clubId, String announcementId, InterviewEmailSendRequest body) {
+  @EventListener
+  @Async
+  public void createInterviewEmails(InterviewEmailEvent event) {
+    List<Email> emails = new ArrayList<>();
 
-    interviewService.createInterviewSlot(
-        adminId, announcementId, body.numberOfPeopleByInterviewDateRequests());
+    for (Applicant applicant : event.applicants()) {
+      String htmlLink = createHtmlLink(event.clubId(), event.announcementId(), applicant.getId());
 
-    List<Applicant> applicants =
-        applicantRepository.findByEmails(body.emailSendRequest().recipients());
+      emails.add(
+          Email.initialize(
+              event.adminId(),
+              applicant.getEmail(),
+              event.subject(),
+              htmlLink + event.content(),
+              event.clubId(),
+              event.announcementId()));
+    }
 
-    List<Email> emails =
-        createEmailsWithEachLink(
-            clubId,
-            adminId,
-            announcementId,
-            applicants,
-            body.emailSendRequest().subject(),
-            body.emailSendRequest().content());
-
-    return saveAll(emails);
+    emailRepository.saveAll(emails);
   }
 
   @Transactional(readOnly = true)
@@ -106,41 +114,11 @@ public class EmailService {
     emailRepository.save(updatedEmail);
   }
 
-  private List<Email> createEmailsWithEachLink(
-      String clubId,
-      String adminId,
-      String announcementId,
-      List<Applicant> applicants,
-      String subject,
-      String content) {
-    List<Email> emails = new ArrayList<>();
-
-    for (Applicant applicant : applicants) {
-      String link =
-          String.format(
-              "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
-              baseUri, clubId, announcementId, applicant.getId());
-      String linkHtml = String.format(linkHtmlTemplate, link);
-
-      emails.add(
-          Email.initialize(
-              adminId, applicant.getEmail(), subject, linkHtml + content, clubId, announcementId));
-    }
-    return emails;
-  }
-
-  private List<EmailSendResponse> saveAll(List<Email> emails) {
-    List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream()
-        .map(
-            email -> {
-              String statusUrl = String.format("api/v2/emails/%s/status", email.getId());
-              return EmailSendResponse.builder()
-                  .emailId(email.getId())
-                  .status(email.getStatus())
-                  .statusUrl(statusUrl)
-                  .build();
-            })
-        .toList();
+  private String createHtmlLink(String clubId, String announcementId, String applicantId) {
+    String link =
+        String.format(
+            "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
+            baseUri, clubId, announcementId, applicantId);
+    return String.format(linkHtmlTemplate, link);
   }
 }

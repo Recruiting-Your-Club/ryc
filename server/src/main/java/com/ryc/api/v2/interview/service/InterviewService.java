@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.email.service.InterviewEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
@@ -23,7 +25,7 @@ import com.ryc.api.v2.interview.domain.InterviewReservation;
 import com.ryc.api.v2.interview.domain.InterviewSlot;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
-import com.ryc.api.v2.interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
 
 import lombok.RequiredArgsConstructor;
@@ -36,26 +38,7 @@ public class InterviewService {
   private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
   private final FileService fileService;
-
-  @Transactional
-  public List<String> createInterviewSlot(
-      String adminId, String announcementId, List<NumberOfPeopleByInterviewDateRequest> requests) {
-
-    List<InterviewSlot> interviewSlots =
-        requests.stream()
-            .map(
-                request ->
-                    InterviewSlot.initialize(
-                        adminId,
-                        announcementId,
-                        request.numberOfPeople(),
-                        request.start(),
-                        request.interviewDuration()))
-            .toList();
-
-    List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
-    return savedInterviewSlots.stream().map(InterviewSlot::getId).toList();
-  }
+  private final ApplicationEventPublisher publisher;
 
   @Transactional(readOnly = true)
   public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
@@ -156,6 +139,42 @@ public class InterviewService {
                     .applicantEmail(applicant.getEmail())
                     .applicantName(applicant.getName())
                     .build())
+        .toList();
+  }
+
+  @Transactional
+  public List<InterviewSlotCreateResponse> createInterviewSlots(
+      String adminId, String clubId, String announcementId, InterviewSlotCreateRequest request) {
+
+    List<InterviewSlot> interviewSlots =
+        request.numberOfPeopleByInterviewDateRequests().stream()
+            .map(
+                r ->
+                    InterviewSlot.initialize(
+                        adminId,
+                        announcementId,
+                        r.numberOfPeople(),
+                        r.start(),
+                        r.interviewDuration()))
+            .toList();
+
+    List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
+
+    // 이메일 전송을 위한 이벤트 발행
+    List<Applicant> applicants =
+        applicantRepository.findByEmails(request.emailSendRequest().recipients());
+    publisher.publishEvent(
+        InterviewEmailEvent.builder()
+            .applicants(applicants)
+            .subject(request.emailSendRequest().subject())
+            .content(request.emailSendRequest().content())
+            .adminId(adminId)
+            .clubId(clubId)
+            .announcementId(announcementId)
+            .build());
+
+    return savedInterviewSlots.stream()
+        .map(slot -> new InterviewSlotCreateResponse(slot.getId()))
         .toList();
   }
 
