@@ -126,6 +126,11 @@ function EvaluationBox({
                         evaluation.evaluationDetails.map((comment) => (
                             <PersonalScoreCard
                                 key={comment.evaluationId}
+                                image={
+                                    comment.isEvaluatorImagePresent
+                                        ? comment.evaluatorThumbnailUrl
+                                        : ''
+                                }
                                 score={comment.score}
                                 name={comment.evaluatorName}
                                 comment={comment.comment}
