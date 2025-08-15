@@ -61,8 +61,8 @@ function SideBar({ menu, subMenu }: SideBarProps) {
             subMenu: '시간대 별 지원자 편집',
             link: '/manager/time-slots',
         },
+        { parentId: 4, subMenu: '서류 평가', link: '/document-evaluation' },
         { parentId: 4, subMenu: '면접 평가', link: '/interview-evaluation' },
-        { parentId: 4, subMenu: '면접 공통 질문 설정', link: '/manager/questions' },
         { parentId: 5, subMenu: '사용자 권한 설정', link: '/manager/setting' },
     ];
     const menuItems = Array.isArray(menu) ? menu : defaultMenuItems;

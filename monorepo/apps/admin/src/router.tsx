@@ -5,6 +5,7 @@ import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
     ClubSearchPage,
+    DocumentEvaluationPage,
     LoginPage,
     MyClubPage,
     NotFoundPage,
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
+            { path: 'document-evaluation', element: <DocumentEvaluationPage /> },
         ],
     },
     {

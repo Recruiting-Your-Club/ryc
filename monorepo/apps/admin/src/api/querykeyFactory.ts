@@ -35,4 +35,27 @@ const interviewKeys = {
     evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
 };
 
-export { myClubKeys, interviewKeys };
+const applicantKeys = {
+    applicantDocument: (announcementId: string, applicantId: string, clubId: string) =>
+        ['applicant-document', announcementId, applicantId, clubId] as const,
+};
+
+const stepKeys = {
+    totalSteps: ['step'] as const,
+    allStepApplicants: (announcementId: string, clubId: string) =>
+        ['step-applicants', announcementId, clubId] as const,
+};
+
+const evaluationKeys = {
+    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-summary', clubId, ...applicantIds, type] as const,
+    evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-detail', clubId, ...applicantIds, type] as const,
+    myEvaluationStatus: (
+        clubId: string,
+        applicantIds: string[],
+        type: 'application' | 'interview',
+    ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
+};
+
+export { myClubKeys, interviewKeys, applicantKeys, stepKeys, evaluationKeys };
