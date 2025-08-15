@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.applicant.domain.Applicant;
-import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
@@ -30,17 +29,14 @@ public class EmailService {
   private final String baseUri;
   private final String linkHtmlTemplate;
   private final EmailRepository emailRepository;
-  private final ApplicantRepository applicantRepository;
 
   public EmailService(
       @Value("${CLIENT_URL}") String baseUri,
       EmailRepository emailRepository,
-      ApplicantRepository applicantRepository,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
     this.emailRepository = emailRepository;
-    this.applicantRepository = applicantRepository;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     try (InputStream is = resource.getInputStream()) {
@@ -56,7 +52,7 @@ public class EmailService {
             .map(
                 recipient ->
                     Email.initialize(
-                        adminId, recipient, body.subject(), body.content(), clubId, announcementId))
+                        adminId, recipient, body.subject(), body.content(), announcementId))
             .toList();
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
@@ -88,7 +84,6 @@ public class EmailService {
               applicant.getEmail(),
               event.subject(),
               htmlLink + event.content(),
-              event.clubId(),
               event.announcementId()));
     }
 

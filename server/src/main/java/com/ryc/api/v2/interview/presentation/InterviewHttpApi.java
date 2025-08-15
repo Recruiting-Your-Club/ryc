@@ -101,7 +101,7 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/interview-slots")
+  @PostMapping("/admin/clubs/{clubId}/announcements/{announcementId}/interview-slots")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 일정 생성 및 지원자에게 이메일 전송", description = "면접 일정을 생성하고, 지원자들에게 이메일을 발송합니다.")
   @ApiErrorCodeExample(
