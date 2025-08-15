@@ -19,6 +19,7 @@ function ClubApplyPersonalInfoPage({
     answers,
     clubPersonalQuestions,
     onAnswerChange,
+    onFileUpload,
     containerStyle,
     getValidationError,
     getErrorMessage,
@@ -26,6 +27,7 @@ function ClubApplyPersonalInfoPage({
     onBlur,
     onFocus,
     questionRefs,
+    isFileUploading = false,
 }: ClubApplyPersonalInfoPageProps) {
     //props destruction
     //lib hooks
@@ -53,16 +55,16 @@ function ClubApplyPersonalInfoPage({
                             <FileUpLoader
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
-                                onFilesChange={(newFiles: File[]) => {
+                                onFilesChange={async (newFiles: File[]) => {
+                                    // 로컬 상태 업데이트
                                     setFilesByQuestion((prev) => ({
                                         ...prev,
                                         [question.id]: newFiles,
                                     }));
-                                    const first = newFiles[0];
-                                    const value = first ? first.name : ''; // fileMetadataId 저장
-                                    onAnswerChange(question.id, question.label, value);
+                                    await onFileUpload(question.id, question.label, newFiles);
                                 }}
                                 maxFileCount={1}
+                                disabled={isFileUploading}
                             >
                                 <FileUpLoader.HelperText>
                                     1개의 이미지 파일만 넣어주세요.
@@ -86,16 +88,18 @@ function ClubApplyPersonalInfoPage({
                             <FileUpLoader
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
-                                onFilesChange={(newFiles: File[]) => {
+                                onFilesChange={async (newFiles: File[]) => {
+                                    // 로컬 상태 업데이트
                                     setFilesByQuestion((prev) => ({
                                         ...prev,
                                         [question.id]: newFiles,
                                     }));
-                                    const first = newFiles[0];
-                                    const value = first ? first.name : ''; // fileMetadataId 저장
-                                    onAnswerChange(question.id, question.label, value);
+
+                                    // 파일 업로드 처리 (File[] -> uploadFiles가 File | File[] 처리)
+                                    await onFileUpload(question.id, question.label, newFiles);
                                 }}
                                 maxFileCount={20}
+                                disabled={isFileUploading}
                             >
                                 <FileUpLoader.HelperText>
                                     최대 20개의 파일을 첨부할 수 있습니다.

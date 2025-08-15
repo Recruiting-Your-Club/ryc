@@ -37,6 +37,7 @@ export interface ClubApplyPersonalInfoPageProps {
         value: string,
         optionText?: string,
     ) => void;
+    onFileUpload: (questionId: string, questionTitle: string, files: File[]) => Promise<void>;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
@@ -44,6 +45,7 @@ export interface ClubApplyPersonalInfoPageProps {
     onBlur: (questionTitle: string) => void;
     onFocus: (questionTitle: string) => void;
     questionRefs: RefObject<{ [key: string]: HTMLDivElement | null }>;
+    isFileUploading?: boolean;
 }
 
 export interface ClubApplyDetailQuestionPageProps {
