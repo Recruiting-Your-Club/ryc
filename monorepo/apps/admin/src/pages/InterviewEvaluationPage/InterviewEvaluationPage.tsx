@@ -51,7 +51,6 @@ function InterviewEvaluationPage() {
             selectedApplicant?.applicantId ?? '',
             CLUB_ID,
         ),
-
         enabled: !!selectedApplicant?.applicantId,
     });
     const { data: interviewEvaluationDetail } = useQuery({
@@ -195,7 +194,7 @@ function InterviewEvaluationPage() {
                     intervieweeList={finalIntervieweeList}
                     interviewSlots={interviewSlots}
                     selectedApplicantId={selectedApplicant?.applicantId ?? null}
-                    onSelectApplicant={handleSelectApplicantId}
+                    onSelectApplicantId={handleSelectApplicantId}
                     onInterviewSlotId={setSlotId}
                 />
             </div>

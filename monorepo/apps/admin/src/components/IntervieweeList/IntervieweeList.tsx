@@ -1,6 +1,6 @@
 import { IntervieweeCard, InterviewTimeTable } from '@components';
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import Search from '@ssoc/assets/images/search.svg';
 import { Button, Dropdown, Input, Text } from '@ssoc/ui';
@@ -24,7 +24,7 @@ function IntervieweeList({
     intervieweeList,
     interviewSlots,
     selectedApplicantId,
-    onSelectApplicant,
+    onSelectApplicantId,
     onInterviewSlotId,
 }: IntervieweeListProps) {
     // prop destruction
@@ -46,34 +46,26 @@ function IntervieweeList({
     // form hooks
     // query hooks
     // calculated values
-    const selectedInterviewees =
-        selectedInterviewLabel.interviewSlotId !== ''
-            ? intervieweeList.filter(
-                  (interviewee) =>
-                      interviewee.interviewName === selectedInterviewLabel.interviewSlotId,
-              )
-            : [];
+    const selectedInterviewees = useMemo(() => {
+        if (!selectedInterviewLabel.interviewSlotId) return [];
+        return intervieweeList.filter(
+            (interviewee) => interviewee.interviewName === selectedInterviewLabel.interviewSlotId,
+        );
+    }, [selectedInterviewLabel.interviewSlotId, intervieweeList]);
 
-    const searchInterviewees = useCallback(
-        (applicants: EnrichedInterviewee[]) => {
-            return applicants.filter((value) =>
-                value.name.toLowerCase().includes(searchText.toLowerCase()),
-            );
-        },
-        [searchText],
-    );
-
-    const visibleInterviewees: EnrichedInterviewee[] = searchInterviewees(selectedInterviewees);
+    const visibleInterviewees: EnrichedInterviewee[] = useMemo(() => {
+        return selectedInterviewees.filter((value) =>
+            value.name.toLowerCase().includes(searchText.toLowerCase()),
+        );
+    }, [selectedInterviewees, searchText]);
 
     // handlers
     // effects
     useEffect(() => {
         if (visibleInterviewees.length <= 0) return;
-        const interviewee = visibleInterviewees.reduce((min, current) => {
-            return current.applicantId < min.applicantId ? current : min;
-        }, visibleInterviewees[0]);
-        onSelectApplicant(interviewee.applicantId);
-    }, [selectedInterviewLabel]);
+
+        onSelectApplicantId(visibleInterviewees[0].applicantId);
+    }, [visibleInterviewees]);
 
     return (
         <div css={s_listContainer(height)}>
@@ -133,7 +125,7 @@ function IntervieweeList({
                                 key={interviewee.applicantId}
                                 name={interviewee.name}
                                 email={interviewee.email}
-                                onClick={() => onSelectApplicant(interviewee.applicantId)}
+                                onClick={() => onSelectApplicantId(interviewee.applicantId)}
                                 isActivated={selectedApplicantId === interviewee.applicantId}
                             />
                         ))

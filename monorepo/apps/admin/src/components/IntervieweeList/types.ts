@@ -19,6 +19,6 @@ export interface IntervieweeListProps {
     intervieweeList: EnrichedInterviewee[];
     interviewSlots: InterviewSlot[];
     selectedApplicantId: string | null;
-    onSelectApplicant: (id: string) => void;
+    onSelectApplicantId: (id: string) => void;
     onInterviewSlotId: (id: string) => void;
 }
