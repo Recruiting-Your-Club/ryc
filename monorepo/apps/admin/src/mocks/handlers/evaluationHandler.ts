@@ -46,7 +46,7 @@ const evaluationHandler = [
             applicantIdList.includes(evaluation.applicantId),
         );
 
-        return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
+        return HttpResponse.json({ evaluationsOfApplicants: filtered }, { status: 200 });
     }),
 
     http.post(`${BASE_URL}evaluation/interviews/search`, async ({ request }) => {
@@ -58,7 +58,7 @@ const evaluationHandler = [
             applicantIdList.includes(evaluation.applicantId),
         );
 
-        return HttpResponse.json({ evaluationsByApplicant: filtered }, { status: 200 });
+        return HttpResponse.json({ evaluationsOfApplicants: filtered }, { status: 200 });
     }),
 
     http.put(`${BASE_URL}evaluation/:evaluationId`, async ({ request, params }) => {
