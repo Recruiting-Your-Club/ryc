@@ -24,7 +24,7 @@ export const s_questionArea = css`
     flex: 0 0 95%;
     min-width: 0;
     padding-right: 2rem;
-    border-right: 1px solid ${theme.colors.gray[400]};
+    border-right: 1px solid ${theme.colors.gray[300]};
     position: relative;
 `;
 
