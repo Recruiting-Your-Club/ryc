@@ -9,11 +9,13 @@ async function getTotalSteps(): Promise<Step> {
     return response as Step;
 }
 
-async function getAllStepApplicants(params: {
+async function getAllStepApplicants({
+    announcementId,
+    clubId,
+}: {
     announcementId: string;
     clubId: string;
 }): Promise<StepApplicant[]> {
-    const { announcementId, clubId } = params;
     return await httpRequest.get({
         url: `announcements/${announcementId}/applications`,
         headers: {
