@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-  @Value("${CLIENT_URL}/")
+  @Value("${CLIENT_URL}")
   private String CLIENT_URL;
 
   @Value("${LOCAL_CLIENT_URL}")
