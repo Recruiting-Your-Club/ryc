@@ -1,6 +1,7 @@
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import Trash from '@ssoc/assets/images/trash.svg';
 import { Button, Input, Radio } from '@ssoc/ui';
 import { Checkbox } from '@ssoc/ui';
 import { useToast } from '@ssoc/ui';
@@ -13,10 +14,11 @@ import {
     s_questionOptionContainer,
     s_questionOptionRow,
     s_removeOptionButton,
+    s_trashIcon,
 } from './QuestionForm.style';
 import type { QuestionFormProps } from './types';
 
-function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
+function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFormProps) {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
@@ -85,6 +87,16 @@ function QuestionForm({ question, updateQuestion }: QuestionFormProps) {
                     />
                     <div css={s_inputLength}>{question.title.length}/50</div>
                 </div>
+                {onRemoveQuestion && (
+                    <Button
+                        aria-label="질문 삭제"
+                        variant="transparent"
+                        size="lg"
+                        onClick={() => onRemoveQuestion(question.id)}
+                    >
+                        <Trash css={s_trashIcon} />
+                    </Button>
+                )}
                 <div css={s_questionContainer}>
                     <Input
                         placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"

@@ -24,4 +24,5 @@ export interface QuestionProps {
 export interface QuestionFormProps {
     question: QuestionProps;
     updateQuestion: (id: string, updates: Partial<QuestionProps>) => void;
+    onRemoveQuestion?: (id: string) => void;
 }

@@ -6,12 +6,7 @@ import Trash from '@ssoc/assets/images/trash.svg';
 import { Button } from '@ssoc/ui';
 import { useToast } from '@ssoc/ui';
 
-import {
-    s_buttonContainer,
-    s_buttonPosition,
-    s_questionContainer,
-    s_trashIcon,
-} from './PersonalStatementStep.style';
+import { s_buttonContainer, s_questionContainer } from './PersonalStatementStep.style';
 import type { PersonalStatementStepProps } from './types';
 
 function PersonalStatementStep({
@@ -43,15 +38,11 @@ function PersonalStatementStep({
             <div css={s_buttonContainer}>
                 {applicationQuestions.map((q) => (
                     <div key={q.id} css={s_questionContainer}>
-                        <Button
-                            variant="transparent"
-                            size="lg"
-                            onClick={() => removeApplicationQuestion(q.id)}
-                            sx={s_buttonPosition}
-                        >
-                            <Trash css={s_trashIcon} />
-                        </Button>
-                        <QuestionForm question={q} updateQuestion={updateApplicationQuestion} />
+                        <QuestionForm
+                            question={q}
+                            updateQuestion={updateApplicationQuestion}
+                            onRemoveQuestion={() => removeApplicationQuestion(q.id)}
+                        />
                     </div>
                 ))}
                 <Button size="full" variant="primary" onClick={handleAddApplicationQuestion}>

@@ -47,3 +47,11 @@ export const s_addOptionButton = css`
     border: 0.1rem solid ${theme.colors.gray[300]};
     height: 2.7rem;
 `;
+
+export const s_trashIcon = css`
+    width: 2rem;
+    height: 2rem;
+    path {
+        stroke-width: 1.5;
+    }
+`;
