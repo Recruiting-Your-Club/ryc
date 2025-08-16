@@ -6,7 +6,7 @@ import type {
 import type { StepApplicant } from '@api/domain/step/types';
 import { interviewQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
-import { ApplicantList, ComponentMover, InterviewTimeTable } from '@components';
+import { ApplicantList, ComponentMover, InterviewSlotDropdown } from '@components';
 import { interviewMutations } from '@hooks/mutations/interviewMutations';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
-import { Button, Dropdown, Tooltip } from '@ssoc/ui';
+import { Tooltip } from '@ssoc/ui';
 import { convertDate } from '@ssoc/utils';
 
 import {
@@ -24,11 +24,8 @@ import {
     s_applicantList,
     s_applicantSchedulePageContainer,
     s_arrowContainer,
-    s_buttonGroup,
     s_contentComponentWrapper,
     s_contentContainer,
-    s_dropdownContent,
-    s_selectionButton,
 } from './ApplicantSchedulePage.style';
 import type { SelectedLabel } from './types';
 
@@ -204,22 +201,13 @@ function ApplicantSchedulePage() {
                         titleMode="titleNode"
                         sx={s_applicantList}
                     >
-                        <Dropdown open={open} onOpenChange={setOpen}>
-                            <Dropdown.Trigger asChild>
-                                <Button variant="outlined" sx={s_selectionButton}>
-                                    {selectedInterviewLabel.label}
-                                </Button>
-                            </Dropdown.Trigger>
-                            <Dropdown.Content offsetX={11.7} offsetY={42} sx={s_dropdownContent}>
-                                <InterviewTimeTable
-                                    interviewSlots={interviewSlots}
-                                    selectedInterviewSlotId={selectedInterviewLabel.interviewSlotId}
-                                    onSelect={handleSelectLabel}
-                                    onOpenChange={setOpen}
-                                    listSx={s_buttonGroup}
-                                />
-                            </Dropdown.Content>
-                        </Dropdown>
+                        <InterviewSlotDropdown
+                            open={open}
+                            onOpenChange={setOpen}
+                            selectedInterviewLabel={selectedInterviewLabel}
+                            interviewSlots={interviewSlots}
+                            onSelectLabel={handleSelectLabel}
+                        />
                     </ApplicantList>
                 </div>
                 <div css={s_arrowContainer}>
@@ -252,24 +240,13 @@ function ApplicantSchedulePage() {
                         titleMode="titleNode"
                         sx={s_applicantList}
                     >
-                        <Dropdown open={standardOpen} onOpenChange={setStandardOpen}>
-                            <Dropdown.Trigger asChild>
-                                <Button variant="outlined" sx={s_selectionButton}>
-                                    {selectedStandardInterviewLabel.label}
-                                </Button>
-                            </Dropdown.Trigger>
-                            <Dropdown.Content offsetX={11.7} offsetY={42}>
-                                <InterviewTimeTable
-                                    interviewSlots={interviewSlots}
-                                    selectedInterviewSlotId={
-                                        selectedStandardInterviewLabel.interviewSlotId
-                                    }
-                                    onSelect={handleSelectStandardLabel}
-                                    onOpenChange={setStandardOpen}
-                                    listSx={s_buttonGroup}
-                                />
-                            </Dropdown.Content>
-                        </Dropdown>
+                        <InterviewSlotDropdown
+                            open={standardOpen}
+                            onOpenChange={setStandardOpen}
+                            selectedInterviewLabel={selectedStandardInterviewLabel}
+                            interviewSlots={interviewSlots}
+                            onSelectLabel={handleSelectStandardLabel}
+                        />
                     </ApplicantList>
                 </div>
                 <div css={s_arrowContainer}>

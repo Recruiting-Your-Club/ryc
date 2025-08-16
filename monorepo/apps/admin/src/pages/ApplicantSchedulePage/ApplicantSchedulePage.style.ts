@@ -51,19 +51,6 @@ export const s_timeTable = css`
     min-height: 20rem;
 `;
 
-export const s_buttonGroup = css`
-    height: 22rem;
-`;
-
-export const s_selectionButton = css`
-    border-color: ${theme.colors.gray[300]};
-    border-radius: 20px;
-    padding: 0 1.5rem;
-    width: 11.5rem;
-    height: 2.8rem;
-    ${theme.typography.captionRegular}
-`;
-
 export const s_applicantList = css`
     box-shadow: none;
     border: 1px solid ${theme.colors.gray[200]};
@@ -74,8 +61,4 @@ export const s_alertSvg = css`
     width: 2rem;
     height: 2rem;
     cursor: pointer;
-`;
-
-export const s_dropdownContent = css`
-    /* 추후 dropdown컴포넌트 리팩토링 버전 도입 후 구현 예정 */
 `;
