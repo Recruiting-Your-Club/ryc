@@ -21,13 +21,13 @@ import { convertDate } from '@ssoc/utils';
 import {
     s_alertSvg,
     s_alertSvgWrapper,
+    s_applicantList,
     s_applicantSchedulePageContainer,
     s_arrowContainer,
     s_buttonGroup,
     s_contentComponentWrapper,
     s_contentContainer,
     s_dropdownContent,
-    s_highlightedApplicantList,
     s_selectionButton,
 } from './ApplicantSchedulePage.style';
 import type { SelectedLabel } from './types';
@@ -202,6 +202,7 @@ function ApplicantSchedulePage() {
                         selectedApplicantId={selectedIntervieweeId}
                         onSelectApplicantId={setSelectedIntervieweeId}
                         titleMode="titleNode"
+                        sx={s_applicantList}
                     >
                         <Dropdown open={open} onOpenChange={setOpen}>
                             <Dropdown.Trigger asChild>
@@ -249,7 +250,7 @@ function ApplicantSchedulePage() {
                         selectedApplicantId={selectedStandardIntervieweeId}
                         onSelectApplicantId={setSelectedStandardIntervieweeId}
                         titleMode="titleNode"
-                        sx={s_highlightedApplicantList}
+                        sx={s_applicantList}
                     >
                         <Dropdown open={standardOpen} onOpenChange={setStandardOpen}>
                             <Dropdown.Trigger asChild>
@@ -299,6 +300,7 @@ function ApplicantSchedulePage() {
                         applicantList={toStepApplicants(unreservedApplicants.unreservedApplicants)}
                         selectedApplicantId={unreservedIntervieweeId}
                         onSelectApplicantId={setUnreservedIntervieweeId}
+                        sx={s_applicantList}
                     />
                 </div>
             </div>

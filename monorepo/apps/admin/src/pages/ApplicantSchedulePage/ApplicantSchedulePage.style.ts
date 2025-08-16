@@ -64,8 +64,9 @@ export const s_selectionButton = css`
     ${theme.typography.captionRegular}
 `;
 
-export const s_highlightedApplicantList = css`
-    box-shadow: 0px 0px 30px 0px rgba(${hexToRgb(theme.colors.default)}, 0.2);
+export const s_applicantList = css`
+    box-shadow: none;
+    border: 1px solid ${theme.colors.gray[200]};
 `;
 
 export const s_alertSvg = css`
