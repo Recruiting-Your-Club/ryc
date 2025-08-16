@@ -55,6 +55,15 @@ public class InterviewSlot {
     List<InterviewReservation> newInterviewReservations =
         new ArrayList<>(this.interviewReservations);
 
+    this.interviewReservations.stream()
+        .filter(r -> r.getApplicant().getId().equals(newReservation.getApplicant().getId()))
+        .findFirst()
+        .ifPresent(
+            existingReservation -> {
+              // 이미 예약된 지원자의 경우 예외 발생
+              throw new InterviewException(InterviewErrorCode.APPLICANT_ALREADY_RESERVED);
+            });
+
     if (maxNumberOfPeople == interviewReservations.size()) {
       if (allowOverMax) {
         maxCount++;

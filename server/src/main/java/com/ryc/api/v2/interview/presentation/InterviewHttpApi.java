@@ -5,7 +5,9 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,9 +18,11 @@ import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
 import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -97,11 +101,34 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
+  @PostMapping("/admin/clubs/{clubId}/announcements/{announcementId}/interview-slots")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 일정 생성 및 지원자에게 이메일 전송", description = "면접 일정을 생성하고, 지원자들에게 이메일을 발송합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER", "INTERVIEW_SLOT_PERIOD_INVALID"})
+  public ResponseEntity<List<InterviewSlotCreateResponse>> createInterviewSlots(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @PathVariable String clubId,
+      @PathVariable String announcementId,
+      @Valid @RequestBody InterviewSlotCreateRequest body) {
+    List<InterviewSlotCreateResponse> responses =
+        interviewService.createInterviewSlots(userDetail.getId(), clubId, announcementId, body);
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
+  }
+
   @PostMapping("interview-slots/{interview-slot-id}/reservations")
-  @Operation(summary = "지원자가 면접 예약", description = "지원자가 특정 면접 슬롯에 대해 면접을 예약합니다.")
+  @Operation(
+      summary = "지원자가 면접 예약",
+      description = "지원자가 특정 면접 슬롯에 대해 면접을 예약합니다.<br>성공적으로 예약되면, 해당 지원자에게 이메일을 발송합니다.")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, InterviewErrorCode.class},
-      include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "INTERVIEW_SLOT_FULL"})
+      include = {
+        "INVALID_PARAMETER",
+        "RESOURCE_NOT_FOUND",
+        "INTERVIEW_SLOT_FULL",
+        "APPLICANT_ALREADY_RESERVED"
+      })
   public ResponseEntity<InterviewReservationCreateResponse> reservationInterview(
       @PathVariable("interview-slot-id") String slotId,
       @Valid @RequestBody InterviewReservationRequest body) {
@@ -111,7 +138,7 @@ public class InterviewHttpApi {
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/api/v2/reservations/{reservation-id}")
-            .buildAndExpand(response.id())
+            .buildAndExpand(response.interviewReservationId())
             .toUri();
     return ResponseEntity.created(location).body(response);
   }
@@ -123,14 +150,8 @@ public class InterviewHttpApi {
       description =
           "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
-      value = {
-        PermissionErrorCode.class,
-        CommonErrorCode.class,
-      },
-      include = {
-        "FORBIDDEN_NOT_CLUB_MEMBER",
-        "RESOURCE_NOT_FOUND",
-      })
+      value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND", "APPLICANT_ALREADY_RESERVED"})
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
       @PathVariable("applicant-id") String applicantId,
       @Valid @RequestBody InterviewReservationUpdatedRequest body) {

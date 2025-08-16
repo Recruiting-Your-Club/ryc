@@ -10,15 +10,17 @@ public interface InterviewRepository {
    * @param interviewSlot 저장할 인터뷰 슬롯
    * interviewSlot의 List<InterviewReservation> 필드 또한 함께 저장됩니다.
    */
-  InterviewSlot saveInterviewSlot(InterviewSlot interviewSlot);
+  InterviewSlot saveSlot(InterviewSlot interviewSlot);
 
-  List<InterviewSlot> saveAllInterviewSlot(List<InterviewSlot> interviewSlots);
+  List<InterviewSlot> saveAllSlot(List<InterviewSlot> interviewSlots);
 
-  List<InterviewSlot> findInterviewSlotsByAnnouncementId(String announcementId);
+  List<InterviewSlot> findSlotsByAnnouncementId(String announcementId);
 
-  InterviewSlot findInterviewSlotById(String interviewSlotId);
+  InterviewSlot findSlotById(String interviewSlotId);
 
-  InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId);
+  InterviewSlot findSlotByIdForUpdate(String interviewSlotId);
 
-  Optional<InterviewSlot> findInterviewSlotByApplicantIdForUpdate(String applicantId);
+  Optional<InterviewSlot> findSlotByApplicantIdForUpdate(String applicantId);
+
+  Boolean isReservedByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
 }

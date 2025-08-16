@@ -1,15 +1,15 @@
-package com.ryc.api.v2.email.presentation.dto.request;
+package com.ryc.api.v2.interview.presentation.dto.request;
 
 import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import com.ryc.api.v2.interview.presentation.dto.request.NumberOfPeopleByInterviewDateRequest;
+import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record InterviewEmailSendRequest(
+public record InterviewSlotCreateRequest(
     @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.")
         List<
                 @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.") @Valid
