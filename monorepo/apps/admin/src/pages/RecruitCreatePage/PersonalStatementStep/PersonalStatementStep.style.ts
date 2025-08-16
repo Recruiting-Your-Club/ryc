@@ -26,4 +26,7 @@ export const s_buttonPosition = css`
 export const s_trashIcon = css`
     width: 2rem;
     height: 2rem;
+    path {
+        stroke-width: 1.5;
+    }
 `;
