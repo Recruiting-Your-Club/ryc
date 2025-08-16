@@ -33,6 +33,7 @@ import {
 } from './ApplicantDialog.style';
 import type { ApplicantDialogProps } from './types';
 import type { QuestionAnswer } from '@api/domain/applicant/types';
+import { EVALUATION_FIRST_PAGE, EVALUATION_SECOND_PAGE } from '@constants/applicantDialog';
 
 function ApplicantDialog({
     open,
@@ -63,13 +64,13 @@ function ApplicantDialog({
     function getInitialIndex() {
         switch (true) {
             case applicant.status.startsWith('DOCUMENT'):
-                return 0;
+                return EVALUATION_FIRST_PAGE;
             case applicant.status.startsWith('INTERVIEW'):
-                return 1;
+                return EVALUATION_SECOND_PAGE;
             case applicant.status.startsWith('FINAL'):
-                return isThreeStepProcess ? 1 : 0;
+                return isThreeStepProcess ? EVALUATION_SECOND_PAGE : EVALUATION_FIRST_PAGE;
             default:
-                return 0;
+                return EVALUATION_FIRST_PAGE;
         }
     }
 
