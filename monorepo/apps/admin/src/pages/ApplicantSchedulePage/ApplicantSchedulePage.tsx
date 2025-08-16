@@ -184,14 +184,14 @@ function ApplicantSchedulePage() {
 
     return (
         <div css={s_applicantSchedulePageContainer}>
-            <div css={s_alertSvgWrapper}>
+            <span css={s_alertSvgWrapper}>
                 <Tooltip
                     content="카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!"
                     direction="right"
                 >
                     <Alert css={s_alertSvg} />
                 </Tooltip>
-            </div>
+            </span>
             <div css={s_contentContainer}>
                 <div css={s_contentComponentWrapper}>
                     <ApplicantList
