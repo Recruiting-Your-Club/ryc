@@ -61,7 +61,12 @@ function ClubApplyPersonalInfoPage({
                                         ...prev,
                                         [question.id]: newFiles,
                                     }));
-                                    await onFileUpload(question.id, question.label, newFiles);
+                                    await onFileUpload(
+                                        question.id,
+                                        question.label,
+                                        question.type,
+                                        newFiles,
+                                    );
                                 }}
                                 maxFileCount={1}
                                 disabled={isFileUploading}
@@ -96,7 +101,12 @@ function ClubApplyPersonalInfoPage({
                                     }));
 
                                     // 파일 업로드 처리 (File[] -> uploadFiles가 File | File[] 처리)
-                                    await onFileUpload(question.id, question.label, newFiles);
+                                    await onFileUpload(
+                                        question.id,
+                                        question.label,
+                                        question.type,
+                                        newFiles,
+                                    );
                                 }}
                                 maxFileCount={20}
                                 disabled={isFileUploading}

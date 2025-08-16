@@ -47,22 +47,32 @@ export const useFileUpload = ({ baseUrl, requireAuth = false }: UseFileUploadPro
     });
 
     // 단일 파일 업로드 프로세스 (내부 사용)
-    const uploadSingleFile = async (file: File): Promise<string> => {
+    const uploadSingleFile = async (file: File, questionType: string): Promise<string> => {
         try {
-            // 1단계: presigned URL 받기
+            let fileType = '';
+            switch (questionType) {
+                case 'FILE':
+                    fileType = 'ANSWER_ATTACHMENT';
+                    break;
+                case 'PROFILE_IMAGE':
+                    fileType = 'APPLICATION_PROFILE';
+                    break;
+            }
+
+            // 1. presigned URL 받기
             const fileMetadata: FileMetadata = {
                 fileName: file.name,
-                fileType: file.type,
+                fileType: fileType,
                 contentType: file.type,
             };
 
             const { fileMetadataId, presignedUrl } =
                 await getPresignedUrlMutation.mutateAsync(fileMetadata);
 
-            // 2단계: S3에 업로드
+            // 2. S3에 업로드
             await uploadToS3Mutation.mutateAsync({ file, presignedUrl });
 
-            // 3단계: 업로드 완료 확인
+            // 3. 업로드 완료 확인
             await confirmUploadMutation.mutateAsync(fileMetadataId);
 
             return fileMetadataId;
@@ -73,7 +83,7 @@ export const useFileUpload = ({ baseUrl, requireAuth = false }: UseFileUploadPro
     };
 
     // 파일 업로드 프로세스 (단일/여러 파일 모두 지원)
-    const uploadFiles = async (files: File | File[]): Promise<string[]> => {
+    const uploadFiles = async (files: File | File[], questionType: string): Promise<string[]> => {
         try {
             // File 또는 File[] 처리
             const fileArray = Array.isArray(files) ? files : [files];
@@ -83,7 +93,7 @@ export const useFileUpload = ({ baseUrl, requireAuth = false }: UseFileUploadPro
             }
 
             const uploadPromises = fileArray.map(async (file) => {
-                return await uploadSingleFile(file);
+                return await uploadSingleFile(file, questionType);
             });
 
             // 모든 파일을 병렬로 업로드

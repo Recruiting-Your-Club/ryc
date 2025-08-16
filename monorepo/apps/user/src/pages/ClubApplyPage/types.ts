@@ -37,7 +37,12 @@ export interface ClubApplyPersonalInfoPageProps {
         value: string,
         optionText?: string,
     ) => void;
-    onFileUpload: (questionId: string, questionTitle: string, files: File[]) => Promise<void>;
+    onFileUpload: (
+        questionId: string,
+        questionTitle: string,
+        questionType: string,
+        files: File[],
+    ) => Promise<void>;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
