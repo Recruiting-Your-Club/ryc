@@ -15,3 +15,4 @@ export * from './SideBar';
 export * from './ComponentMover';
 export * from './ApplicantList';
 export * from './ApplicantMiniCard';
+export * from './InterviewSlotDropdown';
