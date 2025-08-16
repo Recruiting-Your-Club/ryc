@@ -9,11 +9,14 @@ import { useToast } from '@ssoc/ui';
 import {
     s_addOptionButton,
     s_applicationQuestion,
+    s_firstRow,
     s_inputLength,
+    s_questionArea,
     s_questionContainer,
     s_questionOptionContainer,
     s_questionOptionRow,
     s_removeOptionButton,
+    s_trashButton,
     s_trashIcon,
 } from './QuestionForm.style';
 import type { QuestionFormProps } from './types';
@@ -78,25 +81,28 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     if (question.type === 'long') {
         return (
             <div css={s_applicationQuestion}>
-                <div css={s_questionContainer}>
-                    <Input
-                        placeholder="질문을 입력하세요"
-                        value={question.title}
-                        onChange={handleChange}
-                        maxLength={50}
-                    />
-                    <div css={s_inputLength}>{question.title.length}/50</div>
+                <div css={s_firstRow}>
+                    <div css={s_questionArea}>
+                        <Input
+                            placeholder="질문을 입력하세요"
+                            value={question.title}
+                            onChange={handleChange}
+                            maxLength={50}
+                        />
+                        <div css={s_inputLength}>{question.title.length}/50</div>
+                    </div>
+                    {onRemoveQuestion && (
+                        <Button
+                            aria-label="질문 삭제"
+                            variant="transparent"
+                            size="lg"
+                            onClick={() => onRemoveQuestion(question.id)}
+                            sx={s_trashButton}
+                        >
+                            <Trash css={s_trashIcon} />
+                        </Button>
+                    )}
                 </div>
-                {onRemoveQuestion && (
-                    <Button
-                        aria-label="질문 삭제"
-                        variant="transparent"
-                        size="lg"
-                        onClick={() => onRemoveQuestion(question.id)}
-                    >
-                        <Trash css={s_trashIcon} />
-                    </Button>
-                )}
                 <div css={s_questionContainer}>
                     <Input
                         placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"

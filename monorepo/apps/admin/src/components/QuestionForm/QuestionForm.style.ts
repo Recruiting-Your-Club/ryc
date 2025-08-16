@@ -20,6 +20,19 @@ export const s_questionContainer = css`
     position: relative;
 `;
 
+export const s_questionArea = css`
+    flex: 0 0 95%;
+    min-width: 0;
+    padding-right: 2rem;
+    border-right: 1px solid ${theme.colors.gray[400]};
+    position: relative;
+`;
+
+export const s_firstRow = css`
+    display: flex;
+    align-items: center;
+`;
+
 export const s_questionOptionContainer = css`
     margin-top: 2rem;
 `;
@@ -54,4 +67,8 @@ export const s_trashIcon = css`
     path {
         stroke-width: 1.5;
     }
+`;
+
+export const s_trashButton = css`
+    margin-left: auto;
 `;
