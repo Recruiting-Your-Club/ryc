@@ -41,7 +41,7 @@ function EvaluationBox({
     };
 
     // state, ref, querystring hooks
-    const [formState, setFormState] = useState(defaultState); // applicantId별로 상태 관리
+    const [formStates, setFormStates] = useState<Record<string, typeof defaultState>>({});
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
     // form hooks
@@ -49,9 +49,15 @@ function EvaluationBox({
     // calculated values
     const myComment = evaluation.evaluationDetails.find((comment) => comment.isMyEvaluation);
 
+    const formState = formStates[selectedApplicantId ?? ''] ?? defaultState;
+
     // handlers
     const handleFormState = (partial: Partial<typeof defaultState>) => {
-        setFormState((prev) => ({ ...prev, ...partial }));
+        if (!selectedApplicantId) return;
+        setFormStates((prev) => ({
+            ...prev,
+            [selectedApplicantId]: { ...formState, ...partial },
+        }));
     };
 
     const handlePost = () => {
@@ -69,7 +75,7 @@ function EvaluationBox({
 
         // 초기화
         if (formState.commentIdForEdit === myComment.evaluationId) {
-            setFormState(defaultState);
+            handleFormState(defaultState);
         }
     };
 
