@@ -38,6 +38,7 @@ export const s_dropdownTrigger = css`
 const baseContent = css`
     z-index: 50;
     min-width: 8rem;
+    isolation: isolate; // stacking context 분리
 
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 0.6rem;
@@ -71,18 +72,17 @@ export const s_dropdownContent = (
             ? css`
                   top: calc(100% + 0.4rem);
                   left: 50%;
-                  transform: translateX(-50%) translateY(${y});
+                  transform: translateX(calc(-50% + ${x})) translateY(${y});
               `
             : css`
                   top: 50%;
                   left: calc(100% + 0.4rem);
-                  transform: translateY(-50%) translateX(${x});
+                  transform: translateY(calc(-50% + ${y})) translateX(${x});
               `;
-
     return css`
         ${baseContent}
         position: absolute;
-        ${positionStyles}
+        //${positionStyles}
         opacity: 0;
         pointer-events: none;
         visibility: hidden;

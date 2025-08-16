@@ -1,4 +1,4 @@
-import backgroundImage from '@assets/images/background.png';
+import backgroundImage from '@assets/images/background.webp';
 import { css, keyframes } from '@emotion/react';
 
 import theme from '@ssoc/styles';

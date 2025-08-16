@@ -26,6 +26,7 @@ export const recruitCardHeader = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     padding: 1rem;
     gap: 1rem;
 `;
@@ -41,6 +42,7 @@ export const recruitCardBody = css`
     display: flex;
     flex-wrap: wrap;
     flex: 1;
+    width: 100%;
     padding: 1rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -50,5 +52,6 @@ export const recruitCardFooter = css`
     display: flex;
     width: 23rem;
     padding: 1rem;
+    width: 100%;
     gap: 0.5rem;
 `;

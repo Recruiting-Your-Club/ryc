@@ -12,24 +12,11 @@ function Header() {
         <header css={headerBarContainer}>
             <div css={homeNavContainer}>
                 <Link to="/">
-                    <Text as="h1" type="h4Light" color="caption">
-                        <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
-                            R
-                        </Text.HighLight>
-                        ecruiting
-                    </Text>
-                    <Text as="h1" type="h4Light" color="caption" textAlign="start">
-                        <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
-                            Y
-                        </Text.HighLight>
-                        our
-                        <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
-                            C
-                        </Text.HighLight>
-                        lub
+                    <Text as="h1" type="h1Bold" color="black">
+                        SSOC
                     </Text>
                 </Link>
-                <nav css={navContainer}>
+                {/* <nav css={navContainer}>
                     <Input
                         variant="transparent"
                         startNode={
@@ -46,7 +33,7 @@ function Header() {
                         }}
                         placeholder="동아리명 검색 또는 키워드 입력"
                     />
-                </nav>
+                </nav> */}
             </div>
         </header>
     );
