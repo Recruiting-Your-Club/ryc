@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient();
 dayjs.locale('ko'); // dayjs를 한국기준으로 설정
 
-const Channeltalk = () => {
+const Channeltalk = async () => {
     ChannelService.loadScript();
     ChannelService.boot({
         pluginKey: `${process.env.CHANNEL_PLUGIN_KEY}`,
@@ -32,7 +32,7 @@ async function initializeApp() {
     if (process.env.API_MOCKING === 'enabled') {
         await browserServer.start();
     }
-    Channeltalk();
+    await Channeltalk();
     root.render(
         <React.StrictMode>
             <Global styles={globalStyles} />
