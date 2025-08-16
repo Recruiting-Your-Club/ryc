@@ -62,66 +62,79 @@ const evaluationHandler = [
     }),
 
     http.put(`${BASE_URL}evaluation/:evaluationId`, async ({ request, params }) => {
-        const { evaluationId, type } = params as {
+        const { evaluationId } = params as {
             evaluationId: string;
-            type: 'application' | 'interview';
         };
         const { score, comment } = (await request.json()) as { score: number; comment: string };
 
-        const evaluationDetail =
-            type === 'application' ? applicationEvaluationDetail : interviewEvaluationDetail;
+        const sources = [applicationEvaluationDetail, interviewEvaluationDetail];
 
-        const entries = Object.entries(evaluationDetail.evaluationsOfApplicants);
-        let found = false;
+        let foundDetail: typeof applicationEvaluationDetail | null = null;
+        let applicantEvaluation:
+            | (typeof applicationEvaluationDetail.evaluationsOfApplicants)[number]
+            | undefined;
 
-        for (const [applicationId, evaluationDataWithSummary] of entries) {
-            const targetEvaluation = evaluationDataWithSummary.evaluationDetails.find(
-                (e) => e.evaluationId === evaluationId,
+        for (const source of sources) {
+            applicantEvaluation = source.evaluationsOfApplicants.find((applicant) =>
+                applicant.evaluationDetails.some(
+                    (evaluation) => evaluation.evaluationId === evaluationId,
+                ),
             );
-
-            if (targetEvaluation) {
-                targetEvaluation.score = score;
-                targetEvaluation.comment = comment;
-                found = true;
+            if (applicantEvaluation) {
+                foundDetail = source;
                 break;
             }
         }
 
-        if (!found) {
+        if (!foundDetail || !applicantEvaluation) {
             return HttpResponse.json({ message: '자원을 찾을 수 없습니다.' }, { status: 404 });
         }
 
-        return HttpResponse.json(evaluationDetail, { status: 200 });
+        const targetEvaluation = applicantEvaluation.evaluationDetails.find(
+            (evaluation) => evaluation.evaluationId === evaluationId,
+        );
+
+        if (targetEvaluation) {
+            targetEvaluation.score = score;
+            targetEvaluation.comment = comment;
+        }
+
+        return HttpResponse.json(foundDetail, { status: 200 });
     }),
 
     http.delete(`${BASE_URL}evaluation/:evaluationId`, async ({ params }) => {
-        const { evaluationId, type } = params as {
+        const { evaluationId } = params as {
             evaluationId: string;
-            type: 'application' | 'interview';
         };
 
-        const evaluationDetail =
-            type === 'application' ? applicationEvaluationDetail : interviewEvaluationDetail;
+        const sources = [applicationEvaluationDetail, interviewEvaluationDetail];
 
-        const evaluationEntry = Object.entries(evaluationDetail.evaluationsOfApplicants).find(
-            ([_, evalautionDataWithSummary]) =>
-                evalautionDataWithSummary.evaluationDetails.some(
-                    (evaluationdata) => evaluationdata.evaluationId === evaluationId,
+        let foundDetail: typeof applicationEvaluationDetail | null = null;
+        let applicantEvaluation:
+            | (typeof applicationEvaluationDetail.evaluationsOfApplicants)[number]
+            | undefined;
+
+        for (const source of sources) {
+            applicantEvaluation = source.evaluationsOfApplicants.find((applicant) =>
+                applicant.evaluationDetails.some(
+                    (evaluation) => evaluation.evaluationId === evaluationId,
                 ),
-        );
+            );
+            if (applicantEvaluation) {
+                foundDetail = source;
+                break;
+            }
+        }
 
-        if (!evaluationEntry) {
+        if (!foundDetail || !applicantEvaluation) {
             return HttpResponse.json({ status: 404 });
         }
 
-        const [applicantId, evaluationDataWithSummary] = evaluationEntry;
+        applicantEvaluation.evaluationDetails = applicantEvaluation.evaluationDetails.filter(
+            (evaluation) => evaluation.evaluationId !== evaluationId,
+        );
 
-        evaluationDataWithSummary.evaluationDetails =
-            evaluationDataWithSummary.evaluationDetails.filter(
-                (evaluationDetail) => evaluationDetail.evaluationId !== evaluationId,
-            );
-
-        return HttpResponse.json(evaluationDetail, { status: 200 });
+        return HttpResponse.json(foundDetail, { status: 200 });
     }),
 
     http.post(`${BASE_URL}evaluation/:type`, async ({ request, params }) => {
@@ -135,12 +148,11 @@ const evaluationHandler = [
         const evaluationDetail =
             type === 'application' ? applicationEvaluationDetail : interviewEvaluationDetail;
 
-        const [id, evaluationDataWithSummary] =
-            Object.entries(evaluationDetail.evaluationsOfApplicants).find(
-                ([id]) => id === applicantId,
-            ) || [];
+        const applicantEvaluation = evaluationDetail.evaluationsOfApplicants.find(
+            (item) => item.applicantId === applicantId,
+        );
 
-        if (!evaluationDataWithSummary) {
+        if (!applicantEvaluation) {
             return HttpResponse.json({ status: 404 });
         }
 
@@ -148,21 +160,20 @@ const evaluationHandler = [
             evaluationId: `eval-${Date.now()}`,
             evaluatorId: 'mock-evaluator',
             evaluatorName: '정지훈',
+            evaluatorThumbnailUrl: '',
+            isEvaluatorImagePresent: false,
             score,
             comment,
             evaluationType: type === 'application' ? 'APPLICATION' : 'INTERVIEW',
             isMyEvaluation: true,
         };
 
-        (evaluationDataWithSummary.evaluationDetails as EvaluationDetail[]).push(
-            newEvaluation as EvaluationDetail,
-        );
+        applicantEvaluation.evaluationDetails.push(newEvaluation);
 
         return HttpResponse.json(evaluationDetail, { status: 201 });
     }),
 
-    http.post(`${BASE_URL}evaluation/:type/my-status`, async ({ request, params }) => {
-        const { type } = params as { type: 'applications' | 'interviews' };
+    http.post(`${BASE_URL}evaluation/:type/my-status`, async ({ request }) => {
         const { applicantIdList } = (await request.json()) as { applicantIdList: string[] };
 
         const filtered: MyEvaluationStatus = {

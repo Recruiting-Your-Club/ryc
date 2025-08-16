@@ -3,7 +3,7 @@ import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { stepQueries } from '@api/queryFactory/stepQueries';
 import { ApplicantList, EvaluationBox, InformationBox } from '@components';
-import { evaluationMutations } from '@hooks/mutations/evaluationMutations';
+import { useEvaluation } from '@hooks/components';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
@@ -66,12 +66,10 @@ function DocumentEvaluationPage() {
             ].includes(selectedApplicant.status),
     });
 
-    const { mutate: postApplicationComment } = evaluationMutations.usePostPersonalEvaluation();
-    const { mutate: updateComment } = evaluationMutations.usePutEvaluation(
+    const { handlePostComment, handleUpdateComment, handleDeleteComment } = useEvaluation(
+        'application',
         selectedApplicant?.applicantId ?? '',
-    );
-    const { mutate: deleteComment } = evaluationMutations.useDeleteEvaluation(
-        selectedApplicant?.applicantId ?? '',
+        getEvaluationActionCallbacks,
     );
 
     // calculated values
@@ -85,37 +83,6 @@ function DocumentEvaluationPage() {
         }
     };
 
-    const handlePostComment = (
-        applicantId: string,
-        score: number,
-        comment: string,
-        clubId: string,
-    ) => {
-        postApplicationComment(
-            { applicantId, score, comment, clubId, type: 'application' },
-            getEvaluationActionCallbacks('등록'),
-        );
-    };
-
-    const handleUpdateComment = (
-        evaluationId: string,
-        score: number,
-        comment: string,
-        clubId: string,
-    ) => {
-        updateComment(
-            { evaluationId, score, comment, clubId, type: 'application' },
-            getEvaluationActionCallbacks('수정'),
-        );
-    };
-
-    const handleDeleteComment = (evaluationId: string, clubId: string) => {
-        deleteComment(
-            { evaluationId, clubId, type: 'application' },
-            getEvaluationActionCallbacks('삭제'),
-        );
-    };
-
     // effects
     useEffect(() => {
         if (selectedApplicant === null && stepApplicantList.length > 0)
@@ -123,7 +90,7 @@ function DocumentEvaluationPage() {
     }, [stepApplicantList, selectedApplicant]);
 
     // etc
-    const getEvaluationActionCallbacks = (status: string) => {
+    function getEvaluationActionCallbacks(status: string) {
         return {
             onSuccess: () => {
                 toast(`작성하신 평가가 ${status}되었어요!`, {
@@ -138,7 +105,7 @@ function DocumentEvaluationPage() {
                 });
             },
         };
-    };
+    }
 
     return (
         <div css={documentEvaluationPageContainer}>

@@ -6,7 +6,7 @@ import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
-import { evaluationMutations } from '@hooks/mutations';
+import { useEvaluation } from '@hooks/components';
 import {
     ANNOUNCEMENT_ID,
     CLUB_ID,
@@ -71,12 +71,10 @@ function InterviewEvaluationPage() {
             ].includes(selectedApplicant.status),
     });
 
-    const { mutate: postInterviewComment } = evaluationMutations.usePostPersonalEvaluation();
-    const { mutate: updateComment } = evaluationMutations.usePutEvaluation(
+    const { handlePostComment, handleUpdateComment, handleDeleteComment } = useEvaluation(
+        'interview',
         selectedApplicant?.applicantId ?? '',
-    );
-    const { mutate: deleteComment } = evaluationMutations.useDeleteEvaluation(
-        selectedApplicant?.applicantId ?? '',
+        getEvaluationActionCallbacks,
     );
 
     // calculated values
@@ -119,37 +117,6 @@ function InterviewEvaluationPage() {
         }
     };
 
-    const handlePostComment = (
-        applicantId: string,
-        score: number,
-        comment: string,
-        clubId: string,
-    ) => {
-        postInterviewComment(
-            { applicantId, score, comment, clubId, type: 'interview' },
-            getEvaluationActionCallbacks('등록'),
-        );
-    };
-
-    const handleUpdateComment = (
-        evaluationId: string,
-        score: number,
-        comment: string,
-        clubId: string,
-    ) => {
-        updateComment(
-            { evaluationId, score, comment, clubId, type: 'interview' },
-            getEvaluationActionCallbacks('수정'),
-        );
-    };
-
-    const handleDeleteComment = (evaluationId: string, clubId: string) => {
-        deleteComment(
-            { evaluationId, clubId, type: 'interview' },
-            getEvaluationActionCallbacks('삭제'),
-        );
-    };
-
     // effects
     useEffect(() => {
         if (slotId === null && interviewSlots.length > 0) {
@@ -158,7 +125,7 @@ function InterviewEvaluationPage() {
     }, [interviewSlots]);
 
     // etc
-    const getEvaluationActionCallbacks = (status: string) => {
+    function getEvaluationActionCallbacks(status: string) {
         return {
             onSuccess: () => {
                 toast(`작성하신 평가가 ${status}되었어요!`, {
@@ -173,7 +140,7 @@ function InterviewEvaluationPage() {
                 });
             },
         };
-    };
+    }
 
     const toStepApplicants = (
         interviewees: ApplicantReservedInterview[] | ApplicantForInterviewSlot[],
@@ -212,7 +179,7 @@ function InterviewEvaluationPage() {
                     <EvaluationBox
                         selectedApplicantId={selectedApplicant?.applicantId ?? null}
                         evaluation={
-                            (interviewEvaluationDetail?.evaluationsOfApplicants ?? []).find(
+                            interviewEvaluationDetail?.evaluationsOfApplicants?.find(
                                 (evaluation) =>
                                     evaluation.applicantId ===
                                     (selectedApplicant?.applicantId ?? ''),
