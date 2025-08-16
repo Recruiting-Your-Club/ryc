@@ -11,6 +11,8 @@ import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
 import {
+    s_dialogContent,
+    s_dialogHeader,
     s_prohibitDragArea,
     s_recruitCreatePageContainer,
     s_stepButtonContainer,
@@ -223,14 +225,16 @@ function RecruitCreatePage() {
                             setIsDialogOpen(false);
                         }}
                     >
-                        <Dialog.Header closeIcon handleClose={() => setIsDialogOpen(false)}>
-                            모집 공고 제출 확인
-                        </Dialog.Header>
-                        <Dialog.Content>
-                            정말 모집 공고를 제출하시겠습니까? 모집이 시작된 후 수정이 불가능합니다.
+                        <Dialog.Header sx={s_dialogHeader}>제출 확인</Dialog.Header>
+                        <Dialog.Content sx={s_dialogContent}>
+                            <p>정말 모집 공고를 제출하시겠습니까?</p>
+                            <p>모집이 시작된 후 수정이 불가능합니다.</p>
                         </Dialog.Content>
-                        <Dialog.Action border position="end">
-                            <Button onClick={handleConfirmSubmit}>공고 생성</Button>
+                        <Dialog.Action position="end">
+                            <Button onClick={handleConfirmSubmit}>확인</Button>
+                            <Button onClick={() => setIsDialogOpen(false)} variant="outlined">
+                                취소
+                            </Button>
                         </Dialog.Action>
                     </Dialog>
                 </div>

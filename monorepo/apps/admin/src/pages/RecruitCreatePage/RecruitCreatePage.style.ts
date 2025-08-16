@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 
+import theme from '@ssoc/styles';
+
 export const s_stepButtonContainer = css`
     display: flex;
     margin-top: 5rem;
@@ -31,4 +33,13 @@ export const s_prohibitDragArea = css`
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+`;
+
+export const s_dialogContent = css`
+    align-items: center;
+    justify-content: center;
+`;
+
+export const s_dialogHeader = css`
+    ${theme.typography.bodySemibold}
 `;
