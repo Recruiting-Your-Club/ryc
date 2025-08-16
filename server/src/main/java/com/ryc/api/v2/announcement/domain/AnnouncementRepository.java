@@ -30,4 +30,6 @@ public interface AnnouncementRepository {
   List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds);
 
   boolean imageAllowed(String announcementId);
+
+  String findClubNameByAnnouncementId(String announcementId);
 }

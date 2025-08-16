@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.service;
+package com.ryc.api.v2.email.service.event;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 import lombok.Builder;
 
 @Builder
-public record InterviewEmailEvent(
+public record InterviewSlotEmailEvent(
     List<Applicant> applicants,
     String subject,
     String content,

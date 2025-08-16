@@ -46,7 +46,8 @@ public class EmailHttpApi {
       @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     List<EmailSendResponse> responses =
-        emailService.createEmails(userDetail.getId(), announcementId, body);
+        emailService.createEmails(
+            userDetail.getId(), announcementId, body.recipients(), body.subject(), body.content());
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 }

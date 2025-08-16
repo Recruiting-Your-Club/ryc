@@ -9,15 +9,15 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
-import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
-import com.ryc.api.v2.common.exception.custom.InterviewException;
-import com.ryc.api.v2.email.service.InterviewEmailEvent;
+import com.ryc.api.v2.email.service.event.InterviewReservationEmailEvent;
+import com.ryc.api.v2.email.service.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
@@ -37,6 +37,7 @@ public class InterviewService {
   private final InterviewRepository interviewRepository;
   private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
+  private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
   private final ApplicationEventPublisher publisher;
 
@@ -82,6 +83,7 @@ public class InterviewService {
         .clubCategory(club.getCategory().toString())
         .slotByDateResponses(slotResponses)
         .representativeImage(representativeImage)
+        .applicantId(applicant.getId())
         .applicantEmail(applicant.getEmail())
         .applicantName(applicant.getName())
         .isReserved(isReserved)
@@ -164,7 +166,7 @@ public class InterviewService {
     List<Applicant> applicants =
         applicantRepository.findByEmails(request.emailSendRequest().recipients());
     publisher.publishEvent(
-        InterviewEmailEvent.builder()
+        InterviewSlotEmailEvent.builder()
             .applicants(applicants)
             .subject(request.emailSendRequest().subject())
             .content(request.emailSendRequest().content())
@@ -192,14 +194,25 @@ public class InterviewService {
     // 새로운 예약 정보를 저장합니다.
     InterviewSlot updatedInterviewSlot = interviewSlot.addInterviewReservations(reservation, false);
     InterviewSlot savedInterviewSlot = interviewRepository.saveSlot(updatedInterviewSlot);
+    InterviewReservation savedReservation =
+        savedInterviewSlot.getInterviewReservations().stream()
+            .filter(r -> r.getApplicant().getId().equals(applicant.getId()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("예약 정보가 없습니다. 서버 오류일 수 있습니다."));
 
-    for (InterviewReservation r : savedInterviewSlot.getInterviewReservations()) {
-      if (r.getApplicant().getId().equals(applicant.getId())) {
-        return new InterviewReservationCreateResponse(r.getId());
-      }
-    }
+    // 이메일 이벤트를 발행
+    String clubName =
+        announcementRepository.findClubNameByAnnouncementId(savedInterviewSlot.getAnnouncementId());
+    publisher.publishEvent(
+        InterviewReservationEmailEvent.builder()
+            .clubName(clubName)
+            .applicantEmail(savedReservation.getApplicant().getEmail())
+            .applicantName(savedReservation.getApplicant().getName())
+            .announcementId(savedInterviewSlot.getAnnouncementId())
+            .period(savedInterviewSlot.getPeriod())
+            .build());
 
-    throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
+    return new InterviewReservationCreateResponse(savedReservation.getId());
   }
 
   @Transactional

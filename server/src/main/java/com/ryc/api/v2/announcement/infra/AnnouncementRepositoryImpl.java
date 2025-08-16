@@ -108,4 +108,13 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
         .getPersonalInfoQuestions()
         .contains(PersonalInfoQuestionType.PROFILE_IMAGE);
   }
+
+  @Override
+  public String findClubNameByAnnouncementId(String announcementId) {
+    return announcementJpaRepository
+        .findClubNameByAnnouncementId(announcementId)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException("Club not found for announcementId: " + announcementId));
+  }
 }
