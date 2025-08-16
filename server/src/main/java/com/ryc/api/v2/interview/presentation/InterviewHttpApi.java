@@ -138,7 +138,7 @@ public class InterviewHttpApi {
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/api/v2/reservations/{reservation-id}")
-            .buildAndExpand(response.id())
+            .buildAndExpand(response.interviewReservationId())
             .toUri();
     return ResponseEntity.created(location).body(response);
   }
