@@ -12,6 +12,7 @@ import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
 import { Button, Dropdown, Tooltip } from '@ssoc/ui';
@@ -31,13 +32,11 @@ import {
 } from './ApplicantSchedulePage.style';
 import type { SelectedLabel } from './types';
 
-export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
-export const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
-
 function ApplicantSchedulePage() {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+    const { clubId, announcementId } = useParams();
 
     // initial values
     // state, ref, querystring hooks
@@ -61,21 +60,23 @@ function ApplicantSchedulePage() {
     // form hooks
     // query hooks
     const { data: interviewSlots = [] } = useSuspenseQuery(
-        interviewQueries.interviewSlot(ANNOUNCEMENT_ID, CLUB_ID),
+        interviewQueries.interviewSlot(announcementId!, clubId!),
     );
     const { data: slot0Applicants } = useQuery({
-        ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slot0Id ?? '', CLUB_ID),
+        ...interviewQueries.interviewInformation(announcementId!, slot0Id ?? '', clubId!),
         enabled: !!slot0Id && slot0Id !== '',
     });
     const { data: slot1Applicants } = useQuery({
-        ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slot1Id ?? '', CLUB_ID),
+        ...interviewQueries.interviewInformation(announcementId!, slot1Id ?? '', clubId!),
         enabled: !!slot1Id && slot1Id !== '',
     });
     const { data: unreservedApplicants } = useSuspenseQuery(
-        interviewQueries.unreservedApplicant(ANNOUNCEMENT_ID, CLUB_ID),
+        interviewQueries.unreservedApplicant(announcementId!, clubId!),
     );
 
-    const { mutate: updateIntervieweeList } = interviewMutations.useUpdateInterviewReservation();
+    const { mutate: updateIntervieweeList } = interviewMutations.useUpdateInterviewReservation(
+        announcementId!,
+    );
 
     // calculated values
     const standardInterviewees = slot0Applicants?.interviewReservations ?? [];
@@ -135,7 +136,7 @@ function ApplicantSchedulePage() {
         updateIntervieweeList({
             applicantId: reserved.applicantId,
             interviewSlotId: targetSlotId,
-            clubId: CLUB_ID,
+            clubId: clubId!,
             oldInterviewSlotId: currentSlotId,
         });
 
