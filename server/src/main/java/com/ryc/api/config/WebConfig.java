@@ -11,6 +11,9 @@ public class WebConfig implements WebMvcConfigurer {
   @Value("${CLIENT_URL}")
   private String CLIENT_URL;
 
+  @Value("${ADMIN_CLIENT_URL}")
+  private String ADMIN_CLIENT_URL;
+
   @Value("${LOCAL_CLIENT_URL}")
   private String LOCAL_CLIENT_URL;
 
@@ -27,6 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
         .allowedOrigins(
             CLIENT_URL,
             CLIENT_URL + "/",
+            ADMIN_CLIENT_URL,
+            ADMIN_CLIENT_URL + "/",
             LOCAL_CLIENT_URL,
             LOCAL_CLIENT_URL + "/",
             LOCAL_CLIENT_HTTPS_URL,
