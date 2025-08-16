@@ -17,4 +17,11 @@ public record NumberOfPeopleByInterviewDateRequest(
     @NotNull(message = "면접 날짜별 인원 수는 null일 수 없습니다.")
         @Min(value = 1, message = "인원 수는 1명 이상이어야 합니다.")
         @Schema(description = "인원 수")
-        Integer numberOfPeople) {}
+        Integer numberOfPeople) {
+
+  public NumberOfPeopleByInterviewDateRequest {
+    if (start.isAfter(LocalDateTime.now())) {
+      throw new IllegalArgumentException("면접 시작 날짜와 시간은 현재 시간 이후여야 합니다.");
+    }
+  }
+}
