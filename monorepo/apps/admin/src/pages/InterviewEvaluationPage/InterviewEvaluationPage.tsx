@@ -149,7 +149,7 @@ function InterviewEvaluationPage() {
             applicantId,
             name: applicantName,
             email: applicantEmail,
-            status: 'INTERVIEW_PASS',
+            status: 'INTERVIEW_PASS', // 임시용
             submittedAt: '',
         }));
     };
