@@ -1,4 +1,3 @@
-export type EvaluationType = 'document' | 'interview';
 type RecruitmentStep = 'DOCUMENT' | 'INTERVIEW' | 'FINAL';
 
 export interface StepApplicant {

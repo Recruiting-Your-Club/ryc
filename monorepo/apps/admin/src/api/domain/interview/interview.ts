@@ -8,6 +8,7 @@ async function getInterviewSlot(params: {
     return await httpRequest.get({
         url: `announcements/${params.announcementId}/interview-slots`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -19,6 +20,7 @@ async function getInterviewInformation(params: {
     return await httpRequest.get({
         url: `announcements/${params.announcementId}/interview-slots/${params.interviewSlotId}/reservations`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -29,6 +31,7 @@ async function getUnreservedApplicant(params: {
     return await httpRequest.get({
         url: `announcements/${params.announcementId}/unreserved`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -42,6 +45,7 @@ async function patchInterviewReservation(params: {
         url: `interview-reservations/${params.applicantId}`,
         body: { interviewSlotId: params.interviewSlotId },
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 

@@ -1,6 +1,6 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type { Evaluation, EvaluationSummary, MyEvaluationStatus } from './types';
+import type { Evaluation, EvaluationSummary, EvaluationType, MyEvaluationStatus } from './types';
 
 async function postApplicationEvaluationSummary(params: {
     clubId: string;
@@ -11,8 +11,8 @@ async function postApplicationEvaluationSummary(params: {
         body: params,
         headers: {
             'X-CLUB-ID': params.clubId,
-            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
+        isAuthRequire: true,
     });
 }
 
@@ -25,8 +25,8 @@ async function postInterviewEvaluationSummary(params: {
         body: params,
         headers: {
             'X-CLUB-ID': params.clubId,
-            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
+        isAuthRequire: true,
     });
 }
 
@@ -39,8 +39,8 @@ async function postDetailApplicationEvaluation(params: {
         body: params,
         headers: {
             'X-CLUB-ID': params.clubId,
-            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
+        isAuthRequire: true,
     });
 }
 
@@ -53,8 +53,8 @@ async function postDetailInterviewEvaluation(params: {
         body: params,
         headers: {
             'X-CLUB-ID': params.clubId,
-            Authorization: 'Bearer mock-user-token-user-42', // 임시
         },
+        isAuthRequire: true,
     });
 }
 
@@ -63,12 +63,13 @@ async function postPersonalEvaluation(params: {
     applicantId: string;
     score: number;
     comment: string;
-    type: 'application' | 'interview';
+    type: EvaluationType;
 }): Promise<void> {
     await httpRequest.post({
         url: `evaluation/${params.type}`,
         body: { applicantId: params.applicantId, score: params.score, comment: params.comment },
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -77,12 +78,13 @@ async function putEvaluationScoreAndComment(params: {
     score: number;
     comment: string;
     clubId: string;
-    type?: 'application' | 'interview';
+    type?: EvaluationType;
 }): Promise<void> {
     await httpRequest.put({
         url: `evaluation/${params.evaluationId}`,
         body: { score: params.score, comment: params.comment },
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -94,6 +96,7 @@ async function deleteEvaluation(params: {
     await httpRequest.delete({
         url: `evaluation/${params.evaluationId}`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -106,6 +109,7 @@ async function postMyEvaluationStatus(params: {
         url: `evaluation/${params.type}s/my-status`,
         body: { applicantIdList: params.applicantIdList },
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 

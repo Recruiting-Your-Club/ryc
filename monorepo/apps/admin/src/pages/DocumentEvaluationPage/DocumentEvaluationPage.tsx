@@ -3,9 +3,11 @@ import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { stepQueries } from '@api/queryFactory/stepQueries';
 import { ApplicantList, EvaluationBox, InformationBox } from '@components';
+import { INITIAL_EVALUATION_SUMMARY } from '@constants/evaluationPage';
 import { useEvaluation } from '@hooks/components';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
 
@@ -16,20 +18,12 @@ import {
     listContainer,
 } from './DocumentEvaluationPage.style';
 
-export const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
-export const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
-export const INITIAL_EVALUATION_SUMMARY: EvaluationDetailWithSummary = {
-    applicantId: '',
-    completedEvaluatorCount: 0,
-    totalEvaluatorCount: 0,
-    averageScore: 0,
-    evaluationDetails: [],
-};
-
 function DocumentEvaluationPage() {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+    const { clubId, announcementId } = useParams();
+
     // initial values
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
@@ -37,29 +31,29 @@ function DocumentEvaluationPage() {
     // form hooks
     // query hooks
     const { data: stepApplicantList = [] } = useSuspenseQuery(
-        stepQueries.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
+        stepQueries.allStepApplicants(announcementId!, clubId!),
     );
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
-            ANNOUNCEMENT_ID,
+            announcementId!,
             selectedApplicant?.applicantId ?? '',
-            CLUB_ID,
+            clubId!,
         ),
 
         enabled: !!selectedApplicant?.applicantId,
     });
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
-            clubId: CLUB_ID,
+            clubId: clubId!,
             applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
             type: 'application',
         }),
         enabled:
             !!selectedApplicant &&
             [
-                'DOCUMENT_PASS',
+                'DOCUMENT_PENDING',
                 'DOCUMENT_FAIL',
-                'INTERVIEW_PASS',
+                'INTERVIEW_PENDING',
                 'INTERVIEW_FAIL',
                 'FINAL_PASS',
                 'FINAL_FAIL',
@@ -125,6 +119,7 @@ function DocumentEvaluationPage() {
             </div>
             <div css={evaluationContainer}>
                 <EvaluationBox
+                    clubId={clubId!}
                     selectedApplicantId={selectedApplicant?.applicantId ?? null}
                     evaluation={
                         documentEvaluationDetail?.evaluationsOfApplicants?.find(

@@ -1,3 +1,5 @@
+export type EvaluationType = 'application' | 'interview';
+
 export interface EvaluationSummary {
     applicantId: string;
     completedEvaluatorCount: number;

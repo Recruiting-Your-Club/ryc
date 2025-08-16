@@ -1,5 +1,4 @@
 import { ConfirmDialog, PersonalScoreCard } from '@components';
-import { CLUB_ID } from '@pages/DocumentEvaluationPage';
 import React, { useState } from 'react';
 
 import { useToast } from '@ssoc/ui';
@@ -21,6 +20,7 @@ import {
 import type { EvaluationBoxProps } from './types';
 
 function EvaluationBox({
+    clubId,
     selectedApplicantId,
     evaluation,
     onPostComment,
@@ -65,13 +65,13 @@ function EvaluationBox({
             toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
             return;
         }
-        onPostComment(selectedApplicantId || '', formState.score, formState.comment, CLUB_ID);
+        onPostComment(selectedApplicantId || '', formState.score, formState.comment, clubId);
         handleFormState({ score: 0, comment: '' });
     };
 
     const handleDelete = () => {
         if (!myComment) return;
-        onDeleteComment(myComment.evaluationId, CLUB_ID);
+        onDeleteComment(myComment.evaluationId, clubId);
 
         // 초기화
         if (formState.commentIdForEdit === myComment.evaluationId) {
@@ -93,7 +93,7 @@ function EvaluationBox({
             return;
         }
         if (!myComment) return;
-        onUpdateComment(myComment.evaluationId, formState.score, formState.comment, CLUB_ID);
+        onUpdateComment(myComment.evaluationId, formState.score, formState.comment, clubId);
         handleFormState({
             isOpenForm: false,
         });

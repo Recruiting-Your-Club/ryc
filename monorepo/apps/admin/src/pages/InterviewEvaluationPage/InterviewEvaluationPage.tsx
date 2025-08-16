@@ -6,15 +6,12 @@ import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
+import { INITIAL_EVALUATION_SUMMARY } from '@constants/evaluationPage';
 import { useEvaluation } from '@hooks/components';
-import {
-    ANNOUNCEMENT_ID,
-    CLUB_ID,
-    INITIAL_EVALUATION_SUMMARY,
-} from '@pages/DocumentEvaluationPage';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
 
@@ -30,6 +27,7 @@ function InterviewEvaluationPage() {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+    const { clubId, announcementId } = useParams();
 
     // initial values
     // state, ref, querystring hooks
@@ -39,32 +37,32 @@ function InterviewEvaluationPage() {
     // form hooks
     // query hooks
     const { data: interviewSlots = [] } = useSuspenseQuery(
-        interviewQueries.interviewSlot(ANNOUNCEMENT_ID, CLUB_ID),
+        interviewQueries.interviewSlot(announcementId!, clubId!),
     );
     const { data: slotApplicants } = useQuery({
-        ...interviewQueries.interviewInformation(ANNOUNCEMENT_ID, slotId ?? '', CLUB_ID),
+        ...interviewQueries.interviewInformation(announcementId!, slotId ?? '', clubId!),
         enabled: !!slotId && slotId !== '',
     });
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
-            ANNOUNCEMENT_ID,
+            announcementId!,
             selectedApplicant?.applicantId ?? '',
-            CLUB_ID,
+            clubId!,
         ),
         enabled: !!selectedApplicant?.applicantId,
     });
     const { data: interviewEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
-            clubId: CLUB_ID,
+            clubId: clubId!,
             applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
             type: 'interview',
         }),
         enabled:
             !!selectedApplicant &&
             [
-                'DOCUMENT_PASS',
+                'DOCUMENT_PENDING',
                 'DOCUMENT_FAIL',
-                'INTERVIEW_PASS',
+                'INTERVIEW_PENDING',
                 'INTERVIEW_FAIL',
                 'FINAL_PASS',
                 'FINAL_FAIL',
@@ -93,7 +91,7 @@ function InterviewEvaluationPage() {
                     applicantId: applicant.applicantId,
                     name: applicant.applicantName,
                     email: applicant.applicantEmail,
-                    status: 'INTERVIEW_PASS',
+                    status: 'INTERVIEW_PENDING',
                     submittedAt: '',
                     interviewDate: dayjs(matchedSlot.period.startDate).format('YYYY-MM-DD'),
                     interviewName: matchedSlot.id,
@@ -149,7 +147,7 @@ function InterviewEvaluationPage() {
             applicantId,
             name: applicantName,
             email: applicantEmail,
-            status: 'INTERVIEW_PASS', // 임시용
+            status: 'INTERVIEW_PENDING',
             submittedAt: '',
         }));
     };
@@ -177,6 +175,7 @@ function InterviewEvaluationPage() {
                 </div>
                 <div css={s_evaluationBoxWrapper}>
                     <EvaluationBox
+                        clubId={clubId!}
                         selectedApplicantId={selectedApplicant?.applicantId ?? null}
                         evaluation={
                             interviewEvaluationDetail?.evaluationsOfApplicants?.find(

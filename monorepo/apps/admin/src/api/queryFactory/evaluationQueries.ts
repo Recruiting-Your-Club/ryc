@@ -5,6 +5,7 @@ import {
     postInterviewEvaluationSummary,
     postMyEvaluationStatus,
 } from '@api/domain';
+import type { EvaluationType } from '@api/domain/evaluation/types';
 import { evaluationKeys } from '@api/querykeyFactory';
 import { queryOptions } from '@tanstack/react-query';
 
@@ -16,7 +17,7 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'application' | 'interview';
+        type: EvaluationType;
     }) =>
         queryOptions({
             queryKey: evaluationKeys.evaluationSummary(clubId, applicantIdList, type),
@@ -35,7 +36,7 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'application' | 'interview';
+        type: EvaluationType;
     }) =>
         queryOptions({
             queryKey: evaluationKeys.evaluationDetail(clubId, applicantIdList, type),
@@ -54,7 +55,7 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'application' | 'interview';
+        type: EvaluationType;
     }) =>
         queryOptions({
             queryKey: evaluationKeys.myEvaluationStatus(clubId, applicantIdList, type),
