@@ -16,7 +16,6 @@ public interface EvaluationJpaRepository extends JpaRepository<EvaluationEntity,
     FROM EvaluationEntity e
     WHERE e.applicantEntity.id IN :applicantIds
       AND e.type = :type
-      AND e.deleted = false
     """)
   List<EvaluationEntity> findEvaluationsByApplicantIdsAndType(
       @Param("applicantIds") List<String> applicantIds, @Param("type") EvaluationType type);
@@ -28,7 +27,6 @@ public interface EvaluationJpaRepository extends JpaRepository<EvaluationEntity,
         WHERE e.adminEntity.id = :evaluatorId
           AND e.type = :type
           AND e.applicantEntity.id in :applicantIds
-          AND e.deleted = false
     """)
   List<String> findEvaluatedApplicantIds(
       @Param("evaluatorId") String evaluatorId,
