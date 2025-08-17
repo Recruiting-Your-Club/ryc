@@ -16,4 +16,6 @@ public interface AdminRepository {
   Map<String, String> findThumbnailUrlByIds(List<String> adminIds);
 
   Map<String, String> findAdminNamesByIds(List<String> adminIds);
+
+  void deleteById(String adminId);
 }

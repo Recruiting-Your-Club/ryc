@@ -67,4 +67,9 @@ public class AdminRepositoryImpl implements AdminRepository {
         .filter(projection -> projection.getId() != null && projection.getName() != null)
         .collect(Collectors.toMap(AdminIdNameProjection::getId, AdminIdNameProjection::getName));
   }
+
+  @Override
+  public void deleteById(String adminId) {
+    adminJpaRepository.deleteById(adminId);
+  }
 }
