@@ -42,9 +42,7 @@ final class AnnouncementValidator {
     return string != null ? string.trim() : null;
   }
 
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수
-   * 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스
-   */
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
   static ValidatedAnnouncement validateAndSanitize(
       String id,
       String clubId,
@@ -64,7 +62,7 @@ final class AnnouncementValidator {
       Boolean isDeleted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
-    
+
     // 정제
     String resolvedTitle = sanitizeString(title);
     String resolvedNumberOfPeople = sanitizeString(numberOfPeople);
@@ -123,9 +121,7 @@ final class AnnouncementValidator {
         .build();
   }
 
-  /**
-   * 검증 private 헬퍼 메소드
-   */
+  /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {
@@ -160,7 +156,8 @@ final class AnnouncementValidator {
           "Announcement Title must be at least " + MIN_TITLE_LENGTH + " characters");
     }
     if (title.length() > MAX_TITLE_LENGTH) {
-      throw new IllegalArgumentException("Announcement Title cannot exceed " + MAX_TITLE_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "Announcement Title cannot exceed " + MAX_TITLE_LENGTH + " characters");
     }
   }
 
@@ -170,7 +167,8 @@ final class AnnouncementValidator {
     }
 
     if (numberOfPeople.length() > MAX_NUMBER_OF_PEOPLE_LENGTH) {
-      throw new IllegalArgumentException("NumberOfPeople cannot exceed " + MAX_NUMBER_OF_PEOPLE_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "NumberOfPeople cannot exceed " + MAX_NUMBER_OF_PEOPLE_LENGTH + " characters");
     }
   }
 
@@ -180,7 +178,8 @@ final class AnnouncementValidator {
     }
 
     if (detailDescription.length() > MAX_DESCRIPTION_LENGTH) {
-      throw new IllegalArgumentException("DetailDescription cannot exceed " + MAX_DESCRIPTION_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "DetailDescription cannot exceed " + MAX_DESCRIPTION_LENGTH + " characters");
     }
   }
 
@@ -190,7 +189,8 @@ final class AnnouncementValidator {
     }
 
     if (summaryDescription.length() > MAX_SUMMARY_DESCRIPTION_LENGTH) {
-      throw new IllegalArgumentException("SummaryDescription cannot exceed " + MAX_SUMMARY_DESCRIPTION_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "SummaryDescription cannot exceed " + MAX_SUMMARY_DESCRIPTION_LENGTH + " characters");
     }
   }
 
@@ -200,7 +200,8 @@ final class AnnouncementValidator {
     }
 
     if (target.length() > MAX_TARGET_LENGTH) {
-      throw new IllegalArgumentException("Target cannot exceed " + MAX_TARGET_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "Target cannot exceed " + MAX_TARGET_LENGTH + " characters");
     }
   }
 
@@ -220,7 +221,8 @@ final class AnnouncementValidator {
     }
 
     if (activityPeriod.length() > MAX_ACTIVITY_PERIOD_LENGTH) {
-      throw new IllegalArgumentException("ActivityPeriod cannot exceed " + MAX_ACTIVITY_PERIOD_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "ActivityPeriod cannot exceed " + MAX_ACTIVITY_PERIOD_LENGTH + " characters");
     }
   }
 
@@ -248,7 +250,8 @@ final class AnnouncementValidator {
     }
   }
 
-  private static void validateAnnouncementPeriodInfo(AnnouncementPeriodInfo announcementPeriodInfo) {
+  private static void validateAnnouncementPeriodInfo(
+      AnnouncementPeriodInfo announcementPeriodInfo) {
     if (announcementPeriodInfo == null) {
       throw new IllegalArgumentException("AnnouncementPeriodInfo cannot be null");
     }
@@ -266,7 +269,7 @@ final class AnnouncementValidator {
     }
   }
 
-  //TODO: createdAt, updatedAt Null 비허용 로직 추가
+  // TODO: createdAt, updatedAt Null 비허용 로직 추가
   private static void validateCreatedAt(LocalDateTime createdAt) {
     if (createdAt == null) {
       throw new IllegalArgumentException("createdAt cannot be null");

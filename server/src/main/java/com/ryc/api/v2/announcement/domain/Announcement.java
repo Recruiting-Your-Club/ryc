@@ -68,9 +68,24 @@ public class Announcement {
 
     AnnouncementValidator.ValidatedAnnouncement validated =
         AnnouncementValidator.validateAndSanitize(
-            id, clubId, title, numberOfPeople, detailDescription, summaryDescription,
-            target, field, tags, announcementStatus, announcementType, hasInterview,
-            announcementPeriodInfo, activityPeriod, applicationForm, isDeleted, createdAt, updatedAt);
+            id,
+            clubId,
+            title,
+            numberOfPeople,
+            detailDescription,
+            summaryDescription,
+            target,
+            field,
+            tags,
+            announcementStatus,
+            announcementType,
+            hasInterview,
+            announcementPeriodInfo,
+            activityPeriod,
+            applicationForm,
+            isDeleted,
+            createdAt,
+            updatedAt);
 
     this.id = validated.id();
     this.clubId = validated.clubId();
