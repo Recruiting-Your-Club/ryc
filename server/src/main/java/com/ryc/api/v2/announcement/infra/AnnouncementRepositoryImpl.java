@@ -118,4 +118,14 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
             () ->
                 new NoSuchElementException("Club not found for announcementId: " + announcementId));
   }
+
+  @Override
+  public List<String> findIdsByClubId(String clubId) {
+    return announcementJpaRepository.findIdsByClubId(clubId);
+  }
+
+  @Override
+  public void deleteAllByIdIn(List<String> announcementIds) {
+    announcementJpaRepository.deleteByIdIn(announcementIds);
+  }
 }

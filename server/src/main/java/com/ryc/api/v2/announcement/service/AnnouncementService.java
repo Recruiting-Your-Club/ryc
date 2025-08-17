@@ -3,6 +3,8 @@ package com.ryc.api.v2.announcement.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,8 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
+import com.ryc.api.v2.announcement.service.event.AnnouncementDeletedEvent;
+import com.ryc.api.v2.club.service.event.ClubDeletedEvent;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.file.domain.FileDomainType;
@@ -27,6 +31,7 @@ public class AnnouncementService {
 
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public AnnouncementCreateResponse createAnnouncement(
@@ -144,6 +149,18 @@ public class AnnouncementService {
             .toList();
 
     return new AnnouncementProcessGetResponse(processes);
+  }
+
+  public void deleteAnnouncements(List<String> announcementIds) {
+    eventPublisher.publishEvent(new AnnouncementDeletedEvent(announcementIds));
+    announcementRepository.deleteAllByIdIn(announcementIds);
+  }
+
+  @EventListener
+  @Transactional
+  protected void handleClubDeletedEvent(ClubDeletedEvent event) {
+    List<String> ids = announcementRepository.findIdsByClubId(event.clubId());
+    deleteAnnouncements(ids);
   }
 
   private boolean shouldIncludeProcess(AnnouncementProcess process, Announcement announcement) {

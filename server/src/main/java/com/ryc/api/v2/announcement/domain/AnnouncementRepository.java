@@ -32,4 +32,8 @@ public interface AnnouncementRepository {
   boolean imageAllowed(String announcementId);
 
   String findClubNameByAnnouncementId(String announcementId);
+
+  List<String> findIdsByClubId(String clubId);
+
+  void deleteAllByIdIn(List<String> announcementIds);
 }
