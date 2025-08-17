@@ -58,9 +58,7 @@ final class AdminValidator {
     return email != null ? email.trim().toLowerCase() : null;
   }
 
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수
-   * 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스
-   */
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
   static ValidatedAdmin validateAndSanitize(
       String id,
       String name,
@@ -71,41 +69,39 @@ final class AdminValidator {
       AdminDefaultRole adminDefaultRole,
       Boolean isDeleted) {
     // 정제
-    String cleanName = sanitizeString(name);
-    String cleanEmail = sanitizeEmail(email);
-    String cleanImageUrl = sanitizeString(imageUrl);
-    String cleanThumbnailUrl = sanitizeString(thumbnailUrl);
+    String resolvedName = sanitizeString(name);
+    String resolvedEmail = sanitizeEmail(email);
+    String resolvedImageUrl = sanitizeString(imageUrl);
+    String resolvedThumbnailUrl = sanitizeString(thumbnailUrl);
 
     // 선택 멤버 변수 기본값 처리
-    AdminDefaultRole cleanAdminDefaultRole =
+    AdminDefaultRole resolvedAdminDefaultRole =
         adminDefaultRole != null ? adminDefaultRole : AdminDefaultRole.USER;
-    Boolean cleanIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
+    Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
 
     // 검증
     validateId(id);
-    validateName(cleanName);
-    validateEmail(cleanEmail);
+    validateName(resolvedName);
+    validateEmail(resolvedEmail);
     validatePassword(password);
-    validateImageUrl(cleanImageUrl);
-    validateThumbnailUrl(cleanThumbnailUrl);
-    validateAdminDefaultRole(adminDefaultRole);
-    validateIsDeleted(isDeleted);
+    validateImageUrl(resolvedImageUrl);
+    validateThumbnailUrl(resolvedThumbnailUrl);
+    validateAdminDefaultRole(resolvedAdminDefaultRole);
+    validateIsDeleted(resolvedIsDeleted);
 
     return ValidatedAdmin.builder()
         .id(id)
-        .name(cleanName)
-        .email(cleanEmail)
+        .name(resolvedName)
+        .email(resolvedEmail)
         .password(password)
-        .imageUrl(cleanImageUrl)
-        .thumbnailUrl(cleanThumbnailUrl)
-        .adminDefaultRole(cleanAdminDefaultRole)
-        .isDeleted(cleanIsDeleted)
+        .imageUrl(resolvedImageUrl)
+        .thumbnailUrl(resolvedThumbnailUrl)
+        .adminDefaultRole(resolvedAdminDefaultRole)
+        .isDeleted(resolvedIsDeleted)
         .build();
   }
 
-  /**
-   * 검증 private 헬퍼 메소드
-   */
+  /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {

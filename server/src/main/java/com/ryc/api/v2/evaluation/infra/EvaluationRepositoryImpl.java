@@ -35,7 +35,7 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
     AdminEntity adminEntity =
         adminJpaRepository
             .findById(evaluation.getEvaluatorId())
-            .filter(entity -> !entity.getDeleted())
+            .filter(entity -> !entity.getIsDeleted())
             .orElseThrow(() -> new NoSuchElementException("AdminEntity not found or deleted"));
 
     ApplicantEntity applicantEntity =

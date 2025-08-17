@@ -46,10 +46,10 @@ public class ApplicantMapper {
             .personalInfos(personalInfos)
             .build();
 
-      for (ApplicantPersonalInfoEntity infoEntity : personalInfos) {
-          infoEntity.setApplicant(applicantEntity);
-      }
+    for (ApplicantPersonalInfoEntity infoEntity : personalInfos) {
+      infoEntity.setApplicant(applicantEntity);
+    }
 
-      return applicantEntity;
+    return applicantEntity;
   }
 }

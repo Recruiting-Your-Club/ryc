@@ -17,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Applicant {
 
   private final String id;
@@ -30,6 +29,29 @@ public class Applicant {
   private final Boolean isDeleted;
   // 이름, 이메일 제외 개인정보 질문 저장
   private final List<ApplicantPersonalInfo> personalInfos;
+
+  @Builder
+  private Applicant(
+      String id,
+      String announcementId,
+      String email,
+      String name,
+      ApplicantStatus status,
+      Boolean isDeleted,
+      List<ApplicantPersonalInfo> personalInfos) {
+
+    ApplicantValidator.ValidatedApplicant validated =
+        ApplicantValidator.validateAndSanitize(
+            id, announcementId, email, name, status, isDeleted, personalInfos);
+
+    this.id = validated.id();
+    this.announcementId = validated.announcementId();
+    this.email = validated.email();
+    this.name = validated.name();
+    this.status = validated.status();
+    this.isDeleted = validated.isDeleted();
+    this.personalInfos = validated.personalInfos();
+  }
 
   public static Applicant initialize(ApplicantCreateRequest request, String announcementId) {
     List<ApplicantPersonalInfo> personalInfos =

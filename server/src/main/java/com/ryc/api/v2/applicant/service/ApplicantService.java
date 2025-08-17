@@ -68,7 +68,9 @@ public class ApplicantService {
     List<String> profileFileIds =
         applicants.stream()
             .flatMap(applicant -> applicant.getPersonalInfos().stream())
-            .filter(personalInfo -> personalInfo.getQuestionType() == PersonalInfoQuestionType.PROFILE_IMAGE)
+            .filter(
+                personalInfo ->
+                    personalInfo.getQuestionType() == PersonalInfoQuestionType.PROFILE_IMAGE)
             .map(ApplicantPersonalInfo::getValue)
             .filter(id -> id != null && !id.isBlank())
             .distinct()
@@ -87,7 +89,10 @@ public class ApplicantService {
 
               String profileFileId =
                   applicant.getPersonalInfos().stream()
-                      .filter(personalInfo -> personalInfo.getQuestionType() == PersonalInfoQuestionType.PROFILE_IMAGE)
+                      .filter(
+                          personalInfo ->
+                              personalInfo.getQuestionType()
+                                  == PersonalInfoQuestionType.PROFILE_IMAGE)
                       .map(ApplicantPersonalInfo::getValue)
                       .filter(value -> value != null && !value.isBlank())
                       .findFirst()
