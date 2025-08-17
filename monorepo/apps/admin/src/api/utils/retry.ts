@@ -21,3 +21,11 @@ export const shouldAttemptRefresh = (
     if (isAuthEndpoint(option.url)) return false;
     return true;
 };
+
+export const tryRefreshAccessToken = async (): Promise<string | null> => {
+    return useAuthStore.getState().bootstrap();
+};
+
+export const autoLogout = async (): Promise<void> => {
+    await useAuthStore.getState().logout?.('SESSION_EXPIRED');
+};
