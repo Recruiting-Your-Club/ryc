@@ -56,7 +56,6 @@ function ClubApplyPersonalInfoPage({
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
                                 onFilesChange={async (newFiles: File[]) => {
-                                    // 로컬 상태 업데이트
                                     setFilesByQuestion((prev) => ({
                                         ...prev,
                                         [question.id]: newFiles,
@@ -94,13 +93,10 @@ function ClubApplyPersonalInfoPage({
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
                                 onFilesChange={async (newFiles: File[]) => {
-                                    // 로컬 상태 업데이트
                                     setFilesByQuestion((prev) => ({
                                         ...prev,
                                         [question.id]: newFiles,
                                     }));
-
-                                    // 파일 업로드 처리 (File[] -> uploadFiles가 File | File[] 처리)
                                     await onFileUpload(
                                         question.id,
                                         question.label,
