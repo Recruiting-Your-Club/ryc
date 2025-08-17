@@ -12,13 +12,30 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Answer {
   private final String id;
   private final String questionId;
   private final String textAnswer;
   private final List<AnswerChoice> choices;
   private final String fileMetadataId;
+
+  @Builder
+  private Answer(
+      String id,
+      String questionId,
+      String textAnswer,
+      List<AnswerChoice> choices,
+      String fileMetadataId) {
+
+    AnswerValidator.ValidatedAnswer validated =
+        AnswerValidator.validateAndSanitize(id, questionId, textAnswer, choices, fileMetadataId);
+
+    this.id = validated.id();
+    this.questionId = validated.questionId();
+    this.textAnswer = validated.textAnswer();
+    this.choices = validated.choices();
+    this.fileMetadataId = validated.fileMetadataId();
+  }
 
   public static Answer initialize(AnswerCreateRequest request) {
     List<AnswerChoice> choices =
