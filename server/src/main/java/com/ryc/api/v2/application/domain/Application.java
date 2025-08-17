@@ -18,12 +18,27 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Application {
   private final String id;
   private final String applicantId;
   private final List<Answer> answers;
   private final LocalDateTime createdAt;
+
+  @Builder
+  private Application(
+      String id,
+      String applicantId,
+      List<Answer> answers,
+      LocalDateTime createdAt) {
+
+    ApplicationValidator.ValidatedApplication validated =
+        ApplicationValidator.validateAndSanitize(id, applicantId, answers, createdAt);
+
+    this.id = validated.id();
+    this.applicantId = validated.applicantId();
+    this.answers = validated.answers();
+    this.createdAt = validated.createdAt();
+  }
 
   public static Application initialize(ApplicationCreateRequest request, String applicantId) {
     List<Answer> answers = request.answers().stream().map(Answer::initialize).toList();
