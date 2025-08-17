@@ -76,6 +76,22 @@ export const perStarScoreGroup = (empty?: boolean) => css`
     gap: 0.8rem;
     ${scoreWrapper(empty)}
     min-height: 5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+    overflow-y: auto;
+
+    ${!empty &&
+    css`
+        align-items: center;
+        justify-content: center;
+    `}
+    &::after {
+        content: '';
+        height: 0.5rem;
+        flex-shrink: 0;
+    }
 `;
 
 export const userSavedEvaluation = css`
@@ -97,7 +113,7 @@ export const userStarScore = (empty?: boolean) => css`
     min-height: 5rem;
 `;
 
-export const userEvaluation = css`
+export const s_userEvaluation = css`
     flex: 2;
     width: 100%;
     background-color: ${theme.colors.white};
@@ -116,7 +132,7 @@ export const s_myEvaluationTitleContainer = css`
     justify-content: space-between;
 `;
 
-export const textareaCss = css`
+export const s_textarea = css`
     margin: -1.2rem 0;
     background-color: ${theme.colors.gray[200]};
     border: none;
@@ -127,13 +143,15 @@ export const textareaCss = css`
     }
 `;
 
-export const svgButtonGroup = css`
+export const s_buttonContainerForEdit = css`
     display: flex;
-    margin: 0.5rem 0;
+    width: 100%;
+    gap: 0.5rem;
 `;
 
-export const svgButtonCss = css`
-    width: 1.2rem;
-    height: 1.2rem;
-    cursor: pointer;
+export const s_cancelButton = css`
+    background-color: ${theme.colors.gray[300]};
+    &:hover {
+        background-color: ${theme.colors.gray[400]};
+    }
 `;

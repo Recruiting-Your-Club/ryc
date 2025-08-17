@@ -13,11 +13,11 @@
             "@pages/*": ["pages/*"],
             "@types/*": ["types/*"],
             "@utils/*": ["utils/*"],
-            "@styles/*": ["styles/*"]
+            "@styles/*": ["styles/*"],
+            "@stores/*": ["stores/*"]
         },
         "moduleResolution": "bundler", // webpack 번들링 위해 필요
-        "noEmit": true, // tsconfig말고 webpack으로 번들링 함
-        "resolveJsonModule": false // json import
+        "noEmit": true // tsconfig말고 webpack으로 번들링 함
     },
     "include": ["src"],
     "exclude": ["node_modules", "dist", "build"]

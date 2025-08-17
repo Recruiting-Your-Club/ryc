@@ -41,7 +41,11 @@ export const totalClubContainer = css`
     flex-direction: column;
     align-items: start;
     padding: 0rem 0.5rem;
+    padding-left: 1rem;
     gap: 0.5rem;
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        padding-left: 0.5rem;
+    }
 `;
 
 export const clubCategoryContainer = css`
@@ -50,7 +54,52 @@ export const clubCategoryContainer = css`
     align-items: center;
     width: 100%;
     height: 3.5rem;
-    border-bottom: 1px solid ${theme.colors.gray[200]};
+`;
+
+export const categoryProgressContainer = css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    width: 100%;
+    padding-right: 1rem;
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        justify-content: end;
+    }
+`;
+export const categoryDropdown = css`
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
+`;
+export const dropdownItem = css`
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    overflow-y: auto;
+    gap: 0.5rem;
+`;
+export const divider = css`
+    width: 100%;
+    background-color: ${theme.colors.gray[200]};
+`;
+
+export const categorySlider = (position: number, width: string) => css`
+    display: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 1;
+    border-radius: 25px;
+    border: 1px solid ${theme.colors.default};
+    width: ${width};
+    transform: translateX(${position}rem);
+    transition:
+        transform 0.3s ease-in-out,
+        width 0.2s ease-in-out 0.05s;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
 `;
 
 export const emptyElement = css`

@@ -1,14 +1,14 @@
 package com.ryc.api.v2.common.aop.aspect;
 
+import java.util.NoSuchElementException;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import com.ryc.api.v2.club.business.ClubService;
-import com.ryc.api.v2.common.exception.code.ClubErrorCode;
-import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.club.service.ClubService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,8 +24,8 @@ public class ClubAspect {
     MethodSignature signature = (MethodSignature) joinPoint.getSignature();
     String clubId = extractParameters(signature.getParameterNames(), joinPoint.getArgs());
 
-    if (!clubService.isValidClubId(clubId)) {
-      throw new ClubException(ClubErrorCode.CLUB_NOT_FOUND);
+    if (!clubService.existClubById(clubId)) {
+      throw new NoSuchElementException("동아리를 찾을 수 없습니다.");
     }
   }
 

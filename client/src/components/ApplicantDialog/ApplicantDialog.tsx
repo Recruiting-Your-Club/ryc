@@ -11,6 +11,7 @@ import {
     Rating,
     Text,
 } from '@components';
+import { evaluation } from '@constants/applicantDialog';
 import React, { useState } from 'react';
 import {
     chevronSvgCss,

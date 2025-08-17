@@ -1,12 +1,16 @@
-export interface Evaluation {
-    applicantId: number;
-    averageScore: number;
-    comments: { evaluator: string; comment: string }[];
-}
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
 
 export interface EvaluationBoxProps {
-    evaluation: Evaluation | null;
+    selectedApplicantId: string | null;
+    evaluation: EvaluationDataWithSummary;
+    onPostComment: (
+        applicantId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+        type: 'application' | 'interview',
+    ) => void;
+    onDeleteComment: (evaluationId: string, clubId: string) => void;
+    onUpdateComment: (evaluationId: string, score: number, comment: string, clubId: string) => void;
     height?: string;
 }
-
-export const MOCK_USER_ID = 'user-42';

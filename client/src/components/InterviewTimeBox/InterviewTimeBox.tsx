@@ -1,10 +1,10 @@
 import { Button, Divider, Select, Text } from '@components';
-import { useInterviewSettingDialogContext } from '@components/InterviewSettingDialog/InterviewSettingDialogContext';
 import type { InterviewInformation } from '@components/InterviewSettingDialog/types';
 import { DEFAULT_END_TIME, DEFAULT_START_TIME } from '@constants/InterviewSettingDialog';
 import { useToast } from '@hooks/useToast';
 import { generateTimeRange } from '@utils/InterviewTimeBox/generateTime';
 import React, { useCallback, useEffect, useMemo } from 'react';
+import { useInterviewSettingDialogContext } from '../InterviewSettingDialog/InterviewSettingDialogContext';
 import {
     baseBox,
     dividerCss,

@@ -14,11 +14,13 @@ import {
     applyButtonAtMobile,
 } from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
+import { useRouter } from '@hooks/useRouter';
 
 function RecruitmentPage() {
     // prop destruction
     const { open, openDialog, closeDialog } = useDialog();
     // lib hooks
+    const { goTo } = useRouter();
     // initial values
     const images = [
         'https://ticketimage.interpark.com/Play/image/large/24/24013437_p.gif',
@@ -52,7 +54,12 @@ function RecruitmentPage() {
                             </Text>
                             <Tag variant="progress" text="모집중" />
                         </div>
-                        <Button variant="primary" size="xl" sx={applyButtonAtDesktop}>
+                        <Button
+                            variant="primary"
+                            size="xl"
+                            onClick={() => goTo('/apply')}
+                            sx={applyButtonAtDesktop}
+                        >
                             지원하기
                         </Button>
                     </div>

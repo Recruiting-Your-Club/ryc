@@ -1,4 +1,4 @@
-import { DEFAULT_FONT_SIZE } from '@constants/Editor';
+import { DEFAULT_FONT_SIZE } from '@constants/editor';
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';

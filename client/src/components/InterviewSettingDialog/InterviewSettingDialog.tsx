@@ -4,12 +4,12 @@ import {
     Calendar,
     Dialog,
     Divider,
+    Editor,
     Input,
     InterviewTimeBox,
     Select,
     Text,
 } from '@components';
-import { Editor } from '@components/_common';
 import {
     DEFAULT_END_TIME,
     DEFAULT_NUMBER_VALUE,

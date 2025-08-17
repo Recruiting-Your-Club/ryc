@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 
-export const boxContainer = (height: string = '100%') => css`
+export const s_boxContainer = (height: string = '100%') => css`
     height: ${height};
     border-radius: 10px;
     background-color: ${theme.colors.white};
@@ -16,7 +16,7 @@ export const boxContainer = (height: string = '100%') => css`
     min-height: 20rem;
 `;
 
-export const titleSection = css`
+export const s_titleSection = css`
     flex: 0.5;
     width: 100%;
     display: flex;
@@ -25,7 +25,7 @@ export const titleSection = css`
     padding: 1rem;
 `;
 
-export const contentSection = css`
+export const s_contentSection = css`
     flex: 9.5;
     width: 100%;
     min-height: 0;
@@ -35,7 +35,7 @@ export const s_titleText = css`
     margin-left: 1rem;
 `;
 
-export const documentWrapper = css`
+export const s_documentWrapper = css`
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,7 @@ export const documentWrapper = css`
     }
 `;
 
-export const personalDataWrapper = css`
+export const s_personalDataWrapper = css`
     display: flex;
     border-radius: 10px;
     padding: 2rem;
@@ -60,13 +60,18 @@ export const personalDataWrapper = css`
     align-items: center;
 `;
 
-export const avatarCss = css`
+export const s_avatar = css`
     width: 10rem;
     height: 12rem;
 `;
 
-export const textSection = css`
+export const s_textGroup = css`
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+`;
+
+export const s_documentTypeTextWrapper = css`
+    align-self: flex-start;
+    padding: 0 1rem;
 `;

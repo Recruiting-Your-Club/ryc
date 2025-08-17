@@ -1,17 +1,8 @@
-export interface ApplicantDetail {
-    id: number;
-    name: string;
-    email: string;
-    studentId: string;
-    phone: string;
-}
-export interface InformationBoxProps {
-    applicant: ApplicantDetail | null;
-    documentList: Document | null;
-    height?: string;
-}
+import type { PersonalInfo, QuestionAnswer } from '@api/domain/applicant/types';
 
-export interface Document {
-    id: number;
-    detail: { question: string; answer: string }[];
+export interface InformationBoxProps {
+    personalInformation: PersonalInfo[];
+    preQuestionAnswers: QuestionAnswer[];
+    applicationQuestionAnswers: QuestionAnswer[];
+    height?: string;
 }

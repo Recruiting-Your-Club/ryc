@@ -5,7 +5,7 @@ import { Toast } from '.';
 import { Button } from '../Button';
 import { Text } from '../Text';
 import { ToastProvider } from './ToastProvider';
-import { useToast } from './useToast';
+import { useToast } from '../../hooks/useToast';
 
 type Story = StoryObj<typeof Toast>;
 

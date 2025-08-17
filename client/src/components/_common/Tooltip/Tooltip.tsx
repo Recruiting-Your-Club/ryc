@@ -8,7 +8,8 @@ function Tooltip({
     delay = 100,
     disabled = false,
     children,
-    sx,
+    wrapperSx,
+    tooltipSx,
 }: TooltipProps) {
     const [visible, setVisible] = useState<boolean>();
     const timeoutRef = useRef<NodeJS.Timeout>();
@@ -33,9 +34,15 @@ function Tooltip({
     }, []);
 
     return (
-        <div css={tooltipContainter} onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
+        <div
+            css={[tooltipContainter, wrapperSx]}
+            onMouseEnter={showTooltip}
+            onMouseLeave={hideTooltip}
+        >
             {children}
-            {!disabled && visible && <div css={[tooltipStyle(direction), sx]}>{content}</div>}
+            {!disabled && visible && (
+                <div css={[tooltipStyle(direction), tooltipSx]}>{content}</div>
+            )}
         </div>
     );
 }

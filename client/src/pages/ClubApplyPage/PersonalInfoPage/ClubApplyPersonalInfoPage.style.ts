@@ -31,6 +31,9 @@ export const labelContainer = css`
     gap: 0.5rem;
     margin-bottom: 1rem;
 `;
+export const s_labelTextSx = css`
+    margin-top: 0.3rem;
+`;
 
 export const labelSx = css`
     color: ${theme.colors.black};

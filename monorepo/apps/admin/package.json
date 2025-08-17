@@ -4,11 +4,11 @@
     "private": true,
     "scripts": {
         "start": "webpack serve --open --config webpack.prod.js",
-        "dev": "webpack serve --open --config webpack.dev.js",
-        "build": "webpack --config webpack.prod.js",
+        "dev": "NODE_ENV=development webpack serve --open --config webpack.dev.js",
+        "build": "NODE_ENV=production webpack --config webpack.prod.js",
         "lint": "eslint --fix .",
         "format": "prettier --write .",
-        "test": "react-scripts test",
+        "test": "jest --coverage ",
         "eject": "react-scripts eject",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"
@@ -20,6 +20,7 @@
         ]
     },
     "dependencies": {
+        "@channel.io/channel-web-sdk-loader": "^2.0.0",
         "@emotion/react": "^11.13.0",
         "@ssoc/assets": "workspace:*",
         "@ssoc/constants": "workspace:*",
@@ -29,9 +30,13 @@
         "@ssoc/utils": "workspace:*",
         "@tanstack/react-query": "^5.74.7",
         "dayjs": "^1.11.13",
+        "dotenv-webpack": "^8.1.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "react-router-dom": "^7.1.5"
+        "react-easy-crop": "^5.4.2",
+        "react-router-dom": "^7.1.5",
+        "whatwg-fetch": "^3.6.20",
+        "zustand": "^5.0.6"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
@@ -46,8 +51,11 @@
         "@storybook/test": "^8.5.4",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.3.0",
+        "@types/jest": "^27.0.1",
         "html-webpack-plugin": "^5.6.3",
         "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29",
+        "msw": "^2.9.0",
         "storybook": "^8.5.4",
         "webpack": "^5.97.1",
         "webpack-cli": "^6.0.1",
