@@ -71,8 +71,10 @@ function StepManagementPage() {
         enabled: !!selectedApplicant?.applicantId,
     });
 
-    const { mutate: sendPlainEmail } = emailMutations.usePostPlainEmail();
-    const { mutate: sendInterviewEmail } = emailMutations.usePostInterviewEmail();
+    const { mutate: sendPlainEmail } = emailMutations.usePostPlainEmail(() => setIsOpen(false));
+    const { mutate: sendInterviewEmail } = emailMutations.usePostInterviewEmail(() =>
+        setIsInterviewOpen(false),
+    );
 
     // calculated values
     const isThreeStepProcess = totalSteps.process.length === 3;
@@ -252,14 +254,11 @@ function StepManagementPage() {
     const handlePlainEmail = (subject: string, content: string) => {
         if (!validateEmailInputs(subject, content)) return;
 
-        sendPlainEmail(
-            {
-                announcementId: ANNOUNCEMENT_ID,
-                clubId: CLUB_ID,
-                email: { recipients: emailTargetList, subject, content },
-            },
-            getEmailCallbacks(() => setIsEmailOpen(false)),
-        );
+        sendPlainEmail({
+            announcementId: ANNOUNCEMENT_ID,
+            clubId: CLUB_ID,
+            email: { recipients: emailTargetList, subject, content },
+        });
     };
 
     const handleInterviewEmail = (
@@ -273,17 +272,14 @@ function StepManagementPage() {
         }
         if (!validateEmailInputs(subject, content)) return;
 
-        sendInterviewEmail(
-            {
-                announcementId: ANNOUNCEMENT_ID,
-                clubId: CLUB_ID,
-                email: {
-                    numberOfPeopleByInterviewDates,
-                    emailSendRequest: { recipients: emailTargetList, subject, content },
-                },
+        sendInterviewEmail({
+            announcementId: ANNOUNCEMENT_ID,
+            clubId: CLUB_ID,
+            email: {
+                numberOfPeopleByInterviewDates,
+                emailSendRequest: { recipients: emailTargetList, subject, content },
             },
-            getEmailCallbacks(() => setIsInterviewOpen(false)),
-        );
+        });
     };
 
     const handleEmailDialogOpen = (
@@ -324,21 +320,6 @@ function StepManagementPage() {
 
     // effects
     // etc
-    const getEmailCallbacks = (onClose: () => void) => {
-        return {
-            onSuccess: () => {
-                onClose();
-                toast('이메일 전송이 완료되었어요!', {
-                    type: 'success',
-                    toastTheme: 'colored',
-                });
-            },
-            onError: () => {
-                onClose();
-                toast('이메일 전송에 실패했어요.', { type: 'error', toastTheme: 'colored' });
-            },
-        };
-    };
 
     const validateEmailInputs = (subject: string, content: string): boolean => {
         if (!subject.trim()) {
