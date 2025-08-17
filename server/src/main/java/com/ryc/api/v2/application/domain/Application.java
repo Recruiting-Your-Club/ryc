@@ -26,10 +26,7 @@ public class Application {
 
   @Builder
   private Application(
-      String id,
-      String applicantId,
-      List<Answer> answers,
-      LocalDateTime createdAt) {
+      String id, String applicantId, List<Answer> answers, LocalDateTime createdAt) {
 
     ApplicationValidator.ValidatedApplication validated =
         ApplicationValidator.validateAndSanitize(id, applicantId, answers, createdAt);

@@ -27,15 +27,10 @@ final class ApplicationValidator {
     return string != null ? string.trim() : null;
   }
 
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수
-   * 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스
-   */
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
   static ValidatedApplication validateAndSanitize(
-      String id,
-      String applicantId,
-      List<Answer> answers,
-      LocalDateTime createdAt) {
-    
+      String id, String applicantId, List<Answer> answers, LocalDateTime createdAt) {
+
     // 선택 멤버 변수 기본값 처리
     LocalDateTime resolvedCreatedAt = createdAt != null ? createdAt : LocalDateTime.now();
 
@@ -53,9 +48,7 @@ final class ApplicationValidator {
         .build();
   }
 
-  /**
-   * 검증 private 헬퍼 메소드
-   */
+  /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {
@@ -95,8 +88,5 @@ final class ApplicationValidator {
   /** 접근 제한자 package-private 준수 */
   @Builder(access = AccessLevel.PRIVATE)
   record ValidatedApplication(
-      String id,
-      String applicantId,
-      List<Answer> answers,
-      LocalDateTime createdAt) {}
+      String id, String applicantId, List<Answer> answers, LocalDateTime createdAt) {}
 }

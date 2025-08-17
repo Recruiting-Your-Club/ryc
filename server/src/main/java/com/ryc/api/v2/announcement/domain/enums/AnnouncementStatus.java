@@ -18,6 +18,7 @@ public enum AnnouncementStatus {
    */
   public static AnnouncementStatus from(
       AnnouncementPeriodInfo announcementPeriodInfo, AnnouncementType type) {
+    // TODO: 서비스에서 announcementPeriodInfo, type null 아닌상태로 들어오는거 보장하듯이 코드 짜야함. 근데 지금 이게 init에서 호출되어서 이 검증책임이 Announcement한테 달림. 서비스로 빼야함
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime startDate = announcementPeriodInfo.applicationPeriod().startDate();
     LocalDateTime endDate = announcementPeriodInfo.applicationPeriod().endDate();

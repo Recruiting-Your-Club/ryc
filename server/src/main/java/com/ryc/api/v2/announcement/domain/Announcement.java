@@ -18,7 +18,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Announcement {
   // Announcement 정보
   private final String id;
@@ -45,6 +44,53 @@ public class Announcement {
   // timestamp
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
+
+  @Builder
+  private Announcement(
+      String id,
+      String clubId,
+      String title,
+      String numberOfPeople,
+      String detailDescription,
+      String summaryDescription,
+      String target,
+      String field,
+      List<Tag> tags,
+      AnnouncementStatus announcementStatus,
+      AnnouncementType announcementType,
+      Boolean hasInterview,
+      AnnouncementPeriodInfo announcementPeriodInfo,
+      String activityPeriod,
+      ApplicationForm applicationForm,
+      Boolean isDeleted,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+
+    AnnouncementValidator.ValidatedAnnouncement validated =
+        AnnouncementValidator.validateAndSanitize(
+            id, clubId, title, numberOfPeople, detailDescription, summaryDescription,
+            target, field, tags, announcementStatus, announcementType, hasInterview,
+            announcementPeriodInfo, activityPeriod, applicationForm, isDeleted, createdAt, updatedAt);
+
+    this.id = validated.id();
+    this.clubId = validated.clubId();
+    this.title = validated.title();
+    this.numberOfPeople = validated.numberOfPeople();
+    this.detailDescription = validated.detailDescription();
+    this.summaryDescription = validated.summaryDescription();
+    this.target = validated.target();
+    this.field = validated.field();
+    this.tags = validated.tags();
+    this.announcementStatus = validated.announcementStatus();
+    this.announcementType = validated.announcementType();
+    this.hasInterview = validated.hasInterview();
+    this.announcementPeriodInfo = validated.announcementPeriodInfo();
+    this.activityPeriod = validated.activityPeriod();
+    this.applicationForm = validated.applicationForm();
+    this.isDeleted = validated.isDeleted();
+    this.createdAt = validated.createdAt();
+    this.updatedAt = validated.updatedAt();
+  }
 
   /**
    * 최초 생성시에만 사용하는 정적 팩토리 메서드
@@ -165,7 +211,7 @@ public class Announcement {
   /**
    * 유효 객체 검사
    *
-   * @throws IllegalArgumentException 각 객체가 유효하지 않을 경우
+   * @throws BusinessRuleException 각 객체가 유효하지 않을 경우
    */
   public void validate() {
     // 생성시에는 모집 예정, 모집 중
@@ -174,7 +220,7 @@ public class Announcement {
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
       }
     }
-    // 업데이트시 모집 예정일때만 수정가능
+    // 업데이트시 모집 예정일 때만 수정가능
     else {
       if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
