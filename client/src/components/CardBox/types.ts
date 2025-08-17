@@ -23,7 +23,7 @@ export interface CardBoxProps {
     handleApplicantStatus: (applicantIds: string[], newStatus: string) => void;
     statusLabel: { label: string; status: string }[];
     statusInOwnStep: { pass: string; fail: string };
-    onEmailDialogOpen: (target: string) => void;
+    onEmailDialogOpen: (target: string, ids: string[], isInterviewDialog?: boolean) => void;
     height?: string;
     sx?: CSSObject;
 }

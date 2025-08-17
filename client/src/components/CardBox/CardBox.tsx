@@ -82,8 +82,8 @@ function CardBox({
     const isDisabled = selectedGroup.list.length === 0;
 
     const getEmailTargetType = (): string => {
-        if (step === 'document') return fail ? 'documentFailed' : 'documentPassed';
-        if (step === 'interview') return fail ? 'interviewFailed' : 'interviewPassed';
+        if (step === 'document') return fail ? 'documentFailed' : 'documentPending';
+        if (step === 'interview') return fail ? 'interviewFailed' : 'interviewPending';
         return fail ? 'finalFailed' : 'finalPassed';
     };
 
@@ -222,17 +222,38 @@ function CardBox({
                                         </Text>
                                     )}
                                 </Dropdown.Item>
+                                {getEmailTargetType().includes('interviewPending') && (
+                                    <>
+                                        <Dropdown.Seperator sx={s_dropdownSeparator} />
+                                        <Dropdown.Item
+                                            inset
+                                            sx={s_dropdownItem}
+                                            onClick={() => {
+                                                onEmailDialogOpen(
+                                                    getEmailTargetType(),
+                                                    selectedGroup.ids,
+                                                    true,
+                                                );
+                                            }}
+                                            disabled={isDisabled}
+                                        >
+                                            <Text as="text" type="subCaptionRegular">
+                                                면접 일정 보내기
+                                            </Text>
+                                        </Dropdown.Item>
+                                    </>
+                                )}
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />
                                 <Dropdown.Item
                                     inset
                                     sx={s_dropdownItem}
                                     onClick={() => {
-                                        onEmailDialogOpen(getEmailTargetType());
+                                        onEmailDialogOpen(getEmailTargetType(), selectedGroup.ids);
                                     }}
                                     disabled={isDisabled}
                                 >
                                     <Text as="text" type="subCaptionRegular">
-                                        전체 이메일 보내기
+                                        이메일 보내기
                                     </Text>
                                 </Dropdown.Item>
                                 <Dropdown.Seperator sx={s_dropdownSeparator} />

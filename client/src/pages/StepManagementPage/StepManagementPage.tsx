@@ -79,11 +79,13 @@ function StepManagementPage() {
 
     const documentStepApplicants = stepApplicantList.filter(
         (applicant) =>
-            ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(applicant.status) ||
+            ['DOCUMENT_PENDING', 'DOCUMENT_FAIL'].includes(applicant.status) ||
             (!isThreeStepProcess && ['FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status)),
     );
     const interviewStepApplicants = stepApplicantList.filter((applicant) =>
-        ['INTERVIEW_PASS', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status),
+        ['INTERVIEW_PENDING', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
+            applicant.status,
+        ),
     );
 
     const documentApplicantIds = documentStepApplicants.map((applicant) => applicant.applicantId);
@@ -112,9 +114,9 @@ function StepManagementPage() {
         enabled:
             !!selectedApplicant &&
             [
-                'DOCUMENT_PASS',
+                'DOCUMENT_PENDING',
                 'DOCUMENT_FAIL',
-                'INTERVIEW_PASS',
+                'INTERVIEW_PENDING',
                 'INTERVIEW_FAIL',
                 'FINAL_PASS',
                 'FINAL_FAIL',
@@ -128,30 +130,30 @@ function StepManagementPage() {
         }),
         enabled:
             !!selectedApplicant &&
-            ['INTERVIEW_PASS', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
+            ['INTERVIEW_PENDING', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
                 selectedApplicant.status,
             ),
     });
 
     const statusLabel = isThreeStepProcess
         ? [
-              { label: '서류', status: 'DOCUMENT_PASS' },
-              { label: '면접 평가', status: 'INTERVIEW_PASS' },
+              { label: '서류', status: 'DOCUMENT_PENDING' },
+              { label: '면접 평가', status: 'INTERVIEW_PENDING' },
               { label: '최종', status: 'FINAL_PASS' },
           ]
         : [
-              { label: '지원서 접수', status: 'DOCUMENT_PASS' },
+              { label: '지원서 접수', status: 'DOCUMENT_PENDING' },
               { label: '최종', status: 'FINAL_PASS' },
           ];
 
     const statusInOwnStep = isThreeStepProcess
         ? [
-              { pass: 'DOCUMENT_PASS', fail: 'DOCUMENT_FAIL' },
-              { pass: 'INTERVIEW_PASS', fail: 'INTERVIEW_FAIL' },
+              { pass: 'DOCUMENT_PENDING', fail: 'DOCUMENT_FAIL' },
+              { pass: 'INTERVIEW_PENDING', fail: 'INTERVIEW_FAIL' },
               { pass: 'FINAL_PASS', fail: 'FINAL_FAIL' },
           ]
         : [
-              { pass: 'DOCUMENT_PASS', fail: 'DOCUMENT_FAIL' },
+              { pass: 'DOCUMENT_PENDING', fail: 'DOCUMENT_FAIL' },
               { pass: 'FINAL_PASS', fail: 'FINAL_FAIL' },
           ];
 
@@ -181,7 +183,7 @@ function StepManagementPage() {
         selectedApplicant?.applicantId,
     );
 
-    const isOnlyDocumentStatus = ['DOCUMENT_PASS', 'DOCUMENT_FAIL'].includes(
+    const isOnlyDocumentStatus = ['DOCUMENT_PENDING', 'DOCUMENT_FAIL'].includes(
         selectedApplicant?.status ?? '',
     );
     const isInterviewIncluded = !isOnlyDocumentStatus && isThreeStepProcess;
@@ -284,19 +286,36 @@ function StepManagementPage() {
         );
     };
 
-    const handleEmailDialogOpen = (target: string) => {
+    const handleEmailDialogOpen = (
+        target: string,
+        ids: string[],
+        isInterviewDialog: boolean = false,
+    ) => {
+        if (ids.length === 0) {
+            toast('지원자를 선택해주세요!', { toastTheme: 'black', type: 'error' });
+            return;
+        }
+
         const groupMap: Record<string, StepApplicant[]> = {
-            documentPassed: stepApplicantGroups.documentPassed,
+            documentPending: stepApplicantGroups.documentPending,
             documentFailed: stepApplicantGroups.documentFailed,
-            interviewPassed: stepApplicantGroups.interviewPassed ?? [],
+            interviewPending: stepApplicantGroups.interviewPending ?? [],
             interviewFailed: stepApplicantGroups.interviewFailed ?? [],
             finalPassed: stepApplicantGroups.finalPassed,
             finalFailed: stepApplicantGroups.finalFailed,
         };
 
-        setEmailTargetList((groupMap[target] || []).map((applicant) => applicant.email));
+        const applicantsById = new Map(
+            groupMap[target].map((applicant) => [applicant.applicantId, applicant.email] as const),
+        );
 
-        if (target === 'interviewPassed') {
+        const emails = ids
+            .map((id) => applicantsById.get(id))
+            .filter((email): email is string => Boolean(email));
+
+        setEmailTargetList(emails);
+
+        if (isInterviewDialog) {
             setIsInterviewOpen(true);
         } else {
             setIsEmailOpen(true);
@@ -355,7 +374,7 @@ function StepManagementPage() {
                     stepTitle={statusLabel[DOCUMENT_STEP].label}
                     step="document"
                     searchText={searchText}
-                    passedApplicantList={stepApplicantGroups.documentPassed}
+                    passedApplicantList={stepApplicantGroups.documentPending}
                     failedApplicantList={stepApplicantGroups.documentFailed}
                     handleOpen={handleOpen}
                     handleApplicantStatus={handleStatusUpdate}
@@ -372,7 +391,7 @@ function StepManagementPage() {
                         stepTitle={statusLabel[INTERVIEW_STEP].label}
                         step="interview"
                         searchText={searchText}
-                        passedApplicantList={stepApplicantGroups.interviewPassed!}
+                        passedApplicantList={stepApplicantGroups.interviewPending!}
                         failedApplicantList={stepApplicantGroups.interviewFailed!}
                         handleOpen={handleOpen}
                         handleApplicantStatus={handleStatusUpdate}

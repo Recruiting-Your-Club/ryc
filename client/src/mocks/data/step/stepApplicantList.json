@@ -17,14 +17,14 @@
         "applicantId": "3",
         "name": "박철수",
         "email": "chulsoo.park@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:10:00Z"
     },
     {
         "applicantId": "4",
         "name": "이은지",
         "email": "eunji.lee@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:15:00Z"
     },
     {
@@ -36,128 +36,128 @@
     },
     {
         "applicantId": "6",
-        "name": "한지수",
-        "email": "jisoo.han@email.com",
+        "name": "정지훈",
+        "email": "jihun.jung@email.com",
         "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T10:25:00Z"
     },
     {
         "applicantId": "7",
-        "name": "정우진",
-        "email": "woojin.jung@email.com",
-        "status": "FINAL_PASS",
+        "name": "김민아",
+        "email": "mina.kim@email.com",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:30:00Z"
     },
     {
         "applicantId": "8",
-        "name": "윤아름",
-        "email": "areum.yoon@email.com",
-        "status": "INTERVIEW_PASS",
+        "name": "이성민",
+        "email": "sungmin.lee@email.com",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:35:00Z"
     },
     {
         "applicantId": "9",
-        "name": "강태현",
-        "email": "taehyun.kang@email.com",
-        "status": "DOCUMENT_PASS",
+        "name": "박서현",
+        "email": "seohyun.park@email.com",
+        "status": "FINAL_PASS",
         "submittedAt": "2025-08-08T10:40:00Z"
     },
     {
         "applicantId": "10",
-        "name": "서지원",
-        "email": "jiwon.seo@email.com",
-        "status": "FINAL_PASS",
+        "name": "최은지",
+        "email": "eunji.choi@email.com",
+        "status": "FINAL_FAIL",
         "submittedAt": "2025-08-08T10:45:00Z"
     },
     {
         "applicantId": "11",
-        "name": "임나영",
-        "email": "nayoung.lim@email.com",
-        "status": "INTERVIEW_FAIL",
+        "name": "윤지아",
+        "email": "jia.yun@email.com",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:50:00Z"
     },
     {
         "applicantId": "12",
-        "name": "고준혁",
-        "email": "junhyuk.go@email.com",
-        "status": "DOCUMENT_PASS",
+        "name": "강태민",
+        "email": "taemin.kang@email.com",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:55:00Z"
     },
     {
         "applicantId": "13",
-        "name": "문소연",
-        "email": "soyeon.moon@email.com",
-        "status": "DOCUMENT_FAIL",
+        "name": "서지연",
+        "email": "jiyeon.seo@email.com",
+        "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T11:00:00Z"
     },
     {
         "applicantId": "14",
-        "name": "전동현",
-        "email": "donghyun.jeon@email.com",
-        "status": "INTERVIEW_PASS",
+        "name": "한승우",
+        "email": "seungwoo.han@email.com",
+        "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T11:05:00Z"
     },
     {
         "applicantId": "15",
-        "name": "배수현",
-        "email": "suhyun.bae@email.com",
-        "status": "INTERVIEW_FAIL",
+        "name": "이하나",
+        "email": "hana.lee@email.com",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:10:00Z"
     },
     {
         "applicantId": "16",
-        "name": "장민우",
-        "email": "minwoo.jang@email.com",
-        "status": "FINAL_PASS",
+        "name": "김준호",
+        "email": "junho.kim@email.com",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T11:15:00Z"
     },
     {
         "applicantId": "17",
-        "name": "오지훈",
-        "email": "jihun.oh@email.com",
-        "status": "DOCUMENT_PASS",
+        "name": "박하민",
+        "email": "hamin.park@email.com",
+        "status": "FINAL_PASS",
         "submittedAt": "2025-08-08T11:20:00Z"
     },
     {
         "applicantId": "18",
-        "name": "김다정",
-        "email": "dajung.kim@email.com",
-        "status": "DOCUMENT_FAIL",
+        "name": "정수아",
+        "email": "sua.jung@email.com",
+        "status": "FINAL_FAIL",
         "submittedAt": "2025-08-08T11:25:00Z"
     },
     {
         "applicantId": "19",
-        "name": "윤서연",
-        "email": "seoyeon.yoon@email.com",
-        "status": "FINAL_PASS",
+        "name": "송은채",
+        "email": "eunchae.song@email.com",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T11:30:00Z"
     },
     {
         "applicantId": "20",
-        "name": "이정호",
-        "email": "jeongho.lee@email.com",
-        "status": "INTERVIEW_PASS",
+        "name": "신민규",
+        "email": "mingyu.shin@email.com",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:35:00Z"
     },
     {
         "applicantId": "21",
-        "name": "송은지",
-        "email": "eunji.song@email.com",
-        "status": "DOCUMENT_FAIL",
+        "name": "임지우",
+        "email": "jiwoo.lim@email.com",
+        "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T11:40:00Z"
     },
     {
         "applicantId": "22",
-        "name": "정우성",
-        "email": "woosung.jung@email.com",
-        "status": "FINAL_FAIL",
+        "name": "윤서준",
+        "email": "seojun.yun@email.com",
+        "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T11:45:00Z"
     },
     {
         "applicantId": "23",
         "name": "신현아",
         "email": "hyuna.shin@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:50:00Z"
     },
     {
@@ -178,7 +178,7 @@
         "applicantId": "26",
         "name": "김진영",
         "email": "jinyoung.kim@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T12:05:00Z"
     },
     {
@@ -190,23 +190,23 @@
     },
     {
         "applicantId": "28",
-        "name": "황민서",
-        "email": "minseo.hwang@email.com",
-        "status": "FINAL_PASS",
+        "name": "조윤서",
+        "email": "yunseo.jo@email.com",
+        "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T12:15:00Z"
     },
     {
         "applicantId": "29",
-        "name": "강태민",
-        "email": "taemin.kang@email.com",
-        "status": "DOCUMENT_FAIL",
+        "name": "백승호",
+        "email": "seungho.baek@email.com",
+        "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T12:20:00Z"
     },
     {
         "applicantId": "30",
-        "name": "윤지현",
-        "email": "jihyun.yoon@email.com",
-        "status": "INTERVIEW_PASS",
+        "name": "강태우",
+        "email": "taewoo.kang@email.com",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T12:25:00Z"
     }
 ]

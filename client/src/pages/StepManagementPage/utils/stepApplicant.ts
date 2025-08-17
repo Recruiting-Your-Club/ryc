@@ -20,7 +20,7 @@ export const mergeApplicantWithSummary = (
 ) => {
     return applicants.map((applicant) => {
         const isDocumentStep =
-            applicant.status === 'DOCUMENT_PASS' ||
+            applicant.status === 'DOCUMENT_PENDING' ||
             applicant.status === 'DOCUMENT_FAIL' ||
             (!isThreeStepProcess && ['FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status));
 
@@ -48,20 +48,20 @@ export const groupStepApplicants = (
     isThreeStepProcess: boolean,
 ) => {
     const grouped = {
-        documentPassed: [] as typeof applicants,
+        documentPending: [] as typeof applicants,
         documentFailed: [] as typeof applicants,
         finalPassed: [] as typeof applicants,
         finalFailed: [] as typeof applicants,
         ...(isThreeStepProcess && {
-            interviewPassed: [] as typeof applicants,
+            interviewPending: [] as typeof applicants,
             interviewFailed: [] as typeof applicants,
         }),
     };
 
     for (const applicant of applicants) {
         switch (applicant.status) {
-            case 'DOCUMENT_PASS':
-                grouped.documentPassed.push(applicant);
+            case 'DOCUMENT_PENDING':
+                grouped.documentPending.push(applicant);
                 break;
             case 'DOCUMENT_FAIL':
                 grouped.documentFailed.push(applicant);
@@ -72,8 +72,8 @@ export const groupStepApplicants = (
             case 'FINAL_FAIL':
                 grouped.finalFailed.push(applicant);
                 break;
-            case 'INTERVIEW_PASS':
-                if (isThreeStepProcess) grouped.interviewPassed?.push(applicant);
+            case 'INTERVIEW_PENDING':
+                if (isThreeStepProcess) grouped.interviewPending?.push(applicant);
                 break;
             case 'INTERVIEW_FAIL':
                 if (isThreeStepProcess) grouped.interviewFailed?.push(applicant);
