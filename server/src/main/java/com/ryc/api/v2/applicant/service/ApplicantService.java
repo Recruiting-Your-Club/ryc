@@ -16,6 +16,7 @@ import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantStatusRequest;
 import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantGetResponse;
+import com.ryc.api.v2.applicant.service.event.ApplicantDeletedEvent;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
@@ -116,6 +117,7 @@ public class ApplicantService {
 
   @Transactional
   public void deleteApplicants(List<String> applicantIds) {
+    eventPublisher.publishEvent(new ApplicantDeletedEvent(applicantIds));
     applicantRepository.deleteAllByIdIn(applicantIds);
     applicationRepository.deleteAllByApplicantIds(applicantIds);
   }
@@ -124,12 +126,13 @@ public class ApplicantService {
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event
-        .announcementId()
+        .announcementIds()
         .forEach(
             announcementId -> {
               List<String> applicantIds =
                   applicantRepository.findAllIdByAnnouncementId(announcementId);
-              deleteApplicants(applicantIds);
+              applicantRepository.deleteAllByIdIn(applicantIds);
+              applicationRepository.deleteAllByApplicantIds(applicantIds);
             });
   }
 }

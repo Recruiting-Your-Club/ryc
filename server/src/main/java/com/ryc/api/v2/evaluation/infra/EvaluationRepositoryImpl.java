@@ -82,4 +82,9 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
   public void deleteById(String evaluationId) {
     evaluationJpaRepository.deleteById(evaluationId);
   }
+
+  @Override
+  public void deleteAllByApplicantId(String applicantId) {
+    evaluationJpaRepository.deleteByApplicantEntityId(applicantId);
+  }
 }

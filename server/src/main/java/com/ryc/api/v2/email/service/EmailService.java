@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.service.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
@@ -132,6 +133,12 @@ public class EmailService {
   public void incrementRetryCount(Email email) {
     Email updatedEmail = email.incrementRetryCount();
     emailRepository.save(updatedEmail);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
+    event.announcementIds().forEach(emailRepository::deleteAllByAnnouncementId);
   }
 
   private String createHtmlLink(String clubId, String announcementId, String applicantId) {

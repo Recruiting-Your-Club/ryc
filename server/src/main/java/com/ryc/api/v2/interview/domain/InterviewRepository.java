@@ -23,4 +23,8 @@ public interface InterviewRepository {
   Optional<InterviewSlot> findSlotByApplicantIdForUpdate(String applicantId);
 
   Boolean isReservedByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
+
+  void deleteSlotsByAnnouncementId(String announcementId);
+
+  void deleteReservationsByApplicantIdIn(List<String> applicantIds);
 }

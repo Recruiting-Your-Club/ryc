@@ -1,5 +1,6 @@
 package com.ryc.api.v2.interview.infra.jpa;
 
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.persistence.LockModeType;
@@ -31,4 +32,6 @@ public interface InterviewReservationJpaRepository
     AND r.applicant.id = :applicantId
 """)
   Boolean existsByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
+
+  void deleteByApplicantIdIn(List<String> applicantIds);
 }

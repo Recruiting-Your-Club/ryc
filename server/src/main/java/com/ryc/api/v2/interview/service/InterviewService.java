@@ -6,13 +6,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
+import com.ryc.api.v2.announcement.service.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.service.event.ApplicantDeletedEvent;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
@@ -250,6 +253,18 @@ public class InterviewService {
         .interviewReservationId(reservationId)
         .interviewSlot(slotGetResponse)
         .build();
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
+    event.announcementIds().forEach(interviewRepository::deleteSlotsByAnnouncementId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
+    interviewRepository.deleteReservationsByApplicantIdIn(event.applicantIds());
   }
 
   private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {

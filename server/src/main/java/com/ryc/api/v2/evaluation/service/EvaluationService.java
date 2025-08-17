@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.ryc.api.v2.applicant.service.event.ApplicantDeletedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -318,5 +320,11 @@ public class EvaluationService {
             .toList();
 
     return new EvaluationOverviewSearchResponse(overviewDataList);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
+    event.applicantIds().forEach(evaluationRepository::deleteAllByApplicantId);
   }
 }
