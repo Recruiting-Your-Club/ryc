@@ -4,18 +4,13 @@ export interface FileMetadata {
     contentType: string;
 }
 
-export const postFileAndGetPresignedUrl = async (
-    baseUrl: string,
-    fileMetadata: FileMetadata,
-    requireAuth: boolean = false,
-) => {
+export const postFileAndGetPresignedUrl = async (baseUrl: string, fileMetadata: FileMetadata) => {
     const response = await fetch(`${baseUrl}files/presigned-url`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(fileMetadata),
-        credentials: requireAuth ? 'include' : 'omit',
     });
 
     if (!response.ok) {
@@ -25,18 +20,13 @@ export const postFileAndGetPresignedUrl = async (
     return response.json();
 };
 
-export const confirmUpload = async (
-    baseUrl: string,
-    fileMetadataId: string,
-    requireAuth: boolean = false,
-) => {
+export const confirmUpload = async (baseUrl: string, fileMetadataId: string) => {
     const response = await fetch(`${baseUrl}files/confirm-upload`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ fileMetadataId }),
-        credentials: requireAuth ? 'include' : 'omit',
     });
 
     if (!response.ok) {

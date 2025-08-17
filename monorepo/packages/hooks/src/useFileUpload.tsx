@@ -7,16 +7,11 @@ interface PresignedUrlResponse {
     presignedUrl: string;
 }
 
-interface UseFileUploadProps {
-    baseUrl: string;
-    requireAuth?: boolean;
-}
-
-export const useFileUpload = ({ baseUrl, requireAuth = false }: UseFileUploadProps) => {
+export const useFileUpload = (baseUrl: string) => {
     // 1단계: 파일 메타데이터를 보내서 presigned URL 받기
     const getPresignedUrlMutation = useMutation({
         mutationFn: async (fileMetadata: FileMetadata): Promise<PresignedUrlResponse> => {
-            return postFileAndGetPresignedUrl(baseUrl, fileMetadata, requireAuth);
+            return postFileAndGetPresignedUrl(baseUrl, fileMetadata);
         },
     });
 
@@ -42,7 +37,7 @@ export const useFileUpload = ({ baseUrl, requireAuth = false }: UseFileUploadPro
     // 3단계: 업로드 완료 확인
     const confirmUploadMutation = useMutation({
         mutationFn: async (fileMetadataId: string) => {
-            return confirmUpload(baseUrl, fileMetadataId, requireAuth);
+            return confirmUpload(baseUrl, fileMetadataId);
         },
     });
 

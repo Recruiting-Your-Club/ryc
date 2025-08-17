@@ -54,7 +54,6 @@ function ClubApplyPage() {
     const { toast } = useToast();
     const { uploadFiles, isLoading: isFileUploading } = useFileUpload({
         baseUrl: BASE_URL,
-        requireAuth: false,
     });
     // query hooks
     const { data: applicationForm } = useSuspenseQuery(
@@ -173,15 +172,11 @@ function ClubApplyPage() {
     ) => {
         try {
             if (files.length === 0) {
-                // 파일이 없으면 값을 비움
                 handleAnswerChange(questionId, questionTitle, '');
                 return;
             }
 
-            // 단일/여러 파일 모두 uploadFiles로 처리
             const fileMetadataIds = await uploadFiles(files, questionType);
-
-            // 업로드 성공 시 fileMetadataId(s)를 답변으로 저장 (쉼표로 구분)
             const value = fileMetadataIds.join(',');
             handleAnswerChange(questionId, questionTitle, value);
 
