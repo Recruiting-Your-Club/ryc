@@ -14,4 +14,6 @@ public interface RefreshTokenRepository {
   boolean deleteRefreshTokenByAdmin(Admin admin);
 
   void flush();
+
+  void deleteByAdminId(String adminId);
 }

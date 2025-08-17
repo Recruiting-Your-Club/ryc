@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.NoSuchElementException;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminDefaultRole;
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.admin.service.event.AdminDeletedEvent;
 import com.ryc.api.v2.auth.domain.RefreshToken;
 import com.ryc.api.v2.auth.domain.RefreshTokenRepository;
 import com.ryc.api.v2.auth.presentation.request.RegisterRequest;
@@ -123,5 +125,11 @@ public class AuthService {
     if (!deleted) {
       throw new NoSuchElementException("RefreshToken not found for logout.");
     }
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    refreshTokenRepository.deleteByAdminId(event.adminId());
   }
 }

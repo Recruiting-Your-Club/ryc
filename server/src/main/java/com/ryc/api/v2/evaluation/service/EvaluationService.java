@@ -5,13 +5,14 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.ryc.api.v2.applicant.service.event.ApplicantDeletedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.admin.service.event.AdminDeletedEvent;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.service.event.ApplicantDeletedEvent;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
@@ -326,5 +327,11 @@ public class EvaluationService {
   @EventListener
   protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
     event.applicantIds().forEach(evaluationRepository::deleteAllByApplicantId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    evaluationRepository.deleteAllByAdminId(event.adminId());
   }
 }

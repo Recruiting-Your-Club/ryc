@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.service.AdminService;
+import com.ryc.api.v2.admin.service.event.AdminDeletedEvent;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
@@ -137,5 +138,11 @@ public class ClubRoleService {
   @Transactional
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     clubRoleRepository.deleteByClubId(event.clubId());
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    clubRoleRepository.deleteByUserId(event.adminId());
   }
 }
