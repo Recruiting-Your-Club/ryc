@@ -44,4 +44,9 @@ public class EmailRepositoryImpl implements EmailRepository {
   public void deleteAllByAnnouncementId(String announcementId) {
     emailJpaRepository.deleteAllByAnnouncementId(announcementId);
   }
+
+  @Override
+  public void deleteAllByAdminId(String adminId) {
+    emailJpaRepository.deleteBySenderId(adminId);
+  }
 }

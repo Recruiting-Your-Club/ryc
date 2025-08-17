@@ -13,4 +13,6 @@ public interface EmailRepository {
   List<Email> findPendingEmails(Pageable pageable);
 
   void deleteAllByAnnouncementId(String announcementId);
+
+  void deleteAllByAdminId(String adminId);
 }

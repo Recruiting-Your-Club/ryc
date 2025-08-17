@@ -6,6 +6,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ryc.api.v2.admin.service.event.AdminDeletedEvent;
+import com.ryc.api.v2.applicant.service.event.ApplicantDeletedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
@@ -139,6 +141,12 @@ public class EmailService {
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().forEach(emailRepository::deleteAllByAnnouncementId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    emailRepository.deleteAllByAdminId(event.adminId());
   }
 
   private String createHtmlLink(String clubId, String announcementId, String applicantId) {

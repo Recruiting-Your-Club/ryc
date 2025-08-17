@@ -15,4 +15,6 @@ public interface EmailJpaRepository extends JpaRepository<EmailEntity, String> {
   List<EmailEntity> findPendingEmails(Pageable pageable);
 
   void deleteAllByAnnouncementId(String announcementId);
+
+  void deleteBySenderId(String adminId);
 }
