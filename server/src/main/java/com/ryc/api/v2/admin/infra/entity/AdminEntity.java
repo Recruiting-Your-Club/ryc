@@ -33,5 +33,5 @@ public class AdminEntity extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private AdminDefaultRole adminDefaultRole;
 
-  private Boolean deleted;
+  private Boolean isDeleted;
 }

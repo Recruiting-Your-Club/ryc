@@ -58,7 +58,9 @@ final class AdminValidator {
     return email != null ? email.trim().toLowerCase() : null;
   }
 
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수
+   * 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스
+   */
   static ValidatedAdmin validateAndSanitize(
       String id,
       String name,
@@ -67,7 +69,7 @@ final class AdminValidator {
       String imageUrl,
       String thumbnailUrl,
       AdminDefaultRole adminDefaultRole,
-      Boolean deleted) {
+      Boolean isDeleted) {
     // 정제
     String cleanName = sanitizeString(name);
     String cleanEmail = sanitizeEmail(email);
@@ -77,7 +79,7 @@ final class AdminValidator {
     // 선택 멤버 변수 기본값 처리
     AdminDefaultRole cleanAdminDefaultRole =
         adminDefaultRole != null ? adminDefaultRole : AdminDefaultRole.USER;
-    Boolean cleanDeleted = deleted != null ? deleted : Boolean.FALSE;
+    Boolean cleanIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
 
     // 검증
     validateId(id);
@@ -87,7 +89,7 @@ final class AdminValidator {
     validateImageUrl(cleanImageUrl);
     validateThumbnailUrl(cleanThumbnailUrl);
     validateAdminDefaultRole(adminDefaultRole);
-    validateDeleted(deleted);
+    validateIsDeleted(isDeleted);
 
     return ValidatedAdmin.builder()
         .id(id)
@@ -97,9 +99,13 @@ final class AdminValidator {
         .imageUrl(cleanImageUrl)
         .thumbnailUrl(cleanThumbnailUrl)
         .adminDefaultRole(cleanAdminDefaultRole)
-        .deleted(cleanDeleted)
+        .isDeleted(cleanIsDeleted)
         .build();
   }
+
+  /**
+   * 검증 private 헬퍼 메소드
+   */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {
@@ -225,9 +231,9 @@ final class AdminValidator {
     }
   }
 
-  private static void validateDeleted(Boolean deleted) {
-    if (deleted == null) {
-      throw new IllegalArgumentException("Deleted cannot be null");
+  private static void validateIsDeleted(Boolean isDeleted) {
+    if (isDeleted == null) {
+      throw new IllegalArgumentException("isDeleted cannot be null");
     }
   }
 
@@ -241,5 +247,5 @@ final class AdminValidator {
       String imageUrl,
       String thumbnailUrl,
       AdminDefaultRole adminDefaultRole,
-      Boolean deleted) {}
+      Boolean isDeleted) {}
 }

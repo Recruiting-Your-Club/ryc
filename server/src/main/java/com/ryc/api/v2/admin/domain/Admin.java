@@ -15,7 +15,7 @@ public class Admin {
   private final String imageUrl;
   private final String thumbnailUrl;
   private final AdminDefaultRole adminDefaultRole;
-  private final Boolean deleted;
+  private final Boolean isDeleted;
 
   @Builder
   private Admin(
@@ -26,11 +26,11 @@ public class Admin {
       String imageUrl,
       String thumbnailUrl,
       AdminDefaultRole adminDefaultRole,
-      Boolean deleted) {
+      Boolean isDeleted) {
 
     AdminValidator.ValidatedAdmin validated =
         AdminValidator.validateAndSanitize(
-            id, name, email, password, imageUrl, thumbnailUrl, adminDefaultRole, deleted);
+            id, name, email, password, imageUrl, thumbnailUrl, adminDefaultRole, isDeleted);
 
     this.id = validated.id();
     this.name = validated.name();
@@ -39,7 +39,7 @@ public class Admin {
     this.imageUrl = validated.imageUrl();
     this.thumbnailUrl = validated.thumbnailUrl();
     this.adminDefaultRole = validated.adminDefaultRole();
-    this.deleted = validated.deleted();
+    this.isDeleted = validated.isDeleted();
   }
 
   // TODO: 해당 메소드를 사용하는 경우는 register시 클라이언트에게 받은 값을 Domain으로 변환시에만 사용된다. 따라서, 파라미터로 해당 requestDTO 고려
@@ -54,7 +54,7 @@ public class Admin {
         .imageUrl("MOCK_PROFILE_IMAGE_URL")
         .thumbnailUrl("MOCK_PROFILE_THUMBNAIL_URL")
         .adminDefaultRole(AdminDefaultRole.USER)
-        .deleted(Boolean.FALSE)
+        .isDeleted(Boolean.FALSE)
         .build();
   }
 }
