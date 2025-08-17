@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
@@ -18,14 +18,28 @@ import {
 } from './ClubApplySuccessPage.style';
 
 function ClubApplySuccessPage() {
+    // prop destruction
+    // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubField } = useClubStore();
-    const { getAnswers } = useApplicationStore();
-    const applicationAnswers = getAnswers(announcementId || '');
-    const { goTo } = useRouter();
+    const { getAnswers, clear } = useApplicationStore();
 
+    const { goTo } = useRouter();
+    // initial values
+    const applicationAnswers = getAnswers(announcementId || '');
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     const userName = applicationAnswers.find((answer) => answer.questionTitle === '이름')?.value;
     const userEmail = applicationAnswers.find((answer) => answer.questionTitle === '이메일')?.value;
+    // handlers
+    // effects
+    useEffect(() => {
+        return () => {
+            clear(announcementId);
+        };
+    }, []);
 
     return (
         <div css={s_applicationSuccessPageContainer}>
