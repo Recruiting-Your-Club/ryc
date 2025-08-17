@@ -42,16 +42,30 @@ export const useFileUpload = (baseUrl: string) => {
     });
 
     // 단일 파일 업로드 프로세스 (내부 사용)
-    const uploadSingleFile = async (file: File, questionType: string): Promise<string> => {
+    const uploadSingleFile = async (file: File, location: string): Promise<string> => {
         try {
             let fileType = '';
-            switch (questionType) {
+            switch (location) {
                 case 'FILE':
                     fileType = 'ANSWER_ATTACHMENT';
                     break;
                 case 'PROFILE_IMAGE':
                     fileType = 'APPLICATION_PROFILE';
                     break;
+                case 'CLUB_CREATE':
+                    fileType = 'CLUB_PROFILE';
+                    break;
+                case 'CLUB_INTRODUCTION':
+                    fileType = 'CLUB_POST_IMAGE';
+                    break;
+                case 'ANNOUNCEMENT_CREATE':
+                    fileType = 'ANNOUNCEMENT_POST_IMAGE';
+                    break;
+                case 'USER_PROFILE_IMAGE':
+                    fileType = 'USER_PROFILE';
+                    break;
+                default:
+                    throw new Error('Invalid question type');
             }
 
             // 1. presigned URL 받기
@@ -78,7 +92,7 @@ export const useFileUpload = (baseUrl: string) => {
     };
 
     // 파일 업로드 프로세스 (단일/여러 파일 모두 지원)
-    const uploadFiles = async (files: File | File[], questionType: string): Promise<string[]> => {
+    const uploadFiles = async (files: File | File[], location: string): Promise<string[]> => {
         try {
             // File 또는 File[] 처리
             const fileArray = Array.isArray(files) ? files : [files];
@@ -88,7 +102,7 @@ export const useFileUpload = (baseUrl: string) => {
             }
 
             const uploadPromises = fileArray.map(async (file) => {
-                return await uploadSingleFile(file, questionType);
+                return await uploadSingleFile(file, location);
             });
 
             // 모든 파일을 병렬로 업로드
