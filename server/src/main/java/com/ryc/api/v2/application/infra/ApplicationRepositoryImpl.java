@@ -60,4 +60,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
                 object -> (String) object[0], // applicantId
                 object -> (LocalDateTime) object[1])); // createdAt
   }
+
+  @Override
+  public void deleteAllByApplicantIds(List<String> applicantIds) {
+    applicationJpaRepository.deleteByApplicantIdIn(applicantIds);
+  }
 }

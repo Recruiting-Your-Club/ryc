@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.service.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantPersonalInfo;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
@@ -28,7 +30,7 @@ public class ApplicantService {
   private final ApplicantRepository applicantRepository;
   private final ApplicationRepository applicationRepository;
   private final FileService fileService;
-  private final AnnouncementRepository announcementRepository;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public void changeApplicantStatus(String applicantId, ApplicantStatusRequest statusRequest) {
@@ -110,5 +112,24 @@ public class ApplicantService {
                   .build();
             })
         .toList();
+  }
+
+  @Transactional
+  public void deleteApplicants(List<String> applicantIds) {
+    applicantRepository.deleteAllByIdIn(applicantIds);
+    applicationRepository.deleteAllByApplicantIds(applicantIds);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
+    event
+        .announcementId()
+        .forEach(
+            announcementId -> {
+              List<String> applicantIds =
+                  applicantRepository.findAllIdByAnnouncementId(announcementId);
+              deleteApplicants(applicantIds);
+            });
   }
 }

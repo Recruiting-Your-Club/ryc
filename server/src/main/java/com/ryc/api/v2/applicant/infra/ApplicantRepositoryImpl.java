@@ -79,4 +79,9 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
             Collectors.toMap(
                 ApplicantImageProjection::getApplicantId, ApplicantImageProjection::getImageUrl));
   }
+
+  @Override
+  public void deleteAllByIdIn(List<String> ids) {
+    applicantJpaRepository.deleteByIdIn(ids);
+  }
 }

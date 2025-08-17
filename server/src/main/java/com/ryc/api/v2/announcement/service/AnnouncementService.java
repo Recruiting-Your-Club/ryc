@@ -151,6 +151,7 @@ public class AnnouncementService {
     return new AnnouncementProcessGetResponse(processes);
   }
 
+  @Transactional
   public void deleteAnnouncements(List<String> announcementIds) {
     eventPublisher.publishEvent(new AnnouncementDeletedEvent(announcementIds));
     announcementRepository.deleteAllByIdIn(announcementIds);
