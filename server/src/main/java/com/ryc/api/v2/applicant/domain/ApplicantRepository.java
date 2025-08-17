@@ -7,8 +7,6 @@ import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 
 public interface ApplicantRepository {
 
-  String findEmailById(String id);
-
   Applicant save(Applicant applicant);
 
   Applicant findById(String id);
@@ -18,6 +16,8 @@ public interface ApplicantRepository {
   List<String> findAllIdByAnnouncementId(String announcementId);
 
   List<Applicant> findAllByAnnouncementIdAndStatus(String announcementId, ApplicantStatus status);
+
+  List<Applicant> findByEmails(List<String> emails);
 
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
 

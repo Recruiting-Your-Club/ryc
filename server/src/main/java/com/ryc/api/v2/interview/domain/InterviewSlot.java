@@ -2,12 +2,10 @@ package com.ryc.api.v2.interview.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import com.ryc.api.v2.announcement.domain.vo.Period;
-import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
 
@@ -31,9 +29,16 @@ public class InterviewSlot {
       String creatorId,
       String announcementId,
       Integer maxNumberOfPeople,
-      PeriodRequest periodRequest) {
+      LocalDateTime start,
+      Integer interviewDuration) {
 
-    Period period = Period.from(periodRequest);
+    Period period =
+        Period.builder().startDate(start).endDate(start.plusMinutes(interviewDuration)).build();
+
+    if (!period.startDate().toLocalDate().equals(period.endDate().toLocalDate())) {
+      throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_PERIOD_INVALID);
+    }
+
     return InterviewSlot.builder()
         .id(DEFAULT_INITIAL_ID)
         .creatorId(creatorId)
@@ -49,6 +54,15 @@ public class InterviewSlot {
     int maxCount = this.maxNumberOfPeople;
     List<InterviewReservation> newInterviewReservations =
         new ArrayList<>(this.interviewReservations);
+
+    this.interviewReservations.stream()
+        .filter(r -> r.getApplicant().getId().equals(newReservation.getApplicant().getId()))
+        .findFirst()
+        .ifPresent(
+            existingReservation -> {
+              // 이미 예약된 지원자의 경우 예외 발생
+              throw new InterviewException(InterviewErrorCode.APPLICANT_ALREADY_RESERVED);
+            });
 
     if (maxNumberOfPeople == interviewReservations.size()) {
       if (allowOverMax) {
@@ -71,10 +85,9 @@ public class InterviewSlot {
         .build();
   }
 
-  public InterviewSlot removeInterviewReservationById(InterviewReservation reservation) {
-    List<InterviewReservation> newInterviewReservations =
-        new ArrayList<>(this.interviewReservations);
-    newInterviewReservations.remove(reservation);
+  public InterviewSlot removeReservation(InterviewReservation reservation) {
+    Set<InterviewReservation> newInterviewReservations = new HashSet<>(this.interviewReservations);
+    newInterviewReservations.removeIf(r -> r.getId().equals(reservation.getId()));
 
     return InterviewSlot.builder()
         .id(this.id)
@@ -86,15 +99,18 @@ public class InterviewSlot {
         .build();
   }
 
-  public InterviewReservation getInterviewReservationById(String reservationId) {
-    return this.interviewReservations.stream()
-        .filter(reservation -> reservation.getId().equals(reservationId))
-        .findFirst()
-        .orElseThrow(() -> new NoSuchElementException("Interview slot not found"));
-  }
-
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
   public List<InterviewReservation> getInterviewReservations() {
     return List.copyOf(interviewReservations);
+  }
+
+  public InterviewReservation getInterviewReservationByApplicantId(String applicantId) {
+    return interviewReservations.stream()
+        .filter(reservation -> reservation.getApplicant().getId().equals(applicantId))
+        .findFirst()
+        .orElseThrow(
+            () ->
+                new NoSuchElementException(
+                    "Interview reservation not found for applicant: " + applicantId));
   }
 }

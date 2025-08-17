@@ -2,8 +2,11 @@ import { css } from '@emotion/react';
 
 import theme from '@ssoc/styles';
 
+import type { Placement } from './types';
+
 export const s_dropdown = css`
     position: relative;
+    display: inline-block;
 `;
 
 export const s_dropdownTrigger = css`
@@ -35,6 +38,7 @@ export const s_dropdownTrigger = css`
 const baseContent = css`
     z-index: 50;
     min-width: 8rem;
+    isolation: isolate; // stacking context 분리
 
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 0.6rem;
@@ -54,16 +58,31 @@ const baseContent = css`
     }
 `;
 
-export const s_dropdownContent = (offsetX: number, offsetY: number, open: boolean) => {
+export const s_dropdownContent = (
+    offsetX: number,
+    offsetY: number,
+    open: boolean,
+    placement: Placement,
+) => {
     const x = `${offsetX * 0.8}rem`;
     const y = `${offsetY * 0.8}rem`;
 
+    const positionStyles =
+        placement === 'bottom'
+            ? css`
+                  top: calc(100% + 0.4rem);
+                  left: 50%;
+                  transform: translateX(calc(-50% + ${x})) translateY(${y});
+              `
+            : css`
+                  top: 50%;
+                  left: calc(100% + 0.4rem);
+                  transform: translateY(calc(-50% + ${y})) translateX(${x});
+              `;
     return css`
         ${baseContent}
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) translate(${x}, ${y});
+        //${positionStyles}
         opacity: 0;
         pointer-events: none;
         visibility: hidden;

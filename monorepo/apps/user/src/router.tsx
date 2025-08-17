@@ -1,6 +1,6 @@
 import { ClubApplyPage } from '@pages/ClubApplyPage';
 import React, { lazy, Suspense } from 'react';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, ScrollRestoration } from 'react-router';
 
 import { UserLayout } from './layouts';
 import {
@@ -19,7 +19,12 @@ const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <UserLayout />,
+        element: (
+            <>
+                <UserLayout />
+                <ScrollRestoration />
+            </>
+        ),
         children: [
             {
                 index: true,
@@ -45,7 +50,7 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: '/reservation',
+        path: '/reservation/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
         element: <ReservationPage />,
     },
 ]);

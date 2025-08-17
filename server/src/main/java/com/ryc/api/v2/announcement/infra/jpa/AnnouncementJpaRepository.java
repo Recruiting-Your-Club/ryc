@@ -1,6 +1,7 @@
 package com.ryc.api.v2.announcement.infra.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,8 @@ public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEnt
           + "from AnnouncementEntity a "
           + "group by a.clubId")
   List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds);
+
+  @Query(
+      "SELECT c.name FROM ClubEntity c JOIN AnnouncementEntity a ON c.id = a.clubId WHERE a.id = :announcementId")
+  Optional<String> findClubNameByAnnouncementId(String announcementId);
 }

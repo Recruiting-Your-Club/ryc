@@ -18,7 +18,6 @@ import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
-import com.ryc.api.v2.email.presentation.dto.request.InterviewEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.email.service.EmailService;
 import com.ryc.api.v2.role.domain.enums.Role;
@@ -36,7 +35,7 @@ public class EmailHttpApi {
 
   private final EmailService emailService;
 
-  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails")
+  @PostMapping("/announcements/{announcement-id}/emails")
   @HasRole(Role.MEMBER)
   @Operation(summary = "이메일 전송 API", description = "이메일을 전송합니다.")
   @ApiErrorCodeExample(
@@ -44,27 +43,11 @@ public class EmailHttpApi {
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable String clubId,
-      @PathVariable String announcementId,
+      @PathVariable("announcement-id") String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     List<EmailSendResponse> responses =
-        emailService.createEmails(userDetail.getId(), clubId, announcementId, body);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
-  }
-
-  @PostMapping("/clubs/{clubId}/announcements/{announcementId}/emails/interviews")
-  @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 이메일 전송 API", description = "지원자가 면접 일정을 선택할 수 있는 이메일을 전송합니다.")
-  @ApiErrorCodeExample(
-      value = {PermissionErrorCode.class, CommonErrorCode.class},
-      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
-  public ResponseEntity<List<EmailSendResponse>> sendInterviewEmail(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable String clubId,
-      @PathVariable String announcementId,
-      @Valid @RequestBody InterviewEmailSendRequest body) {
-    List<EmailSendResponse> responses =
-        emailService.createInterviewDateEmails(userDetail.getId(), clubId, announcementId, body);
+        emailService.createEmails(
+            userDetail.getId(), announcementId, body.recipients(), body.subject(), body.content());
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 }

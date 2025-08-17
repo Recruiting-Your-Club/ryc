@@ -6,4 +6,4 @@ import lombok.Builder;
 @Builder
 public record InterviewReservationUpdateResponse(
     @Schema(description = "변경된 예약 ID") String interviewReservationId,
-    @Schema(description = "변경된 면접 슬롯 정보") InterviewSlotGetResponse interviewSlot) {}
+    @Schema(description = "변경된 면접 슬롯 정보") InterviewSlotResponse interviewSlot) {}

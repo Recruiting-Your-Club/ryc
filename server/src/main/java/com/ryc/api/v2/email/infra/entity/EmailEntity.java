@@ -23,7 +23,6 @@ public class EmailEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(nullable = false)
   private String senderId;
 
   @Column(nullable = false)
@@ -34,9 +33,6 @@ public class EmailEntity extends BaseEntity {
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String content;
-
-  @Column(nullable = false)
-  private String clubId;
 
   @Column(nullable = false)
   private String announcementId;

@@ -1,10 +1,11 @@
-import { InterviewEvaluationPage } from '@pages/InterviewEvaluationPage';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
-    ClubSearchPage,
+    ClubEditPage,
+    EntryPage,
+    InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
     NotFoundPage,
@@ -17,23 +18,34 @@ const router = createBrowserRouter([
         path: '/',
         element: <ManagerLayout />,
         children: [
-            { index: true, element: <TestPage /> },
-            { path: '*', element: <NotFoundPage /> },
-            { path: 'test', element: <TestPage /> },
-            { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
+            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
+
+            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
+            { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            { path: 'applicants/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            {
+                path: 'interview-evaluation/:clubId/:announcementId?',
+                element: <InterviewEvaluationPage />,
+            },
+            { path: 'document-evaluation/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
         ],
     },
     {
         path: '/',
         element: <EntryLayout />,
         children: [
-            { index: true, element: <TestPage /> },
+            { index: true, element: <EntryPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
-            { path: 'club-search', element: <ClubSearchPage /> },
-            { path: 'myclub', element: <MyClubPage /> },
+            { path: 'myClub', element: <MyClubPage /> },
         ],
     },
 ]);

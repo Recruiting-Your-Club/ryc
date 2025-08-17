@@ -13,7 +13,7 @@ function ConfirmDialog({
     type = 'text',
     title = 'Sample Title입니다.',
     content = 'Sample Content입니다.',
-    dialogSize = 'md',
+    dialogSize = 'sm',
     open,
     backdrop = false,
     titlePosition = 'start',

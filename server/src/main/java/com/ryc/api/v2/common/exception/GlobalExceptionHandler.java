@@ -22,6 +22,7 @@ import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.common.exception.custom.NoPermissionException;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
@@ -36,6 +37,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(ClubException.class)
   public ResponseEntity<Object> handleClubException(ClubException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode);
+  }
+
+  @ExceptionHandler(InterviewException.class)
+  public ResponseEntity<Object> handleInterviewException(InterviewException e) {
     ErrorCode errorCode = e.getErrorCode();
     return handleExceptionInternal(errorCode);
   }

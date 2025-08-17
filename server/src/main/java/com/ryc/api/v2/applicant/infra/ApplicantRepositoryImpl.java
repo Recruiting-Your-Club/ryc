@@ -30,13 +30,6 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   }
 
   @Override
-  public String findEmailById(String id) {
-    return applicantJpaRepository
-        .findEmailById(id)
-        .orElseThrow(() -> new NoSuchElementException("Applicant not found with id: " + id));
-  }
-
-  @Override
   public Applicant findById(String id) {
     return applicantJpaRepository
         .findById(id)
@@ -63,6 +56,13 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   public List<Applicant> findAllByAnnouncementIdAndStatus(
       String announcementId, ApplicantStatus status) {
     return applicantJpaRepository.findAllByAnnouncementIdAndStatus(announcementId, status).stream()
+        .map(ApplicantMapper::toDomain)
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<Applicant> findByEmails(List<String> emails) {
+    return applicantJpaRepository.findAllByEmailIn(emails).stream()
         .map(ApplicantMapper::toDomain)
         .collect(Collectors.toList());
   }
