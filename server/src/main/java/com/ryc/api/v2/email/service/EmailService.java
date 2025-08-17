@@ -81,7 +81,7 @@ public class EmailService {
   @Async
   @EventListener
   @Transactional
-  public void createInterviewEmails(InterviewSlotEmailEvent event) {
+  protected void createInterviewEmails(InterviewSlotEmailEvent event) {
     List<Email> emails = new ArrayList<>();
 
     for (Applicant applicant : event.applicants()) {
@@ -102,7 +102,7 @@ public class EmailService {
   @Async
   @EventListener
   @Transactional
-  public void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
+  protected void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
     String subject = String.format("[면접 예약 완료] %s 면접 예약이 정상적으로 완료되었습니다.", event.clubName());
     String content =
         interviewReservationHtmlTemplate
