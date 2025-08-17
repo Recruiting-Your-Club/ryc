@@ -39,7 +39,7 @@ public class InterviewService {
   private final ApplicantRepository applicantRepository;
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
-  private final ApplicationEventPublisher publisher;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional(readOnly = true)
   public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
@@ -165,7 +165,7 @@ public class InterviewService {
     // 이메일 전송을 위한 이벤트 발행
     List<Applicant> applicants =
         applicantRepository.findByEmails(request.emailSendRequest().recipients());
-    publisher.publishEvent(
+    eventPublisher.publishEvent(
         InterviewSlotEmailEvent.builder()
             .applicants(applicants)
             .subject(request.emailSendRequest().subject())
@@ -203,7 +203,7 @@ public class InterviewService {
     // 이메일 이벤트를 발행
     String clubName =
         announcementRepository.findClubNameByAnnouncementId(savedInterviewSlot.getAnnouncementId());
-    publisher.publishEvent(
+    eventPublisher.publishEvent(
         InterviewReservationEmailEvent.builder()
             .clubName(clubName)
             .applicantEmail(savedReservation.getApplicant().getEmail())

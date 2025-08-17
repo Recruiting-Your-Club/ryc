@@ -19,5 +19,7 @@ public interface ClubRoleRepository {
 
   void deleteByUserId(String adminId);
 
+  void deleteByClubId(String clubId);
+
   int countManagerAndMemberByClubId(String clubId);
 }

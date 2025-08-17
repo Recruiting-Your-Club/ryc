@@ -12,4 +12,6 @@ public interface ClubRepository {
   List<Club> findAll();
 
   boolean existsById(String clubId);
+
+  void deleteById(String clubId);
 }

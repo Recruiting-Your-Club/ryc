@@ -54,4 +54,9 @@ public class ClubRepositoryImpl implements ClubRepository {
   public boolean existsById(String clubId) {
     return clubJpaRepository.existsById(clubId);
   }
+
+  @Override
+  public void deleteById(String clubId) {
+    clubJpaRepository.deleteById(clubId);
+  }
 }

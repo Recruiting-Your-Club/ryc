@@ -116,4 +116,8 @@ public class ClubService {
   public boolean existClubById(String clubId) {
     return clubRepository.existsById(clubId);
   }
+
+  public void deleteClub(String id) {
+    clubRepository.deleteById(id);
+  }
 }
