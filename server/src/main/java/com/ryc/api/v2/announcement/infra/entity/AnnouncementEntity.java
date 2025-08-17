@@ -62,7 +62,7 @@ public class AnnouncementEntity extends BaseEntity {
   @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
   private ApplicationFormEntity applicationForm;
 
-  private Boolean isDeleted;
+  @Builder.Default private Boolean isDeleted = Boolean.FALSE;
 
   public void update(AnnouncementEntity announcement) {
     // announcement update
