@@ -9,7 +9,7 @@ async function postPlainEmail(params: {
     const { announcementId, clubId, email } = params;
 
     return await httpRequest.post({
-        url: `clubs/${clubId}/announcements/${announcementId}/emails/interviews`,
+        url: `announcements/${announcementId}/emails`,
         headers: { 'X-ClUB-ID': clubId },
         body: email,
     });
@@ -23,7 +23,7 @@ async function postInterviewEmail(params: {
     const { announcementId, clubId, email } = params;
 
     return await httpRequest.post({
-        url: `clubs/${clubId}/announcements/${announcementId}/emails/interviews`,
+        url: `admin/clubs/${clubId}/announcements/${announcementId}/interview-slots`,
         headers: { 'X-CLUB-ID': clubId },
         body: email,
     });

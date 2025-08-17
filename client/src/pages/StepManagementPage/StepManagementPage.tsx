@@ -36,14 +36,14 @@ import {
 import { useToast } from '@hooks/useToast';
 import { emailMutations } from '@api/mutationFactory/emailMutations';
 import type { InterviewDetailInformation } from '@api/domain/email/types';
-
-const CLUB_ID = '69cab5c5-c2ff-4bcf-8048-9307c214e566-42';
-const ANNOUNCEMENT_ID = 'd3f1c5e2-8a90-4b6c-9c45-6d2a1c8e5d3f';
+import { useParams } from 'react-router-dom';
 
 function StepManagementPage() {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
+    const { announcementId, clubId } = useParams();
+
     // initial values
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
@@ -58,14 +58,14 @@ function StepManagementPage() {
     const queryClient = useQueryClient();
     const { data: totalSteps = { process: [] } } = useSuspenseQuery(stepQueries.getTotalSteps());
     const { data: stepApplicantList = [] } = useSuspenseQuery(
-        stepQueries.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
+        stepQueries.allStepApplicants(announcementId!, clubId!),
     );
     const { mutate: updateStatus } = stepMutations.useUpdateStepApplicantStatus();
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
-            ANNOUNCEMENT_ID,
+            announcementId!,
             selectedApplicant?.applicantId ?? '',
-            CLUB_ID,
+            clubId!,
         ),
 
         enabled: !!selectedApplicant?.applicantId,
@@ -95,21 +95,21 @@ function StepManagementPage() {
 
     const { data: documentEvaluationSummaryList = [] } = useSuspenseQuery(
         evaluationQueries.evaluationSummary({
-            clubId: CLUB_ID,
+            clubId: clubId!,
             applicantIdList: documentApplicantIds,
             type: 'document',
         }),
     );
     const { data: interviewEvaluationSummaryList = [] } = useSuspenseQuery(
         evaluationQueries.evaluationSummary({
-            clubId: CLUB_ID,
+            clubId: clubId!,
             applicantIdList: interviewApplicantIds,
             type: 'interview',
         }),
     );
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
-            clubId: CLUB_ID,
+            clubId: clubId!,
             applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
             type: 'document',
         }),
@@ -126,7 +126,7 @@ function StepManagementPage() {
     });
     const { data: interviewEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
-            clubId: CLUB_ID,
+            clubId: clubId!,
             applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
             type: 'interview',
         }),
@@ -229,18 +229,18 @@ function StepManagementPage() {
                 {
                     onSuccess: () => {
                         queryClient.invalidateQueries({
-                            queryKey: stepKeys.allStepApplicants(ANNOUNCEMENT_ID, CLUB_ID),
+                            queryKey: stepKeys.allStepApplicants(announcementId!, clubId!),
                         });
                         queryClient.invalidateQueries({
                             queryKey: evaluationKeys.evaluationSummary(
-                                CLUB_ID,
+                                clubId!,
                                 documentApplicantIds,
                                 'document',
                             ),
                         });
                         queryClient.invalidateQueries({
                             queryKey: evaluationKeys.evaluationSummary(
-                                CLUB_ID,
+                                clubId!,
                                 interviewApplicantIds,
                                 'interview',
                             ),
@@ -255,8 +255,8 @@ function StepManagementPage() {
         if (!validateEmailInputs(subject, content)) return;
 
         sendPlainEmail({
-            announcementId: ANNOUNCEMENT_ID,
-            clubId: CLUB_ID,
+            announcementId: announcementId!,
+            clubId: clubId!,
             email: { recipients: emailTargetList, subject, content },
         });
     };
@@ -273,8 +273,8 @@ function StepManagementPage() {
         if (!validateEmailInputs(subject, content)) return;
 
         sendInterviewEmail({
-            announcementId: ANNOUNCEMENT_ID,
-            clubId: CLUB_ID,
+            announcementId: announcementId!,
+            clubId: clubId!,
             email: {
                 numberOfPeopleByInterviewDates,
                 emailSendRequest: { recipients: emailTargetList, subject, content },
