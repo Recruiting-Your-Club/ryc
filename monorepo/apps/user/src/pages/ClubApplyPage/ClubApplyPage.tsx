@@ -52,9 +52,7 @@ function ClubApplyPage() {
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
     const { toast } = useToast();
-    const { uploadFiles, isLoading: isFileUploading } = useFileUpload({
-        baseUrl: BASE_URL,
-    });
+    const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
     // query hooks
     const { data: applicationForm } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
@@ -353,10 +351,10 @@ function ClubApplyPage() {
     }, [answers, getValidationError]);
 
     useEffect(() => {
-        if (clubPersonalInfoQuestions.length > 0 && applicationAnswers.length > 0) {
+        if (applicationAnswers.length > 0) {
             setAnswers(applicationAnswers);
         }
-    }, [clubPersonalInfoQuestions, applicationAnswers]);
+    }, [applicationAnswers]);
 
     return (
         <div css={clubApplyPage}>
