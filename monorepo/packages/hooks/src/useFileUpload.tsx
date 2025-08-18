@@ -8,14 +8,14 @@ interface PresignedUrlResponse {
 }
 
 export const useFileUpload = (baseUrl: string) => {
-    // 1단계: 파일 메타데이터를 보내서 presigned URL 받기
+    // 파일 메타데이터를 보내서 presigned URL 받는 함수
     const getPresignedUrlMutation = useMutation({
         mutationFn: async (fileMetadata: FileMetadata): Promise<PresignedUrlResponse> => {
             return postFileAndGetPresignedUrl(baseUrl, fileMetadata);
         },
     });
 
-    // 2단계: presigned URL로 S3에 파일 업로드
+    // presigned URL로 S3에 파일 업로드 함수
     const uploadToS3Mutation = useMutation({
         mutationFn: async ({ file, presignedUrl }: { file: File; presignedUrl: string }) => {
             const response = await fetch(presignedUrl, {
@@ -34,38 +34,44 @@ export const useFileUpload = (baseUrl: string) => {
         },
     });
 
-    // 3단계: 업로드 완료 확인
+    // 업로드 완료 확인 함수
     const confirmUploadMutation = useMutation({
         mutationFn: async (fileMetadataId: string) => {
             return confirmUpload(baseUrl, fileMetadataId);
         },
     });
 
-    // 단일 파일 업로드 프로세스 (내부 사용)
+    // 단일 파일 업로드 프로세스
     const uploadSingleFile = async (file: File, location: string): Promise<string> => {
         try {
             let fileType = '';
             switch (location) {
                 case 'FILE':
-                    fileType = 'ANSWER_ATTACHMENT';
+                    fileType = 'ANSWER_ATTACHMENT'; // 자소서 파일 첨부 문항
                     break;
                 case 'PROFILE_IMAGE':
-                    fileType = 'APPLICATION_PROFILE';
+                    fileType = 'APPLICATION_PROFILE'; // 지원자 본인 사진 문항
                     break;
-                case 'CLUB_CREATE':
-                    fileType = 'CLUB_PROFILE';
+                case 'CLUB_CREATE': // 동아리 생성 페이지
+                    fileType = 'CLUB_PROFILE'; // 동아리 로고
                     break;
-                case 'CLUB_INTRODUCTION':
-                    fileType = 'CLUB_POST_IMAGE';
+                case 'CLUB_INTRODUCTION_IMAGE': // 동아리 소개 작성 페이지
+                    fileType = 'CLUB_IMAGE'; // 동아리 소개 이미지
                     break;
-                case 'ANNOUNCEMENT_CREATE':
-                    fileType = 'ANNOUNCEMENT_POST_IMAGE';
+                case 'CLUB_EDITOR': // 동아리 소개 작성 페이지의 에디터
+                    fileType = 'CLUB_POST_IMAGE'; // 동아리 소개 에디터 이미지
                     break;
-                case 'USER_PROFILE_IMAGE':
-                    fileType = 'USER_PROFILE';
+                case 'ANNOUNCEMENT_EDITOR': // 공고 작성 페이지의 에디터
+                    fileType = 'ANNOUNCEMENT_POST_IMAGE'; // 공고 에디터 이미지
+                    break;
+                case 'ANNOUNCEMENT_CREATE_IMAGE': // 공고 작성 페이지의 이미지
+                    fileType = 'ANNOUNCEMENT_IMAGE'; // 공고 이미지
+                    break;
+                case 'USER_PROFILE': // 동아리 사용자 페이지
+                    fileType = 'USER_PROFILE_IMAGE'; // 동아리 사용자 페이지 사진
                     break;
                 default:
-                    throw new Error('Invalid question type');
+                    throw new Error('Invalid type');
             }
 
             // 1. presigned URL 받기
@@ -91,10 +97,8 @@ export const useFileUpload = (baseUrl: string) => {
         }
     };
 
-    // 파일 업로드 프로세스 (단일/여러 파일 모두 지원)
     const uploadFiles = async (files: File | File[], location: string): Promise<string[]> => {
         try {
-            // File 또는 File[] 처리
             const fileArray = Array.isArray(files) ? files : [files];
 
             if (fileArray.length === 0) {
