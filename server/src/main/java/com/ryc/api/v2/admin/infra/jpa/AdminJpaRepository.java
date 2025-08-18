@@ -26,7 +26,7 @@ public interface AdminJpaRepository extends JpaRepository<AdminEntity, String> {
                     FROM AdminEntity e
                     WHERE e.id IN :adminIds AND e.isDeleted = false
                 """)
-  List<AdminIdThumbnailProjection> findThumbnailUrlByIds(List<String> adminIds);
+  List<AdminIdThumbnailProjection> findThumbnailUrlByIds(@Param("adminIds") List<String> adminIds);
 
   @Query(
       """
