@@ -15,7 +15,6 @@ import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
-import com.ryc.api.v2.applicant.domain.event.ApplicantDeletedEvent;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
@@ -259,12 +258,6 @@ public class InterviewService {
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().forEach(interviewRepository::deleteSlotsByAnnouncementId);
-  }
-
-  @Transactional
-  @EventListener
-  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
-    interviewRepository.deleteReservationsByApplicantIdIn(event.applicantIds());
   }
 
   private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {

@@ -128,11 +128,7 @@ public class ApplicantService {
     event
         .announcementIds()
         .forEach(
-            announcementId -> {
-              List<String> applicantIds =
-                  applicantRepository.findAllIdByAnnouncementId(announcementId);
-              applicantRepository.deleteAllByIdIn(applicantIds);
-              applicationRepository.deleteAllByApplicantIds(applicantIds);
-            });
+            announcementId ->
+                deleteApplicants(applicantRepository.findAllIdByAnnouncementId(announcementId)));
   }
 }

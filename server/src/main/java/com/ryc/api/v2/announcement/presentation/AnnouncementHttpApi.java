@@ -154,7 +154,8 @@ public class AnnouncementHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_OWNER"})
-  public ResponseEntity<Void> deleteAnnouncements(@RequestBody AnnouncementDeletedRequest body) {
+  public ResponseEntity<Void> deleteAnnouncements(
+      @Valid @RequestBody AnnouncementDeletedRequest body) {
     announcementService.deleteAnnouncements(body.announcementIds());
     return ResponseEntity.noContent().build();
   }
