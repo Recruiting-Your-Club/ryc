@@ -29,11 +29,37 @@ const clubKeys = {
 };
 
 const interviewKeys = {
-    allInterviewSchedules: ['interviewschedules'] as const,
-    allInterviewees: ['interviewees'] as const,
-    intervieweeDetail: (id: number) => ['interviewee-detail', id] as const,
-    documentDetail: (id: number) => ['document-detail', id] as const,
-    evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
+    interviewSlot: (announcementId: string, clubId: string) =>
+        ['interview-slot', announcementId, clubId] as const,
+    interviewInformation: (announcementId: string, interviewSlotId: string, clubId: string) =>
+        ['interview-information', announcementId, interviewSlotId, clubId] as const,
+    unreservedApplicant: (announcementId: string, clubId: string) =>
+        ['unreserved-applicant', announcementId, clubId] as const,
+};
+
+const applicantKeys = {
+    applicantDocument: (announcementId: string, applicantId: string, clubId: string) =>
+        ['applicant-document', announcementId, applicantId, clubId] as const,
+};
+
+const stepKeys = {
+    totalSteps: (announcementId: string) => ['step', announcementId] as const,
+    allStepApplicants: (announcementId: string, clubId: string, status?: string) =>
+        status
+            ? (['step-applicants', announcementId, clubId, status] as const)
+            : (['step-applicants', announcementId, clubId] as const),
+};
+
+const evaluationKeys = {
+    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-summary', clubId, ...applicantIds, type] as const,
+    evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-detail', clubId, ...applicantIds, type] as const,
+    myEvaluationStatus: (
+        clubId: string,
+        applicantIds: string[],
+        type: 'application' | 'interview',
+    ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
 };
 
 const announcementKeys = {
@@ -44,4 +70,4 @@ const announcementKeys = {
     listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
 };
 
-export { clubKeys, interviewKeys, announcementKeys };
+export { clubKeys, myClubKeys, interviewKeys, announcementKeys, applicantKeys, evaluationKeys, stepKeys };

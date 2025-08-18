@@ -1,17 +1,21 @@
-import { Avatar, DocumentBox, Text, TextToggle } from '@components';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
 import React, { useState } from 'react';
+
+import { Avatar, DocumentBox, Text, TextToggle } from '@components';
+
 import {
-    avatarCss,
-    boxContainer,
-    contentSection,
-    documentWrapper,
-    personalDataWrapper,
+    s_avatar,
+    s_boxContainer,
+    s_contentSection,
     s_documentTypeTextWrapper,
+    s_documentWrapper,
+    s_invisibleText,
+    s_personalDataWrapper,
+    s_textGroup,
+    s_titleSection,
     s_titleText,
-    s_valueText,
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
-import type { QuestionAnswer } from '@api/domain/applicant/types';
 
 function InformationBox({
     personalInformation,
@@ -82,10 +86,10 @@ function InformationBox({
                     size="sm"
                 />
             </div>
-            <div css={contentSection}>
+            <div css={s_contentSection}>
                 {(preQuestionAnswers.length > 0 || applicationQuestionAnswers.length > 0) &&
                     isToggle && (
-                        <div css={documentWrapper}>
+                        <div css={s_documentWrapper}>
                             {documentGroups.map(({ label, documents }) =>
                                 documents.length > 0 ? (
                                     <>
@@ -108,9 +112,9 @@ function InformationBox({
                         </div>
                     )}
                 {personalInformation.length > 0 && !isToggle && (
-                    <div css={personalDataWrapper}>
-                        <Avatar sx={avatarCss} imageURL={getPersonalValue('PROFILE_IMAGE')} />
-                        <div css={textSection}>
+                    <div css={s_personalDataWrapper}>
+                        <Avatar sx={s_avatar} imageURL={getPersonalValue('PROFILE_IMAGE')} />
+                        <div css={s_textGroup}>
                             {textMap
                                 .filter((item) => item.value.trim().length > 0)
                                 .map((item) => (
@@ -125,7 +129,7 @@ function InformationBox({
                                     </Text>
                                 ))}
                         </div>
-                        <div css={textSection}>
+                        <div css={s_textGroup}>
                             {textMap
                                 .filter((item) => item.value.trim().length > 0)
                                 .map((item) => (
@@ -141,7 +145,7 @@ function InformationBox({
                         </div>
                     </div>
                 )}
-                {!isVisible && (
+                {!personalInformation?.length && (
                     <div css={s_invisibleText}>
                         <Text as="span" type="captionSemibold" textAlign="center" sx={s_titleText}>
                             지원자 정보가 없습니다.

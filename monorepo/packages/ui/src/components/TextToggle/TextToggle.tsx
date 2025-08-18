@@ -21,6 +21,8 @@ function TextToggle({
     rightText = '내 정보',
     size = 'md',
     sx,
+    rightSx = {},
+    leftSx = {},
     ...props
 }: ToggleProps) {
     return (
@@ -32,10 +34,10 @@ function TextToggle({
                 onChange={handleToggle}
                 {...props}
             />
-            <Text as="div" type={getTextType[size]} sx={leftTextContainer(isChecked)}>
+            <Text as="div" type={getTextType[size]} sx={[leftTextContainer(isChecked), leftSx]}>
                 {leftText}
             </Text>
-            <Text as="div" type={getTextType[size]} sx={rightTextContainer(isChecked)}>
+            <Text as="div" type={getTextType[size]} sx={[rightTextContainer(isChecked), rightSx]}>
                 {rightText}
             </Text>
         </label>

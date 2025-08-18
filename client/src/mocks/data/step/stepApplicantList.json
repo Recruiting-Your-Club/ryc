@@ -17,14 +17,14 @@
         "applicantId": "3",
         "name": "박철수",
         "email": "chulsoo.park@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:10:00Z"
     },
     {
         "applicantId": "4",
         "name": "이은지",
         "email": "eunji.lee@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:15:00Z"
     },
     {
@@ -52,14 +52,14 @@
         "applicantId": "8",
         "name": "윤아름",
         "email": "areum.yoon@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:35:00Z"
     },
     {
         "applicantId": "9",
         "name": "강태현",
         "email": "taehyun.kang@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:40:00Z"
     },
     {
@@ -80,7 +80,7 @@
         "applicantId": "12",
         "name": "고준혁",
         "email": "junhyuk.go@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:55:00Z"
     },
     {
@@ -91,10 +91,10 @@
         "submittedAt": "2025-08-08T11:00:00Z"
     },
     {
-        "applicantId": "14",
+        "applicantId": "14", 
         "name": "전동현",
         "email": "donghyun.jeon@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:05:00Z"
     },
     {
@@ -115,7 +115,7 @@
         "applicantId": "17",
         "name": "오지훈",
         "email": "jihun.oh@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T11:20:00Z"
     },
     {
@@ -136,7 +136,7 @@
         "applicantId": "20",
         "name": "이정호",
         "email": "jeongho.lee@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:35:00Z"
     },
     {
@@ -157,7 +157,7 @@
         "applicantId": "23",
         "name": "신현아",
         "email": "hyuna.shin@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:50:00Z"
     },
     {
@@ -178,7 +178,7 @@
         "applicantId": "26",
         "name": "김진영",
         "email": "jinyoung.kim@email.com",
-        "status": "DOCUMENT_PASS",
+        "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T12:05:00Z"
     },
     {
@@ -206,7 +206,7 @@
         "applicantId": "30",
         "name": "윤지현",
         "email": "jihyun.yoon@email.com",
-        "status": "INTERVIEW_PASS",
+        "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T12:25:00Z"
     }
 ]

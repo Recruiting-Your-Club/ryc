@@ -1,6 +1,5 @@
-import type { CSSObject } from '@emotion/react';
-import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
-import React, { useState } from 'react';
+import type { KeyboardEvent } from 'react';
+import React from 'react';
 
 import Check from '@ssoc/assets/images/select_check.svg';
 

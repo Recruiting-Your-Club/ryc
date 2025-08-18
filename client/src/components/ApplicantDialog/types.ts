@@ -1,29 +1,15 @@
-import type { evaluation } from '@constants/applicantDialog';
-
-export type EvaluationType = (typeof evaluation)[number];
-
-export interface Evaluator {
-    id: number;
-    name: string;
-    score: number;
-    comment: string;
-}
-
-export interface Document {
-    question: string;
-    answer: string;
-}
-export interface Evaluation {
-    type: EvaluationType;
-    averageScore: number;
-    evaluators: Evaluator[];
-}
+import type { PersonalInfo, QuestionAnswer } from '@api/domain/applicant/types';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import type { StepApplicant } from '@api/domain/step/types';
 
 export interface ApplicantDialogProps {
     open: boolean;
     handleClose: () => void;
-    name: string;
-    email: string;
-    documentList: Document[];
-    evaluations: Evaluation[];
+    applicant: StepApplicant;
+    evaluationLabels: string[];
+    personalInformation: PersonalInfo[];
+    preQuestionAnswers: QuestionAnswer[];
+    applicationQuestionAnswers: QuestionAnswer[];
+    evaluations: EvaluationDataWithSummary[];
+    isThreeStepProcess: boolean;
 }

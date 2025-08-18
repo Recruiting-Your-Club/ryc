@@ -4,10 +4,10 @@ import { stepKeys } from '@api/querykeyFactory';
 import { queryOptions } from '@tanstack/react-query';
 
 const stepQueries = {
-    getTotalSteps: () =>
+    getTotalSteps: (announcementId: string) =>
         queryOptions({
-            queryKey: stepKeys.totalSteps,
-            queryFn: () => getTotalSteps(),
+            queryKey: stepKeys.totalSteps(announcementId),
+            queryFn: () => getTotalSteps({ announcementId }),
         }),
     allStepApplicants: (announcementId: string, clubId: string) =>
         queryOptions<StepApplicant[]>({
