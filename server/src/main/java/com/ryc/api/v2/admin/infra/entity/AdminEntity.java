@@ -11,7 +11,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "admins")
-@SQLDelete(sql = "UPDATE clubs SET is_deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE admins SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
