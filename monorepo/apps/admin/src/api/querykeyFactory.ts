@@ -70,4 +70,4 @@ const announcementKeys = {
     listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
 };
 
-export { clubKeys, myClubKeys, interviewKeys, announcementKeys, applicantKeys, evaluationKeys, stepKeys };
+export { clubKeys, interviewKeys, announcementKeys, applicantKeys, evaluationKeys, stepKeys };
