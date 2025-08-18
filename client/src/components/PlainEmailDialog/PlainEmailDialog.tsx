@@ -1,6 +1,5 @@
 import XIcon from '@assets/images/xIcon.svg';
-import { Button, Dialog, Divider, Input, Text } from '@components/_common';
-import { TextArea } from '@components/_common/TextArea';
+import { Button, Dialog, Divider, Input, Text, TextArea } from '@components';
 import React from 'react';
 import {
     actionCss,

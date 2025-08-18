@@ -20,7 +20,7 @@ function ClubBox({ data }: ClubBoxProps) {
                     >
                         {data.title}
                     </Text>
-                    <Text as="div" type="bodyRegular" textAlign="start" noWrap>
+                    <Text as="div" type="bodyRegular" textAlign="start" noWrap cropped>
                         {data.value}
                     </Text>
                 </div>

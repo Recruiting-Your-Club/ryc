@@ -105,10 +105,9 @@ export interface Period {
 
 export interface Image {
     id: string;
-    fileMetadataId: string;
-    originUrl: string;
-    thumbnailUrl: string;
-    ContentType: string;
+    url: string;
+    originFileName: string;
+    contentType: string;
 }
 
 export interface Announcement {

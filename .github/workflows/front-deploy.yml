@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+    paths:
+      - 'client/**'
+      - 'monorepo/**'
 
 jobs:
   build-and-deploy:
@@ -30,17 +33,19 @@ jobs:
         run: yarn install
         working-directory: ./monorepo
 
-      # 4. user 앱 빌드
+      # 4. user, admin 앱 빌드
       - name: Build user app
         run: |
-            echo "NODE_ENV: $NODE_ENV"
-            echo "BASE_URL: $BASE_URL"
-            echo "API_MOKING: $API_MOKING"
-            yarn build
+          echo "NODE_ENV: $NODE_ENV"
+          echo "BASE_URL: $BASE_URL"
+          echo "API_MOCKING: $API_MOCKING"
+          echo "CHANNEL_PLUGIN_KEY: $CHANNEL_PLUGIN_KEY"
+          yarn build
         working-directory: ./monorepo
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
-          API_MOKING: disabled
+          API_MOCKING: disabled
+          CHANNEL_PLUGIN_KEY: ${{ secrets.CHANNEL_PLUGIN_KEY }}
 
       # 5. AWS 자격 증명 설정
       - name: Configure AWS credentials
@@ -51,11 +56,19 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # 6. 빌드 파일 S3에 업로드
-      - name: Upload to S3
+      - name: Upload user app to S3
         run: |
           aws s3 sync ./monorepo/apps/user/dist s3://${{ secrets.S3_BUCKET_NAME }}/dev/dist --delete
 
+      - name: Upload admin app to S3
+        run: |
+          aws s3 sync ./monorepo/apps/admin/dist s3://${{ secrets.S3_BUCKET_NAME }}/deploy/admin --delete
+
       # 7. CloudFront 캐시 무효
-      - name: Invalidate CloudFront cache
+      - name: Invalidate user app CloudFront cache
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+
+      - name: Invalidate admin app CloudFront cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ADMIN_ID }} --paths "/*"

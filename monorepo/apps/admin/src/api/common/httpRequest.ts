@@ -1,16 +1,37 @@
+import { useAuthStore } from '@stores/authStore';
+
 import { httpClient } from './httpClient';
+import { HttpError } from './httpError';
 import type { RequestBodyOption, RequestWithoutBodyOption } from './types';
 import type { HttpMethod } from './types';
 
 const httpRequest = {
-    request<T>(method: HttpMethod, { ...option }: RequestBodyOption): Promise<T> {
-        const data = httpClient
-            .createHttpRequest({
+    async request<T>(
+        method: HttpMethod,
+        option: RequestBodyOption | RequestWithoutBodyOption,
+    ): Promise<T> {
+        const attempt = async (): Promise<T> => {
+            const response = await httpClient.createHttpRequest({
                 method,
                 ...option,
-            })
-            .then((response) => httpClient.handleResponse<T>(response));
-        return data;
+            });
+
+            return httpClient.handleResponse<T>(response);
+        };
+
+        try {
+            return await attempt();
+        } catch (error) {
+            if (error instanceof HttpError && error.statusCode === 401) {
+                //silent refresh (access Token 재발급 시도)
+                const newToken = await useAuthStore.getState().bootstrap();
+                if (newToken) {
+                    //재시도
+                    return await attempt();
+                }
+            }
+            throw error;
+        }
     },
 
     get<T>({ url, headers, isAuthRequire }: RequestWithoutBodyOption): Promise<T> {

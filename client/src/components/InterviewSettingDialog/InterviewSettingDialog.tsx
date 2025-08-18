@@ -10,14 +10,13 @@ import {
     Text,
     TextArea,
 } from '@components';
-import { s_textareaInner } from '@components/PlainEmailDialog/PlainEmailDialog.style';
 import {
     DEFAULT_END_TIME,
     DEFAULT_NUMBER_VALUE,
     DEFAULT_START_TIME,
     DEFAULT_TIME_VALUE,
     INITIAL_FORM,
-} from '@constants/InterviewSettingDialog';
+} from '@constants/interviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     calendarCss,
@@ -35,6 +34,7 @@ import {
     s_select,
     s_selectContainer,
     s_selectTrigger,
+    s_textareaInner,
     s_textAreaOuter,
     titleInputCss,
     titleWrapper,

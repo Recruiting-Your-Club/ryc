@@ -31,6 +31,10 @@ const announcementHandler = [
 
         return HttpResponse.json(applicationForm, { status: 200 });
     }),
+
+    http.get(`${BASE_URL}clubs/:clubId/announcements`, () => {
+        return HttpResponse.json(announcementByClub as AnnouncementList[], { status: 200 });
+    }),
 ];
 
 export { announcementHandler };

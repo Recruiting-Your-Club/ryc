@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.admin.presentation.response.AdminEmailDuplicatedResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,5 +22,11 @@ public class AdminService {
     return adminRepository
         .findById(id)
         .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + id));
+  }
+
+  @Transactional(readOnly = true)
+  public AdminEmailDuplicatedResponse checkEmailDuplicate(String email) {
+    boolean isDuplicated = adminRepository.existsByEmail(email);
+    return new AdminEmailDuplicatedResponse(isDuplicated);
   }
 }

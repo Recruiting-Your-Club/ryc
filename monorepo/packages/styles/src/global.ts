@@ -139,6 +139,7 @@ const globalStyles = css`
     * {
         box-sizing: border-box;
         -ms-overflow-style: none;
+        overscroll-behavior: none;
     }
 
     ol,

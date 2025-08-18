@@ -1,5 +1,8 @@
 package com.ryc.api.config;
 
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.ryc.api.v2.security.exception.RestAuthenticationEntryPoint;
 import com.ryc.api.v2.security.exception.TokenAccessDeniedHandler;
@@ -29,6 +33,16 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+
+  @Value("${SECURITY_WHITELIST_ALL_METHOD_PATHS}")
+  private String[] whitelistAllPaths;
+
+  @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}")
+  private String[] whitelistGetPaths;
+
+  @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}")
+  private String[] whitelistPostPaths;
+
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtTokenManager jwtTokenManager;
@@ -62,27 +76,14 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             request ->
                 request
-                    .requestMatchers(
-                        "/api/health",
-                        "/api/v2/auth/*",
-                        "/swagger-ui/*",
-                        "/swagger-ui.html",
-                        "/webjars/**",
-                        "/v2/**",
-                        "/v3/**",
-                        "/swagger-resources/**")
+                    .requestMatchers(whitelistAllPaths)
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v2/application/")
+                    .requestMatchers(regexMatchers(whitelistPostPaths, HttpMethod.POST))
                     .permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/api/v2/application/form",
-                        "/api/v2/clubs/*",
-                        "/api/v2/clubs")
+                    .requestMatchers(regexMatchers(whitelistGetPaths, HttpMethod.GET))
                     .permitAll()
                     .anyRequest()
                     .authenticated());
-
     return http.build();
   }
 
@@ -95,5 +96,16 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(
       AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  private RequestMatcher[] regexMatchers(String[] regexes, HttpMethod method) {
+    return Arrays.stream(regexes)
+        .map(
+            pattern ->
+                (RequestMatcher)
+                    request ->
+                        request.getMethod().equals(method.name())
+                            && request.getRequestURI().matches(pattern))
+        .toArray(RequestMatcher[]::new);
   }
 }

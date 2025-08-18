@@ -1,0 +1,39 @@
+package com.ryc.api.v2.admin.presentation;
+
+import jakarta.validation.constraints.Email;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import com.ryc.api.v2.admin.presentation.response.AdminEmailDuplicatedResponse;
+import com.ryc.api.v2.admin.service.AdminService;
+import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
+import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/v2/admin")
+@Validated
+@RequiredArgsConstructor
+@Tag(name = "사용자")
+public class AdminHttpApi {
+
+  private AdminService adminService;
+
+  @GetMapping("/emails/duplicate-check")
+  @Operation(
+      summary = "이메일 중복 확인",
+      description = "주어진 이메일이 이미 사용 중인지 확인합니다. 사용 중이면 true, 아니면 false를 반환합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"INVALID_PARAMETER"})
+  public ResponseEntity<AdminEmailDuplicatedResponse> checkEmailDuplicate(
+      @RequestParam @Email String email) {
+    AdminEmailDuplicatedResponse response = adminService.checkEmailDuplicate(email);
+    return ResponseEntity.ok(response);
+  }
+}

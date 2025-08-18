@@ -1,7 +1,8 @@
 export * from './AuthPage';
+export * from './ClubCreatePage';
+export * from './ClubDetailPage';
 export * from './TestPage';
 export * from './NotFoundPage';
-export * from './ClubDetailPage';
 export * from './MainPage';
 export * from './StepManagementPage';
 export * from './RecruitmentPage';
@@ -12,3 +13,4 @@ export * from './DocumentEvaluationPage';
 export * from './ClubCreatePage';
 export * from './LoadingPage';
 export * from './ClubApplyPage/ClubApplySuccessPage';
+export * from './InterviewEvaluationPage';

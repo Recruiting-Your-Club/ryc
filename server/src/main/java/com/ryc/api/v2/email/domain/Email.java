@@ -2,32 +2,31 @@ package com.ryc.api.v2.email.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
-import java.time.LocalDateTime;
-
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
-public record Email(
-    String id,
-    String recipient,
-    String subject,
-    String content,
-    String announcementId,
-    String adminId,
-    EmailSentStatus status,
-    Integer retryCount,
-    LocalDateTime createdAt,
-    LocalDateTime updatedAt) {
+@Getter
+public class Email {
+
+  private final String id;
+  private final String senderId;
+  private final String recipient;
+  private final String subject;
+  private final String content;
+  private final String announcementId;
+  private final EmailSentStatus status;
+  private final Integer retryCount;
 
   public static Email initialize(
-      String recipient, String subject, String content, String announcementId, String adminId) {
+      String senderId, String recipient, String subject, String content, String announcementId) {
     return Email.builder()
         .id(DEFAULT_INITIAL_ID)
+        .senderId(senderId)
         .recipient(recipient)
         .subject(subject)
         .content(content)
         .announcementId(announcementId)
-        .adminId(adminId)
         .status(EmailSentStatus.PENDING)
         .retryCount(0)
         .build();
@@ -36,11 +35,11 @@ public record Email(
   public Email updateStatus(EmailSentStatus status) {
     return Email.builder()
         .id(this.id)
+        .senderId(this.senderId)
         .recipient(this.recipient)
         .subject(this.subject)
         .content(this.content)
         .announcementId(this.announcementId)
-        .adminId(this.adminId)
         .status(status)
         .retryCount(this.retryCount)
         .build();
@@ -49,11 +48,11 @@ public record Email(
   public Email incrementRetryCount() {
     return Email.builder()
         .id(this.id)
+        .senderId(this.senderId)
         .recipient(this.recipient)
         .subject(this.subject)
         .content(this.content)
         .announcementId(this.announcementId)
-        .adminId(this.adminId)
         .status(this.status)
         .retryCount(this.retryCount + 1)
         .build();

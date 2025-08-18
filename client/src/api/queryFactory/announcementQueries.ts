@@ -5,6 +5,7 @@ import {
     getAnnouncementList,
     getAnnouncementDetail,
     postApplicationAnswers,
+    getAnnouncementsByClub
 } from '@api/domain/announcement/announcement';
 import { ApplicationSubmissionRequest } from '@api/domain/announcement/types';
 
@@ -14,6 +15,12 @@ const announcementQueries = {
             queryKey: announcementKeys.lists(clubId),
             queryFn: () => getAnnouncementList(clubId),
         }),
+    getListByClub: (clubId: string, on: boolean = false) =>
+        queryOptions({
+            queryKey: announcementKeys.listByClub(clubId),
+            queryFn: () => getAnnouncementsByClub(clubId),
+            enabled: on,
+    }),
     getAnnouncementDetail: (announcementId: string) =>
         queryOptions({
             queryKey: announcementKeys.detail(announcementId),
@@ -29,6 +36,12 @@ const announcementQueries = {
             queryKey: announcementKeys.detail(`post-application-answers-${announcementId}`),
             queryFn: () => postApplicationAnswers(announcementId, answerData),
         }),
+};
+
+export { announcementQueries };
+
+const announcementQueries = {
+    
 };
 
 export { announcementQueries };

@@ -50,6 +50,9 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'com.h2database:h2'
+
+    implementation platform('software.amazon.awssdk:bom:2.20.28')
+    implementation 'software.amazon.awssdk:s3'
 }
 
 tasks.named('test') {

@@ -4,17 +4,20 @@ import React, { useMemo, useState } from 'react';
 
 import banner from '@ssoc/assets/images/banner.png';
 import Check from '@ssoc/assets/images/check.svg';
-import { Button, Text } from '@ssoc/ui';
+import { Button, Dropdown, Text } from '@ssoc/ui';
 
 import { MainCard } from '../../components/MainCard/MainCard';
 import { CLUB_CATEGORIES } from '../../constants/club';
 import {
     bannerContainer,
     categoryButton,
+    categoryDropdown,
+    categoryProgressContainer,
     categorySlider,
     clubCategoryContainer,
     clubListContainer,
     divider,
+    dropdownItem,
     emptyElement,
     mainPageContainer,
     progressContainer,
@@ -75,7 +78,7 @@ function MainPage() {
                 <img src={banner} alt="배너 이미지" width="100%" height="100%" />
             </div>
             <div css={totalClubContainer}>
-                <Text type="h4Semibold" color="black">
+                <Text type="bodySemibold" color="black">
                     총 {filteredClubData?.length}개의 동아리
                 </Text>
             </div>
@@ -92,16 +95,39 @@ function MainPage() {
                         {category.name}
                     </Button>
                 ))}
-                <div css={emptyElement} />
-                <Button
-                    variant="text"
-                    size="md"
-                    sx={progressContainer(isProgress)}
-                    onClick={() => setIsProgress((prev) => !prev)}
-                >
-                    <Check css={svgContainer} />
-                    모집중인 동아리만 보기
-                </Button>
+
+                <div css={categoryProgressContainer}>
+                    <Button
+                        variant="text"
+                        size="md"
+                        sx={progressContainer(isProgress)}
+                        onClick={() => setIsProgress((prev) => !prev)}
+                    >
+                        <Check css={svgContainer} />
+                        모집중인 동아리만 보기
+                    </Button>
+                    <Dropdown sx={categoryDropdown}>
+                        <Dropdown.Trigger sx={{ border: 'none', backgroundColor: 'transparent' }}>
+                            <Text type="captionSemibold" color="caption">
+                                {currentCategory.name === '전체'
+                                    ? '카테고리'
+                                    : currentCategory.name}
+                            </Text>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content sx={{ border: 'none' }}>
+                            <Dropdown.Item sx={dropdownItem}>
+                                {CLUB_CATEGORIES.map((category) => (
+                                    <Dropdown.Label
+                                        key={category.name}
+                                        onClick={() => handleCategory(category)}
+                                    >
+                                        {category.name}
+                                    </Dropdown.Label>
+                                ))}
+                            </Dropdown.Item>
+                        </Dropdown.Content>
+                    </Dropdown>
+                </div>
             </div>
             <div css={{ padding: '0 0.5rem' }}>
                 <div css={divider}>

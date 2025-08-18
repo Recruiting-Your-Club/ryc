@@ -3,9 +3,14 @@ import { createBrowserRouter } from 'react-router';
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
-    ClubSearchPage,
+    ClubEditPage,
+    EntryPage,
+    InterviewEvaluationPage,
     LoginPage,
+    MyClubPage,
     NotFoundPage,
+    RecruitCreatePage,
+    RecruitSuccessPage,
     RegisterPage,
     TestPage,
 } from './pages';
@@ -15,21 +20,39 @@ const router = createBrowserRouter([
         path: '/',
         element: <ManagerLayout />,
         children: [
-            { index: true, element: <TestPage /> },
-            { path: '*', element: <NotFoundPage /> },
-            { path: 'test', element: <TestPage /> },
+            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
+
+            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
+            { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            { path: 'applicants/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            {
+                path: 'interview-evaluation/:clubId/:announcementId?',
+                element: <InterviewEvaluationPage />,
+            },
+            { path: 'document-evaluation/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
         ],
     },
     {
         path: '/',
         element: <EntryLayout />,
         children: [
-            { index: true, element: <TestPage /> },
+            { index: true, element: <EntryPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
+
+            //추 후 clubId에 따른 하위 router로 리펙토링 예정
+            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
+            { path: 'test', element: <TestPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
-            { path: 'club-search', element: <ClubSearchPage /> },
+            { path: 'myClub', element: <MyClubPage /> },
         ],
     },
 ]);

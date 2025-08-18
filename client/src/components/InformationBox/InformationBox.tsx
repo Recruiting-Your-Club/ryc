@@ -1,6 +1,4 @@
-import { TextToggle } from '@components';
-import { DocumentBox } from '@components/DocumentBox';
-import { Avatar, Text } from '@components/_common';
+import { Avatar, DocumentBox, Text, TextToggle } from '@components';
 import React, { useState } from 'react';
 import {
     avatarCss,
@@ -8,21 +6,27 @@ import {
     contentSection,
     documentWrapper,
     personalDataWrapper,
+    s_documentTypeTextWrapper,
     s_titleText,
-    textSection,
-    titleSection,
+    s_valueText,
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
 
-function InformationBox({ applicant, documentList, height }: InformationBoxProps) {
+function InformationBox({
+    personalInformation,
+    preQuestionAnswers,
+    applicationQuestionAnswers,
+    height,
+}: InformationBoxProps) {
     // prop destruction
     // lib hooks
     // initial value
     const textMap = [
-        { label: '이름', value: applicant?.name },
-        { label: '이메일', value: applicant?.email },
-        { label: '학번', value: applicant?.studentId },
-        { label: '전화번호', value: applicant?.phone },
+        { label: '이름', value: getPersonalValue('NAME') },
+        { label: '이메일', value: getPersonalValue('EMAIL') },
+        { label: '학번', value: getPersonalValue('STUDENT_ID') },
+        { label: '전화번호', value: getPersonalValue('PHONE_NUMBER') },
     ];
 
     // state, ref, querystring hooks
@@ -31,11 +35,42 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
     // form hooks
     // query hooks
     // calculated values
+    const documentGroups = [
+        { label: '▶ 사전질문', documents: preQuestionAnswers ?? [] },
+        { label: '▶ 자기소개서', documents: applicationQuestionAnswers ?? [] },
+    ];
+
+    const formatAnswer = (question: QuestionAnswer): string => {
+        switch (question.questionType) {
+            case 'LONG_ANSWER':
+            case 'SHORT_ANSWER':
+                return question.textAnswer || '답변 미작성';
+
+            case 'SINGLE_CHOICE':
+            case 'MULTIPLE_CHOICE':
+                return question.selectedOptionIds?.join(', ') || '답변 미선택';
+
+            case 'FILE':
+                return question.fileUrl || '파일 미첨부';
+
+            default:
+                return '답변 미작성';
+        }
+    };
+
     // handlers
     // effects
+    // etc
+    function getPersonalValue(type: string) {
+        return (
+            personalInformation.find((information) => information.questionType === type)?.value ||
+            ''
+        );
+    }
+
     return (
-        <div css={boxContainer(height)}>
-            <div css={titleSection}>
+        <div css={s_boxContainer(height)}>
+            <div css={s_titleSection}>
                 <Text as="span" type="captionSemibold" textAlign="start" sx={s_titleText}>
                     지원자 정보
                 </Text>
@@ -48,46 +83,69 @@ function InformationBox({ applicant, documentList, height }: InformationBoxProps
                 />
             </div>
             <div css={contentSection}>
-                {applicant && isToggle && (
-                    <div css={documentWrapper}>
-                        {documentList?.detail.map((document, index) => (
-                            <DocumentBox
-                                key={index}
-                                index={index}
-                                question={document.question}
-                                answer={document.answer}
-                            />
-                        ))}
+                {(preQuestionAnswers.length > 0 || applicationQuestionAnswers.length > 0) &&
+                    isToggle && (
+                        <div css={documentWrapper}>
+                            {documentGroups.map(({ label, documents }) =>
+                                documents.length > 0 ? (
+                                    <>
+                                        <div css={s_documentTypeTextWrapper}>
+                                            <Text as="span" type="bodyBold" textAlign="start">
+                                                {label}
+                                            </Text>
+                                        </div>
+                                        {documents.map((document, index) => (
+                                            <DocumentBox
+                                                key={document.questionId}
+                                                index={index}
+                                                question={document.questionLabel}
+                                                answer={formatAnswer(document)}
+                                            />
+                                        ))}
+                                    </>
+                                ) : null,
+                            )}
+                        </div>
+                    )}
+                {personalInformation.length > 0 && !isToggle && (
+                    <div css={personalDataWrapper}>
+                        <Avatar sx={avatarCss} imageURL={getPersonalValue('PROFILE_IMAGE')} />
+                        <div css={textSection}>
+                            {textMap
+                                .filter((item) => item.value.trim().length > 0)
+                                .map((item) => (
+                                    <Text
+                                        key={item.label}
+                                        as="span"
+                                        type="captionSemibold"
+                                        color="primary"
+                                        textAlign="end"
+                                    >
+                                        {item.label}
+                                    </Text>
+                                ))}
+                        </div>
+                        <div css={textSection}>
+                            {textMap
+                                .filter((item) => item.value.trim().length > 0)
+                                .map((item) => (
+                                    <Text
+                                        key={item.label}
+                                        as="span"
+                                        type="captionRegular"
+                                        textAlign="start"
+                                    >
+                                        {item.value}
+                                    </Text>
+                                ))}
+                        </div>
                     </div>
                 )}
-                {applicant && !isToggle && (
-                    <div css={personalDataWrapper}>
-                        <Avatar sx={avatarCss} />
-                        <div css={textSection}>
-                            {textMap.map((item) => (
-                                <Text
-                                    key={item.label}
-                                    as="span"
-                                    type="captionSemibold"
-                                    color="primary"
-                                    textAlign="end"
-                                >
-                                    {item.label}
-                                </Text>
-                            ))}
-                        </div>
-                        <div css={textSection}>
-                            {textMap.map((item) => (
-                                <Text
-                                    key={item.label}
-                                    as="span"
-                                    type="captionRegular"
-                                    textAlign="start"
-                                >
-                                    {item.value}
-                                </Text>
-                            ))}
-                        </div>
+                {!isVisible && (
+                    <div css={s_invisibleText}>
+                        <Text as="span" type="captionSemibold" textAlign="center" sx={s_titleText}>
+                            지원자 정보가 없습니다.
+                        </Text>
                     </div>
                 )}
             </div>

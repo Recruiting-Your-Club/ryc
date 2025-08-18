@@ -18,7 +18,7 @@ import lombok.Getter;
 public class Question {
   private final String id;
   private final String label;
-  private boolean isRequired;
+  private final boolean isRequired;
 
   private final List<QuestionOption> options;
 
