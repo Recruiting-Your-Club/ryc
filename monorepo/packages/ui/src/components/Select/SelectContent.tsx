@@ -1,16 +1,13 @@
-import type { CSSObject } from '@emotion/react';
-import type { HTMLAttributes, ReactNode, Ref } from 'react';
+import type { Ref } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 
 import { s_selectContent } from './Select.styles';
 import { useSelectContext } from './SelectContext';
+import type { SelectContentProps } from './types';
 
 /**
  * SelectContent 컴포넌트
  */
-interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    sx?: CSSObject;
-}
 
 function SelectContent(
     { children, sx, ...props }: SelectContentProps,

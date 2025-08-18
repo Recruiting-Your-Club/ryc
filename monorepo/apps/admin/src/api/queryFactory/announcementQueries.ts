@@ -1,4 +1,4 @@
-import { getAllAnnouncements, getDetailAnnouncement } from '@api/domain';
+import { getAllAnnouncements, getAnnouncementsByClub, getDetailAnnouncement } from '@api/domain';
 import { announcementKeys } from '@api/querykeyFactory';
 import { DEFAULT_GCTIME } from '@constants/gcTime';
 import { DEFAULT_STALETIME, PREFETCH_STALETIME } from '@constants/staleTime';
@@ -32,6 +32,12 @@ const announcementQueries = {
             staleTime: DEFAULT_STALETIME,
             gcTime: DEFAULT_GCTIME,
             enabled: !!announcementId,
+        }),
+    getListByClub: (clubId: string, on: boolean = false) =>
+        queryOptions({
+            queryKey: announcementKeys.listByClub(clubId),
+            queryFn: () => getAnnouncementsByClub(clubId),
+            enabled: on,
         }),
 };
 

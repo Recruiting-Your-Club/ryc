@@ -20,19 +20,12 @@ function MyClubPage() {
     // prop destruction
     // lib hooks
     const { goTo } = useRouter();
-
     // initial values
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     const { data: myClubs } = useSuspenseQuery(myClubQueries.all());
-
     // calculated values
-    // handlers
-    const handleGoToClubDetail = (clubId: string) => {
-        goTo(`/clubs/${clubId}`);
-    };
-    // effects
 
     return (
         <div css={myClubPageLayout}>
@@ -47,7 +40,7 @@ function MyClubPage() {
                                 variant="transparent"
                                 size="xl"
                                 sx={clubItem}
-                                onClick={() => handleGoToClubDetail(club.id)}
+                                onClick={() => goTo(`/clubs/${club.id}`)}
                             >
                                 <Avatar radius="10px" imageURL={club.imageUrl} />
                                 <div css={clubItemText}>
@@ -67,7 +60,12 @@ function MyClubPage() {
                         </li>
                     ))}
                 </ul>
-                <Button variant="transparent" size="xl" sx={searchButton}>
+                <Button
+                    variant="transparent"
+                    size="xl"
+                    sx={searchButton}
+                    onClick={() => goTo('/club-create')}
+                >
                     <div css={plusButton}>+</div>
                     <Text type="bodyRegular" color="primary">
                         새 동아리 만들기

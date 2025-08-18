@@ -1,6 +1,8 @@
+import * as ChannelService from '@channel.io/channel-web-sdk-loader';
 import { Global, ThemeProvider } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -15,11 +17,22 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 const queryClient = new QueryClient();
 dayjs.locale('ko'); // dayjs를 한국기준으로 설정
 
+const Channeltalk = async () => {
+    ChannelService.loadScript();
+    ChannelService.boot({
+        pluginKey: `${process.env.CHANNEL_PLUGIN_KEY}`,
+    });
+    return () => {
+        ChannelService.shutdown();
+    };
+};
+
 async function initializeApp() {
     // 개발 환경에서 MSW 활성화
     if (process.env.API_MOCKING === 'enabled') {
         await browserServer.start();
     }
+    await Channeltalk();
     root.render(
         <React.StrictMode>
             <Global styles={globalStyles} />

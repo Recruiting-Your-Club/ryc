@@ -1,0 +1,66 @@
+import type { ReactElement } from 'react';
+import React, { Children, cloneElement, isValidElement, useMemo } from 'react';
+
+import { Step } from './Step';
+import { StepConnector } from './StepConnector';
+import { StepLabel } from './StepLabel';
+import { s_stepper } from './Stepper.style';
+import { StepperContext } from './StepperContext';
+import type { StepperProps } from './types';
+
+const defaultConnector = <StepConnector />;
+
+function StepperRoot({
+    activeStep = 0,
+    alternativeLabel = false,
+    children,
+    component: Component = 'div',
+    connector = defaultConnector,
+    orientation = 'horizontal',
+    sx,
+}: StepperProps) {
+    //prop destruction
+
+    //lib hooks
+    const contextValue = useMemo(
+        () => ({ activeStep, alternativeLabel, connector, orientation }),
+        [activeStep, alternativeLabel, connector, orientation],
+    );
+    //state, ref, querystring hooks
+
+    //form hooks
+
+    //query hooks
+
+    //calculated values
+
+    const steps = Children.toArray(children)
+        .filter(isValidElement)
+        .map((step, index) => {
+            const props = step.props ?? {};
+
+            // NOTE: 기존 step의 props를 유지하면서 새로운 props(index, last) 추가를 위해 cloneElement 사용
+            return cloneElement(step as ReactElement, {
+                index,
+                last: index + 1 === Children.toArray(children).length,
+                ...props,
+            });
+        });
+
+    //effects
+
+    //handlers
+
+    return (
+        <StepperContext.Provider value={contextValue}>
+            <Component css={[s_stepper(orientation, alternativeLabel), sx]}>{steps}</Component>
+        </StepperContext.Provider>
+    );
+}
+
+const Stepper = Object.assign(StepperRoot, {
+    Step: Step,
+    Label: StepLabel,
+});
+
+export { Stepper };

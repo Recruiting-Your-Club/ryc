@@ -1,41 +1,57 @@
-import { InterviewEvaluationPage } from '@pages/InterviewEvaluationPage';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     AnnouncementPage,
     ClubCreatePage,
-    ClubSearchPage,
+    ClubEditPage,
+    EntryPage,
+    InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
     NotFoundPage,
+    RecruitCreatePage,
+    RecruitSuccessPage,
     RegisterPage,
     TestPage,
 } from './pages';
 
 const router = createBrowserRouter([
     {
-        path: '/clubs',
+        path: '/',
         element: <ManagerLayout />,
         children: [
-            { index: true, element: <TestPage /> },
-            { path: '*', element: <NotFoundPage /> },
-            { path: 'test', element: <TestPage /> },
-            { path: ':clubId', element: <TestPage /> },
-            { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
             { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
+            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
+
+            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
+            { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            { path: 'applicants/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            {
+                path: 'interview-evaluation/:clubId/:announcementId?',
+                element: <InterviewEvaluationPage />,
+            },
+            { path: 'document-evaluation/:clubId/:announcementId?', element: <ClubCreatePage /> },
+
+            { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
+            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },
     {
         path: '/',
         element: <EntryLayout />,
         children: [
-            { index: true, element: <TestPage /> },
+            { index: true, element: <EntryPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            { path: 'test', element: <TestPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
-            { path: 'club-search', element: <ClubSearchPage /> },
             { path: 'myClub', element: <MyClubPage /> },
         ],
     },

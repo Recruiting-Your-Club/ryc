@@ -111,7 +111,7 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
             .secure(true)
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());

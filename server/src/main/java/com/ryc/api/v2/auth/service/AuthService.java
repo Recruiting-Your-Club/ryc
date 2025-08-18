@@ -2,8 +2,7 @@ package com.ryc.api.v2.auth.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -66,7 +65,7 @@ public class AuthService {
     Admin admin =
         refreshTokenRepository
             .findAdminByToken(refreshToken)
-            .orElseThrow(() -> new EntityNotFoundException("Refresh token not found."));
+            .orElseThrow(() -> new NoSuchElementException("Refresh token not found."));
 
     // 3. 신규 at 생성
     final String accessToken =
@@ -74,7 +73,7 @@ public class AuthService {
 
     // 4. 기존 rt db삭제
     if (!refreshTokenRepository.deleteRefreshTokenByToken(refreshToken)) {
-      throw new EntityNotFoundException("RefreshToken not found");
+      throw new NoSuchElementException("RefreshToken not found");
     }
 
     // TODO: 추후 update 방식으로 수정하는 것이 안전할 것으로 보임.
@@ -107,7 +106,7 @@ public class AuthService {
     Admin admin =
         adminRepository
             .findById(adminId)
-            .orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + adminId));
+            .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + adminId));
 
     refreshTokenRepository.deleteRefreshTokenByAdmin(admin);
     refreshTokenRepository.flush();
@@ -122,7 +121,7 @@ public class AuthService {
     boolean deleted = refreshTokenRepository.deleteRefreshTokenByToken(refreshToken);
     // TODO: 삭제 실패인지, 해당 토큰이 DB에 없는 것인지 구분 필요.
     if (!deleted) {
-      throw new EntityNotFoundException("RefreshToken not found for logout.");
+      throw new NoSuchElementException("RefreshToken not found for logout.");
     }
   }
 }

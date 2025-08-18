@@ -10,10 +10,13 @@ import com.ryc.api.v2.applicant.infra.entity.ApplicantEntity;
 
 @Repository
 public interface ApplicantJpaRepository extends JpaRepository<ApplicantEntity, String> {
+
   List<ApplicantEntity> findAllByAnnouncementId(String announcementId);
 
   List<ApplicantEntity> findAllByAnnouncementIdAndStatus(
       String announcementId, ApplicantStatus status);
 
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
+
+  List<ApplicantEntity> findAllByEmailIn(List<String> emails);
 }

@@ -9,6 +9,8 @@ export const clubBoxContainer = css`
     column-gap: 10rem;
     row-gap: 2rem;
     background-color: ${theme.colors.gray[100]};
+    //background-color: ${theme.colors.white};
+    //border: 1px solid ${theme.colors.gray[200]};
     padding: 2rem 3rem;
     border-radius: 15px;
 
@@ -19,6 +21,8 @@ export const clubBoxContainer = css`
 
 export const clubBoxItem = css`
     display: flex;
+    align-items: center;
+    gap: 1rem;
     @media (max-width: ${theme.breakpoint.mobile}) {
         gap: 2rem;
     }

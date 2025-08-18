@@ -25,7 +25,7 @@ queryClient.prefetchQueries({
 
 const clubKeys = {
     all: ['clubs'] as const,
-    detail: (clubId: string) => ['detail', clubId] as const,
+    detail: (id: string) => ['detail', id] as const,
 };
 
 const interviewKeys = {
@@ -41,6 +41,7 @@ const announcementKeys = {
     list: (clubId: string) => [...announcementKeys.all, 'list', clubId] as const,
     detail: (announcementId: string) =>
         [...announcementKeys.all, 'detail', announcementId] as const,
+    listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
 };
 
 export { clubKeys, interviewKeys, announcementKeys };

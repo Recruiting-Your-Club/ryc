@@ -10,6 +10,7 @@ function DropdownContent({
     offsetY = 0,
     sx,
     forwardedRef,
+    placement = 'bottom',
     ...props
 }: DropdownContentProps) {
     //prop destruction
@@ -25,7 +26,12 @@ function DropdownContent({
     //handlers
     //effects
     return (
-        <div role="menu" ref={ref} css={[s_dropdownContent(offsetX, offsetY, open), sx]} {...props}>
+        <div
+            role="menu"
+            ref={ref}
+            css={[s_dropdownContent(offsetX, offsetY, open, placement), sx]}
+            {...props}
+        >
             {children}
         </div>
     );

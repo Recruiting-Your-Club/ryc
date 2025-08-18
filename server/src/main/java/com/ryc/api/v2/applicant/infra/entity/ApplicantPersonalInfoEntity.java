@@ -23,6 +23,7 @@ public class ApplicantPersonalInfoEntity {
   private String value;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "applicant_id")
+  @JoinColumn(name = "applicant_id", nullable = false)
+  @Setter
   private ApplicantEntity applicant;
 }
