@@ -17,7 +17,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "announcements")
-@SQLDelete(sql = "UPDATE ryc.announcements SET is_deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE announcements SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
