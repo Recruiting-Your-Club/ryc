@@ -42,7 +42,7 @@ export interface ClubApplyPersonalInfoPageProps {
         questionTitle: string,
         questionType: string,
         files: File[],
-    ) => Promise<void>;
+    ) => void;
     containerStyle: CSSObject;
     getValidationError: (questionTitle: string, value: string) => boolean;
     getErrorMessage: (questionTitle: string, value: string) => string | undefined;
