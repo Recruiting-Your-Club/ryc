@@ -3,7 +3,6 @@ package com.ryc.api.v2.common.validator;
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.common.exception.code.ErrorCode;
-import com.ryc.api.v2.common.exception.custom.FormatException;
 import com.ryc.api.v2.common.exception.custom.InvalidFormatException;
 
 /**
@@ -39,7 +38,7 @@ public abstract class DomainValidator {
   }
 
   /** 최소 길이 검증 */
-  protected static void validateMinLength(String value, int minLength,  ErrorCode errorCode) {
+  protected static void validateMinLength(String value, int minLength, ErrorCode errorCode) {
     if (value.length() < minLength) {
       throw new InvalidFormatException(errorCode);
     }
@@ -68,8 +67,7 @@ public abstract class DomainValidator {
   }
 
   /** 패턴 검증 */
-  protected static void validatePattern(
-      String value, Pattern pattern, ErrorCode errorCode) {
+  protected static void validatePattern(String value, Pattern pattern, ErrorCode errorCode) {
     if (!pattern.matcher(value).matches()) {
       throw new InvalidFormatException(errorCode);
     }
@@ -83,7 +81,8 @@ public abstract class DomainValidator {
   }
 
   /** 특정 문자 포함 여부 검증 */
-  protected static void validateContains(String value, String requiredSubstring, ErrorCode errorCode) {
+  protected static void validateContains(
+      String value, String requiredSubstring, ErrorCode errorCode) {
     if (!value.contains(requiredSubstring)) {
       throw new InvalidFormatException(errorCode);
     }

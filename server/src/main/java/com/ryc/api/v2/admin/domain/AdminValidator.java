@@ -1,5 +1,7 @@
 package com.ryc.api.v2.admin.domain;
 
+import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
+
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.common.validator.DomainValidator;
@@ -45,39 +47,35 @@ final class AdminValidator extends DomainValidator {
       Boolean isDeleted) {
 
     // 공통 검증 메소드 사용
-    validateId(id, "Admin Id");
-    validateName(name, "Admin Name");
-    validateEmail(email, "Admin Email");
-    validateBCryptPassword(password, "Admin Password");
-    validateImageUrl(imageUrl, "Admin Image URL");
-    validateThumbnailUrl(thumbnailUrl, "Admin Thumbnail URL");
-    validateAdminDefaultRole(adminDefaultRole, "Admin Default Role");
-    validateIsDeleted(isDeleted, "Admin IsDeleted");
+    validateId(id);
+    validateName(name);
+    validateEmail(email);
+    validateBCryptPassword(password);
+    validateImageUrl(imageUrl);
+    validateThumbnailUrl(thumbnailUrl);
+    validateAdminDefaultRole(adminDefaultRole);
+    validateIsDeleted(isDeleted);
   }
 
   /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
-  private static void validateId(String id, String fieldName) {
-    validateNotNullOrEmpty(id, fieldName);
-    validatePattern(id, fieldName, UUID_PATTERN, "(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
+  private static void validateId(String id) {
+    validateNotNullOrEmpty(id, ADMIN_ID_NULL_OR_EMPTY);
+    validatePattern(id, UUID_PATTERN, ADMIN_INVALID_ID_FORMAT);
   }
 
-  private static void validateName(String name, String fieldName) {
-    validateNotNullOrEmpty(name, fieldName);
-    validateLengthRange(name, fieldName, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
-    validatePattern(
-        name,
-        fieldName,
-        NAME_PATTERN,
-        "Name can only contain Korean, English letters, numbers, spaces, dots, underscores, and hyphens. Must start with a letter.");
+  private static void validateName(String name) {
+    validateNotNullOrEmpty(name, ADMIN_NAME_NULL_OR_EMPTY);
+    validateLengthRange(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH, ADMIN_INVALID_NAME_LENGTH);
+    validatePattern(name, NAME_PATTERN, ADMIN_INVALID_NAME_FORMAT);
   }
 
   /** RFC 5322 준수 Email */
-  private static void validateEmail(String email, String fieldName) {
-    validateNotNullOrEmpty(email, fieldName);
-    validateMaxLength(email, fieldName, MAX_EMAIL_LENGTH);
-    validateContains(email, fieldName, EMAIL_AT_SYMBOL);
+  private static void validateEmail(String email) {
+    validateNotNullOrEmpty(email, ADMIN_EMAIL_NULL_OR_EMPTY);
+    validateMaxLength(email, MAX_EMAIL_LENGTH, ADMIN_EMAIL_TOO_LONG);
+    validateContains(email, EMAIL_AT_SYMBOL, ADMIN_EMAIL_MISSING_AT_SYMBOL);
 
     int atIndex = email.indexOf(EMAIL_AT_SYMBOL);
     String localPart = email.substring(0, atIndex);
@@ -85,39 +83,42 @@ final class AdminValidator extends DomainValidator {
 
     // 로컬파트 길이 검증
     validateLengthRange(
-        localPart, "Email Local Part", MIN_EMAIL_LOCAL_PART_LENGTH, MAX_EMAIL_LOCAL_PART_LENGTH);
+        localPart,
+        MIN_EMAIL_LOCAL_PART_LENGTH,
+        MAX_EMAIL_LOCAL_PART_LENGTH,
+        ADMIN_EMAIL_LOCAL_PART_INVALID_LENGTH);
 
     // 도메인부 길이 검증 (RFC 5321: 도메인 최대 253자)
-    validateNotNullOrEmpty(domainPart, "Email Domain Part");
-    validateMaxLength(domainPart, "Email Domain Part", MAX_EMAIL_DOMAIN_PART_LENGTH);
+    validateNotNullOrEmpty(domainPart, ADMIN_EMAIL_DOMAIN_PART_NULL_OR_EMPTY);
+    validateMaxLength(domainPart, MAX_EMAIL_DOMAIN_PART_LENGTH, ADMIN_EMAIL_DOMAIN_PART_TOO_LONG);
 
     // RFC 5322 정규식 검증
-    validatePattern(email, fieldName, EMAIL_PATTERN, "according to RFC 5322 standards");
+    validatePattern(email, EMAIL_PATTERN, ADMIN_INVALID_EMAIL_FORMAT);
   }
 
   /** Password, BCrypt 암호화 준수 */
-  private static void validateBCryptPassword(String password, String fieldName) {
-    validateNotNullOrEmpty(password, fieldName);
+  private static void validateBCryptPassword(String password) {
+    validateNotNullOrEmpty(password, ADMIN_PASSWORD_NULL_OR_EMPTY);
 
     // BCrypt 해시 형식 검증
-    validatePattern(password, fieldName, PASSWORD_BCRYPT_PATTERN, "valid BCrypt hash format");
-    validateExactLength(password, fieldName, PASSWORD_BCRYPT_HASH_LENGTH);
+    validatePattern(password, PASSWORD_BCRYPT_PATTERN, ADMIN_INVALID_BCRYPT_PASSWORD_FORMAT);
+    validateExactLength(
+        password, PASSWORD_BCRYPT_HASH_LENGTH, ADMIN_INVALID_BCRYPT_PASSWORD_LENGTH);
   }
 
-  private static void validateImageUrl(String imageUrl, String fieldName) {
+  private static void validateImageUrl(String imageUrl) {
     // TODO: S3 구성이후 유효성 규칙 수정 필요
   }
 
-  private static void validateThumbnailUrl(String thumbnailUrl, String fieldName) {
+  private static void validateThumbnailUrl(String thumbnailUrl) {
     // TODO: S3 구성이후 유효성 규칙 수정 필요
   }
 
-  private static void validateAdminDefaultRole(
-      AdminDefaultRole adminDefaultRole, String fieldName) {
-    validateNotNull(adminDefaultRole, "Admin Default Role");
+  private static void validateAdminDefaultRole(AdminDefaultRole adminDefaultRole) {
+    validateNotNull(adminDefaultRole, ADMIN_DEFAULT_ROLE_NULL);
   }
 
-  private static void validateIsDeleted(Boolean isDeleted, String fieldName) {
-    validateNotNull(isDeleted, "Admin IsDeleted");
+  private static void validateIsDeleted(Boolean isDeleted) {
+    validateNotNull(isDeleted, ADMIN_IS_DELETED_NULL);
   }
 }
