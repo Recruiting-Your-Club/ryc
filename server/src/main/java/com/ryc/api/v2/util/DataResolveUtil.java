@@ -10,7 +10,8 @@ public final class DataResolveUtil {
    * @return null Or Trimed String
    */
   public static String sanitizeString(String string) {
-    return string != null ? string.trim() : null;
+    String sanitizedString = string != null ? string.trim() : null;
+    return emptyToNull(sanitizedString);
   }
 
   /**
@@ -20,6 +21,17 @@ public final class DataResolveUtil {
    * @return null Or Trimed and Lowercased Email
    */
   public static String sanitizeEmail(String email) {
-    return email != null ? email.trim().toLowerCase() : null;
+    String sanitizedEmail = email != null ? email.trim().toLowerCase() : null;
+    return emptyToNull(sanitizedEmail);
+  }
+
+  /**
+   * Trim 이후 빈문자열("")인 경우 null 취급
+   *
+   * @param string
+   * @return
+   */
+  private static String emptyToNull(String string) {
+    return (string != null && string.isEmpty()) ? null : string;
   }
 }

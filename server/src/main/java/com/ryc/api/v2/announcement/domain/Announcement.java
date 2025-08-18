@@ -1,6 +1,7 @@
 package com.ryc.api.v2.announcement.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
@@ -13,6 +14,7 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRe
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -66,45 +68,60 @@ public class Announcement {
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
 
-    AnnouncementValidator.ValidatedAnnouncement validated =
-        AnnouncementValidator.validateAndSanitize(
-            id,
-            clubId,
-            title,
-            numberOfPeople,
-            detailDescription,
-            summaryDescription,
-            target,
-            field,
-            tags,
-            announcementStatus,
-            announcementType,
-            hasInterview,
-            announcementPeriodInfo,
-            activityPeriod,
-            applicationForm,
-            isDeleted,
-            createdAt,
-            updatedAt);
+    // 1. 정제
+    String sanitizeTitle = DataResolveUtil.sanitizeString(title);
+    String sanitizeNumberOfPeople = DataResolveUtil.sanitizeString(numberOfPeople);
+    String sanitizeDetailDescription = DataResolveUtil.sanitizeString(detailDescription);
+    String sanitizeSummaryDescription = DataResolveUtil.sanitizeString(summaryDescription);
+    String sanitizeTarget = DataResolveUtil.sanitizeString(target);
+    String sanitizeField = DataResolveUtil.sanitizeString(field);
+    String sanitizeActivityPeriod = DataResolveUtil.sanitizeString(activityPeriod);
 
-    this.id = validated.id();
-    this.clubId = validated.clubId();
-    this.title = validated.title();
-    this.numberOfPeople = validated.numberOfPeople();
-    this.detailDescription = validated.detailDescription();
-    this.summaryDescription = validated.summaryDescription();
-    this.target = validated.target();
-    this.field = validated.field();
-    this.tags = validated.tags();
-    this.announcementStatus = validated.announcementStatus();
-    this.announcementType = validated.announcementType();
-    this.hasInterview = validated.hasInterview();
-    this.announcementPeriodInfo = validated.announcementPeriodInfo();
-    this.activityPeriod = validated.activityPeriod();
-    this.applicationForm = validated.applicationForm();
-    this.isDeleted = validated.isDeleted();
-    this.createdAt = validated.createdAt();
-    this.updatedAt = validated.updatedAt();
+    // 2. 선택 멤버 변수 기본값 처리
+    List<Tag> resolvedTags = tags != null ? tags : new ArrayList<>();
+    Boolean resolvedHasInterview = hasInterview != null ? hasInterview : Boolean.TRUE;
+    Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
+
+    // 3. 검증
+    AnnouncementValidator.validate(
+        id,
+        clubId,
+        sanitizeTitle,
+        sanitizeNumberOfPeople,
+        sanitizeDetailDescription,
+        sanitizeSummaryDescription,
+        sanitizeTarget,
+        sanitizeField,
+        resolvedTags,
+        announcementStatus,
+        announcementType,
+        resolvedHasInterview,
+        announcementPeriodInfo,
+        sanitizeActivityPeriod,
+        applicationForm,
+        resolvedIsDeleted,
+        createdAt,
+        updatedAt);
+
+    // 4. 할당
+    this.id = id;
+    this.clubId = clubId;
+    this.title = sanitizeTitle;
+    this.numberOfPeople = sanitizeNumberOfPeople;
+    this.detailDescription = sanitizeDetailDescription;
+    this.summaryDescription = sanitizeSummaryDescription;
+    this.target = sanitizeTarget;
+    this.field = sanitizeField;
+    this.tags = resolvedTags;
+    this.announcementStatus = announcementStatus;
+    this.announcementType = announcementType;
+    this.hasInterview = resolvedHasInterview;
+    this.announcementPeriodInfo = announcementPeriodInfo;
+    this.activityPeriod = sanitizeActivityPeriod;
+    this.applicationForm = applicationForm;
+    this.isDeleted = resolvedIsDeleted;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   /**
