@@ -1,4 +1,4 @@
 export * from './compareTime';
 export * from './hexToRgb';
 export * from './fileUpload';
-export * from './imageUrlToFile';
+export * from './imageDataUrlToFile';

@@ -1,4 +1,4 @@
-export const imageUrlToFile = (dataUrl: string, fileName: string): File => {
+export const imageDataUrlToFile = (dataUrl: string, fileName: string): File => {
     const [header, base64] = dataUrl.split(',');
     const match = header.match(/data:(.*);base64/);
     const mime = match ? match[1] : 'image/png';
