@@ -4,6 +4,7 @@ import type {
     EvaluationSummary,
 } from '@api/domain/evaluation/types';
 import type { StepApplicant } from '@api/domain/step/types';
+import type { MergedStepApplicant } from '@components/CardBox/types';
 import { INITIAL_EVALUATION_SUMMARY } from '@constants/stepManagementPage';
 
 export const getEvaluations = (
@@ -48,7 +49,11 @@ export const mergeApplicantWithSummary = (
         }
 
         return {
-            ...applicant,
+            applicantId: applicant.applicantId,
+            name: applicant.name,
+            email: applicant.email,
+            status: applicant.status,
+            submittedAt: applicant.submittedAt,
             completedEvaluatorCount: summary?.completedEvaluatorCount ?? 0,
             totalEvaluatorCount: summary?.totalEvaluatorCount ?? 0,
             averageScore: averageScore,
@@ -57,11 +62,7 @@ export const mergeApplicantWithSummary = (
 };
 
 export const groupStepApplicants = (
-    applicants: (StepApplicant & {
-        completedEvaluatorCount: number;
-        totalEvaluatorCount: number;
-        averageScore: number;
-    })[],
+    applicants: MergedStepApplicant[],
     isThreeStepProcess: boolean,
 ) => {
     const grouped = {

@@ -1,3 +1,4 @@
+import type { StepApplicant } from '@api/domain/step/types';
 import type { CSSObject } from '@emotion/react';
 
 export type Step = 'document' | 'interview' | 'final';

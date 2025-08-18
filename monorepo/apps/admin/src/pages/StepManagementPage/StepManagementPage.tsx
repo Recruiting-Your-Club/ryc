@@ -1,13 +1,12 @@
 import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
-import type { StepApplicant } from '@api/domain/step/types';
+import type { StepApplicantWithoutImage } from '@api/domain/step/types';
 import { stepMutations } from '@api/hooks';
 import { emailMutations } from '@api/hooks/emailMutations';
 import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFactory';
-import { evaluationKeys, stepKeys } from '@api/querykeyFactory';
+import { stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
 import { ApplicantDialog, CardBox, InterviewSettingDialog, PlainEmailDialog } from '@components';
-import type { MergedStepApplicant } from '@components/CardBox/types';
 import {
     DOCUMENT_STEP,
     FINAL_STEP_IN_THREE,
@@ -42,7 +41,9 @@ function StepManagementPage() {
     const { announcementId, clubId } = useParams();
     // initial values
     // state, ref, querystring hooks
-    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicantWithoutImage | null>(
+        null,
+    );
     const [searchText, setSearchText] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
@@ -196,20 +197,8 @@ function StepManagementPage() {
         ? ['서류평가', '면접평가']
         : ['서류평가'];
 
-    const mapFinalApplicants = (
-        step: string,
-        applicants: MergedStepApplicant[],
-        isThreeStep: boolean,
-    ) =>
-        applicants.map((applicant) => {
-            if (step !== 'final') return applicant;
-            if (isThreeStep) {
-                const documentScore = applicant;
-            }
-        });
-
     // handlers
-    const handleOpen = (applicant: StepApplicant) => {
+    const handleOpen = (applicant: StepApplicantWithoutImage) => {
         setSelectedApplicant(applicant);
         setIsOpen(true);
     };
@@ -234,6 +223,8 @@ function StepManagementPage() {
         }
 
         applicantIds.forEach((id) => {
+            const oldStatus = stepApplicantList.find((a) => a.applicantId === id)?.status;
+
             updateStatus(
                 { applicantId: id, status: newStatus, clubId: clubId! },
                 {
@@ -241,20 +232,21 @@ function StepManagementPage() {
                         queryClient.invalidateQueries({
                             queryKey: stepKeys.allStepApplicants(announcementId!, clubId!),
                         });
-                        queryClient.invalidateQueries({
-                            queryKey: evaluationKeys.evaluationSummary(
-                                clubId!,
-                                documentApplicantIds,
-                                'document',
-                            ),
-                        });
-                        queryClient.invalidateQueries({
-                            queryKey: evaluationKeys.evaluationSummary(
-                                clubId!,
-                                interviewApplicantIds,
-                                'interview',
-                            ),
-                        });
+
+                        // queryClient.invalidateQueries({
+                        //     queryKey: stepKeys.allStepApplicants(
+                        //         announcementId!,
+                        //         clubId!,
+                        //         oldStatus,
+                        //     ),
+                        // });
+                        // queryClient.invalidateQueries({
+                        //     queryKey: stepKeys.allStepApplicants(
+                        //         announcementId!,
+                        //         clubId!,
+                        //         newStatus,
+                        //     ),
+                        // });
                     },
                 },
             );
@@ -302,7 +294,7 @@ function StepManagementPage() {
             return;
         }
 
-        const groupMap: Record<string, StepApplicant[]> = {
+        const groupMap: Record<string, StepApplicantWithoutImage[]> = {
             documentPending: stepApplicantGroups.documentPending,
             documentFailed: stepApplicantGroups.documentFailed,
             interviewPending: stepApplicantGroups.interviewPending ?? [],
