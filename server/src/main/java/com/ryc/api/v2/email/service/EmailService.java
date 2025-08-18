@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
@@ -17,14 +16,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
-import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
+import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 
 @Service
 public class EmailService {
