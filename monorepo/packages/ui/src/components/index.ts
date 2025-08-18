@@ -27,3 +27,4 @@ export * from './Table';
 export * from './ImageDialog';
 export * from './Select';
 export * from './ConfirmDialog';
+export * from './Select';

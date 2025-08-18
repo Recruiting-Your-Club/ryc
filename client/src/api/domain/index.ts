@@ -5,4 +5,5 @@ export * from './announcement/announcement';
 export * from './step/step';
 export * from './evaluation/evaluation';
 export * from './interview/interview';
-
+export * from './applicant/applicant';
+export * from './email/email';

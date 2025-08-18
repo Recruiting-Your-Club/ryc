@@ -1,12 +1,12 @@
+import { Text } from '@components';
 import React from 'react';
 import {
     hiddenCheckbox,
-    toggleContainer,
     leftTextContainer,
     rightTextContainer,
+    toggleContainer,
 } from './TextToggle.style';
-import { Text } from '@components';
-import type { ToggleProps, Size, TextType } from './types';
+import type { Size, TextType, ToggleProps } from './types';
 
 const getTextType: Record<Size, TextType> = {
     sm: 'subCaptionRegular',
@@ -20,6 +20,8 @@ function TextToggle({
     rightText = '내 정보',
     size = 'md',
     sx,
+    rightSx = {},
+    leftSx = {},
     ...props
 }: ToggleProps) {
     return (
@@ -31,10 +33,10 @@ function TextToggle({
                 onChange={handleToggle}
                 {...props}
             />
-            <Text as="div" type={getTextType[size]} sx={leftTextContainer(isChecked)}>
+            <Text as="div" type={getTextType[size]} sx={[leftTextContainer(isChecked), leftSx]}>
                 {leftText}
             </Text>
-            <Text as="div" type={getTextType[size]} sx={rightTextContainer(isChecked)}>
+            <Text as="div" type={getTextType[size]} sx={[rightTextContainer(isChecked), rightSx]}>
                 {rightText}
             </Text>
         </label>

@@ -1,7 +1,16 @@
 import ChevronLeft from '@assets/images/chevronLeft.svg';
 import ChevronRight from '@assets/images/chevronRight.svg';
 import XIcon from '@assets/images/xIcon.svg';
-import { Button, Dialog, Divider, DocumentBox, PersonalScoreCard, Rating, Text } from '@components';
+import {
+    Button,
+    Dialog,
+    Divider,
+    DocumentBox,
+    FileDownloader,
+    PersonalScoreCard,
+    Rating,
+    Text,
+} from '@components';
 import { evaluation } from '@constants/applicantDialog';
 import React, { useState } from 'react';
 import {
@@ -19,38 +28,85 @@ import {
     formWrapper,
     headerCss,
     perStarScoreGroup,
+    s_documentTypeTextWrapper,
     starScoreWrapper,
     titleWrapper,
 } from './ApplicantDialog.style';
 import type { ApplicantDialogProps } from './types';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
+import { EVALUATION_FIRST_PAGE, EVALUATION_SECOND_PAGE } from '@constants/applicantDialog';
 
 function ApplicantDialog({
     open,
     handleClose,
-    name,
-    email,
-    documentList,
+    applicant,
+    evaluationLabels,
+    personalInformation,
+    preQuestionAnswers,
+    applicationQuestionAnswers,
     evaluations,
+    isThreeStepProcess,
 }: ApplicantDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
+    const initialIndex = getInitialIndex();
+
     // state, ref, querystring hooks
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
     // form hooks
     // query hooks
     // calculated values
+    const currentEvaluation = evaluations[currentIndex];
+    const currentLabel = evaluationLabels[currentIndex];
+    const hasEvaluation = currentEvaluation.completedEvaluatorCount > 0;
+
+    function getInitialIndex() {
+        switch (true) {
+            case applicant.status.startsWith('DOCUMENT'):
+                return EVALUATION_FIRST_PAGE;
+            case applicant.status.startsWith('INTERVIEW'):
+                return EVALUATION_SECOND_PAGE;
+            case applicant.status.startsWith('FINAL'):
+                return isThreeStepProcess ? EVALUATION_SECOND_PAGE : EVALUATION_FIRST_PAGE;
+            default:
+                return EVALUATION_FIRST_PAGE;
+        }
+    }
+
+    const documentGroups = [
+        { label: '▶ 사전질문', documents: preQuestionAnswers ?? [] },
+        { label: '▶ 자기소개서', documents: applicationQuestionAnswers ?? [] },
+    ];
+
+    const formatAnswer = (question: QuestionAnswer): string => {
+        switch (question.questionType) {
+            case 'LONG_ANSWER':
+            case 'SHORT_ANSWER':
+                return question.textAnswer ?? '답변 미작성';
+
+            case 'SINGLE_CHOICE':
+            case 'MULTIPLE_CHOICE':
+                return question.selectedOptionIds?.join(', ') ?? '답변 미선택';
+
+            case 'FILE':
+                return question.fileUrl ?? '파일 미첨부';
+
+            default:
+                return '답변 미작성';
+        }
+    };
+
     // handlers
     const goPrev = () => {
         if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
     };
 
     const goNext = () => {
-        if (currentIndex < evaluation.length - 1) setCurrentIndex((prev) => prev + 1);
+        if (currentIndex < evaluations.length - 1) setCurrentIndex((prev) => prev + 1);
     };
 
-    const currentEvaluation = evaluations[currentIndex];
     // effects
 
     return (
@@ -67,7 +123,7 @@ function ApplicantDialog({
             <Dialog.Content sx={contentCss}>
                 <div css={contentHeader}>
                     <Text as="span" type="h3Bold" textAlign="start">
-                        {name}
+                        {applicant.name}
                     </Text>
                     <Text
                         as="span"
@@ -76,7 +132,18 @@ function ApplicantDialog({
                         color="caption"
                         sx={{ paddingTop: '0.1rem' }}
                     >
-                        {email}
+                        {applicant.email}
+                        {personalInformation &&
+                            personalInformation
+                                .filter((info) =>
+                                    ['STUDENT_ID', 'PHONE_NUMBER'].includes(info.questionType),
+                                )
+                                .map((info, index) => (
+                                    <span key={info.questionType}>
+                                        {index >= 0 && ' | '}
+                                        {info.value}
+                                    </span>
+                                ))}
                     </Text>
                 </div>
                 <Divider width="full" />
@@ -95,14 +162,43 @@ function ApplicantDialog({
                         <div css={contentWrapper}>
                             <div css={formWrapper}>
                                 <div css={documentBoxGroup}>
-                                    {documentList.map((document, index) => (
-                                        <DocumentBox
-                                            key={index}
-                                            index={index}
-                                            question={document.question}
-                                            answer={document.answer}
-                                        />
-                                    ))}
+                                    {documentGroups.map(({ label, documents }) =>
+                                        documents.length > 0 ? (
+                                            <>
+                                                <div css={s_documentTypeTextWrapper}>
+                                                    <Text
+                                                        as="span"
+                                                        type="bodyBold"
+                                                        textAlign="start"
+                                                    >
+                                                        {label}
+                                                    </Text>
+                                                </div>
+                                                {documents.map((document, index) => (
+                                                    <DocumentBox
+                                                        key={document.questionId}
+                                                        index={index}
+                                                        question={document.questionLabel}
+                                                        answer={
+                                                            document.questionType === 'FILE' &&
+                                                            document.fileUrl ? (
+                                                                <FileDownloader
+                                                                    fileName={
+                                                                        document.fileUrl
+                                                                            .split('/')
+                                                                            .pop() || 'download'
+                                                                    }
+                                                                    fileData={document.fileUrl}
+                                                                />
+                                                            ) : (
+                                                                formatAnswer(document)
+                                                            )
+                                                        }
+                                                    />
+                                                ))}
+                                            </>
+                                        ) : null,
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -126,7 +222,7 @@ function ApplicantDialog({
                                         onClick={goPrev}
                                     />
                                     <Text as="span" type="captionBold">
-                                        {currentEvaluation.type}
+                                        {currentLabel}
                                     </Text>
                                     <ChevronRight
                                         css={chevronSvgCss(currentIndex < evaluations.length - 1)}
@@ -144,7 +240,7 @@ function ApplicantDialog({
                                         평균 평점
                                     </Text>
                                     <Rating
-                                        key={currentEvaluation.type}
+                                        key={currentEvaluation.averageScore}
                                         value={currentEvaluation.averageScore}
                                         totalStars={5}
                                         size="lg"
@@ -160,16 +256,14 @@ function ApplicantDialog({
                                     </Text>
                                 </div>
                                 <Divider />
-                                <div
-                                    css={perStarScoreGroup(currentEvaluation.evaluators.length > 0)}
-                                >
-                                    {currentEvaluation.evaluators.length > 0 ? (
-                                        currentEvaluation.evaluators.map((evaluator) => (
+                                <div css={perStarScoreGroup(hasEvaluation)}>
+                                    {hasEvaluation ? (
+                                        currentEvaluation.evaluationDatas.map((evaluation) => (
                                             <PersonalScoreCard
-                                                key={evaluator.id}
-                                                score={evaluator.score}
-                                                name={evaluator.name}
-                                                comment={evaluator.comment}
+                                                key={evaluation.evaluationId}
+                                                score={evaluation.score}
+                                                name={evaluation.evaluatorName}
+                                                comment={evaluation.comment}
                                             />
                                         ))
                                     ) : (

@@ -4,49 +4,54 @@ import {
     Calendar,
     Dialog,
     Divider,
+    Editor,
     Input,
     InterviewTimeBox,
     Select,
     Text,
-    TextArea,
 } from '@components';
 import {
     DEFAULT_END_TIME,
     DEFAULT_NUMBER_VALUE,
     DEFAULT_START_TIME,
     DEFAULT_TIME_VALUE,
-    INITIAL_FORM,
-} from '@constants/interviewSettingDialog';
+    numberOptions,
+    timeOptions,
+} from '@constants/InterviewSettingDialog';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-    calendarCss,
-    contentCss,
-    contentWrapper,
-    dialogCss,
-    headerCss,
-    informationContainer,
-    inputCss,
-    submitButtonWrapper,
+    s_calendar,
+    s_content,
+    s_contentWrapper,
+    s_dialog,
+    s_editorRoot,
+    s_editorTextarea,
+    s_editorToolbar,
     s_emailContainer,
     s_emptyPlace,
+    s_header,
+    s_informationContainer,
+    s_input,
     s_perInformationContainer,
     s_resetButton,
     s_select,
     s_selectContainer,
     s_selectTrigger,
-    s_textareaInner,
-    s_textAreaOuter,
-    titleInputCss,
-    titleWrapper,
-    verticalDivider,
+    s_submitButtonWrapper,
+    s_titleInput,
+    s_titleWrapper,
+    s_verticalDivider,
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
+import type { InterviewDetailInformation } from '@api/domain/email/types';
+import dayjs from 'dayjs';
 
-const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-const times = ['15분', '30분', '1시간'];
-
-function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogProps) {
+function InterviewSettingDialog({
+    open,
+    handleClose,
+    handleInterviewEmail,
+}: InterviewSettingDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -58,13 +63,14 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
 
     const [timeButtonList, setTimeButtonList] = useState<string[]>([]);
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
+    const [highlightedDate, setHighlightedDate] = useState<string[]>([]);
     const [currentDate, setCurrentDate] = useState<string>('');
     const [interviewInformation, setInterviewInformation] = useState<
         Record<string, InterviewInformation>
     >({});
 
     const [emailTitle, setEmailTitle] = useState<string>('');
-    const [emailContent, setEmailContent] = useState<string>(INITIAL_FORM);
+    const [emailContent, setEmailContent] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -94,6 +100,26 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         ],
     );
 
+    const interviewDetailInformationList = useMemo<InterviewDetailInformation[]>(() => {
+        const result: InterviewDetailInformation[] = [];
+
+        Object.entries(interviewInformation).forEach(([date, info]) => {
+            info.selectedTimeList.forEach((time) => {
+                const startDate = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
+                const endDate = dayjs(startDate)
+                    .add(Number(info.perTime), 'minute')
+                    .format('YYYY-MM-DDTHH:mm');
+
+                result.push({
+                    interviewPeriod: { startDate, endDate },
+                    numberOfPeople: Number(info.maxNumber),
+                });
+            });
+        });
+
+        return result;
+    }, [interviewInformation]);
+
     // handler
     const handleReset = () => {
         setTimeValue(DEFAULT_TIME_VALUE);
@@ -101,13 +127,37 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
         setStartTime(DEFAULT_START_TIME);
         setEndTime(DEFAULT_END_TIME);
         setInterviewInformation({});
+        setSelectedDates([]);
+        setHighlightedDate([]);
+    };
+
+    const handleResetContent = () => {
+        setEmailTitle('');
+        setEmailContent('');
+    };
+
+    const handleDates = (newDates: string[]) => {
+        const newDate = newDates[0];
+        const prevDate = highlightedDate[0];
+
+        if (prevDate) {
+            const shouldRemovePrev =
+                !interviewInformation[prevDate] ||
+                interviewInformation[prevDate].selectedTimeList.length === 0;
+
+            if (shouldRemovePrev)
+                setSelectedDates((prev) => prev.filter((date) => date !== prevDate));
+        }
+
+        setHighlightedDate([newDate]);
+        setSelectedDates((prev) => (prev.includes(newDate) ? prev : [...prev, newDate]));
     };
 
     // effects
     useEffect(() => {
-        setCurrentDate(selectedDates.at(-1)!);
+        setCurrentDate(highlightedDate.at(-1)!);
         setTimeButtonList([]);
-    }, [selectedDates]);
+    }, [highlightedDate]);
 
     // 현재 날짜에 알맞은 정보를 불러옴
     useEffect(() => {
@@ -133,8 +183,8 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
 
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
-            <Dialog open={open} handleClose={handleClose} size="full" sx={dialogCss}>
-                <Dialog.Header position="start" sx={headerCss}>
+            <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
+                <Dialog.Header position="start" sx={s_header}>
                     <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
                         면접 일정 보내기
                     </Text>
@@ -148,7 +198,7 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                     </Button>
                 </Dialog.Header>
                 <Divider color="black" sx={{ borderTop: '1px solid' }} />
-                <Dialog.Content sx={contentCss}>
+                <Dialog.Content sx={s_content}>
                     <div css={s_selectContainer}>
                         <Text as="span" type="h4Bold" textAlign="start">
                             상세 면접 정보
@@ -165,14 +215,15 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onValueChange={setNumberValue}
                                 size="xs"
                                 sx={s_select}
+                                options={numberOptions}
                             >
                                 <Select.Trigger sx={s_selectTrigger}>
                                     <Select.Value />
                                 </Select.Trigger>
                                 <Select.Content>
-                                    {numbers.map((number) => (
-                                        <Select.Item key={number} value={number}>
-                                            {number}
+                                    {numberOptions.map(({ value, label }) => (
+                                        <Select.Item key={value} value={value}>
+                                            {label}
                                         </Select.Item>
                                     ))}
                                 </Select.Content>
@@ -190,14 +241,15 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onValueChange={setTimeValue}
                                 size="xs"
                                 sx={s_select}
+                                options={timeOptions}
                             >
                                 <Select.Trigger sx={s_selectTrigger}>
                                     <Select.Value />
                                 </Select.Trigger>
                                 <Select.Content>
-                                    {times.map((time) => (
-                                        <Select.Item key={time} value={time}>
-                                            {time}
+                                    {timeOptions.map(({ value, label }) => (
+                                        <Select.Item key={value} value={value}>
+                                            {label}
                                         </Select.Item>
                                     ))}
                                 </Select.Content>
@@ -221,19 +273,20 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                             </Button>
                         </div>
                     </div>
-                    <div css={informationContainer}>
+                    <div css={s_informationContainer}>
                         <Calendar
-                            // isMultiple
+                            mode="custom"
                             size="md"
                             selectedDate={selectedDates}
-                            onSelect={setSelectedDates}
-                            sx={calendarCss}
+                            onSelect={handleDates}
+                            highlightedDate={highlightedDate}
+                            sx={s_calendar}
                         />
                         <InterviewTimeBox />
                     </div>
-                    <div css={verticalDivider} />
+                    <div css={s_verticalDivider} />
                     <div css={s_emailContainer}>
-                        <div css={titleWrapper}>
+                        <div css={s_titleWrapper}>
                             <Text as="span" type="h4Semibold" textAlign="start">
                                 제목
                             </Text>
@@ -242,25 +295,37 @@ function InterviewSettingDialog({ open, handleClose }: InterviewSettingDialogPro
                                 onChange={(e) => setEmailTitle(e.target.value)}
                                 height="4rem"
                                 placeholder="이메일 제목을 입력해주세요."
-                                inputSx={titleInputCss}
-                                sx={inputCss}
+                                inputSx={s_titleInput}
+                                sx={s_input}
                             />
                         </div>
-                        <div css={contentWrapper}>
+                        <div css={s_contentWrapper}>
                             <Text as="span" type="h4Semibold" textAlign="start">
                                 내용
                             </Text>
-                            <TextArea
-                                value={emailContent}
-                                onChange={(e) => setEmailContent(e.target.value)}
-                                size="md"
-                                placeholder="이메일 내용을 입력해주세요."
-                                textAreaSx={s_textareaInner}
-                                wrapperSx={s_textAreaOuter}
-                            />
+                            <Editor.Root sx={s_editorRoot}>
+                                <Editor.Toolbar sx={s_editorToolbar} />
+                                <Editor.Textarea
+                                    sx={s_editorTextarea}
+                                    value={emailContent}
+                                    onChange={setEmailContent}
+                                />
+                            </Editor.Root>
                         </div>
-                        <div css={submitButtonWrapper}>
-                            <Button>이메일 보내기</Button>
+                        <div css={s_submitButtonWrapper}>
+                            <Button
+                                onClick={() => {
+                                    handleInterviewEmail(
+                                        interviewDetailInformationList,
+                                        emailTitle,
+                                        emailContent,
+                                    );
+                                    handleReset();
+                                    handleResetContent();
+                                }}
+                            >
+                                이메일 보내기
+                            </Button>
                         </div>
                     </div>
                 </Dialog.Content>

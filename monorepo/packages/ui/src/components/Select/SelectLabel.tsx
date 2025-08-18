@@ -1,5 +1,3 @@
-import type { CSSObject } from '@emotion/react';
-import type { HTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 
 import { s_selectLabel } from './Select.styles';

@@ -1,6 +1,5 @@
-import type { CSSObject } from '@emotion/react';
-import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
-import React, { forwardRef, useMemo } from 'react';
+import type { Ref } from 'react';
+import React from 'react';
 
 import DownArrow from '@ssoc/assets/images/downArrow.svg';
 

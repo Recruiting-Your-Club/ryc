@@ -1,51 +1,57 @@
 import { httpRequest } from '../../common/httpRequest';
-import type {
-    Document,
-    Evaluation,
-    Interviewee,
-    IntervieweeDetail,
-    InterviewSchedule,
-} from './types';
+import type { InterviewApplicant, InterviewSlot, UnreservedApplicant } from './types';
 
-async function getAllInterviewSchedules(): Promise<InterviewSchedule[]> {
-    const response = await httpRequest.get({
-        url: `interviewschedules/all`,
+async function getInterviewSlot(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<InterviewSlot[]> {
+    return await httpRequest.get({
+        url: `announcements/${params.announcementId}/interview-slots`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
-    return response as InterviewSchedule[];
 }
 
-async function getAllInterviewees(): Promise<Interviewee[]> {
-    const response = await httpRequest.get({
-        url: `interviewees/all`,
+async function getInterviewInformation(params: {
+    announcementId: string;
+    interviewSlotId: string;
+    clubId: string;
+}): Promise<InterviewApplicant> {
+    return await httpRequest.get({
+        url: `announcements/${params.announcementId}/interview-slots/${params.interviewSlotId}/reservations`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
-    return response as Interviewee[];
 }
 
-async function getIntervieweeDetail(id: number): Promise<IntervieweeDetail> {
-    const response = await httpRequest.get({
-        url: `interviewees/${id}`,
+async function getUnreservedApplicant(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<UnreservedApplicant> {
+    return await httpRequest.get({
+        url: `announcements/${params.announcementId}/unreserved`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
-    return response as IntervieweeDetail;
 }
 
-async function getDocument(id: number): Promise<Document> {
-    const response = await httpRequest.get({
-        url: `documents/${id}`,
+async function patchInterviewReservation(params: {
+    applicantId: string;
+    interviewSlotId: string;
+    clubId: string;
+    oldInterviewSlotId: string;
+}): Promise<void> {
+    await httpRequest.patch({
+        url: `interview-reservations/${params.applicantId}`,
+        body: { interviewSlotId: params.interviewSlotId },
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
-    return response as Document;
-}
-
-async function getEvaluation(id: number): Promise<Evaluation> {
-    const response = await httpRequest.get({
-        url: `interviewer/${id}`,
-    });
-    return response as Evaluation;
 }
 
 export {
-    getAllInterviewSchedules,
-    getAllInterviewees,
-    getDocument,
-    getEvaluation,
-    getIntervieweeDetail,
+    getInterviewSlot,
+    getInterviewInformation,
+    getUnreservedApplicant,
+    patchInterviewReservation,
 };

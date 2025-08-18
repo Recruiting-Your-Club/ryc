@@ -1,12 +1,14 @@
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
 
 import { Text } from '../Text';
 
 interface DescriptionTextProps {
     description: string;
+    sx?: CSSObject;
 }
 
-function DescriptionText({ description }: DescriptionTextProps) {
+function DescriptionText({ description, sx }: DescriptionTextProps) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
@@ -18,7 +20,7 @@ function DescriptionText({ description }: DescriptionTextProps) {
 
     return (
         <>
-            <Text as="span" textAlign="start" type="helperTextBold" color="subCaption">
+            <Text as="span" textAlign="start" type="helperTextBold" color="subCaption" sx={sx}>
                 {description}
             </Text>
         </>
