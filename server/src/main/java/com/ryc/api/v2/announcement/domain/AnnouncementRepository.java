@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 
+/*
+ * AnnouncementEntity는 Soft Delete를 지원합니다.
+ * AnnouncementEntity를 조회할 때는 항상 isDeleted가 false인 것만 조회합니다.
+ * AnnouncementEntity를 삭제할 때는 isDeleted를 true로 변경합니다.
+ */
 public interface AnnouncementRepository {
   /**
    * @param announcement
