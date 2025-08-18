@@ -117,6 +117,7 @@ public class ClubService {
     return clubRepository.existsById(clubId);
   }
 
+  @Transactional
   public void deleteClub(String id) {
     clubRepository.deleteById(id);
   }
