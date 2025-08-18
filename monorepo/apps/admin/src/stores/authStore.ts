@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     },
     logout: async (reason = 'MANUAL') => {
         try {
-            const logoutURL = new URL('/auth/logout', BASE_URL).toString();
+            const logoutURL = new URL('auth/logout', BASE_URL).toString();
             await fetch(logoutURL, { method: 'POST', credentials: 'include' });
         } catch {
             /** no-op */
