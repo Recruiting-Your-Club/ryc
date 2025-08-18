@@ -37,7 +37,6 @@
         "react-router-dom": "^7.1.5",
         "whatwg-fetch": "^3.6.20",
         "zustand": "^5.0.7"
-
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^3.2.4",
