@@ -7,7 +7,7 @@ import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionCont
 import { FileUpLoaderItemView } from './FileUpLoaderItemView';
 import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 
-function FileUpLoaderBox({ sx }: CSSObject) {
+function FileUpLoaderBox({ sx, text }: { sx?: CSSObject; text?: string }) {
     const { files, isActive, disabled } = useFileUpLoaderStateContext();
 
     const { handleDragStart, handleDragEnd, handleDragOver, handleDrop } =
@@ -23,7 +23,7 @@ function FileUpLoaderBox({ sx }: CSSObject) {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
         >
-            {files.length === 0 ? <FileUpLoaderEmptyView /> : <FileUpLoaderItemView />}
+            {files.length === 0 ? <FileUpLoaderEmptyView text={text} /> : <FileUpLoaderItemView />}
         </div>
     );
 }

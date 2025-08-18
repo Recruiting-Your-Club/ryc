@@ -1,7 +1,8 @@
 import type { Meta } from '@storybook/react';
 import React, { useState } from 'react';
 
-import { ToastProvider } from '../Toast/ToastProvider';
+import { ToastProvider } from '@ssoc/ui';
+
 import { FileUpLoader } from './FileUpLoader';
 
 const mockPdfFile = new File(['%PDF-sample'], 'document.pdf', {

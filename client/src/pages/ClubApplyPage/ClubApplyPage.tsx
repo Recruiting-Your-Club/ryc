@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import dayjs from 'dayjs';
 import {
     clubApplyPage,
     clubApplyPageMainContainer,
@@ -13,180 +12,130 @@ import {
     clubApplyTabContainer,
     s_submitButtonSx,
 } from './ClubApplyPage.style';
-import Ryc from '@assets/images/Ryc.svg';
 import { Text, Button } from '@components/_common/';
 import { ClubSubmitCard, SubmitDialog, ClubNavigation, QuestionDropdown } from '@components';
 import { ClubApplyPersonalInfoPage } from './PersonalInfoPage';
 import { ClubApplyDetailQuestionPage } from './DetailQuestionPage';
-import type { Answer, QuestionType } from './types';
+import type { Answer, PageAnswer } from './types';
 import type { ValidationKey } from './constants';
-import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
-
-// 임시 데이터
-export const clubData = {
-    announcementId: '213123',
-    title: 'EN# (Enjoy C#)',
-    description: '',
-    target: '1,2학년',
-    tag: '학술동아리',
-    numberOfPeople: 0,
-    announcementPeriod: [
-        {
-            start: '2025-05-03T03:13:11.173Z',
-            end: '2025-06-29T03:13:11.173Z',
-        },
-    ],
-    applicationPeriod: [
-        {
-            start: '2025-05-03T03:13:11.173Z',
-            end: '2025-05-03T03:13:11.173Z',
-        },
-    ],
-    interviewPeriod: [
-        {
-            start: '2025-05-03T03:13:11.173Z',
-            end: '2025-05-03T03:13:11.173Z',
-        },
-    ],
-    resultAnnouncementDate: '2025-06-30T15:00:00.000Z',
-    durationDate: '한 학기',
-    application: {
-        applicationQuestions: [
-            {
-                type: 'LONG_ANSWER',
-                label: 'EN#에 지원한 동기가 무엇인가요?',
-                description: 'EN#에 지원하게 된 계기와 동기를 자유롭게 작성해주세요.',
-                isRequired: true,
-                options: [],
-            },
-            {
-                type: 'LONG_ANSWER',
-                label: 'EN#에서 기대하는 활동을 작성해주세요.',
-                description: 'EN#에서 하고 싶은 활동이나 목표를 자유롭게 작성해주세요.',
-                isRequired: true,
-                options: [],
-            },
-            {
-                type: 'LONG_ANSWER',
-                label: '프로젝트 경험이 있다면 자세히 설명해주세요. (없다면 작성하지 않으셔도 됩니다.)',
-                description: '참여했던 프로젝트의 내용, 역할, 기간 등을 자세히 작성해주세요.',
-                isRequired: false,
-                options: [],
-            },
-        ],
-        preQuestions: [
-            {
-                type: 'SHORT_ANSWER',
-                label: '이름',
-                isRequired: true,
-                options: [],
-            },
-            {
-                type: 'SHORT_ANSWER',
-                label: '생년월일',
-                isRequired: true,
-                options: [],
-            },
-            {
-                type: 'SHORT_ANSWER',
-                label: '전화번호',
-                isRequired: true,
-                options: [],
-            },
-            {
-                type: 'SINGLE_CHOICE',
-                label: '성별',
-                isRequired: true,
-                options: ['남', '여'],
-            },
-            {
-                type: 'MULTIPLE_CHOICE',
-                label: '전공',
-                isRequired: true,
-                options: ['소프트웨어학과', '컴퓨터공학과', '기타'],
-            },
-        ],
-        personalInfoQuestions: ['STUDENT_ID', 'PROFILE_IMAGE'],
-    },
-};
+import { VALIDATION_PATTERNS } from './constants';
+import { useParams } from 'react-router-dom';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { announcementQueries } from '@api/queryFactory';
+import { useClubStore } from '@stores/clubStore';
+import { useApplicationStore } from '@stores/applicationStore';
+import { getCategory } from '@utils/changeCategory';
+import { ClubApplyLoadingPage } from '@pages/LoadingPage';
+import { useRouter } from '@hooks/useRouter';
+import {
+    getErrorMessage,
+    getPersonalQuestionLabel,
+    getValidationError,
+    makeAnsewerDataForSubmit,
+} from './utils';
+import { postApplicationAnswers } from '@api/domain/announcement/announcement';
+import {
+    ApplicationSubmissionRequest,
+    PersonalInfoQuestionType,
+    QuestionType,
+} from '@api/domain/announcement/types';
 
 function ClubApplyPage() {
     // prop destruction
     // lib hooks
-    // initial values
-    const deadline = dayjs(clubData.announcementPeriod[0].end).format('YYYY-MM-DD');
-    // state, ref, querystring hooks
-    const [answers, setAnswers] = useState<Answer[]>([]);
-    const [completedQuestions, setCompletedQuestions] = useState<number>(0);
-    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
-    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
-    const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-    const [activeTab, setActiveTab] = useState<string>('사전질문');
+    const { announcementId } = useParams<{ announcementId: string }>();
+    const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
+    const { getAnswers, setAnswers: setApplicationAnswers } = useApplicationStore();
+    const applicationAnswers = getAnswers(announcementId || '');
+    const { goTo } = useRouter();
+    // query hooks
+    const { data: applicationForm, isLoading: formLoading } = useSuspenseQuery(
+        announcementQueries.getApplicationForm(announcementId || ''),
+    );
 
+    // initial values
     // 사전질문 데이터
+
     const clubPersonalQuestions = useMemo(
         () =>
-            clubData.application.preQuestions.map((question) => ({
-                id: question.label,
-                questionTitle: question.label,
-                type: question.type as QuestionType,
-                options: question.options ?? [],
-                isRequired: question.isRequired,
-            })),
-        [],
+            applicationForm?.personalInfoQuestionTypes?.map((question) => {
+                return {
+                    id: question,
+                    label: getPersonalQuestionLabel(question),
+                    type: question as PersonalInfoQuestionType,
+                    isRequired: true,
+                };
+            }),
+        [applicationForm],
     );
+
+    const clubPreQuestions = useMemo(
+        () =>
+            applicationForm?.preQuestions?.map((question) => ({
+                id: question.id,
+                label: question.label,
+                type: question.type as QuestionType,
+                options: question.options,
+                isRequired: question.isRequired,
+            })) || [],
+        [applicationForm],
+    );
+
+    const clubPersonalInfoQuestions = [...clubPersonalQuestions, ...clubPreQuestions];
 
     // 자기소개서 질문 데이터
     const detailQuestions = useMemo(
         () =>
-            clubData.application.applicationQuestions.map((question) => ({
-                id: question.label,
-                questionTitle: question.label,
+            applicationForm?.applicationQuestions?.map((question) => ({
+                id: question.id,
+                label: question.label,
                 description: question.description,
+                type: question.type as QuestionType,
                 isRequired: question.isRequired,
-            })),
-        [],
+            })) || [],
+        [applicationForm],
     );
 
     const allQuestions = useMemo(
-        () => [...clubPersonalQuestions, ...detailQuestions],
-        [clubPersonalQuestions, detailQuestions],
+        () => [...clubPersonalInfoQuestions, ...detailQuestions],
+        [clubPersonalInfoQuestions, detailQuestions],
     );
 
-    // form hooks
-    // query hooks
+    // state, ref, querystring hooks
+    const [answers, setAnswers] = useState<Answer[]>([]);
+    const [completedQuestions, setCompletedQuestions] = useState<number>(0);
+    const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState<boolean>(false);
+    const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+    const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+    const [activeTab, setActiveTab] = useState<string>('사전질문');
+    const { mutate: submitApplication, isPending: isSubmitting } = useMutation({
+        mutationFn: (data: ApplicationSubmissionRequest) =>
+            postApplicationAnswers(announcementId || '', data),
+        onSuccess: (response) => {
+            setIsSubmitDialogOpen(false);
+            goTo(`success/${response.applicantId}/${response.applicationId}`);
+        },
+        onError: (error) => {
+            console.error('지원서 제출 실패:', error);
+            setIsSubmitDialogOpen(false);
+        },
+    });
+
     // calculated values
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         return allQuestions.filter((question) => question.isRequired).length;
-    }, []);
-
-    const getValidationError = useCallback((questionTitle: string, value: string): boolean => {
-        if (!value.trim()) return false;
-        const pattern = VALIDATION_PATTERNS[questionTitle as ValidationKey];
-        return !pattern.test(value);
-    }, []);
-
-    const getErrorMessage = useCallback(
-        (questionTitle: string, value: string): string | undefined => {
-            return getValidationError(questionTitle, value)
-                ? ERROR_MESSAGES[questionTitle as ValidationKey]
-                : undefined;
-        },
-        [getValidationError],
-    );
+    }, [allQuestions]);
 
     // 필수 질문 완료 여부 계산
     const requiredQuestionsCompleted = useMemo(() => {
         return allQuestions
             .filter((question) => question.isRequired)
             .every((question) => {
-                const answer = answers.find(
-                    (answer) => answer.questionTitle === question.questionTitle,
-                );
+                const answer = answers.find((answer) => answer.questionTitle === question.label);
                 if (!answer || !answer.value.trim()) return false;
-                if (VALIDATION_PATTERNS[question.questionTitle as ValidationKey]) {
-                    return !getValidationError(question.questionTitle, answer.value);
+                if (VALIDATION_PATTERNS[question.label as ValidationKey]) {
+                    return !getValidationError(question.label, answer.value);
                 }
                 return true;
             });
@@ -199,6 +148,7 @@ function ClubApplyPage() {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
+
     // handlers
     const handleBlur = (questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
@@ -208,41 +158,129 @@ function ClubApplyPage() {
         setTouched((prev) => ({ ...prev, [questionTitle]: false }));
     };
 
-    const handleAnswerChange = (questionTitle: string, value: string) => {
+    const handleAnswerChange = (
+        questionId: string,
+        questionTitle: string,
+        value: string,
+        optionText?: string,
+    ) => {
         setAnswers((prev) => {
             const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
-            const question = clubPersonalQuestions.find(
-                (question) => question.questionTitle === questionTitle,
+            const question = clubPersonalInfoQuestions.find(
+                (question) => question.label === questionTitle,
             );
+
+            let newAnswers: Answer[];
 
             // 체크박스인 경우
             if (question?.type === 'MULTIPLE_CHOICE') {
-                const currentValues = existingAnswer?.value?.split(',') || [];
-                const isCurrentlyChecked = currentValues.includes(value);
-                const newValues = isCurrentlyChecked
-                    ? currentValues.filter((currentValue) => currentValue !== value)
-                    : [...currentValues, value];
-                value = newValues.join(',');
+                const currentOptionIds = existingAnswer?.optionIds || [];
+                const isCurrentlyChecked = currentOptionIds.includes(value);
+
+                let newOptionIds: string[];
+
+                if (isCurrentlyChecked) {
+                    newOptionIds = currentOptionIds.filter((id) => id !== value);
+                } else {
+                    newOptionIds = [...currentOptionIds, value];
+                }
+
+                const newValues = newOptionIds.join(',');
+
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: newValues,
+                    questionTitle,
+                    pageAnswerType: 'detail',
+                    questionType: question.type,
+                    optionIds: newOptionIds,
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
+            }
+            // 라디오 버튼인 경우
+            else if (question?.type === 'SINGLE_CHOICE') {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: optionText || value,
+                    questionTitle,
+                    pageAnswerType: 'detail',
+                    questionType: question.type,
+                    optionIds: [value],
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
+            } else if (question?.type === 'PROFILE_IMAGE') {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: value,
+                    questionTitle,
+                    pageAnswerType: 'personal',
+                    questionType: question.type,
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
+            } else if (question?.type === 'FILE') {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value: value,
+                    questionTitle,
+                    pageAnswerType: 'personal',
+                    questionType: question.type,
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
+            }
+            // 일반 텍스트 입력인 경우
+            else {
+                const newAnswer: Answer = {
+                    id: questionId,
+                    value,
+                    questionTitle,
+                    pageAnswerType: clubPersonalInfoQuestions.some(
+                        (question) => question.label === questionTitle,
+                    )
+                        ? ('personal' as PageAnswer)
+                        : ('detail' as PageAnswer),
+                    questionType: question?.type as QuestionType | PersonalInfoQuestionType,
+                };
+
+                if (existingAnswer) {
+                    newAnswers = prev.map((answer) =>
+                        answer.questionTitle === questionTitle ? newAnswer : answer,
+                    );
+                } else {
+                    newAnswers = [...prev, newAnswer];
+                }
             }
 
-            const newAnswer: Answer = {
-                id: questionTitle,
-                value,
-                questionTitle,
-                type: clubPersonalQuestions.some(
-                    (question) => question.questionTitle === questionTitle,
-                )
-                    ? 'personal'
-                    : 'detail',
-            };
+            setApplicationAnswers(announcementId || '', newAnswers);
 
-            if (existingAnswer) {
-                return prev.map((answer) =>
-                    answer.questionTitle === questionTitle ? newAnswer : answer,
-                );
-            }
-
-            return [...prev, newAnswer];
+            return newAnswers;
         });
     };
 
@@ -251,7 +289,8 @@ function ClubApplyPage() {
     };
 
     const handleConfirmSubmit = () => {
-        setIsSubmitDialogOpen(false);
+        const answerData = makeAnsewerDataForSubmit(answers);
+        submitApplication(answerData);
     };
 
     const handleQuestionFocus = (questionTitle: string, tab: string) => {
@@ -271,7 +310,7 @@ function ClubApplyPage() {
             page: (
                 <ClubApplyPersonalInfoPage
                     answers={answers}
-                    clubPersonalQuestions={clubPersonalQuestions}
+                    clubPersonalQuestions={clubPersonalInfoQuestions}
                     onAnswerChange={handleAnswerChange}
                     containerStyle={applyFormContainer}
                     getValidationError={getValidationError}
@@ -317,24 +356,34 @@ function ClubApplyPage() {
         }).length;
 
         setCompletedQuestions(completedCount);
-    }, [answers, allQuestions, getValidationError]);
+    }, [answers, getValidationError]);
+
+    useEffect(() => {
+        if (clubPersonalInfoQuestions.length > 0 && applicationAnswers.length > 0) {
+            setAnswers(applicationAnswers);
+        }
+    }, [clubPersonalInfoQuestions, applicationAnswers]);
+
+    if (formLoading) {
+        return <ClubApplyLoadingPage />;
+    }
 
     return (
         <div css={clubApplyPage}>
             <div css={clubApplyPageMainContainer}>
                 <div css={clubLogoAndNameContainer}>
-                    <Ryc css={svgContainer} />
+                    {clubLogo && <img src={clubLogo} alt="로고" css={svgContainer} />}
                     <div css={clubNameContainer}>
-                        <Text type="h3Semibold">{clubData.title}</Text>
+                        <Text type="h3Semibold">{clubName}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            {clubData.tag}
+                            {getCategory(clubCategory)}
                         </Text>
                     </div>
                 </div>
 
                 <div css={mobileQuestionStatus}>
                     <QuestionDropdown
-                        personalQuestions={clubPersonalQuestions}
+                        personalQuestions={clubPersonalInfoQuestions}
                         detailQuestions={detailQuestions}
                         completedQuestionsCount={completedQuestions}
                         answers={answers}
@@ -354,15 +403,18 @@ function ClubApplyPage() {
 
             <div css={submitCardContainer}>
                 <ClubSubmitCard
-                    clubName={clubData.title}
-                    tag={clubData.tag}
-                    deadline={deadline}
-                    personalQuestions={clubPersonalQuestions}
+                    clubName={clubName}
+                    category={clubCategory}
+                    field={clubField}
+                    deadline={applicationPeriod.endDate}
+                    personalQuestions={clubPersonalInfoQuestions}
                     detailQuestions={detailQuestions}
                     completedQuestionsCount={completedQuestions}
                     requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
                     answers={answers}
+                    logo={clubLogo}
+                    isSubmitting={isSubmitting}
                     onQuestionFocus={handleQuestionFocus}
                     requiredQuestionsCompleted={requiredQuestionsCompleted}
                     allQuestionsCount={allQuestions.length}
@@ -373,8 +425,11 @@ function ClubApplyPage() {
                 <Button
                     variant="primary"
                     size="full"
+                    loading={isSubmitting}
                     disabled={
-                        !(requiredQuestionsCompleted || completedQuestions === allQuestions.length)
+                        !(
+                            requiredQuestionsCompleted || completedQuestions === allQuestions.length
+                        ) || isSubmitting
                     }
                     onClick={handleSubmit}
                     sx={s_submitButtonSx}
@@ -385,6 +440,7 @@ function ClubApplyPage() {
 
             <SubmitDialog
                 open={isSubmitDialogOpen}
+                isSubmitting={isSubmitting}
                 onConfirm={handleConfirmSubmit}
                 onClose={() => setIsSubmitDialogOpen(false)}
             />
@@ -392,4 +448,4 @@ function ClubApplyPage() {
     );
 }
 
-export { ClubApplyPage };
+export default ClubApplyPage;

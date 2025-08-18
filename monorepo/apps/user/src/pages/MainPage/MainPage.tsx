@@ -1,6 +1,4 @@
 import { clubQueries } from '@api/queryFactory';
-import { MainCard } from '@components';
-import { CLUB_CATEGORIES } from '@constants/club';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 
@@ -8,6 +6,8 @@ import banner from '@ssoc/assets/images/banner.png';
 import Check from '@ssoc/assets/images/check.svg';
 import { Button, Dropdown, Text } from '@ssoc/ui';
 
+import { MainCard } from '../../components/MainCard/MainCard';
+import { CLUB_CATEGORIES } from '../../constants/club';
 import {
     bannerContainer,
     categoryButton,
@@ -147,9 +147,9 @@ function MainPage() {
                         title={club.name}
                         category={club.category}
                         description={club.shortDescription}
-                        status={club.announcementStatus}
+                        status={club.announcementStatus || ''}
                         clubTags={club.clubTags}
-                        imageURL={club.imageUrl}
+                        representativeImage={club.representativeImage}
                         link={club.id}
                     />
                 ))}

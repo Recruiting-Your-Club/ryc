@@ -7,6 +7,7 @@ export interface FileUpLoaderProps {
     disabled?: boolean;
     files?: File[];
     onFilesChange?: (files: File[]) => void;
+    maxFileCount?: number;
 }
 
 export interface FileUpLoaderStateContextType {

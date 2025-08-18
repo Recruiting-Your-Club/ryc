@@ -50,6 +50,28 @@ export const s_dropdownItem = css`
     padding: 0;
 `;
 
+export const s_dropdownItemTextSx = css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 70%;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        width: 60%;
+    }
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: 55%;
+    }
+`;
+export const s_dropdownItemSuccessTextSx = css`
+    width: 30%;
+    @media (max-width: ${theme.breakpoint.tablet}) {
+        width: 40%;
+    }
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: 35%;
+    }
+`;
+
 export const s_dropdownContent = css`
     width: 13rem;
     @media (max-width: ${theme.breakpoint.tablet}) {

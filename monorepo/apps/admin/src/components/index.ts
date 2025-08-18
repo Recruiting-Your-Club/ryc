@@ -1,6 +1,5 @@
 export * from './DocumentBox';
 export * from './EvaluationBox';
-export * from './FileUpLoader';
 export * from './Footer';
 export * from './Header';
 export * from './ImageEditDialog';

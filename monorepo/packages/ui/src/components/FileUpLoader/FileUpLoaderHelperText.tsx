@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { Text } from '../Text';
+import { Text } from '../../components/Text';
 import { s_fileUpLoaderHelperText } from './FileUpLoader.style';
 import type { FileUpLoaderHelperTextProps } from './types';
 

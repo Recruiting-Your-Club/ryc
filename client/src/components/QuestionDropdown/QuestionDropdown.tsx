@@ -54,15 +54,13 @@ function QuestionDropdown({
                     <Dropdown.Group>
                         {personalQuestions.map((question) => (
                             <Dropdown.Item
-                                key={question.questionTitle}
-                                onItemSelect={() =>
-                                    onQuestionFocus(question.questionTitle, '사전질문')
-                                }
+                                key={question.id}
+                                onItemSelect={() => onQuestionFocus(question.label, '사전질문')}
                                 sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
-                                    {question.questionTitle}
-                                    {getAnswer(answers, question.questionTitle)?.trim() && (
+                                    {question.label}
+                                    {getAnswer(answers, question.label)?.trim() && (
                                         <Text type="subCaptionRegular" color="primary">
                                             [완료]
                                         </Text>
@@ -76,15 +74,13 @@ function QuestionDropdown({
                         <Dropdown.Label sx={s_dropdownLabelBottomSx}>자기소개서</Dropdown.Label>
                         {detailQuestions.map((question, index) => (
                             <Dropdown.Item
-                                key={question.questionTitle}
-                                onItemSelect={() =>
-                                    onQuestionFocus(question.questionTitle, '자기소개서')
-                                }
+                                key={question.id}
+                                onItemSelect={() => onQuestionFocus(question.label, '자기소개서')}
                                 sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
                                     질문{index + 1}
-                                    {getAnswer(answers, question.questionTitle)?.trim() && (
+                                    {getAnswer(answers, question.label)?.trim() && (
                                         <Text type="subCaptionRegular" color="primary">
                                             [완료]
                                         </Text>

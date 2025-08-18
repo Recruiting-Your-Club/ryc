@@ -30,4 +30,16 @@ const clubKeys = {
         ['reservation', clubId, announcementId, applicantId] as const,
 };
 
-export { clubKeys };
+const applicationKeys = {
+    all: ['application'] as const,
+    detail: (id: string) => ['detail', id] as const,
+};
+
+const announcementKeys = {
+    lists: (clubId: string) => ['list', clubId] as const,
+    detail: (announcementId: string) => ['detail', announcementId] as const,
+    postApplicationAnswers: (announcementId: string) =>
+        ['post-application-answers', announcementId] as const,
+};
+
+export { clubKeys, applicationKeys, announcementKeys };

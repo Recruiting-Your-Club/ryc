@@ -29,6 +29,10 @@ export const avatarSize: Record<AvatarSize, Size> = {
         width: '4.5rem',
         height: '4.5rem',
     },
+    full: {
+        width: '6rem',
+        height: '6rem',
+    },
 };
 
 export const s_size = (size: AvatarSize) => {

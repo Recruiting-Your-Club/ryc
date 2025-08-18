@@ -1,81 +1,114 @@
-import React from 'react';
-import { RecruitCard, RecruitDialog } from '@components';
-import { recruitCell, recruitmentContainer } from './RecruitmentPage.style';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { RecruitCard, RecruitDialog, Text } from '@components';
+import { Button } from '@components/_common';
+import { useRouter } from '@hooks/useRouter';
+import { ClubDetailRecruitmentLoadingPage } from '@pages/LoadingPage';
+import {
+    recruitCell,
+    recruitmentContainer,
+    s_noRecruitmentContainer,
+} from './RecruitmentPage.style';
 import { useDialog } from '@hooks/useDialog';
+import { announcementQueries } from '@api/queryFactory';
+import { useClubStore } from '@stores/clubStore';
+import { useParams } from 'react-router-dom';
+import { useApplicationStore } from '@stores/applicationStore';
 
 function RecruitmentPage() {
     // prop destruction
-    // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
+
+    // lib hooks
+    const { goTo } = useRouter();
+    const { id: clubId } = useParams<{ id: string }>();
+    const { setApplicationPeriod, setClubField } = useClubStore();
     // initial values
     // state, ref, querystring hooks
+    const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
     // form hooks
     // query hooks
+    const {
+        data: announcements,
+        isLoading,
+        error,
+    } = useQuery({
+        ...announcementQueries.getAnnouncementList(clubId || ''),
+        enabled: !!clubId,
+    });
+
+    const { data: selectedAnnouncementDetail } = useQuery({
+        ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId),
+        enabled: !!selectedAnnouncementId,
+    });
+
     // calculated values
     // handlers
-    // effects
-    const recruitListData = [
-        {
-            title: '🌱 프론트엔드 스터디원 모집',
-            content:
-                'React, Vue, Angular 등 프론트엔드 기술 스택 학습 및 프로젝트 진행하실 분 모십니다. 주 2회 스터디 진행.',
-            deadline: '2025-05-25', // 마감일은 YYYY-MM-DD 형식 문자열
-            hashtags: ['프론트엔드', 'React', '스터디', '온라인'],
-            link: '/recruitment/1', // 해당 공고 상세 페이지로 이동할 링크
-        },
-        {
-            title: '🖥️ 백엔드 개발자 구인',
-            content:
-                'Node.js 기반 서비스 개발 경험자 우대, REST API 설계 및 구현, DB 모델링 등 함께 성장할 개발자 찾습니다.',
-            deadline: '2025-06-10',
-            hashtags: ['백엔드', 'Node.js', '취업', '서울'],
-            link: '/recruitment/2',
-        },
-        {
-            title: '📱 모바일 앱 개발 (iOS/Android) 프로젝트 팀원 모집',
-            content:
-                'Flutter 또는 React Native를 이용한 크로스 플랫폼 앱 개발 프로젝트를 함께 할 팀원 모집합니다.',
-            deadline: '2025-05-30',
-            hashtags: ['모바일', 'Flutter', 'React Native', '프로젝트', 'React Native', '프로젝트'],
-            link: '/recruitment/3',
-        },
-        {
-            title: '🎨 UX/UI 디자이너 모집',
-            content:
-                '사용자 중심의 인터페이스 디자인 및 개선에 참여하실 디자이너 분들을 찾습니다. 포트폴리오 제출 필수.',
-            deadline: '2025-06-01',
-            hashtags: ['디자인', 'UX/UI', '웹디자인', '모바일디자인'],
-            link: '/recruitment/4',
-        },
-        {
-            title: '📸 사진/영상 촬영 및 편집 스터디',
-            content:
-                '사진 또는 영상 촬영에 관심 있는 분들이 모여 서로 배우고 함께 작업하며 실력을 향상시킬 스터디입니다.',
-            deadline: '2025-05-20',
-            hashtags: ['사진', '영상', '스터디', '오프라인'],
-            link: '/recruitment/5',
-        },
-    ];
+    const handleCardClick = (announcementId: string) => {
+        setSelectedAnnouncementId(announcementId);
+        openDialog();
+    };
+
+    const handleDialogClose = () => {
+        closeDialog();
+        setSelectedAnnouncementId('');
+    };
+    //effects
+    useEffect(() => {
+        if (selectedAnnouncementDetail) {
+            setApplicationPeriod({
+                startDate: selectedAnnouncementDetail.applicationPeriod.startDate,
+                endDate: selectedAnnouncementDetail.applicationPeriod.endDate,
+            });
+            setClubField(selectedAnnouncementDetail.field);
+        }
+    }, [selectedAnnouncementDetail, setApplicationPeriod, setClubField]);
+
+    if (isLoading) {
+        return <ClubDetailRecruitmentLoadingPage />;
+    }
+
+    if (error) {
+        return (
+            <div css={recruitmentContainer(false)}>
+                <Text>공고 목록을 불러오는 중 오류가 발생했습니다.</Text>
+            </div>
+        );
+    }
 
     return (
         <>
-            <div css={recruitmentContainer}>
-                {recruitListData &&
-                    recruitListData.map((cardData) => (
-                        <div css={recruitCell} key={cardData.title}>
+            <div css={recruitmentContainer(announcements && announcements.length > 0)}>
+                {announcements && announcements.length > 0 ? (
+                    announcements.map((announcement) => (
+                        <div css={recruitCell} key={announcement.announcementId}>
                             <RecruitCard
-                                title={cardData.title}
-                                content={cardData.content}
-                                deadline={cardData.deadline}
-                                hashtags={cardData.hashtags}
-                                onClick={openDialog}
+                                title={announcement.title}
+                                content={announcement.summaryDescription}
+                                deadline={announcement.applicationEndDate}
+                                hashtags={announcement.tags}
+                                onClick={() => handleCardClick(announcement.announcementId)}
                             />
                         </div>
-                    ))}
+                    ))
+                ) : (
+                    <div css={s_noRecruitmentContainer}>
+                        <Text>현재 이 동아리에서 등록한 공고가 없습니다.</Text>
+                        <Button variant="primary" onClick={() => goTo('/')}>
+                            다른 동아리 둘러보기
+                        </Button>
+                    </div>
+                )}
             </div>
-            {open && <RecruitDialog open={open} handleClose={closeDialog} />}
+            {open && selectedAnnouncementDetail && (
+                <RecruitDialog
+                    open={open}
+                    handleClose={handleDialogClose}
+                    announcementDetaildata={selectedAnnouncementDetail}
+                />
+            )}
         </>
     );
 }
 
-export { RecruitmentPage };
+export default RecruitmentPage;

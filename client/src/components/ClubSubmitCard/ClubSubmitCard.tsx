@@ -12,18 +12,21 @@ import {
 } from './ClubSubmitCard.style';
 import type { ClubSubmitCardProps } from './types';
 import { getDeadlineInfo } from '@utils/compareTime';
+import { getCategory } from '@utils/changeCategory';
 
 function ClubSubmitCard({
     clubName,
-    tag,
+    category,
     deadline,
+    field,
     personalQuestions,
     detailQuestions,
     allQuestionsCount,
     completedQuestionsCount,
-    requiredQuestionsCount,
     requiredQuestionsCompleted,
     answers,
+    logo,
+    isSubmitting,
     onQuestionFocus,
     onSubmit,
 }: ClubSubmitCardProps) {
@@ -34,14 +37,15 @@ function ClubSubmitCard({
     // form hooks
     // query hooks
     // calculated values
-    const { displayText, diffDay } = getDeadlineInfo(deadline);
+    const { diffDay, displayText } = getDeadlineInfo(deadline);
+
     // handlers
     // effects
     return (
         <div css={clubApplySubmitCardContainer}>
             <div css={clubSubmitCard}>
                 <div css={clubSubmitCardLogo}>
-                    <Ryc css={svgContainer} />
+                    <img src={logo} alt="로고" css={svgContainer} />
                     {deadline && (
                         <Text
                             color="caption"
@@ -58,10 +62,10 @@ function ClubSubmitCard({
                 </Text>
                 <div css={clubSubmitCardSubCaption}>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
-                        {tag}
+                        {getCategory(category)}
                     </Text>
                     <Text textAlign="left" type="subCaptionLight" color="subCaption">
-                        26기 신입기수 모집
+                        {field}
                     </Text>
                     <QuestionDropdown
                         completedQuestionsCount={completedQuestionsCount}
@@ -75,6 +79,7 @@ function ClubSubmitCard({
                 </div>
                 <Button
                     size="full"
+                    loading={isSubmitting}
                     disabled={
                         !(
                             requiredQuestionsCompleted ||

@@ -3,15 +3,15 @@ import React from 'react';
 
 import XIcon from '@ssoc/assets/images/gray_xicon.svg';
 import PdfIcon from '@ssoc/assets/images/PdfIcon.svg';
-
-import { FileExtension } from '../../constants/fileUpLoader';
-import { Button } from '../Button';
+import { Button } from '../../components/Button';
+import { FileExtension } from '../../constants';
 import { s_fileImagePreview, s_fileItem, s_fileRow } from './FileUpLoader.style';
 import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
 import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
 import type { FileUpLoaderItemProps } from './types';
-import { formatBytes, formatDate, getExtension } from './utills';
+import { formatBytes, formatDate, getExtension } from './utils';
+
 
 function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     //props destruction

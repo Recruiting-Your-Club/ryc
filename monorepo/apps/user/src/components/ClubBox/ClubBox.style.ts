@@ -26,3 +26,10 @@ export const clubBoxItem = css`
         gap: 2rem;
     }
 `;
+
+export const s_TextSx = css`
+    width: 40%;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: auto;
+    }
+`;
