@@ -20,6 +20,8 @@ export * from './Radio';
 export * from './TextArea';
 export * from './PasswordInput';
 export * from './Toast';
+export * from './Stepper';
+export * from './FileUpLoader';
 export * from './Tooltip';
 export * from './Table';
 export * from './ImageDialog';

@@ -12,4 +12,6 @@ export * from './InterviewInformationButton';
 export * from './InterviewTimeTable';
 export * from './PersonalScoreCard';
 export * from './SideBar';
+export * from './QuestionForm';
+export * from './FieldLabel';
 export * from './ClubBox';

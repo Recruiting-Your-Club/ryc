@@ -1,7 +1,7 @@
-import XIcon from '@ssoc/assets/images/xIcon.svg';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
+import XIcon from '@ssoc/assets/images/xIcon.svg';
 import theme from '@ssoc/styles';
 
 import { Dialog } from '.';

@@ -1,6 +1,7 @@
+import React from 'react';
+
 import Alert from '@ssoc/assets/images/alert.svg';
 import Check from '@ssoc/assets/images/check.svg';
-import React from 'react';
 
 import { Button } from '../Button';
 import type { ButtonSize } from '../Button';
