@@ -124,8 +124,15 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     return announcementJpaRepository.findIdsByClubId(clubId);
   }
 
+  /*
+   * jpaRepository.deleteAllByIdIn(List<String> ids)을 수행하지 않고, entity를 조회한 후 삭제합니다.
+   * jpaRepository.deleteAllByIdIn는 JPQL 기반의 직접 삭제 쿼리이기 때문에
+   * SqlDelete가 적용되지않아 Soft Delete가 적용되지 않습니다.
+   * 따라서, entity를 조회한 후 삭제하는 방식으로 Soft Delete를 적용합니다.
+   */
   @Override
   public void deleteAllByIdIn(List<String> announcementIds) {
-    announcementJpaRepository.deleteByIdIn(announcementIds);
+    List<AnnouncementEntity> entities = announcementJpaRepository.findAllByIdIn(announcementIds);
+    announcementJpaRepository.deleteAll(entities);
   }
 }

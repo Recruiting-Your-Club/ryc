@@ -34,5 +34,5 @@ public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEnt
   @Query("SELECT a.id FROM AnnouncementEntity a WHERE a.clubId = :clubId AND a.isDeleted = false")
   List<String> findIdsByClubId(String clubId);
 
-  void deleteByIdIn(List<String> announcementIds);
+  List<AnnouncementEntity> findAllByIdIn(List<String> announcementIds);
 }
