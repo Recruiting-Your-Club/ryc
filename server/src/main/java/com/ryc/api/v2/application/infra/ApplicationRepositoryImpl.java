@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.application.domain.Answer;
@@ -63,6 +64,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 
   @Override
   public void deleteAllByApplicantIds(List<String> applicantIds) {
-    applicationJpaRepository.deleteByApplicantIdIn(applicantIds);
+    // cascade 적용하기 위해 ApplicationEntity를 조회하여 삭제
+    List<ApplicationEntity> entities = applicationJpaRepository.findAllById(applicantIds);
+    applicationJpaRepository.deleteAll(entities);
   }
 }

@@ -16,6 +16,4 @@ public interface ApplicationJpaRepository extends JpaRepository<ApplicationEntit
   @Query(
       "SELECT a.applicantId, a.createdAt FROM ApplicationEntity a WHERE a.applicantId IN :applicantIds")
   List<Object[]> findCreatedAtByApplicantIds(List<String> applicantIds);
-
-  void deleteByApplicantIdIn(List<String> applicantIds);
 }
