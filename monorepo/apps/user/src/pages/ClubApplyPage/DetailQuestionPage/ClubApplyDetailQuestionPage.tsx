@@ -3,7 +3,7 @@ import React from 'react';
 import { useMediaQuery } from '@ssoc/hooks';
 import { Text, TextArea, Tooltip } from '@ssoc/ui';
 
-import InfoIcon from '../../../asset/images/info.svg';
+import InfoIcon from '../../../assets/images/info.svg';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
 import {
