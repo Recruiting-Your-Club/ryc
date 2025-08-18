@@ -1,5 +1,7 @@
 package com.ryc.api.v2.announcement.domain;
 
+import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -54,121 +56,126 @@ final class AnnouncementValidator extends DomainValidator {
       LocalDateTime updatedAt) {
 
     // 공통 검증 메소드 사용
-    validateId(id, "Announcement Id");
-    validateClubId(clubId, "Club Id");
-    validateTitle(title, "Announcement Title");
-    validateNumberOfPeople(numberOfPeople, "NumberOfPeople");
-    validateDetailDescription(detailDescription, "Detail Description");
-    validateSummaryDescription(summaryDescription, "Summary Description");
-    validateTarget(target, "Target");
-    validateField(field, "Field");
-    validateTags(tags, "Tags");
-    validateAnnouncementStatus(announcementStatus, "Announcement Status");
-    validateAnnouncementType(announcementType, "Announcement Type");
-    validateHasInterview(hasInterview, "HasInterview");
-    validateAnnouncementPeriodInfo(announcementPeriodInfo, "Announcement Period Info");
-    validateActivityPeriod(activityPeriod, "Activity Period");
-    validateApplicationForm(applicationForm, "Application Form");
-    validateIsDeleted(isDeleted, "IsDeleted");
-    validateCreatedAt(id, createdAt, "CreatedAt");
-    validateUpdatedAt(id, updatedAt, "UpdatedAt");
+    validateId(id);
+    validateClubId(clubId);
+    validateTitle(title);
+    validateNumberOfPeople(numberOfPeople);
+    validateDetailDescription(detailDescription);
+    validateSummaryDescription(summaryDescription);
+    validateTarget(target);
+    validateField(field);
+    validateTags(tags);
+    validateAnnouncementStatus(announcementStatus);
+    validateAnnouncementType(announcementType);
+    validateHasInterview(hasInterview);
+    validateAnnouncementPeriodInfo(announcementPeriodInfo);
+    validateActivityPeriod(activityPeriod);
+    validateApplicationForm(applicationForm);
+    validateIsDeleted(isDeleted);
+    validateCreatedAt(id, createdAt);
+    validateUpdatedAt(id, updatedAt);
   }
 
   /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
-  private static void validateId(String id, String fieldName) {
-    validateNotNullOrEmpty(id, fieldName);
-    validatePattern(id, fieldName, UUID_PATTERN, "(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
+  private static void validateId(String id) {
+    validateNotNullOrEmpty(id, ANNOUNCEMENT_ID_NULL_OR_EMPTY);
+    validatePattern(id, UUID_PATTERN, ANNOUNCEMENT_INVALID_ID_FORMAT);
   }
 
-  private static void validateClubId(String clubId, String fieldName) {
-    validateNotNullOrEmpty(clubId, fieldName);
-    validatePattern(clubId, fieldName, UUID_PATTERN, "(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
+  private static void validateClubId(String clubId) {
+    validateNotNullOrEmpty(clubId, ANNOUNCEMENT_CLUB_ID_NULL_OR_EMPTY);
+    validatePattern(clubId, UUID_PATTERN, ANNOUNCEMENT_INVALID_CLUB_ID_FORMAT);
   }
 
-  private static void validateTitle(String title, String fieldName) {
-    validateNotNullOrEmpty(title, fieldName);
-    validateLengthRange(title, fieldName, MIN_TITLE_LENGTH, MAX_TITLE_LENGTH);
+  private static void validateTitle(String title) {
+    validateNotNullOrEmpty(title, ANNOUNCEMENT_TITLE_NULL_OR_EMPTY);
+    validateLengthRange(
+        title, MIN_TITLE_LENGTH, MAX_TITLE_LENGTH, ANNOUNCEMENT_INVALID_TITLE_LENGTH);
   }
 
-  private static void validateNumberOfPeople(String numberOfPeople, String fieldName) {
+  private static void validateNumberOfPeople(String numberOfPeople) {
     // NULL 허용
-    validateNotEmpty(numberOfPeople, fieldName);
-    validateMaxLength(numberOfPeople, fieldName, MAX_NUMBER_OF_PEOPLE_LENGTH);
+    validateNotEmpty(numberOfPeople, ANNOUNCEMENT_NUMBER_OF_PEOPLE_EMPTY);
+    validateMaxLength(
+        numberOfPeople, MAX_NUMBER_OF_PEOPLE_LENGTH, ANNOUNCEMENT_NUMBER_OF_PEOPLE_TOO_LONG);
   }
 
-  private static void validateDetailDescription(String detailDescription, String fieldName) {
+  private static void validateDetailDescription(String detailDescription) {
     // NULL 허용
-    validateNotEmpty(detailDescription, fieldName);
-    validateMaxLength(detailDescription, fieldName, MAX_DESCRIPTION_LENGTH);
+    validateNotEmpty(detailDescription, ANNOUNCEMENT_DETAIL_DESCRIPTION_EMPTY);
+    validateMaxLength(
+        detailDescription, MAX_DESCRIPTION_LENGTH, ANNOUNCEMENT_DETAIL_DESCRIPTION_TOO_LONG);
   }
 
-  private static void validateSummaryDescription(String summaryDescription, String fieldName) {
+  private static void validateSummaryDescription(String summaryDescription) {
     // NULL 허용
-    validateNotEmpty(summaryDescription, fieldName);
-    validateMaxLength(summaryDescription, fieldName, MAX_SUMMARY_DESCRIPTION_LENGTH);
+    validateNotEmpty(summaryDescription, ANNOUNCEMENT_SUMMARY_DESCRIPTION_EMPTY);
+    validateMaxLength(
+        summaryDescription,
+        MAX_SUMMARY_DESCRIPTION_LENGTH,
+        ANNOUNCEMENT_SUMMARY_DESCRIPTION_TOO_LONG);
   }
 
-  private static void validateTarget(String target, String fieldName) {
+  private static void validateTarget(String target) {
     // NULL 허용
-    validateNotEmpty(target, fieldName);
-    validateMaxLength(target, fieldName, MAX_TARGET_LENGTH);
+    validateNotEmpty(target, ANNOUNCEMENT_TARGET_EMPTY);
+    validateMaxLength(target, MAX_TARGET_LENGTH, ANNOUNCEMENT_TARGET_TOO_LONG);
   }
 
-  private static void validateField(String field, String fieldName) {
+  private static void validateField(String field) {
     // NULL 허용
-    validateNotEmpty(field, fieldName);
-    validateMaxLength(field, fieldName, MAX_FIELD_LENGTH);
+    validateNotEmpty(field, ANNOUNCEMENT_FIELD_EMPTY);
+    validateMaxLength(field, MAX_FIELD_LENGTH, ANNOUNCEMENT_FIELD_TOO_LONG);
   }
 
-  private static void validateActivityPeriod(String activityPeriod, String fieldName) {
+  private static void validateActivityPeriod(String activityPeriod) {
     // NULL 허용
-    validateNotNullOrEmpty(activityPeriod, fieldName);
-    validateMaxLength(activityPeriod, fieldName, MAX_ACTIVITY_PERIOD_LENGTH);
+    validateNotEmpty(activityPeriod, ANNOUNCEMENT_ACTIVITY_PERIOD_EMPTY);
+    validateMaxLength(
+        activityPeriod, MAX_ACTIVITY_PERIOD_LENGTH, ANNOUNCEMENT_ACTIVITY_PERIOD_TOO_LONG);
   }
 
-  private static void validateTags(List<Tag> tags, String fieldName) {
+  private static void validateTags(List<Tag> tags) {
     // 빈 리스트 허용
-    validateNotNull(tags, fieldName);
+    validateNotNull(tags, ANNOUNCEMENT_TAGS_NULL);
   }
 
-  private static void validateAnnouncementStatus(
-      AnnouncementStatus announcementStatus, String fieldName) {
-    validateNotNull(announcementStatus, fieldName);
+  private static void validateAnnouncementStatus(AnnouncementStatus announcementStatus) {
+    validateNotNull(announcementStatus, ANNOUNCEMENT_STATUS_NULL);
   }
 
-  private static void validateAnnouncementType(
-      AnnouncementType announcementType, String fieldName) {
-    validateNotNull(announcementType, fieldName);
+  private static void validateAnnouncementType(AnnouncementType announcementType) {
+    validateNotNull(announcementType, ANNOUNCEMENT_TYPE_NULL);
   }
 
-  private static void validateHasInterview(Boolean hasInterview, String fieldName) {
-    validateNotNull(hasInterview, fieldName);
+  private static void validateHasInterview(Boolean hasInterview) {
+    validateNotNull(hasInterview, ANNOUNCEMENT_HAS_INTERVIEW_NULL);
   }
 
   private static void validateAnnouncementPeriodInfo(
-      AnnouncementPeriodInfo announcementPeriodInfo, String fieldName) {
-    validateNotNull(announcementPeriodInfo, fieldName);
+      AnnouncementPeriodInfo announcementPeriodInfo) {
+    validateNotNull(announcementPeriodInfo, ANNOUNCEMENT_PERIOD_INFO_NULL);
   }
 
-  private static void validateApplicationForm(ApplicationForm applicationForm, String fieldName) {
-    validateNotNull(applicationForm, fieldName);
+  private static void validateApplicationForm(ApplicationForm applicationForm) {
+    validateNotNull(applicationForm, ANNOUNCEMENT_APPLICATION_FORM_NULL);
   }
 
-  private static void validateIsDeleted(Boolean isDeleted, String fieldName) {
-    validateNotNull(isDeleted, fieldName);
+  private static void validateIsDeleted(Boolean isDeleted) {
+    validateNotNull(isDeleted, ANNOUNCEMENT_IS_DELETED_NULL);
   }
 
-  private static void validateCreatedAt(String id, LocalDateTime createdAt, String fieldName) {
-    // 영속화 이전 NULL 허용
+  private static void validateCreatedAt(String id, LocalDateTime createdAt) {
+    // 영속화 이전은 NULL 허용
     if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) return;
-    validateNotNull(createdAt, fieldName);
+    validateNotNull(createdAt, ANNOUNCEMENT_CREATED_AT_NULL);
   }
 
-  private static void validateUpdatedAt(String id, LocalDateTime updatedAt, String fieldName) {
-    // 영속화 이전 NULL 허용
+  private static void validateUpdatedAt(String id, LocalDateTime updatedAt) {
+    // 영속화 이전은 NULL 허용
     if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) return;
-    validateNotNull(updatedAt, fieldName);
+    validateNotNull(updatedAt, ANNOUNCEMENT_UPDATED_AT_NULL);
   }
 }
