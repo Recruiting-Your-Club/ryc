@@ -35,7 +35,6 @@ public class InterviewSlotEntity extends BaseEntity {
   @Column(nullable = false)
   private Integer maxNumberOfPeople;
 
-  @Column(nullable = false)
   @Embedded
   private PeriodVO period;
 
