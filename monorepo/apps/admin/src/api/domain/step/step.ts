@@ -13,12 +13,18 @@ async function getTotalSteps({ announcementId }: { announcementId: string }): Pr
 async function getAllStepApplicants({
     announcementId,
     clubId,
+    status,
 }: {
     announcementId: string;
     clubId: string;
+    status?: string;
 }): Promise<StepApplicant[]> {
+    const url = status
+        ? `announcements/${announcementId}/applicants?status=${status}`
+        : `announcements/${announcementId}/applicants`;
+
     return await httpRequest.get({
-        url: `announcements/${announcementId}/applications`,
+        url: url,
         headers: {
             'X-CLUB-ID': clubId,
         },
