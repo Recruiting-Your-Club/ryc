@@ -1,6 +1,6 @@
 import { updateClub } from '@api/domain';
 import type { Club } from '@api/domain/club/types';
-import { myClubKeys } from '@api/querykeyFactory';
+import { clubKeys } from '@api/querykeyFactory';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useUpdateClub = () => {
@@ -9,7 +9,7 @@ const useUpdateClub = () => {
         mutationFn: ({ id, club }: { id: string; club: Club }) => updateClub(id, club),
         onSuccess: (response, { id }) => {
             //서버에서 받은 response를 데이터로 직접 업데이트
-            queryClient.setQueryData(myClubKeys.detail(id), response);
+            queryClient.setQueryData(clubKeys.detail(id), response);
             return response;
         },
         onError: (error) => {

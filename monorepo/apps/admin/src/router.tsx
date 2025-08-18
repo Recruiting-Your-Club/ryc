@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
+    AnnouncementPage,
     ClubCreatePage,
     ClubEditPage,
     EntryPage,
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <ManagerLayout />,
         children: [
+            { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
             { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
@@ -36,6 +38,8 @@ const router = createBrowserRouter([
 
             { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
             { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
+            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },
     {
@@ -46,10 +50,6 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
-            { path: 'recruitment', element: <RecruitCreatePage /> },
-
-            //추 후 clubId에 따른 하위 router로 리펙토링 예정
-            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
             { path: 'test', element: <TestPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
             { path: 'myClub', element: <MyClubPage /> },
