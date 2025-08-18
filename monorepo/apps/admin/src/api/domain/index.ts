@@ -4,3 +4,4 @@ export * from './email/email';
 export * from './applicant/applicant';
 export * from './evaluation/evaluation';
 export * from './step/step';
+export * from './announcement/announcement';

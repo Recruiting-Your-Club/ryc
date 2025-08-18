@@ -23,19 +23,32 @@ const meta: Meta<typeof Select> = {
 export const DefaultSelect: Story = {
     render: (args) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [value, setValue] = useState('');
+        const [value, setValue] = useState('primary1');
+        const options = [
+            { value: 'primary1', label: '기본입니다 1' },
+            { value: 'primary2', label: '기본입니다 2' },
+            { value: 'primary3', label: '기본입니다 3' },
+        ];
 
         return (
             <div style={{ height: '300px' }}>
                 <p style={{ marginBottom: '20px' }}>Selected value: {value}</p>
-                <Select value={args.value} onValueChange={setValue} size={args.size} sx={args.sx}>
+                <Select
+                    value={value}
+                    onValueChange={setValue}
+                    size={args.size}
+                    sx={args.sx}
+                    options={options}
+                >
                     <Select.Trigger>
                         <Select.Value placeholder="기본 Select" />
                     </Select.Trigger>
                     <Select.Content>
-                        <Select.Item value="primary1">기본입니다 1</Select.Item>
-                        <Select.Item value="primary2">기본입니다 2</Select.Item>
-                        <Select.Item value="primary3">기본입니다 3</Select.Item>
+                        {options.map(({ value, label }) => (
+                            <Select.Item key={value} value={value}>
+                                {label}
+                            </Select.Item>
+                        ))}
                     </Select.Content>
                 </Select>
             </div>
@@ -44,7 +57,7 @@ export const DefaultSelect: Story = {
     args: {
         children: 'ReactNode',
         size: 'lg',
-        value: '',
+        value: 'primary1',
         onValueChange: () => {},
     },
 };

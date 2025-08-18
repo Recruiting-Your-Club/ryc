@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, CSSObject } from '@emotion/react';
 import type { CSSProperties } from 'react';
 
 import theme from '@ssoc/styles';

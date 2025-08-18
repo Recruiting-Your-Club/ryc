@@ -1,4 +1,5 @@
 import type { KeyboardEvent } from 'react';
+import React from 'react';
 
 import Check from '@ssoc/assets/images/select_check.svg';
 

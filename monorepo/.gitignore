@@ -14,8 +14,10 @@
 # misc
 .DS_Store
 .env.local
+.env.development
 .env.development.local
 .env.test.local
+.env.production
 .env.production.local
 
 npm-debug.log*
@@ -30,6 +32,8 @@ yarn-error.log*
 .idea/
 .vscode/
 .turbo
+
+.yarn/install-state.gz
 
 # TypeScript build info
 *.tsbuildinfo

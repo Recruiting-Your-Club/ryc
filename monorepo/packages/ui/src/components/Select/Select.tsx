@@ -4,7 +4,7 @@ import { useClickOutside } from '@ssoc/hooks';
 
 import { s_select, s_size } from './Select.styles';
 import { SelectContent } from './SelectContent';
-import { SelectContext } from './SelectContext';
+import { SelectContext, useSelectContext } from './SelectContext';
 import { SelectGroup } from './SelectGroup';
 import { SelectItem } from './SelectItem';
 import { SelectLabel } from './SelectLabel';

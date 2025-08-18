@@ -1,4 +1,5 @@
 import type { Ref } from 'react';
+import React from 'react';
 
 import DownArrow from '@ssoc/assets/images/downArrow.svg';
 

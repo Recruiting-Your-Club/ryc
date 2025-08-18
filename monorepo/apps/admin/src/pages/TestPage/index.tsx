@@ -1,41 +1,51 @@
-import { Table } from '@ssoc/ui';
+import { useState } from 'react';
+
+import { Button, Stepper } from '@ssoc/ui';
 
 function TestPage() {
+    const [activeStep, setActiveStep] = useState(0);
     return (
-        <div css={{ width: '60%' }}>
-            <Table>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.ColumnHeaderCell sx={{ paddingRight: '15rem' }}>
-                            멤버
-                        </Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>가입일</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>권한</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>작업</Table.ColumnHeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    <Table.Row>
-                        <Table.Cell>오성</Table.Cell>
-                        <Table.Cell>2025.09.01</Table.Cell>
-                        <Table.Cell>회장</Table.Cell>
-                        <Table.Cell>hello</Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>오성</Table.Cell>
-                        <Table.Cell>2025.09.01</Table.Cell>
-                        <Table.Cell>회장</Table.Cell>
-                        <Table.Cell>hello</Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>오성</Table.Cell>
-                        <Table.Cell>2025.09.01</Table.Cell>
-                        <Table.Cell>회장</Table.Cell>
-                        <Table.Cell>hello</Table.Cell>
-                    </Table.Row>
-                </Table.Body>
-            </Table>
-            <div>hi</div>
+        <div style={{ width: '800px' }}>
+            <Stepper activeStep={activeStep}>
+                <Stepper.Step>
+                    <Stepper.Label>Step 1</Stepper.Label>
+                </Stepper.Step>
+                <Stepper.Step>
+                    <Stepper.Label>Step 2</Stepper.Label>
+                </Stepper.Step>
+                <Stepper.Step>
+                    <Stepper.Label>Step 3</Stepper.Label>
+                </Stepper.Step>
+                <Stepper.Step>
+                    <Stepper.Label>Step 4</Stepper.Label>
+                </Stepper.Step>
+                <Stepper.Step>
+                    <Stepper.Label>Step 5</Stepper.Label>
+                </Stepper.Step>
+            </Stepper>
+            <div
+                style={{
+                    display: 'flex',
+                    marginTop: '2rem',
+                    textAlign: 'center',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Button
+                    variant="primary"
+                    size="s"
+                    onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}
+                >
+                    이전
+                </Button>
+                <Button
+                    variant="primary"
+                    size="s"
+                    onClick={() => setActiveStep((prev) => Math.min(prev + 1, 4))}
+                >
+                    다음
+                </Button>
+            </div>
         </div>
     );
 }
