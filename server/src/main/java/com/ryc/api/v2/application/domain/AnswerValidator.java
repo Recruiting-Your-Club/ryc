@@ -28,16 +28,14 @@ final class AnswerValidator {
     return string != null ? string.trim() : null;
   }
 
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수
-   * 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스
-   */
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
   static ValidatedAnswer validateAndSanitize(
       String id,
       String questionId,
       String textAnswer,
       List<AnswerChoice> choices,
       String fileMetadataId) {
-    
+
     // 정제
     String resolvedTextAnswer = sanitizeString(textAnswer);
 
@@ -57,9 +55,7 @@ final class AnswerValidator {
         .build();
   }
 
-  /**
-   * 검증 private 헬퍼 메소드
-   */
+  /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {
@@ -87,7 +83,8 @@ final class AnswerValidator {
   private static void validateTextAnswer(String textAnswer) {
     // textAnswer는 null 허용 (선택 사항)
     if (textAnswer != null && textAnswer.length() > MAX_TEXT_ANSWER_LENGTH) {
-      throw new IllegalArgumentException("TextAnswer cannot exceed " + MAX_TEXT_ANSWER_LENGTH + " characters");
+      throw new IllegalArgumentException(
+          "TextAnswer cannot exceed " + MAX_TEXT_ANSWER_LENGTH + " characters");
     }
   }
 
@@ -98,10 +95,9 @@ final class AnswerValidator {
   private static void validateFileMetadataId(String fileMetadataId) {
     // fileMetadataId는 null 허용 (선택 사항)
     if (fileMetadataId != null && !fileMetadataId.isEmpty()) {
-      //TODO: S3 메타데이터 id 포멧으로 수정
+      // TODO: S3 메타데이터 id 포멧으로 수정
       if (!UUID_PATTERN.matcher(fileMetadataId).matches()) {
-        throw new IllegalArgumentException(
-            "");
+        throw new IllegalArgumentException("");
       }
     }
   }
