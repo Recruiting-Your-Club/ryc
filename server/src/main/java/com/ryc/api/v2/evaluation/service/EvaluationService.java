@@ -163,8 +163,19 @@ public class EvaluationService {
   @Transactional
   public void deleteEvaluation(String evaluationId) {
     // TODO: 본인 평가 ID인지 검증 필요
-    //  현재 물리 삭제로 구현. 추후 의논 후 논리/물리 삭제 기준 설계 필요.
     evaluationRepository.deleteById(evaluationId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
+    event.applicantIds().forEach(evaluationRepository::deleteAllByApplicantId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    evaluationRepository.deleteAllByAdminId(event.adminId());
   }
 
   /**
@@ -321,17 +332,5 @@ public class EvaluationService {
             .toList();
 
     return new EvaluationOverviewSearchResponse(overviewDataList);
-  }
-
-  @Transactional
-  @EventListener
-  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
-    event.applicantIds().forEach(evaluationRepository::deleteAllByApplicantId);
-  }
-
-  @Transactional
-  @EventListener
-  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
-    evaluationRepository.deleteAllByAdminId(event.adminId());
   }
 }

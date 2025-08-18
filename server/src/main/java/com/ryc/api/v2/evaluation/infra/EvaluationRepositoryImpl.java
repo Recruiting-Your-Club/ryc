@@ -41,8 +41,6 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
     ApplicantEntity applicantEntity =
         applicantJpaRepository
             .findById(evaluation.getEvaluateeId())
-            // TODO: applicant 논리 삭제 허용시, 아래 필터 추가
-            //                        .filter(entity -> !entity.getDeleted())
             .orElseThrow(() -> new NoSuchElementException("ApplicantEntity not found or deleted"));
 
     EvaluationEntity evaluationEntity =
