@@ -3,210 +3,510 @@
         "applicantId": "1",
         "name": "홍길동",
         "email": "gildong.hong@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/gildong.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/gildong.jpg",
         "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T10:00:00Z"
+        "submittedAt": "2025-08-08T10:00:00Z",
+        "profileImage": {
+            "id": "img-1",
+            "url": "https://example.com/images/gildong.jpg",
+            "originalFileName": "profile-image-1.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "2",
         "name": "김영희",
         "email": "younghee.kim@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/younghee.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/younghee.jpg",
         "status": "FINAL_FAIL",
-        "submittedAt": "2025-08-08T10:05:00Z"
+        "submittedAt": "2025-08-08T10:05:00Z",
+        "profileImage": {
+            "id": "img-2",
+            "url": "https://example.com/images/younghee.jpg",
+            "originalFileName": "profile-image-2.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "3",
         "name": "박철수",
         "email": "chulsoo.park@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
         "status": "DOCUMENT_PENDING",
-        "submittedAt": "2025-08-08T10:10:00Z"
+        "submittedAt": "2025-08-08T10:10:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "4",
         "name": "이은지",
         "email": "eunji.lee@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/eunji.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/eunji.jpg",
         "status": "INTERVIEW_PENDING",
-        "submittedAt": "2025-08-08T10:15:00Z"
+        "submittedAt": "2025-08-08T10:15:00Z",
+        "profileImage": {
+            "id": "img-4",
+            "url": "https://example.com/images/eunji.jpg",
+            "originalFileName": "profile-image-4.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "5",
         "name": "최민준",
         "email": "minjun.choi@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
         "status": "INTERVIEW_FAIL",
-        "submittedAt": "2025-08-08T10:20:00Z"
+        "submittedAt": "2025-08-08T10:20:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "6",
-        "name": "한지수",
-        "email": "jisoo.han@email.com",
+        "name": "정지훈",
+        "email": "jihun.jung@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/jihun.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/jihun.jpg",
         "status": "DOCUMENT_FAIL",
-        "submittedAt": "2025-08-08T10:25:00Z"
+        "submittedAt": "2025-08-08T10:25:00Z",
+        "profileImage": {
+            "id": "img-6",
+            "url": "https://example.com/images/jihun.jpg",
+            "originalFileName": "profile-image-6.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "7",
-        "name": "정우진",
-        "email": "woojin.jung@email.com",
-        "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T10:30:00Z"
+        "name": "김민아",
+        "email": "mina.kim@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "INTERVIEW_PENDING",
+        "submittedAt": "2025-08-08T10:30:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "8",
-        "name": "윤아름",
-        "email": "areum.yoon@email.com",
-        "status": "INTERVIEW_PENDING",
-        "submittedAt": "2025-08-08T10:35:00Z"
+        "name": "이성민",
+        "email": "sungmin.lee@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/sungmin.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/sungmin.jpg",
+        "status": "DOCUMENT_PENDING",
+        "submittedAt": "2025-08-08T10:35:00Z",
+        "profileImage": {
+            "id": "img-8",
+            "url": "https://example.com/images/sungmin.jpg",
+            "originalFileName": "profile-image-8.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "9",
-        "name": "강태현",
-        "email": "taehyun.kang@email.com",
-        "status": "DOCUMENT_PENDING",
-        "submittedAt": "2025-08-08T10:40:00Z"
+        "name": "박서현",
+        "email": "seohyun.park@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/seohyun.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/seohyun.jpg",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T10:40:00Z",
+        "profileImage": {
+            "id": "img-9",
+            "url": "https://example.com/images/seohyun.jpg",
+            "originalFileName": "profile-image-9.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "10",
-        "name": "서지원",
-        "email": "jiwon.seo@email.com",
-        "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T10:45:00Z"
+        "name": "최은지",
+        "email": "eunji.choi@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-08-08T10:45:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "11",
-        "name": "임나영",
-        "email": "nayoung.lim@email.com",
-        "status": "INTERVIEW_FAIL",
-        "submittedAt": "2025-08-08T10:50:00Z"
+        "name": "윤지아",
+        "email": "jia.yun@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/jia.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/jia.jpg",
+        "status": "DOCUMENT_PENDING",
+        "submittedAt": "2025-08-08T10:50:00Z",
+        "profileImage": {
+            "id": "img-11",
+            "url": "https://example.com/images/jia.jpg",
+            "originalFileName": "profile-image-11.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "12",
-        "name": "고준혁",
-        "email": "junhyuk.go@email.com",
-        "status": "DOCUMENT_PENDING",
-        "submittedAt": "2025-08-08T10:55:00Z"
+        "name": "강태민",
+        "email": "taemin.kang@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "INTERVIEW_PENDING",
+        "submittedAt": "2025-08-08T10:55:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "13",
-        "name": "문소연",
-        "email": "soyeon.moon@email.com",
-        "status": "DOCUMENT_FAIL",
-        "submittedAt": "2025-08-08T11:00:00Z"
+        "name": "서지연",
+        "email": "jiyeon.seo@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/jiyeon.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/jiyeon.jpg",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T11:00:00Z",
+        "profileImage": {
+            "id": "img-13",
+            "url": "https://example.com/images/jiyeon.jpg",
+            "originalFileName": "profile-image-13.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "14",
-        "name": "전동현",
-        "email": "donghyun.jeon@email.com",
-        "status": "INTERVIEW_PENDING",
-        "submittedAt": "2025-08-08T11:05:00Z"
+        "name": "한승우",
+        "email": "seungwoo.han@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T11:05:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "15",
-        "name": "배수현",
-        "email": "suhyun.bae@email.com",
-        "status": "INTERVIEW_FAIL",
-        "submittedAt": "2025-08-08T11:10:00Z"
+        "name": "이하나",
+        "email": "hana.lee@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/hana.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/hana.jpg",
+        "status": "INTERVIEW_PENDING",
+        "submittedAt": "2025-08-08T11:10:00Z",
+        "profileImage": {
+            "id": "img-15",
+            "url": "https://example.com/images/hana.jpg",
+            "originalFileName": "profile-image-15.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "16",
-        "name": "장민우",
-        "email": "minwoo.jang@email.com",
-        "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T11:15:00Z"
+        "name": "김준호",
+        "email": "junho.kim@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "DOCUMENT_PENDING",
+        "submittedAt": "2025-08-08T11:15:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "17",
-        "name": "오지훈",
-        "email": "jihun.oh@email.com",
-        "status": "DOCUMENT_PENDING",
-        "submittedAt": "2025-08-08T11:20:00Z"
+        "name": "박하민",
+        "email": "hamin.park@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/hamin.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/hamin.jpg",
+        "status": "FINAL_PASS",
+        "submittedAt": "2025-08-08T11:20:00Z",
+        "profileImage": {
+            "id": "img-17",
+            "url": "https://example.com/images/hamin.jpg",
+            "originalFileName": "profile-image-17.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "18",
-        "name": "김다정",
-        "email": "dajung.kim@email.com",
-        "status": "DOCUMENT_FAIL",
-        "submittedAt": "2025-08-08T11:25:00Z"
+        "name": "정수아",
+        "email": "sua.jung@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "FINAL_FAIL",
+        "submittedAt": "2025-08-08T11:25:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "19",
-        "name": "윤서연",
-        "email": "seoyeon.yoon@email.com",
-        "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T11:30:00Z"
+        "name": "송은채",
+        "email": "eunchae.song@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/eunchae.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/eunchae.jpg",
+        "status": "DOCUMENT_PENDING",
+        "submittedAt": "2025-08-08T11:30:00Z",
+        "profileImage": {
+            "id": "img-19",
+            "url": "https://example.com/images/eunchae.jpg",
+            "originalFileName": "profile-image-19.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "20",
-        "name": "이정호",
-        "email": "jeongho.lee@email.com",
+        "name": "신민규",
+        "email": "mingyu.shin@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
         "status": "INTERVIEW_PENDING",
-        "submittedAt": "2025-08-08T11:35:00Z"
+        "submittedAt": "2025-08-08T11:35:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "21",
-        "name": "송은지",
-        "email": "eunji.song@email.com",
-        "status": "DOCUMENT_FAIL",
-        "submittedAt": "2025-08-08T11:40:00Z"
+        "name": "임지우",
+        "email": "jiwoo.lim@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/jiwoo.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/jiwoo.jpg",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T11:40:00Z",
+        "profileImage": {
+            "id": "img-21",
+            "url": "https://example.com/images/jiwoo.jpg",
+            "originalFileName": "profile-image-21.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "22",
-        "name": "정우성",
-        "email": "woosung.jung@email.com",
-        "status": "FINAL_FAIL",
-        "submittedAt": "2025-08-08T11:45:00Z"
+        "name": "윤서준",
+        "email": "seojun.yun@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T11:45:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "23",
         "name": "신현아",
         "email": "hyuna.shin@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/hyuna.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/hyuna.jpg",
         "status": "INTERVIEW_PENDING",
-        "submittedAt": "2025-08-08T11:50:00Z"
+        "submittedAt": "2025-08-08T11:50:00Z",
+        "profileImage": {
+            "id": "img-23",
+            "url": "https://example.com/images/hyuna.jpg",
+            "originalFileName": "profile-image-23.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "24",
         "name": "박서준",
         "email": "seojun.park@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
         "status": "INTERVIEW_FAIL",
-        "submittedAt": "2025-08-08T11:55:00Z"
+        "submittedAt": "2025-08-08T11:55:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "25",
         "name": "권은진",
         "email": "eunjin.kwon@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/eunjin.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/eunjin.jpg",
         "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T12:00:00Z"
+        "submittedAt": "2025-08-08T12:00:00Z",
+        "profileImage": {
+            "id": "img-25",
+            "url": "https://example.com/images/eunjin.jpg",
+            "originalFileName": "profile-image-25.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "26",
         "name": "김진영",
         "email": "jinyoung.kim@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
         "status": "DOCUMENT_PENDING",
-        "submittedAt": "2025-08-08T12:05:00Z"
+        "submittedAt": "2025-08-08T12:05:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "27",
         "name": "이성민",
         "email": "sungmin.lee@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/sungmin2.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/sungmin2.jpg",
         "status": "FINAL_FAIL",
-        "submittedAt": "2025-08-08T12:10:00Z"
+        "submittedAt": "2025-08-08T12:10:00Z",
+        "profileImage": {
+            "id": "img-27",
+            "url": "https://example.com/images/sungmin2.jpg",
+            "originalFileName": "profile-image-27.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "28",
-        "name": "황민서",
-        "email": "minseo.hwang@email.com",
-        "status": "FINAL_PASS",
-        "submittedAt": "2025-08-08T12:15:00Z"
+        "name": "조윤서",
+        "email": "yunseo.jo@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "DOCUMENT_FAIL",
+        "submittedAt": "2025-08-08T12:15:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     },
     {
         "applicantId": "29",
-        "name": "강태민",
-        "email": "taemin.kang@email.com",
-        "status": "DOCUMENT_FAIL",
-        "submittedAt": "2025-08-08T12:20:00Z"
+        "name": "백승호",
+        "email": "seungho.baek@email.com",
+        "imageAllowed": true,
+        "imagePresent": true,
+        "imageUrl": "https://example.com/images/seungho.jpg",
+        "thumbnailUrl": "https://example.com/thumbnails/seungho.jpg",
+        "status": "INTERVIEW_FAIL",
+        "submittedAt": "2025-08-08T12:20:00Z",
+        "profileImage": {
+            "id": "img-29",
+            "url": "https://example.com/images/seungho.jpg",
+            "originalFileName": "profile-image-29.jpg",
+            "contentType": "image/jpeg"
+        }
     },
     {
         "applicantId": "30",
-        "name": "윤지현",
-        "email": "jihyun.yoon@email.com",
-        "status": "INTERVIEW_PENDING",
-        "submittedAt": "2025-08-08T12:25:00Z"
+        "name": "강태우",
+        "email": "taewoo.kang@email.com",
+        "imageAllowed": false,
+        "imagePresent": false,
+        "imageUrl": "",
+        "thumbnailUrl": "",
+        "status": "DOCUMENT_PENDING",
+        "submittedAt": "2025-08-08T12:25:00Z",
+        "profileImage": {
+            "id": "",
+            "url": "",
+            "originalFileName": "",
+            "contentType": ""
+        }
     }
 ]
