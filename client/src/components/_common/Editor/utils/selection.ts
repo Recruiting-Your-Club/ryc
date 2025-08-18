@@ -1,4 +1,4 @@
-import { DEFAULT_FONT_SIZE, DEFAULT_TEXT_ALIGN, MAX_FONT_SIZE } from '@constants/Editor';
+import { DEFAULT_FONT_SIZE, DEFAULT_TEXT_ALIGN, MAX_FONT_SIZE } from '@constants/editor';
 import type { Align, Format, List, Size } from '../types';
 import { getEditorRoot } from './alignment';
 import { getLinesInRange } from './list';

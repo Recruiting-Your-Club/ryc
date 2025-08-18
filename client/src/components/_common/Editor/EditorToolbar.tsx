@@ -1,11 +1,11 @@
-import { Select } from '@components/Select';
+import { Select } from '@components';
 import {
     alignButtons,
     DEFAULT_FONT_SIZE,
     formatButtons,
     listButtons,
     optionButtons,
-} from '@constants/Editor';
+} from '@constants/editor';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     buttonGroup,

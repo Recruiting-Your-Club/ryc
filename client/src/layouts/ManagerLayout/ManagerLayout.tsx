@@ -1,19 +1,17 @@
-import React from 'react';
-import { SideBar, ManagerHeader } from '@components';
+import React, { useEffect } from 'react';
+import { SideBar } from '@components';
 import { Outlet } from 'react-router-dom';
-import { layoutContainer, contentContainer } from './ManagerLayout.style';
-import { Footer } from '@components/Footer';
+import { outletWrapper } from './ManagerLayout.style';
+import { useLocation } from 'react-router-dom';
 
 function ManagerLayout() {
+    const location = useLocation();
+
     return (
         <>
-            <div css={layoutContainer}>
-                <ManagerHeader />
-                <div css={contentContainer}>
-                    <SideBar />
-                    <Outlet />
-                </div>
-                <Footer />
+            <SideBar />
+            <div css={outletWrapper} key={location.pathname}>
+                <Outlet />
             </div>
         </>
     );

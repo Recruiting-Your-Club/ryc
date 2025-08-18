@@ -1,17 +1,20 @@
 import { css } from '@emotion/react';
-import theme from '@styles/theme';
+import { keyframes } from '@emotion/react';
 
-export const layoutContainer = css`
-    display: flex;
-    flex-direction: column;
-    width: 100dvw;
-    height: 100dvh;
+const contentFadeIn = keyframes`
+    from {
+        opacity: 0.5;
+        transform: translateY(2rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 `;
 
-export const contentContainer = css`
-    display: flex;
-    flex: 1;
+export const outletWrapper = css`
+    animation: ${contentFadeIn} 0.3s ease-in-out;
     width: 100%;
+    height: 100%;
     overflow-y: auto;
-    background-color: ${theme.colors.white};
 `;

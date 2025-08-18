@@ -100,6 +100,22 @@ export const textAreaInner = css`
     }
 `;
 
+export const s_textareaInner = css`
+    ${theme.typography.captionRegular}
+    margin: -2.5rem 0;
+    padding: 1rem 1.5rem;
+    min-height: 35rem;
+    height: 100%;
+
+    ::placeholder {
+        ${theme.typography.captionRegular}
+    }
+    &:focus {
+        border-color: ${theme.colors.default};
+        outline: none;
+    }
+`;
+
 export const s_textAreaOuter = css`
     height: 100%;
     margin: 0;

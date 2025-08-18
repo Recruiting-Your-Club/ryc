@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Text } from '@ssoc/ui';
+import { getDeadlineInfo } from '@ssoc/utils/src/compareTime';
 
 import {
     deadlineText,
@@ -17,25 +17,12 @@ function RecruitCard(props: RecruitCardProps) {
     const { title, content, deadline, hashtags, onClick } = props;
     // lib hooks
     // initial values
-    const today = dayjs().format('YYYY-MM-DD');
-    const formattedDeadline = dayjs(deadline);
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
     const hashtagList = hashtags.map((tag) => `#${tag} `);
-    const diffDay = formattedDeadline.diff(today, 'day');
-    const calculateDeadline = useMemo(() => {
-        if (diffDay > 7) {
-            return `~${formattedDeadline.format('MM.DD')}`;
-        } else if (diffDay > 0) {
-            return `D-${diffDay}`;
-        } else if (diffDay === 0) {
-            return `D-Day`;
-        } else {
-            return `마감`;
-        }
-    }, [formattedDeadline, today]);
+    const { displayText, diffDay } = getDeadlineInfo(deadline);
     // handlers
 
     // effects
@@ -46,8 +33,8 @@ function RecruitCard(props: RecruitCardProps) {
                     <Text noWrap cropped>
                         {title}
                     </Text>
-                    <Text color="caption" sx={deadlineText(diffDay)} noWrap>
-                        {calculateDeadline}
+                    <Text color="caption" sx={deadlineText(diffDay)} noWrap cropped>
+                        {displayText}
                     </Text>
                 </div>
 

@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 
 import { Toast } from '.';
+import { useToast } from '../../hooks/useToast';
 import { Button } from '../Button';
 import { Text } from '../Text';
 import { ToastProvider } from './ToastProvider';
-import { useToast } from './useToast';
 
 type Story = StoryObj<typeof Toast>;
 

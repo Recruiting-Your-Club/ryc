@@ -1,0 +1,28 @@
+import { Avatar, Text } from '@components';
+import React from 'react';
+import { s_cardContainer, s_informationContainer } from './IntervieweeCard.style';
+import type { IntervieweeCardProps } from './types';
+
+function IntervieweeCard({
+    name,
+    email,
+    imageUrl,
+    isActivated = false,
+    ...props
+}: IntervieweeCardProps) {
+    return (
+        <button css={s_cardContainer(isActivated)} {...props}>
+            <Avatar shape="round" size="md" imageURL={imageUrl} />
+            <div css={s_informationContainer}>
+                <Text as="span" textAlign="start" type="captionRegular" cropped>
+                    {name}
+                </Text>
+                <Text as="span" textAlign="start" type="captionRegular" cropped>
+                    {email}
+                </Text>
+            </div>
+        </button>
+    );
+}
+
+export { IntervieweeCard };

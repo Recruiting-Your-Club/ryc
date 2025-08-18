@@ -7,9 +7,8 @@ import jakarta.persistence.*;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
-import com.ryc.api.v2.announcement.infra.vo.ImageVO;
 import com.ryc.api.v2.announcement.infra.vo.TagVO;
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.applicationForm.infra.entity.ApplicationFormEntity;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
 import lombok.*;
@@ -25,9 +24,8 @@ public class AnnouncementEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "club_id")
-  private ClubEntity clubEntity;
+  @Column(nullable = false, name = "club_id")
+  private String clubId;
 
   private String title;
 
@@ -42,16 +40,12 @@ public class AnnouncementEntity extends BaseEntity {
 
   private String target;
 
+  private String field;
+
   @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
   @ElementCollection
-  @OrderColumn(name = "image_order")
-  @CollectionTable(name = "announcement_images")
-  private List<ImageVO> images;
-
-  @ElementCollection
-  @OrderColumn(name = "tag_order")
-  @CollectionTable(name = "announcement_tags")
+  @OrderBy("displayOrder ASC")
   private List<TagVO> tags;
 
   @Enumerated(EnumType.STRING)
@@ -62,5 +56,28 @@ public class AnnouncementEntity extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private AnnouncementStatus announcementStatus;
 
+  @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+  private ApplicationFormEntity applicationForm;
+
   private Boolean isDeleted;
+
+  public void update(AnnouncementEntity announcement) {
+    // announcement update
+    this.title = announcement.getTitle();
+    this.numberOfPeople = announcement.getNumberOfPeople();
+    this.summaryDescription = announcement.getSummaryDescription();
+    this.hasInterview = announcement.getHasInterview();
+    this.detailDescription = announcement.getDetailDescription();
+    this.target = announcement.getTarget();
+    this.field = announcement.getField();
+    this.announcementType = announcement.getAnnouncementType();
+    this.activityPeriod = announcement.getActivityPeriod();
+    this.announcementStatus = announcement.getAnnouncementStatus();
+    this.isDeleted = announcement.getIsDeleted();
+    this.tags = announcement.getTags();
+    this.announcementPeriodInfoVO = announcement.getAnnouncementPeriodInfoVO();
+
+    // applicationForm update
+    this.applicationForm.update(announcement.getApplicationForm());
+  }
 }

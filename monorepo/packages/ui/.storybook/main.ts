@@ -1,6 +1,9 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
 import path from 'path';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const config: StorybookConfig = {
     stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -12,7 +15,7 @@ const config: StorybookConfig = {
         '@storybook/addon-themes',
     ],
     framework: {
-        name: '@storybook/react',
+        name: '@storybook/react-webpack5',
         options: {},
     },
     docs: {
@@ -39,8 +42,32 @@ const config: StorybookConfig = {
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
             },
+            {
+                test: /\.(ts|tsx)$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/fonts/[name][hash][ext][query]',
+                },
+            },
         ];
-
+        if (config.resolve) {
+            config.resolve.alias = {
+                ...config.resolve.alias,
+                '@ssoc/assets': path.resolve(__dirname, '../../assets'),
+                '@components': path.resolve(__dirname, '../src/components'),
+                '@constants': path.resolve(__dirname, '../src/constants'),
+                '@hooks': path.resolve(__dirname, '../src/hooks'),
+            };
+        }
         return config;
     },
 };

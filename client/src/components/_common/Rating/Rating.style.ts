@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import type { CSSProperties } from 'react';
-import type { StarSize } from './Star';
+import type { RatingType, StarSize } from './types';
 
 interface Size {
     width?: CSSProperties['width'];
@@ -38,7 +38,7 @@ export const s_size = (size: StarSize) => {
     `;
 };
 
-export const s_star = (filled: boolean) => {
+export const s_star = (filled: boolean, type: RatingType) => {
     return css`
         cursor: pointer;
         position: relative;
@@ -49,10 +49,25 @@ export const s_star = (filled: boolean) => {
         align-items: center;
         justify-content: center;
 
+        ${type === 'display' &&
+        css`
+            cursor: default;
+        `}
+
+        ${type === 'click' &&
+        css`
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        `}
+
         & > svg {
             width: 100%;
             height: 100%;
             fill: ${filled ? theme.colors.default : theme.colors.disabled};
+            transition: fill 0.2s ease;
         }
     `;
 };
@@ -63,8 +78,6 @@ export const s_halfStar = (percentage: number) => {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
 
         & > svg {
             fill: ${theme.colors.default};
@@ -77,6 +90,5 @@ export const ratingContainer = () => {
     return css`
         display: flex;
         align-items: center;
-        gap: 0.4rem;
     `;
 };

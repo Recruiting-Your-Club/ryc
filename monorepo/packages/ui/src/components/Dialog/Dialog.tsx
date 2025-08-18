@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import XIcon from '@ssoc/assets/images/xIcon.svg';
@@ -53,8 +53,18 @@ function BaseDialog({
     // form hooks
     // query hooks
     // calculated values
-    // effects
     // handlers
+    // effects
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [open]);
     return (
         <>
             {open &&

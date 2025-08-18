@@ -26,6 +26,46 @@ queryClient.prefetchQueries({
 const clubKeys = {
     all: ['clubs'] as const,
     detail: (id: string) => ['detail', id] as const,
+    myClub: ['myClub'] as const,
 };
 
-export { clubKeys };
+const applicantKeys = {
+    applicantDocument: (announcementId: string, applicantId: string, clubId: string) =>
+        ['applicant-document', announcementId, applicantId, clubId] as const,
+};
+
+const stepKeys = {
+    totalSteps: ['step'] as const,
+    allStepApplicants: (announcementId: string, clubId: string) =>
+        ['step-applicants', announcementId, clubId] as const,
+};
+
+const evaluationKeys = {
+    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-summary', clubId, ...applicantIds, type] as const,
+    evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+        ['evaluation-detail', clubId, ...applicantIds, type] as const,
+    myEvaluationStatus: (
+        clubId: string,
+        applicantIds: string[],
+        type: 'application' | 'interview',
+    ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
+};
+
+const announcementKeys = {
+    listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
+};
+
+const interviewKeys = {
+    allInterviewSchedules: ['interviewschedules'] as const,
+    allInterviewees: ['interviewees'] as const,
+    intervieweeDetail: (id: number) => ['interviewee-detail', id] as const,
+    documentDetail: (id: number) => ['document-detail', id] as const,
+    evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
+};
+
+const myClubKeys = {
+  all: ['clubs'] as const,
+}
+
+export { clubKeys, applicantKeys, stepKeys, evaluationKeys, interviewKeys, myClubKeys, announcementKeys };
