@@ -1,4 +1,3 @@
-import { StepApplicant } from '@api/domain/step/types';
 import MeatBallMenu from '@assets/images/meatball-menu.svg';
 import { ApplicantCard } from '@components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
