@@ -18,7 +18,7 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
-import com.ryc.api.v2.club.service.event.ClubDeletedEvent;
+import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;

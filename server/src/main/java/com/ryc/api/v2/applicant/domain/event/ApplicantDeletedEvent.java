@@ -1,4 +1,4 @@
-package com.ryc.api.v2.applicant.service.event;
+package com.ryc.api.v2.applicant.domain.event;
 
 import java.util.List;
 

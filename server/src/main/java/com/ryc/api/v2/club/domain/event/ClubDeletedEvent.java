@@ -1,3 +1,3 @@
-package com.ryc.api.v2.club.service.event;
+package com.ryc.api.v2.club.domain.event;
 
 public record ClubDeletedEvent(String clubId) {}

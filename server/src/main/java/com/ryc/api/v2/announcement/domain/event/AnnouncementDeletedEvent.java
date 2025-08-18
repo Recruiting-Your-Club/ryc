@@ -1,4 +1,4 @@
-package com.ryc.api.v2.announcement.service.event;
+package com.ryc.api.v2.announcement.domain.event;
 
 import java.util.List;
 
