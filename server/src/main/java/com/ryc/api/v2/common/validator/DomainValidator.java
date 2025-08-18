@@ -2,6 +2,10 @@ package com.ryc.api.v2.common.validator;
 
 import java.util.regex.Pattern;
 
+import com.ryc.api.v2.common.exception.code.ErrorCode;
+import com.ryc.api.v2.common.exception.custom.FormatException;
+import com.ryc.api.v2.common.exception.custom.InvalidFormatException;
+
 /**
  * 도메인 Validator 추상 클래스 모든 도메인 Validator가 상속받아 원자적 검증 단위를 조합하여 사용
  *
@@ -14,79 +18,74 @@ public abstract class DomainValidator {
   protected DomainValidator() {}
 
   /** null/empty 검증 */
-  protected static void validateNotNullOrEmpty(String value, String fieldName) {
+  protected static void validateNotNullOrEmpty(String value, ErrorCode errorCode) {
     if (value == null || value.isEmpty()) {
-      throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** null은 허용 필드에 한하여 사용. 값이 있는 경우에만 Empty Check */
-  protected static void validateNotEmpty(String value, String fieldName) {
+  protected static void validateNotEmpty(String value, ErrorCode errorCode) {
     if (value != null && value.isEmpty()) {
-      throw new IllegalArgumentException(fieldName + " cannot be empty (null is allowed)");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** null 검증 */
-  protected static void validateNotNull(Object value, String fieldName) {
+  protected static void validateNotNull(Object value, ErrorCode errorCode) {
     if (value == null) {
-      throw new IllegalArgumentException(fieldName + " cannot be null");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** 최소 길이 검증 */
-  protected static void validateMinLength(String value, String fieldName, int minLength) {
+  protected static void validateMinLength(String value, int minLength,  ErrorCode errorCode) {
     if (value.length() < minLength) {
-      throw new IllegalArgumentException(
-          fieldName + " must be at least " + minLength + " characters");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** 최대 길이 검증 */
-  protected static void validateMaxLength(String value, String fieldName, int maxLength) {
+  protected static void validateMaxLength(String value, int maxLength, ErrorCode errorCode) {
     if (value.length() > maxLength) {
-      throw new IllegalArgumentException(fieldName + " cannot exceed " + maxLength + " characters");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** 정확한 길이 검증 */
-  protected static void validateExactLength(String value, String fieldName, int exactLength) {
+  protected static void validateExactLength(String value, int exactLength, ErrorCode errorCode) {
     if (value.length() != exactLength) {
-      throw new IllegalArgumentException(
-          fieldName + " must be exactly " + exactLength + " characters long");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** 길이 범위 검증 */
   protected static void validateLengthRange(
-      String value, String fieldName, int minLength, int maxLength) {
+      String value, int minLength, int maxLength, ErrorCode errorCode) {
     if (value.length() < minLength || value.length() > maxLength) {
-      throw new IllegalArgumentException(
-          fieldName + " must be between " + minLength + " and " + maxLength + " characters");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** 패턴 검증 */
   protected static void validatePattern(
-      String value, String fieldName, Pattern pattern, String description) {
+      String value, Pattern pattern, ErrorCode errorCode) {
     if (!pattern.matcher(value).matches()) {
-      throw new IllegalArgumentException(
-          fieldName + " must be a valid " + pattern + " " + description);
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** URL 프로토콜 검증 */
-  protected static void validateUrlProtocol(String url, String fieldName, String protocol) {
+  protected static void validateUrlProtocol(String url, String protocol, ErrorCode errorCode) {
     if (!url.startsWith(protocol)) {
-      throw new IllegalArgumentException(fieldName + " must use " + protocol + " protocol");
+      throw new InvalidFormatException(errorCode);
     }
   }
 
   /** 특정 문자 포함 여부 검증 */
-  protected static void validateContains(String value, String fieldName, String requiredSubstring) {
+  protected static void validateContains(String value, String requiredSubstring, ErrorCode errorCode) {
     if (!value.contains(requiredSubstring)) {
-      throw new IllegalArgumentException(
-          fieldName + " must contain " + requiredSubstring + " characters");
+      throw new InvalidFormatException(errorCode);
     }
   }
 }
