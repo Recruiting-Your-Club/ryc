@@ -2,9 +2,6 @@ package com.ryc.api.v2.admin.domain;
 
 import java.util.regex.Pattern;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-
 /** 유효성(Validation) 검사 Util 클래스 접근 제한자 package-private 준수 */
 final class AdminValidator {
 
@@ -38,28 +35,8 @@ final class AdminValidator {
   private static final int MAX_EMAIL_LOCAL_PART_LENGTH = 64;
   private static final int PASSWORD_BCRYPT_HASH_LENGTH = 60;
 
-  /**
-   * 문자열 정제 메소드
-   *
-   * @param string
-   * @return null Or Trimed String
-   */
-  private static String sanitizeString(String string) {
-    return string != null ? string.trim() : null;
-  }
-
-  /**
-   * 이메일 정제 메소드 (trim + 소문자 변환)
-   *
-   * @param email
-   * @return null Or Trimed and Lowercased Email
-   */
-  private static String sanitizeEmail(String email) {
-    return email != null ? email.trim().toLowerCase() : null;
-  }
-
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
-  static ValidatedAdmin validateAndSanitize(
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수 순수 검증만 담당 */
+  static void validate(
       String id,
       String name,
       String email,
@@ -68,37 +45,16 @@ final class AdminValidator {
       String thumbnailUrl,
       AdminDefaultRole adminDefaultRole,
       Boolean isDeleted) {
-    // 정제
-    String resolvedName = sanitizeString(name);
-    String resolvedEmail = sanitizeEmail(email);
-    String resolvedImageUrl = sanitizeString(imageUrl);
-    String resolvedThumbnailUrl = sanitizeString(thumbnailUrl);
 
-    // 선택 멤버 변수 기본값 처리
-    AdminDefaultRole resolvedAdminDefaultRole =
-        adminDefaultRole != null ? adminDefaultRole : AdminDefaultRole.USER;
-    Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
-
-    // 검증
+    // 검증만 수행
     validateId(id);
-    validateName(resolvedName);
-    validateEmail(resolvedEmail);
+    validateName(name);
+    validateEmail(email);
     validatePassword(password);
-    validateImageUrl(resolvedImageUrl);
-    validateThumbnailUrl(resolvedThumbnailUrl);
-    validateAdminDefaultRole(resolvedAdminDefaultRole);
-    validateIsDeleted(resolvedIsDeleted);
-
-    return ValidatedAdmin.builder()
-        .id(id)
-        .name(resolvedName)
-        .email(resolvedEmail)
-        .password(password)
-        .imageUrl(resolvedImageUrl)
-        .thumbnailUrl(resolvedThumbnailUrl)
-        .adminDefaultRole(resolvedAdminDefaultRole)
-        .isDeleted(resolvedIsDeleted)
-        .build();
+    validateImageUrl(imageUrl);
+    validateThumbnailUrl(thumbnailUrl);
+    validateAdminDefaultRole(adminDefaultRole);
+    validateIsDeleted(isDeleted);
   }
 
   /** 검증 private 헬퍼 메소드 */
@@ -232,16 +188,4 @@ final class AdminValidator {
       throw new IllegalArgumentException("isDeleted cannot be null");
     }
   }
-
-  /** 접근 제한자 package-private 준수 */
-  @Builder(access = AccessLevel.PRIVATE)
-  record ValidatedAdmin(
-      String id,
-      String name,
-      String email,
-      String password,
-      String imageUrl,
-      String thumbnailUrl,
-      AdminDefaultRole adminDefaultRole,
-      Boolean isDeleted) {}
 }

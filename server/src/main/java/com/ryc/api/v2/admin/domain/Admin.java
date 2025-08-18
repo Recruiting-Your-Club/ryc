@@ -2,6 +2,8 @@ package com.ryc.api.v2.admin.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
+import com.ryc.api.v2.util.DataResolveUtil;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,18 +30,35 @@ public class Admin {
       AdminDefaultRole adminDefaultRole,
       Boolean isDeleted) {
 
-    AdminValidator.ValidatedAdmin validated =
-        AdminValidator.validateAndSanitize(
-            id, name, email, password, imageUrl, thumbnailUrl, adminDefaultRole, isDeleted);
+    // 1. 정제
+    String sanitizeName = DataResolveUtil.sanitizeString(name);
+    String sanitizeEmail = DataResolveUtil.sanitizeEmail(email);
 
-    this.id = validated.id();
-    this.name = validated.name();
-    this.email = validated.email();
-    this.password = validated.password();
-    this.imageUrl = validated.imageUrl();
-    this.thumbnailUrl = validated.thumbnailUrl();
-    this.adminDefaultRole = validated.adminDefaultRole();
-    this.isDeleted = validated.isDeleted();
+    // 2. 기본값 처리
+    AdminDefaultRole resolvedAdminDefaultRole =
+        adminDefaultRole != null ? adminDefaultRole : AdminDefaultRole.USER;
+    Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
+
+    // 3. 검증
+    AdminValidator.validate(
+        id,
+        sanitizeName,
+        sanitizeEmail,
+        password,
+        imageUrl,
+        thumbnailUrl,
+        resolvedAdminDefaultRole,
+        resolvedIsDeleted);
+
+    // 4. 할당
+    this.id = id;
+    this.name = sanitizeName;
+    this.email = sanitizeEmail;
+    this.password = password;
+    this.imageUrl = imageUrl;
+    this.thumbnailUrl = thumbnailUrl;
+    this.adminDefaultRole = resolvedAdminDefaultRole;
+    this.isDeleted = resolvedIsDeleted;
   }
 
   // TODO: 해당 메소드를 사용하는 경우는 register시 클라이언트에게 받은 값을 Domain으로 변환시에만 사용된다. 따라서, 파라미터로 해당 requestDTO 고려
