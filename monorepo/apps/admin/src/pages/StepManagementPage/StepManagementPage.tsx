@@ -7,6 +7,7 @@ import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFact
 import { evaluationKeys, stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
 import { ApplicantDialog, CardBox, InterviewSettingDialog, PlainEmailDialog } from '@components';
+import type { MergedStepApplicant } from '@components/CardBox/types';
 import {
     DOCUMENT_STEP,
     FINAL_STEP_IN_THREE,
@@ -195,6 +196,18 @@ function StepManagementPage() {
         ? ['서류평가', '면접평가']
         : ['서류평가'];
 
+    const mapFinalApplicants = (
+        step: string,
+        applicants: MergedStepApplicant[],
+        isThreeStep: boolean,
+    ) =>
+        applicants.map((applicant) => {
+            if (step !== 'final') return applicant;
+            if (isThreeStep) {
+                const documentScore = applicant;
+            }
+        });
+
     // handlers
     const handleOpen = (applicant: StepApplicant) => {
         setSelectedApplicant(applicant);
@@ -317,7 +330,6 @@ function StepManagementPage() {
 
     // effects
     // etc
-
     const validateEmailInputs = (subject: string, content: string): boolean => {
         if (!subject.trim()) {
             toast('이메일 제목을 입력해주세요!', { toastTheme: 'colored', type: 'error' });

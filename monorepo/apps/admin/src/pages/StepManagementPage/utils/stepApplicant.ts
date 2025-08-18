@@ -31,11 +31,27 @@ export const mergeApplicantWithSummary = (
             (summary) => summary.applicantId === applicant.applicantId,
         );
 
+        let averageScore = summary?.averageScore ?? 0;
+
+        if (isThreeStepProcess && ['FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status)) {
+            const documentSummary = documentSummaries.find(
+                (summary) => summary.applicantId === applicant.applicantId,
+            );
+            const interviewSummary = interviewSummaries.find(
+                (summary) => summary.applicantId === applicant.applicantId,
+            );
+
+            const documentScore = documentSummary?.averageScore ?? 0;
+            const interviewScore = interviewSummary?.averageScore ?? 0;
+
+            averageScore = (documentScore + interviewScore) / 2;
+        }
+
         return {
             ...applicant,
             completedEvaluatorCount: summary?.completedEvaluatorCount ?? 0,
             totalEvaluatorCount: summary?.totalEvaluatorCount ?? 0,
-            averageScore: summary?.averageScore ?? 0,
+            averageScore: averageScore,
         };
     });
 };

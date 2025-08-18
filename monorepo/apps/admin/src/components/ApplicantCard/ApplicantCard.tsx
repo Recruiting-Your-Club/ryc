@@ -18,7 +18,7 @@ import {
 } from './ApplicantCard.style';
 import type { ApplicantCardProps } from './types';
 
-function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardProps) {
+function ApplicantCard({ status, applicant, checked, onChange, onClick }: ApplicantCardProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -30,10 +30,16 @@ function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardP
         const totalEvaluatorCount = applicant.totalEvaluatorCount;
         const completedEvaluatorCount = applicant.completedEvaluatorCount;
 
-        if (completedEvaluatorCount === totalEvaluatorCount)
-            return `평가 완료 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
+        const isFinal = status === 'final';
+        const isCompleted = completedEvaluatorCount === totalEvaluatorCount;
 
-        return `평가 중 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
+        if (isFinal) {
+            return isCompleted ? '평가 완료' : '평가 중';
+        }
+
+        return isCompleted
+            ? `평가 완료 (${completedEvaluatorCount}/${totalEvaluatorCount})`
+            : `평가 중 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
     };
 
     // handlers

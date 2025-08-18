@@ -284,6 +284,7 @@ function CardBox({
                         .sort((prev, next) => (next.averageScore ?? 0) - (prev.averageScore ?? 0))
                         .map((applicant) => (
                             <ApplicantCard
+                                status={step}
                                 key={applicant.applicantId}
                                 applicant={applicant}
                                 checked={selectedGroup.ids.includes(applicant.applicantId)}
