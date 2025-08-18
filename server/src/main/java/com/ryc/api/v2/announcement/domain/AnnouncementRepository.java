@@ -28,7 +28,7 @@ public interface AnnouncementRepository {
    */
   Announcement findById(String announcementId);
 
-  List<Announcement> findAllByIsDeleted(Boolean isDeleted);
+  List<Announcement> findAll();
 
   void saveAll(List<Announcement> announcements);
 

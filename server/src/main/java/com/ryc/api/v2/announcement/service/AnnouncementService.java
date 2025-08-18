@@ -100,7 +100,7 @@ public class AnnouncementService {
   @Transactional
   public void updateAnnouncementStatus() {
     // 1. 삭제되지 않은 공고 불러오기
-    List<Announcement> announcements = announcementRepository.findAllByIsDeleted(false);
+    List<Announcement> announcements = announcementRepository.findAll();
 
     // 2.공고 상태 업데이트
     List<Announcement> updatedAnnouncements =

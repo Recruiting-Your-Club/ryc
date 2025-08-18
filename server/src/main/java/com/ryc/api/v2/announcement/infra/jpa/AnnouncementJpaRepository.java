@@ -16,8 +16,6 @@ public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEnt
   @Query("select a from AnnouncementEntity a where a.clubId = :clubId and a.isDeleted = false")
   List<AnnouncementEntity> findAllByClubId(@Param("clubId") String clubId);
 
-  List<AnnouncementEntity> findAllByIsDeleted(Boolean isDeleted);
-
   @Query(
       "select new com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto(a.clubId,"
           + "case when sum(case when a.announcementStatus = com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus.RECRUITING then 1 else 0 end) > 0 then com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus.RECRUITING "

@@ -35,8 +35,7 @@ public class InterviewSlotEntity extends BaseEntity {
   @Column(nullable = false)
   private Integer maxNumberOfPeople;
 
-  @Embedded
-  private PeriodVO period;
+  @Embedded private PeriodVO period;
 
   @Builder.Default
   @OneToMany(mappedBy = "interviewSlot", cascade = CascadeType.ALL, orphanRemoval = true)

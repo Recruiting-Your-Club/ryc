@@ -75,10 +75,8 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public List<Announcement> findAllByIsDeleted(Boolean isDeleted) {
-    return announcementJpaRepository.findAllByIsDeleted(isDeleted).stream()
-        .map(AnnouncementMapper::toDomain)
-        .toList();
+  public List<Announcement> findAll() {
+    return announcementJpaRepository.findAll().stream().map(AnnouncementMapper::toDomain).toList();
   }
 
   @Override
