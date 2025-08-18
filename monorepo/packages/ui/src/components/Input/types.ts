@@ -14,4 +14,5 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     labelSx?: CSSObject;
     helperSx?: CSSObject;
     height?: string;
+    sx?: CSSObject;
 }

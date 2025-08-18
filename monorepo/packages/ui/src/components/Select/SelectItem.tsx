@@ -1,21 +1,14 @@
-import type { CSSObject } from '@emotion/react';
-import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
+import type { KeyboardEvent } from 'react';
 
 import Check from '@ssoc/assets/images/select_check.svg';
 
 import { s_selectItem, s_selectItemIndicator } from './Select.styles';
 import { useSelectContext } from './SelectContext';
+import type { SelectItemProps } from './types';
 
 /**
  * SelectItem 컴포넌트
  */
-interface SelectItemProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode;
-    value: string;
-    disabled?: boolean;
-    highlight?: boolean;
-    sx?: CSSObject;
-}
 
 function SelectItem({
     children,

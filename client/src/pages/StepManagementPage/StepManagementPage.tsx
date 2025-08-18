@@ -19,7 +19,7 @@ import {
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { stepQueries, evaluationQueries, applicantQueries } from '@api/queryFactory';
 import type { StepApplicant } from '@api/domain/step/types';
-import { stepMutations } from '@api/mutationFactory';
+import { stepMutations } from '@api/hooks';
 import { evaluationKeys, stepKeys } from '@api/querykeyFactory';
 import {
     DOCUMENT_STEP,
@@ -34,7 +34,7 @@ import {
     mergeApplicantWithSummary,
 } from './utils/stepApplicant';
 import { useToast } from '@hooks/useToast';
-import { emailMutations } from '@api/mutationFactory/emailMutations';
+import { emailMutations } from '@api/hooks/emailMutations';
 import type { InterviewDetailInformation } from '@api/domain/email/types';
 import { useParams } from 'react-router-dom';
 
@@ -56,7 +56,9 @@ function StepManagementPage() {
     // form hooks
     // query hooks
     const queryClient = useQueryClient();
-    const { data: totalSteps = { process: [] } } = useSuspenseQuery(stepQueries.getTotalSteps());
+    const { data: totalSteps = { process: [] } } = useSuspenseQuery(
+        stepQueries.getTotalSteps(announcementId!),
+    );
     const { data: stepApplicantList = [] } = useSuspenseQuery(
         stepQueries.allStepApplicants(announcementId!, clubId!),
     );
@@ -225,7 +227,7 @@ function StepManagementPage() {
 
         applicantIds.forEach((id) => {
             updateStatus(
-                { applicantId: id, status: newStatus },
+                { applicantId: id, status: newStatus, clubId: clubId! },
                 {
                     onSuccess: () => {
                         queryClient.invalidateQueries({

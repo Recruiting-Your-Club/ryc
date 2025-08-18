@@ -6,7 +6,7 @@ import {
     listButtons,
     optionButtons,
     sizeOptions,
-} from '@constants/Editor';
+} from '@constants/editor';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     buttonGroup,

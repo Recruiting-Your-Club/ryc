@@ -1,4 +1,4 @@
-import type { CSSObject, SerializedStyles } from '@emotion/react';
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
 import { baseCard } from './Card.style';
 

@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 
 import theme from '@ssoc/styles';
 
-import type { SelectSize } from './Select';
+import type { SelectSize } from './types';
 
 interface Size {
     width?: CSSProperties['width'];

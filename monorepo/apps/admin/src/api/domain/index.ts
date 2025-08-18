@@ -1,2 +1,6 @@
 export * from './club/club';
 export * from './interview/interview';
+export * from './email/email';
+export * from './applicant/applicant';
+export * from './evaluation/evaluation';
+export * from './step/step';

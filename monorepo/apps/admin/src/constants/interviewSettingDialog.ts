@@ -1,0 +1,46 @@
+export const INITIAL_FORM = `--- 아래 양식은 예시입니다! --- 
+
+# 본 메일의 수신자는 면접대상자입니다.
+
+안녕하세요. 동아리 담당자입니다.
+
+먼저 우리 동아리에 대한 관심과 애정에 감사드리며, 동아리 모집 서류 합격을 축하드립니다!
+서류 전형은 심사위원들이 동아리에 대한 이해도, 지원자의 열정 등을 종합적으로 고려하여 선발 했습니다.
+면접 전형 관련해서 안내 드리니 아래 내용 참고하셔서 참석 바랍니다.
+
+----------------------------- 아     래 -----------------------------
+
+- 일시 : 
+- 방식 : 
+- 시간 : 
+- 면접장소 : 
+- 약도 첨부 : 
+
+고맙습니다.
+
+담당자 드림`;
+
+export const numberOnlyRegex = /^[0-9]*$/;
+
+export const DEFAULT_START_TIME = '08:00';
+export const DEFAULT_END_TIME = '22:00';
+export const DEFAULT_TIME_VALUE = '15';
+export const DEFAULT_NUMBER_VALUE = '1';
+
+export const numberOptions = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+    { value: '6', label: '6' },
+    { value: '7', label: '7' },
+    { value: '8', label: '8' },
+    { value: '9', label: '9' },
+    { value: '10', label: '10' },
+];
+export const timeOptions = [
+    { value: '15', label: '15분' },
+    { value: '30', label: '30분' },
+    { value: '60', label: '1시간' },
+];

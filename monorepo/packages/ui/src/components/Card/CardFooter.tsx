@@ -1,3 +1,4 @@
+import type { CSSObject } from '@emotion/react';
 import React from 'react';
 
 import { footerContainer } from './Card.style';
@@ -5,9 +6,10 @@ import { footerContainer } from './Card.style';
 interface CardFooterProps {
     footerHeight?: string;
     children?: React.ReactNode;
+    sx?: CSSObject;
 }
 
-function CardFooter({ footerHeight = '3.3rem', children }: CardFooterProps) {
+function CardFooter({ footerHeight = '3.3rem', children, sx }: CardFooterProps) {
     // prop destruction
     // lib hooks
     // state, ref, querystring hooks
@@ -17,7 +19,7 @@ function CardFooter({ footerHeight = '3.3rem', children }: CardFooterProps) {
     // effects
     // handlers
 
-    return <div css={footerContainer(footerHeight)}>{children}</div>;
+    return <div css={[footerContainer(footerHeight), sx]}>{children}</div>;
 }
 
 export { CardFooter };

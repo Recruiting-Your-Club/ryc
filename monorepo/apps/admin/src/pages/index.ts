@@ -6,3 +6,4 @@ export * from './MyClubPage';
 export * from './InterviewEvaluationPage';
 export * from './ClubEditPage';
 export * from './EntryPage';
+export * from './StepManagementPage';
