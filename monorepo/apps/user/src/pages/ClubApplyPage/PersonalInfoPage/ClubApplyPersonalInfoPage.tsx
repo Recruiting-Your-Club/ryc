@@ -55,12 +55,12 @@ function ClubApplyPersonalInfoPage({
                             <FileUpLoader
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
-                                onFilesChange={async (newFiles: File[]) => {
+                                onFilesChange={(newFiles: File[]) => {
                                     setFilesByQuestion((prev) => ({
                                         ...prev,
                                         [question.id]: newFiles,
                                     }));
-                                    await onFileUpload(
+                                    onFileUpload(
                                         question.id,
                                         question.label,
                                         question.type,
@@ -92,12 +92,12 @@ function ClubApplyPersonalInfoPage({
                             <FileUpLoader
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
-                                onFilesChange={async (newFiles: File[]) => {
+                                onFilesChange={(newFiles: File[]) => {
                                     setFilesByQuestion((prev) => ({
                                         ...prev,
                                         [question.id]: newFiles,
                                     }));
-                                    await onFileUpload(
+                                    onFileUpload(
                                         question.id,
                                         question.label,
                                         question.type,
@@ -108,7 +108,7 @@ function ClubApplyPersonalInfoPage({
                                 disabled={isFileUploading}
                             >
                                 <FileUpLoader.HelperText>
-                                    최대 20개의 파일을 첨부할 수 있습니다.
+                                    1개의 파일을 첨부할 수 있습니다.
                                 </FileUpLoader.HelperText>
                                 <FileUpLoader.Button />
                                 <FileUpLoader.Box />
