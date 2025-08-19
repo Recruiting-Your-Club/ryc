@@ -5,6 +5,7 @@ import {
     AnnouncementPage,
     ClubCreatePage,
     ClubEditPage,
+    ClubMemberRolePage,
     EntryPage,
     InterviewEvaluationPage,
     LoginPage,
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
             { path: 'document-evaluation/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
             { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
-            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'settings/:clubId', element: <ClubMemberRolePage /> },
             { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
