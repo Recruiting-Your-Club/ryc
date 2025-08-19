@@ -1,5 +1,6 @@
 package com.ryc.api.v2.common.validator;
 
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.common.exception.code.ErrorCode;
@@ -84,6 +85,14 @@ public abstract class DomainValidator {
   protected static void validateContains(
       String value, String requiredSubstring, ErrorCode errorCode) {
     if (!value.contains(requiredSubstring)) {
+      throw new InvalidFormatException(errorCode);
+    }
+  }
+
+  /** 유효한 시간 범위 검증 */
+  protected static void validateDateRange(
+      LocalDateTime startDate, LocalDateTime endDate, ErrorCode errorCode) {
+    if (startDate.isAfter(endDate)) {
       throw new InvalidFormatException(errorCode);
     }
   }

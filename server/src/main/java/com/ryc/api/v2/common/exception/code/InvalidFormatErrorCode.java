@@ -89,6 +89,18 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   ANNOUNCEMENT_CREATED_AT_NULL(HttpStatus.BAD_REQUEST, "공고 생성일은 null일 수 없습니다."),
   ANNOUNCEMENT_UPDATED_AT_NULL(HttpStatus.BAD_REQUEST, "공고 수정일은 null일 수 없습니다."),
 
+  /** 기간(Period) 에러 코드 */
+  PERIOD_START_DATE_NULL(HttpStatus.BAD_REQUEST, "기간의 시작 시간은 null일 수 없습니다."),
+  PERIOD_END_DATE_NULL(HttpStatus.BAD_REQUEST, "기간의 종료 시간은 null일 수 없습니다."),
+  PERIOD_INVALID_RANGE(HttpStatus.BAD_REQUEST, "기간의 시작 시간은 종료 시간보다 더 빨라야 합니다."),
+
+  /** 공고 기간 정보(AnnouncementPeriodInfo) 에러코드 */
+  APPLICATION_PERIOD_NULL(HttpStatus.BAD_REQUEST, "지원서 작성 기간은 null일 수 없습니다."),
+
+  /** 공고 태그(Tag) 에러코드 */
+  ANNOUNCEMENT_TAG_LABEL_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "공고 태그 라벨은 null 혹은 empty일 수 없습니다."),
+  ANNOUNCEMENT_TAG_LABEL_TOO_LONG(HttpStatus.BAD_REQUEST, "공고 태그 라벨은 20자를 초과할 수 없습니다."),
+
   /** 지원자(Applicant) 에러 코드 */
   // Applicant Personal Info ID
   APPLICANT_PERSONAL_INFO_ID_NULL_OR_EMPTY(
