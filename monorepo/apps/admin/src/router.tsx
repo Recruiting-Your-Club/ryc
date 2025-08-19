@@ -9,6 +9,7 @@ import {
     InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
+    NonAnnouncementPage,
     NotFoundPage,
     RecruitCreatePage,
     RecruitSuccessPage,
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
             { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
-            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'announcements/:clubId/:announcementId?', element: <NonAnnouncementPage /> },
             { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
             { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
