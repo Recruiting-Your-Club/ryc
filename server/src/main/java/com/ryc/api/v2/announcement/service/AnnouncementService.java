@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
@@ -16,6 +17,7 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRe
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 
@@ -36,7 +38,9 @@ public class AnnouncementService {
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
-    fileService.claimOwnershipAsync(request.images(), savedAnnouncement.getId());
+    fileService.claimOwnership(
+        request.images(), savedAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
+
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
   }
 
@@ -78,7 +82,14 @@ public class AnnouncementService {
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
 
-    fileService.claimOwnershipSync(request.images(), updateAnnouncement.getId());
+    // 3. 이미지 파일 업데이트
+    if (request.images().size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.IMAGE_LIMIT_EXCEEDED);
+    }
+
+    fileService.claimOwnership(
+        request.images(), updateAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
+
     List<FileGetResponse> imageResponses =
         fileService.findAllByAssociatedId(announcementId).stream()
             .filter(

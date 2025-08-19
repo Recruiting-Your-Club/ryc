@@ -1,6 +1,5 @@
 package com.ryc.api.v2.club.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -34,11 +33,10 @@ public class ClubService {
     }
     Club club = Club.initialize(body.name(), body.category());
 
-    List<String> imageIds = new ArrayList<>();
-    imageIds.add(body.representativeImage());
-
     Club savedClub = clubRepository.save(club);
-    fileService.claimOwnershipAsync(imageIds, savedClub.getId());
+
+    fileService.claimOwnership(
+        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
     return savedClub;
   }
 
@@ -53,11 +51,10 @@ public class ClubService {
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
-    List<String> imageIds = new ArrayList<>(body.clubDetailImages());
-
-    imageIds.add(body.representativeImage());
-
-    fileService.claimOwnershipSync(imageIds, savedClub.getId());
+    fileService.claimOwnership(
+        body.clubDetailImages(), savedClub.getId(), FileDomainType.CLUB_IMAGE);
+    fileService.claimOwnership(
+        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
 
     List<FileMetaData> images = fileService.findAllByAssociatedId(savedClub.getId());
     FileGetResponse representativeImage =

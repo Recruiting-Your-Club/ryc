@@ -37,6 +37,9 @@ public enum AnnouncementErrorCode implements ErrorCode {
       HttpStatus.CONFLICT, "질문 타입이 올바르지 않습니다. QUESTION - LONG_ANSWER , PRE_QUESTION - 그 외"),
   QUESTION_OPTION_REQUIRED(HttpStatus.CONFLICT, "객관식 질문은 2개 이상의 선지가 필요합니다."),
   QUESTION_OPTION_NOT_ALLOWED(HttpStatus.CONFLICT, "단답형, 서술형 질문에는 선택지를 추가할 수 없습니다."),
+
+  IMAGE_LIMIT_EXCEEDED(
+      HttpStatus.CONFLICT, "Image Limit Exceeded - can not add more than 10 images"),
   ;
 
   private final HttpStatus httpStatus;

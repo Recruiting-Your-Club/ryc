@@ -1,5 +1,7 @@
 package com.ryc.api.v2.role.service;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,14 +56,25 @@ public class ClubRoleService {
   public List<AdminsGetResponse> getAdminsInClub(String clubId) {
     List<ClubRole> clubRoles = clubRoleRepository.findRolesByClubId(clubId);
 
+    List<String> adminIds = clubRoles.stream().map(ClubRole::admin).map(Admin::getId).toList();
+
+    Map<String, FileGetResponse> representativeImageMap =
+        fileService.findAllByAssociatedIdIn(adminIds).stream()
+            .map(
+                fileMetaData ->
+                    Map.entry(
+                        fileMetaData.getAssociatedId(),
+                        FileGetResponse.of(
+                            fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData))))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
     return clubRoles.stream()
         .map(
             clubRole ->
                 AdminsGetResponse.builder()
                     .adminId(clubRole.admin().getId())
                     .name(clubRole.admin().getName())
-                    .imageUrl(clubRole.admin().getImageUrl())
-                    .thumbnailUrl(clubRole.admin().getThumbnailUrl())
+                    .representativeImage(representativeImageMap.get(clubRole.admin().getId()))
                     .role(clubRole.role().toString())
                     .build())
         .toList();
@@ -102,7 +115,7 @@ public class ClubRoleService {
                     FileMetaData::getAssociatedId,
                     Collectors.mapping(
                         image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
-                        Collectors.toList())));
+                        toList())));
 
     return clubs.stream()
         .map(
