@@ -255,7 +255,39 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   APPLICATION_FORM_APPLICATION_QUESTIONS_NULL(HttpStatus.BAD_REQUEST, "지원서 질문 리스트는 null일 수 없습니다."),
   APPLICATION_FORM_PERSONAL_INFO_QUESTION_TYPES_NULL(
       HttpStatus.BAD_REQUEST, "개인정보 질문 타입 리스트는 null일 수 없습니다."),
-  APPLICATION_FORM_PRE_QUESTIONS_NULL(HttpStatus.BAD_REQUEST, "사전 질문 리스트는 null일 수 없습니다.");
+  APPLICATION_FORM_PRE_QUESTIONS_NULL(HttpStatus.BAD_REQUEST, "사전 질문 리스트는 null일 수 없습니다."),
+
+  /** 질문(Question) 에러 코드 */
+  // Question ID
+  QUESTION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 ID는 null 혹은 empty일 수 없습니다."),
+  QUESTION_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "질문 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Question Label
+  QUESTION_LABEL_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문은 null 혹은 empty일 수 없습니다."),
+  QUESTION_LABEL_TOO_LONG(HttpStatus.BAD_REQUEST, "질문은 500자를 초과할 수 없습니다."),
+
+  // Question IsRequired
+  QUESTION_IS_REQUIRED_NULL(HttpStatus.BAD_REQUEST, "질문 IsRequired는 null일 수 없습니다."),
+
+  // Question Options
+  QUESTION_OPTIONS_NULL(HttpStatus.BAD_REQUEST, "객관식 질문 선지 리스트는 null일 수 없습니다. (빈리스트는 허용)"),
+
+  // Question Type
+  QUESTION_TYPE_NULL(HttpStatus.BAD_REQUEST, "질문 타입은 null일 수 없습니다."),
+
+  // Question Category
+  QUESTION_CATEGORY_NULL(HttpStatus.BAD_REQUEST, "질문 카테고리(사전질문/질문)는 null일 수 없습니다."),
+
+  /** 질문옵션(QuestionOption) 에러 코드 */
+  // QuestionOption ID
+  QUESTION_OPTION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 옵션 ID는 null 혹은 empty일 수 없습니다."),
+  QUESTION_OPTION_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "질문 옵션 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // QuestionOption Option
+  QUESTION_OPTION_OPTION_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 옵션 내용은 null 혹은 empty일 수 없습니다."),
+  QUESTION_OPTION_OPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "질문 옵션 내용은 200자를 초과할 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;

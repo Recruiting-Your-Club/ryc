@@ -9,12 +9,12 @@ import com.ryc.api.v2.applicationForm.presentation.request.QuestionCreateRequest
 import com.ryc.api.v2.applicationForm.presentation.request.QuestionUpdateRequest;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Question {
   private final String id;
   private final String label;
@@ -24,6 +24,34 @@ public class Question {
 
   private final QuestionType questionType;
   private final QuestionCategory category;
+
+  @Builder
+  private Question(
+      String id,
+      String label,
+      boolean isRequired,
+      List<QuestionOption> options,
+      QuestionType questionType,
+      QuestionCategory category) {
+
+    // 1. 정제
+    String sanitizedLabel = DataResolveUtil.sanitizeString(label);
+
+    // 2. 선택 멤버 변수 기본값 처리
+    List<QuestionOption> resolvedOptions = options != null ? options : List.of();
+
+    // 3. 검증
+    QuestionValidator.validate(
+        id, sanitizedLabel, isRequired, resolvedOptions, questionType, category);
+
+    // 4. 할당
+    this.id = id;
+    this.label = sanitizedLabel;
+    this.isRequired = isRequired;
+    this.options = resolvedOptions;
+    this.questionType = questionType;
+    this.category = category;
+  }
 
   public static Question initialize(QuestionCreateRequest request, QuestionCategory category) {
     List<QuestionOption> options =
