@@ -43,6 +43,8 @@ public class AnnouncementMapper {
         .announcementType(announcementEntity.getAnnouncementType())
         .hasInterview(announcementEntity.getHasInterview())
         .isDeleted(announcementEntity.getIsDeleted())
+        .createdAt(announcementEntity.getCreatedAt())
+        .updatedAt(announcementEntity.getUpdatedAt())
         .build();
   }
 

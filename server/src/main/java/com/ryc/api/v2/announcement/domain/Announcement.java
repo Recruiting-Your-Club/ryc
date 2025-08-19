@@ -237,6 +237,8 @@ public class Announcement {
         .announcementType(this.announcementType)
         .isDeleted(false)
         .announcementPeriodInfo(this.announcementPeriodInfo)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
         .build();
   }
 
