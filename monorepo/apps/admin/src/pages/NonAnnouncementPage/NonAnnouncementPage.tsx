@@ -6,6 +6,7 @@ import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import File from '@ssoc/assets/images/file-normal.svg';
+import { useRouter } from '@ssoc/hooks';
 import { Button, Dialog, Divider, Text } from '@ssoc/ui';
 
 import {
@@ -25,6 +26,7 @@ function NonAnnouncementPage() {
     // prop destruction
     // lib hooks
     const { clubId } = useParams();
+    const { goTo } = useRouter();
     // initial values
     // state, ref, querystring hooks
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -98,7 +100,9 @@ function NonAnnouncementPage() {
                                 <div css={s_dialogTextContainer}>
                                     <Text color="caption">현재 생성된 공고가 없습니다.</Text>
                                     <Text color="subCaption">공고를 먼저 생성해주세요.</Text>
-                                    <Button>공고 생성하기</Button>
+                                    <Button onClick={() => goTo(`/announcements/create/${clubId}`)}>
+                                        공고 생성하기
+                                    </Button>
                                 </div>
                             )}
                         {!isLoading && announcementList && announcementList.length > 0 && (

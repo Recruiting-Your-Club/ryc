@@ -22,10 +22,9 @@ const router = createBrowserRouter([
         path: '/',
         element: <ManagerLayout />,
         children: [
-            { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
+            { path: 'announcements/:clubId/:announcementId?', element: <AnnouncementPage /> },
+            { path: 'announcements/create/:clubId', element: <RecruitCreatePage /> },
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
-
-            { path: 'announcements/:clubId/:announcementId?', element: <NonAnnouncementPage /> },
             { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
             { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
