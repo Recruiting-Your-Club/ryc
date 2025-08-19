@@ -1,6 +1,7 @@
 package com.ryc.api.v2.role.infra;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -59,6 +60,14 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
+  public Invite findInviteById(String inviteId) {
+    return inviteJpaRepository
+        .findById(inviteId)
+        .map(InviteMapper::toDomain)
+        .orElseThrow(() -> new NoSuchElementException("Invite not found with id: " + inviteId));
+  }
+
+  @Override
   public boolean existsByAdminIdAndClubId(String adminId, String clubId) {
     return clubRoleJpaRepository.existsByAdminIdAndClubId(adminId, clubId);
   }
@@ -97,5 +106,10 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   @Override
   public void deleteAllByAdminId(String adminId) {
     clubRoleJpaRepository.deleteAllByAdminId(adminId);
+  }
+
+  @Override
+  public void deleteInvite(Invite invite) {
+    inviteJpaRepository.deleteById(invite.getId());
   }
 }

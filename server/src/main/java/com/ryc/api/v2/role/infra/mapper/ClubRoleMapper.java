@@ -31,7 +31,7 @@ public class ClubRoleMapper {
         .club(club)
         .admin(admin)
         .role(clubRoleEntity.getRole())
-        .createdAt(clubRoleEntity.getCreatedAt())
+        .joinedAt(clubRoleEntity.getCreatedAt())
         .build();
   }
 }

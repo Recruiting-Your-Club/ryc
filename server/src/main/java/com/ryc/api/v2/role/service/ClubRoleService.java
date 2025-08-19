@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
+import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
@@ -25,7 +27,8 @@ import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 import com.ryc.api.v2.role.domain.Invite;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.role.presentation.dto.response.ClubInviteGetResponse;
+import com.ryc.api.v2.role.presentation.dto.response.ClubInviteAcceptResponse;
+import com.ryc.api.v2.role.presentation.dto.response.ClubInviteCreatedResponse;
 import com.ryc.api.v2.role.presentation.dto.response.ClubRoleGetResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +38,9 @@ import lombok.RequiredArgsConstructor;
 public class ClubRoleService {
 
   private final ClubRoleRepository clubRoleRepository;
+  private final ClubRepository clubRepository;
   private final FileService fileService;
+  private final AdminService adminService;
 
   @Transactional
   public ClubRole assignRole(Admin admin, Club club, Role role) {
@@ -44,21 +49,52 @@ public class ClubRoleService {
   }
 
   @Transactional
-  public ClubInviteGetResponse getInviteCode(String clubId) {
+  public ClubInviteCreatedResponse createInviteCode(String clubId) {
     Optional<Invite> optional = clubRoleRepository.findInviteOptionalById(clubId);
-    Invite finalInvite;
+    Invite invite;
 
     // 만약 초대 링크가 존재하지 않거나 만료되었을 경우 새로 생성
-    if (optional.isEmpty() || optional.get().isExpired()) {
+    if (optional.isEmpty()) {
       Invite newInvite = Invite.initialize(clubId);
-      finalInvite = clubRoleRepository.saveInvite(newInvite);
+      invite = clubRoleRepository.saveInvite(newInvite);
     } else {
-      finalInvite = optional.get();
+      invite = optional.get();
+
+      if (invite.isExpired()) {
+        clubRoleRepository.deleteInvite(invite);
+
+        Invite newInvite = Invite.initialize(clubId);
+        invite = clubRoleRepository.saveInvite(newInvite);
+      }
     }
 
-    return ClubInviteGetResponse.builder()
-        .inviteCode(finalInvite.getId())
-        .expiresAt(finalInvite.getExpiresAt().toString())
+    return ClubInviteCreatedResponse.builder()
+        .inviteCode(invite.getId())
+        .expiresAt(invite.getExpiresAt())
+        .build();
+  }
+
+  @Transactional
+  public ClubInviteAcceptResponse acceptInvite(
+      String newAdminId, String clubId, String inviteCode) {
+    // 이미 동아리 멤버인 경우 예외 처리
+    if (clubRoleRepository.existsByAdminIdAndClubId(newAdminId, clubId)) {
+      throw new ClubException(ClubErrorCode.CLUB_MEMBER_ALREADY_EXISTS);
+    }
+
+    // 초대 코드가 존재하지 않거나 만료된 경우 예외 처리
+    Invite invite = clubRoleRepository.findInviteById(inviteCode);
+    if (invite.isExpired()) {
+      throw new ClubException(ClubErrorCode.CLUB_INVITE_EXPIRED);
+    }
+
+    Admin newAdmin = adminService.getAdminById(newAdminId);
+    Club club = clubRepository.findById(clubId);
+    ClubRole clubRole = assignRole(newAdmin, club, Role.MEMBER);
+    return ClubInviteAcceptResponse.builder()
+        .clubRoleId(clubRole.getId())
+        .role(clubRole.getRole().toString())
+        .joinedAt(clubRole.getJoinedAt())
         .build();
   }
 
@@ -83,8 +119,8 @@ public class ClubRoleService {
                   .adminId(admin.getId())
                   .adminName(admin.getName())
                   .role(clubRole.getRole().toString())
-                  .createdAt(clubRole.getCreatedAt().toString())
-                  .fileGetResponse(representativeImage)
+                  .joinedAt(clubRole.getJoinedAt().toString())
+                  .adminProfileImage(representativeImage)
                   .build();
             })
         .toList();

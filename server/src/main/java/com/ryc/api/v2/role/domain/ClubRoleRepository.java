@@ -17,6 +17,8 @@ public interface ClubRoleRepository {
 
   Optional<Invite> findInviteOptionalById(String inviteId);
 
+  Invite findInviteById(String inviteId);
+
   boolean existsByAdminIdAndClubId(String adminId, String clubId);
 
   boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
@@ -32,4 +34,6 @@ public interface ClubRoleRepository {
   int countManagerAndMemberByClubId(String clubId);
 
   void deleteAllByAdminId(String adminId);
+
+  void deleteInvite(Invite invite);
 }
