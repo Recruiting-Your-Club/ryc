@@ -363,7 +363,44 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // ClubTag Name
   CLUB_TAG_NAME_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 태그 이름은 null 혹은 empty일 수 없습니다."),
-  CLUB_TAG_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 태그 이름은 30자를 초과할 수 없습니다.");
+  CLUB_TAG_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 태그 이름은 30자를 초과할 수 없습니다."),
+
+  /** 평가(Evaluation) 에러 코드 */
+  // Evaluation ID
+  EVALUATION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "평가 ID는 null 혹은 empty일 수 없습니다."),
+  EVALUATION_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "평가 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Evaluation Evaluator ID
+  EVALUATION_EVALUATOR_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "평가자 ID는 null 혹은 empty일 수 없습니다."),
+  EVALUATION_INVALID_EVALUATOR_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "평가자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Evaluation Evaluatee ID
+  EVALUATION_EVALUATEE_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "피평가자 ID는 null 혹은 empty일 수 없습니다."),
+  EVALUATION_INVALID_EVALUATEE_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "피평가자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Evaluation Score
+  EVALUATION_SCORE_NULL(HttpStatus.BAD_REQUEST, "평가 점수는 null일 수 없습니다."),
+  EVALUATION_SCORE_OUT_OF_RANGE(HttpStatus.BAD_REQUEST, "평가 점수는 0.0 이상 5.0 이하여야 합니다."),
+  EVALUATION_SCORE_INVALID_SCALE(HttpStatus.BAD_REQUEST, "평가 점수는 소수점 첫째 자리까지만 허용됩니다."),
+
+  // Evaluation Comment
+  EVALUATION_COMMENT_EMPTY(HttpStatus.BAD_REQUEST, "평가 코멘트는 empty일 수 없습니다."),
+  EVALUATION_COMMENT_TOO_LONG(HttpStatus.BAD_REQUEST, "평가 코멘트는 500자를 초과할 수 없습니다."),
+
+  // Evaluation Type
+  EVALUATION_TYPE_NULL(HttpStatus.BAD_REQUEST, "평가 타입은 null일 수 없습니다."),
+
+  // Evaluation Deleted
+  EVALUATION_DELETED_NULL(HttpStatus.BAD_REQUEST, "평가 삭제 여부는 null일 수 없습니다."),
+
+  // Evaluation CreatedAt/UpdatedAt
+  EVALUATION_CREATED_AT_NULL(HttpStatus.BAD_REQUEST, "평가 생성일은 null일 수 없습니다."),
+  EVALUATION_UPDATED_AT_NULL(HttpStatus.BAD_REQUEST, "평가 수정일은 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;

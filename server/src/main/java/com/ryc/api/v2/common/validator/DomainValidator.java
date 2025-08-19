@@ -1,5 +1,6 @@
 package com.ryc.api.v2.common.validator;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
@@ -99,6 +100,22 @@ public abstract class DomainValidator {
   protected static void validateDateRange(
       LocalDateTime startDate, LocalDateTime endDate, ErrorCode errorCode) {
     if (startDate.isAfter(endDate)) {
+      throw new InvalidFormatException(errorCode);
+    }
+  }
+
+  /** BigDecimal 범위 검증 */
+  protected static void validateBigDecimalRange(
+      BigDecimal value, BigDecimal minValue, BigDecimal maxValue, ErrorCode errorCode) {
+    if (value.compareTo(minValue) < 0 || value.compareTo(maxValue) > 0) {
+      throw new InvalidFormatException(errorCode);
+    }
+  }
+
+  /** BigDecimal 소수점 자리수 검증 */
+  protected static void validateBigDecimalScale(
+      BigDecimal value, int maxScale, ErrorCode errorCode) {
+    if (value.scale() > maxScale) {
       throw new InvalidFormatException(errorCode);
     }
   }
