@@ -2593,6 +2593,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ssoc/hooks@workspace:packages/hooks"
   dependencies:
+    "@ssoc/utils": "workspace:*"
     "@types/react": "npm:^18.0.0"
     "@types/react-dom": "npm:^18.0.0"
     typescript: "npm:^4.4.2"
