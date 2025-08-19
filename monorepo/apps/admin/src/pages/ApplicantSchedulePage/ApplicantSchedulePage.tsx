@@ -41,8 +41,6 @@ function ApplicantSchedulePage() {
     const [standardOpen, setStandardOpen] = useState<boolean>(false);
 
     const [selectedIntervieweeId, setSelectedIntervieweeId] = useState<string>('');
-    const [selectedStandardIntervieweeId, setSelectedStandardIntervieweeId] = useState<string>('');
-    const [unreservedIntervieweeId, setUnreservedIntervieweeId] = useState<string>('');
 
     const [slot0Id, setSlot0Id] = useState<string | null>(null);
     const [slot1Id, setSlot1Id] = useState<string | null>(null);
@@ -262,10 +260,10 @@ function ApplicantSchedulePage() {
                         onMoveLeft={() =>
                             handleMove(
                                 standardInterviewees,
-                                selectedStandardIntervieweeId,
+                                selectedIntervieweeId,
                                 selectedInterviewLabel.interviewSlotId ?? '',
                                 selectedStandardInterviewLabel.interviewSlotId ?? '',
-                                setSelectedStandardIntervieweeId,
+                                setSelectedIntervieweeId,
                             )
                         }
                         onMoveRight={() =>
@@ -282,8 +280,8 @@ function ApplicantSchedulePage() {
                 <div css={s_contentComponentWrapper}>
                     <ApplicantList
                         applicantList={toStepApplicants(standardInterviewees)}
-                        selectedApplicantId={selectedStandardIntervieweeId}
-                        onSelectApplicantId={setSelectedStandardIntervieweeId}
+                        selectedApplicantId={selectedIntervieweeId}
+                        onSelectApplicantId={setSelectedIntervieweeId}
                         titleMode="titleNode"
                         sx={s_applicantList}
                     >
@@ -301,19 +299,19 @@ function ApplicantSchedulePage() {
                         onMoveLeft={() =>
                             handleMove(
                                 unreservedApplicants,
-                                unreservedIntervieweeId,
+                                selectedIntervieweeId,
                                 selectedStandardInterviewLabel.interviewSlotId ?? '',
                                 '',
-                                setUnreservedIntervieweeId,
+                                setSelectedIntervieweeId,
                             )
                         }
                         onMoveRight={() =>
                             handleMove(
                                 standardInterviewees,
-                                selectedStandardIntervieweeId,
+                                selectedIntervieweeId,
                                 '',
                                 selectedStandardInterviewLabel.interviewSlotId ?? '',
-                                setSelectedStandardIntervieweeId,
+                                setSelectedIntervieweeId,
                             )
                         }
                     />
@@ -322,8 +320,8 @@ function ApplicantSchedulePage() {
                     <ApplicantList
                         title="면접 일정 미지정자"
                         applicantList={toStepApplicants(unreservedApplicants)}
-                        selectedApplicantId={unreservedIntervieweeId}
-                        onSelectApplicantId={setUnreservedIntervieweeId}
+                        selectedApplicantId={selectedIntervieweeId}
+                        onSelectApplicantId={setSelectedIntervieweeId}
                         sx={s_applicantList}
                     />
                 </div>
