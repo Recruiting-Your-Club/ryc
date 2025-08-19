@@ -93,7 +93,10 @@ function ApplicantSchedulePage() {
             const isSame = newSetId !== null && newSetId === targetSetId;
 
             if (isSame) {
-                toast('같은 면접 일정은 선택할 수 없어요!', { type: 'error', toastTheme: 'black' });
+                toast('선택한 면접 일정이 다른 리스트와 겹쳐요!', {
+                    type: 'error',
+                    toastTheme: 'black',
+                });
                 setDropdown(true);
                 return;
             }
