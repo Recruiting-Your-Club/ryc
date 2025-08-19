@@ -209,7 +209,39 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   ANSWER_INVALID_FILE_METADATA_ID_EMPTY(HttpStatus.BAD_REQUEST, "답변 파일 메타데이터 ID는 empty일 수 없습니다."),
   ANSWER_INVALID_FILE_METADATA_ID_FORMAT(
       HttpStatus.BAD_REQUEST,
-      "답변 파일 메타데이터 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
+      "답변 파일 메타데이터 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  /** 답변선택(AnswerChoice) 에러 코드 */
+  // AnswerChoice ID
+  ANSWER_CHOICE_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "객관식 답변 ID는 null 혹은 empty일 수 없습니다."),
+  ANSWER_CHOICE_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "객관식 답변 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // AnswerChoice Option ID
+  ANSWER_CHOICE_OPTION_ID_NULL_OR_EMPTY(
+      HttpStatus.BAD_REQUEST, "객관식 답변 값인 선지 ID는 null 혹은 empty일 수 없습니다."),
+  ANSWER_CHOICE_INVALID_OPTION_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "객관식 답변 값인 선지 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  /** 지원서(Application) 에러 코드 */
+  // Application ID
+  APPLICATION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원서 ID는 null 혹은 empty일 수 없습니다."),
+  APPLICATION_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "지원서 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Application Applicant ID
+  APPLICATION_APPLICANT_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원서의 지원자 ID는 null 혹은 empty일 수 없습니다."),
+  APPLICATION_INVALID_APPLICANT_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "지원서의 지원자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Application Answers
+  APPLICATION_ANSWERS_NULL(HttpStatus.BAD_REQUEST, "지원서 답변 리스트는 null일 수 없습니다."),
+
+  // Application CreatedAt
+  APPLICATION_CREATED_AT_NULL(HttpStatus.BAD_REQUEST, "지원서 생성일은 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
