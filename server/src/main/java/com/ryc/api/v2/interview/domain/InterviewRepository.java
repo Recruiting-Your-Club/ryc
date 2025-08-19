@@ -26,5 +26,5 @@ public interface InterviewRepository {
 
   void deleteSlotsByAnnouncementId(String announcementId);
 
-  void deleteReservationsByApplicantIdIn(List<String> applicantIds);
+  void deleteReservationById(String reservationId);
 }

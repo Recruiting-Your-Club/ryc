@@ -235,7 +235,7 @@ public class InterviewService {
       InterviewSlot updatedSlot = slot.removeReservation(reservation);
       interviewRepository.saveSlot(updatedSlot);
     } else {
-
+      // 기존 면접 슬롯이 없는 경우, 새로운 예약을 생성합니다.
       Applicant applicant = applicantRepository.findById(applicantId);
       reservation = InterviewReservation.initialize(applicant);
     }
@@ -252,6 +252,11 @@ public class InterviewService {
         .interviewReservationId(reservationId)
         .interviewSlot(slotGetResponse)
         .build();
+  }
+
+  @Transactional
+  public void deleteInterviewReservation(String reservationId) {
+    interviewRepository.deleteReservationById(reservationId);
   }
 
   @Transactional
