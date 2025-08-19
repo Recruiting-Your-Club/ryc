@@ -281,13 +281,13 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   /** 질문옵션(QuestionOption) 에러 코드 */
   // QuestionOption ID
-  QUESTION_OPTION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 옵션 ID는 null 혹은 empty일 수 없습니다."),
+  QUESTION_OPTION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 선지 ID는 null 혹은 empty일 수 없습니다."),
   QUESTION_OPTION_INVALID_ID_FORMAT(
-      HttpStatus.BAD_REQUEST, "질문 옵션 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+      HttpStatus.BAD_REQUEST, "질문 선지 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
 
   // QuestionOption Option
-  QUESTION_OPTION_OPTION_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 옵션 내용은 null 혹은 empty일 수 없습니다."),
-  QUESTION_OPTION_OPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "질문 옵션 내용은 200자를 초과할 수 없습니다.");
+  QUESTION_OPTION_OPTION_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 선지는 null 혹은 empty일 수 없습니다."),
+  QUESTION_OPTION_OPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "질문 선지는 200자를 초과할 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
