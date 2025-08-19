@@ -6,6 +6,9 @@ import com.ryc.api.v2.file.presentation.dto.request.UploadUrlRequest;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.security.SecureRandom;
+import java.util.UUID;
+
 @Getter
 @Builder
 public class FileMetaData {
@@ -16,6 +19,7 @@ public class FileMetaData {
   private final Long fileSize;
   private final boolean isDeleted;
   private final int displayOrder;
+  private final String accessToken;
 
   private final FileDomainType fileDomainType;
 
@@ -33,12 +37,15 @@ public class FileMetaData {
    * @return FileMetaData domain 객체
    */
   public static FileMetaData initialize(UploadUrlRequest request, String path) {
+    String accessToken = UUID.randomUUID().toString();
+
     return FileMetaData.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
         .filePath(path)
         .originalFileName(request.fileName())
         .contentType(request.contentType())
         .fileDomainType(FileDomainType.from(request.fileType()))
+            .accessToken(accessToken)
         .associatedId(null)
         .uploadedByUserId(null)
         .status(FileStatus.PENDING)
@@ -54,6 +61,7 @@ public class FileMetaData {
         .filePath(filePath)
         .originalFileName(originalFileName)
         .contentType(contentType)
+            .accessToken(accessToken)
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
@@ -71,6 +79,7 @@ public class FileMetaData {
         .originalFileName(originalFileName)
         .contentType(contentType)
         .fileSize(fileSize)
+            .accessToken(accessToken)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
         .uploadedByUserId(uploadedByUserId)
@@ -86,6 +95,7 @@ public class FileMetaData {
         .filePath(filePath)
         .originalFileName(originalFileName)
         .contentType(contentType)
+            .accessToken(accessToken)
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
@@ -103,6 +113,7 @@ public class FileMetaData {
         .originalFileName(originalFileName)
         .contentType(contentType)
         .fileSize(fileSize)
+            .accessToken(accessToken)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
         .uploadedByUserId(uploadedByUserId)
@@ -120,6 +131,7 @@ public class FileMetaData {
         .contentType(this.contentType)
         .fileSize(this.fileSize)
         .fileDomainType(this.fileDomainType)
+            .accessToken(accessToken)
         .uploadedByUserId(this.uploadedByUserId)
         .associatedId(this.associatedId)
         .displayOrder(this.displayOrder)
@@ -139,6 +151,7 @@ public class FileMetaData {
         .uploadedByUserId(this.uploadedByUserId)
         .associatedId(this.associatedId)
         .isDeleted(false)
+            .accessToken(this.accessToken)
         .displayOrder(this.displayOrder)
         .status(FileStatus.MOVE_FAILED)
         .build();
@@ -153,6 +166,7 @@ public class FileMetaData {
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
+            .accessToken(accessToken)
         .isDeleted(false)
         .uploadedByUserId(uploadedByUserId)
         .status(status)
