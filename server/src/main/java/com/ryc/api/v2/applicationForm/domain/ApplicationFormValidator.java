@@ -44,7 +44,8 @@ final class ApplicationFormValidator extends DomainValidator {
     validateNotNull(applicationQuestions, APPLICATION_FORM_APPLICATION_QUESTIONS_NULL);
   }
 
-  private static void validatePersonalInfoQuestionTypes(List<PersonalInfoQuestionType> personalInfoQuestionTypes) {
+  private static void validatePersonalInfoQuestionTypes(
+      List<PersonalInfoQuestionType> personalInfoQuestionTypes) {
     validateNotNull(personalInfoQuestionTypes, APPLICATION_FORM_PERSONAL_INFO_QUESTION_TYPES_NULL);
   }
 

@@ -31,16 +31,15 @@ public class ApplicationForm {
       List<Question> preQuestions) {
 
     // 1. 멤버 변수 기본값 처리
-    List<Question> resolvedApplicationQuestions = applicationQuestions != null ? applicationQuestions : List.of();
-    List<PersonalInfoQuestionType> resolvedPersonalInfoQuestionTypes = personalInfoQuestionTypes != null ? personalInfoQuestionTypes : List.of();
+    List<Question> resolvedApplicationQuestions =
+        applicationQuestions != null ? applicationQuestions : List.of();
+    List<PersonalInfoQuestionType> resolvedPersonalInfoQuestionTypes =
+        personalInfoQuestionTypes != null ? personalInfoQuestionTypes : List.of();
     List<Question> resolvedPreQuestions = preQuestions != null ? preQuestions : List.of();
 
     // 3. 검증
     ApplicationFormValidator.validate(
-        id,
-        resolvedApplicationQuestions,
-        resolvedPersonalInfoQuestionTypes,
-        resolvedPreQuestions);
+        id, resolvedApplicationQuestions, resolvedPersonalInfoQuestionTypes, resolvedPreQuestions);
 
     // 4. 할당
     this.id = id;

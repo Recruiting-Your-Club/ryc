@@ -248,11 +248,13 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   // ApplicationForm ID
   APPLICATION_FORM_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원서 양식 ID는 null 혹은 empty일 수 없습니다."),
   APPLICATION_FORM_INVALID_ID_FORMAT(
-      HttpStatus.BAD_REQUEST, "지원서 양식 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+      HttpStatus.BAD_REQUEST,
+      "지원서 양식 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
 
   // ApplicationForm Questions
   APPLICATION_FORM_APPLICATION_QUESTIONS_NULL(HttpStatus.BAD_REQUEST, "지원서 질문 리스트는 null일 수 없습니다."),
-  APPLICATION_FORM_PERSONAL_INFO_QUESTION_TYPES_NULL(HttpStatus.BAD_REQUEST, "개인정보 질문 타입 리스트는 null일 수 없습니다."),
+  APPLICATION_FORM_PERSONAL_INFO_QUESTION_TYPES_NULL(
+      HttpStatus.BAD_REQUEST, "개인정보 질문 타입 리스트는 null일 수 없습니다."),
   APPLICATION_FORM_PRE_QUESTIONS_NULL(HttpStatus.BAD_REQUEST, "사전 질문 리스트는 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
