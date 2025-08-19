@@ -8,5 +8,5 @@ public class S3Prefix {
   public static final String ANNOUNCEMENT_POST_IMAGE = "private/applications/%s/posts/%s";
   public static final String TEMP_PATH = "temp/%s";
   public static final String APPLICATION_ATTACHMENT = "private/applications/%s/attachments/%s";
-  public static final String APPLICATION_PROFILE = "private/applications/%s/profile/%s";
+  public static final String APPLICANT_PROFILE = "private/applications/%s/profile/%s";
 }

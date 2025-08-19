@@ -15,6 +15,7 @@ import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantSummaryResponse;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
@@ -80,14 +81,13 @@ public class InterviewService {
                     FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
             .orElse(null);
 
+    ApplicantSummaryResponse applicantSummaryResponse = createApplicantSummaryResponse(applicant);
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
         .slotByDateResponses(slotResponses)
         .representativeImage(representativeImage)
-        .applicantId(applicant.getId())
-        .applicantEmail(applicant.getEmail())
-        .applicantName(applicant.getName())
+        .applicantSummary(applicantSummaryResponse)
         .isReserved(isReserved)
         .build();
   }
@@ -103,25 +103,23 @@ public class InterviewService {
   public List<InterviewReservationGetResponse> getInterviewReservations(String interviewSlotId) {
     InterviewSlot interviewSlot = interviewRepository.findSlotById(interviewSlotId);
     List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
-    List<InterviewReservationGetResponse> responses = new ArrayList<>();
 
-    for (InterviewReservation reservation : reservations) {
-      Applicant applicant = reservation.getApplicant();
+    return reservations.stream()
+        .map(
+            reservation -> {
+              ApplicantSummaryResponse applicantSummaryResponse =
+                  createApplicantSummaryResponse(reservation.getApplicant());
 
-      InterviewReservationGetResponse response =
-          InterviewReservationGetResponse.builder()
-              .interviewReservationId(reservation.getId())
-              .applicantId(applicant.getId())
-              .applicantEmail(applicant.getEmail())
-              .applicantName(applicant.getName())
-              .build();
-      responses.add(response);
-    }
-    return responses;
+              return InterviewReservationGetResponse.builder()
+                  .interviewReservationId(reservation.getId())
+                  .applicantSummary(applicantSummaryResponse)
+                  .build();
+            })
+        .toList();
   }
 
   @Transactional(readOnly = true)
-  public List<UnReservedApplicantGetResponse> getUnReservedApplicants(String announcementId) {
+  public List<ApplicantSummaryResponse> getInterviewUnReservations(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
     Set<Applicant> applicants =
@@ -135,15 +133,7 @@ public class InterviewService {
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
 
-    return applicants.stream()
-        .map(
-            applicant ->
-                UnReservedApplicantGetResponse.builder()
-                    .applicantId(applicant.getId())
-                    .applicantEmail(applicant.getEmail())
-                    .applicantName(applicant.getName())
-                    .build())
-        .toList();
+    return applicants.stream().map(this::createApplicantSummaryResponse).toList();
   }
 
   @Transactional
@@ -286,6 +276,27 @@ public class InterviewService {
         .date(date)
         .interviewDuration((int) interviewDuration)
         .interviewSlots(slotResponses)
+        .build();
+  }
+
+  private ApplicantSummaryResponse createApplicantSummaryResponse(Applicant applicant) {
+    FileGetResponse imageResponse =
+        fileService.findAllByAssociatedId(applicant.getId()).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
+            .findFirst()
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(
+                        fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData)))
+            .orElse(null);
+
+    return ApplicantSummaryResponse.builder()
+        .applicantId(applicant.getId())
+        .applicantEmail(applicant.getEmail())
+        .applicantName(applicant.getName())
+        .imageResponse(imageResponse)
         .build();
   }
 }

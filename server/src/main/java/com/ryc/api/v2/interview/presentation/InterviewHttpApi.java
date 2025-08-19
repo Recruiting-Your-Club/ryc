@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantSummaryResponse;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
@@ -94,10 +95,10 @@ public class InterviewHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<UnReservedApplicantGetResponse>> getUnReservedApplicants(
+  public ResponseEntity<List<ApplicantSummaryResponse>> getInterviewUnReservationsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<UnReservedApplicantGetResponse> response =
-        interviewService.getUnReservedApplicants(announcementId);
+    List<ApplicantSummaryResponse> response =
+        interviewService.getInterviewUnReservations(announcementId);
     return ResponseEntity.ok(response);
   }
 
