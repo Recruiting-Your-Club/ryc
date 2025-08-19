@@ -50,7 +50,7 @@ export const useFileUpload = (baseUrl: string) => {
                     fileType = 'ANSWER_ATTACHMENT'; // 자소서 파일 첨부 문항
                     break;
                 case 'PROFILE_IMAGE':
-                    fileType = 'APPLICATION_PROFILE'; // 지원자 본인 사진 문항
+                    fileType = 'APPLICANT_PROFILE'; // 지원자 본인 사진 문항
                     break;
                 case 'CLUB_CREATE': // 동아리 생성 페이지
                     fileType = 'CLUB_PROFILE'; // 동아리 로고

@@ -7,7 +7,8 @@ import { useParams } from 'react-router-dom';
 
 import File from '@ssoc/assets/images/file-normal.svg';
 import { useRouter } from '@ssoc/hooks';
-import { Button, Dialog, Divider, Text } from '@ssoc/ui';
+import { Button, Dialog, Divider, Dropdown, Text } from '@ssoc/ui';
+import { DropdownItem } from '@ssoc/ui/dist/src/components/Dropdown/DropdownItem';
 
 import {
     s_captionText,
@@ -63,7 +64,9 @@ function NonAnnouncementPage() {
         );
     }, [announcementList]);
 
-    const handleSelectAnnouncement = (announcement: AnnouncementList) => {};
+    const handleSelectAnnouncement = (announcement: AnnouncementList) => {
+        goTo(`/announcements/${clubId}/${announcement.announcementId}`);
+    };
 
     // handlers
     const handleOpenDialog = () => {
