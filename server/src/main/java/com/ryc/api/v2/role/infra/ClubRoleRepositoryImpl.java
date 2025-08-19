@@ -51,8 +51,18 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
-  public void deleteByUserId(String adminId) {
-    clubRoleJpaRepository.deleteByAdminId(adminId);
+  public boolean existsByClubId(String clubId) {
+    return clubRoleJpaRepository.existsByClubId(clubId);
+  }
+
+  @Override
+  public boolean existsByAdminId(String adminId) {
+    return clubRoleJpaRepository.existsByAdminId(adminId);
+  }
+
+  @Override
+  public void deleteByAdminIdAndClubId(String adminId, String clubId) {
+    clubRoleJpaRepository.deleteByAdminIdAndClubId(adminId, clubId);
   }
 
   @Override
@@ -64,5 +74,10 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   public int countManagerAndMemberByClubId(String clubId) {
     long count = clubRoleJpaRepository.countManagerAndMemberByClubId(clubId);
     return Math.toIntExact(count); // 21억명이 넘을 가능성은 없지만, type 전환 실수를 위한 safe check
+  }
+
+  @Override
+  public void deleteAllByAdminId(String adminId) {
+    clubRoleJpaRepository.deleteAllByAdminId(adminId);
   }
 }

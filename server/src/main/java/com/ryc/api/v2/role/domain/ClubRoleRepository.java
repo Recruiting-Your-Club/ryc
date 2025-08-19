@@ -17,9 +17,15 @@ public interface ClubRoleRepository {
 
   boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId);
 
-  void deleteByUserId(String adminId);
+  boolean existsByClubId(String clubId);
+
+  boolean existsByAdminId(String adminId);
+
+  void deleteByAdminIdAndClubId(String adminId, String clubId);
 
   void deleteByClubId(String clubId);
 
   int countManagerAndMemberByClubId(String clubId);
+
+  void deleteAllByAdminId(String adminId);
 }

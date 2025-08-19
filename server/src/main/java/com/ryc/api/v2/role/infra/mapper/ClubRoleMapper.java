@@ -14,10 +14,10 @@ public class ClubRoleMapper {
   private ClubRoleMapper() {}
 
   public static ClubRoleEntity toEntity(ClubRole clubRole) {
-    ClubEntity clubEntity = ClubMapper.toEntity(clubRole.club());
-    AdminEntity adminEntity = AdminMapper.toEntity(clubRole.admin());
+    ClubEntity clubEntity = ClubMapper.toEntity(clubRole.getClub());
+    AdminEntity adminEntity = AdminMapper.toEntity(clubRole.getAdmin());
     return ClubRoleEntity.builder()
-        .role(clubRole.role())
+        .role(clubRole.getRole())
         .club(clubEntity)
         .admin(adminEntity)
         .build();

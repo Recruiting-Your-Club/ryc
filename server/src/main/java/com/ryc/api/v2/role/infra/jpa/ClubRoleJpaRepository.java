@@ -33,6 +33,10 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
   boolean existsOwnerRoleByAdminIdAndClubId(
       @Param("adminId") String adminId, @Param("clubId") String clubId);
 
+  boolean existsByClubId(String clubId);
+
+  boolean existsByAdminId(String adminId);
+
   @Query("""
     SELECT COUNT(r)
     FROM ClubRoleEntity r
@@ -40,7 +44,7 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
 """)
   long countManagerAndMemberByClubId(@Param("clubId") String clubId);
 
-  void deleteByAdminId(String adminId);
+  void deleteByAdminIdAndClubId(String adminId, String clubId);
 
   @Query(
       """
@@ -51,4 +55,6 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
   List<ClubEntity> findClubsByAdminId(String adminId);
 
   void deleteByClubId(String clubId);
+
+  void deleteAllByAdminId(String adminId);
 }
