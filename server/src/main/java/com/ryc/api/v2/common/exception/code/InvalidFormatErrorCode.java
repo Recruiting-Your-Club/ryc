@@ -232,7 +232,8 @@ public enum InvalidFormatErrorCode implements ErrorCode {
       HttpStatus.BAD_REQUEST, "지원서 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
 
   // Application Applicant ID
-  APPLICATION_APPLICANT_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원서의 지원자 ID는 null 혹은 empty일 수 없습니다."),
+  APPLICATION_APPLICANT_ID_NULL_OR_EMPTY(
+      HttpStatus.BAD_REQUEST, "지원서의 지원자 ID는 null 혹은 empty일 수 없습니다."),
   APPLICATION_INVALID_APPLICANT_ID_FORMAT(
       HttpStatus.BAD_REQUEST,
       "지원서의 지원자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),

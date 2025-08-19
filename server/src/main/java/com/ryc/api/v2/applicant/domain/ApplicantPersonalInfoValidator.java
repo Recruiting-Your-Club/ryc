@@ -108,7 +108,8 @@ final class ApplicantPersonalInfoValidator extends DomainValidator {
 
     // 도메인부 길이 검증
     validateNotNullOrEmpty(domainPart, PERSONAL_INFO_EMAIL_DOMAIN_PART_NULL_OR_EMPTY);
-    validateMaxLength(domainPart, MAX_EMAIL_DOMAIN_PART_LENGTH, PERSONAL_INFO_EMAIL_DOMAIN_PART_TOO_LONG);
+    validateMaxLength(
+        domainPart, MAX_EMAIL_DOMAIN_PART_LENGTH, PERSONAL_INFO_EMAIL_DOMAIN_PART_TOO_LONG);
 
     // RFC 5322 정규식 검증
     validatePattern(email, EMAIL_PATTERN, PERSONAL_INFO_INVALID_EMAIL_FORMAT);
