@@ -97,44 +97,56 @@ final class AnnouncementValidator extends DomainValidator {
 
   private static void validateNumberOfPeople(String numberOfPeople) {
     // NULL 허용
-    validateNotEmpty(numberOfPeople, ANNOUNCEMENT_NUMBER_OF_PEOPLE_EMPTY);
-    validateMaxLength(
-        numberOfPeople, MAX_NUMBER_OF_PEOPLE_LENGTH, ANNOUNCEMENT_NUMBER_OF_PEOPLE_TOO_LONG);
+    if (numberOfPeople != null) {
+      validateNotEmpty(numberOfPeople, ANNOUNCEMENT_NUMBER_OF_PEOPLE_EMPTY);
+      validateMaxLength(
+          numberOfPeople, MAX_NUMBER_OF_PEOPLE_LENGTH, ANNOUNCEMENT_NUMBER_OF_PEOPLE_TOO_LONG);
+    }
   }
 
   private static void validateDetailDescription(String detailDescription) {
     // NULL 허용
-    validateNotEmpty(detailDescription, ANNOUNCEMENT_DETAIL_DESCRIPTION_EMPTY);
-    validateMaxLength(
-        detailDescription, MAX_DESCRIPTION_LENGTH, ANNOUNCEMENT_DETAIL_DESCRIPTION_TOO_LONG);
+    if (detailDescription != null) {
+      validateNotEmpty(detailDescription, ANNOUNCEMENT_DETAIL_DESCRIPTION_EMPTY);
+      validateMaxLength(
+          detailDescription, MAX_DESCRIPTION_LENGTH, ANNOUNCEMENT_DETAIL_DESCRIPTION_TOO_LONG);
+    }
   }
 
   private static void validateSummaryDescription(String summaryDescription) {
     // NULL 허용
-    validateNotEmpty(summaryDescription, ANNOUNCEMENT_SUMMARY_DESCRIPTION_EMPTY);
-    validateMaxLength(
-        summaryDescription,
-        MAX_SUMMARY_DESCRIPTION_LENGTH,
-        ANNOUNCEMENT_SUMMARY_DESCRIPTION_TOO_LONG);
+    if (summaryDescription != null) {
+      validateNotEmpty(summaryDescription, ANNOUNCEMENT_SUMMARY_DESCRIPTION_EMPTY);
+      validateMaxLength(
+          summaryDescription,
+          MAX_SUMMARY_DESCRIPTION_LENGTH,
+          ANNOUNCEMENT_SUMMARY_DESCRIPTION_TOO_LONG);
+    }
   }
 
   private static void validateTarget(String target) {
     // NULL 허용
-    validateNotEmpty(target, ANNOUNCEMENT_TARGET_EMPTY);
-    validateMaxLength(target, MAX_TARGET_LENGTH, ANNOUNCEMENT_TARGET_TOO_LONG);
+    if (target != null) {
+      validateNotEmpty(target, ANNOUNCEMENT_TARGET_EMPTY);
+      validateMaxLength(target, MAX_TARGET_LENGTH, ANNOUNCEMENT_TARGET_TOO_LONG);
+    }
   }
 
   private static void validateField(String field) {
     // NULL 허용
-    validateNotEmpty(field, ANNOUNCEMENT_FIELD_EMPTY);
-    validateMaxLength(field, MAX_FIELD_LENGTH, ANNOUNCEMENT_FIELD_TOO_LONG);
+    if (field != null) {
+      validateNotEmpty(field, ANNOUNCEMENT_FIELD_EMPTY);
+      validateMaxLength(field, MAX_FIELD_LENGTH, ANNOUNCEMENT_FIELD_TOO_LONG);
+    }
   }
 
   private static void validateActivityPeriod(String activityPeriod) {
     // NULL 허용
-    validateNotEmpty(activityPeriod, ANNOUNCEMENT_ACTIVITY_PERIOD_EMPTY);
-    validateMaxLength(
-        activityPeriod, MAX_ACTIVITY_PERIOD_LENGTH, ANNOUNCEMENT_ACTIVITY_PERIOD_TOO_LONG);
+    if (activityPeriod != null) {
+      validateNotEmpty(activityPeriod, ANNOUNCEMENT_ACTIVITY_PERIOD_EMPTY);
+      validateMaxLength(
+          activityPeriod, MAX_ACTIVITY_PERIOD_LENGTH, ANNOUNCEMENT_ACTIVITY_PERIOD_TOO_LONG);
+    }
   }
 
   private static void validateTags(List<Tag> tags) {

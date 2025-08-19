@@ -51,7 +51,7 @@ final class AnswerValidator extends DomainValidator {
   private static void validateTextAnswer(String textAnswer) {
     // textAnswer는 null 허용
     if (textAnswer != null) {
-      validateNotEmpty(textAnswer,ANSWER_TEXT_ANSWER_EMPTY);
+      validateNotEmpty(textAnswer, ANSWER_TEXT_ANSWER_EMPTY);
       validateMaxLength(textAnswer, MAX_TEXT_ANSWER_LENGTH, ANSWER_TEXT_ANSWER_TOO_LONG);
     }
   }
