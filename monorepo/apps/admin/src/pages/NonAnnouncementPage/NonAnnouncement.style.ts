@@ -51,3 +51,20 @@ export const s_dialogTextContainer = css`
     gap: 1rem;
     margin-bottom: 2rem;
 `;
+
+export const s_dialogDivider = css`
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+`;
+
+export const s_dialog = css`
+    max-height: 50rem;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const s_dialogScrollArea = css`
+    overflow-y: auto;
+    flex: 1;
+    width: 100%;
+`;

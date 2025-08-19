@@ -6,10 +6,13 @@ import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import File from '@ssoc/assets/images/file-normal.svg';
-import { Button, Dialog, Text } from '@ssoc/ui';
+import { Button, Dialog, Divider, Text } from '@ssoc/ui';
 
 import {
     s_captionText,
+    s_dialog,
+    s_dialogDivider,
+    s_dialogScrollArea,
     s_dialogTextContainer,
     s_fileIcon,
     s_fileIconWrapper,
@@ -85,28 +88,44 @@ function NonAnnouncementPage() {
                 <Dialog.Header handleClose={() => setIsDialogOpen(false)} closeIcon>
                     공고 선택
                 </Dialog.Header>
-                <Dialog.Content>
-                    {isLoading && <Text>불러오는 중...</Text>}
-                    {error && <Text>목록을 불러오지 못했습니다. 다시 시도해주세요.</Text>}
-                    {!isLoading &&
-                        !error &&
-                        (!announcementList || announcementList.length === 0) && (
-                            <div css={s_dialogTextContainer}>
-                                <Text color="caption">현재 생성된 공고가 없습니다.</Text>
-                                <Text color="subCaption">공고를 먼저 생성해주세요.</Text>
-                                <Button>공고 생성하기</Button>
-                            </div>
+                <Dialog.Content sx={s_dialog}>
+                    <div css={s_dialogScrollArea}>
+                        {isLoading && <Text>불러오는 중...</Text>}
+                        {error && <Text>목록을 불러오지 못했습니다. 다시 시도해주세요.</Text>}
+                        {!isLoading &&
+                            !error &&
+                            (!announcementList || announcementList.length === 0) && (
+                                <div css={s_dialogTextContainer}>
+                                    <Text color="caption">현재 생성된 공고가 없습니다.</Text>
+                                    <Text color="subCaption">공고를 먼저 생성해주세요.</Text>
+                                    <Button>공고 생성하기</Button>
+                                </div>
+                            )}
+                        {!isLoading && announcementList && announcementList.length > 0 && (
+                            <>
+                                <DialogSection
+                                    title={`진행중 공고 (${announcementsByStatus.recruiting.length})`}
+                                    items={announcementsByStatus.recruiting}
+                                    emptyText="현재 진행중인 공고가 없습니다."
+                                    onSelect={handleSelectAnnouncement}
+                                />
+                                <Divider css={s_dialogDivider} />
+                                <DialogSection
+                                    title={`예정된 공고 (${announcementsByStatus.upcoming.length})`}
+                                    items={announcementsByStatus.upcoming}
+                                    emptyText="예정된 공고가 없습니다."
+                                    onSelect={handleSelectAnnouncement}
+                                />
+                                <Divider css={s_dialogDivider} />
+                                <DialogSection
+                                    title={`마감된 공고 (${announcementsByStatus.closed.length})`}
+                                    items={announcementsByStatus.closed}
+                                    emptyText="마감된 공고가 없습니다."
+                                    onSelect={handleSelectAnnouncement}
+                                />
+                            </>
                         )}
-                    {!isLoading && announcementList && announcementList.length > 0 && (
-                        <>
-                            <DialogSection
-                                title={`진행중 공고 (${announcementsByStatus.recruiting.length})`}
-                                items={announcementsByStatus.recruiting}
-                                emptyText="현재 진행중인 공고가 없습니다."
-                                onSelect={handleSelectAnnouncement}
-                            />
-                        </>
-                    )}
+                    </div>
                 </Dialog.Content>
             </Dialog>
         </div>
