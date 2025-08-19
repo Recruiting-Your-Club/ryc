@@ -102,49 +102,44 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   ANNOUNCEMENT_TAG_LABEL_TOO_LONG(HttpStatus.BAD_REQUEST, "공고 태그 라벨은 20자를 초과할 수 없습니다."),
 
   /** 지원자(Applicant) 에러 코드 */
-  // Applicant Personal Info ID
-  APPLICANT_PERSONAL_INFO_ID_NULL_OR_EMPTY(
-      HttpStatus.BAD_REQUEST, "지원자 개인정보 ID는 null 혹은 empty일 수 없습니다."),
-  APPLICANT_INVALID_PERSONAL_INFO_ID_FORMAT(
+  // Applicant ID
+  APPLICANT_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원자 ID는 null 혹은 empty일 수 없습니다."),
+  APPLICANT_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "지원자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Applicant 공고 ID
+  APPLICANT_ANNOUNCEMENT_ID_NULL_OR_EMPTY(
+      HttpStatus.BAD_REQUEST, "지원자의 공고 ID는 null 혹은 empty일 수 없습니다."),
+  APPLICANT_INVALID_ANNOUNCEMENT_ID_FORMAT(
       HttpStatus.BAD_REQUEST,
-      "지원자 개인정보 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+      "지원자의 공고 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
 
-  // Question Type
-  APPLICANT_QUESTION_TYPE_NULL(HttpStatus.BAD_REQUEST, "개인정보 질문 유형은 null일 수 없습니다."),
+  // Applicant Domain Email (separate from Personal Info Email)
+  APPLICANT_EMAIL_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원자의 이메일은 null 혹은 empty일 수 없습니다."),
+  APPLICANT_EMAIL_TOO_LONG(HttpStatus.BAD_REQUEST, "지원자 도메인 이메일은 320자를 초과할 수 없습니다."),
+  APPLICANT_EMAIL_MISSING_AT_SYMBOL(HttpStatus.BAD_REQUEST, "지원자 도메인 이메일에 @ 기호가 없습니다."),
+  APPLICANT_EMAIL_LOCAL_PART_INVALID_LENGTH(
+      HttpStatus.BAD_REQUEST, "지원자의 이메일 로컬 부분은 1자 이상 64자 이하여야 합니다."),
+  APPLICANT_EMAIL_DOMAIN_PART_NULL_OR_EMPTY(
+      HttpStatus.BAD_REQUEST, "지원자의 이메일 도메인 부분은 null 혹은 empty일 수 없습니다."),
+  APPLICANT_EMAIL_DOMAIN_PART_TOO_LONG(
+      HttpStatus.BAD_REQUEST, "지원자의 이메일 도메인 부분은 253자를 초과할 수 없습니다."),
+  APPLICANT_INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "지원자의 이메일이 RFC 5322 표준에 맞지 않습니다."),
 
-  // Personal Info Value
-  APPLICANT_PERSONAL_INFO_VALUE_NULL_OR_EMPTY(
-      HttpStatus.BAD_REQUEST, "개인정보 값은 null 혹은 empty일 수 없습니다."),
-
-  // Student ID
-  APPLICANT_INVALID_STUDENT_ID_FORMAT(HttpStatus.BAD_REQUEST, "학번은 8-12자리 숫자여야 합니다."),
-
-  // Phone Number
-  APPLICANT_INVALID_PHONE_NUMBER_FORMAT(HttpStatus.BAD_REQUEST, "전화번호는 01X-XXXX-XXXX 형식이어야 합니다."),
-
-  // Profile Image
-  APPLICANT_PROFILE_IMAGE_METADATA_ID_NULL_OR_EMPTY(
-      HttpStatus.BAD_REQUEST, "프로필 이미지 메타데이터 ID는 null 혹은 empty일 수 없습니다."),
-  APPLICANT_INVALID_PROFILE_IMAGE_METADATA_ID_FORMAT(
-      HttpStatus.BAD_REQUEST,
-      "프로필 이미지 메타데이터 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
-
-  // Applicant Name
+  // Applicant Domain Name (separate from Personal Info Name)
   APPLICANT_NAME_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원자 이름은 null 혹은 empty일 수 없습니다."),
   APPLICANT_INVALID_NAME_LENGTH(HttpStatus.BAD_REQUEST, "지원자 이름은 2자 이상 30자 이하여야 합니다."),
   APPLICANT_INVALID_NAME_FORMAT(
-      HttpStatus.BAD_REQUEST, "지원자 이름은 한글, 영문, 숫자, 공백, 점, 밑줄, 하이픈만 포함할 수 있으며 문자로 시작해야 합니다."),
+      HttpStatus.BAD_REQUEST, "지원자 도메인 이름은 한글, 영문, 숫자, 공백, 점, 밑줄, 하이픈만 포함할 수 있으며 문자로 시작해야 합니다."),
 
-  // Applicant Email
-  APPLICANT_EMAIL_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "지원자 이메일은 null 혹은 empty일 수 없습니다."),
-  APPLICANT_EMAIL_TOO_LONG(HttpStatus.BAD_REQUEST, "지원자 이메일은 320자를 초과할 수 없습니다."),
-  APPLICANT_EMAIL_MISSING_AT_SYMBOL(HttpStatus.BAD_REQUEST, "지원자 이메일에 @ 기호가 없습니다."),
-  APPLICANT_EMAIL_LOCAL_PART_INVALID_LENGTH(
-      HttpStatus.BAD_REQUEST, "지원자 이메일 로컬 부분은 1자 이상 64자 이하여야 합니다."),
-  APPLICANT_EMAIL_DOMAIN_PART_NULL_OR_EMPTY(
-      HttpStatus.BAD_REQUEST, "지원자 이메일 도메인 부분은 null 혹은 empty일 수 없습니다."),
-  APPLICANT_EMAIL_DOMAIN_PART_TOO_LONG(HttpStatus.BAD_REQUEST, "지원자 이메일 도메인 부분은 253자를 초과할 수 없습니다."),
-  APPLICANT_INVALID_EMAIL_FORMAT(HttpStatus.BAD_REQUEST, "지원자 이메일이 RFC 5322 표준에 맞지 않습니다.");
+  // Applicant Status
+  APPLICANT_STATUS_NULL(HttpStatus.BAD_REQUEST, "지원자 상태는 null일 수 없습니다."),
+
+  // Applicant IsDeleted
+  APPLICANT_IS_DELETED_NULL(HttpStatus.BAD_REQUEST, "지원자 삭제 여부는 null일 수 없습니다."),
+
+  // Applicant Personal Infos List
+  APPLICANT_PERSONAL_INFOS_NULL(HttpStatus.BAD_REQUEST, "지원자 개인정보 리스트는 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
