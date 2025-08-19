@@ -1,201 +1,371 @@
-[
-    {
-        "interviewSlotId": "slot-1",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-1-1",
+{
+    "slot-1": [
+        {
+            "interviewReservationId": "res-1-1",
+            "applicantSummary": {
                 "applicantId": "3",
                 "applicantEmail": "chulsoo.park@email.com",
-                "applicantName": "박철수"
-            },
-            {
-                "interviewReservationId": "res-1-2",
+                "applicantName": "박철수",
+                "imageResponse": {
+                    "id": "img-3",
+                    "url": "https://example.com/images/3.jpg",
+                    "originalFileName": "3.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-1-2",
+            "applicantSummary": {
                 "applicantId": "4",
                 "applicantEmail": "eunji.lee@email.com",
-                "applicantName": "이은지"
+                "applicantName": "이은지",
+                "imageResponse": {
+                    "id": "img-4",
+                    "url": "https://example.com/images/4.jpg",
+                    "originalFileName": "4.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-2",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-2-1",
+        }
+    ],
+    "slot-2": [
+        {
+            "interviewReservationId": "res-2-1",
+            "applicantSummary": {
                 "applicantId": "1",
                 "applicantEmail": "gildong.hong@email.com",
-                "applicantName": "홍길동"
-            },
-            {
-                "interviewReservationId": "res-2-2",
+                "applicantName": "홍길동",
+                "imageResponse": {
+                    "id": "img-1",
+                    "url": "https://example.com/images/1.jpg",
+                    "originalFileName": "1.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-2-2",
+            "applicantSummary": {
                 "applicantId": "7",
                 "applicantEmail": "woojin.jung@email.com",
-                "applicantName": "정우진"
-            },
-            {
-                "interviewReservationId": "res-2-3",
+                "applicantName": "정우진",
+                "imageResponse": {
+                    "id": "img-7",
+                    "url": "https://example.com/images/7.jpg",
+                    "originalFileName": "7.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-2-3",
+            "applicantSummary": {
                 "applicantId": "10",
                 "applicantEmail": "jiwon.seo@email.com",
-                "applicantName": "서지원"
-            },
-            {
-                "interviewReservationId": "res-2-4",
+                "applicantName": "서지원",
+                "imageResponse": {
+                    "id": "img-10",
+                    "url": "https://example.com/images/10.jpg",
+                    "originalFileName": "10.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-2-4",
+            "applicantSummary": {
                 "applicantId": "16",
                 "applicantEmail": "minwoo.jang@email.com",
-                "applicantName": "장민우"
-            },
-            {
-                "interviewReservationId": "res-2-5",
+                "applicantName": "장민우",
+                "imageResponse": {
+                    "id": "img-16",
+                    "url": "https://example.com/images/16.jpg",
+                    "originalFileName": "16.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-2-5",
+            "applicantSummary": {
                 "applicantId": "19",
                 "applicantEmail": "seoyeon.yoon@email.com",
-                "applicantName": "윤서연"
+                "applicantName": "윤서연",
+                "imageResponse": {
+                    "id": "img-19",
+                    "url": "https://example.com/images/19.jpg",
+                    "originalFileName": "19.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-3",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-3-1",
+        }
+    ],
+    "slot-3": [
+        {
+            "interviewReservationId": "res-3-1",
+            "applicantSummary": {
                 "applicantId": "25",
                 "applicantEmail": "eunjin.kwon@email.com",
-                "applicantName": "권은진"
+                "applicantName": "권은진",
+                "imageResponse": {
+                    "id": "img-25",
+                    "url": "https://example.com/images/25.jpg",
+                    "originalFileName": "25.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-4",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-4-1",
+        }
+    ],
+    "slot-4": [
+        {
+            "interviewReservationId": "res-4-1",
+            "applicantSummary": {
                 "applicantId": "8",
                 "applicantEmail": "areum.yoon@email.com",
-                "applicantName": "윤아름"
-            },
-            {
-                "interviewReservationId": "res-4-2",
+                "applicantName": "윤아름",
+                "imageResponse": {
+                    "id": "img-8",
+                    "url": "https://example.com/images/8.jpg",
+                    "originalFileName": "8.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-4-2",
+            "applicantSummary": {
                 "applicantId": "9",
                 "applicantEmail": "taehyun.kang@email.com",
-                "applicantName": "강태현"
-            },
-            {
-                "interviewReservationId": "res-4-3",
+                "applicantName": "강태현",
+                "imageResponse": {
+                    "id": "img-9",
+                    "url": "https://example.com/images/9.jpg",
+                    "originalFileName": "9.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-4-3",
+            "applicantSummary": {
                 "applicantId": "17",
                 "applicantEmail": "jihun.oh@email.com",
-                "applicantName": "오지훈"
+                "applicantName": "오지훈",
+                "imageResponse": {
+                    "id": "img-17",
+                    "url": "https://example.com/images/17.jpg",
+                    "originalFileName": "17.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-5",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-5-1",
+        }
+    ],
+    "slot-5": [
+        {
+            "interviewReservationId": "res-5-1",
+            "applicantSummary": {
                 "applicantId": "20",
                 "applicantEmail": "jeongho.lee@email.com",
-                "applicantName": "이정호"
-            },
-            {
-                "interviewReservationId": "res-5-2",
+                "applicantName": "이정호",
+                "imageResponse": {
+                    "id": "img-20",
+                    "url": "https://example.com/images/20.jpg",
+                    "originalFileName": "20.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-5-2",
+            "applicantSummary": {
                 "applicantId": "23",
                 "applicantEmail": "hyuna.shin@email.com",
-                "applicantName": "신현아"
-            },
-            {
-                "interviewReservationId": "res-5-3",
+                "applicantName": "신현아",
+                "imageResponse": {
+                    "id": "img-23",
+                    "url": "https://example.com/images/23.jpg",
+                    "originalFileName": "23.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-5-3",
+            "applicantSummary": {
                 "applicantId": "26",
                 "applicantEmail": "jinyoung.kim@email.com",
-                "applicantName": "김진영"
-            },
-            {
-                "interviewReservationId": "res-5-4",
+                "applicantName": "김진영",
+                "imageResponse": {
+                    "id": "img-26",
+                    "url": "https://example.com/images/26.jpg",
+                    "originalFileName": "26.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-5-4",
+            "applicantSummary": {
                 "applicantId": "28",
                 "applicantEmail": "minseo.hwang@email.com",
-                "applicantName": "황민서"
+                "applicantName": "황민서",
+                "imageResponse": {
+                    "id": "img-28",
+                    "url": "https://example.com/images/28.jpg",
+                    "originalFileName": "28.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-6",
-        "interviewReservations": []
-    },
-    {
-        "interviewSlotId": "slot-7",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-7-1",
+        }
+    ],
+    "slot-6": [],
+    "slot-7": [
+        {
+            "interviewReservationId": "res-7-1",
+            "applicantSummary": {
                 "applicantId": "12",
                 "applicantEmail": "junhyuk.go@email.com",
-                "applicantName": "고준혁"
-            },
-            {
-                "interviewReservationId": "res-7-2",
+                "applicantName": "고준혁",
+                "imageResponse": {
+                    "id": "img-12",
+                    "url": "https://example.com/images/12.jpg",
+                    "originalFileName": "12.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-7-2",
+            "applicantSummary": {
                 "applicantId": "14",
                 "applicantEmail": "donghyun.jeon@email.com",
-                "applicantName": "전동현"
-            },
-            {
-                "interviewReservationId": "res-7-3",
+                "applicantName": "전동현",
+                "imageResponse": {
+                    "id": "img-14",
+                    "url": "https://example.com/images/14.jpg",
+                    "originalFileName": "14.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-7-3",
+            "applicantSummary": {
                 "applicantId": "29",
                 "applicantEmail": "taemin.kang@email.com",
-                "applicantName": "강태민"
-            },
-            {
-                "interviewReservationId": "res-7-4",
+                "applicantName": "강태민",
+                "imageResponse": {
+                    "id": "img-29",
+                    "url": "https://example.com/images/29.jpg",
+                    "originalFileName": "29.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-7-4",
+            "applicantSummary": {
                 "applicantId": "30",
                 "applicantEmail": "jihyun.yoon@email.com",
-                "applicantName": "윤지현"
+                "applicantName": "윤지현",
+                "imageResponse": {
+                    "id": "img-30",
+                    "url": "https://example.com/images/30.jpg",
+                    "originalFileName": "30.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-8",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-8-1",
+        }
+    ],
+    "slot-8": [
+        {
+            "interviewReservationId": "res-8-1",
+            "applicantSummary": {
                 "applicantId": "2",
                 "applicantEmail": "younghee.kim@email.com",
-                "applicantName": "김영희"
-            },
-            {
-                "interviewReservationId": "res-8-2",
+                "applicantName": "김영희",
+                "imageResponse": {
+                    "id": "img-2",
+                    "url": "https://example.com/images/2.jpg",
+                    "originalFileName": "2.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-8-2",
+            "applicantSummary": {
                 "applicantId": "5",
                 "applicantEmail": "minjun.choi@email.com",
-                "applicantName": "최민준"
+                "applicantName": "최민준",
+                "imageResponse": {
+                    "id": "img-5",
+                    "url": "https://example.com/images/5.jpg",
+                    "originalFileName": "5.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-9",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-9-1",
+        }
+    ],
+    "slot-9": [
+        {
+            "interviewReservationId": "res-9-1",
+            "applicantSummary": {
                 "applicantId": "11",
                 "applicantEmail": "nayoung.lim@email.com",
-                "applicantName": "임나영"
-            },
-            {
-                "interviewReservationId": "res-9-2",
+                "applicantName": "임나영",
+                "imageResponse": {
+                    "id": "img-11",
+                    "url": "https://example.com/images/11.jpg",
+                    "originalFileName": "11.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-9-2",
+            "applicantSummary": {
                 "applicantId": "13",
                 "applicantEmail": "soyeon.moon@email.com",
-                "applicantName": "문소연"
-            },
-            {
-                "interviewReservationId": "res-9-3",
+                "applicantName": "문소연",
+                "imageResponse": {
+                    "id": "img-13",
+                    "url": "https://example.com/images/13.jpg",
+                    "originalFileName": "13.jpg",
+                    "contentType": "image/jpeg"
+                }
+            }
+        },
+        {
+            "interviewReservationId": "res-9-3",
+            "applicantSummary": {
                 "applicantId": "15",
                 "applicantEmail": "suhyun.bae@email.com",
-                "applicantName": "배수현"
+                "applicantName": "배수현",
+                "imageResponse": {
+                    "id": "img-15",
+                    "url": "https://example.com/images/15.jpg",
+                    "originalFileName": "15.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    },
-    {
-        "interviewSlotId": "slot-10",
-        "interviewReservations": [
-            {
-                "interviewReservationId": "res-10-1",
+        }
+    ],
+    "slot-10": [
+        {
+            "interviewReservationId": "res-10-1",
+            "applicantSummary": {
                 "applicantId": "18",
                 "applicantEmail": "dajung.kim@email.com",
-                "applicantName": "김다정"
+                "applicantName": "김다정",
+                "imageResponse": {
+                    "id": "img-18",
+                    "url": "https://example.com/images/18.jpg",
+                    "originalFileName": "18.jpg",
+                    "contentType": "image/jpeg"
+                }
             }
-        ]
-    }
-]
+        }
+    ]
+}
