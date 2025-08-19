@@ -312,7 +312,58 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   REFRESH_TOKEN_INVALID_PART_FORMAT(HttpStatus.BAD_REQUEST, "리프레시 토큰의 각 파트는 Base64Url 포멧이어야 합니다."),
 
   // RefreshToken Expiration Time
-  REFRESH_TOKEN_EXPIRATION_TIME_NULL(HttpStatus.BAD_REQUEST, "리프레시 토큰 만료 시간은 null일 수 없습니다.");
+  REFRESH_TOKEN_EXPIRATION_TIME_NULL(HttpStatus.BAD_REQUEST, "리프레시 토큰 만료 시간은 null일 수 없습니다."),
+
+  /** 동아리(Club) 에러 코드 */
+  // Club ID
+  CLUB_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 ID는 null 혹은 empty일 수 없습니다."),
+  CLUB_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "동아리 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Club Name
+  CLUB_NAME_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 이름은 null 혹은 empty일 수 없습니다."),
+  CLUB_INVALID_NAME_LENGTH(HttpStatus.BAD_REQUEST, "동아리 이름은 2자 이상 50자 이하여야 합니다."),
+
+  // Club Short Description
+  CLUB_SHORT_DESCRIPTION_EMPTY(HttpStatus.BAD_REQUEST, "동아리 간단 설명은 empty일 수 없습니다."),
+  CLUB_SHORT_DESCRIPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 간단 설명은 200자를 초과할 수 없습니다."),
+
+  // Club Detail Description
+  CLUB_DETAIL_DESCRIPTION_EMPTY(HttpStatus.BAD_REQUEST, "동아리 상세 설명은 empty일 수 없습니다."),
+  CLUB_DETAIL_DESCRIPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 상세 설명은 5000자를 초과할 수 없습니다."),
+
+  // Club Category
+  CLUB_CATEGORY_NULL(HttpStatus.BAD_REQUEST, "동아리 카테고리는 null일 수 없습니다."),
+
+  // Club Tags & Summaries
+  CLUB_TAGS_NULL(HttpStatus.BAD_REQUEST, "동아리 태그 리스트는 null일 수 없습니다."),
+  CLUB_SUMMARIES_NULL(HttpStatus.BAD_REQUEST, "동아리 요약 리스트는 null일 수 없습니다."),
+
+  /** 동아리요약(ClubSummary) 에러 코드 */
+  // ClubSummary ID
+  CLUB_SUMMARY_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 요약 ID는 null 혹은 empty일 수 없습니다."),
+  CLUB_SUMMARY_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "동아리 요약 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // ClubSummary Title
+  CLUB_SUMMARY_TITLE_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 요약 제목은 null 혹은 empty일 수 없습니다."),
+  CLUB_SUMMARY_TITLE_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 요약 제목은 100자를 초과할 수 없습니다."),
+
+  // ClubSummary Content
+  CLUB_SUMMARY_CONTENT_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 요약 내용은 null 혹은 empty일 수 없습니다."),
+  CLUB_SUMMARY_CONTENT_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 요약 내용은 500자를 초과할 수 없습니다."),
+
+  /** 동아리태그(ClubTag) 에러 코드 */
+  // ClubTag ID
+  CLUB_TAG_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 태그 ID는 null 혹은 empty일 수 없습니다."),
+  CLUB_TAG_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "동아리 태그 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // ClubTag Name
+  CLUB_TAG_NAME_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 태그 이름은 null 혹은 empty일 수 없습니다."),
+  CLUB_TAG_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 태그 이름은 30자를 초과할 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
