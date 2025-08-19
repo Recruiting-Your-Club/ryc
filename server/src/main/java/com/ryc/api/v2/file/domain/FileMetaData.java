@@ -1,13 +1,12 @@
 package com.ryc.api.v2.file.domain;
 
+import java.util.UUID;
+
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.file.presentation.dto.request.UploadUrlRequest;
 
 import lombok.Builder;
 import lombok.Getter;
-
-import java.security.SecureRandom;
-import java.util.UUID;
 
 @Getter
 @Builder
@@ -37,7 +36,12 @@ public class FileMetaData {
    * @return FileMetaData domain 객체
    */
   public static FileMetaData initialize(UploadUrlRequest request, String path) {
-    String accessToken = UUID.randomUUID().toString();
+    FileDomainType domainType = FileDomainType.from(request.fileType());
+
+    String accessToken = null;
+    if (domainType.getIsPrivate()) {
+      accessToken = UUID.randomUUID().toString();
+    }
 
     return FileMetaData.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
@@ -45,7 +49,7 @@ public class FileMetaData {
         .originalFileName(request.fileName())
         .contentType(request.contentType())
         .fileDomainType(FileDomainType.from(request.fileType()))
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .associatedId(null)
         .uploadedByUserId(null)
         .status(FileStatus.PENDING)
@@ -55,18 +59,31 @@ public class FileMetaData {
         .build();
   }
 
+  public boolean isCorrectAccessToken(String accessToken) {
+    if (fileDomainType.getIsPrivate()) {
+      return this.accessToken.equals(accessToken);
+    }
+    return accessToken == null;
+  }
+
+  public boolean isPrivateFile() {
+    return this.fileDomainType.equals(FileDomainType.APPLICANT_PROFILE)
+        || this.fileDomainType.equals(FileDomainType.ANSWER_ATTACHMENT)
+        || this.fileDomainType.equals(FileDomainType.USER_PROFILE);
+  }
+
   public FileMetaData confirmUpload(Long fileSize) {
     return FileMetaData.builder()
         .id(id)
         .filePath(filePath)
         .originalFileName(originalFileName)
         .contentType(contentType)
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
         .uploadedByUserId(uploadedByUserId)
-        .status(FileStatus.COMPLETED)
+        .status(FileStatus.UPLOAD_COMPLETED)
         .isDeleted(false)
         .displayOrder(displayOrder)
         .build();
@@ -79,7 +96,7 @@ public class FileMetaData {
         .originalFileName(originalFileName)
         .contentType(contentType)
         .fileSize(fileSize)
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
         .uploadedByUserId(uploadedByUserId)
@@ -95,7 +112,7 @@ public class FileMetaData {
         .filePath(filePath)
         .originalFileName(originalFileName)
         .contentType(contentType)
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
@@ -113,11 +130,11 @@ public class FileMetaData {
         .originalFileName(originalFileName)
         .contentType(contentType)
         .fileSize(fileSize)
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
         .uploadedByUserId(uploadedByUserId)
-        .status(FileStatus.MOVE_REQUESTED)
+        .status(FileStatus.ATTACHED)
         .isDeleted(isDeleted)
         .displayOrder(displayOrder)
         .build();
@@ -131,7 +148,7 @@ public class FileMetaData {
         .contentType(this.contentType)
         .fileSize(this.fileSize)
         .fileDomainType(this.fileDomainType)
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .uploadedByUserId(this.uploadedByUserId)
         .associatedId(this.associatedId)
         .displayOrder(this.displayOrder)
@@ -151,7 +168,7 @@ public class FileMetaData {
         .uploadedByUserId(this.uploadedByUserId)
         .associatedId(this.associatedId)
         .isDeleted(false)
-            .accessToken(this.accessToken)
+        .accessToken(this.accessToken)
         .displayOrder(this.displayOrder)
         .status(FileStatus.MOVE_FAILED)
         .build();
@@ -166,7 +183,7 @@ public class FileMetaData {
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
-            .accessToken(accessToken)
+        .accessToken(accessToken)
         .isDeleted(false)
         .uploadedByUserId(uploadedByUserId)
         .status(status)

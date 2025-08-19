@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
 import com.ryc.api.v2.evaluation.presentation.dto.request.*;
 import com.ryc.api.v2.evaluation.presentation.dto.response.*;
+import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class EvaluationService {
   private final AdminRepository adminRepository;
   private final ClubRoleRepository clubRoleRepository;
   private final ApplicantRepository applicantRepository;
+  private final FileService fileService;
 
   @Transactional
   public ApplicationEvaluationResponse evaluateApplication(
@@ -69,8 +72,16 @@ public class EvaluationService {
     // 평가자 아이디 - 이름 매핑
     Map<String, String> evaluatorNameMap = getEvaluatorNameMap(evaluations);
 
-    // 평가자 아이디 - 썸네일 url 매핑
-    Map<String, String> evaluatorThumbnailMap = getEvaluatorThumbnailMap(evaluations);
+    List<String> evaluatorIds = evaluations.stream().map(Evaluation::getEvaluatorId).toList();
+
+    Map<String, FileGetResponse> evaluatorImageMap =
+        fileService.findAllByAssociatedIdIn(evaluatorIds).stream()
+            .map(
+                m ->
+                    Map.entry(
+                        m.getAssociatedId(),
+                        FileGetResponse.of(m, fileService.getPrivateFileGetUrl(m))))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     // applicantId 별로 평가 데이터를 생성
     List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
@@ -84,7 +95,7 @@ public class EvaluationService {
                         entry.getKey(),
                         entry.getValue(),
                         evaluatorNameMap,
-                        evaluatorThumbnailMap,
+                        evaluatorImageMap,
                         currentAdminId,
                         totalEvaluatorCount))
             .toList();
@@ -180,19 +191,6 @@ public class EvaluationService {
   }
 
   /**
-   * 평가자 ID를 기준으로 썸네일 이미지 URL을 매핑한 Map을 반환합니다.
-   *
-   * @param evaluations 평가 데이터 리스트
-   * @return evaluatorId -> evaluatorThumbnailUrl 매핑 Map
-   */
-  private Map<String, String> getEvaluatorThumbnailMap(List<Evaluation> evaluations) {
-    Set<String> evaluatorIds =
-        evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
-
-    return adminRepository.findThumbnailUrlByIds(evaluatorIds.stream().toList());
-  }
-
-  /**
    * 지원자 1명에 대한 평가 요약 및 상세 정보를 생성합니다.
    *
    * @param evaluations 평가 데이터 리스트
@@ -205,7 +203,7 @@ public class EvaluationService {
       String applicantId,
       List<Evaluation> evaluations,
       Map<String, String> evaluatorNameMap,
-      Map<String, String> evaluatorThumbnailMap,
+      Map<String, FileGetResponse> evaluatorThumbnailMap,
       String currentAdminId,
       int totalEvaluatorCount) {
 
@@ -221,8 +219,8 @@ public class EvaluationService {
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
                             evaluatorNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
-                        .evaluatorThumbnailUrl(
-                            evaluatorThumbnailMap.getOrDefault(evaluation.getEvaluatorId(), ""))
+                        .evaluatorRepresentativeImage(
+                            evaluatorThumbnailMap.getOrDefault(evaluation.getEvaluatorId(), null))
                         .isEvaluatorImagePresent(
                             evaluatorThumbnailMap.containsKey(evaluation.getEvaluatorId()))
                         .score(evaluation.getScore())
