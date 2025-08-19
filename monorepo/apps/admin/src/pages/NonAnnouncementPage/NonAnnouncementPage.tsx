@@ -1,5 +1,6 @@
 import type { AnnouncementList } from '@api/domain/announcement/types';
 import { announcementQueries } from '@api/queryFactory';
+import { DialogSection } from '@components/DialogSection';
 import { useQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -96,6 +97,16 @@ function NonAnnouncementPage() {
                                 <Button>공고 생성하기</Button>
                             </div>
                         )}
+                    {!isLoading && announcementList && announcementList.length > 0 && (
+                        <>
+                            <DialogSection
+                                title={`진행중 공고 (${announcementsByStatus.recruiting.length})`}
+                                items={announcementsByStatus.recruiting}
+                                emptyText="현재 진행중인 공고가 없습니다."
+                                onSelect={handleSelectAnnouncement}
+                            />
+                        </>
+                    )}
                 </Dialog.Content>
             </Dialog>
         </div>
