@@ -1,4 +1,4 @@
-package com.ryc.api.v2.role.domain.vo;
+package com.ryc.api.v2.role.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
