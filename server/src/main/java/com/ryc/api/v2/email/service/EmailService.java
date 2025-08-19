@@ -139,12 +139,18 @@ public class EmailService {
   @Transactional
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
-    event.announcementIds().forEach(emailRepository::deleteAllByAnnouncementId);
+    event.announcementIds().stream()
+        .filter(emailRepository::existsByAnnouncementId)
+        .forEach(emailRepository::deleteAllByAnnouncementId);
   }
 
   @Transactional
   @EventListener
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    if (!emailRepository.existsByAdminId(event.adminId())) {
+      return;
+    }
+
     emailRepository.deleteAllByAdminId(event.adminId());
   }
 

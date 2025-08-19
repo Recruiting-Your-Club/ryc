@@ -90,4 +90,14 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
   public void deleteAllByAdminId(String adminId) {
     evaluationJpaRepository.deleteAllByAdminEntityId(adminId);
   }
+
+  @Override
+  public boolean existsByApplicantId(String applicantId) {
+    return evaluationJpaRepository.existsByApplicantEntityId(applicantId);
+  }
+
+  @Override
+  public boolean existsByAdminId(String adminId) {
+    return evaluationJpaRepository.existsByAdminEntityId(adminId);
+  }
 }

@@ -20,4 +20,6 @@ public interface InterviewSlotJpaRepository extends JpaRepository<InterviewSlotE
   List<InterviewSlotEntity> findByAnnouncementId(String announcementId);
 
   void deleteAllByAnnouncementId(String announcementId);
+
+  boolean existsByAnnouncementId(String announcementId);
 }

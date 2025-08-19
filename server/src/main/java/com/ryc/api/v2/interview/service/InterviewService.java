@@ -256,13 +256,19 @@ public class InterviewService {
 
   @Transactional
   public void deleteInterviewReservation(String reservationId) {
+    if (!interviewRepository.existsReservationById(reservationId)) {
+      throw new NoSuchElementException("Interview reservation not found for id: " + reservationId);
+    }
+
     interviewRepository.deleteReservationById(reservationId);
   }
 
   @Transactional
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
-    event.announcementIds().forEach(interviewRepository::deleteSlotsByAnnouncementId);
+    event.announcementIds().stream()
+        .filter(interviewRepository::existsSlotsByAnnouncementId)
+        .forEach(interviewRepository::deleteSlotsByAnnouncementId);
   }
 
   private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {

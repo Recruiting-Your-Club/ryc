@@ -36,4 +36,8 @@ public interface EvaluationJpaRepository extends JpaRepository<EvaluationEntity,
   void deleteByApplicantEntityId(String applicantId);
 
   void deleteAllByAdminEntityId(String adminId);
+
+  boolean existsByApplicantEntityId(String applicantId);
+
+  boolean existsByAdminEntityId(String adminId);
 }

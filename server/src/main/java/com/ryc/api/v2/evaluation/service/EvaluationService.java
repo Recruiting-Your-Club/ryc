@@ -169,12 +169,17 @@ public class EvaluationService {
   @Transactional
   @EventListener
   protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
-    event.applicantIds().forEach(evaluationRepository::deleteAllByApplicantId);
+    event.applicantIds().stream()
+        .filter(evaluationRepository::existsByApplicantId)
+        .forEach(evaluationRepository::deleteAllByApplicantId);
   }
 
   @Transactional
   @EventListener
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    if (!evaluationRepository.existsByAdminId(event.adminId())) {
+      return;
+    }
     evaluationRepository.deleteAllByAdminId(event.adminId());
   }
 

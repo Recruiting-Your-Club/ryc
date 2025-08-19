@@ -153,6 +153,10 @@ public class AnnouncementService {
 
   @Transactional
   public void deleteAnnouncements(List<String> announcementIds) {
+    if (announcementIds.isEmpty()) {
+      return;
+    }
+
     eventPublisher.publishEvent(new AnnouncementDeletedEvent(announcementIds));
     announcementRepository.deleteAllByIdIn(announcementIds);
   }

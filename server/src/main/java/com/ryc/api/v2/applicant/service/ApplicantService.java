@@ -117,6 +117,10 @@ public class ApplicantService {
 
   @Transactional
   public void deleteApplicants(List<String> applicantIds) {
+    if (applicantIds.isEmpty()) {
+      return;
+    }
+
     eventPublisher.publishEvent(new ApplicantDeletedEvent(applicantIds));
     applicantRepository.deleteAllByIdIn(applicantIds);
     applicationRepository.deleteAllByApplicantIds(applicantIds);

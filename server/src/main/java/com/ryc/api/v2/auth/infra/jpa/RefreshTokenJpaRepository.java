@@ -15,4 +15,6 @@ public interface RefreshTokenJpaRepository extends JpaRepository<RefreshTokenEnt
   int deleteByAdminEntity(AdminEntity adminEntity);
 
   void deleteByAdminEntityId(String adminId);
+
+  boolean existsByAdminEntityId(String adminId);
 }

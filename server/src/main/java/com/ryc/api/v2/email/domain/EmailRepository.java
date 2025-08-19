@@ -15,4 +15,8 @@ public interface EmailRepository {
   void deleteAllByAnnouncementId(String announcementId);
 
   void deleteAllByAdminId(String adminId);
+
+  boolean existsByAdminId(String adminId);
+
+  boolean existsByAnnouncementId(String announcementId);
 }
