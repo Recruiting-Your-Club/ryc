@@ -173,7 +173,9 @@ function ApplicantSchedulePage() {
     //etc
     function getInitialInterviewLabel(slot: InterviewSlot | null): SelectedLabel {
         if (slot) {
-            const date = convertDate(dayjs(slot.period.startDate).format('YYYY-MM-DD'));
+            const date = dayjs(dayjs(slot.period.startDate).format('YYYY-MM-DD')).format(
+                'MM월 DD일',
+            );
             const name = dayjs(slot.period.startDate).format('HH:mm');
             return { label: `${date} ${name}`, interviewSlotId: slot.id };
         }
