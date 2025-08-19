@@ -6,4 +6,8 @@ import lombok.Builder;
 
 @Builder
 public record ClubRoleGetResponse(
-    String adminId, String adminName, String role, FileGetResponse fileGetResponse) {}
+    String adminId,
+    String adminName,
+    String role,
+    String createdAt,
+    FileGetResponse fileGetResponse) {}

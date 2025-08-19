@@ -1,17 +1,21 @@
 package com.ryc.api.v2.role.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.role.domain.vo.ClubRole;
 
 public interface ClubRoleRepository {
 
   ClubRole save(ClubRole clubRole);
 
+  Invite saveInvite(Invite newInvite);
+
   List<ClubRole> findRolesByClubId(String clubId);
 
   List<Club> findClubsByAdminId(String adminId);
+
+  Optional<Invite> findInviteOptionalById(String inviteId);
 
   boolean existsByAdminIdAndClubId(String adminId, String clubId);
 

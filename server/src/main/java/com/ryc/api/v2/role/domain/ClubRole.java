@@ -19,7 +19,6 @@ public class ClubRole {
   private final Club club;
   private final Admin admin;
   private final LocalDateTime createdAt;
-  private final LocalDateTime updatedAt;
 
   public static ClubRole initialize(Club club, Admin admin, Role role) {
     return ClubRole.builder().id(DEFAULT_INITIAL_ID).club(club).admin(admin).role(role).build();

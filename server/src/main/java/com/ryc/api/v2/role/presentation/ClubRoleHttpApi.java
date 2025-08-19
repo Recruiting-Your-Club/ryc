@@ -2,13 +2,10 @@ package com.ryc.api.v2.role.presentation;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
@@ -16,6 +13,7 @@ import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
+import com.ryc.api.v2.role.presentation.dto.response.ClubInviteGetResponse;
 import com.ryc.api.v2.role.presentation.dto.response.ClubRoleGetResponse;
 import com.ryc.api.v2.role.service.ClubRoleService;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -31,6 +29,20 @@ import lombok.RequiredArgsConstructor;
 public class ClubRoleHttpApi {
 
   private final ClubRoleService clubRoleService;
+
+  @GetMapping("clubs/{club-id}/invites")
+  @HasRole(Role.MEMBER)
+  @Operation(
+      summary = "동아리 초대 링크 조회",
+      description = "동아리 초대 링크를 조회합니다.<br>만약 존재하지 않거나, 만료된 경우 새로 생성합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
+  public ResponseEntity<ClubInviteGetResponse> getInviteCode(
+      @PathVariable("club-id") String clubId) {
+    ClubInviteGetResponse response = clubRoleService.getInviteCode(clubId);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 
   @GetMapping("clubs/{club-id}/users")
   @HasRole(Role.MEMBER)

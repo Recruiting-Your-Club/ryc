@@ -6,7 +6,7 @@ import com.ryc.api.v2.admin.infra.mapper.AdminMapper;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
-import com.ryc.api.v2.role.domain.vo.ClubRole;
+import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
 public class ClubRoleMapper {
@@ -32,7 +32,6 @@ public class ClubRoleMapper {
         .admin(admin)
         .role(clubRoleEntity.getRole())
         .createdAt(clubRoleEntity.getCreatedAt())
-        .updatedAt(clubRoleEntity.getUpdatedAt())
         .build();
   }
 }

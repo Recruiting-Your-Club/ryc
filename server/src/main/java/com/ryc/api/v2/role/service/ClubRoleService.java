@@ -3,6 +3,7 @@ package com.ryc.api.v2.role.service;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.context.event.EventListener;
@@ -20,9 +21,11 @@ import com.ryc.api.v2.common.exception.custom.ClubException;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
+import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
+import com.ryc.api.v2.role.domain.Invite;
 import com.ryc.api.v2.role.domain.enums.Role;
-import com.ryc.api.v2.role.domain.vo.ClubRole;
+import com.ryc.api.v2.role.presentation.dto.response.ClubInviteGetResponse;
 import com.ryc.api.v2.role.presentation.dto.response.ClubRoleGetResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +41,25 @@ public class ClubRoleService {
   public ClubRole assignRole(Admin admin, Club club, Role role) {
     ClubRole clubRole = ClubRole.initialize(club, admin, role);
     return clubRoleRepository.save(clubRole);
+  }
+
+  @Transactional
+  public ClubInviteGetResponse getInviteCode(String clubId) {
+    Optional<Invite> optional = clubRoleRepository.findInviteOptionalById(clubId);
+    Invite finalInvite;
+
+    // 만약 초대 링크가 존재하지 않거나 만료되었을 경우 새로 생성
+    if (optional.isEmpty() || optional.get().isExpired()) {
+      Invite newInvite = Invite.initialize(clubId);
+      finalInvite = clubRoleRepository.saveInvite(newInvite);
+    } else {
+      finalInvite = optional.get();
+    }
+
+    return ClubInviteGetResponse.builder()
+        .inviteCode(finalInvite.getId())
+        .expiresAt(finalInvite.getExpiresAt().toString())
+        .build();
   }
 
   @Transactional(readOnly = true)
@@ -61,6 +83,7 @@ public class ClubRoleService {
                   .adminId(admin.getId())
                   .adminName(admin.getName())
                   .role(clubRole.getRole().toString())
+                  .createdAt(clubRole.getCreatedAt().toString())
                   .fileGetResponse(representativeImage)
                   .build();
             })
