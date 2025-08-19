@@ -13,7 +13,7 @@ export interface AllClub {
     id: string;
     name: string;
     shortDescription: string;
-    representativeImage: string;
+    representativeImage: RepresentativeImage;
     thumbnailUrl: string;
     category: string;
     announcementStatus?: string;
@@ -22,7 +22,7 @@ export interface AllClub {
 export interface Club {
     name: string;
     detailDescription: string;
-    representativeImage: string;
+    representativeImage: RepresentativeImage;
     thumbnailUrl: string;
     category: string;
     clubTags: ClubTag[];

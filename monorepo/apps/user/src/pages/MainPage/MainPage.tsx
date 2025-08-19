@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 
 import banner from '@ssoc/assets/images/banner.png';
+import basicImage from '@ssoc/assets/images/basicImage.png';
 import Check from '@ssoc/assets/images/check.svg';
 import { Button, Dropdown, Text } from '@ssoc/ui';
 
@@ -40,7 +41,6 @@ function MainPage() {
     // form hooks
     // query hooks
     const { data: clublist } = useSuspenseQuery(clubQueries.all());
-
     // calculated values
     const filteredClubData = useMemo(() => {
         let filteredClub = clublist || [];
@@ -77,6 +77,7 @@ function MainPage() {
             <div css={bannerContainer}>
                 <img src={banner} alt="배너 이미지" width="100%" height="100%" />
             </div>
+            <img src={clublist[0].representativeImage.url} alt="동아리 이미지" />
             <div css={totalClubContainer}>
                 <Text type="bodySemibold" color="black">
                     총 {filteredClubData?.length}개의 동아리
@@ -149,7 +150,7 @@ function MainPage() {
                         description={club.shortDescription}
                         status={club.announcementStatus || ''}
                         clubTags={club.clubTags}
-                        representativeImage={club.representativeImage}
+                        representativeImage={club.representativeImage?.url || basicImage}
                         link={club.id}
                     />
                 ))}
