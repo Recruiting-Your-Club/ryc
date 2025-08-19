@@ -1,13 +1,13 @@
 import type {
-    ApplicantForInterviewSlot,
-    ApplicantReservedInterview,
+    InterviewApplicant,
     InterviewSlot,
+    UnreservedApplicant,
 } from '@api/domain/interview/types';
 import type { StepApplicant } from '@api/domain/step/types';
+import { interviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
 import { ApplicantList, ComponentMover, InterviewSlotDropdown } from '@components';
-import { interviewMutations } from '@hooks/mutations/interviewMutations';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import type { Dispatch, SetStateAction } from 'react';
@@ -74,10 +74,11 @@ function ApplicantSchedulePage() {
     const { mutate: updateIntervieweeList } = interviewMutations.useUpdateInterviewReservation(
         announcementId!,
     );
+    const { mutate: deleteReservation } = interviewMutations.useDeleteReservation(announcementId!);
 
     // calculated values
-    const standardInterviewees = slot0Applicants?.interviewReservations ?? [];
-    const intervieweesToMove = slot1Applicants?.interviewReservations ?? [];
+    const standardInterviewees = slot0Applicants ?? [];
+    const intervieweesToMove = slot1Applicants ?? [];
 
     // handlers
     const labelSelectHandler =
@@ -118,24 +119,42 @@ function ApplicantSchedulePage() {
     );
 
     const handleMove = (
-        interviewees: ApplicantReservedInterview[] | ApplicantForInterviewSlot[],
+        interviewees: InterviewApplicant[] | UnreservedApplicant[],
         applicantId: string,
         targetSlotId: string,
         currentSlotId: string,
         resetSelectedId: Dispatch<SetStateAction<string>>,
     ) => {
-        const selected = interviewees.find(
-            (interviewee) => interviewee.applicantId === applicantId,
+        const selected = interviewees.find((interviewee) =>
+            'applicantSummary' in interviewee
+                ? interviewee.applicantSummary.applicantId === applicantId
+                : interviewee.applicantId === applicantId,
         );
+
         if (!selected) return;
 
-        const reserved = selected as ApplicantReservedInterview;
-        updateIntervieweeList({
-            applicantId: reserved.applicantId,
-            interviewSlotId: targetSlotId,
-            clubId: clubId!,
-            oldInterviewSlotId: currentSlotId,
-        });
+        const finalApplicantId =
+            'applicantSummary' in selected
+                ? selected.applicantSummary.applicantId
+                : selected.applicantId;
+
+        const finalReservationId =
+            'applicantSummary' in selected ? selected.interviewReservationId : '';
+
+        if (targetSlotId === '') {
+            deleteReservation({
+                reservationId: finalReservationId,
+                clubId: clubId!,
+                oldInterviewSlotId: currentSlotId,
+            });
+        } else {
+            updateIntervieweeList({
+                applicantId: finalApplicantId,
+                interviewSlotId: targetSlotId,
+                clubId: clubId!,
+                oldInterviewSlotId: currentSlotId,
+            });
+        }
 
         resetSelectedId('');
     };
@@ -170,16 +189,44 @@ function ApplicantSchedulePage() {
         return null;
     };
 
+    const getApplicantInformation = (applicant: InterviewApplicant | UnreservedApplicant) => {
+        if ('applicantSummary' in applicant) {
+            return {
+                applicantId: applicant.applicantSummary.applicantId,
+                applicantName: applicant.applicantSummary.applicantName,
+                applicantEmail: applicant.applicantSummary.applicantEmail,
+                imageResponse: applicant.applicantSummary.imageResponse,
+            };
+        }
+        return {
+            applicantId: applicant.applicantId,
+            applicantName: applicant.applicantName,
+            applicantEmail: applicant.applicantEmail,
+            imageResponse: applicant.imageResponse,
+        };
+    };
+
+    // 이미지 받아오는 곳 수정 필요
     const toStepApplicants = (
-        interviewees: ApplicantReservedInterview[] | ApplicantForInterviewSlot[],
+        interviewees: InterviewApplicant[] | UnreservedApplicant[],
     ): StepApplicant[] => {
-        return interviewees.map(({ applicantId, applicantName, applicantEmail }) => ({
-            applicantId,
-            name: applicantName,
-            email: applicantEmail,
-            status: '',
-            submittedAt: '',
-        }));
+        if (!Array.isArray(interviewees)) return [];
+
+        return interviewees.map((applicant) => {
+            const { applicantId, applicantName, applicantEmail, imageResponse } =
+                getApplicantInformation(applicant);
+
+            return {
+                applicantId,
+                name: applicantName,
+                email: applicantEmail,
+                status: '',
+                submittedAt: '',
+                imageAllowed: Boolean(imageResponse),
+                imagePresent: Boolean(imageResponse),
+                profileImage: imageResponse ?? null,
+            };
+        });
     };
 
     return (
@@ -253,7 +300,7 @@ function ApplicantSchedulePage() {
                     <ComponentMover
                         onMoveLeft={() =>
                             handleMove(
-                                unreservedApplicants.unreservedApplicants,
+                                unreservedApplicants,
                                 unreservedIntervieweeId,
                                 selectedStandardInterviewLabel.interviewSlotId ?? '',
                                 '',
@@ -274,7 +321,7 @@ function ApplicantSchedulePage() {
                 <div css={s_contentComponentWrapper}>
                     <ApplicantList
                         title="면접 일정 미지정자"
-                        applicantList={toStepApplicants(unreservedApplicants.unreservedApplicants)}
+                        applicantList={toStepApplicants(unreservedApplicants)}
                         selectedApplicantId={unreservedIntervieweeId}
                         onSelectApplicantId={setUnreservedIntervieweeId}
                         sx={s_applicantList}
