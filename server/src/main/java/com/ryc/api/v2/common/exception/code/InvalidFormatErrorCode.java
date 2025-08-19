@@ -348,11 +348,11 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // ClubSummary Title
   CLUB_SUMMARY_TITLE_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 요약 제목은 null 혹은 empty일 수 없습니다."),
-  CLUB_SUMMARY_TITLE_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 요약 제목은 100자를 초과할 수 없습니다."),
+  CLUB_SUMMARY_TITLE_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 요약 제목은 20자를 초과할 수 없습니다."),
 
   // ClubSummary Content
   CLUB_SUMMARY_CONTENT_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 요약 내용은 null 혹은 empty일 수 없습니다."),
-  CLUB_SUMMARY_CONTENT_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 요약 내용은 500자를 초과할 수 없습니다."),
+  CLUB_SUMMARY_CONTENT_TOO_LONG(HttpStatus.BAD_REQUEST, "동아리 요약 내용은 50자를 초과할 수 없습니다."),
 
   /** 동아리태그(ClubTag) 에러 코드 */
   // ClubTag ID
