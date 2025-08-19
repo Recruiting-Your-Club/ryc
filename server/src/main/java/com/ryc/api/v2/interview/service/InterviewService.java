@@ -267,10 +267,23 @@ public class InterviewService {
   }
 
   private ApplicantSummaryResponse createApplicantSummaryResponse(Applicant applicant) {
+    FileGetResponse imageResponse =
+        fileService.findAllByAssociatedId(applicant.getId()).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
+            .findFirst()
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(
+                        fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData)))
+            .orElse(null);
+
     return ApplicantSummaryResponse.builder()
         .applicantId(applicant.getId())
         .applicantEmail(applicant.getEmail())
         .applicantName(applicant.getName())
+        .imageResponse(imageResponse)
         .build();
   }
 }
