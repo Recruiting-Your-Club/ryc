@@ -14,11 +14,12 @@ public class AnswerChoice {
   @Builder
   private AnswerChoice(String id, String optionId) {
 
-    AnswerChoiceValidator.ValidatedAnswerChoice validated =
-        AnswerChoiceValidator.validateAndSanitize(id, optionId);
+    // 검증
+    AnswerChoiceValidator.validate(id, optionId);
 
-    this.id = validated.id();
-    this.optionId = validated.optionId();
+    // 할당
+    this.id = id;
+    this.optionId = optionId;
   }
 
   public static AnswerChoice initialize(AnswerChoiceCreateRequest request) {
