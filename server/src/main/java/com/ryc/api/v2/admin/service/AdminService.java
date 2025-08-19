@@ -20,6 +20,7 @@ public class AdminService {
   private final AdminRepository adminRepository;
   private final ApplicationEventPublisher eventPublisher;
 
+  // TODO:: AdminRepository로 이전 예정
   @Transactional(readOnly = true)
   public Admin getAdminById(String id) {
     return adminRepository
@@ -33,6 +34,7 @@ public class AdminService {
     return new AdminEmailDuplicatedResponse(isDuplicated);
   }
 
+  @Transactional
   public void deleteAdminById(String adminId) {
     eventPublisher.publishEvent(new AdminDeletedEvent(adminId));
     adminRepository.deleteById(adminId);
