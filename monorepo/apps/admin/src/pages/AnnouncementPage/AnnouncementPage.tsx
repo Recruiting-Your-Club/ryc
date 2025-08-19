@@ -1,7 +1,8 @@
-import { myClubQueries } from '@api/queryFactory';
+import type { DetailAnnouncement } from '@api/domain/announcement/types';
+import { announcementQueries, myClubQueries } from '@api/queryFactory';
 import { ClubNavigation } from '@components';
 import { CATEGORY_LABEL } from '@constants/category';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -151,42 +152,66 @@ export const announcementData = {
 function AnnouncementPage() {
     const { application, ...recruitment } = announcementData;
     const [activeTab, setActiveTab] = useState<string>('모집공고');
-    const { clubId } = useParams<{ clubId: string }>();
+    const { clubId, announcementId } = useParams();
 
     const { data: club } = useSuspenseQuery(myClubQueries.detail(clubId ?? ''));
+    const { data: detailClub } = useQuery<DetailAnnouncement>(
+        announcementQueries.detail(announcementId ?? ''),
+    );
 
-    // 모집공고 데이터
+    const imageUrls = useMemo(
+        () => (detailClub?.images ?? []).map((image) => image.url),
+        [detailClub?.images],
+    );
 
     // 사전질문 데이터
     const personalQuestions = useMemo(
         () =>
-            announcementData.application.preQuestions.map((question) => ({
+            (detailClub?.applicationForm?.preQuestions ?? []).map((question) => ({
                 id: question.id,
                 label: question.label,
                 type: question.type as QuestionType,
-                options: question.options ?? [],
+                options: (question.options ?? []).map((option) => option.option),
                 isRequired: question.isRequired,
             })),
-        [],
+        [detailClub?.applicationForm?.preQuestions],
     );
 
     // 자기소개서 질문 데이터
     const detailQuestions = useMemo(
         () =>
-            announcementData.application.applicationQuestions.map((question) => ({
-                id: question.id,
-                type: question.type as QuestionType,
-                label: question.label,
-                subLabel: question.subLabel,
-                isRequired: question.isRequired,
+            (detailClub?.applicationForm?.applicationQuestions ?? []).map((q) => ({
+                id: q.id,
+                type: q.type as QuestionType,
+                label: q.label,
+                description: q.description,
+                isRequired: q.isRequired,
             })),
-        [],
+        [detailClub?.applicationForm?.applicationQuestions],
     );
 
     const navigateItem = [
         {
             title: '모집공고',
-            page: <RecruitmentPage {...recruitment} />,
+            page: (
+                <RecruitmentPage
+                    id={detailClub?.id}
+                    title={detailClub?.title}
+                    summaryDescription={detailClub?.summaryDescription}
+                    detailDescription={detailClub?.detailDescription}
+                    target={detailClub?.target}
+                    field={detailClub?.field}
+                    numberOfPeople={detailClub?.numberOfPeople}
+                    activityPeriod={detailClub?.activityPeriod}
+                    announcementType={detailClub?.announcementType}
+                    announcementStatus={detailClub?.announcementStatus}
+                    images={imageUrls}
+                    applicationPeriod={detailClub?.applicationPeriod}
+                    documentResultPeriod={detailClub?.documentResultPeriod}
+                    interviewPeriod={detailClub?.interviewPeriod}
+                    finalResultPeriod={detailClub?.finalResultPeriod}
+                />
+            ),
             width: '5.6rem',
         },
         {

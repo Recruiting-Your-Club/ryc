@@ -29,7 +29,7 @@ export interface DetailAnnouncement {
     detailDescription: string; //공고 상세
     target: string; //모집 대상
     field: string; //모집 분야
-    announcementsStatus: 'UPCOMING' | 'RECRUITING' | 'CLOSED' | 'EMPTY';
+    announcementStatus: 'UPCOMING' | 'RECRUITING' | 'CLOSED' | 'EMPTY';
     announcementType: 'ALWAYS_OPEN' | 'LIMITED_TIME';
     activityPeriod: string;
     numberOfPeople: string;
@@ -42,41 +42,56 @@ export interface DetailAnnouncement {
     images: Image[];
 }
 
-interface Period {
+export interface Period {
     startDate: string;
     endDate: string;
 }
 
-interface ApplicationForm {
+export interface ApplicationForm {
+    id: string;
     applicationQuestions: ApplicationQuestion[];
     preQuestions: PreQuestion[];
     personalInfoQuestions: PersonalInfoQuestion[];
 }
 
-type PersonalInfoQuestion = 'STUDENT_ID' | 'PHONE_NUMBER' | 'PROFILE_IMAGE' | 'NAME' | 'EMAIL';
+export type PersonalInfoQuestion =
+    | 'STUDENT_ID'
+    | 'PHONE_NUMBER'
+    | 'PROFILE_IMAGE'
+    | 'NAME'
+    | 'EMAIL';
 
-interface ApplicationQuestion {
+export interface ApplicationQuestion {
     id: string;
     type: QuestionType;
     label: string;
     isRequired: boolean;
-    subLabel: string;
+    description?: string;
 }
 
-interface PreQuestion {
+export interface PreQuestion {
     id: string;
     type: QuestionType;
     label: string;
     isRequired: boolean;
-    options: Option[];
+    options?: Option[];
 }
 
-interface Option {
+export interface Option {
+    id: string;
     option: string;
 }
 
-interface Image {
-    fileMetaData: string;
+export interface Image {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
 }
 
-type QuestionType = 'FILE' | 'MULTIPLE_CHOICE' | 'SINGLE_CHOICE' | 'LONG_ANSWER' | 'SHORT_ANSWER';
+export type QuestionType =
+    | 'FILE'
+    | 'MULTIPLE_CHOICE'
+    | 'SINGLE_CHOICE'
+    | 'LONG_ANSWER'
+    | 'SHORT_ANSWER';
