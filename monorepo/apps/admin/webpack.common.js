@@ -63,8 +63,14 @@ module.exports = {
             template: 'public/index.html',
         }),
         new Dotenv({
-            path: path.resolve(__dirname, './', dotenvFilename),
+            path: path.resolve(dirname, './', dotenvFilename),
             systemvars: true,
+        }),
+        new webpack.DefinePlugin({
+            'process.env.CHANNEL_PLUGIN_KEY': JSON.stringify(process.env.CHANNEL_PLUGIN_KEY),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
+            'process.env.API_MOCKING': JSON.stringify(process.env.API_MOCKING),
         }),
     ],
 };
