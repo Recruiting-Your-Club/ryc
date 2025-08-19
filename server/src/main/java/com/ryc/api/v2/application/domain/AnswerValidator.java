@@ -1,113 +1,71 @@
 package com.ryc.api.v2.application.domain;
 
+import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
-import lombok.AccessLevel;
-import lombok.Builder;
+import com.ryc.api.v2.common.validator.DomainValidator;
 
 /** 유효성(Validation) 검사 Util 클래스 접근 제한자 package-private 준수 */
-final class AnswerValidator {
+final class AnswerValidator extends DomainValidator {
 
   private AnswerValidator() {}
 
-  /** 유효성 검증 규칙 (Validation Roles) */
+  /** 유효성 검증 규칙 (Validation Rules) */
   private static final Pattern UUID_PATTERN =
       Pattern.compile(
           "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
   private static final int MAX_TEXT_ANSWER_LENGTH = 5000;
 
-  /**
-   * 문자열 정제 메소드
-   *
-   * @param string
-   * @return null Or Trimed String
-   */
-  private static String sanitizeString(String string) {
-    return string != null ? string.trim() : null;
-  }
-
-  /** 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 */
-  static ValidatedAnswer validateAndSanitize(
+  /** 유효성 검증 진입점 접근 제한자 private-package 준수 */
+  static void validate(
       String id,
       String questionId,
       String textAnswer,
       List<AnswerChoice> choices,
       String fileMetadataId) {
 
-    // 정제
-    String resolvedTextAnswer = sanitizeString(textAnswer);
-
-    // 검증
+    // 공통 검증 메소드 사용
     validateId(id);
     validateQuestionId(questionId);
-    validateTextAnswer(resolvedTextAnswer);
+    validateTextAnswer(textAnswer);
     validateChoices(choices);
     validateFileMetadataId(fileMetadataId);
-
-    return ValidatedAnswer.builder()
-        .id(id)
-        .questionId(questionId)
-        .textAnswer(resolvedTextAnswer)
-        .choices(choices)
-        .fileMetadataId(fileMetadataId)
-        .build();
   }
 
   /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {
-    if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("Id cannot be null or empty");
-    }
-
-    if (!UUID_PATTERN.matcher(id).matches()) {
-      throw new IllegalArgumentException(
-          "Id must be a valid UUID format (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
-    }
+    validateNotNullOrEmpty(id, ANSWER_ID_NULL_OR_EMPTY);
+    validatePattern(id, UUID_PATTERN, ANSWER_INVALID_ID_FORMAT);
   }
 
   private static void validateQuestionId(String questionId) {
-    if (questionId == null || questionId.isEmpty()) {
-      throw new IllegalArgumentException("QuestionId cannot be null or empty");
-    }
-
-    if (!UUID_PATTERN.matcher(questionId).matches()) {
-      throw new IllegalArgumentException(
-          "QuestionId must be a valid UUID format (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
-    }
+    validateNotNullOrEmpty(questionId, ANSWER_QUESTION_ID_NULL_OR_EMPTY);
+    validatePattern(questionId, UUID_PATTERN, ANSWER_INVALID_QUESTION_ID_FORMAT);
   }
 
   private static void validateTextAnswer(String textAnswer) {
-    // textAnswer는 null 허용 (선택 사항)
-    if (textAnswer != null && textAnswer.length() > MAX_TEXT_ANSWER_LENGTH) {
-      throw new IllegalArgumentException(
-          "TextAnswer cannot exceed " + MAX_TEXT_ANSWER_LENGTH + " characters");
+    // textAnswer는 null 허용
+    if (textAnswer != null) {
+      validateNotEmpty(textAnswer,ANSWER_TEXT_ANSWER_EMPTY);
+      validateMaxLength(textAnswer, MAX_TEXT_ANSWER_LENGTH, ANSWER_TEXT_ANSWER_TOO_LONG);
     }
   }
 
   private static void validateChoices(List<AnswerChoice> choices) {
-    // Null 허용
+    // 빈 리스트 허용
+    validateNotNull(choices, ANSWER_CHOICES_NULL);
   }
 
   private static void validateFileMetadataId(String fileMetadataId) {
-    // fileMetadataId는 null 허용 (선택 사항)
-    if (fileMetadataId != null && !fileMetadataId.isEmpty()) {
-      // TODO: S3 메타데이터 id 포멧으로 수정
-      if (!UUID_PATTERN.matcher(fileMetadataId).matches()) {
-        throw new IllegalArgumentException("");
-      }
+    // fileMetadataId는 null 허용
+    if (fileMetadataId != null) {
+      validateNotEmpty(fileMetadataId, ANSWER_INVALID_FILE_METADATA_ID_EMPTY);
+      validatePattern(fileMetadataId, UUID_PATTERN, ANSWER_INVALID_FILE_METADATA_ID_FORMAT);
     }
   }
-
-  /** 접근 제한자 package-private 준수 */
-  @Builder(access = AccessLevel.PRIVATE)
-  record ValidatedAnswer(
-      String id,
-      String questionId,
-      String textAnswer,
-      List<AnswerChoice> choices,
-      String fileMetadataId) {}
 }

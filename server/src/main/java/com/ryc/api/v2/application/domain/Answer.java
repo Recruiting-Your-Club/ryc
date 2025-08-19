@@ -7,6 +7,7 @@ import com.ryc.api.v2.application.presentation.dto.request.AnswerCreateRequest;
 import com.ryc.api.v2.applicationForm.domain.Question;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -27,14 +28,21 @@ public class Answer {
       List<AnswerChoice> choices,
       String fileMetadataId) {
 
-    AnswerValidator.ValidatedAnswer validated =
-        AnswerValidator.validateAndSanitize(id, questionId, textAnswer, choices, fileMetadataId);
+    // 1. 정제
+    String sanitizeTextAnswer = DataResolveUtil.sanitizeString(textAnswer);
 
-    this.id = validated.id();
-    this.questionId = validated.questionId();
-    this.textAnswer = validated.textAnswer();
-    this.choices = validated.choices();
-    this.fileMetadataId = validated.fileMetadataId();
+    // 2. 선택 멤버 변수 기본값 처리
+    List<AnswerChoice> resolvedChoices = choices != null ? choices : List.of();
+
+    // 3. 검증
+    AnswerValidator.validate(id, questionId, sanitizeTextAnswer, resolvedChoices, fileMetadataId);
+
+    // 4. 할당
+    this.id = id;
+    this.questionId = questionId;
+    this.textAnswer = sanitizeTextAnswer;
+    this.choices = resolvedChoices;
+    this.fileMetadataId = fileMetadataId;
   }
 
   public static Answer initialize(AnswerCreateRequest request) {
