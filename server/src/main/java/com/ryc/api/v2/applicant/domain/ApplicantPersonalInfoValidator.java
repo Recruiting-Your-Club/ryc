@@ -1,13 +1,13 @@
 package com.ryc.api.v2.applicant.domain;
 
+import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
+
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
+import com.ryc.api.v2.common.validator.DomainValidator;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-
-final class ApplicantPersonalInfoValidator {
+final class ApplicantPersonalInfoValidator extends DomainValidator {
   private ApplicantPersonalInfoValidator() {}
 
   /** 유효성 검증 규칙 (Validation Roles) */
@@ -19,94 +19,44 @@ final class ApplicantPersonalInfoValidator {
   private static final Pattern EMAIL_PATTERN =
       Pattern.compile(
           "^[a-zA-Z0-9](?:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\\.[a-zA-Z]{2,}$");
-  private static final Pattern STUDENT_ID_PATTERN = Pattern.compile("^[0-9]{8,12}$");
+  private static final Pattern STUDENT_ID_PATTERN = Pattern.compile("^[0-9]{8}$");
   private static final Pattern PHONE_NUMBER_PATTERN =
       Pattern.compile("^01[0-9]-[0-9]{4}-[0-9]{4}$");
-  private static final Pattern S3_URL_PATTERN =
-      Pattern.compile(
-          "^https://(?:"
-              + "[a-z0-9.-]+\\.s3\\.(?:[a-z0-9-]+\\.)?amazonaws\\.com|"
-              + "s3\\.(?:[a-z0-9-]+\\.)?amazonaws\\.com/[a-z0-9.-]+"
-              + ")/.*$",
-          Pattern.CASE_INSENSITIVE);
-  private static final Pattern IMAGE_EXTENSION_PATTERN =
-      Pattern.compile(".*\\.(jpg|jpeg|png|gif|webp|bmp)(?:\\?.*)?$", Pattern.CASE_INSENSITIVE);
 
   private static final int MIN_NAME_LENGTH = 2;
   private static final int MAX_NAME_LENGTH = 30;
   private static final int MAX_EMAIL_LENGTH = 320;
   private static final int MIN_EMAIL_LOCAL_PART_LENGTH = 1;
   private static final int MAX_EMAIL_LOCAL_PART_LENGTH = 64;
-
-  /**
-   * 문자열 정제 메소드
-   *
-   * @param string
-   * @return null Or Trimed String
-   */
-  private static String sanitizeString(String string) {
-    return string != null ? string.trim() : null;
-  }
-
-  /**
-   * 이메일 정제 메소드 (trim + 소문자 변환)
-   *
-   * @param email
-   * @return null Or Trimed and Lowercased Email
-   */
-  private static String sanitizeEmail(String email) {
-    return email != null ? email.trim().toLowerCase() : null;
-  }
+  private static final int MAX_EMAIL_DOMAIN_PART_LENGTH = 253;
+  private static final int STUDENT_ID_LENGTH = 8;
+  private static final String EMAIL_AT_SYMBOL = "@";
 
   /**
    * 유효성 검증 진입점 접근 제한자 private-package 준수 데이터 정제 -> Default 값 대입 -> 유효성 검증 순서의 프로세스 정제값 없는 경우, 별도
-   * dto 반환 값 없음
    */
-  static ValidatedApplicantPersonalInfo validateAndSanitize(
-      String id, PersonalInfoQuestionType questionType, String value) {
-
-    // 정제
-    String resolvedValue;
-    if (questionType.equals(PersonalInfoQuestionType.EMAIL)) resolvedValue = sanitizeEmail(value);
-    else resolvedValue = sanitizeString(value);
-
+  static void validate(String id, PersonalInfoQuestionType questionType, String value) {
     // 검증
     validateId(id);
     validateQuestionType(questionType);
-    validateValueByQuestionType(questionType, resolvedValue);
-
-    return ValidatedApplicantPersonalInfo.builder()
-        .id(id)
-        .questionType(questionType)
-        .value(resolvedValue)
-        .build();
+    validateValueByQuestionType(questionType, value);
   }
 
   /** 검증 private 헬퍼 메소드 */
 
   /** UUID 포멧 준수 */
   private static void validateId(String id) {
-    if (id == null || id.isEmpty()) {
-      throw new IllegalArgumentException("Id cannot be null or empty");
-    }
-
-    if (!UUID_PATTERN.matcher(id).matches()) {
-      throw new IllegalArgumentException(
-          "Id must be a valid UUID format (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)");
-    }
+    validateNotNullOrEmpty(id, PERSONAL_INFO_ID_NULL_OR_EMPTY);
+    validatePattern(id, UUID_PATTERN, PERSONAL_INFO_INVALID_ID_FORMAT);
   }
 
   private static void validateQuestionType(PersonalInfoQuestionType questionType) {
-    if (questionType == null) {
-      throw new IllegalArgumentException("PersonalInfoQuestionType cannot be null");
-    }
+    validateNotNull(questionType, PERSONAL_INFO_QUESTION_TYPE_NULL);
   }
 
   private static void validateValueByQuestionType(
       PersonalInfoQuestionType questionType, String value) {
-    if (value == null || value.isEmpty()) {
-      throw new IllegalArgumentException("Value cannot be null or empty");
-    }
+    validateNotNullOrEmpty(value, PERSONAL_INFO_VALUE_NULL_OR_EMPTY);
 
     switch (questionType) {
       case STUDENT_ID -> validateStudentId(value);
@@ -118,87 +68,49 @@ final class ApplicantPersonalInfoValidator {
   }
 
   private static void validateStudentId(String studentId) {
-    if (!STUDENT_ID_PATTERN.matcher(studentId).matches()) {
-      throw new IllegalArgumentException("Student ID must be 8-12 digits");
-    }
+    validateExactLength(studentId, STUDENT_ID_LENGTH, PERSONAL_INFO_INVALID_STUDENT_ID_LENGTH);
+    validatePattern(studentId, STUDENT_ID_PATTERN, PERSONAL_INFO_INVALID_STUDENT_ID_FORMAT);
   }
 
   private static void validatePhoneNumber(String phoneNumber) {
-    if (!PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
-      throw new IllegalArgumentException("Phone number must be in format: 01X-XXXX-XXXX");
-    }
+    validatePattern(phoneNumber, PHONE_NUMBER_PATTERN, PERSONAL_INFO_INVALID_PHONE_NUMBER_FORMAT);
   }
 
   // TODO: S3 구성이후 유효성 규칙 수정 필요
-  private static void validateImageUrl(String imageUrl) {
-    if (imageUrl == null || imageUrl.isEmpty()) {
-      throw new IllegalArgumentException("Image URL cannot be null or empty");
-    }
-
-    // S3 URL 패턴 검증
-    if (!S3_URL_PATTERN.matcher(imageUrl).matches()) {
-      throw new IllegalArgumentException("Image URL must be a valid S3 URL");
-    }
-
-    // 이미지 파일 확장자 검증
-    if (!IMAGE_EXTENSION_PATTERN.matcher(imageUrl).matches()) {
-      throw new IllegalArgumentException(
-          "Image URL must have a valid image file extension (jpg, jpeg, png, gif, webp, bmp)");
-    }
-
-    // HTTPS 강제 (보안)
-    if (!imageUrl.startsWith("https://")) {
-      throw new IllegalArgumentException("Image URL must use HTTPS protocol");
-    }
+  private static void validateImageUrl(String metadataId) {
+    validateNotNullOrEmpty(metadataId, PERSONAL_INFO_PROFILE_IMAGE_METADATA_ID_NULL_OR_EMPTY);
+    validatePattern(
+        metadataId, UUID_PATTERN, PERSONAL_INFO_INVALID_PROFILE_IMAGE_METADATA_ID_FORMAT);
   }
 
   private static void validateName(String name) {
-    if (name == null || name.isEmpty()) {
-      throw new IllegalArgumentException("Applicant Name cannot be null or empty");
-    }
-
-    if (name.length() < MIN_NAME_LENGTH) {
-      throw new IllegalArgumentException(
-          "Applicant Name must be at least " + MIN_NAME_LENGTH + " characters");
-    }
-    if (name.length() > MAX_NAME_LENGTH) {
-      throw new IllegalArgumentException(
-          "Applicant Name cannot exceed " + MAX_NAME_LENGTH + " characters");
-    }
-
-    if (!NAME_PATTERN.matcher(name).matches()) {
-      throw new IllegalArgumentException(
-          "Applicant Name can only contain Korean, English letters, numbers, spaces, dots, underscores, and hyphens. Must start with a letter.");
-    }
+    validateNotNullOrEmpty(name, PERSONAL_INFO_NAME_NULL_OR_EMPTY);
+    validateLengthRange(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH, PERSONAL_INFO_INVALID_NAME_LENGTH);
+    validatePattern(name, NAME_PATTERN, PERSONAL_INFO_INVALID_NAME_FORMAT);
   }
 
   /** RFC 5322 준수 Email */
   private static void validateEmail(String email) {
-    if (email == null || email.isEmpty()) {
-      throw new IllegalArgumentException("Applicant Email cannot be null or empty");
-    }
+    validateNotNullOrEmpty(email, PERSONAL_INFO_EMAIL_NULL_OR_EMPTY);
+    validateMaxLength(email, MAX_EMAIL_LENGTH, PERSONAL_INFO_EMAIL_TOO_LONG);
+    validateContains(email, EMAIL_AT_SYMBOL, PERSONAL_INFO_EMAIL_MISSING_AT_SYMBOL);
 
-    // RFC 5321 최대 길이 검증
-    if (email.length() > MAX_EMAIL_LENGTH) {
-      throw new IllegalArgumentException("Applicant Email cannot exceed 320 characters");
-    }
+    int atIndex = email.indexOf(EMAIL_AT_SYMBOL);
+    String localPart = email.substring(0, atIndex);
+    String domainPart = email.substring(atIndex + 1);
 
     // 로컬파트 길이 검증
-    int atIndex = email.indexOf('@');
-    if (atIndex >= MIN_EMAIL_LOCAL_PART_LENGTH && atIndex <= MAX_EMAIL_LOCAL_PART_LENGTH) {
-    } else if (atIndex > MAX_EMAIL_LOCAL_PART_LENGTH) {
-      throw new IllegalArgumentException("Applicant Email local part cannot exceed 64 characters");
-    }
+    validateLengthRange(
+        localPart,
+        MIN_EMAIL_LOCAL_PART_LENGTH,
+        MAX_EMAIL_LOCAL_PART_LENGTH,
+        PERSONAL_INFO_EMAIL_LOCAL_PART_INVALID_LENGTH);
 
-    // RFC 5322 제약사항 통합 정규식 검증
-    if (!EMAIL_PATTERN.matcher(email).matches()) {
-      throw new IllegalArgumentException(
-          "Invalid Applicant email format according to RFC 5322 standards");
-    }
+    // 도메인부 길이 검증
+    validateNotNullOrEmpty(domainPart, PERSONAL_INFO_EMAIL_DOMAIN_PART_NULL_OR_EMPTY);
+    validateMaxLength(domainPart, MAX_EMAIL_DOMAIN_PART_LENGTH, PERSONAL_INFO_EMAIL_DOMAIN_PART_TOO_LONG);
+
+    // RFC 5322 정규식 검증
+    validatePattern(email, EMAIL_PATTERN, PERSONAL_INFO_INVALID_EMAIL_FORMAT);
   }
-
-  /** 접근 제한자 package-private 준수 */
-  @Builder(access = AccessLevel.PRIVATE)
-  record ValidatedApplicantPersonalInfo(
-      String id, PersonalInfoQuestionType questionType, String value) {}
 }
