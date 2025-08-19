@@ -13,10 +13,8 @@ import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 
 @Repository
 public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEntity, String> {
-  @Query("select a from AnnouncementEntity a where a.clubId = :clubId")
+  @Query("select a from AnnouncementEntity a where a.clubId = :clubId and a.isDeleted = false")
   List<AnnouncementEntity> findAllByClubId(@Param("clubId") String clubId);
-
-  List<AnnouncementEntity> findAllByIsDeleted(Boolean isDeleted);
 
   @Query(
       "select new com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto(a.clubId,"
@@ -30,4 +28,9 @@ public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEnt
   @Query(
       "SELECT c.name FROM ClubEntity c JOIN AnnouncementEntity a ON c.id = a.clubId WHERE a.id = :announcementId")
   Optional<String> findClubNameByAnnouncementId(String announcementId);
+
+  @Query("SELECT a.id FROM AnnouncementEntity a WHERE a.clubId = :clubId AND a.isDeleted = false")
+  List<String> findIdsByClubId(String clubId);
+
+  List<AnnouncementEntity> findAllByIdIn(List<String> announcementIds);
 }

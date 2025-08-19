@@ -16,13 +16,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
+import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.EmailSentStatus;
+import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
-import com.ryc.api.v2.email.service.event.InterviewReservationEmailEvent;
-import com.ryc.api.v2.email.service.event.InterviewSlotEmailEvent;
 
 @Service
 public class EmailService {
@@ -81,7 +83,7 @@ public class EmailService {
   @Async
   @EventListener
   @Transactional
-  public void createInterviewEmails(InterviewSlotEmailEvent event) {
+  protected void createInterviewEmails(InterviewSlotEmailEvent event) {
     List<Email> emails = new ArrayList<>();
 
     for (Applicant applicant : event.applicants()) {
@@ -102,7 +104,7 @@ public class EmailService {
   @Async
   @EventListener
   @Transactional
-  public void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
+  protected void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
     String subject = String.format("[면접 예약 완료] %s 면접 예약이 정상적으로 완료되었습니다.", event.clubName());
     String content =
         interviewReservationHtmlTemplate
@@ -132,6 +134,18 @@ public class EmailService {
   public void incrementRetryCount(Email email) {
     Email updatedEmail = email.incrementRetryCount();
     emailRepository.save(updatedEmail);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
+    event.announcementIds().forEach(emailRepository::deleteAllByAnnouncementId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    emailRepository.deleteAllByAdminId(event.adminId());
   }
 
   private String createHtmlLink(String clubId, String announcementId, String applicantId) {

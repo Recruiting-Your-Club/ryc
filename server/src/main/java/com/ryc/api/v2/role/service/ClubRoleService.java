@@ -4,13 +4,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
+import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
@@ -129,5 +132,17 @@ public class ClubRoleService {
   @Transactional(readOnly = true)
   public boolean hasOwnerRole(String adminId, String clubId) {
     return clubRoleRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
+  }
+
+  @EventListener
+  @Transactional
+  protected void handleClubDeletedEvent(ClubDeletedEvent event) {
+    clubRoleRepository.deleteByClubId(event.clubId());
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    clubRoleRepository.deleteByUserId(event.adminId());
   }
 }

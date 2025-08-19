@@ -6,18 +6,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
-import com.ryc.api.v2.email.service.event.InterviewReservationEmailEvent;
-import com.ryc.api.v2.email.service.event.InterviewSlotEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
@@ -39,7 +41,7 @@ public class InterviewService {
   private final ApplicantRepository applicantRepository;
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
-  private final ApplicationEventPublisher publisher;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional(readOnly = true)
   public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
@@ -165,7 +167,7 @@ public class InterviewService {
     // 이메일 전송을 위한 이벤트 발행
     List<Applicant> applicants =
         applicantRepository.findByEmails(request.emailSendRequest().recipients());
-    publisher.publishEvent(
+    eventPublisher.publishEvent(
         InterviewSlotEmailEvent.builder()
             .applicants(applicants)
             .subject(request.emailSendRequest().subject())
@@ -203,7 +205,7 @@ public class InterviewService {
     // 이메일 이벤트를 발행
     String clubName =
         announcementRepository.findClubNameByAnnouncementId(savedInterviewSlot.getAnnouncementId());
-    publisher.publishEvent(
+    eventPublisher.publishEvent(
         InterviewReservationEmailEvent.builder()
             .clubName(clubName)
             .applicantEmail(savedReservation.getApplicant().getEmail())
@@ -233,7 +235,7 @@ public class InterviewService {
       InterviewSlot updatedSlot = slot.removeReservation(reservation);
       interviewRepository.saveSlot(updatedSlot);
     } else {
-
+      // 기존 면접 슬롯이 없는 경우, 새로운 예약을 생성합니다.
       Applicant applicant = applicantRepository.findById(applicantId);
       reservation = InterviewReservation.initialize(applicant);
     }
@@ -250,6 +252,17 @@ public class InterviewService {
         .interviewReservationId(reservationId)
         .interviewSlot(slotGetResponse)
         .build();
+  }
+
+  @Transactional
+  public void deleteInterviewReservation(String reservationId) {
+    interviewRepository.deleteReservationById(reservationId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
+    event.announcementIds().forEach(interviewRepository::deleteSlotsByAnnouncementId);
   }
 
   private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {

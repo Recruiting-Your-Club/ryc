@@ -10,4 +10,6 @@ public interface ApplicationRepository {
   Application findByApplicantId(String applicantId);
 
   Map<String, LocalDateTime> findCreatedAtByApplicantIds(List<String> applicantIds);
+
+  void deleteAllByApplicantIds(List<String> applicantIds);
 }

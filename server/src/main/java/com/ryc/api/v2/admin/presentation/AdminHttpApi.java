@@ -3,6 +3,7 @@ package com.ryc.api.v2.admin.presentation;
 import jakarta.validation.constraints.Email;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import com.ryc.api.v2.admin.presentation.response.AdminEmailDuplicatedResponse;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,5 +37,12 @@ public class AdminHttpApi {
       @RequestParam @Email String email) {
     AdminEmailDuplicatedResponse response = adminService.checkEmailDuplicate(email);
     return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping()
+  @Operation(summary = "회원 탈퇴")
+  public ResponseEntity<Void> deleteAdmin(@AuthenticationPrincipal CustomUserDetail userDetail) {
+    adminService.deleteAdminById(userDetail.getId());
+    return ResponseEntity.noContent().build();
   }
 }

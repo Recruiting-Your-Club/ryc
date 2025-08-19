@@ -49,4 +49,6 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
         WHERE r.admin.id = :adminId
       """)
   List<ClubEntity> findClubsByAdminId(String adminId);
+
+  void deleteByClubId(String clubId);
 }

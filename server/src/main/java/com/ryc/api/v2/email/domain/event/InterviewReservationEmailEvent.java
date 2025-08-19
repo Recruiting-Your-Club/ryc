@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.service.event;
+package com.ryc.api.v2.email.domain.event;
 
 import com.ryc.api.v2.announcement.domain.vo.Period;
 

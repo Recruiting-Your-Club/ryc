@@ -19,7 +19,6 @@ public class Evaluation {
   private final BigDecimal score;
   private final String comment;
   private final EvaluationType type;
-  private final Boolean deleted;
 
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
@@ -41,7 +40,6 @@ public class Evaluation {
             .score(request.score())
             .comment(request.comment())
             .type(type)
-            .deleted(false)
             .build();
 
     evaluation.validate();
@@ -66,7 +64,6 @@ public class Evaluation {
             .score(body.score())
             .comment(body.comment())
             .type(type)
-            .deleted(deleted)
             .createdAt(createdAt)
             .updatedAt(createdAt)
             .build();

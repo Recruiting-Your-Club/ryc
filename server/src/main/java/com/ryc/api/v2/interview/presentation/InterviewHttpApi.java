@@ -159,4 +159,16 @@ public class InterviewHttpApi {
         interviewService.changeInterviewReservation(applicantId, body);
     return ResponseEntity.ok(response);
   }
+
+  @DeleteMapping("admin/interview-reservations/{reservation-id}")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 예약자를 미지정자로 변경", description = "동아리 관리자가 면접 예약자를 미지정자로 변경합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<Void> deleteInterviewReservation(
+      @PathVariable("reservation-id") String reservationId) {
+    interviewService.deleteInterviewReservation(reservationId);
+    return ResponseEntity.noContent().build();
+  }
 }

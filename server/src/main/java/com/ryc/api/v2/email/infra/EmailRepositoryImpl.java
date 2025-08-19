@@ -39,4 +39,14 @@ public class EmailRepositoryImpl implements EmailRepository {
         .map(EmailMapper::toDomain)
         .toList();
   }
+
+  @Override
+  public void deleteAllByAnnouncementId(String announcementId) {
+    emailJpaRepository.deleteAllByAnnouncementId(announcementId);
+  }
+
+  @Override
+  public void deleteAllByAdminId(String adminId) {
+    emailJpaRepository.deleteBySenderId(adminId);
+  }
 }
