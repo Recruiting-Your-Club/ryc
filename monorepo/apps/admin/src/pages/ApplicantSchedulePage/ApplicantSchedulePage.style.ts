@@ -14,9 +14,10 @@ export const s_applicantSchedulePageContainer = css`
     justify-content: center;
 `;
 
-export const s_alertSvgWrapper = css`
+export const s_alertSvgContainer = css`
     display: flex;
     align-items: center;
+    gap: 0.5rem;
 `;
 
 export const s_contentContainer = css`

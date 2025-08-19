@@ -14,13 +14,12 @@ import type { Dispatch, SetStateAction } from 'react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useToast } from '@ssoc/ui';
-import { Tooltip } from '@ssoc/ui';
+import { Text, useToast } from '@ssoc/ui';
 import { convertDate } from '@ssoc/utils';
 
 import {
     s_alertSvg,
-    s_alertSvgWrapper,
+    s_alertSvgContainer,
     s_applicantList,
     s_applicantSchedulePageContainer,
     s_arrowContainer,
@@ -232,13 +231,11 @@ function ApplicantSchedulePage() {
 
     return (
         <div css={s_applicantSchedulePageContainer}>
-            <span css={s_alertSvgWrapper}>
-                <Tooltip
-                    content="카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!"
-                    direction="right"
-                >
-                    <Alert css={s_alertSvg} />
-                </Tooltip>
+            <span css={s_alertSvgContainer}>
+                <Alert css={s_alertSvg} />
+                <Text as="span" type="captionRegular" color="helper">
+                    카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!
+                </Text>
             </span>
             <div css={s_contentContainer}>
                 <div css={s_contentComponentWrapper}>
