@@ -11,7 +11,7 @@ import { ApplicantList, ComponentMover, InterviewSlotDropdown } from '@component
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Text, useToast } from '@ssoc/ui';
@@ -74,8 +74,26 @@ function ApplicantSchedulePage() {
     const { mutate: deleteReservation } = interviewMutations.useDeleteReservation(announcementId!);
 
     // calculated values
-    const standardInterviewees = slot0Applicants ?? [];
-    const intervieweesToMove = slot1Applicants ?? [];
+    const standardInterviewees = useMemo(() => slot0Applicants ?? [], [slot0Applicants]);
+    const intervieweesToMove = useMemo(() => slot1Applicants ?? [], [slot1Applicants]);
+
+    const isSelectedInFirstSlot = useMemo(
+        () =>
+            intervieweesToMove.some(
+                (applicant) =>
+                    'applicantSummary' in applicant &&
+                    applicant.applicantSummary.applicantId === selectedIntervieweeId,
+            ),
+        [intervieweesToMove, selectedIntervieweeId],
+    );
+
+    const isSelectedInThirdSlot = useMemo(
+        () =>
+            unreservedApplicants.some(
+                (applicant) => applicant.applicantId === selectedIntervieweeId,
+            ),
+        [unreservedApplicants, selectedIntervieweeId],
+    );
 
     // handlers
     const labelSelectHandler =
@@ -261,10 +279,12 @@ function ApplicantSchedulePage() {
                     <ComponentMover
                         onMoveLeft={() =>
                             handleMove(
-                                standardInterviewees,
+                                isSelectedInThirdSlot ? unreservedApplicants : standardInterviewees,
                                 selectedIntervieweeId,
                                 selectedInterviewLabel.interviewSlotId ?? '',
-                                selectedStandardInterviewLabel.interviewSlotId ?? '',
+                                isSelectedInThirdSlot
+                                    ? ''
+                                    : (selectedStandardInterviewLabel.interviewSlotId ?? ''),
                                 setSelectedIntervieweeId,
                             )
                         }
@@ -309,10 +329,12 @@ function ApplicantSchedulePage() {
                         }
                         onMoveRight={() =>
                             handleMove(
-                                standardInterviewees,
+                                isSelectedInFirstSlot ? intervieweesToMove : standardInterviewees,
                                 selectedIntervieweeId,
                                 '',
-                                selectedStandardInterviewLabel.interviewSlotId ?? '',
+                                isSelectedInFirstSlot
+                                    ? (selectedInterviewLabel.interviewSlotId ?? '')
+                                    : (selectedStandardInterviewLabel.interviewSlotId ?? ''),
                                 setSelectedIntervieweeId,
                             )
                         }
