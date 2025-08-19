@@ -59,6 +59,12 @@ public abstract class DomainValidator {
     }
   }
 
+  protected static void validateExactLength(int count, int exactLength, ErrorCode errorCode) {
+    if (count != exactLength) {
+      throw new InvalidFormatException(errorCode);
+    }
+  }
+
   /** 길이 범위 검증 */
   protected static void validateLengthRange(
       String value, int minLength, int maxLength, ErrorCode errorCode) {

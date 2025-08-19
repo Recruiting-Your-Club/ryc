@@ -287,7 +287,32 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // QuestionOption Option
   QUESTION_OPTION_OPTION_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "질문 선지는 null 혹은 empty일 수 없습니다."),
-  QUESTION_OPTION_OPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "질문 선지는 200자를 초과할 수 없습니다.");
+  QUESTION_OPTION_OPTION_TOO_LONG(HttpStatus.BAD_REQUEST, "질문 선지는 200자를 초과할 수 없습니다."),
+
+  /** 리프레시 토큰(RefreshToken) 에러 코드 */
+  // RefreshToken ID
+  REFRESH_TOKEN_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "리프레시 토큰 ID는 null 혹은 empty일 수 없습니다."),
+  REFRESH_TOKEN_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "리프레시 토큰 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // RefreshToken Admin ID
+  REFRESH_TOKEN_ADMIN_ID_NULL_OR_EMPTY(
+      HttpStatus.BAD_REQUEST, "리프레시 토큰 도메인의 관리자 ID는 null 혹은 empty일 수 없습니다."),
+  REFRESH_TOKEN_INVALID_ADMIN_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "리프레시 토큰 도메인의 관리자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // RefreshToken Token
+  REFRESH_TOKEN_TOKEN_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "리프래시 토큰 값은 null 혹은 empty일 수 없습니다."),
+  REFRESH_TOKEN_INVALID_LENGTH(HttpStatus.BAD_REQUEST, "리프레시 토큰은 100자 이상 1000자 이하여야 합니다."),
+  REFRESH_TOKEN_MISSING_DOT_SYMBOL(HttpStatus.BAD_REQUEST, "리프레시 토큰에 .(dot) 기호가 없습니다."),
+  REFRESH_TOKEN_INVALID_PART_COUNT(
+      HttpStatus.BAD_REQUEST, "리프레시 토큰은 .(dot) 기호를 기준으로, 3파트(헤더.페이로드.서명)로 구성되어야 합니다."),
+  REFRESH_TOKEN_INVALID_PART_FORMAT(HttpStatus.BAD_REQUEST, "리프레시 토큰의 각 파트는 Base64Url 포멧이어야 합니다."),
+
+  // RefreshToken Expiration Time
+  REFRESH_TOKEN_EXPIRATION_TIME_NULL(HttpStatus.BAD_REQUEST, "리프레시 토큰 만료 시간은 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
