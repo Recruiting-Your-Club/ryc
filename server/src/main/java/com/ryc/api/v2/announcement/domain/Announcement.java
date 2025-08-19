@@ -1,7 +1,6 @@
 package com.ryc.api.v2.announcement.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
@@ -78,7 +77,7 @@ public class Announcement {
     String sanitizeActivityPeriod = DataResolveUtil.sanitizeString(activityPeriod);
 
     // 2. 선택 멤버 변수 기본값 처리
-    List<Tag> resolvedTags = tags != null ? tags : new ArrayList<>();
+    List<Tag> resolvedTags = tags != null ? tags : List.of();
     Boolean resolvedHasInterview = hasInterview != null ? hasInterview : Boolean.TRUE;
     Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
 

@@ -46,7 +46,7 @@ public class Applicant {
     // 2. 선택 멤버 변수 기본값 처리
     Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
     List<ApplicantPersonalInfo> resolvedPersonalInfo =
-        personalInfos != null ? personalInfos : new ArrayList<>();
+        personalInfos != null ? personalInfos : List.of();
     // 3. 검증
     ApplicantValidator.validate(
         id,

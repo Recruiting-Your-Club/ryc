@@ -1,7 +1,6 @@
 package com.ryc.api.v2.application.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -30,7 +29,7 @@ public class Application {
       String id, String applicantId, List<Answer> answers, LocalDateTime createdAt) {
 
     // 기본 값 주입
-    List<Answer> resolvedAnswers = answers != null ? answers : new ArrayList<>();
+    List<Answer> resolvedAnswers = answers != null ? answers : List.of();
 
     // 검증
     ApplicationValidator.validate(id, applicantId, resolvedAnswers, createdAt);
