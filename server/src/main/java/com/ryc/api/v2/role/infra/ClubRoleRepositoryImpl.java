@@ -44,7 +44,7 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
 
   @Override
   public List<ClubRole> findRolesByClubId(String clubId) {
-    List<ClubRoleEntity> clubRoleEntities = clubRoleJpaRepository.findByClubId(clubId);
+    List<ClubRoleEntity> clubRoleEntities = clubRoleJpaRepository.findByClub_Id(clubId);
     return clubRoleEntities.stream().map(ClubRoleMapper::toDomain).toList();
   }
 
@@ -69,7 +69,7 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
 
   @Override
   public boolean existsByAdminIdAndClubId(String adminId, String clubId) {
-    return clubRoleJpaRepository.existsByAdminIdAndClubId(adminId, clubId);
+    return clubRoleJpaRepository.existsByAdmin_IdAndClub_Id(adminId, clubId);
   }
 
   @Override
@@ -79,22 +79,22 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
 
   @Override
   public boolean existsByClubId(String clubId) {
-    return clubRoleJpaRepository.existsByClubId(clubId);
+    return clubRoleJpaRepository.existsByClub_Id(clubId);
   }
 
   @Override
   public boolean existsByAdminId(String adminId) {
-    return clubRoleJpaRepository.existsByAdminId(adminId);
+    return clubRoleJpaRepository.existsByAdmin_Id(adminId);
   }
 
   @Override
   public void deleteByAdminIdAndClubId(String adminId, String clubId) {
-    clubRoleJpaRepository.deleteByAdminIdAndClubId(adminId, clubId);
+    clubRoleJpaRepository.deleteByAdmin_IdAndClub_Id(adminId, clubId);
   }
 
   @Override
   public void deleteByClubId(String clubId) {
-    clubRoleJpaRepository.deleteByClubId(clubId);
+    clubRoleJpaRepository.deleteByClub_Id(clubId);
   }
 
   @Override
@@ -105,7 +105,7 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
 
   @Override
   public void deleteAllByAdminId(String adminId) {
-    clubRoleJpaRepository.deleteAllByAdminId(adminId);
+    clubRoleJpaRepository.deleteAllByAdmin_Id(adminId);
   }
 
   @Override
