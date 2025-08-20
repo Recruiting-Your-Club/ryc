@@ -10,3 +10,4 @@ export * from './ClubEditPage';
 export * from './EntryPage';
 export * from './StepManagementPage';
 export * from './ClubMemberRolePage';
+export * from './InviteConfirmPage';
