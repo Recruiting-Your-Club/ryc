@@ -13,8 +13,6 @@ public class Admin {
   private final String email;
   private final String
       password; // password는 Domin과 Entity에서 언제나 암호화 된 상태로 존재한다.(암호화와 복호화는 반드시 service 로직에서 진행)
-  private final String imageUrl;
-  private final String thumbnailUrl;
 
   @Builder.Default private final AdminDefaultRole adminDefaultRole = AdminDefaultRole.USER;
 

@@ -28,11 +28,6 @@ public class AdminEntity extends BaseEntity {
 
   private String password;
 
-  @Column(columnDefinition = "TEXT")
-  private String imageUrl;
-
-  private String thumbnailUrl;
-
   @Enumerated(EnumType.STRING)
   private AdminDefaultRole adminDefaultRole;
 

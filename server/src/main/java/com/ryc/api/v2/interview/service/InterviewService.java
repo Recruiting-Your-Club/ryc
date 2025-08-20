@@ -22,6 +22,7 @@ import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
 import com.ryc.api.v2.interview.domain.InterviewReservation;
@@ -81,8 +82,23 @@ public class InterviewService {
                 fileMetaData ->
                     FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
             .orElse(null);
-
-    ApplicantSummaryResponse applicantSummaryResponse = createApplicantSummaryResponse(applicant);
+    FileGetResponse applicantProfile =
+        fileService.findAllByAssociatedId(applicantId).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
+            .findFirst()
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(
+                        fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData)))
+            .orElse(null);
+    Map<String, FileGetResponse> imageMap =
+        applicantProfile == null
+            ? Collections.emptyMap()
+            : Collections.singletonMap(applicantId, applicantProfile);
+    ApplicantSummaryResponse applicantSummaryResponse =
+        createApplicantSummaryResponse(applicant, imageMap);
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
@@ -105,11 +121,27 @@ public class InterviewService {
     InterviewSlot interviewSlot = interviewRepository.findSlotById(interviewSlotId);
     List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
 
+    List<String> interviewerIds =
+        reservations.stream().map(reservation -> reservation.getApplicant().getId()).toList();
+
+    Map<String, FileGetResponse> interviewerImages =
+        fileService.findAllByAssociatedIdIn(interviewerIds).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
+            .collect(
+                Collectors.toMap(
+                    FileMetaData::getAssociatedId,
+                    fileMetaData -> {
+                      String url = fileService.getPrivateFileGetUrl(fileMetaData);
+                      return FileGetResponse.of(fileMetaData, url);
+                    }));
+
     return reservations.stream()
         .map(
             reservation -> {
               ApplicantSummaryResponse applicantSummaryResponse =
-                  createApplicantSummaryResponse(reservation.getApplicant());
+                  createApplicantSummaryResponse(reservation.getApplicant(), interviewerImages);
 
               return InterviewReservationGetResponse.builder()
                   .interviewReservationId(reservation.getId())
@@ -134,7 +166,23 @@ public class InterviewService {
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
 
-    return applicants.stream().map(this::createApplicantSummaryResponse).toList();
+    List<String> ids = applicants.stream().map(Applicant::getId).toList();
+    Map<String, FileGetResponse> imageMap =
+        fileService.findAllByAssociatedIdIn(ids).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
+            .collect(
+                Collectors.toMap(
+                    FileMetaData::getAssociatedId,
+                    fileMetaData -> {
+                      String url = fileService.getPrivateFileGetUrl(fileMetaData);
+                      return FileGetResponse.of(fileMetaData, url);
+                    }));
+
+    return applicants.stream()
+        .map(applicant -> createApplicantSummaryResponse(applicant, imageMap))
+        .toList();
   }
 
   @Transactional
@@ -286,24 +334,15 @@ public class InterviewService {
         .build();
   }
 
-  private ApplicantSummaryResponse createApplicantSummaryResponse(Applicant applicant) {
-    FileGetResponse imageResponse =
-        fileService.findAllByAssociatedId(applicant.getId()).stream()
-            .filter(
-                fileMetaData ->
-                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
-            .findFirst()
-            .map(
-                fileMetaData ->
-                    FileGetResponse.of(
-                        fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData)))
-            .orElse(null);
+  private ApplicantSummaryResponse createApplicantSummaryResponse(
+      Applicant applicant, Map<String, FileGetResponse> imageMap) {
 
     return ApplicantSummaryResponse.builder()
         .applicantId(applicant.getId())
         .applicantEmail(applicant.getEmail())
         .applicantName(applicant.getName())
-        .imageResponse(imageResponse)
+        .representativeImage(imageMap.get(applicant.getId()))
+        .imagePresent(imageMap.containsKey(applicant.getId()))
         .build();
   }
 }

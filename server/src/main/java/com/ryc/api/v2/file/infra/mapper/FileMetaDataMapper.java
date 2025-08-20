@@ -17,6 +17,7 @@ public class FileMetaDataMapper {
         .isDeleted(fileMetaData.isDeleted())
         .status(fileMetaData.getStatus())
         .displayOrder(fileMetaData.getDisplayOrder())
+        .accessToken(fileMetaData.getAccessToken())
         .build();
   }
 
@@ -32,6 +33,7 @@ public class FileMetaDataMapper {
         .uploadedByUserId(fileMetadataEntity.getUploadedByUserId())
         .status(fileMetadataEntity.getStatus())
         .isDeleted(fileMetadataEntity.isDeleted())
+        .accessToken(fileMetadataEntity.getAccessToken())
         .displayOrder(fileMetadataEntity.getDisplayOrder())
         .build();
   }

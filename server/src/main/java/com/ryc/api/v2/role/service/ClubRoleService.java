@@ -1,5 +1,7 @@
 package com.ryc.api.v2.role.service;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -102,14 +104,17 @@ public class ClubRoleService {
   public List<ClubRoleGetResponse> getClubRoles(String clubId) {
     List<ClubRole> clubRoles = clubRoleRepository.findRolesByClubId(clubId);
 
-    // TODO: clubid -> adminId 변경 필요,
-    //  CLUB_PROFILE -> ADMIN_PROFILE 변경 필요
-    FileGetResponse representativeImage =
-        fileService.findAllByAssociatedId(clubId).stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
-            .findFirst()
-            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
-            .orElse(null);
+    List<String> adminIds = clubRoles.stream().map(ClubRole::getAdmin).map(Admin::getId).toList();
+
+    Map<String, FileGetResponse> representativeImageMap =
+        fileService.findAllByAssociatedIdIn(adminIds).stream()
+            .map(
+                fileMetaData ->
+                    Map.entry(
+                        fileMetaData.getAssociatedId(),
+                        FileGetResponse.of(
+                            fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData))))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     return clubRoles.stream()
         .map(
@@ -120,7 +125,7 @@ public class ClubRoleService {
                   .adminName(admin.getName())
                   .role(clubRole.getRole().toString())
                   .joinedAt(clubRole.getJoinedAt())
-                  .adminProfileImage(representativeImage)
+                  .adminProfileImage(representativeImageMap.get(admin.getId()))
                   .build();
             })
         .toList();
@@ -164,7 +169,7 @@ public class ClubRoleService {
                     FileMetaData::getAssociatedId,
                     Collectors.mapping(
                         image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
-                        Collectors.toList())));
+                        toList())));
 
     return clubs.stream()
         .map(
