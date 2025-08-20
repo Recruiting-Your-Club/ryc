@@ -51,7 +51,6 @@ final class AnnouncementValidator extends DomainValidator {
       AnnouncementPeriodInfo announcementPeriodInfo,
       String activityPeriod,
       ApplicationForm applicationForm,
-      Boolean isDeleted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
 
@@ -71,7 +70,6 @@ final class AnnouncementValidator extends DomainValidator {
     validateAnnouncementPeriodInfo(announcementPeriodInfo);
     validateActivityPeriod(activityPeriod);
     validateApplicationForm(applicationForm);
-    validateIsDeleted(isDeleted);
     validateCreatedAt(id, createdAt);
     validateUpdatedAt(id, updatedAt);
   }
@@ -173,10 +171,6 @@ final class AnnouncementValidator extends DomainValidator {
 
   private static void validateApplicationForm(ApplicationForm applicationForm) {
     validateNotNull(applicationForm, ANNOUNCEMENT_APPLICATION_FORM_NULL);
-  }
-
-  private static void validateIsDeleted(Boolean isDeleted) {
-    validateNotNull(isDeleted, ANNOUNCEMENT_IS_DELETED_NULL);
   }
 
   private static void validateCreatedAt(String id, LocalDateTime createdAt) {

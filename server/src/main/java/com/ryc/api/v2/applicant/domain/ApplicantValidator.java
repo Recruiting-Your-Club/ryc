@@ -38,7 +38,6 @@ final class ApplicantValidator extends DomainValidator {
       String email,
       String name,
       ApplicantStatus status,
-      Boolean isDeleted,
       List<ApplicantPersonalInfo> personalInfos) {
 
     validateId(id);
@@ -46,7 +45,6 @@ final class ApplicantValidator extends DomainValidator {
     validateEmail(email);
     validateName(name);
     validateStatus(status);
-    validateIsDeleted(isDeleted);
     validatePersonalInfos(personalInfos);
   }
 
@@ -97,10 +95,6 @@ final class ApplicantValidator extends DomainValidator {
 
   private static void validateStatus(ApplicantStatus status) {
     validateNotNull(status, APPLICANT_STATUS_NULL);
-  }
-
-  private static void validateIsDeleted(Boolean isDeleted) {
-    validateNotNull(isDeleted, APPLICANT_IS_DELETED_NULL);
   }
 
   private static void validatePersonalInfos(List<ApplicantPersonalInfo> personalInfos) {

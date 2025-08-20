@@ -20,15 +20,10 @@ public class ClubRole {
   private final LocalDateTime joinedAt;
 
   @Builder
-  private ClubRole(
-      String id,
-      Role role,
-      Club club,
-      Admin admin,
-      LocalDateTime joinedAt) {
-    
+  private ClubRole(String id, Role role, Club club, Admin admin, LocalDateTime joinedAt) {
+
     ClubRoleValidator.validate(id, role, club, admin, joinedAt);
-    
+
     this.id = id;
     this.role = role;
     this.club = club;

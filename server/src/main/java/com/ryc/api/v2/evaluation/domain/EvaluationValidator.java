@@ -33,7 +33,6 @@ final class EvaluationValidator extends DomainValidator {
       BigDecimal score,
       String comment,
       EvaluationType type,
-      Boolean deleted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
 
@@ -44,7 +43,6 @@ final class EvaluationValidator extends DomainValidator {
     validateScore(score);
     validateComment(comment);
     validateType(type);
-    validateDeleted(deleted);
     validateCreatedAt(id, createdAt);
     validateUpdatedAt(id, updatedAt);
   }
@@ -83,10 +81,6 @@ final class EvaluationValidator extends DomainValidator {
 
   private static void validateType(EvaluationType type) {
     validateNotNull(type, EVALUATION_TYPE_NULL);
-  }
-
-  private static void validateDeleted(Boolean deleted) {
-    validateNotNull(deleted, EVALUATION_DELETED_NULL);
   }
 
   private static void validateCreatedAt(String id, LocalDateTime createdAt) {

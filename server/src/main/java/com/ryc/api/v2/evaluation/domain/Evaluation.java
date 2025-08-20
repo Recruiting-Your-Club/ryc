@@ -31,36 +31,23 @@ public class Evaluation {
       BigDecimal score,
       String comment,
       EvaluationType type,
-      Boolean deleted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
 
     // 1. 정제
     String sanitizedComment = DataResolveUtil.sanitizeString(comment);
 
-    // 2. 선택 멤버 변수 기본값 처리
-    Boolean resolvedDeleted = deleted != null ? deleted : Boolean.FALSE;
-
-    // 3. 검증
+    // 2. 검증
     EvaluationValidator.validate(
-        id,
-        evaluatorId,
-        evaluateeId,
-        score,
-        sanitizedComment,
-        type,
-        resolvedDeleted,
-        createdAt,
-        updatedAt);
+        id, evaluatorId, evaluateeId, score, sanitizedComment, type, createdAt, updatedAt);
 
-    // 4. 할당
+    // 3. 할당
     this.id = id;
     this.evaluatorId = evaluatorId;
     this.evaluateeId = evaluateeId;
     this.score = score;
     this.comment = sanitizedComment;
     this.type = type;
-    this.deleted = resolvedDeleted;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

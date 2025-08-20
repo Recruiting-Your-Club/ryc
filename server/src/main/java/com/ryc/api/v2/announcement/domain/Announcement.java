@@ -60,7 +60,6 @@ public class Announcement {
       AnnouncementPeriodInfo announcementPeriodInfo,
       String activityPeriod,
       ApplicationForm applicationForm,
-      Boolean isDeleted,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
 
@@ -76,7 +75,6 @@ public class Announcement {
     // 2. 선택 멤버 변수 기본값 처리
     List<Tag> resolvedTags = tags != null ? tags : List.of();
     Boolean resolvedHasInterview = hasInterview != null ? hasInterview : Boolean.TRUE;
-    Boolean resolvedIsDeleted = isDeleted != null ? isDeleted : Boolean.FALSE;
 
     // 3. 검증
     AnnouncementValidator.validate(
@@ -95,7 +93,6 @@ public class Announcement {
         announcementPeriodInfo,
         sanitizeActivityPeriod,
         applicationForm,
-        resolvedIsDeleted,
         createdAt,
         updatedAt);
 
@@ -115,7 +112,6 @@ public class Announcement {
     this.announcementPeriodInfo = announcementPeriodInfo;
     this.activityPeriod = sanitizeActivityPeriod;
     this.applicationForm = applicationForm;
-    this.isDeleted = resolvedIsDeleted;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

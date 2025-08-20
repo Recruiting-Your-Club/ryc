@@ -2,6 +2,7 @@ package com.ryc.api.v2.file.domain;
 
 import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
 
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.common.validator.DomainValidator;
@@ -33,6 +34,8 @@ final class FileMetaDataValidator extends DomainValidator {
       Long fileSize,
       boolean isDeleted,
       int displayOrder,
+      String accessToken,
+      LocalDateTime createdAt,
       FileDomainType fileDomainType,
       String associatedId,
       String uploadedByUserId,
@@ -43,12 +46,14 @@ final class FileMetaDataValidator extends DomainValidator {
     validateOriginalFileName(originalFileName);
     validateContentType(contentType);
     validateFileSize(fileSize);
-    validateisDeleted(isDeleted); //
-    validateDisplayOrder(displayOrder); //
-    validateFileDomainType(fileDomainType); //
+    validateisDeleted(isDeleted);
+    validateDisplayOrder(displayOrder);
+    validateAccessToken(accessToken);
+    validateCreatedAt(createdAt);
+    validateFileDomainType(fileDomainType);
     validateAssociatedId(associatedId);
     validateUploadedByUserId(uploadedByUserId);
-    validateStatus(status); //
+    validateStatus(status);
   }
 
   private static void validateId(String id) {
@@ -101,6 +106,14 @@ final class FileMetaDataValidator extends DomainValidator {
         MIN_DISPLAY_ORDER,
         MAX_DISPLAY_ORDER,
         FILE_METADATA_INVALID_DISPLAY_ORDER_RANGE);
+  }
+
+  private static void validateAccessToken(String accessToken) {
+    // TODO: 구현필요
+  }
+
+  private static void validateCreatedAt(LocalDateTime createdAt) {
+    // TODO: 구현필요
   }
 
   private static void validateFileDomainType(FileDomainType fileDomainType) {

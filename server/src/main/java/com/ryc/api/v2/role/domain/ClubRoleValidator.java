@@ -19,12 +19,7 @@ final class ClubRoleValidator extends DomainValidator {
       Pattern.compile(
           "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
-  static void validate(
-      String id,
-      Role role,
-      Club club,
-      Admin admin,
-      LocalDateTime joinedAt) {
+  static void validate(String id, Role role, Club club, Admin admin, LocalDateTime joinedAt) {
 
     validateId(id);
     validateRole(role);

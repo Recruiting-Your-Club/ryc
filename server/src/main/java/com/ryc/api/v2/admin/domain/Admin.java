@@ -12,7 +12,8 @@ public class Admin {
   private final String id;
   private final String name;
   private final String email;
-  private final String password; // password는 Domin과 Entity에서 언제나 암호화 된 상태로 존재한다. (암호화는 반드시 Service에서 진행)
+  private final String
+      password; // password는 Domin과 Entity에서 언제나 암호화 된 상태로 존재한다. (암호화는 반드시 Service에서 진행)
   private final AdminDefaultRole adminDefaultRole;
   private final Boolean isDeleted;
 
@@ -36,12 +37,7 @@ public class Admin {
 
     // 3. 검증
     AdminValidator.validate(
-        id,
-        sanitizeName,
-        sanitizeEmail,
-        password,
-        resolvedAdminDefaultRole,
-        resolvedIsDeleted);
+        id, sanitizeName, sanitizeEmail, password, resolvedAdminDefaultRole, resolvedIsDeleted);
 
     // 4. 할당
     this.id = id;

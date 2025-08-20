@@ -39,6 +39,8 @@ public class FileMetaData {
       Long fileSize,
       boolean isDeleted,
       int displayOrder,
+      String accessToken,
+      LocalDateTime createdAt,
       FileDomainType fileDomainType,
       String associatedId,
       String uploadedByUserId,
@@ -66,6 +68,8 @@ public class FileMetaData {
         resolvedFileSize,
         resolvedIsDeleted,
         resolvedDisplayOrder,
+        accessToken,
+        createdAt,
         fileDomainType,
         associatedId,
         uploadedByUserId,
@@ -79,6 +83,8 @@ public class FileMetaData {
     this.fileSize = resolvedFileSize;
     this.isDeleted = resolvedIsDeleted;
     this.displayOrder = resolvedDisplayOrder;
+    this.accessToken = accessToken;
+    this.createdAt = createdAt;
     this.fileDomainType = fileDomainType;
     this.associatedId = associatedId;
     this.uploadedByUserId = uploadedByUserId;
