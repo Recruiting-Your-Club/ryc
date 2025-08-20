@@ -2,7 +2,7 @@ package com.ryc.api.v2.announcement.domain.enums;
 
 import java.time.LocalDateTime;
 
-import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
+import com.ryc.api.v2.announcement.domain.vo.Period;
 
 public enum AnnouncementStatus {
   UPCOMING,
@@ -10,17 +10,10 @@ public enum AnnouncementStatus {
   CLOSED,
   EMPTY;
 
-  /**
-   * 현재 시간과 지원 시간을 비교하여 status를 반환하는 메소드
-   *
-   * @param announcementPeriodInfo 공고 기간 정보
-   * @return AnnouncementStatus
-   */
-  public static AnnouncementStatus from(
-      AnnouncementPeriodInfo announcementPeriodInfo, AnnouncementType type) {
+  public static AnnouncementStatus from(Period applicationPeriod, AnnouncementType type) {
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime startDate = announcementPeriodInfo.applicationPeriod().startDate();
-    LocalDateTime endDate = announcementPeriodInfo.applicationPeriod().endDate();
+    LocalDateTime startDate = applicationPeriod.startDate();
+    LocalDateTime endDate = applicationPeriod.endDate();
 
     if (type == AnnouncementType.ALWAYS_OPEN) {
       return AnnouncementStatus.RECRUITING;

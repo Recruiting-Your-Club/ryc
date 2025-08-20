@@ -47,6 +47,7 @@ public class AnnouncementEntity extends BaseEntity {
   @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
   @ElementCollection
+  @CollectionTable(name = "announcement_tags", joinColumns = @JoinColumn(name = "announcement_id"))
   @OrderBy("displayOrder ASC")
   private List<TagVO> tags;
 
