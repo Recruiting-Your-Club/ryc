@@ -1,11 +1,13 @@
 package com.ryc.api.v2.role.presentation;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
@@ -42,7 +44,12 @@ public class ClubRoleHttpApi {
   public ResponseEntity<ClubInviteCreatedResponse> createInviteCode(
       @PathVariable("club-id") String clubId) {
     ClubInviteCreatedResponse response = clubRoleService.createInviteCode(clubId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/{id}")
+            .buildAndExpand(response.inviteCode())
+            .toUri();
+    return ResponseEntity.created(location).body(response);
   }
 
   @PostMapping("clubs/{club-id}/invites/{invite-code}")
