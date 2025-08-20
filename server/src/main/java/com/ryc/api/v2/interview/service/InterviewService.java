@@ -45,20 +45,11 @@ public class InterviewService {
   private final ApplicationEventPublisher eventPublisher;
 
   @Transactional(readOnly = true)
-  public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
+  public List<InterviewSlotResponse> getInterviewSlots(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
 
-    List<InterviewSlotResponse> slots =
-        interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
-
-    return slots.stream()
-        .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
-        .entrySet()
-        .stream()
-        .map(entry -> createInterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
-        .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
-        .toList();
+    return interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
   }
 
   @Transactional(readOnly = true)
@@ -69,8 +60,18 @@ public class InterviewService {
     Applicant applicant = applicantRepository.findById(applicantId);
     Boolean isReserved =
         interviewRepository.isReservedByAnnouncementIdAndApplicantId(announcementId, applicantId);
+    List<InterviewSlot> interviewSlots =
+        interviewRepository.findSlotsByAnnouncementId(announcementId);
 
-    List<InterviewSlotsByDateResponse> slotResponses = getInterviewSlots(announcementId);
+    List<InterviewSlotsByDateResponse> slotResponses =
+        interviewSlots.stream()
+            .map(this::createInterviewSlotResponse)
+            .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
+            .entrySet()
+            .stream()
+            .map(entry -> createInterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
+            .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
+            .toList();
 
     FileGetResponse representativeImage =
         fileService.findAllByAssociatedId(clubId).stream()
