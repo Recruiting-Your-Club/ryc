@@ -38,7 +38,10 @@ public class AdminRepositoryImpl implements AdminRepository {
 
   @Override
   public Optional<Admin> findById(String id) {
-    return adminJpaRepository.findById(id).map(AdminMapper::toDomain);
+    return adminJpaRepository
+        .findById(id)
+        .filter(a -> !a.getIsDeleted())
+        .map(AdminMapper::toDomain);
   }
 
   @Override
@@ -63,5 +66,10 @@ public class AdminRepositoryImpl implements AdminRepository {
     return adminJpaRepository.findIdAndNameByIds(adminIds).stream()
         .filter(projection -> projection.getId() != null && projection.getName() != null)
         .collect(Collectors.toMap(AdminIdNameProjection::getId, AdminIdNameProjection::getName));
+  }
+
+  @Override
+  public void deleteById(String adminId) {
+    adminJpaRepository.deleteById(adminId);
   }
 }

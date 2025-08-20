@@ -2,14 +2,14 @@ import { css } from '@emotion/react';
 import theme from '@styles/theme';
 import { hexToRgb } from '@utils/hexToRgb';
 
-export const stepManagementPageContainer = css`
+export const s_stepManagementPageContainer = css`
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 `;
 
-export const topContainer = css`
+export const s_topContainer = css`
     width: 100%;
     height: 5%;
     min-height: 4rem;
@@ -17,7 +17,7 @@ export const topContainer = css`
     padding: 3rem 0;
 `;
 
-export const searchBarContainer = css`
+export const s_searchBarContainer = css`
     width: 30%;
     height: 100%;
     padding: 0 3.5rem;
@@ -26,14 +26,14 @@ export const searchBarContainer = css`
     justify-content: center;
 `;
 
-export const stepBoxContainer = css`
+export const s_stepBoxContainer = css`
     height: 90%;
     padding: 0 3.5rem 0 3.5rem;
     display: flex;
     gap: 2rem;
 `;
 
-export const inputCss = css`
+export const s_input = css`
     width: 100%;
     height: 3rem;
     padding: 0 0.5rem 0 1rem;
@@ -45,19 +45,9 @@ export const inputCss = css`
     box-shadow: 0px 0px 3px 0px rgba(${hexToRgb(theme.colors.black)}, 0.15);
 `;
 
-export const cardGroup = css`
-    height: 100%;
-    padding: 0.5rem 0.5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-
-    &::after {
-        content: '';
-        height: 0.5rem;
-        flex-shrink: 0;
+export const s_searchSvgButton = css`
+    &:hover {
+        cursor: default;
+        color: ${theme.colors.gray[600]};
     }
 `;

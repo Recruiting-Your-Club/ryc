@@ -1,6 +1,5 @@
 import Search from '@assets/images/search.svg';
 import {
-    ApplicantCard,
     ApplicantDialog,
     Button,
     CardBox,
@@ -8,195 +7,201 @@ import {
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
-import { documentList, interviewEmptyEvaluations } from '@constants/applicantDialog';
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-    cardGroup,
-    inputCss,
-    searchBarContainer,
-    stepBoxContainer,
-    stepManagementPageContainer,
-    topContainer,
+    s_input,
+    s_searchBarContainer,
+    s_searchSvgButton,
+    s_stepBoxContainer,
+    s_stepManagementPageContainer,
+    s_topContainer,
 } from './StepManagementPage.style';
-import type { Applicant, ClubNotice } from './types';
-const applicantList = [
-    {
-        name: '박민지',
-        email: 'test123@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 중 (2/6)',
-    },
-    {
-        name: '김영림',
-        email: 'test1234@naver.com',
-        date: '2025. 02. 04',
-        score: '3.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김일림',
-        email: 'test1235@naver.com',
-        date: '2025. 05. 20',
-        score: '0',
-        status: '평가 중 (0/6)',
-    },
-    {
-        name: '김이림',
-        email: 'test1236@naver.com',
-        date: '2025. 05. 20',
-        score: '1.5',
-        status: '평가 중 (3/6)',
-    },
-    {
-        name: '김세림',
-        email: 'test1237@naver.com',
-        date: '2025. 05. 20',
-        score: '2.4',
-        status: '평가 중 (2/6)',
-    },
-    {
-        name: '김네림',
-        email: 'test1238@naver.com',
-        date: '2025. 05. 20',
-        score: '5',
-        status: '평가 완료 (6/6)',
-    },
-];
-
-const applicantList2 = [
-    {
-        name: '박민지',
-        email: 'tes123@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 중 (2/6)',
-    },
-    {
-        name: '김영림',
-        email: 'tes1234@naver.com',
-        date: '2025. 02. 04',
-        score: '3.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김일림',
-        email: 'tes1235@naver.com',
-        date: '2025. 05. 20',
-        score: '0',
-        status: '평가 중 (0/6)',
-    },
-    {
-        name: '김이림',
-        email: 'tes1236@naver.com',
-        date: '2025. 05. 20',
-        score: '1.5',
-        status: '평가 중 (3/6)',
-    },
-    {
-        name: '김세림',
-        email: 'tes1237@naver.com',
-        date: '2025. 05. 20',
-        score: '2.4',
-        status: '평가 중 (2/6)',
-    },
-];
-
-const finalApplicantList = [
-    {
-        name: '박민지',
-        email: 't123@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: 'Robert Lee',
-        email: 't12355@naver.com',
-        date: '2025. 02. 04',
-        score: '4.0',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김영림',
-        email: 't1234@naver.com',
-        date: '2025. 02. 04',
-        score: '3.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김일림',
-        email: 't1235@naver.com',
-        date: '2025. 05. 20',
-        score: '0',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김이림',
-        email: 't1236@naver.com',
-        date: '2025. 05. 20',
-        score: '1.5',
-        status: '평가 완료 (6/6)',
-    },
-    {
-        name: '김세림',
-        email: 't1237@naver.com',
-        date: '2025. 05. 20',
-        score: '2.4',
-        status: '평가 완료 (6/6)',
-    },
-];
-
-const data: ClubNotice = {
-    document: true,
-    interview: true,
-};
+import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { stepQueries, evaluationQueries, applicantQueries } from '@api/queryFactory';
+import type { StepApplicant } from '@api/domain/step/types';
+import { stepMutations } from '@api/hooks';
+import { evaluationKeys, stepKeys } from '@api/querykeyFactory';
+import {
+    DOCUMENT_STEP,
+    FINAL_STEP_IN_THREE,
+    FINAL_STEP_IN_TWO,
+    INTERVIEW_STEP,
+} from '@constants/stepManagementPage';
+import type { EvaluationDataWithSummary } from '@api/domain/evaluation/types';
+import {
+    getEvaluations,
+    groupStepApplicants,
+    mergeApplicantWithSummary,
+} from './utils/stepApplicant';
+import { useToast } from '@hooks/useToast';
+import { emailMutations } from '@api/hooks/emailMutations';
+import type { InterviewDetailInformation } from '@api/domain/email/types';
+import { useParams } from 'react-router-dom';
 
 function StepManagementPage() {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
+    const { announcementId, clubId } = useParams();
+
     // initial values
     // state, ref, querystring hooks
-    const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
-    const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
-    const [query, setQuery] = useState('');
-
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
+    const [searchText, setSearchText] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
+    const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
 
     // form hooks
     // query hooks
-    // calculated values
-    const normalizeQuery = (name: string) => {
-        return name.toLowerCase().replace(/\s+/g, '');
-    }; // 엄밀히 말하면 util 함수에 해당
+    const queryClient = useQueryClient();
+    const { data: totalSteps = { process: [] } } = useSuspenseQuery(
+        stepQueries.getTotalSteps(announcementId!),
+    );
+    const { data: stepApplicantList = [] } = useSuspenseQuery(
+        stepQueries.allStepApplicants(announcementId!, clubId!),
+    );
+    const { mutate: updateStatus } = stepMutations.useUpdateStepApplicantStatus();
+    const { data: applicantDocument } = useQuery({
+        ...applicantQueries.getApplicantDocument(
+            announcementId!,
+            selectedApplicant?.applicantId ?? '',
+            clubId!,
+        ),
 
-    const filteredNames = useCallback(
-        (applicantList: Applicant[]) => {
-            const normalizedQuery = normalizeQuery(query);
-            return applicantList.filter((applicant) =>
-                normalizeQuery(applicant.name).includes(normalizedQuery),
-            );
-        },
-        [query],
+        enabled: !!selectedApplicant?.applicantId,
+    });
+
+    const { mutate: sendPlainEmail } = emailMutations.usePostPlainEmail(() => setIsOpen(false));
+    const { mutate: sendInterviewEmail } = emailMutations.usePostInterviewEmail(() =>
+        setIsInterviewOpen(false),
     );
 
+    // calculated values
+    const isThreeStepProcess = totalSteps.process.length === 3;
+
+    const documentStepApplicants = stepApplicantList.filter(
+        (applicant) =>
+            ['DOCUMENT_PENDING', 'DOCUMENT_FAIL'].includes(applicant.status) ||
+            (!isThreeStepProcess && ['FINAL_PASS', 'FINAL_FAIL'].includes(applicant.status)),
+    );
+    const interviewStepApplicants = stepApplicantList.filter((applicant) =>
+        ['INTERVIEW_PENDING', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
+            applicant.status,
+        ),
+    );
+
+    const documentApplicantIds = documentStepApplicants.map((applicant) => applicant.applicantId);
+    const interviewApplicantIds = interviewStepApplicants.map((applicant) => applicant.applicantId);
+
+    const { data: documentEvaluationSummaryList = [] } = useSuspenseQuery(
+        evaluationQueries.evaluationSummary({
+            clubId: clubId!,
+            applicantIdList: documentApplicantIds,
+            type: 'document',
+        }),
+    );
+    const { data: interviewEvaluationSummaryList = [] } = useSuspenseQuery(
+        evaluationQueries.evaluationSummary({
+            clubId: clubId!,
+            applicantIdList: interviewApplicantIds,
+            type: 'interview',
+        }),
+    );
+    const { data: documentEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: clubId!,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'document',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            [
+                'DOCUMENT_PENDING',
+                'DOCUMENT_FAIL',
+                'INTERVIEW_PENDING',
+                'INTERVIEW_FAIL',
+                'FINAL_PASS',
+                'FINAL_FAIL',
+            ].includes(selectedApplicant.status),
+    });
+    const { data: interviewEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: clubId!,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'interview',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            ['INTERVIEW_PENDING', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
+                selectedApplicant.status,
+            ),
+    });
+
+    const statusLabel = isThreeStepProcess
+        ? [
+              { label: '서류', status: 'DOCUMENT_PENDING' },
+              { label: '면접 평가', status: 'INTERVIEW_PENDING' },
+              { label: '최종', status: 'FINAL_PASS' },
+          ]
+        : [
+              { label: '지원서 접수', status: 'DOCUMENT_PENDING' },
+              { label: '최종', status: 'FINAL_PASS' },
+          ];
+
+    const statusInOwnStep = isThreeStepProcess
+        ? [
+              { pass: 'DOCUMENT_PENDING', fail: 'DOCUMENT_FAIL' },
+              { pass: 'INTERVIEW_PENDING', fail: 'INTERVIEW_FAIL' },
+              { pass: 'FINAL_PASS', fail: 'FINAL_FAIL' },
+          ]
+        : [
+              { pass: 'DOCUMENT_PENDING', fail: 'DOCUMENT_FAIL' },
+              { pass: 'FINAL_PASS', fail: 'FINAL_FAIL' },
+          ];
+
+    const mergedStepApplicantList = useMemo(
+        () =>
+            mergeApplicantWithSummary(
+                stepApplicantList,
+                documentEvaluationSummaryList,
+                interviewEvaluationSummaryList,
+                isThreeStepProcess,
+            ),
+        [stepApplicantList, documentEvaluationSummaryList, interviewEvaluationSummaryList],
+    );
+
+    const stepApplicantGroups = useMemo(
+        () => groupStepApplicants(mergedStepApplicantList, isThreeStepProcess),
+        [mergedStepApplicantList],
+    );
+
+    const documentEvaluations = getEvaluations(
+        documentEvaluationDetail,
+        selectedApplicant?.applicantId,
+    );
+
+    const interviewEvaluations = getEvaluations(
+        interviewEvaluationDetail,
+        selectedApplicant?.applicantId,
+    );
+
+    const isOnlyDocumentStatus = ['DOCUMENT_PENDING', 'DOCUMENT_FAIL'].includes(
+        selectedApplicant?.status ?? '',
+    );
+    const isInterviewIncluded = !isOnlyDocumentStatus && isThreeStepProcess;
+
+    const evaluationsInDialog: EvaluationDataWithSummary[] = isInterviewIncluded
+        ? [documentEvaluations, interviewEvaluations]
+        : [documentEvaluations];
+
+    const dialogEvaluationLabels: string[] = isInterviewIncluded
+        ? ['서류평가', '면접평가']
+        : ['서류평가'];
+
     // handlers
-    const handleToggle = (email: string, checked: boolean) => {
-        setSelectedEmails((prev) => (checked ? [...prev, email] : prev.filter((e) => e !== email)));
-    };
-
-    const handleSelectAll = () => {
-        // 임시 기능 (체크박스 전체선택) -> 추후 적용 예정
-        if (selectedEmails.length === applicantList.length) {
-            setSelectedEmails([]);
-        } else {
-            setSelectedEmails(applicantList.map((applicant) => applicant.email));
-        }
-    };
-
-    const handleOpen = (applicant: Applicant) => {
+    const handleOpen = (applicant: StepApplicant) => {
         setSelectedApplicant(applicant);
         setIsOpen(true);
     };
@@ -214,97 +219,211 @@ function StepManagementPage() {
         setIsInterviewOpen(false);
     };
 
+    const handleStatusUpdate = (applicantIds: string[], newStatus: string) => {
+        if (applicantIds.length === 0) {
+            toast('지원자를 선택해주세요!', { toastTheme: 'black', type: 'error' });
+            return;
+        }
+
+        applicantIds.forEach((id) => {
+            updateStatus(
+                { applicantId: id, status: newStatus, clubId: clubId! },
+                {
+                    onSuccess: () => {
+                        queryClient.invalidateQueries({
+                            queryKey: stepKeys.allStepApplicants(announcementId!, clubId!),
+                        });
+                        queryClient.invalidateQueries({
+                            queryKey: evaluationKeys.evaluationSummary(
+                                clubId!,
+                                documentApplicantIds,
+                                'document',
+                            ),
+                        });
+                        queryClient.invalidateQueries({
+                            queryKey: evaluationKeys.evaluationSummary(
+                                clubId!,
+                                interviewApplicantIds,
+                                'interview',
+                            ),
+                        });
+                    },
+                },
+            );
+        });
+    };
+
+    const handlePlainEmail = (subject: string, content: string) => {
+        if (!validateEmailInputs(subject, content)) return;
+
+        sendPlainEmail({
+            announcementId: announcementId!,
+            clubId: clubId!,
+            email: { recipients: emailTargetList, subject, content },
+        });
+    };
+
+    const handleInterviewEmail = (
+        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        subject: string,
+        content: string,
+    ) => {
+        if (numberOfPeopleByInterviewDates.length === 0) {
+            toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
+            return;
+        }
+        if (!validateEmailInputs(subject, content)) return;
+
+        sendInterviewEmail({
+            announcementId: announcementId!,
+            clubId: clubId!,
+            email: {
+                numberOfPeopleByInterviewDates,
+                emailSendRequest: { recipients: emailTargetList, subject, content },
+            },
+        });
+    };
+
+    const handleEmailDialogOpen = (
+        target: string,
+        ids: string[],
+        isInterviewDialog: boolean = false,
+    ) => {
+        if (ids.length === 0) {
+            toast('지원자를 선택해주세요!', { toastTheme: 'black', type: 'error' });
+            return;
+        }
+
+        const groupMap: Record<string, StepApplicant[]> = {
+            documentPending: stepApplicantGroups.documentPending,
+            documentFailed: stepApplicantGroups.documentFailed,
+            interviewPending: stepApplicantGroups.interviewPending ?? [],
+            interviewFailed: stepApplicantGroups.interviewFailed ?? [],
+            finalPassed: stepApplicantGroups.finalPassed,
+            finalFailed: stepApplicantGroups.finalFailed,
+        };
+
+        const applicantsById = new Map(
+            groupMap[target].map((applicant) => [applicant.applicantId, applicant.email] as const),
+        );
+
+        const emails = ids
+            .map((id) => applicantsById.get(id))
+            .filter((email): email is string => Boolean(email));
+
+        setEmailTargetList(emails);
+
+        if (isInterviewDialog) {
+            setIsInterviewOpen(true);
+        } else {
+            setIsEmailOpen(true);
+        }
+    };
+
     // effects
+    // etc
+
+    const validateEmailInputs = (subject: string, content: string): boolean => {
+        if (!subject.trim()) {
+            toast('이메일 제목을 입력해주세요!', { toastTheme: 'colored', type: 'error' });
+            return false;
+        }
+        if (!content.trim()) {
+            toast('이메일 내용을 입력해주세요!', { toastTheme: 'colored', type: 'error' });
+            return false;
+        }
+        return true;
+    };
 
     return (
-        <div css={stepManagementPageContainer}>
-            <div css={topContainer}>
-                <nav css={searchBarContainer}>
+        <div css={s_stepManagementPageContainer}>
+            <div css={s_topContainer}>
+                <nav css={s_searchBarContainer}>
                     <Input
                         variant="transparent"
                         endNode={
-                            <Button variant="text" size="s">
+                            <Button variant="text" size="s" sx={s_searchSvgButton}>
                                 <Search width="1.5rem" height="1.5rem" />
                             </Button>
                         }
-                        inputSx={inputCss}
+                        inputSx={s_input}
                         placeholder="지원자 이름 검색"
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => setSearchText(e.target.value)}
                     />
                 </nav>
             </div>
-            <div css={stepBoxContainer}>
-                <CardBox stepTitle={data.document ? '서류 평가' : '지원서 접수'} step="normal">
-                    <div css={cardGroup}>
-                        {filteredNames(applicantList).map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.email}
-                                name={applicant.name}
-                                email={applicant.email}
-                                date={applicant.date}
-                                score={applicant.score}
-                                status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)} // 임의 (추후 기능 연장)
-                                onChange={handleToggle}
-                                onClick={() => handleOpen(applicant as Applicant)}
-                            />
-                        ))}
-                    </div>
-                </CardBox>
-                {data.interview && (
-                    <CardBox stepTitle="면접" step="normal">
-                        <div css={cardGroup}>
-                            {filteredNames(applicantList2).map((applicant) => (
-                                <ApplicantCard
-                                    key={applicant.email}
-                                    name={applicant.name}
-                                    email={applicant.email}
-                                    date={applicant.date}
-                                    score={applicant.score}
-                                    status={applicant.status}
-                                    checked={selectedEmails.includes(applicant.email)} // 임의
-                                    onChange={handleToggle}
-                                    onClick={() => handleOpen(applicant as Applicant)}
-                                />
-                            ))}
-                        </div>
-                    </CardBox>
+            <div css={s_stepBoxContainer}>
+                <CardBox
+                    stepTitle={statusLabel[DOCUMENT_STEP].label}
+                    step="document"
+                    searchText={searchText}
+                    passedApplicantList={stepApplicantGroups.documentPending}
+                    failedApplicantList={stepApplicantGroups.documentFailed}
+                    handleOpen={handleOpen}
+                    handleApplicantStatus={handleStatusUpdate}
+                    statusLabel={
+                        isThreeStepProcess
+                            ? [statusLabel[INTERVIEW_STEP], statusLabel[FINAL_STEP_IN_THREE]]
+                            : [statusLabel[FINAL_STEP_IN_TWO]]
+                    }
+                    statusInOwnStep={statusInOwnStep[DOCUMENT_STEP]}
+                    onEmailDialogOpen={handleEmailDialogOpen}
+                />
+                {isThreeStepProcess && (
+                    <CardBox
+                        stepTitle={statusLabel[INTERVIEW_STEP].label}
+                        step="interview"
+                        searchText={searchText}
+                        passedApplicantList={stepApplicantGroups.interviewPending!}
+                        failedApplicantList={stepApplicantGroups.interviewFailed!}
+                        handleOpen={handleOpen}
+                        handleApplicantStatus={handleStatusUpdate}
+                        statusLabel={[statusLabel[DOCUMENT_STEP], statusLabel[FINAL_STEP_IN_THREE]]}
+                        statusInOwnStep={statusInOwnStep[INTERVIEW_STEP]}
+                        onEmailDialogOpen={handleEmailDialogOpen}
+                    />
                 )}
-                <CardBox stepTitle="최종 합격" step="final">
-                    <div css={cardGroup}>
-                        {filteredNames(finalApplicantList).map((applicant) => (
-                            <ApplicantCard
-                                key={applicant.email}
-                                name={applicant.name}
-                                email={applicant.email}
-                                date={applicant.date}
-                                score={applicant.score}
-                                status={applicant.status}
-                                checked={selectedEmails.includes(applicant.email)} // 임의
-                                onChange={handleToggle}
-                                onClick={() => handleOpen(applicant as Applicant)}
-                            />
-                        ))}
-                    </div>
-                </CardBox>
+                <CardBox
+                    stepTitle={statusLabel.at(-1)!.label}
+                    step="final"
+                    searchText={searchText}
+                    passedApplicantList={stepApplicantGroups.finalPassed}
+                    failedApplicantList={stepApplicantGroups.finalFailed}
+                    handleOpen={handleOpen}
+                    handleApplicantStatus={handleStatusUpdate}
+                    statusLabel={
+                        isThreeStepProcess
+                            ? [statusLabel[DOCUMENT_STEP], statusLabel[INTERVIEW_STEP]]
+                            : [statusLabel[DOCUMENT_STEP]]
+                    }
+                    statusInOwnStep={statusInOwnStep.at(-1)!}
+                    onEmailDialogOpen={handleEmailDialogOpen}
+                />
                 {selectedApplicant && (
                     <ApplicantDialog
-                        name={selectedApplicant.name}
-                        email={selectedApplicant.email}
-                        documentList={documentList}
-                        evaluations={interviewEmptyEvaluations}
+                        applicant={selectedApplicant}
+                        personalInformation={applicantDocument?.personalInfos ?? []}
+                        preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                        applicationQuestionAnswers={
+                            applicantDocument?.applicationQuestionAnswers ?? []
+                        }
+                        evaluations={evaluationsInDialog}
+                        evaluationLabels={dialogEvaluationLabels}
+                        isThreeStepProcess={isThreeStepProcess}
                         open={isOpen}
                         handleClose={handleClose}
                     />
                 )}
-                <Button onClick={() => setIsInterviewOpen(true)}>면접일정설정</Button>
                 <InterviewSettingDialog
                     open={isInterviewOpen}
                     handleClose={handleInterviewSettingClose}
+                    handleInterviewEmail={handleInterviewEmail}
                 />
-
-                <Button onClick={() => setIsEmailOpen(true)}>이메일</Button>
-                <PlainEmailDialog open={isEmailOpen} handleClose={handleEmailClose} />
+                <PlainEmailDialog
+                    open={isEmailOpen}
+                    handleClose={handleEmailClose}
+                    handlePlainEmail={handlePlainEmail}
+                />
             </div>
         </div>
     );

@@ -90,7 +90,7 @@ export const documentBoxGroup = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
     padding: 2rem;
     overflow-y: auto;
 
@@ -99,6 +99,11 @@ export const documentBoxGroup = css`
         height: 0.5rem;
         flex-shrink: 0;
     }
+`;
+
+export const s_documentTypeTextWrapper = css`
+    align-self: flex-start;
+    padding: 0 1rem;
 `;
 
 export const evaluationContainer = css`

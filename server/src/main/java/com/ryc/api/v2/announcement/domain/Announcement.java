@@ -39,9 +39,6 @@ public class Announcement {
   // application form
   private final ApplicationForm applicationForm;
 
-  // soft delete
-  private final Boolean isDeleted;
-
   // timestamp
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
@@ -162,7 +159,6 @@ public class Announcement {
             .announcementType(announcementType)
             .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
-            .isDeleted(false)
             .build();
 
     // 5. 유효성 검사
@@ -205,7 +201,6 @@ public class Announcement {
             .tags(updatedTags)
             .announcementStatus(updatedAnnouncementStatus)
             .announcementType(announcementType)
-            .isDeleted(false)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
 
@@ -234,7 +229,6 @@ public class Announcement {
         .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
-        .isDeleted(false)
         .announcementPeriodInfo(this.announcementPeriodInfo)
         .createdAt(this.createdAt)
         .updatedAt(this.updatedAt)

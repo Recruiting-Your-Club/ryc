@@ -1,9 +1,7 @@
+import type { MergedStepApplicant } from '@components/CardBox/types';
+
 export interface ApplicantCardProps {
-    name: string;
-    email: string;
-    date: string;
-    score: string;
-    status: string;
+    applicant: MergedStepApplicant;
     checked: boolean;
     onChange: (email: string, checked: boolean) => void;
     onClick: () => void;

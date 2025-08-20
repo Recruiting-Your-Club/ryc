@@ -76,4 +76,24 @@ public class InterviewRepositoryImpl implements InterviewRepository {
     return interviewReservationJpaRepository.existsByAnnouncementIdAndApplicantId(
         announcementId, applicantId);
   }
+
+  @Override
+  public void deleteSlotsByAnnouncementId(String announcementId) {
+    interviewSlotJpaRepository.deleteAllByAnnouncementId(announcementId);
+  }
+
+  @Override
+  public void deleteReservationById(String reservationId) {
+    interviewReservationJpaRepository.deleteById(reservationId);
+  }
+
+  @Override
+  public boolean existsReservationById(String reservationId) {
+    return interviewReservationJpaRepository.existsById(reservationId);
+  }
+
+  @Override
+  public boolean existsSlotsByAnnouncementId(String announcementId) {
+    return interviewSlotJpaRepository.existsByAnnouncementId(announcementId);
+  }
 }

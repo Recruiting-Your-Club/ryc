@@ -10,5 +10,7 @@ export * from './ClubApplyPage';
 export * from './ReservationPage';
 export * from './MyClubPage';
 export * from './DocumentEvaluationPage';
-export * from './InterviewEvaluationPage';
+export * from './ClubCreatePage';
 export * from './LoadingPage';
+export * from './ClubApplyPage/ClubApplySuccessPage';
+export * from './InterviewEvaluationPage';

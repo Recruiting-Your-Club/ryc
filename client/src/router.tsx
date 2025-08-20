@@ -1,4 +1,4 @@
-import { ClubApplyPage } from '@pages/ClubApplyPage';
+import { ClubApplyLoadingPage } from './pages/LoadingPage';
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { RecruitCreatePage } from '@pages/RecruitCreatePage/RecruitCreatePage';
@@ -10,16 +10,19 @@ import {
     InterviewEvaluationPage,
     LoginPage,
     MainLoadingPage,
-    RecruitmentPage,
     ReservationPage,
     MyClubPage,
     RegisterPage,
     StepManagementPage,
     TestPage,
+    RecruitmentLoadingPage,
+    ClubApplySuccessPage,
 } from './pages';
 
 const LazyMainPage = lazy(() => import('./pages/MainPage/MainPage'));
 const LazyDetailPage = lazy(() => import('./pages/ClubDetailPage/ClubDetailPage'));
+const LazyRecruitmentPage = lazy(() => import('./pages/RecruitmentPage/RecruitmentPage'));
+const LazyClubApplyPage = lazy(() => import('./pages/ClubApplyPage/ClubApplyPage'));
 
 const router = createBrowserRouter([
     {
@@ -44,16 +47,40 @@ const router = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            { path: 'apply', element: <ClubApplyPage /> },
             { path: 'detail', element: <LazyDetailPage /> },
             { path: 'test', element: <TestPage /> },
-            { path: 'detail/recruitment', element: <RecruitmentPage /> },
             { path: 'myclub', element: <MyClubPage /> },
             { path: 'club/create', element: <ClubCreatePage /> },
         ],
     },
     {
-        path: '/',
+        path: '/announcements',
+        element: <UserLayout />,
+        children: [
+            {
+                path: ':announcementId',
+                element: (
+                    <Suspense fallback={<RecruitmentLoadingPage />}>
+                        <LazyRecruitmentPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':announcementId/application',
+                element: (
+                    <Suspense fallback={<ClubApplyLoadingPage />}>
+                        <LazyClubApplyPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: ':announcementId/application/success/:applicantId/:applicationId',
+                element: <ClubApplySuccessPage />,
+            },
+        ],
+    },
+    {
+        path: '/manager',
         element: <ManagerLayout />,
         children: [
             { index: true, element: <TestPage /> },

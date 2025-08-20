@@ -16,7 +16,7 @@ export interface AllClub {
     imageUrl: string;
     thumbnailUrl: string;
     category: string;
-    status?: string;
+    announcementStatus?: string;
     clubTags: ClubTag[];
 }
 export interface Club {

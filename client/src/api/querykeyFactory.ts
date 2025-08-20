@@ -35,7 +35,7 @@ const applicantKeys = {
 };
 
 const stepKeys = {
-    totalSteps: ['step'] as const,
+    totalSteps: (announcementId: string) => ['step', announcementId] as const,
     allStepApplicants: (announcementId: string, clubId: string) =>
         ['step-applicants', announcementId, clubId] as const,
 };
@@ -52,10 +52,6 @@ const evaluationKeys = {
     ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
 };
 
-const announcementKeys = {
-    listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
-};
-
 const interviewKeys = {
     allInterviewSchedules: ['interviewschedules'] as const,
     allInterviewees: ['interviewees'] as const,
@@ -65,7 +61,28 @@ const interviewKeys = {
 };
 
 const myClubKeys = {
-  all: ['clubs'] as const,
-}
+    all: ['clubs'] as const,
+};
 
-export { clubKeys, applicantKeys, stepKeys, evaluationKeys, interviewKeys, myClubKeys, announcementKeys };
+const applicationKeys = {
+    all: ['application'] as const,
+    detail: (id: string) => ['detail', id] as const,
+};
+
+const announcementKeys = {
+    lists: (clubId: string) => ['list', clubId] as const,
+    listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
+    detail: (announcementId: string) => ['detail', announcementId] as const,
+    postApplicationAnswers: (announcementId: string) =>
+        ['post-application-answers', announcementId] as const,
+};
+
+export {
+    clubKeys,
+    applicantKeys,
+    stepKeys,
+    evaluationKeys,
+    interviewKeys,
+    myClubKeys,
+    announcementKeys,
+};

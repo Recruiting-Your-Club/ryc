@@ -1,34 +1,30 @@
-interface InterviewSet {
-    id: number;
-    name: string;
-    startTime: string;
-    endTime: string;
+export interface InterviewSlot {
+    id: string;
+    period: SlotPeriod;
+    maxNumberOfPeople: number;
+    currentNumberOfPeople: number;
 }
 
-export interface InterviewSchedule {
-    date: string;
-    interviewSets: InterviewSet[];
+export interface SlotPeriod {
+    startDate: string;
+    endDate: string;
 }
 
-export interface Interviewee {
-    id: number;
-    name: string;
-    email: string;
-    interviewSetId: number | null;
+export interface InterviewApplicant {
+    interviewSlotId: string;
+    interviewReservations: ApplicantReservedInterview[];
 }
 
-export interface IntervieweeDetail extends Interviewee {
-    studentId: string;
-    phone: string;
+export interface UnreservedApplicant {
+    unreservedApplicants: ApplicantForInterviewSlot[];
 }
 
-export interface Document {
-    applicantId: number;
-    detail: { id: number; question: string; answer: string }[];
+export interface ApplicantReservedInterview extends ApplicantForInterviewSlot {
+    interviewReservationId: string;
 }
 
-export interface Evaluation {
-    applicantId: number;
-    averageScore: number;
-    comments: { id: number; score: number; name: string; comment: string }[];
+export interface ApplicantForInterviewSlot {
+    applicantId: string;
+    applicantEmail: string;
+    applicantName: string;
 }

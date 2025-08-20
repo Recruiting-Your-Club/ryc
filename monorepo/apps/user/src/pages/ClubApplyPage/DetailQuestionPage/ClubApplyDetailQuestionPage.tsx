@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { useMediaQuery } from '@ssoc/hooks/src/useMediaQuery';
-import { Text, TextArea } from '@ssoc/ui';
-import { Tooltip } from '@ssoc/ui/src/components';
-import InfoIcon from '@ssoc/user/src/assets/images/info.svg';
+import { useMediaQuery } from '@ssoc/hooks';
+import { Text, TextArea, Tooltip } from '@ssoc/ui';
 
+import InfoIcon from '../../../assets/images/info.svg';
 import type { ClubApplyDetailQuestionPageProps } from '../types';
 import { getAnswer } from '../utils';
 import {
     clubApplyDetailQuestionContainer,
     s_infoIcon,
     s_labelContainer,
-    s_questionStarSx,
+    s_questionStar,
     s_questionTitleContainer,
     s_questionTitleSx,
     s_textAreaWrapperSx,
@@ -34,48 +33,46 @@ function ClubApplyDetailQuestionPage({
             {clubDetailQuestions.map((question) => {
                 const hasError =
                     question.isRequired &&
-                    touched[question.questionTitle] &&
-                    !getAnswer(answers, question.questionTitle)?.trim();
+                    touched[question.label] &&
+                    !getAnswer(answers, question.label)?.trim();
                 return (
                     <div
-                        key={question.questionTitle}
+                        key={question.label}
                         css={clubApplyDetailQuestionContainer}
                         tabIndex={-1}
                         ref={(element) => {
                             if (questionRefs.current) {
-                                questionRefs.current[question.questionTitle] = element;
+                                questionRefs.current[question.label] = element;
                             }
                         }}
                     >
                         <div css={s_labelContainer}>
                             <div css={s_questionTitleContainer}>
                                 <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
-                                    {question.questionTitle}
+                                    {question.label}
+                                    {question.isRequired && <span css={s_questionStar}>*</span>}
                                 </Text>
-                                {question.isRequired && (
-                                    <Text type="bodyRegular" color="warning" sx={s_questionStarSx}>
-                                        *
-                                    </Text>
-                                )}
                             </div>
-                            <Tooltip
-                                content={question.description}
-                                direction={isTablet ? 'bottomLeft' : 'bottom'}
-                            >
-                                <InfoIcon css={s_infoIcon} />
-                            </Tooltip>
+                            {question.description && (
+                                <Tooltip
+                                    content={question.description || ''}
+                                    direction={isTablet ? 'bottomLeft' : 'bottom'}
+                                >
+                                    <InfoIcon css={s_infoIcon} />
+                                </Tooltip>
+                            )}
                         </div>
                         <TextArea
                             size="lg"
-                            value={getAnswer(answers, question.questionTitle)}
+                            value={getAnswer(answers, question.label)}
                             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                onAnswerChange(question.questionTitle, event.target.value)
+                                onAnswerChange(question.id, question.label, event.target.value)
                             }
                             wrapperSx={s_textAreaWrapperSx}
                             textAreaSx={textAreaSx}
                             error={hasError}
-                            onFocus={() => onFocus(question.questionTitle)}
-                            onBlur={() => onBlur(question.questionTitle)}
+                            onFocus={() => onFocus(question.label)}
+                            onBlur={() => onBlur(question.label)}
                             errorText={hasError ? '필수 항목입니다.' : undefined}
                         />
                     </div>

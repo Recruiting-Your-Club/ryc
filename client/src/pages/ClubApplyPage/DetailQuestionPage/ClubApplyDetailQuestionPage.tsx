@@ -33,23 +33,23 @@ function ClubApplyDetailQuestionPage({
             {clubDetailQuestions.map((question) => {
                 const hasError =
                     question.isRequired &&
-                    touched[question.questionTitle] &&
-                    !getAnswer(answers, question.questionTitle)?.trim();
+                    touched[question.label] &&
+                    !getAnswer(answers, question.label)?.trim();
                 return (
                     <div
-                        key={question.questionTitle}
+                        key={question.label}
                         css={clubApplyDetailQuestionContainer}
                         tabIndex={-1}
                         ref={(element) => {
                             if (questionRefs.current) {
-                                questionRefs.current[question.questionTitle] = element;
+                                questionRefs.current[question.label] = element;
                             }
                         }}
                     >
                         <div css={s_labelContainer}>
                             <div css={s_questionTitleContainer}>
                                 <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
-                                    {question.questionTitle}
+                                    {question.label}
                                 </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_questionStarSx}>
@@ -58,7 +58,7 @@ function ClubApplyDetailQuestionPage({
                                 )}
                             </div>
                             <Tooltip
-                                content={question.description}
+                                content={question.description || ''}
                                 direction={isTablet ? 'bottomLeft' : 'bottom'}
                             >
                                 <InfoIcon css={s_infoIcon} />
@@ -66,15 +66,15 @@ function ClubApplyDetailQuestionPage({
                         </div>
                         <TextArea
                             size="lg"
-                            value={getAnswer(answers, question.questionTitle)}
+                            value={getAnswer(answers, question.label)}
                             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                onAnswerChange(question.questionTitle, event.target.value)
+                                onAnswerChange(question.id, question.label, event.target.value)
                             }
                             wrapperSx={s_textAreaWrapperSx}
                             textAreaSx={textAreaSx}
                             error={hasError}
-                            onFocus={() => onFocus(question.questionTitle)}
-                            onBlur={() => onBlur(question.questionTitle)}
+                            onFocus={() => onFocus(question.label)}
+                            onBlur={() => onBlur(question.label)}
                             errorText={hasError ? '필수 항목입니다.' : undefined}
                         />
                     </div>

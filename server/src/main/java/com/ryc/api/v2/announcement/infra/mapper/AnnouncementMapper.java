@@ -77,7 +77,6 @@ public class AnnouncementMapper {
         .announcementType(announcement.getAnnouncementType())
         .hasInterview(announcement.getHasInterview())
         .summaryDescription(announcement.getSummaryDescription())
-        .isDeleted(announcement.getIsDeleted())
         .build();
   }
 }

@@ -559,8 +559,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   // ClubRole Admin
   CLUB_ROLE_ADMIN_NULL(HttpStatus.BAD_REQUEST, "동아리 역할의 관리자는 null일 수 없습니다."),
 
-  CLUB_ROLE_CREATED_AT_NULL(HttpStatus.BAD_REQUEST, "동아리 권한 생성일은 null일 수 없습니다."),
-  CLUB_ROLE_UPDATED_AT_NULL(HttpStatus.BAD_REQUEST, "동아리 권한 수정일은 null일 수 없습니다.");
+  CLUB_ROLE_JOINED_AT_NULL(HttpStatus.BAD_REQUEST, "동아리 권한 생성일은 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;

@@ -25,7 +25,7 @@ public class Applicant {
   private final String email;
   private final String name;
   private final ApplicantStatus status;
-  private final Boolean isDeleted;
+
   // 이름, 이메일 제외 개인정보 질문 저장
   private final List<ApplicantPersonalInfo> personalInfos;
 
@@ -78,7 +78,6 @@ public class Applicant {
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
         .personalInfos(personalInfos)
         .status(ApplicantStatus.DOCUMENT_PENDING)
-        .isDeleted(false)
         .build();
   }
 
@@ -89,7 +88,6 @@ public class Applicant {
         .email(this.email)
         .name(this.name)
         .status(status)
-        .isDeleted(this.isDeleted)
         .personalInfos(this.personalInfos)
         .build();
   }

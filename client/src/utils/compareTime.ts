@@ -45,5 +45,6 @@ export const getDeadlineInfo = (deadline: string) => {
                 ? `D-Day`
                 : `마감`;
 
-    return { displayText, diffDay };
+    const isExpired = diffDay < 0;
+    return { displayText, diffDay, isExpired };
 };

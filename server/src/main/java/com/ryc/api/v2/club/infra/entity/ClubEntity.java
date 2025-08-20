@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+
 import com.ryc.api.v2.club.domain.enums.Category;
 import com.ryc.api.v2.common.entity.BaseEntity;
 
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "clubs")
+@SQLDelete(sql = "UPDATE clubs SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,7 +49,7 @@ public class ClubEntity extends BaseEntity {
   @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ClubSummaryEntity> clubSummaries = new ArrayList<>();
 
-  @Builder.Default private Boolean deleted = Boolean.FALSE;
+  @Builder.Default private Boolean isDeleted = Boolean.FALSE;
 
   public void addClubTag(ClubTagEntity clubTag) {
     clubTags.add(clubTag);

@@ -6,11 +6,11 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button, Divider } from '@ssoc/ui';
+import { Button, Divider, FileUpLoader } from '@ssoc/ui';
 import { Editor, Image, ImageDialog, Input, Select, Text, useToast } from '@ssoc/ui';
 import { getCategory } from '@ssoc/utils';
 
-import { ClubBox, FileUpLoader, ImageRegister } from '../../components';
+import { ClubBox, ImageRegister } from '../../components';
 import type { ClubBoxItem } from '../../components/ClubBox/types';
 import {
     s_buttonWrapper,

@@ -2,28 +2,20 @@ import TimeCircle from '@assets/images/time-circle.svg';
 import { Card, Checkbox, Divider, ScoreTag, Text } from '@components';
 import React from 'react';
 import {
-    bottomCss,
-    checkboxCss,
-    dateTextCss,
-    dateWrapper,
-    dividerCss,
-    emailTextCss,
-    FooterCss,
-    rootCss,
-    timeCircleSvgCss,
+    s_bottom,
+    s_checkbox,
+    s_dateText,
+    s_dateWrapper,
+    s_divider,
+    s_emailText,
+    s_Footer,
+    s_root,
+    s_timeCircleSvg,
 } from './ApplicantCard.style';
 import type { ApplicantCardProps } from './types';
+import dayjs from 'dayjs';
 
-function ApplicantCard({
-    name,
-    email,
-    date,
-    score,
-    status,
-    checked,
-    onChange,
-    onClick,
-}: ApplicantCardProps) {
+function ApplicantCard({ applicant, checked, onChange, onClick }: ApplicantCardProps) {
     // prop destruction
     // lib hooks
     // initial values
@@ -31,43 +23,62 @@ function ApplicantCard({
     // form hooks
     // query hooks
     // calculated values
+    const getEvaluationState = (): string => {
+        const totalEvaluatorCount = applicant.totalEvaluatorCount;
+        const completedEvaluatorCount = applicant.completedEvaluatorCount;
+
+        if (completedEvaluatorCount === totalEvaluatorCount)
+            return `평가 완료 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
+
+        return `평가 중 (${completedEvaluatorCount}/${totalEvaluatorCount})`;
+    };
+
     // handlers
     const handleChange = (checked: boolean) => {
-        onChange(email, checked);
+        onChange(applicant.applicantId, checked);
     };
+
     // effects
 
     return (
-        <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={rootCss}>
+        <Card.Root width={'23rem'} radius={'5px'} onClick={onClick} sx={s_root}>
             <Checkbox.Root
-                size="xs"
+                variant="solid"
+                size="md"
                 isChecked={checked}
                 onChange={(checked) => handleChange(checked)}
                 onClick={(e) => e.stopPropagation()}
-                sx={checkboxCss}
+                sx={s_checkbox}
             >
                 <Checkbox.HiddenInput />
                 <Checkbox.Control />
             </Checkbox.Root>
             <Card.TopBody>
-                <Card.TitleContainer title={name} subTitle={email} subTitleSx={emailTextCss} />
+                <Card.TitleContainer
+                    title={applicant.name}
+                    subTitle={applicant.email}
+                    subTitleSx={s_emailText}
+                />
             </Card.TopBody>
-            <Card.BottomBody sx={bottomCss}>
-                <span css={dateWrapper}>
-                    <TimeCircle css={timeCircleSvgCss} />
-                    <Card.DescriptionText description={date} sx={dateTextCss} />
+            <Card.BottomBody sx={s_bottom}>
+                <span css={s_dateWrapper}>
+                    <TimeCircle css={s_timeCircleSvg} />
+                    <Card.DescriptionText
+                        description={dayjs(applicant.submittedAt).format('YYYY-MM-DD')}
+                        sx={s_dateText}
+                    />
                 </span>
             </Card.BottomBody>
-            <Divider sx={dividerCss} />
-            <Card.Footer sx={FooterCss}>
+            <Divider sx={s_divider} />
+            <Card.Footer sx={s_Footer}>
                 <Text
                     as="span"
                     type="helperTextBold"
-                    color={status.startsWith('평가 완료') ? 'primary' : 'black'}
+                    color={getEvaluationState().startsWith('평가 완료') ? 'primary' : 'black'}
                 >
-                    {status}
+                    {getEvaluationState()}
                 </Text>
-                <ScoreTag score={score} />
+                <ScoreTag score={String(applicant.averageScore)} />
             </Card.Footer>
         </Card.Root>
     );

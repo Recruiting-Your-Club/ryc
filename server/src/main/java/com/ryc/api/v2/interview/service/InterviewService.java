@@ -6,18 +6,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantSummaryResponse;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
-import com.ryc.api.v2.email.service.event.InterviewReservationEmailEvent;
-import com.ryc.api.v2.email.service.event.InterviewSlotEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
@@ -39,23 +42,14 @@ public class InterviewService {
   private final ApplicantRepository applicantRepository;
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
-  private final ApplicationEventPublisher publisher;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional(readOnly = true)
-  public List<InterviewSlotsByDateResponse> getInterviewSlots(String announcementId) {
+  public List<InterviewSlotResponse> getInterviewSlots(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
 
-    List<InterviewSlotResponse> slots =
-        interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
-
-    return slots.stream()
-        .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
-        .entrySet()
-        .stream()
-        .map(entry -> createInterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
-        .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
-        .toList();
+    return interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
   }
 
   @Transactional(readOnly = true)
@@ -66,8 +60,18 @@ public class InterviewService {
     Applicant applicant = applicantRepository.findById(applicantId);
     Boolean isReserved =
         interviewRepository.isReservedByAnnouncementIdAndApplicantId(announcementId, applicantId);
+    List<InterviewSlot> interviewSlots =
+        interviewRepository.findSlotsByAnnouncementId(announcementId);
 
-    List<InterviewSlotsByDateResponse> slotResponses = getInterviewSlots(announcementId);
+    List<InterviewSlotsByDateResponse> slotResponses =
+        interviewSlots.stream()
+            .map(this::createInterviewSlotResponse)
+            .collect(Collectors.groupingBy(slot -> slot.period().startDate().toLocalDate()))
+            .entrySet()
+            .stream()
+            .map(entry -> createInterviewSlotsByDateResponse(entry.getKey(), entry.getValue()))
+            .sorted(Comparator.comparing(InterviewSlotsByDateResponse::date))
+            .toList();
 
     FileGetResponse representativeImage =
         fileService.findAllByAssociatedId(clubId).stream()
@@ -78,14 +82,13 @@ public class InterviewService {
                     FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
             .orElse(null);
 
+    ApplicantSummaryResponse applicantSummaryResponse = createApplicantSummaryResponse(applicant);
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
         .slotByDateResponses(slotResponses)
         .representativeImage(representativeImage)
-        .applicantId(applicant.getId())
-        .applicantEmail(applicant.getEmail())
-        .applicantName(applicant.getName())
+        .applicantSummary(applicantSummaryResponse)
         .isReserved(isReserved)
         .build();
   }
@@ -101,25 +104,23 @@ public class InterviewService {
   public List<InterviewReservationGetResponse> getInterviewReservations(String interviewSlotId) {
     InterviewSlot interviewSlot = interviewRepository.findSlotById(interviewSlotId);
     List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
-    List<InterviewReservationGetResponse> responses = new ArrayList<>();
 
-    for (InterviewReservation reservation : reservations) {
-      Applicant applicant = reservation.getApplicant();
+    return reservations.stream()
+        .map(
+            reservation -> {
+              ApplicantSummaryResponse applicantSummaryResponse =
+                  createApplicantSummaryResponse(reservation.getApplicant());
 
-      InterviewReservationGetResponse response =
-          InterviewReservationGetResponse.builder()
-              .interviewReservationId(reservation.getId())
-              .applicantId(applicant.getId())
-              .applicantEmail(applicant.getEmail())
-              .applicantName(applicant.getName())
-              .build();
-      responses.add(response);
-    }
-    return responses;
+              return InterviewReservationGetResponse.builder()
+                  .interviewReservationId(reservation.getId())
+                  .applicantSummary(applicantSummaryResponse)
+                  .build();
+            })
+        .toList();
   }
 
   @Transactional(readOnly = true)
-  public List<UnReservedApplicantGetResponse> getUnReservedApplicants(String announcementId) {
+  public List<ApplicantSummaryResponse> getInterviewUnReservations(String announcementId) {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
     Set<Applicant> applicants =
@@ -133,15 +134,7 @@ public class InterviewService {
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
 
-    return applicants.stream()
-        .map(
-            applicant ->
-                UnReservedApplicantGetResponse.builder()
-                    .applicantId(applicant.getId())
-                    .applicantEmail(applicant.getEmail())
-                    .applicantName(applicant.getName())
-                    .build())
-        .toList();
+    return applicants.stream().map(this::createApplicantSummaryResponse).toList();
   }
 
   @Transactional
@@ -165,7 +158,7 @@ public class InterviewService {
     // 이메일 전송을 위한 이벤트 발행
     List<Applicant> applicants =
         applicantRepository.findByEmails(request.emailSendRequest().recipients());
-    publisher.publishEvent(
+    eventPublisher.publishEvent(
         InterviewSlotEmailEvent.builder()
             .applicants(applicants)
             .subject(request.emailSendRequest().subject())
@@ -203,7 +196,7 @@ public class InterviewService {
     // 이메일 이벤트를 발행
     String clubName =
         announcementRepository.findClubNameByAnnouncementId(savedInterviewSlot.getAnnouncementId());
-    publisher.publishEvent(
+    eventPublisher.publishEvent(
         InterviewReservationEmailEvent.builder()
             .clubName(clubName)
             .applicantEmail(savedReservation.getApplicant().getEmail())
@@ -233,7 +226,7 @@ public class InterviewService {
       InterviewSlot updatedSlot = slot.removeReservation(reservation);
       interviewRepository.saveSlot(updatedSlot);
     } else {
-
+      // 기존 면접 슬롯이 없는 경우, 새로운 예약을 생성합니다.
       Applicant applicant = applicantRepository.findById(applicantId);
       reservation = InterviewReservation.initialize(applicant);
     }
@@ -250,6 +243,23 @@ public class InterviewService {
         .interviewReservationId(reservationId)
         .interviewSlot(slotGetResponse)
         .build();
+  }
+
+  @Transactional
+  public void deleteInterviewReservation(String reservationId) {
+    if (!interviewRepository.existsReservationById(reservationId)) {
+      throw new NoSuchElementException("Interview reservation not found for id: " + reservationId);
+    }
+
+    interviewRepository.deleteReservationById(reservationId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
+    event.announcementIds().stream()
+        .filter(interviewRepository::existsSlotsByAnnouncementId)
+        .forEach(interviewRepository::deleteSlotsByAnnouncementId);
   }
 
   private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {
@@ -273,6 +283,27 @@ public class InterviewService {
         .date(date)
         .interviewDuration((int) interviewDuration)
         .interviewSlots(slotResponses)
+        .build();
+  }
+
+  private ApplicantSummaryResponse createApplicantSummaryResponse(Applicant applicant) {
+    FileGetResponse imageResponse =
+        fileService.findAllByAssociatedId(applicant.getId()).stream()
+            .filter(
+                fileMetaData ->
+                    fileMetaData.getFileDomainType() == FileDomainType.APPLICANT_PROFILE)
+            .findFirst()
+            .map(
+                fileMetaData ->
+                    FileGetResponse.of(
+                        fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData)))
+            .orElse(null);
+
+    return ApplicantSummaryResponse.builder()
+        .applicantId(applicant.getId())
+        .applicantEmail(applicant.getEmail())
+        .applicantName(applicant.getName())
+        .imageResponse(imageResponse)
         .build();
   }
 }

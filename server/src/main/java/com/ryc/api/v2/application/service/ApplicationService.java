@@ -91,7 +91,7 @@ public class ApplicationService {
     // 5-1. 프로필 이미지 소유권
     if (profileImage != null) {
       fileService.claimOwnershipAsync(
-          List.of(profileImage), savedApplicant.getId(), FileDomainType.APPLICATION_PROFILE);
+          List.of(profileImage), savedApplicant.getId(), FileDomainType.APPLICANT_PROFILE);
     }
 
     // 5-2. 답변 파일 소유권 (answerId별)

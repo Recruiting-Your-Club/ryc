@@ -3,6 +3,8 @@ package com.ryc.api.v2.announcement.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +13,11 @@ import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementProcess;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
+import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.response.*;
+import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.file.domain.FileDomainType;
@@ -27,6 +31,7 @@ public class AnnouncementService {
 
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public AnnouncementCreateResponse createAnnouncement(
@@ -95,7 +100,7 @@ public class AnnouncementService {
   @Transactional
   public void updateAnnouncementStatus() {
     // 1. 삭제되지 않은 공고 불러오기
-    List<Announcement> announcements = announcementRepository.findAllByIsDeleted(false);
+    List<Announcement> announcements = announcementRepository.findAll();
 
     // 2.공고 상태 업데이트
     List<Announcement> updatedAnnouncements =
@@ -144,6 +149,23 @@ public class AnnouncementService {
             .toList();
 
     return new AnnouncementProcessGetResponse(processes);
+  }
+
+  @Transactional
+  public void deleteAnnouncements(List<String> announcementIds) {
+    if (announcementIds.isEmpty()) {
+      return;
+    }
+
+    eventPublisher.publishEvent(new AnnouncementDeletedEvent(announcementIds));
+    announcementRepository.deleteAllByIdIn(announcementIds);
+  }
+
+  @EventListener
+  @Transactional
+  protected void handleClubDeletedEvent(ClubDeletedEvent event) {
+    List<String> ids = announcementRepository.findIdsByClubId(event.clubId());
+    deleteAnnouncements(ids);
   }
 
   private boolean shouldIncludeProcess(AnnouncementProcess process, Announcement announcement) {

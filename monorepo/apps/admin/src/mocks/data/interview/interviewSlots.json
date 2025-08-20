@@ -1,0 +1,92 @@
+[
+    {
+        "id": "slot-1",
+        "period": {
+            "startDate": "2025-08-18T09:00",
+            "endDate": "2025-08-18T09:30"
+        },
+        "maxNumberOfPeople": 4,
+        "currentNumberOfPeople": 2
+    },
+    {
+        "id": "slot-2",
+        "period": {
+            "startDate": "2025-08-18T10:00",
+            "endDate": "2025-08-18T11:00"
+        },
+        "maxNumberOfPeople": 5,
+        "currentNumberOfPeople": 5
+    },
+    {
+        "id": "slot-3",
+        "period": {
+            "startDate": "2025-08-18T14:00",
+            "endDate": "2025-08-18T14:15"
+        },
+        "maxNumberOfPeople": 4,
+        "currentNumberOfPeople": 1
+    },
+    {
+        "id": "slot-4",
+        "period": {
+            "startDate": "2025-08-19T10:30",
+            "endDate": "2025-08-19T11:00"
+        },
+        "maxNumberOfPeople": 5,
+        "currentNumberOfPeople": 3
+    },
+    {
+        "id": "slot-5",
+        "period": {
+            "startDate": "2025-08-19T13:00",
+            "endDate": "2025-08-19T14:00"
+        },
+        "maxNumberOfPeople": 4,
+        "currentNumberOfPeople": 4
+    },
+    {
+        "id": "slot-6",
+        "period": {
+            "startDate": "2025-08-19T15:00",
+            "endDate": "2025-08-19T15:30"
+        },
+        "maxNumberOfPeople": 5,
+        "currentNumberOfPeople": 0
+    },
+    {
+        "id": "slot-7",
+        "period": {
+            "startDate": "2025-08-20T09:00",
+            "endDate": "2025-08-20T09:15"
+        },
+        "maxNumberOfPeople": 4,
+        "currentNumberOfPeople": 4
+    },
+    {
+        "id": "slot-8",
+        "period": {
+            "startDate": "2025-08-20T11:00",
+            "endDate": "2025-08-20T12:00"
+        },
+        "maxNumberOfPeople": 5,
+        "currentNumberOfPeople": 2
+    },
+    {
+        "id": "slot-9",
+        "period": {
+            "startDate": "2025-08-20T16:00",
+            "endDate": "2025-08-20T16:30"
+        },
+        "maxNumberOfPeople": 4,
+        "currentNumberOfPeople": 3
+    },
+    {
+        "id": "slot-10",
+        "period": {
+            "startDate": "2025-08-20T16:30",
+            "endDate": "2025-08-20T17:00"
+        },
+        "maxNumberOfPeople": 4,
+        "currentNumberOfPeople": 1
+    }
+]

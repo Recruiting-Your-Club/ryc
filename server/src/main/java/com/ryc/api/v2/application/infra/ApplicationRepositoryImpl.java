@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ryc.api.v2.application.domain.Answer;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
+import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
 import com.ryc.api.v2.application.infra.jpa.ApplicationJpaRepository;
 import com.ryc.api.v2.application.infra.mapper.ApplicationMapper;
 import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
@@ -59,5 +60,12 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
             Collectors.toMap(
                 object -> (String) object[0], // applicantId
                 object -> (LocalDateTime) object[1])); // createdAt
+  }
+
+  @Override
+  public void deleteAllByApplicantIds(List<String> applicantIds) {
+    // cascade 적용하기 위해 ApplicationEntity를 조회하여 삭제
+    List<ApplicationEntity> entities = applicationJpaRepository.findAllById(applicantIds);
+    applicationJpaRepository.deleteAll(entities);
   }
 }

@@ -1,5 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, lazy, Suspense } from 'react';
+import { useParams } from 'react-router-dom';
 import { ClubNavigation, Text } from '@components';
+import { ClubDetailRecruitmentLoadingPage } from '@pages/LoadingPage';
 import {
     clubDetailPageContainer,
     clubHeader,
@@ -8,16 +10,21 @@ import {
     clubImage,
     contentContainer,
 } from './ClubDetailPage.style';
-import { RecruitmentPage } from './RecruitmentPage';
 import { ClubIntroPage } from './ClubIntroPage';
+
+const LazyRecruitmentPage = lazy(() => import('./RecruitmentPage/RecruitmentPage'));
 import { useLocation } from 'react-router-dom';
 import { getCategory } from '@utils/changeCategory';
+import { useClubStore } from '@stores/clubStore';
 
 function ClubDetailPage() {
     // prop destruction
     const location = useLocation();
-    const { title, category, clubLogo } = location.state;
+    const { title, category, clubLogo, description, status } = location.state;
+    const { id: clubId } = useParams<{ id: string }>();
     // lib hooks
+    const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
+        useClubStore();
     // initial values
     const navigationItem = useMemo(
         () => [
@@ -28,11 +35,15 @@ function ClubDetailPage() {
             },
             {
                 title: '모집 공고',
-                page: <RecruitmentPage />,
+                page: (
+                    <Suspense fallback={<ClubDetailRecruitmentLoadingPage />}>
+                        <LazyRecruitmentPage />
+                    </Suspense>
+                ),
                 width: '6.4rem',
             },
         ],
-        [],
+        [clubId],
     );
 
     // state, ref, querystring hooks
@@ -41,6 +52,13 @@ function ClubDetailPage() {
     // calculated values
     // handlers
     // effects
+    useEffect(() => {
+        setClubName(title);
+        setClubLogo(clubLogo);
+        setClubCategory(category);
+        setClubDescription(description);
+        setClubStatus(status);
+    }, [title, clubLogo, category, description, status]);
 
     return (
         <div css={clubDetailPageContainer}>
