@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
@@ -35,6 +37,7 @@ public class ClubFacade {
   private final AdminService adminService;
   private final AnnouncementService announcementService;
   private final FileService fileService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
@@ -89,5 +92,11 @@ public class ClubFacade {
                   .build();
             })
         .toList();
+  }
+
+  @Transactional
+  public void deleteClub(String id) {
+    eventPublisher.publishEvent(new ClubDeletedEvent(id));
+    clubService.deleteClub(id);
   }
 }

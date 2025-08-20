@@ -5,11 +5,14 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.domain.event.ApplicantDeletedEvent;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
@@ -171,8 +174,24 @@ public class EvaluationService {
   @Transactional
   public void deleteEvaluation(String evaluationId) {
     // TODO: 본인 평가 ID인지 검증 필요
-    //  현재 물리 삭제로 구현. 추후 의논 후 논리/물리 삭제 기준 설계 필요.
     evaluationRepository.deleteById(evaluationId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
+    event.applicantIds().stream()
+        .filter(evaluationRepository::existsByApplicantId)
+        .forEach(evaluationRepository::deleteAllByApplicantId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    if (!evaluationRepository.existsByAdminId(event.adminId())) {
+      return;
+    }
+    evaluationRepository.deleteAllByAdminId(event.adminId());
   }
 
   /**
