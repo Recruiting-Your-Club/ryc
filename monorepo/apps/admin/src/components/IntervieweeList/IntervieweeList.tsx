@@ -33,7 +33,7 @@ function IntervieweeList({
     // state, ref, querystring hooks
     const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<SelectedLabel>(() => {
         if (interviewSlots[0]) {
-            const date = dayjs(interviewSlots[0].period.startDate).format('MM.DD');
+            const date = dayjs(interviewSlots[0].period.startDate).format('MM월 DD일');
             const name = dayjs(interviewSlots[0].period.startDate).format('HH:mm');
             return { label: `${date} ${name}`, interviewSlotId: interviewSlots[0].id };
         }
@@ -86,7 +86,9 @@ function IntervieweeList({
                                 selectedInterviewSlotId={selectedInterviewLabel.interviewSlotId}
                                 onSelect={(label) => {
                                     const matchedSlot = interviewSlots.find((slot) => {
-                                        const date = dayjs(slot.period.startDate).format('MM.DD');
+                                        const date = dayjs(slot.period.startDate).format(
+                                            'MM월 DD일',
+                                        );
                                         const time = dayjs(slot.period.startDate).format('HH:mm');
                                         return `${date} ${time}` === label;
                                     });

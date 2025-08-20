@@ -84,7 +84,7 @@ function InterviewTimeTable({
                         slotsToShow.map((slot) => {
                             const startTime = dayjs(slot.period.startDate).format('HH:mm');
                             const endTime = dayjs(slot.period.endDate).format('HH:mm');
-                            const label = `${dayjs(highlightedDate).format('MM.DD')} ${startTime}`;
+                            const label = `${dayjs(highlightedDate).format('MM월 DD일')} ${startTime}`;
 
                             return (
                                 <InterviewInformationButton
