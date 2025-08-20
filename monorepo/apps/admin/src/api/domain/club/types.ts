@@ -78,9 +78,11 @@ interface ClubTag {
 }
 export interface Club {
     name: string;
+    shortDescription: string;
     detailDescription: string;
-    imageUrl: string;
+    representativeImage: string;
     category: string;
+    clubTags: ClubTag[];
     clubSummaries: summaries[];
     clubDetailImages: string[];
 }

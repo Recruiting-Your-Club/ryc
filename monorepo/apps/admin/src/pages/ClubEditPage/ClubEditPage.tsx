@@ -1,14 +1,17 @@
 import type { Club } from '@api/domain/club/types';
 import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
+import { BASE_URL } from '@constants/api';
 import { useUpdateClub } from '@hooks/useUpdateClub';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useFileUpload } from '@ssoc/hooks';
 import { Button, Divider, FileUpLoader } from '@ssoc/ui';
 import { Editor, Image, ImageDialog, Input, Select, Text, useToast } from '@ssoc/ui';
 import { getCategory } from '@ssoc/utils';
+import { blobUrlToFile } from '@ssoc/utils';
 
 import { ClubBox, ImageRegister } from '../../components';
 import type { ClubBoxItem } from '../../components/ClubBox/types';
@@ -51,6 +54,7 @@ function ClubEditPage() {
     // query hooks
     const { data: club } = useQuery(myClubQueries.getClub(clubId ?? ''));
     const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
+    const { uploadFiles, error } = useFileUpload(BASE_URL);
 
     // calculated values
     const editModeLogo = (
@@ -156,6 +160,20 @@ function ClubEditPage() {
         </>
     );
     // handlers
+    const saveClubImage = async () => {
+        if (!croppedImage) return;
+        const file = await blobUrlToFile(croppedImage, 'club_logo');
+        try {
+            return await uploadFiles(file, 'CLUB_INTRODUCTION_IMAGE');
+        } catch (error) {
+            toast.error('이미지 업로드에 실패했어요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            throw error;
+        }
+    };
+
     const handleImageExpanded = (url: string) => {
         setExpandedImage(url);
     };
@@ -175,25 +193,28 @@ function ClubEditPage() {
     const handleCancelEdit = () => {
         setClubSummaries(club?.clubSummaries || defaultClubSummaries);
         setIntroText(club?.detailDescription || '');
-        setImage(club?.imageUrl || ssoc);
-        setCroppedImage(club?.imageUrl || ssoc);
+        setImage(club?.representativeImage || ssoc);
+        setCroppedImage(club?.representativeImage || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
     };
-    const updateClubData = () => {
+    const updateClubData = async () => {
+        const fileMetadataIds = await saveClubImage();
         const updatedClubData: Club = {
             name: clubName, // 동아리 타이틀
-            category: clubCategory, // 카테고리
+            shortDescription: club?.shortDescription || '',
             detailDescription: introText, // 동아리 소개
+            category: clubCategory, // 카테고리
+            clubTags: club?.clubTags || [], // 동아리 태그
             clubSummaries: clubSummaries || [], // 동아리 요약
-            imageUrl: croppedImage, // 동아리 대표 이미지
+            representativeImage: fileMetadataIds?.[0] ?? '', // 동아리 대표 이미지
             clubDetailImages: clubDetailImages, // 동아리 상세 이미지
         };
         return updatedClubData;
     };
     const handleSaveEdited = async () => {
-        const updatedClubData = updateClubData();
+        const updatedClubData = await updateClubData();
         if (JSON.stringify(club) !== JSON.stringify(updatedClubData)) {
             try {
                 await updateClub({ id: clubId ?? '', club: updatedClubData });
@@ -213,8 +234,8 @@ function ClubEditPage() {
     // effects
     useEffect(() => {
         setIntroText(club?.detailDescription || '');
-        setImage(club?.imageUrl || ssoc);
-        setCroppedImage(club?.imageUrl || ssoc);
+        setImage(club?.representativeImage || ssoc);
+        setCroppedImage(club?.representativeImage || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
