@@ -1,13 +1,15 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type { ClubMember } from './types';
+import type { ClubMember, EnrollmentClubResponse, InvitesResponse } from './types';
 
 async function getClubMemberList(params: { clubId: string }): Promise<ClubMember[]> {
-    return await httpRequest.get({
+    const response = await httpRequest.get({
         url: `clubs/${params.clubId}/users`,
         headers: { 'X-CLUB-ID': params.clubId },
         isAuthRequire: true,
     });
+
+    return response as ClubMember[];
 }
 
 async function deleteClubMember(params: { clubId: string; userId: string }): Promise<void> {
@@ -18,19 +20,26 @@ async function deleteClubMember(params: { clubId: string; userId: string }): Pro
     });
 }
 
-async function postClubIdAndGetInviteUrl(params: { clubId: string }): Promise<string> {
-    return await httpRequest.post({
+async function postClubIdAndGetInviteUrl(params: { clubId: string }): Promise<InvitesResponse> {
+    const response = await httpRequest.post({
         url: `clubs/${params.clubId}/invites`,
         headers: { 'X-CLUB-ID': params.clubId },
         isAuthRequire: true,
     });
+
+    return response as InvitesResponse;
 }
 
-async function postInviteCode(params: { clubId: string; inviteCode: string }): Promise<void> {
-    return await httpRequest.post({
+async function postInviteCode(params: {
+    clubId: string;
+    inviteCode: string;
+}): Promise<EnrollmentClubResponse> {
+    const response = await httpRequest.post({
         url: `clubs/${params.clubId}/invites/${params.inviteCode}`,
         isAuthRequire: true,
     });
+
+    return response as EnrollmentClubResponse;
 }
 
 export { getClubMemberList, deleteClubMember, postClubIdAndGetInviteUrl, postInviteCode };

@@ -12,3 +12,14 @@ export interface ClubMember {
     joinedAt: string;
     adminProfileImage: AdminProfileImage;
 }
+
+export interface InvitesResponse {
+    inviteCode: string;
+    expireAt: string;
+}
+
+export interface EnrollmentClubResponse {
+    clubRoleId: string;
+    role: string;
+    joinedAt: string;
+}
