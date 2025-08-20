@@ -63,6 +63,7 @@ function RecruitCreatePage() {
         documentResult: { startDate: '', endDate: '' },
         interviewSchedule: { startDate: '', endDate: '' },
         finalResult: { startDate: '', endDate: '' },
+        tags: ['중앙동아리'],
     });
 
     //공고 모집 관련 이미지 상태 관리

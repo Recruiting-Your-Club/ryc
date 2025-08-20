@@ -1,5 +1,6 @@
 import { DatePicker } from '@components';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
+import { TagInput } from '@components/TagInput';
 import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
 import React from 'react';
 
@@ -113,6 +114,17 @@ function DescriptionStepPage({
                         </div>
                     );
                 })}
+            </div>
+            <div css={s_descriptionWrapper}>
+                <FieldLabel
+                    label="공고 태그 작성"
+                    description="태그를 입력한 후 Enter를 눌러주세요"
+                />
+                <TagInput
+                    tags={recruitDetailInfo.tags}
+                    onTagsChange={(next) => onChange({ tags: next })}
+                    maxTags={5}
+                />
             </div>
             <div css={s_descriptionWrapper}>
                 <FieldLabel label="상세 정보" description="자세한 모집 공고 내용을 입력해주세요" />

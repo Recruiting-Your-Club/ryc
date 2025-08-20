@@ -193,7 +193,7 @@ function EditorToolbar({ radius, sx }: ToolbarProps) {
                     onValueChange={(value) => handleSize(value as Size)}
                     size="s"
                     sx={selectCss}
-                    //options={sizeOptions}
+                    options={sizeOptions}
                 >
                     <Select.Trigger sx={sizeSelect}>
                         <Select.Value />

@@ -19,7 +19,7 @@ export const DETAIL_QUESTION_LIST: DetailQuestionList = [
     {
         label: '모집 분야',
         key: 'recruitmentField',
-        placeholder: 'ex) 디자이너 / FE / BE /신입 부원 / 집행 부원 등',
+        placeholder: 'ex) 디자이너 / FE / BE / 신입 부원 / 집행 부원 등',
         required: false,
         type: 'input',
     },

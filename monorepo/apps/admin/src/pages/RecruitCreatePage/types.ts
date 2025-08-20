@@ -9,6 +9,7 @@ export interface RecruitDetailInfo {
     documentResult: Period;
     interviewSchedule: Period;
     finalResult: Period;
+    tags: string[];
 }
 
 export interface BasicInfoFields {
