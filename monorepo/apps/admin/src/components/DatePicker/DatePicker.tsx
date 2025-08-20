@@ -1,8 +1,16 @@
 import React from 'react';
 
-import { Calendar, Dropdown, Text } from '@ssoc/ui';
+import CalenarIcon from '@ssoc/assets/images/calendar.svg';
+import { Button, Calendar, Dropdown, Text } from '@ssoc/ui';
 
-import { s_triggerButton } from './DatePicker.style';
+import {
+    s_calendar,
+    s_calendarIcon,
+    s_dropdown,
+    s_dropdownContent,
+    s_labelWithIcon,
+    s_triggerButton,
+} from './DatePicker.style';
 import type { DatePickerProps } from './types';
 
 function DatePicker({ mode = 'single', selectedDate, onChange, placeholder }: DatePickerProps) {
@@ -16,14 +24,22 @@ function DatePicker({ mode = 'single', selectedDate, onChange, placeholder }: Da
     };
 
     return (
-        <Dropdown>
+        <Dropdown sx={s_dropdown}>
             <Dropdown.Trigger asChild>
-                <button css={s_triggerButton(selectedDate)}>
-                    <Text>{formatLabel()}</Text>
-                </button>
+                <Button sx={s_triggerButton(selectedDate)} variant="outlined">
+                    <div css={s_labelWithIcon}>
+                        <CalenarIcon css={s_calendarIcon} />
+                        {formatLabel()}
+                    </div>
+                </Button>
             </Dropdown.Trigger>
-            <Dropdown.Content>
-                <Calendar mode={mode} selectedDate={selectedDate} onSelect={onChange} />
+            <Dropdown.Content sx={s_dropdownContent}>
+                <Calendar
+                    mode={mode}
+                    selectedDate={selectedDate}
+                    onSelect={onChange}
+                    sx={s_calendar}
+                />
             </Dropdown.Content>
         </Dropdown>
     );

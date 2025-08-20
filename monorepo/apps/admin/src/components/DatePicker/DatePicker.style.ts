@@ -3,19 +3,37 @@ import { css } from '@emotion/react';
 import theme from '@ssoc/styles';
 
 export const s_triggerButton = (selectedDate: string[]) => css`
-    display: 'flex';
+    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-    padding: 0.6rem 0.75rem;
     border-radius: 6px;
+    padding-left: 0.8rem;
     border: 1px solid ${theme.colors.gray[200]};
     background: ${theme.colors.white};
-    color: ${selectedDate.length === 0
-        ? css`
-              ${theme.colors.gray[600]}
-          `
-        : css`
-              ${theme.colors.black}
-          `};
+    color: ${selectedDate.length === 0 ? theme.colors.gray[600] : theme.colors.black};
+`;
+
+export const s_dropdown = css`
+    width: 100%;
+`;
+
+export const s_calendarIcon = css`
+    width: 2rem;
+    height: 2rem;
+`;
+
+export const s_labelWithIcon = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+`;
+
+export const s_dropdownContent = css`
+    min-width: 100%;
+`;
+
+export const s_calendar = css`
+    width: 100%;
 `;

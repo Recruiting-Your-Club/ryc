@@ -1,3 +1,4 @@
+import { DatePicker } from '@components';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
 import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
 import React from 'react';
@@ -43,14 +44,31 @@ function DescriptionStepPage({
                 description="형식에 맞게 공고 세부 정보를 기입해주세요"
             />
             <div css={s_form}>
-                {DETAIL_QUESTION_LIST.map(({ label, key, placeholder, required }) => (
+                {DETAIL_QUESTION_LIST.map(({ label, key, placeholder, required, type, mode }) => (
                     <div css={s_formGroup} key={key}>
                         <FieldLabel label={label} required={required} sx={s_customFieldLabel} />
-                        <Input
-                            placeholder={placeholder}
-                            value={recruitDetailInfo[key]}
-                            onChange={(e) => onChange({ [key]: e.target.value })}
-                        />
+                        {type === 'input' ? (
+                            <Input
+                                placeholder={placeholder}
+                                value={recruitDetailInfo[key]}
+                                onChange={(e) => onChange({ [key]: e.target.value })}
+                            />
+                        ) : (
+                            <DatePicker
+                                mode={mode}
+                                placeholder={placeholder}
+                                selectedDate={
+                                    Array.isArray(recruitDetailInfo[key])
+                                        ? recruitDetailInfo[key]
+                                        : recruitDetailInfo[key]
+                                          ? [recruitDetailInfo[key]]
+                                          : []
+                                }
+                                onChange={(dates) =>
+                                    onChange({ [key]: mode === 'range' ? dates : dates[0] })
+                                }
+                            />
+                        )}
                     </div>
                 ))}
             </div>

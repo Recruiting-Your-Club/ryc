@@ -84,9 +84,14 @@ function RecruitCreatePage() {
     const isDescriptionStepValid = useMemo(() => {
         return (
             recruitDetailInfo.recruitmentSubject.trim() !== '' &&
-            recruitDetailInfo.documentPeriod.trim() !== ''
+            recruitDetailInfo.documentPeriod.trim() !== '' &&
+            recruitDetailInfo.recruitmentSummaryDescription.trim() !== ''
         );
-    }, [recruitDetailInfo.recruitmentSubject, recruitDetailInfo.documentPeriod]);
+    }, [
+        recruitDetailInfo.recruitmentSubject,
+        recruitDetailInfo.documentPeriod,
+        recruitDetailInfo.recruitmentSummaryDescription,
+    ]);
 
     //step2 감시
     const isBasicInfoStepValid = useMemo(() => {
