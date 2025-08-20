@@ -13,6 +13,7 @@ import ApplicationManage from '@ssoc/assets/images/ApplicationManage.svg';
 import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
 import EditApplication from '@ssoc/assets/images/EditApplication.svg';
 import Home from '@ssoc/assets/images/Home.svg';
+import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import Ryc from '@ssoc/assets/images/Ryc.svg';
 import UserSet from '@ssoc/assets/images/UserSet.svg';
 import { useRouter } from '@ssoc/hooks';
@@ -284,6 +285,7 @@ function SideBar() {
                         sx={homeLogoTextWrapper(isExpanded)}
                     >
                         SSOC
+                        {/* <img src={mainLogo} alt="mainLogo" width="80rem" height="50rem" /> */}
                     </Button>
                     <Button
                         variant="transparent"
@@ -303,7 +305,7 @@ function SideBar() {
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
                             <div css={dropDownTriggerWrapper}>
                                 {isExpanded && (
-                                    <div css={dropDownChevronWrapper}>
+                                    <div css={dropDownChevronWrapper(isExpanded)}>
                                         <div css={announcementWrapper(isExpanded)}>
                                             <Text
                                                 as="div"
