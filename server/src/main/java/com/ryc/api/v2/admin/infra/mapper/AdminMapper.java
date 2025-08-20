@@ -11,7 +11,7 @@ public class AdminMapper {
         .email(admin.getEmail())
         .password(admin.getPassword())
         .adminDefaultRole(admin.getAdminDefaultRole())
-        .isDeleted(admin.getDeleted())
+        .isDeleted(admin.getIsDeleted())
         .build();
   }
 
@@ -22,7 +22,7 @@ public class AdminMapper {
         .email(adminEntity.getEmail())
         .password(adminEntity.getPassword())
         .adminDefaultRole(adminEntity.getAdminDefaultRole())
-        .deleted(adminEntity.getIsDeleted())
+        .isDeleted(adminEntity.getIsDeleted())
         .build();
   }
 }

@@ -2,10 +2,11 @@ package com.ryc.api.v2.email.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
+import com.ryc.api.v2.util.DataResolveUtil;
+
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
 public class Email {
 
@@ -17,6 +18,47 @@ public class Email {
   private final String announcementId;
   private final EmailSentStatus status;
   private final Integer retryCount;
+
+  @Builder
+  private Email(
+      String id,
+      String senderId,
+      String recipient,
+      String subject,
+      String content,
+      String announcementId,
+      EmailSentStatus status,
+      Integer retryCount) {
+
+    // 1. 정제
+    String sanitizedRecipient = DataResolveUtil.sanitizeEmail(recipient);
+    String sanitizedSubject = DataResolveUtil.sanitizeString(subject);
+    String sanitizedContent = DataResolveUtil.sanitizeString(content);
+
+    // 2. 선택 멤버 변수 기본값 처리
+    Integer resolvedRetryCount = retryCount != null ? retryCount : 0;
+
+    // 3. 검증
+    EmailValidator.validate(
+        id,
+        senderId,
+        sanitizedRecipient,
+        sanitizedSubject,
+        sanitizedContent,
+        announcementId,
+        status,
+        resolvedRetryCount);
+
+    // 4. 할당
+    this.id = id;
+    this.senderId = senderId;
+    this.recipient = sanitizedRecipient;
+    this.subject = sanitizedSubject;
+    this.content = sanitizedContent;
+    this.announcementId = announcementId;
+    this.status = status;
+    this.retryCount = resolvedRetryCount;
+  }
 
   public static Email initialize(
       String senderId, String recipient, String subject, String content, String announcementId) {

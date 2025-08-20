@@ -8,12 +8,23 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class RefreshToken {
   private final String id;
   private final String adminId;
   private final String token;
   private final LocalDateTime expirationTime;
+
+  @Builder
+  private RefreshToken(String id, String adminId, String token, LocalDateTime expirationTime) {
+
+    RefreshTokenValidator.validate(id, adminId, token, expirationTime);
+
+    // 할당
+    this.id = id;
+    this.adminId = adminId;
+    this.token = token;
+    this.expirationTime = expirationTime;
+  }
 
   public static RefreshToken initialize(
       String adminId, String refreshToken, LocalDateTime expirationTime) {
