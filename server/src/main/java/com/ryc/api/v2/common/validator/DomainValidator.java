@@ -120,6 +120,12 @@ public abstract class DomainValidator {
     }
   }
 
+  protected static void validateLongRange(long value, long minValue, long maxValue, ErrorCode errorCode) {
+    if (value < minValue || value  > maxValue) {
+      throw new InvalidFormatException(errorCode);
+    }
+  }
+
   /** BigDecimal 소수점 자리수 검증 */
   protected static void validateBigDecimalScale(
       BigDecimal value, int maxScale, ErrorCode errorCode) {

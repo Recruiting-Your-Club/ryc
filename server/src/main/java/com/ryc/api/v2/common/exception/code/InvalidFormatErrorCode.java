@@ -442,7 +442,47 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // Email Retry Count
   EMAIL_RETRY_COUNT_NULL(HttpStatus.BAD_REQUEST, "이메일 재시도 횟수는 null일 수 없습니다."),
-  EMAIL_INVALID_RETRY_COUNT_RANGE(HttpStatus.BAD_REQUEST, "이메일 재시도 횟수는 0 이상 10 이하여야 합니다.");
+  EMAIL_INVALID_RETRY_COUNT_RANGE(HttpStatus.BAD_REQUEST, "이메일 재시도 횟수는 0 이상 10 이하여야 합니다."),
+
+  /** 파일 메타데이터(FileMetaData) 에러 코드 */
+  // FileMetaData ID
+  FILE_METADATA_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "파일 메타데이터 ID는 null 혹은 empty일 수 없습니다."),
+  FILE_METADATA_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "파일 메타데이터 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // FileMetaData File Path
+  FILE_METADATA_FILE_PATH_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "파일 경로는 null 혹은 empty일 수 없습니다."),
+  FILE_METADATA_INVALID_FILE_PATH_LENGTH(HttpStatus.BAD_REQUEST, "파일 경로는 1자 이상 2048자 이하여야 합니다."),
+
+  // FileMetaData Original File Name
+  FILE_METADATA_ORIGINAL_FILE_NAME_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "원본 파일명은 null 혹은 empty일 수 없습니다."),
+  FILE_METADATA_INVALID_ORIGINAL_FILE_NAME_LENGTH(HttpStatus.BAD_REQUEST, "원본 파일명은 1자 이상 255자 이하여야 합니다."),
+
+  // FileMetaData Content Type
+  FILE_METADATA_CONTENT_TYPE_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "콘텐츠 타입은 null 혹은 empty일 수 없습니다."),
+  FILE_METADATA_INVALID_CONTENT_TYPE_LENGTH(HttpStatus.BAD_REQUEST, "콘텐츠 타입은 1자 이상 255자 이하여야 합니다."),
+
+  // FileMetaData File Size
+  FILE_METADATA_FILE_SIZE_NULL(HttpStatus.BAD_REQUEST, "파일 크기는 null일 수 없습니다."),
+  FILE_METADATA_INVALID_FILE_SIZE_RANGE(HttpStatus.BAD_REQUEST, "파일 크기는 0 이상 104857600 이하여야 합니다.(100MB)"),
+
+  // FileMetaData Display Order
+  FILE_METADATA_INVALID_DISPLAY_ORDER_RANGE(HttpStatus.BAD_REQUEST, "표시 순서는 0 이상 999 이하여야 합니다."),
+
+  // FileMetaData File Domain Type
+  FILE_METADATA_FILE_DOMAIN_TYPE_NULL(HttpStatus.BAD_REQUEST, "파일 도메인 타입은 null일 수 없습니다."),
+
+  // FileMetaData Associated ID
+  FILE_METADATA_ASSOCIATED_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "파일 연관 ID는 null 혹은 empty일 수 없습니다."),
+  FILE_METADATA_INVALID_ASSOCIATED_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "파일 연관 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // FileMetaData Uploaded By User ID
+  FILE_METADATA_INVALID_UPLOADED_BY_USER_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "파일을 업로드한 관리자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // FileMetaData Status
+  FILE_METADATA_STATUS_NULL(HttpStatus.BAD_REQUEST, "파일 상태는 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
