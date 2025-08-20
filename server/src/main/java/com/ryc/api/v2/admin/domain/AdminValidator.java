@@ -41,8 +41,6 @@ final class AdminValidator extends DomainValidator {
       String name,
       String email,
       String password,
-      String imageUrl,
-      String thumbnailUrl,
       AdminDefaultRole adminDefaultRole,
       Boolean isDeleted) {
 
@@ -51,8 +49,6 @@ final class AdminValidator extends DomainValidator {
     validateName(name);
     validateEmail(email);
     validateBCryptPassword(password);
-    validateImageUrl(imageUrl);
-    validateThumbnailUrl(thumbnailUrl);
     validateAdminDefaultRole(adminDefaultRole);
     validateIsDeleted(isDeleted);
   }
@@ -104,14 +100,6 @@ final class AdminValidator extends DomainValidator {
     validatePattern(password, PASSWORD_BCRYPT_PATTERN, ADMIN_INVALID_BCRYPT_PASSWORD_FORMAT);
     validateExactLength(
         password, PASSWORD_BCRYPT_HASH_LENGTH, ADMIN_INVALID_BCRYPT_PASSWORD_LENGTH);
-  }
-
-  private static void validateImageUrl(String imageUrl) {
-    // TODO: S3 구성이후 유효성 규칙 수정 필요
-  }
-
-  private static void validateThumbnailUrl(String thumbnailUrl) {
-    // TODO: S3 구성이후 유효성 규칙 수정 필요
   }
 
   private static void validateAdminDefaultRole(AdminDefaultRole adminDefaultRole) {

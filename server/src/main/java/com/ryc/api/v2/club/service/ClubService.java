@@ -1,6 +1,5 @@
 package com.ryc.api.v2.club.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.common.util.HtmlImageParser;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
@@ -26,6 +26,7 @@ public class ClubService {
 
   private final ClubRepository clubRepository;
   private final FileService fileService;
+  private final HtmlImageParser htmlImageParser;
 
   @Transactional
   public Club createClub(ClubCreateRequest body) {
@@ -34,11 +35,10 @@ public class ClubService {
     }
     Club club = Club.initialize(body.name(), body.category());
 
-    List<String> imageIds = new ArrayList<>();
-    imageIds.add(body.representativeImage());
-
     Club savedClub = clubRepository.save(club);
-    fileService.claimOwnershipAsync(imageIds, savedClub.getId());
+
+    fileService.claimOwnership(
+        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
     return savedClub;
   }
 
@@ -53,11 +53,18 @@ public class ClubService {
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
-    List<String> imageIds = new ArrayList<>(body.clubDetailImages());
+    List<String> detailDescriptionImages =
+        htmlImageParser.extractImageIds(body.detailDescription());
 
-    imageIds.add(body.representativeImage());
-
-    fileService.claimOwnershipSync(imageIds, savedClub.getId());
+    if (detailDescriptionImages.size() > 10) {
+      throw new ClubException(ClubErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
+    }
+    fileService.claimOwnership(
+        detailDescriptionImages, savedClub.getId(), FileDomainType.CLUB_POST_IMAGE);
+    fileService.claimOwnership(
+        body.clubDetailImages(), savedClub.getId(), FileDomainType.CLUB_IMAGE);
+    fileService.claimOwnership(
+        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
 
     List<FileMetaData> images = fileService.findAllByAssociatedId(savedClub.getId());
     FileGetResponse representativeImage =

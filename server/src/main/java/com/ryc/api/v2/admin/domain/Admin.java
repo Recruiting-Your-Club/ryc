@@ -12,10 +12,7 @@ public class Admin {
   private final String id;
   private final String name;
   private final String email;
-  private final String
-      password; // password는 Domin과 Entity에서 언제나 암호화 된 상태로 존재한다. (암호화는 반드시 Service에서 진행)
-  private final String imageUrl;
-  private final String thumbnailUrl;
+  private final String password; // password는 Domin과 Entity에서 언제나 암호화 된 상태로 존재한다. (암호화는 반드시 Service에서 진행)
   private final AdminDefaultRole adminDefaultRole;
   private final Boolean isDeleted;
 
@@ -25,8 +22,6 @@ public class Admin {
       String name,
       String email,
       String password,
-      String imageUrl,
-      String thumbnailUrl,
       AdminDefaultRole adminDefaultRole,
       Boolean isDeleted) {
 
@@ -45,8 +40,6 @@ public class Admin {
         sanitizeName,
         sanitizeEmail,
         password,
-        imageUrl,
-        thumbnailUrl,
         resolvedAdminDefaultRole,
         resolvedIsDeleted);
 
@@ -55,8 +48,6 @@ public class Admin {
     this.name = sanitizeName;
     this.email = sanitizeEmail;
     this.password = password;
-    this.imageUrl = imageUrl;
-    this.thumbnailUrl = thumbnailUrl;
     this.adminDefaultRole = resolvedAdminDefaultRole;
     this.isDeleted = resolvedIsDeleted;
   }
@@ -68,10 +59,6 @@ public class Admin {
         .name(name)
         .email(email)
         .password(password)
-        // TODO: 관리자 프로필 이미지 입력시점 아직 미정. 회원가입시가 아닌 경우,
-        //  imageUrl, thumbnailUrl 초기화 로직 제거 예정
-        .imageUrl("MOCK_PROFILE_IMAGE_URL")
-        .thumbnailUrl("MOCK_PROFILE_THUMBNAIL_URL")
         .adminDefaultRole(AdminDefaultRole.USER)
         .isDeleted(Boolean.FALSE)
         .build();
