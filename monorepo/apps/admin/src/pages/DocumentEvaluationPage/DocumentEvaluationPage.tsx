@@ -139,4 +139,4 @@ function DocumentEvaluationPage() {
     );
 }
 
-export { DocumentEvaluationPage };
+export default DocumentEvaluationPage;

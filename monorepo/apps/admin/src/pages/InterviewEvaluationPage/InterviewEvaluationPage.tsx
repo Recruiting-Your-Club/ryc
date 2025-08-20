@@ -219,4 +219,4 @@ function InterviewEvaluationPage() {
     );
 }
 
-export { InterviewEvaluationPage };
+export default InterviewEvaluationPage;

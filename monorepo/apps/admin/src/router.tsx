@@ -1,17 +1,25 @@
-import { InterviewEvaluationPage } from '@pages/InterviewEvaluationPage';
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     ClubCreatePage,
     ClubSearchPage,
-    DocumentEvaluationPage,
+    DocumentEvaluationLoadingPage,
+    InterviewEvaluationLoadingPage,
     LoginPage,
     MyClubPage,
     NotFoundPage,
     RegisterPage,
     TestPage,
 } from './pages';
+
+const LazyInterviewEvaluationPage = lazy(
+    () => import('./pages/InterviewEvaluationPage/InterviewEvaluationPage'),
+);
+const LazyDocumentEvaluationPage = lazy(
+    () => import('./pages/DocumentEvaluationPage/DocumentEvaluationPage'),
+);
 
 const router = createBrowserRouter([
     {
@@ -21,8 +29,22 @@ const router = createBrowserRouter([
             { index: true, element: <TestPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'test', element: <TestPage /> },
-            { path: 'interview-evaluation', element: <InterviewEvaluationPage /> },
-            { path: 'document-evaluation', element: <DocumentEvaluationPage /> },
+            {
+                path: 'interview-evaluation',
+                element: (
+                    <Suspense fallback={<InterviewEvaluationLoadingPage />}>
+                        <LazyInterviewEvaluationPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'document-evaluation',
+                element: (
+                    <Suspense fallback={<DocumentEvaluationLoadingPage />}>
+                        <LazyDocumentEvaluationPage />
+                    </Suspense>
+                ),
+            },
         ],
     },
     {

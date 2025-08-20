@@ -5,3 +5,4 @@ export * from './ClubCreatePage';
 export * from './ClubSearchPage';
 export * from './MyClubPage';
 export * from './DocumentEvaluationPage';
+export * from './LoadingPage';
