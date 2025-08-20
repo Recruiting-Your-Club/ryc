@@ -54,6 +54,7 @@ function RecruitCreatePage() {
     //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
         recruitmentSubject: '',
+        recruitmentSummaryDescription: '',
         recruitmentNumber: '',
         activityPeriod: '',
         recruitmentField: '',

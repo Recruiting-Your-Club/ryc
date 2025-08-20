@@ -1,5 +1,6 @@
 export interface RecruitDetailInfo {
     recruitmentSubject: string;
+    recruitmentSummaryDescription: string;
     recruitmentNumber: string;
     activityPeriod: string;
     recruitmentField: string;

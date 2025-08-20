@@ -30,6 +30,14 @@ function DescriptionStepPage({
                     onChange={(e) => onChange({ recruitmentSubject: e.target.value })}
                 />
             </div>
+            <div css={s_descriptionWrapper}>
+                <FieldLabel label="공고 부제" description="공고 부제를 작성해주세요" required />
+                <Input
+                    placeholder="ex) En#에서 함께할 신입 부원을 모집합니다!"
+                    value={recruitDetailInfo.recruitmentSummaryDescription}
+                    onChange={(e) => onChange({ recruitmentSummaryDescription: e.target.value })}
+                />
+            </div>
             <FieldLabel
                 label="공고 세부 정보"
                 description="형식에 맞게 공고 세부 정보를 기입해주세요"
