@@ -77,7 +77,6 @@ function MainPage() {
             <div css={bannerContainer}>
                 <img src={banner} alt="배너 이미지" width="100%" height="100%" />
             </div>
-            <img src={clublist[0].representativeImage.url} alt="동아리 이미지" />
             <div css={totalClubContainer}>
                 <Text type="bodySemibold" color="black">
                     총 {filteredClubData?.length}개의 동아리

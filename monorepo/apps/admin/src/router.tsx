@@ -13,6 +13,7 @@ import {
     RecruitCreatePage,
     RecruitSuccessPage,
     RegisterPage,
+    StepManagementPage,
     TestPage,
 } from './pages';
 
@@ -24,11 +25,11 @@ const router = createBrowserRouter([
             { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
-            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'announcements/:clubId/:announcementId?', element: <StepManagementPage /> },
             { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
             { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
-            { path: 'applicants/:clubId/:announcementId?', element: <ClubCreatePage /> },
+            { path: 'applicants/:clubId/:announcementId?', element: <StepManagementPage /> },
 
             {
                 path: 'interview-evaluation/:clubId/:announcementId?',

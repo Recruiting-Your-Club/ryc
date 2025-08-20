@@ -66,8 +66,5 @@ module.exports = {
             path: path.resolve(__dirname, './', dotenvFilename),
             systemvars: true,
         }),
-        new webpack.DefinePlugin({
-            'process.env.CHANNEL_PLUGIN_KEY': JSON.stringify(process.env.CHANNEL_PLUGIN_KEY),
-        }),
     ],
 };

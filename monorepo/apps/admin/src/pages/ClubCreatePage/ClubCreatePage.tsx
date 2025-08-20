@@ -1,7 +1,13 @@
+import type { CreateClub } from '@api/domain/club/types';
+import { useCreateClub } from '@api/hooks/clubMutation';
 import { ImageRegister } from '@components';
+import { BASE_URL } from '@constants/api';
 import React, { useState } from 'react';
 
-import { Avatar, Button, Input, Text } from '@ssoc/ui';
+import { useFileUpload } from '@ssoc/hooks';
+import { useRouter } from '@ssoc/hooks';
+import { Avatar, Button, Dropdown, Input, Select, Text, useToast } from '@ssoc/ui';
+import { blobUrlToFile } from '@ssoc/utils';
 
 import {
     clubContainer,
@@ -16,6 +22,7 @@ import {
     clubPreviewBox,
     createInputLabel,
     createSubmitButton,
+    s_createClubTagDropdown,
 } from './ClubCreatePage.style';
 
 const clubList = [
@@ -42,16 +49,119 @@ const clubList = [
 function ClubCreatePage() {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
+    const { removeHistoryAndGo } = useRouter();
     // initial values
+    const clubCategoryOptions = [
+        { value: 'PERFORMANCE_ARTS', label: '공연 동아리' },
+        { value: 'CULTURE', label: '문화 동아리' },
+        { value: 'SPORTS', label: '체육 동아리' },
+        { value: 'ACADEMIC', label: '학술 동아리' },
+        { value: 'VOLUNTEER', label: '봉사 동아리' },
+        { value: 'RELIGION', label: '종교 동아리' },
+    ];
+
     // state, ref, querystring hooks
     const [createClubName, setCreateClubName] = useState('동아리 이름');
-    const [createClubTag, setCreateClubTag] = useState('동아리 태그입니다.');
+    const [clubTag, setClubTag] = useState('동아리의 대표적인 태그를 선택해주세요.');
     const [image, setImage] = useState<string>();
     const [croppedImage, setCroppedImage] = useState<string>();
     // form hooks
     // query hooks
+    const { uploadFiles, error } = useFileUpload(BASE_URL);
+    const { mutateAsync: createClub, isPending: isCreateLoading } = useCreateClub();
+
     // calculated values
-    // handlers
+    const getSelectedLabel = () => {
+        const selected = clubCategoryOptions.find((option) => option.label === clubTag);
+        return selected ? selected.value : 'PERFORMANCE_ARTS';
+    };
+
+    const saveClubImage = async () => {
+        if (!croppedImage) return;
+        const file = await blobUrlToFile(croppedImage, 'club_logo');
+        try {
+            return await uploadFiles(file, 'CLUB_CREATE');
+        } catch (error) {
+            toast.error('이미지 업로드에 실패했어요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            throw error;
+        }
+    };
+
+    const checkClubData = (createdClub: CreateClub) => {
+        if (
+            !createdClub.name ||
+            createdClub.name.trim() === '' ||
+            createdClub.name === '동아리 이름'
+        ) {
+            toast.error('동아리 이름을 입력해주세요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            return false;
+        }
+
+        if (
+            !createdClub.category ||
+            createdClub.category === '동아리의 대표적인 태그를 선택해주세요.'
+        ) {
+            toast.error('동아리 카테고리를 선택해주세요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            return false;
+        }
+
+        if (!createdClub.representativeImage) {
+            toast.error('동아리 대표 이미지를 등록해주세요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            return false;
+        }
+        return true;
+    };
+    const createClubData = async () => {
+        const selectedLabel = getSelectedLabel();
+        // 이미지 저장
+        const fileMetadataIds = await saveClubImage();
+        const createdClub = {
+            name: createClubName.trim(),
+            category: selectedLabel,
+            representativeImage: fileMetadataIds?.[0] ?? '',
+        };
+        if (!checkClubData(createdClub)) {
+            return null;
+        }
+        return createdClub;
+    };
+
+    const resetForm = () => {
+        setClubTag('동아리의 대표적인 태그를 선택해주세요.');
+        setCreateClubName('동아리 이름');
+        setImage('');
+        setCroppedImage('');
+    };
+
+    const submitCreateClub = async () => {
+        const createdClub = await createClubData();
+        if (!createdClub) return;
+        try {
+            const result = await createClub(createdClub);
+            toast('동아리 생성이 완료되었습니다.', {
+                type: 'success',
+                toastTheme: 'white',
+            });
+            resetForm();
+            removeHistoryAndGo(`/clubs/${result.clubId}`);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     // effects
     return (
         <div css={clubContainerLayout}>
@@ -81,7 +191,7 @@ function ClubCreatePage() {
                                             textAlign="start"
                                             color="caption"
                                         >
-                                            {index === 0 ? createClubTag : club.category}
+                                            {index === 0 ? clubTag : club.category}
                                         </Text>
                                     </div>
                                 </li>
@@ -106,16 +216,33 @@ function ClubCreatePage() {
                             required
                             labelSx={createInputLabel}
                         />
-                        <Input
-                            type="text"
-                            label="동아리 태그"
-                            placeholder="동아리의 대표적인 태그를 선택해주세요."
-                            required
-                            inputSx={createInputLabel}
-                            labelSx={createInputLabel}
-                        />
+                        <Select
+                            sx={s_createClubTagDropdown}
+                            options={clubCategoryOptions}
+                            value={clubTag}
+                            onValueChange={setClubTag}
+                        >
+                            <Select.Trigger sx={{ border: 'none', width: '100%', height: '100%' }}>
+                                <Text type="captionRegular" textAlign="start" color="caption">
+                                    {clubTag}
+                                </Text>
+                            </Select.Trigger>
+                            <Select.Content>
+                                {clubCategoryOptions.map(({ value, label }) => (
+                                    <Select.Item key={value} value={label}>
+                                        {label}
+                                    </Select.Item>
+                                ))}
+                            </Select.Content>
+                        </Select>
                     </div>
-                    <Button variant="primary" size="lg" sx={createSubmitButton}>
+                    <Button
+                        variant="primary"
+                        size="lg"
+                        sx={createSubmitButton}
+                        loading={isCreateLoading}
+                        onClick={submitCreateClub}
+                    >
                         제출하기
                     </Button>
                 </div>

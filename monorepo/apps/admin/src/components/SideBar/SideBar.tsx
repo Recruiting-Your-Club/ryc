@@ -256,7 +256,7 @@ function SideBar() {
                                 >
                                     <Tooltip content={club.name}>
                                         <img
-                                            src={club.imageUrl}
+                                            src={club.representativeImage?.url}
                                             alt="club"
                                             width="100%"
                                             height="100%"
