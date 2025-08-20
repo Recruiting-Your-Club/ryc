@@ -95,3 +95,24 @@ export type QuestionType =
     | 'SINGLE_CHOICE'
     | 'LONG_ANSWER'
     | 'SHORT_ANSWER';
+
+export interface AnnouncementSubmitRequest {
+    title: string;
+    periodInfo: {
+        applicationPeriod: Period;
+        interviewPeriod: Period;
+        documentResultPeriod: Period;
+        finalResultPeriod: Period;
+    };
+    numberOfPeople: string;
+    detailDescription: string;
+    summaryDescription: string;
+    activityPeriod: string;
+    target: string;
+    field: string;
+    announcementType: 'ALWAYS_OPEN' | 'LIMITED_TIME';
+    tags: string[];
+    applicationForm: {
+        personalInfoQuestionTypes: PersonalInfoQuestion[];
+    };
+}

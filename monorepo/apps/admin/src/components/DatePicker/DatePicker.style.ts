@@ -37,3 +37,15 @@ export const s_dropdownContent = css`
 export const s_calendar = css`
     width: 100%;
 `;
+
+export const s_alwaysButtonContainer = css`
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+`;
+
+export const s_alwaysButton = css`
+    width: 100%;
+    margin-bottom: 1rem;
+`;

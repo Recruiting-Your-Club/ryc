@@ -3,4 +3,7 @@ export interface DatePickerProps {
     selectedDate: string[];
     onChange: (dates: string[]) => void;
     placeholder?: string;
+    showAlwaysOpenToggle?: boolean;
+    alwaysOpenLabel?: string;
+    alwaysOpenSentinel?: string;
 }

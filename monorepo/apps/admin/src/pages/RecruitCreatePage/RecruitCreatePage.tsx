@@ -19,7 +19,7 @@ import {
     s_stepComponent,
     s_stepWrapper,
 } from './RecruitCreatePage.style';
-import type { BasicInfoFields, RecruitDetailInfo } from './types';
+import type { BasicInfoFields, Period, RecruitDetailInfo } from './types';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -129,6 +129,14 @@ function RecruitCreatePage() {
         }
     };
     //-----------------------------//
+
+    //상시모집, 제한모집 구분 함수
+    const getAnnouncementType = (period: Period) => {
+        const { startDate, endDate } = period ?? { startDate: '', endDate: '' };
+        return startDate === '9999-12-31' && endDate === '9999-12-31'
+            ? 'ALWAYS_OPEN'
+            : 'LIMITED_TIME';
+    };
 
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {

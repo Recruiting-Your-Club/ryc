@@ -23,6 +23,8 @@ const PERIOD_KEYS = new Set<keyof RecruitDetailInfo>([
     'finalResult',
 ]);
 
+const ALWAYS_OPEN_TARGET_KEYS = new Set<keyof RecruitDetailInfo>(['documentPeriod']);
+
 function DescriptionStepPage({
     recruitDetailInfo,
     recruitFiles,
@@ -105,6 +107,7 @@ function DescriptionStepPage({
                                             onChange({ [listKey]: date ?? '' });
                                         }
                                     }}
+                                    showAlwaysOpenToggle={ALWAYS_OPEN_TARGET_KEYS.has(listKey)}
                                 />
                             )}
                         </div>
