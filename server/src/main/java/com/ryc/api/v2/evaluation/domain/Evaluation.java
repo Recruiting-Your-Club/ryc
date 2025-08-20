@@ -89,7 +89,6 @@ public class Evaluation {
     return evaluation;
   }
 
-
   public Evaluation update(EvaluationUpdateRequest body) {
     Evaluation evaluation =
         Evaluation.builder()

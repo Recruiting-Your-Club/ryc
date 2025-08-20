@@ -11,7 +11,7 @@ import lombok.Getter;
 public class InterviewReservation {
 
   private final String id;
-  //TODO:  도메인이 외부 도메인을 필드로 가지고 있음. 수정 필요 (도메인 독립성 위반)
+  // TODO:  도메인이 외부 도메인을 필드로 가지고 있음. 수정 필요 (도메인 독립성 위반)
   private final Applicant applicant;
 
   @Builder

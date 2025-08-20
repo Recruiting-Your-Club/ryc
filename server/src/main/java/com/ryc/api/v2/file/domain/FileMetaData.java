@@ -46,8 +46,11 @@ public class FileMetaData {
 
     // 2. 선택 멤버 변수 기본값 처리
     Long resolvedFileSize = fileSize != null ? fileSize : 0L;
-    boolean resolvedIsDeleted = isDeleted; //미사용 필드, 미입력시는 자동으로 false 저장 TODO: boolean null 비허용이라, 추후 Boolean, boolean 사용기준 확립
-    int resolvedDisplayOrder = displayOrder; //미입력시 자동으로 0 저장 TODO: 따라서 Integer 변환 후, 미입력시 우선순위 최 하위값 지정 필요
+    boolean resolvedIsDeleted =
+        isDeleted; // 미사용 필드, 미입력시는 자동으로 false 저장 TODO: boolean null 비허용이라, 추후 Boolean, boolean 사용기준
+    // 확립
+    int resolvedDisplayOrder =
+        displayOrder; // 미입력시 자동으로 0 저장 TODO: 따라서 Integer 변환 후, 미입력시 우선순위 최 하위값 지정 필요
 
     // 3. 검증
     FileMetaDataValidator.validate(

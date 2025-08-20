@@ -114,14 +114,15 @@ public abstract class DomainValidator {
 
   /** int 범위 검증 */
   protected static void validateIntRange(
-          int value, int minValue, int maxValue, ErrorCode errorCode) {
-    if (value < minValue || value  > maxValue) {
+      int value, int minValue, int maxValue, ErrorCode errorCode) {
+    if (value < minValue || value > maxValue) {
       throw new InvalidFormatException(errorCode);
     }
   }
 
-  protected static void validateLongRange(long value, long minValue, long maxValue, ErrorCode errorCode) {
-    if (value < minValue || value  > maxValue) {
+  protected static void validateLongRange(
+      long value, long minValue, long maxValue, ErrorCode errorCode) {
+    if (value < minValue || value > maxValue) {
       throw new InvalidFormatException(errorCode);
     }
   }
