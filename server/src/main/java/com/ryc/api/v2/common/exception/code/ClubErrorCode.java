@@ -13,7 +13,9 @@ public enum ClubErrorCode implements ErrorCode {
   DUPLICATE_CLUB_NAME(HttpStatus.CONFLICT, "동아리 이름은 중복될 수 없습니다."),
   CLUB_MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "동아리원이 이미 존재합니다."),
   CLUB_OWNER_CANNOT_BE_DELETED(HttpStatus.BAD_REQUEST, "동아리 회장은 삭제할 수 없습니다."),
-  CLUB_CATEGORY_BAD_REQUEST(HttpStatus.BAD_REQUEST, "존재하지 않는 동아리 카테고리입니다.");
+  CLUB_CATEGORY_BAD_REQUEST(HttpStatus.BAD_REQUEST, "존재하지 않는 동아리 카테고리입니다."),
+  POST_IMAGE_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "detailDescription의 이미지 수는 10개 이하 입니다."),
+  ;
 
   private final HttpStatus httpStatus;
   private final String message;
