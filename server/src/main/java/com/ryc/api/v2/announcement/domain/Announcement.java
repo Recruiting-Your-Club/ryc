@@ -18,7 +18,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Announcement {
   // Announcement 정보
   private final String id;
@@ -43,6 +42,45 @@ public class Announcement {
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
 
+  @Builder
+  public Announcement(
+      String id,
+      String clubId,
+      String title,
+      String numberOfPeople,
+      String detailDescription,
+      String summaryDescription,
+      String target,
+      String field,
+      List<Tag> tags,
+      AnnouncementType announcementType,
+      Boolean hasInterview,
+      AnnouncementPeriodInfo announcementPeriodInfo,
+      ApplicationForm applicationForm,
+      String activityPeriod,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+    this.id = id;
+    this.clubId = clubId;
+    this.title = title;
+    this.numberOfPeople = numberOfPeople;
+    this.detailDescription = detailDescription;
+    this.summaryDescription = summaryDescription;
+    this.target = target;
+    this.field = field;
+    this.tags = tags;
+    this.announcementType = announcementType;
+    this.hasInterview = hasInterview;
+    this.announcementPeriodInfo = announcementPeriodInfo;
+    this.applicationForm = applicationForm;
+    this.activityPeriod = activityPeriod;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+
+    this.announcementStatus =
+        AnnouncementStatus.from(announcementPeriodInfo.applicationPeriod(), announcementType);
+  }
+
   /**
    * 최초 생성시에만 사용하는 정적 팩토리 메서드
    *
@@ -59,11 +97,7 @@ public class Announcement {
 
     AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
 
-    // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus announcementStatus =
-        AnnouncementStatus.from(announcementPeriodInfo, announcementType);
-
-    // 4. Announcement 생성
+    // Announcement 생성
     Announcement announcement =
         Announcement.builder()
             .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
@@ -78,13 +112,12 @@ public class Announcement {
             .tags(tags)
             // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
             .hasInterview(true)
-            .announcementStatus(announcementStatus)
             .announcementType(announcementType)
             .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
             .build();
 
-    // 5. 유효성 검사
+    // 유효성 검사
     announcement.validate();
     return announcement;
   }
@@ -104,9 +137,6 @@ public class Announcement {
         AnnouncementPeriodInfo.from(request.periodInfo());
     AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
 
-    AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(updatedAnnouncementPeriodInfo, announcementType);
-
     // 3. announcement 생성
     Announcement announcement =
         Announcement.builder()
@@ -122,7 +152,6 @@ public class Announcement {
             .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
-            .announcementStatus(updatedAnnouncementStatus)
             .announcementType(announcementType)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
@@ -134,8 +163,6 @@ public class Announcement {
 
   /** status 갱신 메소드 */
   public Announcement updateStatus() {
-    AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(this.announcementPeriodInfo, this.announcementType);
 
     return Announcement.builder()
         .id(this.id)
@@ -150,7 +177,6 @@ public class Announcement {
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
         .applicationForm(this.applicationForm)
-        .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
         .announcementPeriodInfo(this.announcementPeriodInfo)
         .build();
