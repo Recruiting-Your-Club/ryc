@@ -18,6 +18,7 @@ import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.common.util.HtmlImageParser;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 
@@ -29,6 +30,7 @@ public class AnnouncementService {
 
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
+  private final HtmlImageParser htmlImageParser;
 
   @Transactional
   public AnnouncementCreateResponse createAnnouncement(
@@ -38,8 +40,20 @@ public class AnnouncementService {
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
+    List<String> postImages = htmlImageParser.extractImageIds(request.detailDescription());
+    if (request.images().size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.IMAGE_LIMIT_EXCEEDED);
+    }
+
+    if (postImages.size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
+    }
+
     fileService.claimOwnership(
         request.images(), savedAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
+
+    fileService.claimOwnership(
+        postImages, savedAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_POST_IMAGE);
 
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
   }
@@ -86,6 +100,14 @@ public class AnnouncementService {
     if (request.images().size() > 10) {
       throw new BusinessRuleException(AnnouncementErrorCode.IMAGE_LIMIT_EXCEEDED);
     }
+
+    List<String> postImages = htmlImageParser.extractImageIds(request.detailDescription());
+
+    if (postImages.size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
+    }
+
+    fileService.claimOwnership(postImages, announcementId, FileDomainType.ANNOUNCEMENT_POST_IMAGE);
 
     fileService.claimOwnership(
         request.images(), updateAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);

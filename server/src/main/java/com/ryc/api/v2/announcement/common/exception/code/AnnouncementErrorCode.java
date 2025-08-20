@@ -40,6 +40,8 @@ public enum AnnouncementErrorCode implements ErrorCode {
 
   IMAGE_LIMIT_EXCEEDED(
       HttpStatus.CONFLICT, "Image Limit Exceeded - can not add more than 10 images"),
+  POST_IMAGE_LIMIT_EXCEEDED(
+      HttpStatus.CONFLICT, "Image Limit Exceeded - can not add more than 10 images"),
   ;
 
   private final HttpStatus httpStatus;
