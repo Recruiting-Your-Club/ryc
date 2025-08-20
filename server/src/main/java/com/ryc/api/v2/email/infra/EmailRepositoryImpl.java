@@ -49,4 +49,14 @@ public class EmailRepositoryImpl implements EmailRepository {
   public void deleteAllByAdminId(String adminId) {
     emailJpaRepository.deleteBySenderId(adminId);
   }
+
+  @Override
+  public boolean existsByAdminId(String adminId) {
+    return emailJpaRepository.existsBySenderId(adminId);
+  }
+
+  @Override
+  public boolean existsByAnnouncementId(String announcementId) {
+    return emailJpaRepository.existsByAnnouncementId(announcementId);
+  }
 }

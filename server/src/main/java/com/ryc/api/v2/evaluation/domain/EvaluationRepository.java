@@ -18,4 +18,8 @@ public interface EvaluationRepository {
   void deleteAllByApplicantId(String applicantId);
 
   void deleteAllByAdminId(String adminId);
+
+  boolean existsByApplicantId(String applicantId);
+
+  boolean existsByAdminId(String adminId);
 }

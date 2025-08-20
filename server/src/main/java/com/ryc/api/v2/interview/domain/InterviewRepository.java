@@ -27,4 +27,8 @@ public interface InterviewRepository {
   void deleteSlotsByAnnouncementId(String announcementId);
 
   void deleteReservationById(String reservationId);
+
+  boolean existsReservationById(String reservationId);
+
+  boolean existsSlotsByAnnouncementId(String announcementId);
 }

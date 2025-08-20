@@ -84,10 +84,16 @@ public class InterviewRepositoryImpl implements InterviewRepository {
 
   @Override
   public void deleteReservationById(String reservationId) {
-    if (!interviewReservationJpaRepository.existsById(reservationId)) {
-      throw new NoSuchElementException("Interview reservation not found: " + reservationId);
-    }
-
     interviewReservationJpaRepository.deleteById(reservationId);
+  }
+
+  @Override
+  public boolean existsReservationById(String reservationId) {
+    return interviewReservationJpaRepository.existsById(reservationId);
+  }
+
+  @Override
+  public boolean existsSlotsByAnnouncementId(String announcementId) {
+    return interviewSlotJpaRepository.existsByAnnouncementId(announcementId);
   }
 }

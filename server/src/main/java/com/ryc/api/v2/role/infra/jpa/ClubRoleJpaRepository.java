@@ -11,16 +11,9 @@ import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
 public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, String> {
 
-  List<ClubRoleEntity> findByClubId(String clubId);
+  List<ClubRoleEntity> findByClub_Id(String clubId);
 
-  @Query(
-      """
-            SELECT CASE WHEN EXISTS (
-              SELECT 1 FROM ClubRoleEntity r
-              WHERE r.admin.id = :adminId AND r.club.id = :clubId
-            ) THEN true ELSE false END
-          """)
-  boolean existsByAdminIdAndClubId(
+  boolean existsByAdmin_IdAndClub_Id(
       @Param("adminId") String adminId, @Param("clubId") String clubId);
 
   @Query(
@@ -33,6 +26,10 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
   boolean existsOwnerRoleByAdminIdAndClubId(
       @Param("adminId") String adminId, @Param("clubId") String clubId);
 
+  boolean existsByClub_Id(String clubId);
+
+  boolean existsByAdmin_Id(String adminId);
+
   @Query("""
     SELECT COUNT(r)
     FROM ClubRoleEntity r
@@ -40,7 +37,7 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
 """)
   long countManagerAndMemberByClubId(@Param("clubId") String clubId);
 
-  void deleteByAdminId(String adminId);
+  void deleteByAdmin_IdAndClub_Id(String adminId, String clubId);
 
   @Query(
       """
@@ -50,5 +47,7 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
       """)
   List<ClubEntity> findClubsByAdminId(String adminId);
 
-  void deleteByClubId(String clubId);
+  void deleteByClub_Id(String clubId);
+
+  void deleteAllByAdmin_Id(String adminId);
 }

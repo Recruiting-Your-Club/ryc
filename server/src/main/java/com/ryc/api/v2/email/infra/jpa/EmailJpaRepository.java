@@ -17,4 +17,8 @@ public interface EmailJpaRepository extends JpaRepository<EmailEntity, String> {
   void deleteAllByAnnouncementId(String announcementId);
 
   void deleteBySenderId(String adminId);
+
+  boolean existsBySenderId(String adminId);
+
+  boolean existsByAnnouncementId(String announcementId);
 }

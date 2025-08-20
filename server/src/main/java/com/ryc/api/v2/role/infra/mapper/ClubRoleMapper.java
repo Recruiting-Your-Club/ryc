@@ -6,7 +6,7 @@ import com.ryc.api.v2.admin.infra.mapper.AdminMapper;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
-import com.ryc.api.v2.role.domain.vo.ClubRole;
+import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
 public class ClubRoleMapper {
@@ -14,10 +14,10 @@ public class ClubRoleMapper {
   private ClubRoleMapper() {}
 
   public static ClubRoleEntity toEntity(ClubRole clubRole) {
-    ClubEntity clubEntity = ClubMapper.toEntity(clubRole.club());
-    AdminEntity adminEntity = AdminMapper.toEntity(clubRole.admin());
+    ClubEntity clubEntity = ClubMapper.toEntity(clubRole.getClub());
+    AdminEntity adminEntity = AdminMapper.toEntity(clubRole.getAdmin());
     return ClubRoleEntity.builder()
-        .role(clubRole.role())
+        .role(clubRole.getRole())
         .club(clubEntity)
         .admin(adminEntity)
         .build();
@@ -31,8 +31,7 @@ public class ClubRoleMapper {
         .club(club)
         .admin(admin)
         .role(clubRoleEntity.getRole())
-        .createdAt(clubRoleEntity.getCreatedAt())
-        .updatedAt(clubRoleEntity.getUpdatedAt())
+        .joinedAt(clubRoleEntity.getCreatedAt())
         .build();
   }
 }

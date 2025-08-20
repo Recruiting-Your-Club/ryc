@@ -16,4 +16,6 @@ public interface RefreshTokenRepository {
   void flush();
 
   void deleteByAdminId(String adminId);
+
+  boolean existsByAdminId(String adminId);
 }
