@@ -1,29 +1,57 @@
-{
-    "unreservedApplicants": [
-        {
-            "applicantId": "6",
-            "applicantEmail": "jisoo.han@email.com",
-            "applicantName": "한지수"
-        },
-        {
-            "applicantId": "21",
-            "applicantEmail": "eunji.song@email.com",
-            "applicantName": "송은지"
-        },
-        {
-            "applicantId": "22",
-            "applicantEmail": "woosung.jung@email.com",
-            "applicantName": "정우성"
-        },
-        {
-            "applicantId": "24",
-            "applicantEmail": "seojun.park@email.com",
-            "applicantName": "박서준"
-        },
-        {
-            "applicantId": "27",
-            "applicantEmail": "sungmin.lee@email.com",
-            "applicantName": "이성민"
+[
+    {
+        "applicantId": "6",
+        "applicantEmail": "jisoo.han@email.com",
+        "applicantName": "한지수",
+        "imageResponse": {
+            "id": "img-6",
+            "url": "https://example.com/images/6.jpg",
+            "originalFileName": "6.jpg",
+            "contentType": "image/jpeg"
         }
-    ]
-}
+    },
+    {
+        "applicantId": "21",
+        "applicantEmail": "eunji.song@email.com",
+        "applicantName": "송은지",
+        "imageResponse": {
+            "id": "img-21",
+            "url": "https://example.com/images/21.jpg",
+            "originalFileName": "21.jpg",
+            "contentType": "image/jpeg"
+        }
+    },
+    {
+        "applicantId": "22",
+        "applicantEmail": "woosung.jung@email.com",
+        "applicantName": "정우성",
+        "imageResponse": {
+            "id": "img-22",
+            "url": "https://example.com/images/22.jpg",
+            "originalFileName": "22.jpg",
+            "contentType": "image/jpeg"
+        }
+    },
+    {
+        "applicantId": "24",
+        "applicantEmail": "seojun.park@email.com",
+        "applicantName": "박서준",
+        "imageResponse": {
+            "id": "img-24",
+            "url": "https://example.com/images/24.jpg",
+            "originalFileName": "24.jpg",
+            "contentType": "image/jpeg"
+        }
+    },
+    {
+        "applicantId": "27",
+        "applicantEmail": "sungmin.lee@email.com",
+        "applicantName": "이성민",
+        "imageResponse": {
+            "id": "img-27",
+            "url": "https://example.com/images/27.jpg",
+            "originalFileName": "27.jpg",
+            "contentType": "image/jpeg"
+        }
+    }
+]

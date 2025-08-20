@@ -1,124 +1,21 @@
 {
-    "applicantEvaluationStatuses": [
-        {
-            "applicantId": "1",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "2",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "3",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "4",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "5",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "6",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "7",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "8",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "9",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "10",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "11",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "12",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "13",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "14",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "15",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "16",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "17",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "18",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "19",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "20",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "21",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "22",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "23",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "24",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "25",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "26",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "27",
-            "isEvaluated": false
-        },
-        {
-            "applicantId": "28",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "29",
-            "isEvaluated": true
-        },
-        {
-            "applicantId": "30",
-            "isEvaluated": true
-        }
+    "evaluatedApplicantIds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "8",
+        "11",
+        "12",
+        "16",
+        "19",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "28",
+        "29",
+        "30"
     ]
 }
