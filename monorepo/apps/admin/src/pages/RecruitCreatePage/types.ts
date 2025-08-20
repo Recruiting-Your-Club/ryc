@@ -5,10 +5,10 @@ export interface RecruitDetailInfo {
     activityPeriod: string;
     recruitmentField: string;
     recruitmentTarget: string;
-    documentPeriod: string;
-    documentResult: string;
-    interviewSchedule: string;
-    finalResult: string;
+    documentPeriod: Period;
+    documentResult: Period;
+    interviewSchedule: Period;
+    finalResult: Period;
 }
 
 export interface BasicInfoFields {
@@ -16,3 +16,5 @@ export interface BasicInfoFields {
     phone: boolean;
     photo: boolean;
 }
+
+export type Period = { startDate: string; endDate: string };

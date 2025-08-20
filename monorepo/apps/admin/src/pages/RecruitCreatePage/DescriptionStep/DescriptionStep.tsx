@@ -6,6 +6,7 @@ import React from 'react';
 import { Editor, Input } from '@ssoc/ui';
 import { FileUpLoader } from '@ssoc/ui';
 
+import type { Period, RecruitDetailInfo } from '../types';
 import {
     s_customFieldLabel,
     s_descriptionFileUploader,
@@ -14,6 +15,13 @@ import {
     s_formGroup,
 } from './DescriptionStep.style';
 import type { DescriptionProps, DetailQuestionList } from './types';
+
+const PERIOD_KEYS = new Set<keyof RecruitDetailInfo>([
+    'documentPeriod',
+    'documentResult',
+    'interviewSchedule',
+    'finalResult',
+]);
 
 function DescriptionStepPage({
     recruitDetailInfo,
@@ -44,33 +52,64 @@ function DescriptionStepPage({
                 description="형식에 맞게 공고 세부 정보를 기입해주세요"
             />
             <div css={s_form}>
-                {DETAIL_QUESTION_LIST.map(({ label, key, placeholder, required, type, mode }) => (
-                    <div css={s_formGroup} key={key}>
-                        <FieldLabel label={label} required={required} sx={s_customFieldLabel} />
-                        {type === 'input' ? (
-                            <Input
-                                placeholder={placeholder}
-                                value={recruitDetailInfo[key]}
-                                onChange={(e) => onChange({ [key]: e.target.value })}
-                            />
-                        ) : (
-                            <DatePicker
-                                mode={mode}
-                                placeholder={placeholder}
-                                selectedDate={
-                                    Array.isArray(recruitDetailInfo[key])
-                                        ? recruitDetailInfo[key]
-                                        : recruitDetailInfo[key]
-                                          ? [recruitDetailInfo[key]]
-                                          : []
-                                }
-                                onChange={(dates) =>
-                                    onChange({ [key]: mode === 'range' ? dates : dates[0] })
-                                }
-                            />
-                        )}
-                    </div>
-                ))}
+                {DETAIL_QUESTION_LIST.map(({ label, key, placeholder, required, type, mode }) => {
+                    const listKey = key as keyof RecruitDetailInfo;
+                    const isPeriodField = PERIOD_KEYS.has(listKey);
+
+                    const selectedDate = isPeriodField
+                        ? mode === 'range'
+                            ? [
+                                  (recruitDetailInfo[listKey] as Period)?.startDate,
+                                  (recruitDetailInfo[listKey] as Period)?.endDate,
+                              ].filter(Boolean)
+                            : (recruitDetailInfo[listKey] as Period)?.startDate
+                              ? [(recruitDetailInfo[listKey] as Period).startDate]
+                              : []
+                        : (recruitDetailInfo[listKey] as string)
+                          ? [recruitDetailInfo[listKey] as string]
+                          : [];
+
+                    return (
+                        <div css={s_formGroup} key={key}>
+                            <FieldLabel label={label} required={required} sx={s_customFieldLabel} />
+
+                            {type === 'input' ? (
+                                <Input
+                                    placeholder={placeholder}
+                                    value={recruitDetailInfo[listKey] as string}
+                                    onChange={(e) => onChange({ [listKey]: e.target.value })}
+                                />
+                            ) : (
+                                <DatePicker
+                                    mode={mode}
+                                    placeholder={placeholder}
+                                    selectedDate={selectedDate}
+                                    onChange={(dates) => {
+                                        if (isPeriodField) {
+                                            const [d0, d1] = (dates ?? []) as string[];
+                                            if (mode === 'range') {
+                                                onChange({
+                                                    [listKey]: {
+                                                        startDate: d0 ?? '',
+                                                        endDate: d1 ?? '',
+                                                    },
+                                                });
+                                            } else {
+                                                const date = d0 ?? '';
+                                                onChange({
+                                                    [listKey]: { startDate: date, endDate: date },
+                                                });
+                                            }
+                                        } else {
+                                            const [date] = (dates ?? []) as string[];
+                                            onChange({ [listKey]: date ?? '' });
+                                        }
+                                    }}
+                                />
+                            )}
+                        </div>
+                    );
+                })}
             </div>
             <div css={s_descriptionWrapper}>
                 <FieldLabel label="상세 정보" description="자세한 모집 공고 내용을 입력해주세요" />

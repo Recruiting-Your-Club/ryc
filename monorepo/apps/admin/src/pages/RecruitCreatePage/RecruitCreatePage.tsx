@@ -59,10 +59,10 @@ function RecruitCreatePage() {
         activityPeriod: '',
         recruitmentField: '',
         recruitmentTarget: '',
-        documentPeriod: '',
-        documentResult: '',
-        interviewSchedule: '',
-        finalResult: '',
+        documentPeriod: { startDate: '', endDate: '' },
+        documentResult: { startDate: '', endDate: '' },
+        interviewSchedule: { startDate: '', endDate: '' },
+        finalResult: { startDate: '', endDate: '' },
     });
 
     //공고 모집 관련 이미지 상태 관리
@@ -78,14 +78,15 @@ function RecruitCreatePage() {
     // form hooks
     // query hooks
     // calculated values
+    const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
 
     //--------Step별 유효성 검사--------//
     //step1 검사
     const isDescriptionStepValid = useMemo(() => {
         return (
             recruitDetailInfo.recruitmentSubject.trim() !== '' &&
-            recruitDetailInfo.documentPeriod.trim() !== '' &&
-            recruitDetailInfo.recruitmentSummaryDescription.trim() !== ''
+            recruitDetailInfo.recruitmentSummaryDescription.trim() !== '' &&
+            hasPeriod(recruitDetailInfo.documentPeriod)
         );
     }, [
         recruitDetailInfo.recruitmentSubject,
