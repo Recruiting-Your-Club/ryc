@@ -1,18 +1,13 @@
-import { ClubBox, ImageDialog } from '@components';
-import { toTagProps } from '@constants/status';
+import { ClubInformationBox, ImageDialog } from '@components';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 
-import { Button, Image, Tag, Text } from '@ssoc/ui';
+import { Image, Text } from '@ssoc/ui';
 
-import { s_clubNameContainer } from '../AnnouncementPage.style';
 import type { AnnouncementInfoPageProps } from '../types';
 import {
-    s_applyButtonAtDesktop,
     s_contentBody,
     s_contentContainer,
-    s_contentHeader,
-    s_headerSubContainer,
     s_imageItem,
     s_imageListContainer,
     s_recruitmentContainer,
@@ -20,14 +15,9 @@ import {
 } from './RecruitmentPage.style';
 
 function RecruitmentPage({
-    id,
-    title,
-    summaryDescription,
     detailDescription,
     target,
     field,
-    announcementStatus,
-    announcementType,
     activityPeriod,
     numberOfPeople,
     applicationPeriod,
@@ -40,8 +30,6 @@ function RecruitmentPage({
     // lib hooks
     // initial values
 
-    const { text, variant } = toTagProps(announcementStatus);
-
     // state, ref, querystring hooks
     const [openDialog, setOpenDialog] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
@@ -50,19 +38,22 @@ function RecruitmentPage({
     // calculated values
     const formatDate = (date?: string) => (date ? dayjs(date).format('YY.MM.DD') : '-');
 
-    const formatPeriod = (period: { startDate: string; endDate: string }) => {
-        const sameDay = dayjs(period.startDate).isSame(period.endDate, 'day');
+    const formatPeriod = (period?: { startDate: string; endDate: string }) => {
+        if (!period?.startDate || !period?.endDate) {
+            return '미정';
+        }
+        const sameDay = dayjs(period?.startDate).isSame(period?.endDate, 'day');
         return sameDay
-            ? formatDate(period.startDate)
-            : `${formatDate(period.startDate)} ~ ${formatDate(period.endDate)} `;
+            ? formatDate(period?.startDate)
+            : `${formatDate(period?.startDate)} ~ ${formatDate(period?.endDate)} `;
     };
 
     const clubBoxData = useMemo(
         () => [
-            { title: '모집 대상', value: target },
-            { title: '모집 분야', value: field },
-            { title: '활동 기간', value: activityPeriod },
-            { title: '모집 인원', value: numberOfPeople },
+            { title: '모집 대상', value: target || '미정' },
+            { title: '모집 분야', value: field || '미정' },
+            { title: '활동 기간', value: activityPeriod || '미정' },
+            { title: '모집 인원', value: numberOfPeople || '미정' },
             { title: '서류 접수 기간', value: formatPeriod(applicationPeriod) },
             { title: '서류 결과 발표', value: formatPeriod(documentResultPeriod) },
             { title: '면접 일정', value: formatPeriod(interviewPeriod) },
@@ -89,7 +80,7 @@ function RecruitmentPage({
         <div css={s_recruitmentContainer}>
             <div css={s_contentContainer}>
                 <div css={s_contentBody}>
-                    <ClubBox data={clubBoxData} />
+                    <ClubInformationBox data={clubBoxData} />
                     <Text textAlign="start" sx={s_textContainer}>
                         {detailDescription}
                     </Text>

@@ -9,10 +9,12 @@ import {
     InterviewEvaluationPage,
     LoginPage,
     MyClubPage,
+    NonAnnouncementPage,
     NotFoundPage,
     RecruitCreatePage,
     RecruitSuccessPage,
     RegisterPage,
+    StepManagementPage,
     TestPage,
 } from './pages';
 
@@ -21,24 +23,35 @@ const router = createBrowserRouter([
         path: '/',
         element: <ManagerLayout />,
         children: [
-            { path: ':clubId/announcement-test', element: <AnnouncementPage /> },
-            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
-
-            { path: 'announcements/:clubId/:announcementId?', element: <LoginPage /> },
-            { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
-            { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
-
-            { path: 'applicants/:clubId/:announcementId?', element: <ClubCreatePage /> },
+            { path: 'announcements/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'announcements/:clubId/:announcementId', element: <AnnouncementPage /> },
 
             {
-                path: 'interview-evaluation/:clubId/:announcementId?',
+                path: 'announcements/create/:clubId/:announcementId?',
+                element: <RecruitCreatePage />,
+            },
+
+            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
+
+            { path: 'announcements/edit/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'announcements/edit/:clubId/:announcementId', element: <ClubCreatePage /> },
+
+            { path: 'applicants/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'applicants/:clubId/:announcementId', element: <StepManagementPage /> },
+
+            { path: 'interview-evaluation/:clubId', element: <NonAnnouncementPage /> },
+            {
+                path: 'interview-evaluation/:clubId/:announcementId',
                 element: <InterviewEvaluationPage />,
             },
-            { path: 'document-evaluation/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
-            { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'document-evaluation/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'document-evaluation/:clubId/:announcementId', element: <ClubCreatePage /> },
+
+            { path: 'interviewee-schedule/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'interviewee-schedule/:clubId/:announcementId', element: <LoginPage /> },
+
             { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
-            { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },

@@ -10,6 +10,7 @@ import { useStepper } from '@ssoc/ui';
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
+import { PreivewStep } from './PreviewStep';
 import {
     s_dialogContent,
     s_dialogHeader,
@@ -19,7 +20,7 @@ import {
     s_stepComponent,
     s_stepWrapper,
 } from './RecruitCreatePage.style';
-import type { BasicInfoFields, RecruitDetailInfo } from './types';
+import type { BasicInfoFields, Period, RecruitDetailInfo } from './types';
 
 function RecruitCreatePage() {
     // prop destruction
@@ -54,14 +55,16 @@ function RecruitCreatePage() {
     //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
         recruitmentSubject: '',
+        recruitmentSummaryDescription: '',
         recruitmentNumber: '',
         activityPeriod: '',
         recruitmentField: '',
         recruitmentTarget: '',
-        documentPeriod: '',
-        documentResult: '',
-        interviewSchedule: '',
-        finalResult: '',
+        documentPeriod: { startDate: '', endDate: '' },
+        documentResult: { startDate: '', endDate: '' },
+        interviewSchedule: { startDate: '', endDate: '' },
+        finalResult: { startDate: '', endDate: '' },
+        tags: ['중앙동아리'],
     });
 
     //공고 모집 관련 이미지 상태 관리
@@ -77,15 +80,21 @@ function RecruitCreatePage() {
     // form hooks
     // query hooks
     // calculated values
+    const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
 
     //--------Step별 유효성 검사--------//
     //step1 검사
     const isDescriptionStepValid = useMemo(() => {
         return (
             recruitDetailInfo.recruitmentSubject.trim() !== '' &&
-            recruitDetailInfo.documentPeriod.trim() !== ''
+            recruitDetailInfo.recruitmentSummaryDescription.trim() !== '' &&
+            hasPeriod(recruitDetailInfo.documentPeriod)
         );
-    }, [recruitDetailInfo.recruitmentSubject, recruitDetailInfo.documentPeriod]);
+    }, [
+        recruitDetailInfo.recruitmentSubject,
+        recruitDetailInfo.documentPeriod,
+        recruitDetailInfo.recruitmentSummaryDescription,
+    ]);
 
     //step2 감시
     const isBasicInfoStepValid = useMemo(() => {
@@ -122,6 +131,14 @@ function RecruitCreatePage() {
         }
     };
     //-----------------------------//
+
+    //상시모집, 제한모집 구분 함수
+    const getAnnouncementType = (period: Period) => {
+        const { startDate, endDate } = period ?? { startDate: '', endDate: '' };
+        return startDate === '9999-12-31' && endDate === '9999-12-31'
+            ? 'ALWAYS_OPEN'
+            : 'LIMITED_TIME';
+    };
 
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
@@ -187,7 +204,7 @@ function RecruitCreatePage() {
                     />
                 );
             case 3:
-                return <div>미리보기</div>;
+                return <PreivewStep />;
             default:
                 <div>error</div>;
         }

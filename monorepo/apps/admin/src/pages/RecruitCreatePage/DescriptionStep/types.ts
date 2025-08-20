@@ -14,4 +14,6 @@ export type DetailQuestionList = {
     key: RecruitDetailInfoKey;
     placeholder: string;
     required: boolean;
+    type: string;
+    mode?: 'single' | 'multiple' | 'range';
 }[];
