@@ -125,6 +125,11 @@ function IntervieweeList({
                                 key={interviewee.applicantId}
                                 name={interviewee.name}
                                 email={interviewee.email}
+                                imageUrl={
+                                    interviewee.imageAllowed && interviewee.imagePresent
+                                        ? interviewee.profileImage?.url
+                                        : ''
+                                }
                                 onClick={() => onSelectApplicantId(interviewee.applicantId)}
                                 isActivated={selectedApplicantId === interviewee.applicantId}
                             />

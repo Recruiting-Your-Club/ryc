@@ -32,7 +32,7 @@ export interface Evaluation {
 }
 
 export interface MyEvaluationStatus {
-    applicantEvaluationStatuses: PerEvaluationStatus[];
+    evaluatedApplicantIds: string[];
 }
 
 export interface PerEvaluationStatus {

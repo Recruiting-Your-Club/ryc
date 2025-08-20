@@ -100,14 +100,12 @@ async function deleteEvaluation(params: {
     });
 }
 
-async function postMyEvaluationStatus(params: {
-    applicantIdList: string[];
+async function getMyEvaluationStatus(params: {
     clubId: string;
     type: 'application' | 'interview';
 }): Promise<MyEvaluationStatus> {
-    return await httpRequest.post({
+    return await httpRequest.get({
         url: `evaluation/${params.type}s/my-status`,
-        body: { applicantIdList: params.applicantIdList },
         headers: { 'X-CLUB-ID': params.clubId },
         isAuthRequire: true,
     });
@@ -121,5 +119,5 @@ export {
     postPersonalEvaluation,
     putEvaluationScoreAndComment,
     deleteEvaluation,
-    postMyEvaluationStatus,
+    getMyEvaluationStatus,
 };

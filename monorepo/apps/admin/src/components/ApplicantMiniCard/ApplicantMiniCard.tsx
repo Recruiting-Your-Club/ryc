@@ -28,7 +28,15 @@ function ApplicantMiniCard({
     return (
         <button css={[s_miniCardContainer(isActivated), sx]} {...props}>
             <div css={s_informationContainer}>
-                <Avatar shape="round" size="s" />
+                <Avatar
+                    shape="round"
+                    size="s"
+                    imageURL={
+                        applicant.imageAllowed && applicant.imagePresent
+                            ? applicant.profileImage?.url
+                            : ''
+                    }
+                />
                 <span css={s_textInformationContainer}>
                     <Text as="span" type="captionSemibold" textAlign="start">
                         {applicant.name}
@@ -39,7 +47,7 @@ function ApplicantMiniCard({
                 </span>
             </div>
             {isCompleted && (
-                <Text as="span" type="captionBold" color="primary" noWrap cropped>
+                <Text as="span" type="subCaptionBold" color="primary" noWrap cropped>
                     평가 완료
                 </Text>
             )}

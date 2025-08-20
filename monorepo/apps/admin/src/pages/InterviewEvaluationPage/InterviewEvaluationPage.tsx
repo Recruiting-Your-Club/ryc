@@ -1,7 +1,4 @@
-import type {
-    ApplicantForInterviewSlot,
-    ApplicantReservedInterview,
-} from '@api/domain/interview/types';
+import type { InterviewApplicant, UnreservedApplicant } from '@api/domain/interview/types';
 import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
@@ -79,20 +76,21 @@ function InterviewEvaluationPage() {
     const finalIntervieweeList: EnrichedInterviewee[] = useMemo(() => {
         if (!slotApplicants) return [];
 
-        return slotApplicants.interviewReservations
+        return slotApplicants
             .map((applicant) => {
-                const matchedSlot = interviewSlots.find(
-                    (slot) => slot.id === slotApplicants.interviewSlotId,
-                );
+                const matchedSlot = interviewSlots.find((slot) => slot.id === slotId);
 
                 if (!matchedSlot) return null;
 
                 return {
-                    applicantId: applicant.applicantId,
-                    name: applicant.applicantName,
-                    email: applicant.applicantEmail,
+                    applicantId: applicant.applicantSummary.applicantId,
+                    name: applicant.applicantSummary.applicantName,
+                    email: applicant.applicantSummary.applicantEmail,
+                    imageAllowed: Boolean(applicant.applicantSummary.imageResponse),
+                    imagePresent: Boolean(applicant.applicantSummary.imageResponse),
                     status: 'INTERVIEW_PENDING',
                     submittedAt: '',
+                    profileImage: applicant.applicantSummary.imageResponse,
                     interviewDate: dayjs(matchedSlot.period.startDate).format('YYYY-MM-DD'),
                     interviewName: matchedSlot.id,
                     startTime: dayjs(matchedSlot.period.startDate).format('HH:mm'),
@@ -106,7 +104,7 @@ function InterviewEvaluationPage() {
     const handleSelectApplicantId = (applicantId: string) => {
         if (!slotApplicants) return;
 
-        const foundApplicant = toStepApplicants(slotApplicants.interviewReservations).find(
+        const foundApplicant = toStepApplicants(slotApplicants).find(
             (applicant) => applicant.applicantId === applicantId,
         );
 
@@ -140,16 +138,43 @@ function InterviewEvaluationPage() {
         };
     }
 
+    const getApplicantInformation = (applicant: InterviewApplicant | UnreservedApplicant) => {
+        if ('applicantSummary' in applicant) {
+            return {
+                applicantId: applicant.applicantSummary.applicantId,
+                applicantName: applicant.applicantSummary.applicantName,
+                applicantEmail: applicant.applicantSummary.applicantEmail,
+                imageResponse: applicant.applicantSummary.imageResponse,
+            };
+        }
+        return {
+            applicantId: applicant.applicantId,
+            applicantName: applicant.applicantName,
+            applicantEmail: applicant.applicantEmail,
+            imageResponse: applicant.imageResponse,
+        };
+    };
+
     const toStepApplicants = (
-        interviewees: ApplicantReservedInterview[] | ApplicantForInterviewSlot[],
+        interviewees: InterviewApplicant[] | UnreservedApplicant[],
     ): StepApplicant[] => {
-        return interviewees.map(({ applicantId, applicantName, applicantEmail }) => ({
-            applicantId,
-            name: applicantName,
-            email: applicantEmail,
-            status: 'INTERVIEW_PENDING',
-            submittedAt: '',
-        }));
+        if (!Array.isArray(interviewees)) return [];
+
+        return interviewees.map((applicant) => {
+            const { applicantId, applicantName, applicantEmail, imageResponse } =
+                getApplicantInformation(applicant);
+
+            return {
+                applicantId,
+                name: applicantName,
+                email: applicantEmail,
+                status: 'INTERVIEW_PENDING',
+                submittedAt: '',
+                imageAllowed: Boolean(imageResponse),
+                imagePresent: Boolean(imageResponse),
+                profileImage: imageResponse ?? null,
+            };
+        });
     };
 
     return (

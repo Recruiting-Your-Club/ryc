@@ -1,9 +1,9 @@
 import {
+    getMyEvaluationStatus,
     postApplicationEvaluationSummary,
     postDetailApplicationEvaluation,
     postDetailInterviewEvaluation,
     postInterviewEvaluationSummary,
-    postMyEvaluationStatus,
 } from '@api/domain';
 import type { EvaluationType } from '@api/domain/evaluation/types';
 import { evaluationKeys } from '@api/querykeyFactory';
@@ -48,21 +48,13 @@ const evaluationQueries = {
                     : postDetailInterviewEvaluation(params);
             },
         }),
-    myEvaluationStatus: ({
-        clubId,
-        applicantIdList,
-        type,
-    }: {
-        clubId: string;
-        applicantIdList: string[];
-        type: EvaluationType;
-    }) =>
+    myEvaluationStatus: ({ clubId, type }: { clubId: string; type: EvaluationType }) =>
         queryOptions({
-            queryKey: evaluationKeys.myEvaluationStatus(clubId, applicantIdList, type),
+            queryKey: evaluationKeys.myEvaluationStatus(clubId, type),
             queryFn: () => {
-                const params = { clubId, applicantIdList, type };
+                const params = { clubId, type };
 
-                return postMyEvaluationStatus(params);
+                return getMyEvaluationStatus(params);
             },
         }),
 };

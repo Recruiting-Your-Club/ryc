@@ -1,4 +1,3 @@
-import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { stepQueries } from '@api/queryFactory/stepQueries';
@@ -59,6 +58,9 @@ function DocumentEvaluationPage() {
                 'FINAL_FAIL',
             ].includes(selectedApplicant.status),
     });
+    const { data: myDocumentEvaluationStatus } = useSuspenseQuery(
+        evaluationQueries.myEvaluationStatus({ clubId: clubId!, type: 'application' }),
+    );
 
     const { handlePostComment, handleUpdateComment, handleDeleteComment } = useEvaluation(
         'application',
@@ -108,6 +110,7 @@ function DocumentEvaluationPage() {
                     applicantList={stepApplicantList}
                     selectedApplicantId={selectedApplicant?.applicantId ?? null}
                     onSelectApplicantId={handleSelectApplicantId}
+                    myEvaluationStatusList={myDocumentEvaluationStatus} // 몰라
                 />
             </div>
             <div css={informationContainer}>
