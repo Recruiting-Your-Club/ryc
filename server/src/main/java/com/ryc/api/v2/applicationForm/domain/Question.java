@@ -18,6 +18,7 @@ import lombok.Getter;
 public class Question {
   private final String id;
   private final String label;
+  private final String description;
   private final boolean isRequired;
 
   private final List<QuestionOption> options;
@@ -29,6 +30,7 @@ public class Question {
   private Question(
       String id,
       String label,
+      String description,
       boolean isRequired,
       List<QuestionOption> options,
       QuestionType questionType,
@@ -36,17 +38,25 @@ public class Question {
 
     // 1. 정제
     String sanitizedLabel = DataResolveUtil.sanitizeString(label);
+    String sanitizedDescription = DataResolveUtil.sanitizeString(description);
 
     // 2. 선택 멤버 변수 기본값 처리
     List<QuestionOption> resolvedOptions = options != null ? options : List.of();
 
     // 3. 검증
     QuestionValidator.validate(
-        id, sanitizedLabel, isRequired, resolvedOptions, questionType, category);
+        id,
+        sanitizedLabel,
+        sanitizedDescription,
+        isRequired,
+        resolvedOptions,
+        questionType,
+        category);
 
     // 4. 할당
     this.id = id;
     this.label = sanitizedLabel;
+    this.description = sanitizedDescription;
     this.isRequired = isRequired;
     this.options = resolvedOptions;
     this.questionType = questionType;
@@ -60,6 +70,7 @@ public class Question {
     return Question.builder()
         .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
         .label(request.label())
+        .description(request.description())
         .isRequired(request.isRequired())
         .questionType(request.questionType())
         .options(options)
@@ -72,6 +83,7 @@ public class Question {
     return Question.builder()
         .id(request.id())
         .label(request.label())
+        .description(request.description())
         .isRequired(request.isRequired())
         .questionType(request.questionType())
         .options(options)
