@@ -12,6 +12,7 @@ import { Avatar, Button, Dropdown, Input, Table, useDialog, useToast } from '@ss
 
 import Meatball from '../../assets/images/meatball-menu.svg';
 import {
+    s_buttonSx,
     s_clubMemberRolePageContainer,
     s_clubMemberRolePageTableContainer,
     s_clubMemberRolePageTopContainer,
@@ -23,36 +24,84 @@ import {
     s_tableCellNoActionSx,
     s_tableCellSx,
     s_tableHeaderCellSx,
+    s_tableSx,
 } from './ClubMemberRolePage.style';
 
+const dummyUserList = [
+    {
+        adminId: '1',
+        adminName: '홍길동',
+        adminProfileImage: { url: 'https://via.placeholder.com/150' },
+        joinedAt: '2025-01-01',
+        role: '회장',
+    },
+    {
+        adminId: '2',
+        adminName: '김길동',
+        adminProfileImage: { url: 'https://via.placeholder.com/150' },
+        joinedAt: '2025-01-01',
+        role: '동아리원',
+    },
+    {
+        adminId: '3',
+        adminName: '이길동',
+        adminProfileImage: { url: 'https://via.placeholder.com/150' },
+        joinedAt: '2025-01-01',
+        role: '동아리원',
+    },
+    {
+        adminId: '4',
+        adminName: '박길동',
+        adminProfileImage: { url: 'https://via.placeholder.com/150' },
+        joinedAt: '2025-01-01',
+        role: '동아리원',
+    },
+];
+
 const ClubMemberRolePage = () => {
+    // prop destruction
+
+    // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
     const { toast } = useToast();
-
-    const [currentUserRole] = useState<'회장' | '동아리원'>('회장');
-
-    const [isKickConfirmOpen, setIsKickConfirmOpen] = useState(false);
-
     const { clubId } = useParams();
-
+    // initial values
+    // state, ref, querystring hooks
+    const [currentUserRole] = useState<'회장' | '동아리원'>('회장');
+    const [isKickConfirmOpen, setIsKickConfirmOpen] = useState(false);
+    const [inviteUrl, setInviteUrl] = useState('');
+    const [searchText, setSearchText] = useState('');
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    // form hooks
+    // query hooks
     const { mutate: deleteMember, isPending: isDeleting } = roleMutations.useDeleteClubMember(
         clubId || '',
     );
     const { mutate: generateInviteUrl, isPending: isGeneratingUrl } =
-        roleMutations.usePostClubIdAndGetInviteUrl(clubId || '');
+        roleMutations.usePostClubIdAndGetInviteUrl({
+            clubId: clubId || '',
+            onSuccess: (res) => {
+                const code = res.inviteCode;
+                const localhostUrl = `http://localhost:3000/${code}`;
+                setInviteUrl(localhostUrl);
+                openDialog();
+            },
+            onError: () => {
+                toast.error('초대 링크 생성에 실패했습니다.');
+            },
+        });
 
     const { data: userList } = useQuery(roleQueries.getClubMemberList(clubId || ''));
 
-    const [searchText, setSearchText] = useState('');
-    const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
+    // calculated values
     const filteredMembers = useMemo(
         () =>
             userList?.filter((member) =>
                 member.adminName.toLowerCase().includes(searchText.trim().toLowerCase()),
             ),
-        [searchText, userList],
+        [searchText],
     );
+    // handlers
 
     const handleClickKickMember = () => {
         if (currentUserRole !== '회장') {
@@ -65,25 +114,20 @@ const ClubMemberRolePage = () => {
             return;
         }
 
-        // 확인 다이얼로그 열기
         setIsKickConfirmOpen(true);
     };
 
     const handleConfirmKickMember = () => {
-        // 선택된 멤버들을 API로 삭제
-        selectedIds.forEach((userId) => {
-            deleteMember(userId);
+        deleteMember(selectedIds[0], {
+            onSuccess: () => toast.success('멤버를 내보냈습니다.'),
+            onError: () => toast.error('내보내기에 실패했습니다.'),
         });
-
-        // 선택 상태 초기화
-        setSelectedIds([]);
     };
 
     const handleClickInviteMember = () => {
-        // 초대 URL 생성
         generateInviteUrl();
-        openDialog();
     };
+    // effects
 
     return (
         <div css={s_clubMemberRolePageContainer}>
@@ -104,14 +148,14 @@ const ClubMemberRolePage = () => {
                     variant="primary"
                     size="lg"
                     onClick={handleClickInviteMember}
-                    sx={{ width: '10rem' }}
+                    sx={s_buttonSx}
                     disabled={isGeneratingUrl}
                 >
                     {isGeneratingUrl ? '생성 중...' : '멤버 초대'}
                 </Button>
             </div>
             <div css={s_clubMemberRolePageTableContainer}>
-                <Table>
+                <Table sxTable={{ s_tableSx }}>
                     <Table.Header>
                         <Table.Row>
                             <Table.ColumnHeaderCell sx={s_tableHeaderCellSx}>
@@ -168,7 +212,7 @@ const ClubMemberRolePage = () => {
                     <InviteMemberDialog
                         open={open}
                         handleClose={closeDialog}
-                        inviteUrl={'https://www.google.com'}
+                        inviteUrl={inviteUrl}
                     />
                 )}
 

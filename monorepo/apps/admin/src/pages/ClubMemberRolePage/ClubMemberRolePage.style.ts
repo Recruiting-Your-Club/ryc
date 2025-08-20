@@ -4,23 +4,23 @@ import theme from '@ssoc/styles';
 
 export const s_clubMemberRolePageContainer = css`
     width: 100%;
-    height: 100dvh;
+    height: 100%;
     display: flex;
-    align-items: start;
+    align-items: center;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 1rem;
 `;
 
 export const s_clubMemberRolePageTopContainer = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 80%;
+    margin-top: 8rem;
 `;
 
 export const s_clubMemberRolePageTableContainer = css`
-    width: 100%;
+    width: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
