@@ -38,6 +38,6 @@ public class FileHttpApi {
   @PostMapping("/access-presigned-url")
   public ResponseEntity<FileGetResponse> getAccessPresignedUrl(
       @RequestBody @Valid AccessPresignedUrlGetRequest request) {
-    return ResponseEntity.ok(fileService.getAccessPresignedUrl(request));
+    return ResponseEntity.ok(fileService.getAccessUrl(request));
   }
 }

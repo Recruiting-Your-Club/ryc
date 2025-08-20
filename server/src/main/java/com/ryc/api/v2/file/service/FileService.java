@@ -2,6 +2,7 @@ package com.ryc.api.v2.file.service;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -61,14 +62,11 @@ public class FileService {
   }
 
   @Transactional
-  public FileGetResponse getAccessPresignedUrl(AccessPresignedUrlGetRequest request) {
+  public FileGetResponse getAccessUrl(AccessPresignedUrlGetRequest request) {
     FileMetaData fileMetaData = fileMetaDataRepository.findById(request.metadataId());
 
-    if (!fileMetaData.getFileDomainType().getIsPrivate()) {
-      throw new BusinessRuleException(S3ErrorCode.INVALID_PRIVATE_FILE_REQUEST);
-    }
-
-    if (!fileMetaData.isCorrectAccessToken(request.accessToken())) {
+    if (fileMetaData.getFileDomainType().getIsPrivate()
+        && !fileMetaData.isCorrectAccessToken(request.accessToken())) {
       throw new BusinessRuleException(S3ErrorCode.INVALID_ACCESS_TOKEN);
     }
 
@@ -76,7 +74,12 @@ public class FileService {
       throw new BusinessRuleException(S3ErrorCode.INVALID_FILE_STATUS);
     }
 
-    String presignedUrl = s3FileStorage.getPrivateFileGetUrl(fileMetaData.getFilePath());
+    String presignedUrl;
+    if (fileMetaData.getFileDomainType().getIsPrivate()) {
+      presignedUrl = getPrivateFileGetUrl(fileMetaData);
+    } else {
+      presignedUrl = getPublicFileGetUrl(fileMetaData);
+    }
 
     return FileGetResponse.builder()
         .id(fileMetaData.getId())
@@ -175,7 +178,9 @@ public class FileService {
   @Transactional
   public void claimOwnership(
       String fileMetaDataId, String associatedId, FileDomainType expectedType) {
-    claimOwnership(Collections.singletonList(fileMetaDataId), associatedId, expectedType);
+    List<String> fileMetaDataIds =
+        (fileMetaDataId != null) ? Collections.singletonList(fileMetaDataId) : null;
+    claimOwnership(fileMetaDataIds, associatedId, expectedType);
   }
 
   @Transactional
@@ -204,5 +209,20 @@ public class FileService {
         .collect(
             Collectors.toMap(
                 FileMetaData::getId, m -> FileGetResponse.of(m, getPrivateFileGetUrl(m))));
+  }
+
+  public void deleteOrphanImage() {
+    List<FileMetaData> orphanImages =
+        fileMetaDataRepository.findAll().stream()
+            .filter(this::isOrphanImage)
+            .map(FileMetaData::delete)
+            .toList();
+    s3FileStorage.deleteFiles(orphanImages.stream().map(FileMetaData::getFilePath).toList());
+    fileMetaDataRepository.saveAll(orphanImages);
+  }
+
+  public Boolean isOrphanImage(FileMetaData fileMetaData) {
+    return fileMetaData.getStatus() == FileStatus.PENDING
+        && LocalDateTime.now().isAfter(fileMetaData.getCreatedAt().plusDays(3));
   }
 }

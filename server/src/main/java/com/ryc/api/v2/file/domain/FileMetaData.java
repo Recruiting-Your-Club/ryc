@@ -1,5 +1,6 @@
 package com.ryc.api.v2.file.domain;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
@@ -19,6 +20,7 @@ public class FileMetaData {
   private final boolean isDeleted;
   private final int displayOrder;
   private final String accessToken;
+  private final LocalDateTime createdAt;
 
   private final FileDomainType fileDomainType;
 
@@ -66,12 +68,6 @@ public class FileMetaData {
     return accessToken == null;
   }
 
-  public boolean isPrivateFile() {
-    return this.fileDomainType.equals(FileDomainType.APPLICANT_PROFILE)
-        || this.fileDomainType.equals(FileDomainType.ANSWER_ATTACHMENT)
-        || this.fileDomainType.equals(FileDomainType.USER_PROFILE);
-  }
-
   public FileMetaData confirmUpload(Long fileSize) {
     return FileMetaData.builder()
         .id(id)
@@ -85,23 +81,7 @@ public class FileMetaData {
         .uploadedByUserId(uploadedByUserId)
         .status(FileStatus.UPLOAD_COMPLETED)
         .isDeleted(false)
-        .displayOrder(displayOrder)
-        .build();
-  }
-
-  public FileMetaData issueFailUpload() {
-    return FileMetaData.builder()
-        .id(id)
-        .filePath(filePath)
-        .originalFileName(originalFileName)
-        .contentType(contentType)
-        .fileSize(fileSize)
-        .accessToken(accessToken)
-        .fileDomainType(fileDomainType)
-        .associatedId(associatedId)
-        .uploadedByUserId(uploadedByUserId)
-        .status(FileStatus.FAILED)
-        .isDeleted(true)
+        .createdAt(this.createdAt)
         .displayOrder(displayOrder)
         .build();
   }
@@ -119,6 +99,7 @@ public class FileMetaData {
         .uploadedByUserId(uploadedByUserId)
         .status(status)
         .isDeleted(true)
+        .createdAt(this.createdAt)
         .displayOrder(displayOrder)
         .build();
   }
@@ -130,6 +111,7 @@ public class FileMetaData {
         .originalFileName(originalFileName)
         .contentType(contentType)
         .fileSize(fileSize)
+        .createdAt(this.createdAt)
         .accessToken(accessToken)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
@@ -137,40 +119,6 @@ public class FileMetaData {
         .status(FileStatus.ATTACHED)
         .isDeleted(isDeleted)
         .displayOrder(displayOrder)
-        .build();
-  }
-
-  public FileMetaData issueFileMoveSuccess(String finalS3Key) {
-    return FileMetaData.builder()
-        .id(this.id)
-        .filePath(finalS3Key)
-        .originalFileName(this.originalFileName)
-        .contentType(this.contentType)
-        .fileSize(this.fileSize)
-        .fileDomainType(this.fileDomainType)
-        .accessToken(accessToken)
-        .uploadedByUserId(this.uploadedByUserId)
-        .associatedId(this.associatedId)
-        .displayOrder(this.displayOrder)
-        .isDeleted(false)
-        .status(FileStatus.ATTACHED)
-        .build();
-  }
-
-  public FileMetaData issueFileMoveFail() {
-    return FileMetaData.builder()
-        .id(this.id)
-        .filePath(this.filePath)
-        .originalFileName(this.originalFileName)
-        .contentType(this.contentType)
-        .fileSize(this.fileSize)
-        .fileDomainType(this.fileDomainType)
-        .uploadedByUserId(this.uploadedByUserId)
-        .associatedId(this.associatedId)
-        .isDeleted(false)
-        .accessToken(this.accessToken)
-        .displayOrder(this.displayOrder)
-        .status(FileStatus.MOVE_FAILED)
         .build();
   }
 
@@ -183,6 +131,7 @@ public class FileMetaData {
         .fileSize(fileSize)
         .fileDomainType(fileDomainType)
         .associatedId(associatedId)
+        .createdAt(this.createdAt)
         .accessToken(accessToken)
         .isDeleted(false)
         .uploadedByUserId(uploadedByUserId)
