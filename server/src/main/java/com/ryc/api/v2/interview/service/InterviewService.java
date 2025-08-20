@@ -19,6 +19,7 @@ import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.email.service.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.service.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.interview.domain.InterviewRepository;
 import com.ryc.api.v2.interview.domain.InterviewReservation;
@@ -103,6 +104,21 @@ public class InterviewService {
     List<InterviewReservation> reservations = interviewSlot.getInterviewReservations();
     List<InterviewReservationGetResponse> responses = new ArrayList<>();
 
+    List<String> interviewerIds =
+        reservations.stream()
+            .map(InterviewReservation::getApplicant)
+            .map(Applicant::getId)
+            .toList();
+
+    Map<String, FileGetResponse> imageMaps =
+        fileService.findAllByAssociatedIdIn(interviewerIds).stream()
+            .collect(
+                Collectors.toMap(
+                    FileMetaData::getAssociatedId,
+                    fileMetaData ->
+                        FileGetResponse.of(
+                            fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData))));
+
     for (InterviewReservation reservation : reservations) {
       Applicant applicant = reservation.getApplicant();
 
@@ -112,6 +128,8 @@ public class InterviewService {
               .applicantId(applicant.getId())
               .applicantEmail(applicant.getEmail())
               .applicantName(applicant.getName())
+              .imagePresent(imageMaps.containsKey(reservation.getApplicant().getId()))
+              .representativeImage(imageMaps.get(applicant.getId()))
               .build();
       responses.add(response);
     }
@@ -132,6 +150,15 @@ public class InterviewService {
             .collect(Collectors.toSet());
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
+    Map<String, FileGetResponse> imageMaps =
+        fileService.findAllByAssociatedIdIn(applicants.stream().map(Applicant::getId).toList())
+            .stream()
+            .collect(
+                Collectors.toMap(
+                    FileMetaData::getAssociatedId,
+                    fileMetaData ->
+                        FileGetResponse.of(
+                            fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData))));
 
     return applicants.stream()
         .map(
@@ -140,6 +167,8 @@ public class InterviewService {
                     .applicantId(applicant.getId())
                     .applicantEmail(applicant.getEmail())
                     .applicantName(applicant.getName())
+                        .representativeImage(imageMaps.get(applicant.getId()))
+                        .imagePresent(imageMaps.containsKey(applicant.getId()))
                     .build())
         .toList();
   }
