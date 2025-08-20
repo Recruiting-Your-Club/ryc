@@ -16,6 +16,10 @@ import com.ryc.api.v2.applicationForm.infra.mapper.ApplicationFormMapper;
 
 public class AnnouncementMapper {
 
+  private AnnouncementMapper() {
+    // private constructor to prevent instantiation
+  }
+
   /** entity to domain */
   public static Announcement toDomain(AnnouncementEntity announcementEntity) {
 
@@ -38,7 +42,6 @@ public class AnnouncementMapper {
         .tags(tags)
         .applicationForm(application)
         .announcementPeriodInfo(periodInfo)
-        .announcementStatus(announcementEntity.getAnnouncementStatus())
         .activityPeriod(announcementEntity.getActivityPeriod())
         .announcementType(announcementEntity.getAnnouncementType())
         .hasInterview(announcementEntity.getHasInterview())
@@ -68,7 +71,6 @@ public class AnnouncementMapper {
         .target(announcement.getTarget())
         .field(announcement.getField())
         .tags(tags)
-        .announcementStatus(announcement.getAnnouncementStatus())
         .announcementPeriodInfoVO(periodInfoVO)
         .activityPeriod(announcement.getActivityPeriod())
         .announcementType(announcement.getAnnouncementType())

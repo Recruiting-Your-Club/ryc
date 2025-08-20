@@ -28,10 +28,6 @@ public interface AnnouncementRepository {
    */
   Announcement findById(String announcementId);
 
-  List<Announcement> findAll();
-
-  void saveAll(List<Announcement> announcements);
-
   List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds);
 
   boolean imageAllowed(String announcementId);

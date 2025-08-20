@@ -75,24 +75,6 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public List<Announcement> findAll() {
-    return announcementJpaRepository.findAll().stream().map(AnnouncementMapper::toDomain).toList();
-  }
-
-  @Override
-  public void saveAll(List<Announcement> announcements) {
-
-    List<AnnouncementEntity> announcementEntities =
-        announcements.stream().map(domain -> AnnouncementMapper.toEntity(domain)).toList();
-
-    announcementEntities.forEach(
-        announcementEntity -> {
-          announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
-        });
-    announcementJpaRepository.saveAll(announcementEntities);
-  }
-
-  @Override
   public List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds) {
     return announcementJpaRepository.getStatusesByClubIds(clubIds);
   }

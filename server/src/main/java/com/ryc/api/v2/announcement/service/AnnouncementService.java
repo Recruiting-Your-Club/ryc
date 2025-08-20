@@ -97,19 +97,6 @@ public class AnnouncementService {
     return AnnouncementUpdateResponse.of(updatedAnnouncement, imageResponses);
   }
 
-  @Transactional
-  public void updateAnnouncementStatus() {
-    // 1. 삭제되지 않은 공고 불러오기
-    List<Announcement> announcements = announcementRepository.findAll();
-
-    // 2.공고 상태 업데이트
-    List<Announcement> updatedAnnouncements =
-        announcements.stream().map(Announcement::updateStatus).toList();
-
-    // 3. 공고 저장
-    announcementRepository.saveAll(updatedAnnouncements);
-  }
-
   /**
    * TODO: club도메인에서 jpql로 공고 상태 조회로 최적화
    *
