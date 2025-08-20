@@ -1,9 +1,20 @@
+interface RepresentativeImage {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
+}
+
 export interface MyClubResponse {
     id: string;
     name: string;
     shortDescription: string;
-    imageUrl: string;
-    thumbnailUrl: string;
+    detailDescription: string;
+    representativeImage: RepresentativeImage;
+    category: category;
+    clubTags: clubTag[];
+    clubSummaries: clubSummaries[];
+    clubDetailImages: clubDetailImages[];
 }
 
 export interface DetailClubResponse {
@@ -11,12 +22,7 @@ export interface DetailClubResponse {
     name: string;
     shortDescription: string;
     detailDescription: string;
-    representativeImage: {
-        id: string;
-        url: string;
-        originalFileName: string;
-        contentType: string;
-    };
+    representativeImage: RepresentativeImage;
     category: category;
     clubTags: clubTag[];
     clubSummaries: clubSummaries[];
@@ -77,4 +83,12 @@ export interface Club {
     category: string;
     clubSummaries: summaries[];
     clubDetailImages: string[];
+}
+export interface CreateClub {
+    name: string;
+    category: string;
+    representativeImage: string;
+}
+export interface CreateClubResponse {
+    clubId: string;
 }

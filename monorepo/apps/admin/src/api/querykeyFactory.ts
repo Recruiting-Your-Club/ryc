@@ -26,6 +26,7 @@ queryClient.prefetchQueries({
 const clubKeys = {
     all: ['clubs'] as const,
     detail: (id: string) => ['detail', id] as const,
+    create: (id: string) => ['create', id] as const,
 };
 
 const interviewKeys = {
