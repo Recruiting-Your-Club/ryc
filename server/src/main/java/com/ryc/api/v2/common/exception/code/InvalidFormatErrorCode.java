@@ -541,7 +541,26 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   NUMBER_OF_PEOPLE_BY_INTERVIEW_DATE_NUMBER_OF_PEOPLE_NULL(
       HttpStatus.BAD_REQUEST, "면접 인원수는 null일 수 없습니다."),
   NUMBER_OF_PEOPLE_BY_INTERVIEW_DATE_INVALID_NUMBER_OF_PEOPLE_RANGE(
-      HttpStatus.BAD_REQUEST, "면접 인원수는 0 이상 1000 이하여야 합니다.");
+      HttpStatus.BAD_REQUEST, "면접 인원수는 0 이상 1000 이하여야 합니다."),
+
+  /** 동아리 역할(ClubRole) 에러 코드 */
+  // ClubRole ID
+  CLUB_ROLE_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "동아리 역할 ID는 null 혹은 empty일 수 없습니다."),
+  CLUB_ROLE_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST,
+      "동아리 역할 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // ClubRole Role
+  CLUB_ROLE_ROLE_NULL(HttpStatus.BAD_REQUEST, "동아리 역할은 null일 수 없습니다."),
+
+  // ClubRole Club
+  CLUB_ROLE_CLUB_NULL(HttpStatus.BAD_REQUEST, "동아리 역할의 동아리는 null일 수 없습니다."),
+
+  // ClubRole Admin
+  CLUB_ROLE_ADMIN_NULL(HttpStatus.BAD_REQUEST, "동아리 역할의 관리자는 null일 수 없습니다."),
+
+  CLUB_ROLE_CREATED_AT_NULL(HttpStatus.BAD_REQUEST, "동아리 권한 생성일은 null일 수 없습니다."),
+  CLUB_ROLE_UPDATED_AT_NULL(HttpStatus.BAD_REQUEST, "동아리 권한 수정일은 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
