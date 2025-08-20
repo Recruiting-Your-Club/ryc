@@ -1,8 +1,7 @@
-import mainLogo from '@assets/images/mainLogo.png';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import MainLogo from '@ssoc/assets/images/MainLogo.svg';
+import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import { Text } from '@ssoc/ui';
 
 import { headerContainer, leftContainer, logoContainer } from './Header.style';
