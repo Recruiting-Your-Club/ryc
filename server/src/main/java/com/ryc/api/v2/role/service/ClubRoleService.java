@@ -119,7 +119,7 @@ public class ClubRoleService {
                   .adminId(admin.getId())
                   .adminName(admin.getName())
                   .role(clubRole.getRole().toString())
-                  .joinedAt(clubRole.getJoinedAt().toString())
+                  .joinedAt(clubRole.getJoinedAt())
                   .adminProfileImage(representativeImage)
                   .build();
             })
@@ -128,11 +128,13 @@ public class ClubRoleService {
 
   @Transactional
   public void deleteRole(String adminId, String clubId, String targetUserId) {
+    // 동아리 회장을 삭제하려는 경우 예외 처리
     if (adminId.equals(targetUserId)) {
       throw new ClubException(ClubErrorCode.CLUB_OWNER_CANNOT_BE_DELETED);
     }
 
-    if (!clubRoleRepository.existsByAdminIdAndClubId(adminId, clubId)) {
+    // 동아리 멤버가 아닌 경우 예외 처리
+    if (!clubRoleRepository.existsByAdminIdAndClubId(targetUserId, clubId)) {
       throw new NoSuchElementException(
           "Club roles not found for adminId: " + adminId + " and clubId: " + clubId);
     }
