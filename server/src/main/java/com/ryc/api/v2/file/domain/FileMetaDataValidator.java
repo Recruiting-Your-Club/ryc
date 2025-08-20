@@ -43,12 +43,12 @@ final class FileMetaDataValidator extends DomainValidator {
     validateOriginalFileName(originalFileName);
     validateContentType(contentType);
     validateFileSize(fileSize);
-    validateisDeleted(isDeleted);
-    validateDisplayOrder(displayOrder);
-    validateFileDomainType(fileDomainType);
+    validateisDeleted(isDeleted);//
+    validateDisplayOrder(displayOrder);//
+    validateFileDomainType(fileDomainType); //
     validateAssociatedId(associatedId);
     validateUploadedByUserId(uploadedByUserId);
-    validateStatus(status);
+    validateStatus(status);//
   }
 
   private static void validateId(String id) {
@@ -73,7 +73,8 @@ final class FileMetaDataValidator extends DomainValidator {
   }
 
   private static void validateFileSize(Long fileSize) {
-    validateNotNull(fileSize, FILE_METADATA_FILE_SIZE_NULL);
+    // NULL 허용
+    if(fileSize == null) return;
     validateLongRange(fileSize, MIN_FILE_SIZE, MAX_FILE_SIZE, FILE_METADATA_INVALID_FILE_SIZE_RANGE);
   }
 
@@ -90,13 +91,14 @@ final class FileMetaDataValidator extends DomainValidator {
   }
 
   private static void validateAssociatedId(String associatedId) {
-     validateNotNullOrEmpty(associatedId, FILE_METADATA_ASSOCIATED_ID_NULL_OR_EMPTY);
-     validatePattern(associatedId, UUID_PATTERN, FILE_METADATA_INVALID_ASSOCIATED_ID_FORMAT);
-
+    //Null 허용 (Id 값은 정제하지 않았기에 Empty 값 검증도 필요) TODO: empty일때 null 취급
+    if (associatedId != null && !associatedId.isEmpty()) {
+      validatePattern(associatedId, UUID_PATTERN, FILE_METADATA_INVALID_ASSOCIATED_ID_FORMAT);
+    }
   }
 
   private static void validateUploadedByUserId(String uploadedByUserId) {
-    //Null 허용 (Id 값은 정제하지 않았기에 Empty 값 검증도 필요)
+    //Null 허용 (Id 값은 정제하지 않았기에 Empty 값 검증도 필요) TODO: empty일때 null 취급
     if (uploadedByUserId != null && !uploadedByUserId.isEmpty()) {
       validatePattern(uploadedByUserId, UUID_PATTERN, FILE_METADATA_INVALID_UPLOADED_BY_USER_ID_FORMAT);
     }
