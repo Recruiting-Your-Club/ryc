@@ -112,6 +112,14 @@ public abstract class DomainValidator {
     }
   }
 
+  /** int 범위 검증 */
+  protected static void validateIntRange(
+          int value, int minValue, int maxValue, ErrorCode errorCode) {
+    if (value < minValue || value  > maxValue) {
+      throw new InvalidFormatException(errorCode);
+    }
+  }
+
   /** BigDecimal 소수점 자리수 검증 */
   protected static void validateBigDecimalScale(
       BigDecimal value, int maxScale, ErrorCode errorCode) {

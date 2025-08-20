@@ -400,7 +400,49 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // Evaluation CreatedAt/UpdatedAt
   EVALUATION_CREATED_AT_NULL(HttpStatus.BAD_REQUEST, "평가 생성일은 null일 수 없습니다."),
-  EVALUATION_UPDATED_AT_NULL(HttpStatus.BAD_REQUEST, "평가 수정일은 null일 수 없습니다.");
+  EVALUATION_UPDATED_AT_NULL(HttpStatus.BAD_REQUEST, "평가 수정일은 null일 수 없습니다."),
+
+  /** 이메일(Email) 에러 코드 */
+  // Email ID
+  EMAIL_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "이메일 ID는 null 혹은 empty일 수 없습니다."),
+  EMAIL_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "이메일 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Email Sender ID
+  EMAIL_SENDER_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "이메일 발신자 ID는 null 혹은 empty일 수 없습니다."),
+  EMAIL_INVALID_SENDER_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "이메일 발신자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Email Recipient
+  EMAIL_RECIPIENT_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "이메일 수신자는 null 혹은 empty일 수 없습니다."),
+  EMAIL_RECIPIENT_TOO_LONG(HttpStatus.BAD_REQUEST, "이메일 수신자는 320자를 초과할 수 없습니다."),
+  EMAIL_RECIPIENT_MISSING_AT_SYMBOL(HttpStatus.BAD_REQUEST, "이메일 수신자에 @ 기호가 없습니다."),
+  EMAIL_RECIPIENT_LOCAL_PART_INVALID_LENGTH(
+      HttpStatus.BAD_REQUEST, "이메일 수신자 로컬 부분은 1자 이상 64자 이하여야 합니다."),
+  EMAIL_RECIPIENT_DOMAIN_PART_NULL_OR_EMPTY(
+      HttpStatus.BAD_REQUEST, "이메일 수신자 도메인 부분은 null 혹은 empty일 수 없습니다."),
+  EMAIL_RECIPIENT_DOMAIN_PART_TOO_LONG(HttpStatus.BAD_REQUEST, "이메일 수신자 도메인 부분은 253자를 초과할 수 없습니다."),
+  EMAIL_INVALID_RECIPIENT_FORMAT(HttpStatus.BAD_REQUEST, "이메일 수신자가 RFC 5322 표준에 맞지 않습니다."),
+
+  // Email Subject
+  EMAIL_SUBJECT_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "이메일 제목은 null 혹은 empty일 수 없습니다."),
+  EMAIL_INVALID_SUBJECT_LENGTH(HttpStatus.BAD_REQUEST, "이메일 제목은 1자 이상 255자 이하여야 합니다."),
+
+  // Email Content
+  EMAIL_CONTENT_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "이메일 내용은 null 혹은 empty일 수 없습니다."),
+  EMAIL_INVALID_CONTENT_LENGTH(HttpStatus.BAD_REQUEST, "이메일 내용은 1자 이상 10000자 이하여야 합니다."),
+
+  // Email Announcement ID
+  EMAIL_ANNOUNCEMENT_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "이메일 공고 ID는 null 혹은 empty일 수 없습니다."),
+  EMAIL_INVALID_ANNOUNCEMENT_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "이메일 공고 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // Email Status
+  EMAIL_STATUS_NULL(HttpStatus.BAD_REQUEST, "이메일 상태는 null일 수 없습니다."),
+
+  // Email Retry Count
+  EMAIL_RETRY_COUNT_NULL(HttpStatus.BAD_REQUEST, "이메일 재시도 횟수는 null일 수 없습니다."),
+  EMAIL_INVALID_RETRY_COUNT_RANGE(HttpStatus.BAD_REQUEST, "이메일 재시도 횟수는 0 이상 10 이하여야 합니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
