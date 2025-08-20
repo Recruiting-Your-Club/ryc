@@ -55,8 +55,8 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
-  public Optional<Invite> findInviteOptionalById(String inviteId) {
-    return inviteJpaRepository.findById(inviteId).map(InviteMapper::toDomain);
+  public Optional<Invite> findInviteOptionalByClubId(String clubId) {
+    return inviteJpaRepository.findByClubId(clubId).map(InviteMapper::toDomain);
   }
 
   @Override

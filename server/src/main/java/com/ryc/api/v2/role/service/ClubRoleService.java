@@ -50,7 +50,7 @@ public class ClubRoleService {
 
   @Transactional
   public ClubInviteCreatedResponse createInviteCode(String clubId) {
-    Optional<Invite> optional = clubRoleRepository.findInviteOptionalById(clubId);
+    Optional<Invite> optional = clubRoleRepository.findInviteOptionalByClubId(clubId);
     Invite invite;
 
     // 만약 초대 링크가 존재하지 않거나 만료되었을 경우 새로 생성

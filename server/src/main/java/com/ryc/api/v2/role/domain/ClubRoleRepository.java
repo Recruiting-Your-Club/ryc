@@ -15,7 +15,7 @@ public interface ClubRoleRepository {
 
   List<Club> findClubsByAdminId(String adminId);
 
-  Optional<Invite> findInviteOptionalById(String inviteId);
+  Optional<Invite> findInviteOptionalByClubId(String clubId);
 
   Invite findInviteById(String inviteId);
 
