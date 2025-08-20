@@ -151,7 +151,8 @@ public class InterviewService {
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
     Map<String, FileGetResponse> imageMaps =
-        fileService.findAllByAssociatedIdIn(applicants.stream().map(Applicant::getId).toList())
+        fileService
+            .findAllByAssociatedIdIn(applicants.stream().map(Applicant::getId).toList())
             .stream()
             .collect(
                 Collectors.toMap(
@@ -167,8 +168,8 @@ public class InterviewService {
                     .applicantId(applicant.getId())
                     .applicantEmail(applicant.getEmail())
                     .applicantName(applicant.getName())
-                        .representativeImage(imageMaps.get(applicant.getId()))
-                        .imagePresent(imageMaps.containsKey(applicant.getId()))
+                    .representativeImage(imageMaps.get(applicant.getId()))
+                    .imagePresent(imageMaps.containsKey(applicant.getId()))
                     .build())
         .toList();
   }
