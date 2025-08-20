@@ -160,6 +160,12 @@ public class FileService {
             .map(FileMetaData::delete)
             .collect(Collectors.toCollection(ArrayList::new));
 
+    // 3-1 s3 버킷에서는 실제로 삭제
+    if (!filesToUpdate.isEmpty()) {
+      s3FileStorage.deleteFiles(
+          filesToUpdate.stream().map(FileMetaData::getFilePath).collect(Collectors.toList()));
+    }
+
     // 4. 새로운 파일 목록 순서 업데이트, moveRequest처리
     IntStream.range(0, newFiles.size())
         .forEach(
@@ -194,8 +200,13 @@ public class FileService {
     fileMetaDataRepository.saveAll(filesToUpdate);
   }
 
-  private String sanitizeFileName(String fileName) {
-    return new File(fileName).getName().replaceAll("[^a-zA-Z0-9._-]", "_");
+  public String sanitizeFileName(String fileName) {
+
+    // 1. 경로 순회 문자열을 먼저 제거
+    String sanitized = fileName.replace("..", "");
+
+    // 2. 허용되지 않는 모든 문자를 '_'로 치환
+    return sanitized.replaceAll("[^a-zA-Z0-9\\uAC00-\\uD7A3._-]", "_");
   }
 
   public List<FileMetaData> findAllByAssociatedIdIn(List<String> associatedIds) {
