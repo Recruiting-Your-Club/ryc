@@ -482,7 +482,42 @@ public enum InvalidFormatErrorCode implements ErrorCode {
       HttpStatus.BAD_REQUEST, "파일을 업로드한 관리자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
 
   // FileMetaData Status
-  FILE_METADATA_STATUS_NULL(HttpStatus.BAD_REQUEST, "파일 상태는 null일 수 없습니다.");
+  FILE_METADATA_STATUS_NULL(HttpStatus.BAD_REQUEST, "파일 상태는 null일 수 없습니다."),
+
+  /** 면접 예약(InterviewReservation) 에러 코드 */
+  // InterviewReservation ID
+  INTERVIEW_RESERVATION_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "면접 예약 ID는 null 혹은 empty일 수 없습니다."),
+  INTERVIEW_RESERVATION_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "면접 예약 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // InterviewReservation Applicant
+  INTERVIEW_RESERVATION_APPLICANT_NULL(HttpStatus.BAD_REQUEST, "면접 예약의 지원자는 null일 수 없습니다."),
+
+  /** 면접 슬롯(InterviewSlot) 에러 코드 */
+  // InterviewSlot ID
+  INTERVIEW_SLOT_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "면접 슬롯 ID는 null 혹은 empty일 수 없습니다."),
+  INTERVIEW_SLOT_INVALID_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "면접 슬롯 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // InterviewSlot Creator ID
+  INTERVIEW_SLOT_CREATOR_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "면접 슬롯 생성자 ID는 null 혹은 empty일 수 없습니다."),
+  INTERVIEW_SLOT_INVALID_CREATOR_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "면접 슬롯 생성자 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // InterviewSlot Announcement ID
+  INTERVIEW_SLOT_ANNOUNCEMENT_ID_NULL_OR_EMPTY(HttpStatus.BAD_REQUEST, "면접 슬롯 공고 ID는 null 혹은 empty일 수 없습니다."),
+  INTERVIEW_SLOT_INVALID_ANNOUNCEMENT_ID_FORMAT(
+      HttpStatus.BAD_REQUEST, "면접 슬롯 공고 ID는 UUID 포멧을 준수해야 합니다.(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)"),
+
+  // InterviewSlot Max Number of People
+  INTERVIEW_SLOT_MAX_NUMBER_OF_PEOPLE_NULL(HttpStatus.BAD_REQUEST, "면접 슬롯 최대 인원수는 null일 수 없습니다."),
+  INTERVIEW_SLOT_INVALID_MAX_NUMBER_OF_PEOPLE_RANGE(HttpStatus.BAD_REQUEST, "면접 슬롯 최대 인원수는 1 이상 100 이하여야 합니다."),
+
+  // InterviewSlot Period
+  INTERVIEW_SLOT_PERIOD_NULL(HttpStatus.BAD_REQUEST, "면접 슬롯 기간은 null일 수 없습니다."),
+
+  // InterviewSlot Reservations
+  INTERVIEW_SLOT_RESERVATIONS_NULL(HttpStatus.BAD_REQUEST, "면접 슬롯 예약 리스트는 null일 수 없습니다.");
 
   private final HttpStatus httpStatus;
   private final String message;
