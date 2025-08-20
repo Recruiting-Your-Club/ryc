@@ -10,6 +10,7 @@ import { useStepper } from '@ssoc/ui';
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
+import { PreivewStep } from './PreviewStep';
 import {
     s_dialogContent,
     s_dialogHeader,
@@ -203,7 +204,7 @@ function RecruitCreatePage() {
                     />
                 );
             case 3:
-                return <div>미리보기</div>;
+                return <PreivewStep />;
             default:
                 <div>error</div>;
         }
