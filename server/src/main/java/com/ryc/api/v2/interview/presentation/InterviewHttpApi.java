@@ -43,10 +43,9 @@ public class InterviewHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<InterviewSlotsByDateResponse>> getInterviewSlotsForAdmin(
+  public ResponseEntity<List<InterviewSlotResponse>> getInterviewSlotsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<InterviewSlotsByDateResponse> responses =
-        interviewService.getInterviewSlots(announcementId);
+    List<InterviewSlotResponse> responses = interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
 
