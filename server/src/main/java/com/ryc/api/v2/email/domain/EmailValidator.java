@@ -27,7 +27,7 @@ final class EmailValidator extends DomainValidator {
   private static final int MIN_CONTENT_LENGTH = 1;
   private static final int MAX_CONTENT_LENGTH = 10000;
   private static final int MIN_RETRY_COUNT = 0;
-  private static final int MAX_RETRY_COUNT = 10;
+  private static final int MAX_RETRY_COUNT = 4;
   private static final String EMAIL_AT_SYMBOL = "@";
 
   static void validate(
