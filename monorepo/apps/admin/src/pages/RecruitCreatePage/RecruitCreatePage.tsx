@@ -1,10 +1,11 @@
+import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
 import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useRouter } from '@ssoc/hooks';
-import { Button, Dialog, Stepper } from '@ssoc/ui';
+import { useFileUpload, useRouter } from '@ssoc/hooks';
+import { Button, Dialog, Stepper, useFileUpLoader, useToast } from '@ssoc/ui';
 import { useStepper } from '@ssoc/ui';
 
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
@@ -32,6 +33,7 @@ function RecruitCreatePage() {
     );
 
     const { removeHistoryAndGo } = useRouter();
+    const { toast } = useToast();
 
     const {
         questions,
@@ -46,6 +48,8 @@ function RecruitCreatePage() {
     } = useQuestion();
 
     const location = useLocation();
+
+    const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
 
     // initial values
 
@@ -73,6 +77,7 @@ function RecruitCreatePage() {
 
     //공고 모집 관련 이미지 상태 관리
     const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
+    const [imageFileIds, setImageFileIds] = useState<string[]>([]);
 
     //체크박스를 통한 신원 정보 상태관리
     const [basicInfoFields, setBasicInfoFields] = useState<BasicInfoFields>({
@@ -90,7 +95,7 @@ function RecruitCreatePage() {
                 preQuestions: questions,
                 applicationQuestions,
                 detailDescription,
-                imageUrls: [],
+                imageFileIds,
             }),
         [recruitDetailInfo, basicInfoFields, questions, applicationQuestions, detailDescription],
     );
@@ -162,9 +167,27 @@ function RecruitCreatePage() {
         setDetailDescription(html);
     }, []);
 
-    const handleFileChage = (recruitFiles: File[]) => {
-        setRecuritFiles(recruitFiles);
-    };
+    const handleFilesChage = useCallback(
+        async (files: File[]) => {
+            setRecuritFiles(files);
+
+            try {
+                if (!files.length) {
+                    setImageFileIds([]);
+                    return;
+                }
+
+                const ids = await uploadFiles(files, 'ANNOUNCEMENT_CREATE_IMAGE');
+                setImageFileIds(ids);
+                toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
+            } catch (error) {
+                setImageFileIds([]);
+                console.error(error);
+                toast.error('파일 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
+            }
+        },
+        [uploadFiles],
+    );
 
     const handleNextClick = () => {
         if (isLast) {
@@ -193,7 +216,8 @@ function RecruitCreatePage() {
                         recruitDetailInfo={recruitDetailInfo}
                         recruitFiles={recruitFiles}
                         onChange={handleInputChange}
-                        onFileChange={handleFileChage}
+                        onFilesChange={handleFilesChage}
+                        isFileUploading={isFileUploading}
                         detailDescription={detailDescription}
                         onDetailDescriptionChange={handleDetailDescriptionChange}
                     />
@@ -249,7 +273,11 @@ function RecruitCreatePage() {
                     <Button onClick={prev} disabled={isFirst}>
                         이전
                     </Button>
-                    <Button onClick={handleNextClick} disabled={!isCurrentStepValid()}>
+                    <Button
+                        onClick={handleNextClick}
+                        disabled={!isCurrentStepValid()}
+                        loading={isFileUploading}
+                    >
                         {isLast ? '완료' : '다음'}
                     </Button>
                     <Dialog

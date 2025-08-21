@@ -30,9 +30,10 @@ function DescriptionStepPage({
     recruitDetailInfo,
     recruitFiles,
     onChange,
-    onFileChange,
+    onFilesChange,
     detailDescription,
     onDetailDescriptionChange,
+    isFileUploading = false,
 }: DescriptionProps) {
     return (
         <>
@@ -146,7 +147,8 @@ function DescriptionStepPage({
                 <FileUpLoader
                     sx={s_descriptionFileUploader}
                     files={recruitFiles}
-                    onFilesChange={onFileChange}
+                    onFilesChange={onFilesChange}
+                    disabled={isFileUploading}
                 >
                     <FileUpLoader.Button />
                     <FileUpLoader.HelperText>

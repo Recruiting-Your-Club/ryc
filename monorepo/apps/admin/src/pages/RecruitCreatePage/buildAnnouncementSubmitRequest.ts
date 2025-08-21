@@ -77,7 +77,7 @@ export function buildAnnouncementSubmitRequest(args: {
     preQuestions: QuestionProps[];
     applicationQuestions: QuestionProps[];
     detailDescription: string;
-    imageUrls: string[];
+    imageFileIds: string[];
 }): AnnouncementSubmitRequest {
     const {
         recruitDetailInfo,
@@ -85,7 +85,7 @@ export function buildAnnouncementSubmitRequest(args: {
         preQuestions,
         applicationQuestions,
         detailDescription,
-        imageUrls,
+        imageFileIds,
     } = args;
 
     const applicationPeriod = recruitDetailInfo.documentPeriod;
@@ -111,6 +111,6 @@ export function buildAnnouncementSubmitRequest(args: {
             preQuestions: toQuestionRequests(preQuestions),
             applicationQuestions: toQuestionRequests(applicationQuestions),
         },
-        images: imageUrls ?? [],
+        images: imageFileIds ?? [],
     };
 }
