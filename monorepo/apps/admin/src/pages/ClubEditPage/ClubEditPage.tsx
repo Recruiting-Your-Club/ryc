@@ -245,7 +245,7 @@ function ClubEditPage() {
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
-        if (club?.clubSummaries && clubSummaries.length > 0) {
+        if (club?.clubSummaries && club?.clubSummaries.length > 0) {
             setClubSummaries(club?.clubSummaries);
         }
     }, [club]);
