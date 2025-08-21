@@ -471,7 +471,7 @@ function SideBar() {
                                 />
 
                                 {isExpanded && (
-                                    <div css={dropDownChevronWrapper}>
+                                    <div css={dropDownChevronWrapper(isExpanded)}>
                                         <div css={clubTextWrapper(isExpanded)}>
                                             <Text as="div" type="captionRegular">
                                                 조준희

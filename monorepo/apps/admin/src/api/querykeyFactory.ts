@@ -70,5 +70,16 @@ const announcementKeys = {
         [...announcementKeys.all, 'detail', announcementId] as const,
     listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
 };
+const userKeys = {
+    checkDuplicateEmail: (email: string) => ['check-duplicate-email', email] as const,
+};
 
-export { clubKeys, interviewKeys, announcementKeys, applicantKeys, evaluationKeys, stepKeys };
+export {
+    clubKeys,
+    interviewKeys,
+    announcementKeys,
+    applicantKeys,
+    evaluationKeys,
+    stepKeys,
+    userKeys,
+};

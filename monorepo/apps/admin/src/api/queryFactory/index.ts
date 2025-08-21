@@ -4,3 +4,4 @@ export * from './announcementQueries';
 export * from './evaluationQueries';
 export * from './stepQueries';
 export * from './applicantQueries';
+export * from './userQueries';

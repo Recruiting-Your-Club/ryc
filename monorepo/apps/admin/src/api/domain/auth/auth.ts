@@ -20,4 +20,12 @@ async function register(data: Register): Promise<RegisterResponse> {
     return response as RegisterResponse;
 }
 
-export { login, register };
+async function checkEmail(email: string): Promise<boolean> {
+    const response = await httpRequest.get({
+        url: `admin/emails/duplicate-check?email=${email}`,
+        isAuthRequire: false,
+    });
+    return response as boolean;
+}
+
+export { login, register, checkEmail };
