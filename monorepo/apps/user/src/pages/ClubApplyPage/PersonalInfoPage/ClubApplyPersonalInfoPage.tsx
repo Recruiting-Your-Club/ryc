@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Checkbox, Input, Radio, Text } from '@ssoc/ui';
 import { FileUpLoader } from '@ssoc/ui';
 
-import type { ClubApplyPersonalInfoPageProps, FileRecord } from '../types';
+import { useApplicationStore } from '../../../stores';
+import type { ClubApplyPersonalInfoPageProps } from '../types';
 import { getAnswer, getPlaceholder } from '../utils';
 import {
     clubApplyPersonalQuestionForm,
@@ -16,6 +17,7 @@ import {
 } from './ClubApplyPersonalInfoPage.style';
 
 function ClubApplyPersonalInfoPage({
+    announcementId,
     answers,
     clubPersonalQuestions,
     onAnswerChange,
@@ -33,7 +35,8 @@ function ClubApplyPersonalInfoPage({
     //lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [filesByQuestion, setFilesByQuestion] = useState<FileRecord>({});
+    const { getFiles, updateFiles } = useApplicationStore();
+    const filesByQuestion = getFiles(announcementId);
     //calculated values
 
     //handlers
@@ -56,10 +59,7 @@ function ClubApplyPersonalInfoPage({
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
                                 onFilesChange={(newFiles: File[]) => {
-                                    setFilesByQuestion((prev) => ({
-                                        ...prev,
-                                        [question.id]: newFiles,
-                                    }));
+                                    updateFiles(announcementId, question.id, newFiles);
                                     onFileUpload(
                                         question.id,
                                         question.label,
@@ -93,10 +93,7 @@ function ClubApplyPersonalInfoPage({
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
                                 onFilesChange={(newFiles: File[]) => {
-                                    setFilesByQuestion((prev) => ({
-                                        ...prev,
-                                        [question.id]: newFiles,
-                                    }));
+                                    updateFiles(announcementId, question.id, newFiles);
                                     onFileUpload(
                                         question.id,
                                         question.label,

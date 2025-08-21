@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
+import { HttpError } from '../../api/common/httpError';
 import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
 import { BASE_URL } from '../../constants/api';
 import { usePostApplicationAnswers } from '../../hooks';
@@ -63,7 +64,12 @@ function ClubApplyPage() {
             setIsSubmitDialogOpen(false);
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
-        onError: () => {
+        onError: (error) => {
+            // 500 에러인 경우 전역 처리에 위임
+            if (error instanceof HttpError && error.statusCode === 500) {
+                setIsSubmitDialogOpen(false);
+                return;
+            }
             toast.error('제출에 실패했어요.');
             setIsSubmitDialogOpen(false);
         },
@@ -299,6 +305,7 @@ function ClubApplyPage() {
             title: '사전질문',
             page: (
                 <ClubApplyPersonalInfoPage
+                    announcementId={announcementId || ''}
                     answers={answers}
                     clubPersonalQuestions={clubPersonalInfoQuestions}
                     onAnswerChange={handleAnswerChange}
