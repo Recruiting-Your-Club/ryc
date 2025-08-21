@@ -1,5 +1,5 @@
 import type { EvaluationType } from '@api/domain/evaluation/types';
-import { evaluationMutations } from '@hooks/mutations';
+import { useEvaluationMutations } from '@api/hooks/useEvaluationMutations';
 
 function useEvaluation(
     type: EvaluationType,
@@ -9,9 +9,10 @@ function useEvaluation(
         onError: () => void;
     },
 ) {
-    const { mutate: postComment } = evaluationMutations.usePostPersonalEvaluation();
-    const { mutate: updateComment } = evaluationMutations.usePutEvaluation(selectedApplicantId);
-    const { mutate: deleteComment } = evaluationMutations.useDeleteEvaluation(selectedApplicantId);
+    const { mutate: postComment } = useEvaluationMutations.usePostPersonalEvaluation();
+    const { mutate: updateComment } = useEvaluationMutations.usePutEvaluation(selectedApplicantId);
+    const { mutate: deleteComment } =
+        useEvaluationMutations.useDeleteEvaluation(selectedApplicantId);
 
     const handlePostComment = (
         applicantId: string,

@@ -19,7 +19,7 @@ interface DeleteInterviewReservation {
     oldInterviewSlotId: string;
 }
 
-const interviewMutations = {
+export const useInterviewMutations = {
     useUpdateInterviewReservation: (announcementId: string) => {
         const queryClient = useQueryClient();
         const { toast } = useToast();
@@ -189,5 +189,3 @@ const interviewMutations = {
         });
     },
 };
-
-export { interviewMutations };

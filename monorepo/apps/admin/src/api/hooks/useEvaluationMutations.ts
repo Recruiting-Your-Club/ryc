@@ -28,7 +28,7 @@ interface PostPersonalEvaluation {
     type: 'application' | 'interview';
 }
 
-const evaluationMutations = {
+export const useEvaluationMutations = {
     usePutEvaluation: (applicantId: string) => {
         const queryClient = useQueryClient();
         return useMutation({
@@ -79,5 +79,3 @@ const evaluationMutations = {
         });
     },
 };
-
-export { evaluationMutations };

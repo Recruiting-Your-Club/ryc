@@ -32,7 +32,7 @@ const useEmailMutation = <T>(
     });
 };
 
-export const emailMutations = {
+export const useEmailMutations = {
     usePostPlainEmail: (onClose: () => void) => useEmailMutation<Email>(postPlainEmail, onClose),
 
     usePostInterviewEmail: (onClose: () => void) =>
