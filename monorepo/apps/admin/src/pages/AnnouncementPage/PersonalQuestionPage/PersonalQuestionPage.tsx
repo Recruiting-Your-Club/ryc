@@ -58,8 +58,8 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                                 size="sm"
                                 options={
                                     question.options?.map((option) => ({
-                                        label: option,
-                                        value: option,
+                                        label: option.option,
+                                        value: option.id,
                                     })) || []
                                 }
                             />
@@ -77,18 +77,18 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                                     </Text>
                                 )}
                             </div>
-                            {question.options.map((option) => (
-                                <Checkbox.Root key={option} disabled>
+                            {question.options?.map((option) => (
+                                <Checkbox.Root key={option.id} disabled>
                                     <Checkbox.HiddenInput />
                                     <Checkbox.Control />
-                                    <Checkbox.Label>{option}</Checkbox.Label>
+                                    <Checkbox.Label>{option.option}</Checkbox.Label>
                                 </Checkbox.Root>
                             ))}
                         </div>
                     );
                 }
                 return (
-                    <div key={question.id} css={s_personalQuestionForm(false)} tabIndex={-1}>
+                    <div key={question.id} css={s_personalQuestionForm(false)}>
                         <div css={s_labelContainer}>
                             <Text type="bodyRegular">{question.label}</Text>
                             {question.isRequired && (

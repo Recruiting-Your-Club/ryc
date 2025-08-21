@@ -51,7 +51,7 @@ export interface ApplicationForm {
     id: string;
     applicationQuestions: ApplicationQuestion[];
     preQuestions: PreQuestion[];
-    personalInfoQuestions: PersonalInfoQuestion[];
+    personalInfoQuestionTypes: PersonalInfoQuestion[];
 }
 
 export type PersonalInfoQuestion =

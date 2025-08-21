@@ -64,9 +64,7 @@ function toQuestionRequests(questions: QuestionProps[]): QuestionRequest[] {
 }
 
 function mapPersonalInfoQuestions(basicInfoFiedls: BasicInfoFields): PersonalInfoQuestion[] {
-    const array: PersonalInfoQuestion[] = [];
-    array.push('NAME');
-    array.push('EMAIL');
+    const array: PersonalInfoQuestion[] = ['NAME', 'EMAIL'];
     if (basicInfoFiedls.studentId) array.push('STUDENT_ID');
     if (basicInfoFiedls.phone) array.push('PHONE_NUMBER');
     if (basicInfoFiedls.photo) array.push('PROFILE_IMAGE');

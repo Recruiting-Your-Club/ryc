@@ -81,14 +81,19 @@ function RecruitCreatePage() {
         photo: false,
     });
 
-    // const submitJson = buildAnnouncementSubmitRequest({
-    //     recruitDetailInfo,
-    //     basicInfoFields,
-    //     preQuestions: questions,
-    //     applicationQuestions,
-    //     detailDescription,
-    //     imageUrls,
-    // })
+    //json 파싱 데이터
+    const submitJson = useMemo(
+        () =>
+            buildAnnouncementSubmitRequest({
+                recruitDetailInfo,
+                basicInfoFields,
+                preQuestions: questions,
+                applicationQuestions,
+                detailDescription,
+                imageUrls: [],
+            }),
+        [recruitDetailInfo, basicInfoFields, questions, applicationQuestions, detailDescription],
+    );
 
     // form hooks
     // query hooks
@@ -215,7 +220,7 @@ function RecruitCreatePage() {
                     />
                 );
             case 3:
-                return <PreivewStep />;
+                return <PreivewStep preivewData={submitJson} recruitFiles={recruitFiles} />;
             default:
                 <div>error</div>;
         }
