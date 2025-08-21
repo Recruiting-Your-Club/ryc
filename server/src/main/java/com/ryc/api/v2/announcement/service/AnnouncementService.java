@@ -7,6 +7,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementProcess;
@@ -18,6 +19,8 @@ import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.common.aop.annotation.ValidClub;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.common.util.HtmlImageParser;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 
@@ -29,6 +32,7 @@ public class AnnouncementService {
 
   private final AnnouncementRepository announcementRepository;
   private final FileService fileService;
+  private final HtmlImageParser htmlImageParser;
   private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
@@ -39,7 +43,21 @@ public class AnnouncementService {
 
     Announcement savedAnnouncement = announcementRepository.save(announcement);
 
-    fileService.claimOwnershipAsync(request.images(), savedAnnouncement.getId());
+    List<String> postImages = htmlImageParser.extractImageIds(request.detailDescription());
+    if (request.images().size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.IMAGE_LIMIT_EXCEEDED);
+    }
+
+    if (postImages.size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
+    }
+
+    fileService.claimOwnership(
+        request.images(), savedAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
+
+    fileService.claimOwnership(
+        postImages, savedAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_POST_IMAGE);
+
     return new AnnouncementCreateResponse(savedAnnouncement.getId());
   }
 
@@ -81,7 +99,22 @@ public class AnnouncementService {
     // 2. 업데이트된 Announcement 저장
     Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
 
-    fileService.claimOwnershipSync(request.images(), updateAnnouncement.getId());
+    // 3. 이미지 파일 업데이트
+    if (request.images().size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.IMAGE_LIMIT_EXCEEDED);
+    }
+
+    List<String> postImages = htmlImageParser.extractImageIds(request.detailDescription());
+
+    if (postImages.size() > 10) {
+      throw new BusinessRuleException(AnnouncementErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
+    }
+
+    fileService.claimOwnership(postImages, announcementId, FileDomainType.ANNOUNCEMENT_POST_IMAGE);
+
+    fileService.claimOwnership(
+        request.images(), updateAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
+
     List<FileGetResponse> imageResponses =
         fileService.findAllByAssociatedId(announcementId).stream()
             .filter(

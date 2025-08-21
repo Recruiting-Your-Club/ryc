@@ -18,8 +18,6 @@ public interface AdminRepository {
 
   Optional<Admin> findById(String id);
 
-  Map<String, String> findThumbnailUrlByIds(List<String> adminIds);
-
   Map<String, String> findAdminNamesByIds(List<String> adminIds);
 
   void deleteById(String adminId);

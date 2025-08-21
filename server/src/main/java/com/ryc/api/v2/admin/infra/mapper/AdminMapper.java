@@ -10,10 +10,8 @@ public class AdminMapper {
         .name(admin.getName())
         .email(admin.getEmail())
         .password(admin.getPassword())
-        .imageUrl(admin.getImageUrl())
-        .thumbnailUrl(admin.getThumbnailUrl())
         .adminDefaultRole(admin.getAdminDefaultRole())
-        .isDeleted(admin.getDeleted())
+        .isDeleted(admin.getIsDeleted())
         .build();
   }
 
@@ -23,10 +21,8 @@ public class AdminMapper {
         .name(adminEntity.getName())
         .email(adminEntity.getEmail())
         .password(adminEntity.getPassword())
-        .imageUrl(adminEntity.getImageUrl())
-        .thumbnailUrl(adminEntity.getThumbnailUrl())
         .adminDefaultRole(adminEntity.getAdminDefaultRole())
-        .deleted(adminEntity.getIsDeleted())
+        .isDeleted(adminEntity.getIsDeleted())
         .build();
   }
 }

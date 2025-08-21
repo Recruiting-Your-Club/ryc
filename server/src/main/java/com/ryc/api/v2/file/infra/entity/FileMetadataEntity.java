@@ -30,6 +30,9 @@ public class FileMetadataEntity extends BaseEntity {
 
   private Long fileSize;
 
+  // private 파일 임시 접근을 위한 accessToken
+  private String accessToken;
+
   // Image or 문서 파일
   @Enumerated(EnumType.STRING)
   private FileDomainType fileDomainType;

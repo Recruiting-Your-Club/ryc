@@ -13,6 +13,7 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRe
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +44,7 @@ public class Announcement {
   private final LocalDateTime updatedAt;
 
   @Builder
-  public Announcement(
+  private Announcement(
       String id,
       String clubId,
       String title,
@@ -60,6 +61,43 @@ public class Announcement {
       String activityPeriod,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
+
+    // 1. 정제
+    String sanitizeTitle = DataResolveUtil.sanitizeString(title);
+    String sanitizeNumberOfPeople = DataResolveUtil.sanitizeString(numberOfPeople);
+    String sanitizeDetailDescription = DataResolveUtil.sanitizeString(detailDescription);
+    String sanitizeSummaryDescription = DataResolveUtil.sanitizeString(summaryDescription);
+    String sanitizeTarget = DataResolveUtil.sanitizeString(target);
+    String sanitizeField = DataResolveUtil.sanitizeString(field);
+    String sanitizeActivityPeriod = DataResolveUtil.sanitizeString(activityPeriod);
+
+    // 2. 선택 멤버 변수 기본값 처리
+    List<Tag> resolvedTags = tags != null ? tags : List.of();
+    Boolean resolvedHasInterview = hasInterview != null ? hasInterview : Boolean.TRUE;
+    AnnouncementStatus status =
+        AnnouncementStatus.from(announcementPeriodInfo.applicationPeriod(), announcementType);
+
+    // 3. 검증
+    AnnouncementValidator.validate(
+        id,
+        clubId,
+        sanitizeTitle,
+        sanitizeNumberOfPeople,
+        sanitizeDetailDescription,
+        sanitizeSummaryDescription,
+        sanitizeTarget,
+        sanitizeField,
+        resolvedTags,
+        status,
+        announcementType,
+        resolvedHasInterview,
+        announcementPeriodInfo,
+        sanitizeActivityPeriod,
+        applicationForm,
+        createdAt,
+        updatedAt);
+
+    // 4. 할당
     this.id = id;
     this.clubId = clubId;
     this.title = title;
@@ -69,6 +107,7 @@ public class Announcement {
     this.target = target;
     this.field = field;
     this.tags = tags;
+    this.announcementStatus = status;
     this.announcementType = announcementType;
     this.hasInterview = hasInterview;
     this.announcementPeriodInfo = announcementPeriodInfo;
@@ -76,9 +115,6 @@ public class Announcement {
     this.activityPeriod = activityPeriod;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-
-    this.announcementStatus =
-        AnnouncementStatus.from(announcementPeriodInfo.applicationPeriod(), announcementType);
   }
 
   /**
@@ -179,13 +215,15 @@ public class Announcement {
         .applicationForm(this.applicationForm)
         .announcementType(this.announcementType)
         .announcementPeriodInfo(this.announcementPeriodInfo)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
         .build();
   }
 
   /**
    * 유효 객체 검사
    *
-   * @throws IllegalArgumentException 각 객체가 유효하지 않을 경우
+   * @throws BusinessRuleException 각 객체가 유효하지 않을 경우
    */
   public void validate() {
     // 생성시에는 모집 예정, 모집 중
@@ -194,7 +232,7 @@ public class Announcement {
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
       }
     }
-    // 업데이트시 모집 예정일때만 수정가능
+    // 업데이트시 모집 예정일 때만 수정가능
     else {
       if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);

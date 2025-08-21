@@ -1,8 +1,6 @@
 package com.ryc.api.v2.applicant.domain;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
@@ -12,12 +10,12 @@ import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Applicant {
 
   private final String id;
@@ -30,6 +28,36 @@ public class Applicant {
 
   // 이름, 이메일 제외 개인정보 질문 저장
   private final List<ApplicantPersonalInfo> personalInfos;
+
+  @Builder
+  private Applicant(
+      String id,
+      String announcementId,
+      String email,
+      String name,
+      ApplicantStatus status,
+      List<ApplicantPersonalInfo> personalInfos) {
+
+    // 1. 정제
+    String sanitizeEmail = DataResolveUtil.sanitizeEmail(email);
+    String sanitizeName = DataResolveUtil.sanitizeString(name);
+
+    // 2. 선택 멤버 변수 기본값 처리
+    List<ApplicantPersonalInfo> resolvedPersonalInfo =
+        personalInfos != null ? personalInfos : List.of();
+
+    // 3. 검증
+    ApplicantValidator.validate(
+        id, announcementId, sanitizeEmail, sanitizeName, status, resolvedPersonalInfo);
+
+    // 4. 할당
+    this.id = id;
+    this.announcementId = announcementId;
+    this.email = sanitizeEmail;
+    this.name = sanitizeName;
+    this.status = status;
+    this.personalInfos = resolvedPersonalInfo;
+  }
 
   public static Applicant initialize(ApplicantCreateRequest request, String announcementId) {
     List<ApplicantPersonalInfo> personalInfos =

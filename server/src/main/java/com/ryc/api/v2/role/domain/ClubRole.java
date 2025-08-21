@@ -11,7 +11,6 @@ import com.ryc.api.v2.role.domain.enums.Role;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
 public class ClubRole {
   private final String id;
@@ -19,6 +18,18 @@ public class ClubRole {
   private final Club club;
   private final Admin admin;
   private final LocalDateTime joinedAt;
+
+  @Builder
+  private ClubRole(String id, Role role, Club club, Admin admin, LocalDateTime joinedAt) {
+
+    ClubRoleValidator.validate(id, role, club, admin, joinedAt);
+
+    this.id = id;
+    this.role = role;
+    this.club = club;
+    this.admin = admin;
+    this.joinedAt = joinedAt;
+  }
 
   public static ClubRole initialize(Club club, Admin admin, Role role) {
     return ClubRole.builder().id(DEFAULT_INITIAL_ID).club(club).admin(admin).role(role).build();

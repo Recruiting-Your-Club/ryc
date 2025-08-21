@@ -10,4 +10,5 @@ public record ApplicantSummaryResponse(
     @Schema(description = "지원자 ID") String applicantId,
     @Schema(description = "지원자 이메일") String applicantEmail,
     @Schema(description = "지원자 이름") String applicantName,
-    @Schema(description = "지원자 대표 이미지") FileGetResponse imageResponse) {}
+    @Schema(description = "대표 이미지") FileGetResponse representativeImage,
+    @Schema(description = "지원자 이미지 존재 여부") Boolean imagePresent) {}

@@ -1,26 +1,25 @@
 package com.ryc.api.v2.file.service;
 
-import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.file.common.exception.code.S3ErrorCode;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.domain.FileMetaDataRepository;
 import com.ryc.api.v2.file.domain.FileStatus;
-import com.ryc.api.v2.file.domain.event.FileMoveEvent;
-import com.ryc.api.v2.file.domain.event.FileMoveRequest;
 import com.ryc.api.v2.file.infra.S3FileStorage;
+import com.ryc.api.v2.file.presentation.dto.request.AccessPresignedUrlGetRequest;
 import com.ryc.api.v2.file.presentation.dto.request.UploadConfirmRequest;
 import com.ryc.api.v2.file.presentation.dto.request.UploadUrlRequest;
 import com.ryc.api.v2.file.presentation.dto.response.UploadUrlResponse;
@@ -32,7 +31,6 @@ import software.amazon.awssdk.services.s3.model.*;
 @RequiredArgsConstructor
 public class FileService {
   private final FileMetaDataRepository fileMetaDataRepository;
-  private final ApplicationEventPublisher eventPublisher;
   private final S3FileStorage s3FileStorage;
 
   @Value("${CLOUD_AWS_CDN_DOMAIN}")
@@ -46,7 +44,8 @@ public class FileService {
     fileDomainType.checkContentType(request.contentType());
 
     // 2. s3 key 생성
-    String s3Key = generateTempS3Key(request.fileName());
+    String s3Key = generateS3Key(fileDomainType, request.fileName());
+
     // 3. fileMetaData 생성
     FileMetaData fileMetaData = FileMetaData.initialize(request, s3Key);
 
@@ -55,8 +54,37 @@ public class FileService {
     String presignedUrl = s3FileStorage.getUploadPresignedUrl(s3Key, request.contentType());
 
     return UploadUrlResponse.builder()
+        .accessToken(savedFileMetaData.getAccessToken())
         .presignedUrl(presignedUrl)
         .fileMetadataId(savedFileMetaData.getId())
+        .build();
+  }
+
+  @Transactional
+  public FileGetResponse getAccessUrl(AccessPresignedUrlGetRequest request) {
+    FileMetaData fileMetaData = fileMetaDataRepository.findById(request.metadataId());
+
+    if (fileMetaData.getFileDomainType().getIsPrivate()
+        && !fileMetaData.isCorrectAccessToken(request.accessToken())) {
+      throw new BusinessRuleException(S3ErrorCode.INVALID_ACCESS_TOKEN);
+    }
+
+    if (fileMetaData.getStatus() != FileStatus.UPLOAD_COMPLETED) {
+      throw new BusinessRuleException(S3ErrorCode.INVALID_FILE_STATUS);
+    }
+
+    String presignedUrl;
+    if (fileMetaData.getFileDomainType().getIsPrivate()) {
+      presignedUrl = getPrivateFileGetUrl(fileMetaData);
+    } else {
+      presignedUrl = getPublicFileGetUrl(fileMetaData);
+    }
+
+    return FileGetResponse.builder()
+        .id(fileMetaData.getId())
+        .url(presignedUrl)
+        .contentType(fileMetaData.getContentType())
+        .originalFileName(fileMetaData.getOriginalFileName())
         .build();
   }
 
@@ -64,18 +92,13 @@ public class FileService {
   public void confirmUpload(UploadConfirmRequest request) {
     FileMetaData fileMetaData = fileMetaDataRepository.findById(request.fileMetadataId());
 
+    if (fileMetaData.getStatus() != FileStatus.PENDING) {
+      throw new BusinessRuleException(S3ErrorCode.DUPLICATED_CONFIRM_REQUEST);
+    }
+
     HeadObjectResponse response = s3FileStorage.getMetaData(fileMetaData.getFilePath());
 
     fileMetaDataRepository.save(fileMetaData.confirmUpload(response.contentLength()));
-  }
-
-  @Transactional
-  public void deleteFile(String fileMetaDataId) {
-    FileMetaData fileMetaData = fileMetaDataRepository.findById(fileMetaDataId);
-
-    s3FileStorage.deleteFile(fileMetaData.getFilePath());
-
-    fileMetaDataRepository.save(fileMetaData.delete());
   }
 
   public List<FileMetaData> findAllByAssociatedId(String associatedId) {
@@ -90,16 +113,19 @@ public class FileService {
     return s3FileStorage.getPrivateFileGetUrl(fileMetaData.getFilePath());
   }
 
-  private String generateFinalS3Key(
-      FileDomainType fileDomainType, String associatedId, String fileId, String fileName) {
+  private String generateS3Key(FileDomainType fileDomainType, String fileName) {
     // ensure key uniqueness and traceability by including fileId
     String sanitizedFileName = sanitizeFileName(fileName);
-    String finalFileName = String.format("%s_%s", fileId, sanitizedFileName);
-    return String.format(fileDomainType.getPrefix(), associatedId, finalFileName);
-  }
+    String uuid = UUID.randomUUID().toString();
+    String finalFileName = String.format("%s_%s", uuid, sanitizedFileName);
+    String date =
+        String.format(
+            "%s/%s/%s",
+            LocalDate.now().getYear(),
+            LocalDate.now().getMonthValue(),
+            LocalDate.now().getDayOfMonth());
 
-  private List<FileMetaData> processAssociatedFiles(List<String> fileIds, String associatedId) {
-    return processAssociatedFiles(fileIds, associatedId, null);
+    return String.format(fileDomainType.getPrefix(), date, finalFileName);
   }
 
   private void validateExpectedType(List<FileMetaData> files, FileDomainType expectedType) {
@@ -133,6 +159,12 @@ public class FileService {
             .map(FileMetaData::delete)
             .collect(Collectors.toCollection(ArrayList::new));
 
+    // 3-1 s3 버킷에서는 실제로 삭제
+    if (!filesToUpdate.isEmpty()) {
+      s3FileStorage.deleteFiles(
+          filesToUpdate.stream().map(FileMetaData::getFilePath).collect(Collectors.toList()));
+    }
+
     // 4. 새로운 파일 목록 순서 업데이트, moveRequest처리
     IntStream.range(0, newFiles.size())
         .forEach(
@@ -149,92 +181,31 @@ public class FileService {
   }
 
   @Transactional
-  public void claimOwnershipSync(List<String> fileMetaDataIds, String associatedId) {
-    claimOwnershipSync(fileMetaDataIds, associatedId, null);
+  public void claimOwnership(
+      String fileMetaDataId, String associatedId, FileDomainType expectedType) {
+    List<String> fileMetaDataIds =
+        (fileMetaDataId != null) ? Collections.singletonList(fileMetaDataId) : null;
+    claimOwnership(fileMetaDataIds, associatedId, expectedType);
   }
 
   @Transactional
-  public void claimOwnershipSync(
+  public void claimOwnership(
       List<String> fileMetaDataIds, String associatedId, FileDomainType expectedType) {
     if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
 
     List<FileMetaData> filesToUpdate =
         processAssociatedFiles(fileMetaDataIds, associatedId, expectedType);
 
-    for (int i = 0; i < filesToUpdate.size(); i++) {
-      FileMetaData fileMetaData = filesToUpdate.get(i);
-
-      if (fileMetaData.getStatus() == FileStatus.MOVE_REQUESTED) {
-        String tempS3Key = fileMetaData.getFilePath();
-        String finalS3Key =
-            generateFinalS3Key(
-                fileMetaData.getFileDomainType(),
-                associatedId,
-                fileMetaData.getId(),
-                fileMetaData.getOriginalFileName());
-
-        try {
-          s3FileStorage.moveFile(tempS3Key, finalS3Key);
-          s3FileStorage.deleteFile(tempS3Key);
-
-          filesToUpdate.set(i, fileMetaData.issueFileMoveSuccess(finalS3Key));
-        } catch (Exception e) {
-          filesToUpdate.set(i, fileMetaData.issueFileMoveFail());
-        }
-      }
-    }
-
     fileMetaDataRepository.saveAll(filesToUpdate);
   }
 
-  @Transactional
-  public void claimOwnershipAsync(List<String> fileMetaDataIds, String associatedId) {
-    claimOwnershipAsync(fileMetaDataIds, associatedId, null);
-  }
+  public String sanitizeFileName(String fileName) {
 
-  @Transactional
-  public void claimOwnershipAsync(
-      List<String> fileMetaDataIds, String associatedId, FileDomainType expectedType) {
-    if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
+    // 1. 경로 순회 문자열을 먼저 제거
+    String sanitized = fileName.replace("..", "");
 
-    List<FileMetaData> filesToUpdate =
-        processAssociatedFiles(fileMetaDataIds, associatedId, expectedType);
-
-    List<FileMoveRequest> moveRequests =
-        filesToUpdate.stream()
-            .filter(fileMetaData -> fileMetaData.getStatus() == FileStatus.MOVE_REQUESTED)
-            .map(
-                fileMetaData ->
-                    FileMoveRequest.builder()
-                        .fileMetadataId(fileMetaData.getId())
-                        .tempS3Key(fileMetaData.getFilePath())
-                        .finalS3Key(
-                            generateFinalS3Key(
-                                fileMetaData.getFileDomainType(),
-                                associatedId,
-                                fileMetaData.getId(),
-                                fileMetaData.getOriginalFileName()))
-                        .build())
-            .toList();
-
-    if (!moveRequests.isEmpty()) {
-      eventPublisher.publishEvent(new FileMoveEvent(this, moveRequests));
-    }
-
-    fileMetaDataRepository.saveAll(filesToUpdate);
-  }
-
-  private String generateTempS3Key(String fileName) {
-    String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    String uuid = UUID.randomUUID().toString();
-
-    String sanitizedFileName = sanitizeFileName(fileName);
-
-    return String.format("temp/%s/%s_%s", datePath, uuid, sanitizedFileName);
-  }
-
-  private String sanitizeFileName(String fileName) {
-    return new File(fileName).getName().replaceAll("[^a-zA-Z0-9._-]", "_");
+    // 2. 허용되지 않는 모든 문자를 '_'로 치환
+    return sanitized.replaceAll("[^a-zA-Z0-9\\uAC00-\\uD7A3._-]", "_");
   }
 
   public List<FileMetaData> findAllByAssociatedIdIn(List<String> associatedIds) {
@@ -248,5 +219,20 @@ public class FileService {
         .collect(
             Collectors.toMap(
                 FileMetaData::getId, m -> FileGetResponse.of(m, getPrivateFileGetUrl(m))));
+  }
+
+  public void deleteOrphanImage() {
+    List<FileMetaData> orphanImages =
+        fileMetaDataRepository.findAll().stream()
+            .filter(this::isOrphanImage)
+            .map(FileMetaData::delete)
+            .toList();
+    s3FileStorage.deleteFiles(orphanImages.stream().map(FileMetaData::getFilePath).toList());
+    fileMetaDataRepository.saveAll(orphanImages);
+  }
+
+  public Boolean isOrphanImage(FileMetaData fileMetaData) {
+    return fileMetaData.getStatus() == FileStatus.PENDING
+        && LocalDateTime.now().isAfter(fileMetaData.getCreatedAt().plusDays(3));
   }
 }

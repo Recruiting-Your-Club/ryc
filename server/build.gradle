@@ -51,6 +51,9 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'com.h2database:h2'
 
+    // Jsoup
+    implementation 'org.jsoup:jsoup:1.16.1'
+
     implementation platform('software.amazon.awssdk:bom:2.20.28')
     implementation 'software.amazon.awssdk:s3'
 }

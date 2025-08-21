@@ -1,6 +1,7 @@
 package com.ryc.api.v2.file.infra;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,11 +10,10 @@ import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.file.common.exception.code.S3ErrorCode;
 
 import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
@@ -72,7 +72,20 @@ public class S3FileStorage {
     }
   }
 
-  public void deleteFile(String s3Key) {
-    s3Client.deleteObject(r -> r.bucket(bucketName).key(s3Key));
+  public void deleteFiles(List<String> keysToDelete) {
+
+    List<ObjectIdentifier> objectsToDelete =
+        keysToDelete.stream().map(key -> ObjectIdentifier.builder().key(key).build()).toList();
+
+    Delete delete = Delete.builder().objects(objectsToDelete).build();
+    DeleteObjectsRequest deleteObjectsRequest =
+        DeleteObjectsRequest.builder().bucket(bucketName).delete(delete).build();
+
+    try {
+      DeleteObjectsResponse response = s3Client.deleteObjects(deleteObjectsRequest);
+
+    } catch (SdkClientException | AwsServiceException e) {
+      throw new BusinessRuleException(S3ErrorCode.S3_SERVER_ERROR);
+    }
   }
 }

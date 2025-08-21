@@ -35,7 +35,7 @@ function DetailQuestionPage({ detailQuestions, containerStyle }: DetailQuestionP
                                 )}
                             </div>
                             <Tooltip
-                                content={question.subLabel}
+                                content={question.description || ''}
                                 direction={isTablet ? 'bottomLeft' : 'bottom'}
                             >
                                 <InfoIcon css={s_infoIcon} />

@@ -104,12 +104,13 @@ public class ApplicantService {
                   profileFileId == null ? null : fileMap.get(profileFileId);
 
               return ApplicantGetResponse.builder()
+                  .imagePresent(profileImage != null)
                   .applicantId(applicant.getId())
                   .name(applicant.getName())
                   .email(applicant.getEmail())
                   .status(applicant.getStatus())
                   .submittedAt(submittedAt)
-                  .profileImage(profileImage)
+                  .representativeImage(profileImage)
                   .build();
             })
         .toList();
