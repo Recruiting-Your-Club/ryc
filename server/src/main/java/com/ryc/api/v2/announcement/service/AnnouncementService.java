@@ -177,8 +177,8 @@ public class AnnouncementService {
   }
 
   /*
-    * 파라미터로 받은 공고 목록을 조합하여
-    * 하나의 공고 상태를 결정하는 메소드
+   * 파라미터로 받은 공고 목록을 조합하여
+   * 하나의 공고 상태를 결정하는 메소드
    */
   private AnnouncementStatus getAnnouncementStatuses(List<Announcement> announcements) {
     if (announcements.isEmpty()) {
