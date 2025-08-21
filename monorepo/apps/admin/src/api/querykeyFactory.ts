@@ -72,6 +72,7 @@ const announcementKeys = {
 };
 const userKeys = {
     checkDuplicateEmail: (email: string) => ['check-duplicate-email', email] as const,
+    myInformation: () => ['my-information'] as const,
 };
 
 export {

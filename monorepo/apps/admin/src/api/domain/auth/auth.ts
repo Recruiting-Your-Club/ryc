@@ -1,6 +1,6 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type { Login, LoginResponse, Register, RegisterResponse } from './types';
+import type { Login, LoginResponse, MyInformation, Register, RegisterResponse } from './types';
 
 async function login(data: Login): Promise<LoginResponse> {
     const response = await httpRequest.post({
@@ -27,5 +27,12 @@ async function checkEmail(email: string): Promise<boolean> {
     });
     return response as boolean;
 }
+async function myInformation(): Promise<MyInformation> {
+    const response = await httpRequest.get({
+        url: 'admin/me',
+        isAuthRequire: true,
+    });
+    return response as MyInformation;
+}
 
-export { login, register, checkEmail };
+export { login, register, checkEmail, myInformation };

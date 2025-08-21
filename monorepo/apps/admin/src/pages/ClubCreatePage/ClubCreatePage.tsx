@@ -158,7 +158,11 @@ function ClubCreatePage() {
             resetForm();
             removeHistoryAndGo(`/clubs/${result.clubId}`);
         } catch (error) {
-            console.error(error);
+            if (error instanceof Error) {
+                toast(error.message, {
+                    type: 'error',
+                });
+            }
         }
     };
 

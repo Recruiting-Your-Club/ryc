@@ -1,6 +1,7 @@
 import type { AnnouncementList } from '@api/domain/announcement/types';
 import { announcementQueries } from '@api/queryFactory/announcementQueries';
 import { myClubQueries } from '@api/queryFactory/clubQueries';
+import { userQueries } from '@api/queryFactory/userQueries';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import Club from '@assets/images/club.svg';
@@ -17,7 +18,7 @@ import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import Ryc from '@ssoc/assets/images/Ryc.svg';
 import UserSet from '@ssoc/assets/images/UserSet.svg';
 import { useRouter } from '@ssoc/hooks';
-import { Button, Dropdown, Text, Tooltip } from '@ssoc/ui';
+import { Avatar, Button, Dropdown, Text, Tooltip } from '@ssoc/ui';
 
 import {
     addClubButton,
@@ -147,6 +148,7 @@ function SideBar() {
     const { data: announcementList } = useQuery(
         announcementQueries.getListByClub(clubId || '', queryOn),
     );
+    const { data: myInformation } = useQuery(userQueries.getMyInformation());
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
@@ -464,20 +466,20 @@ function SideBar() {
                     <Dropdown sx={{ width: '100%', marginBottom: '1.5rem' }}>
                         <Dropdown.Trigger sx={dropdownTriggerContainer}>
                             <div css={dropDownTriggerWrapper}>
-                                <Ryc
-                                    width="3.5rem"
-                                    height="3.5rem"
-                                    css={{ borderRadius: '10px' }}
+                                <Avatar
+                                    imageURL={myInformation?.representativeImage?.url}
+                                    size="md"
+                                    shape="round"
                                 />
 
                                 {isExpanded && (
                                     <div css={dropDownChevronWrapper(isExpanded)}>
                                         <div css={clubTextWrapper(isExpanded)}>
                                             <Text as="div" type="captionRegular">
-                                                조준희
+                                                {myInformation?.name}
                                             </Text>
                                             <Text as="div" type="captionRegular">
-                                                zzuni3423@naver.com
+                                                {myInformation?.email}
                                             </Text>
                                         </div>
                                         <ChevronUpDown css={chevronUpDownWrapper} />
@@ -487,7 +489,7 @@ function SideBar() {
                         </Dropdown.Trigger>
                         <Dropdown.Content
                             offsetX={isExpanded ? 32 : 20}
-                            offsetY={-10}
+                            offsetY={0}
                             sx={{
                                 zIndex: 10001,
                                 border: 'none',

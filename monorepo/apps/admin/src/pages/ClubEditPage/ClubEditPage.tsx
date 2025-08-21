@@ -83,7 +83,6 @@ function ClubEditPage() {
             css={{ borderRadius: '10px' }}
         />
     );
-    //FIXME: Select value 값 리팩토링한 Select로 바꿔줘야함
     const editModeClubNameAndCategory = (
         <>
             <Input

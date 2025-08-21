@@ -1,4 +1,4 @@
-import { checkEmail } from '@api/domain/auth/auth';
+import { checkEmail, myInformation } from '@api/domain/auth/auth';
 import { userKeys } from '@api/querykeyFactory';
 import { queryOptions } from '@tanstack/react-query';
 
@@ -8,6 +8,11 @@ const userQueries = {
             queryKey: userKeys.checkDuplicateEmail(email),
             queryFn: () => checkEmail(email),
             enabled: on,
+        }),
+    getMyInformation: () =>
+        queryOptions({
+            queryKey: userKeys.myInformation(),
+            queryFn: () => myInformation(),
         }),
 };
 
