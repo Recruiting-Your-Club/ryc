@@ -75,7 +75,12 @@ function MainPage() {
     return (
         <div css={mainPageContainer}>
             <div css={bannerContainer}>
-                <img src={banner} alt="배너 이미지" width="100%" height="100%" />
+                <img
+                    src="https://d2eqevpna0t9fh.cloudfront.net/public/assets/banner.webp"
+                    alt="배너 이미지"
+                    width="100%"
+                    height="100%"
+                />
             </div>
             <div css={totalClubContainer}>
                 <Text type="bodySemibold" color="black">
