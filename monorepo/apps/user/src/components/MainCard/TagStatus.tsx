@@ -9,7 +9,7 @@ function TagStatus(status: string) {
         case 'CLOSED':
             return <Tag text="모집마감" variant="end" />;
         default:
-            return <Tag text="미정" variant="progress" />;
+            return <Tag text="미정" variant="primary" />;
     }
 }
 

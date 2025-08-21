@@ -33,7 +33,7 @@ function ApplicantMiniCard({
                     size="s"
                     imageURL={
                         applicant.imageAllowed && applicant.imagePresent
-                            ? applicant.profileImage?.url
+                            ? applicant.representativeImage?.url
                             : ''
                     }
                 />

@@ -1,19 +1,21 @@
-import { Avatar, DocumentBox, Text, TextToggle } from '@components';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
 import React, { useState } from 'react';
+
+import { Avatar, DocumentBox, Text, TextToggle } from '@components';
+
 import {
     s_avatar,
     s_contentSection,
-    s_documentWrapper,
-    s_textGroup,
     s_boxContainer,
-    s_titleSection,
-    s_personalDataWrapper,
     s_documentTypeTextWrapper,
+    s_documentWrapper,
+    s_personalDataWrapper,
+    s_textGroup,
+    s_titleSection,
     s_titleText,
     s_invisibleText,
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
-import type { QuestionAnswer } from '@api/domain/applicant/types';
 
 function InformationBox({
     personalInformation,

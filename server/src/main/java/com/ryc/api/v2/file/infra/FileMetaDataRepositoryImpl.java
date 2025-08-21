@@ -39,6 +39,13 @@ public class FileMetaDataRepositoryImpl implements FileMetaDataRepository {
     }
   }
 
+  public List<FileMetaData> findAll() {
+    return fileMetadataJpaRepository.findAll().stream()
+        .filter(entity -> !entity.isDeleted())
+        .map(FileMetaDataMapper::toDomain)
+        .toList();
+  }
+
   @Override
   public FileMetaData findById(String id) {
     return FileMetaDataMapper.toDomain(

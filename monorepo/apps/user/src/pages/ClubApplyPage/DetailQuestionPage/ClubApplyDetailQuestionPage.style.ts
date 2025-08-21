@@ -63,9 +63,7 @@ export const s_questionTitleSx = css`
     }
 `;
 
-export const s_questionStarSx = css`
-    margin-top: 0.5rem;
-    @media (max-width: ${theme.breakpoint.mobile}) {
-        margin-top: 0.25rem;
-    }
+export const s_questionStar = css`
+    margin-left: 0.25rem;
+    color: ${theme.colors.red[800]};
 `;

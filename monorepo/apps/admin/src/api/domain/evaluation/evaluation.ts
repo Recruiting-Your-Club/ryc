@@ -5,10 +5,10 @@ import type { Evaluation, EvaluationSummary, EvaluationType, MyEvaluationStatus 
 async function postApplicationEvaluationSummary(params: {
     clubId: string;
     applicantIdList: string[];
-}): Promise<EvaluationSummary[]> {
+}): Promise<EvaluationSummary> {
     return await httpRequest.post({
         url: `evaluation/applications/summary`,
-        body: params,
+        body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,
         },
@@ -19,10 +19,10 @@ async function postApplicationEvaluationSummary(params: {
 async function postInterviewEvaluationSummary(params: {
     clubId: string;
     applicantIdList: string[];
-}): Promise<EvaluationSummary[]> {
+}): Promise<EvaluationSummary> {
     return await httpRequest.post({
         url: `evaluation/interviews/summary`,
-        body: params,
+        body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,
         },

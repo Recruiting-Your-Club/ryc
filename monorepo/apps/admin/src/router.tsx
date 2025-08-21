@@ -3,14 +3,21 @@ import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
+    AnnouncementPage,
+    ApplicantScheduleLoadingPage,
     ClubCreatePage,
-    ClubSearchPage,
+    ClubEditPage,
     DocumentEvaluationLoadingPage,
+    EntryPage,
     InterviewEvaluationLoadingPage,
     LoginPage,
     MyClubPage,
+    NonAnnouncementPage,
     NotFoundPage,
+    RecruitCreatePage,
+    RecruitSuccessPage,
     RegisterPage,
+    StepManagementPage,
     TestPage,
 } from './pages';
 
@@ -20,44 +27,76 @@ const LazyInterviewEvaluationPage = lazy(
 const LazyDocumentEvaluationPage = lazy(
     () => import('./pages/DocumentEvaluationPage/DocumentEvaluationPage'),
 );
+const LazyApplicantSchedulePage = lazy(
+    () => import('./pages/ApplicantSchedulePage/ApplicantSchedulePage'),
+);
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <ManagerLayout />,
         children: [
-            { index: true, element: <TestPage /> },
-            { path: '*', element: <NotFoundPage /> },
-            { path: 'test', element: <TestPage /> },
+            { path: 'announcements/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'announcements/:clubId/:announcementId', element: <AnnouncementPage /> },
+
             {
-                path: 'interview-evaluation',
+                path: 'announcements/create/:clubId/:announcementId?',
+                element: <RecruitCreatePage />,
+            },
+
+            { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
+
+            { path: 'announcements/edit/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'announcements/edit/:clubId/:announcementId', element: <ClubCreatePage /> },
+
+            { path: 'applicants/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'applicants/:clubId/:announcementId', element: <StepManagementPage /> },
+
+            { path: 'interview-evaluation/:clubId', element: <NonAnnouncementPage /> },
+            {
+                path: 'interview-evaluation/:clubId/:announcementId',
                 element: (
                     <Suspense fallback={<InterviewEvaluationLoadingPage />}>
                         <LazyInterviewEvaluationPage />
                     </Suspense>
                 ),
             },
+
+            { path: 'document-evaluation/:clubId', element: <NonAnnouncementPage /> },
             {
-                path: 'document-evaluation',
+                path: 'document-evaluation/:clubId/:announcementId',
                 element: (
                     <Suspense fallback={<DocumentEvaluationLoadingPage />}>
                         <LazyDocumentEvaluationPage />
                     </Suspense>
                 ),
             },
+
+            { path: 'interviewee-schedule/:clubId', element: <NonAnnouncementPage /> },
+            {
+                path: 'interviewee-schedule/:clubId/:announcementId',
+                element: (
+                    <Suspense fallback={<ApplicantScheduleLoadingPage />}>
+                        <LazyApplicantSchedulePage />
+                    </Suspense>
+                ),
+            },
+
+            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },
     {
         path: '/',
         element: <EntryLayout />,
         children: [
-            { index: true, element: <TestPage /> },
+            { index: true, element: <EntryPage /> },
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
+            { path: 'test', element: <TestPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
-            { path: 'club-search', element: <ClubSearchPage /> },
-            { path: 'myclub', element: <MyClubPage /> },
+            { path: 'myClub', element: <MyClubPage /> },
         ],
     },
 ]);

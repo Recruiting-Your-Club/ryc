@@ -6,15 +6,21 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder
-@RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class InterviewReservation {
 
   private final String id;
+  // TODO:  도메인이 외부 도메인을 필드로 가지고 있음. 수정 필요 (도메인 독립성 위반)
   private final Applicant applicant;
+
+  @Builder
+  private InterviewReservation(String id, Applicant applicant) {
+    InterviewReservationValidator.validate(id, applicant);
+
+    this.id = id;
+    this.applicant = applicant;
+  }
 
   public static InterviewReservation initialize(Applicant applicant) {
     return InterviewReservation.builder().id(DEFAULT_INITIAL_ID).applicant(applicant).build();

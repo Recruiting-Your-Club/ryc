@@ -7,6 +7,8 @@ export interface ToggleProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
     isChecked?: boolean;
     size?: 'sm' | 'md' | 'lg';
     sx?: CSSObject;
+    leftSx?: CSSObject;
+    rightSx?: CSSObject;
     handleToggle?: () => void;
 }
 

@@ -21,7 +21,7 @@ const interviewHandler = [
     }),
 
     http.get(
-        `${BASE_URL}announcements/:announcementId/interviews/unreserved-applicants`,
+        `${BASE_URL}admin/announcements/:announcementId/interviews/unreserved-applicants`,
         async () => {
             return HttpResponse.json(unreservedApplicants, { status: 200 });
         },
@@ -100,7 +100,12 @@ const interviewHandler = [
             applicantId: movedApplicant.applicantId,
             applicantEmail: movedApplicant.applicantEmail,
             applicantName: movedApplicant.applicantName,
-            imageResponse: movedApplicant.imageResponse,
+            imageResponse: movedApplicant.imageResponse ?? {
+                id: '',
+                url: '',
+                originalFileName: '',
+                contentType: '',
+            },
         } satisfies UnreservedApplicant);
 
         return HttpResponse.json({ message: '삭제 성공' }, { status: 200 });

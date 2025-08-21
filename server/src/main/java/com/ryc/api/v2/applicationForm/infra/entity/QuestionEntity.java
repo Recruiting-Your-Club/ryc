@@ -26,6 +26,7 @@ public class QuestionEntity extends BaseEntity {
   private String id;
 
   private String label;
+  private String description;
   private boolean isRequired;
 
   @Column(name = "display_order")
@@ -47,6 +48,7 @@ public class QuestionEntity extends BaseEntity {
 
   public void update(QuestionEntity newQuestion) {
     this.label = newQuestion.getLabel();
+    this.description = newQuestion.getDescription();
     this.isRequired = newQuestion.isRequired();
     this.displayOrder = newQuestion.getDisplayOrder();
     this.questionType = newQuestion.getQuestionType();

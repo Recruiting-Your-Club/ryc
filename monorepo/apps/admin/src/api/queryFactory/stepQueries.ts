@@ -9,10 +9,10 @@ const stepQueries = {
             queryKey: stepKeys.totalSteps(announcementId),
             queryFn: () => getTotalSteps({ announcementId }),
         }),
-    allStepApplicants: (announcementId: string, clubId: string) =>
+    allStepApplicants: (announcementId: string, clubId: string, status?: string) =>
         queryOptions<StepApplicant[]>({
-            queryKey: stepKeys.allStepApplicants(announcementId, clubId),
-            queryFn: () => getAllStepApplicants({ announcementId, clubId }),
+            queryKey: stepKeys.allStepApplicants(announcementId, clubId, status),
+            queryFn: () => getAllStepApplicants({ announcementId, clubId, status }),
         }),
 };
 

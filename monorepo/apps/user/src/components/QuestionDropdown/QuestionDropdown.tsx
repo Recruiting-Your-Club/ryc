@@ -2,8 +2,7 @@ import { getAnswer } from '@pages/ClubApplyPage/utils';
 import React from 'react';
 
 import ArrowDown from '@ssoc/assets/images/downArrow.svg';
-import { Text } from '@ssoc/ui';
-import { Dropdown } from '@ssoc/ui/src/components';
+import { Dropdown, Text } from '@ssoc/ui';
 
 import {
     questionStatusContainer,
@@ -11,7 +10,9 @@ import {
     s_arrowDown,
     s_dropdownContent,
     s_dropdownItem,
+    s_dropdownItemSuccessTextSx,
     s_dropdownItemSx,
+    s_dropdownItemTextSx,
     s_dropdownLabelBottomSx,
     s_dropdownLabelTopSx,
     s_dropdownTriggerSx,
@@ -57,16 +58,25 @@ function QuestionDropdown({
                     <Dropdown.Group>
                         {personalQuestions.map((question) => (
                             <Dropdown.Item
-                                key={question.questionTitle}
-                                onItemSelect={() =>
-                                    onQuestionFocus(question.questionTitle, '사전질문')
-                                }
+                                key={question.id}
+                                onItemSelect={() => onQuestionFocus(question.label, '사전질문')}
                                 sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
-                                    {question.questionTitle}
-                                    {getAnswer(answers, question.questionTitle)?.trim() && (
-                                        <Text type="subCaptionRegular" color="primary">
+                                    <Text
+                                        type="captionRegular"
+                                        textAlign="left"
+                                        sx={s_dropdownItemTextSx}
+                                    >
+                                        {question.label}
+                                    </Text>
+                                    {getAnswer(answers, question.label)?.trim() && (
+                                        <Text
+                                            type="subCaptionRegular"
+                                            color="primary"
+                                            textAlign="right"
+                                            sx={s_dropdownItemSuccessTextSx}
+                                        >
                                             [완료]
                                         </Text>
                                     )}
@@ -79,15 +89,19 @@ function QuestionDropdown({
                         <Dropdown.Label sx={s_dropdownLabelBottomSx}>자기소개서</Dropdown.Label>
                         {detailQuestions.map((question, index) => (
                             <Dropdown.Item
-                                key={question.questionTitle}
-                                onItemSelect={() =>
-                                    onQuestionFocus(question.questionTitle, '자기소개서')
-                                }
+                                key={question.id}
+                                onItemSelect={() => onQuestionFocus(question.label, '자기소개서')}
                                 sx={s_dropdownItemSx}
                             >
                                 <div css={s_dropdownItem}>
-                                    질문{index + 1}
-                                    {getAnswer(answers, question.questionTitle)?.trim() && (
+                                    <Text
+                                        type="captionRegular"
+                                        textAlign="left"
+                                        sx={s_dropdownItemTextSx}
+                                    >
+                                        질문{index + 1}
+                                    </Text>
+                                    {getAnswer(answers, question.label)?.trim() && (
                                         <Text type="subCaptionRegular" color="primary">
                                             [완료]
                                         </Text>

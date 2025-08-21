@@ -31,7 +31,7 @@ async function getUnreservedApplicant(params: {
     clubId: string;
 }): Promise<UnreservedApplicant[]> {
     return await httpRequest.get({
-        url: `announcements/${params.announcementId}/interviews/unreserved-applicants`,
+        url: `admin/announcements/${params.announcementId}/interviews/unreserved-applicants`,
         headers: { 'X-CLUB-ID': params.clubId },
         isAuthRequire: true,
     });

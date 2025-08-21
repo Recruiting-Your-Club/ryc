@@ -23,14 +23,14 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   private final InterviewReservationJpaRepository interviewReservationJpaRepository;
 
   @Override
-  public InterviewSlot saveInterviewSlot(InterviewSlot interviewSlot) {
+  public InterviewSlot saveSlot(InterviewSlot interviewSlot) {
     InterviewSlotEntity entity = InterviewSlotMapper.toEntity(interviewSlot);
     InterviewSlotEntity savedEntity = interviewSlotJpaRepository.save(entity);
     return InterviewSlotMapper.toDomain(savedEntity);
   }
 
   @Override
-  public List<InterviewSlot> saveAllInterviewSlot(List<InterviewSlot> interviewSlots) {
+  public List<InterviewSlot> saveAllSlot(List<InterviewSlot> interviewSlots) {
     List<InterviewSlotEntity> entities =
         interviewSlots.stream().map(InterviewSlotMapper::toEntity).toList();
     List<InterviewSlotEntity> savedEntities = interviewSlotJpaRepository.saveAll(entities);
@@ -38,14 +38,14 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public List<InterviewSlot> findInterviewSlotsByAnnouncementId(String announcementId) {
+  public List<InterviewSlot> findSlotsByAnnouncementId(String announcementId) {
     List<InterviewSlotEntity> entities =
         interviewSlotJpaRepository.findByAnnouncementId(announcementId);
     return entities.stream().map(InterviewSlotMapper::toDomain).toList();
   }
 
   @Override
-  public InterviewSlot findInterviewSlotById(String interviewSlotId) {
+  public InterviewSlot findSlotById(String interviewSlotId) {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
             .findById(interviewSlotId)
@@ -55,7 +55,7 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public InterviewSlot findInterviewSlotByIdForUpdate(String interviewSlotId) {
+  public InterviewSlot findSlotByIdForUpdate(String interviewSlotId) {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
             .findByIdForUpdate(interviewSlotId)
@@ -64,9 +64,36 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public Optional<InterviewSlot> findInterviewSlotByApplicantIdForUpdate(String applicantId) {
+  public Optional<InterviewSlot> findSlotByApplicantIdForUpdate(String applicantId) {
     return interviewReservationJpaRepository
         .findSlotByApplicantId(applicantId)
         .map(InterviewSlotMapper::toDomain);
+  }
+
+  @Override
+  public Boolean isReservedByAnnouncementIdAndApplicantId(
+      String announcementId, String applicantId) {
+    return interviewReservationJpaRepository.existsByAnnouncementIdAndApplicantId(
+        announcementId, applicantId);
+  }
+
+  @Override
+  public void deleteSlotsByAnnouncementId(String announcementId) {
+    interviewSlotJpaRepository.deleteAllByAnnouncementId(announcementId);
+  }
+
+  @Override
+  public void deleteReservationById(String reservationId) {
+    interviewReservationJpaRepository.deleteById(reservationId);
+  }
+
+  @Override
+  public boolean existsReservationById(String reservationId) {
+    return interviewReservationJpaRepository.existsById(reservationId);
+  }
+
+  @Override
+  public boolean existsSlotsByAnnouncementId(String announcementId) {
+    return interviewSlotJpaRepository.existsByAnnouncementId(announcementId);
   }
 }

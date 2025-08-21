@@ -2,8 +2,8 @@ import Alert from '@assets/images/alert.svg';
 import Check from '@assets/images/check.svg';
 import React from 'react';
 
-import type { ButtonSize } from '@ssoc/ui';
 import { Button, Dialog, Text } from '@ssoc/ui';
+import type { ButtonSize } from '@ssoc/ui';
 
 import { confirmDialogHeaderContainer } from './ConfirmDialog.style';
 import type { DialogProps } from './types';

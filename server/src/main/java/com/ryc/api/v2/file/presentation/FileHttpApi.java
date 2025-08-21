@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.file.presentation.dto.request.AccessPresignedUrlGetRequest;
 import com.ryc.api.v2.file.presentation.dto.request.UploadConfirmRequest;
 import com.ryc.api.v2.file.presentation.dto.request.UploadUrlRequest;
 import com.ryc.api.v2.file.presentation.dto.response.UploadUrlResponse;
@@ -31,5 +33,11 @@ public class FileHttpApi {
   public ResponseEntity<Void> confirmUpload(@RequestBody @Valid UploadConfirmRequest request) {
     fileService.confirmUpload(request);
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/get-url")
+  public ResponseEntity<FileGetResponse> getAccessPresignedUrl(
+      @RequestBody @Valid AccessPresignedUrlGetRequest request) {
+    return ResponseEntity.ok(fileService.getAccessUrl(request));
   }
 }

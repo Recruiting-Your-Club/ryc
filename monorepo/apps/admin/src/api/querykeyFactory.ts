@@ -24,8 +24,9 @@ queryClient.prefetchQueries({
 */
 import type { EvaluationType } from './domain/evaluation/types';
 
-const myClubKeys = {
+const clubKeys = {
     all: ['clubs'] as const,
+    detail: (id: string) => ['detail', id] as const,
 };
 
 const interviewKeys = {
@@ -44,8 +45,10 @@ const applicantKeys = {
 
 const stepKeys = {
     totalSteps: (announcementId: string) => ['step', announcementId] as const,
-    allStepApplicants: (announcementId: string, clubId: string) =>
-        ['step-applicants', announcementId, clubId] as const,
+    allStepApplicants: (announcementId: string, clubId: string, status?: string) =>
+        status
+            ? (['step-applicants', announcementId, clubId, status] as const)
+            : (['step-applicants', announcementId, clubId] as const),
 };
 
 const evaluationKeys = {
@@ -57,4 +60,12 @@ const evaluationKeys = {
         ['my-evaluation-status', clubId, type] as const,
 };
 
-export { myClubKeys, interviewKeys, applicantKeys, stepKeys, evaluationKeys };
+const announcementKeys = {
+    all: ['announcements'] as const,
+    list: (clubId: string) => [...announcementKeys.all, 'list', clubId] as const,
+    detail: (announcementId: string) =>
+        [...announcementKeys.all, 'detail', announcementId] as const,
+    listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
+};
+
+export { clubKeys, interviewKeys, announcementKeys, applicantKeys, evaluationKeys, stepKeys };

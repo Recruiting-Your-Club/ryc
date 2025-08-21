@@ -14,7 +14,7 @@ interface TextProps extends PropsWithChildren {
     textAlign?: CSSProperties['textAlign'];
     noWrap?: boolean;
     cropped?: boolean;
-    sx?: CSSObject;
+    sx?: CSSObject | CSSObject[];
     as?: ElementType;
 }
 

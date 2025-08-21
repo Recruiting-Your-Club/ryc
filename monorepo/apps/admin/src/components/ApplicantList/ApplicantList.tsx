@@ -23,6 +23,9 @@ function ApplicantList({
     selectedApplicantId,
     onSelectApplicantId,
     myEvaluationStatusList,
+    titleMode = 'titleString',
+    children,
+    sx,
 }: ApplicationListProps) {
     // prop destruction
     // lib hooks
@@ -50,10 +53,10 @@ function ApplicantList({
     // handlers
     // effects
     return (
-        <div css={s_listContainer(height)}>
+        <div css={[s_listContainer(height), sx]}>
             <div css={s_titleContainer}>
                 <Text as="span" type="captionSemibold" textAlign="start">
-                    {title}
+                    {titleMode === 'titleString' ? title : children}
                 </Text>
                 <span>
                     <Input

@@ -9,7 +9,7 @@ export interface StepApplicant {
     imagePresent: boolean;
     status: string;
     submittedAt: string;
-    profileImage: ProfileImageInformation | null;
+    representativeImage: ProfileImageInformation;
 }
 
 export interface StepApplicantWithoutImage {

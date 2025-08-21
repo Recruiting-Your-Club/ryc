@@ -30,13 +30,6 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
   }
 
   @Override
-  public String findEmailById(String id) {
-    return applicantJpaRepository
-        .findEmailById(id)
-        .orElseThrow(() -> new NoSuchElementException("Applicant not found with id: " + id));
-  }
-
-  @Override
   public Applicant findById(String id) {
     return applicantJpaRepository
         .findById(id)
@@ -85,5 +78,10 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
         .collect(
             Collectors.toMap(
                 ApplicantImageProjection::getApplicantId, ApplicantImageProjection::getImageUrl));
+  }
+
+  @Override
+  public void deleteAllByIdIn(List<String> ids) {
+    applicantJpaRepository.deleteByIdIn(ids);
   }
 }

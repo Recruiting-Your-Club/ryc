@@ -12,22 +12,26 @@ import lombok.Getter;
 
 @Getter
 public enum FileDomainType {
-  CLUB_PROFILE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.CLUB_PROFILE),
-  CLUB_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.CLUB_IMAGE),
-  CLUB_POST_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.CLUB_POST_IMAGE),
-  ANNOUNCEMENT_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.ANNOUNCEMENT_IMAGE),
-  ANNOUNCEMENT_POST_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.ANNOUNCEMENT_POST_IMAGE),
-  APPLICATION_PROFILE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.APPLICATION_PROFILE),
+  CLUB_PROFILE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.CLUB_PROFILE, false),
+  CLUB_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.CLUB_IMAGE, false),
+  CLUB_POST_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.CLUB_POST_IMAGE, false),
+  ANNOUNCEMENT_IMAGE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.ANNOUNCEMENT_IMAGE, false),
+  USER_PROFILE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.USER_PROFILE, true),
+  ANNOUNCEMENT_POST_IMAGE(
+      FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.ANNOUNCEMENT_POST_IMAGE, false),
+  APPLICANT_PROFILE(FileContentType.IMAGE_CONTENT_TYPES, S3Prefix.APPLICANT_PROFILE, true),
   ANSWER_ATTACHMENT(
-      FileContentType.ANSWER_ATTACHMENT_CONTENT_TYPES, S3Prefix.APPLICATION_ATTACHMENT),
+      FileContentType.ANSWER_ATTACHMENT_CONTENT_TYPES, S3Prefix.APPLICATION_ATTACHMENT, true),
   ;
 
   private final Set<String> allowedContentTypes;
   private final String prefix;
+  private final Boolean isPrivate;
 
-  FileDomainType(Set<String> allowedContentTypes, String prefix) {
+  FileDomainType(Set<String> allowedContentTypes, String prefix, Boolean isPrivate) {
     this.allowedContentTypes = allowedContentTypes;
     this.prefix = prefix;
+    this.isPrivate = isPrivate;
   }
 
   /**

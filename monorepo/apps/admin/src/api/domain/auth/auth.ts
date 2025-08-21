@@ -6,7 +6,7 @@ async function login(data: Login): Promise<LoginResponse> {
     const response = await httpRequest.post({
         url: 'auth/login',
         body: data,
-        isAuthRequire: false,
+        isAuthRequire: true,
     });
     return response as LoginResponse;
 }

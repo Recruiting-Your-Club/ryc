@@ -13,12 +13,12 @@ import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRe
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class Announcement {
   // Announcement 정보
   private final String id;
@@ -39,12 +39,82 @@ public class Announcement {
   // application form
   private final ApplicationForm applicationForm;
 
-  // soft delete
-  private final Boolean isDeleted;
-
   // timestamp
   private final LocalDateTime createdAt;
   private final LocalDateTime updatedAt;
+
+  @Builder
+  private Announcement(
+      String id,
+      String clubId,
+      String title,
+      String numberOfPeople,
+      String detailDescription,
+      String summaryDescription,
+      String target,
+      String field,
+      List<Tag> tags,
+      AnnouncementStatus announcementStatus,
+      AnnouncementType announcementType,
+      Boolean hasInterview,
+      AnnouncementPeriodInfo announcementPeriodInfo,
+      String activityPeriod,
+      ApplicationForm applicationForm,
+      LocalDateTime createdAt,
+      LocalDateTime updatedAt) {
+
+    // 1. 정제
+    String sanitizeTitle = DataResolveUtil.sanitizeString(title);
+    String sanitizeNumberOfPeople = DataResolveUtil.sanitizeString(numberOfPeople);
+    String sanitizeDetailDescription = DataResolveUtil.sanitizeString(detailDescription);
+    String sanitizeSummaryDescription = DataResolveUtil.sanitizeString(summaryDescription);
+    String sanitizeTarget = DataResolveUtil.sanitizeString(target);
+    String sanitizeField = DataResolveUtil.sanitizeString(field);
+    String sanitizeActivityPeriod = DataResolveUtil.sanitizeString(activityPeriod);
+
+    // 2. 선택 멤버 변수 기본값 처리
+    List<Tag> resolvedTags = tags != null ? tags : List.of();
+    Boolean resolvedHasInterview = hasInterview != null ? hasInterview : Boolean.TRUE;
+
+    // 3. 검증
+    AnnouncementValidator.validate(
+        id,
+        clubId,
+        sanitizeTitle,
+        sanitizeNumberOfPeople,
+        sanitizeDetailDescription,
+        sanitizeSummaryDescription,
+        sanitizeTarget,
+        sanitizeField,
+        resolvedTags,
+        announcementStatus,
+        announcementType,
+        resolvedHasInterview,
+        announcementPeriodInfo,
+        sanitizeActivityPeriod,
+        applicationForm,
+        createdAt,
+        updatedAt);
+
+    // 4. 할당
+    this.id = id;
+    this.clubId = clubId;
+    this.title = sanitizeTitle;
+    this.numberOfPeople = sanitizeNumberOfPeople;
+    this.detailDescription = sanitizeDetailDescription;
+    this.summaryDescription = sanitizeSummaryDescription;
+    this.target = sanitizeTarget;
+    this.field = sanitizeField;
+    this.tags = resolvedTags;
+    this.announcementStatus = announcementStatus;
+    this.announcementType = announcementType;
+    this.hasInterview = resolvedHasInterview;
+    this.announcementPeriodInfo = announcementPeriodInfo;
+    this.activityPeriod = sanitizeActivityPeriod;
+    this.applicationForm = applicationForm;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
 
   /**
    * 최초 생성시에만 사용하는 정적 팩토리 메서드
@@ -85,7 +155,6 @@ public class Announcement {
             .announcementType(announcementType)
             .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
-            .isDeleted(false)
             .build();
 
     // 5. 유효성 검사
@@ -128,7 +197,6 @@ public class Announcement {
             .tags(updatedTags)
             .announcementStatus(updatedAnnouncementStatus)
             .announcementType(announcementType)
-            .isDeleted(false)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
 
@@ -157,15 +225,16 @@ public class Announcement {
         .applicationForm(this.applicationForm)
         .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
-        .isDeleted(false)
         .announcementPeriodInfo(this.announcementPeriodInfo)
+        .createdAt(this.createdAt)
+        .updatedAt(this.updatedAt)
         .build();
   }
 
   /**
    * 유효 객체 검사
    *
-   * @throws IllegalArgumentException 각 객체가 유효하지 않을 경우
+   * @throws BusinessRuleException 각 객체가 유효하지 않을 경우
    */
   public void validate() {
     // 생성시에는 모집 예정, 모집 중
@@ -174,7 +243,7 @@ public class Announcement {
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
       }
     }
-    // 업데이트시 모집 예정일때만 수정가능
+    // 업데이트시 모집 예정일 때만 수정가능
     else {
       if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);

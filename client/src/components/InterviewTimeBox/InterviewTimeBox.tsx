@@ -1,6 +1,7 @@
 import { Button, Divider, Select, Text } from '@components';
 import type { InterviewInformation } from '@components/InterviewSettingDialog/types';
-import { DEFAULT_END_TIME, DEFAULT_START_TIME } from '@constants/interviewSettingDialog';
+import { DEFAULT_END_TIME, DEFAULT_START_TIME } from '@constants/InterviewSettingDialog';
+import { useToast } from '@hooks/useToast';
 import { generateTimeRange } from '@utils/InterviewTimeBox/generateTime';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useInterviewSettingDialogContext } from '../InterviewSettingDialog/InterviewSettingDialogContext';
@@ -39,6 +40,7 @@ function InterviewTimeBox() {
         setInterviewInformation,
         currentDate,
     } = useInterviewSettingDialogContext();
+    const { toast } = useToast();
 
     // initial values
     // state, ref, querystring hooks
@@ -56,14 +58,17 @@ function InterviewTimeBox() {
     }, [timeValue]);
 
     const timeItems = useMemo(() => {
-        return generateTimeRange(DEFAULT_START_TIME, DEFAULT_END_TIME, interval);
+        return generateTimeRange(DEFAULT_START_TIME, DEFAULT_END_TIME, interval).map((time) => ({
+            value: time,
+            label: time,
+        }));
     }, [interval]);
 
     // handler
     const handleApply = () => {
         if (!interval) return;
         if (!currentDate) {
-            alert('캘린더에서 날짜를 선택해주세요!');
+            toast('캘린더에서 날짜를 선택해주세요!', { type: 'error' });
             return;
         }
         const result = generateTimeRange(startTime, endTime, interval).slice(0, -1);
@@ -131,27 +136,39 @@ function InterviewTimeBox() {
                     면접 진행 시간
                 </Text>
                 <div css={s_timeRangeSettingContainer}>
-                    <Select value={startTime} onValueChange={setStartTime} size="xs" sx={s_select}>
+                    <Select
+                        value={startTime}
+                        onValueChange={setStartTime}
+                        options={timeItems}
+                        size="xs"
+                        sx={s_select}
+                    >
                         <Select.Trigger sx={s_selectTrigger}>
                             <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                            {timeItems.map((item) => (
-                                <Select.Item key={item} value={item}>
-                                    {item}
+                            {timeItems.map(({ value, label }) => (
+                                <Select.Item key={value} value={value}>
+                                    {label}
                                 </Select.Item>
                             ))}
                         </Select.Content>
                     </Select>
                     -
-                    <Select value={endTime} onValueChange={setEndTime} size="xs" sx={s_select}>
+                    <Select
+                        value={endTime}
+                        onValueChange={setEndTime}
+                        options={timeItems}
+                        size="xs"
+                        sx={s_select}
+                    >
                         <Select.Trigger sx={s_selectTrigger}>
                             <Select.Value />
                         </Select.Trigger>
                         <Select.Content sx={s_selectContent}>
-                            {timeItems.map((item) => (
-                                <Select.Item key={item} value={item}>
-                                    {item}
+                            {timeItems.map(({ value, label }) => (
+                                <Select.Item key={value} value={value}>
+                                    {label}
                                 </Select.Item>
                             ))}
                         </Select.Content>

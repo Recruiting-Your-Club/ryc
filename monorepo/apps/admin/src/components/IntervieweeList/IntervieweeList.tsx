@@ -1,11 +1,12 @@
+import Search from '@assets/images/search.svg';
 import { IntervieweeCard, InterviewTimeTable } from '@components';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import Search from '@ssoc/assets/images/search.svg';
 import { Button, Dropdown, Input, Text } from '@ssoc/ui';
 
 import {
+    s_buttonGroup,
     s_intervieweeCardGroupWrapper,
     s_invervieweeCardContainer,
     s_listContainer,
@@ -100,6 +101,7 @@ function IntervieweeList({
                                     onInterviewSlotId(matchedSlot ? matchedSlot.id : '');
                                 }}
                                 onOpenChange={setOpen}
+                                listSx={s_buttonGroup}
                             />
                         </Dropdown.Content>
                     </Dropdown>
@@ -129,7 +131,7 @@ function IntervieweeList({
                                 email={interviewee.email}
                                 imageUrl={
                                     interviewee.imageAllowed && interviewee.imagePresent
-                                        ? interviewee.profileImage?.url
+                                        ? interviewee.representativeImage?.url
                                         : ''
                                 }
                                 onClick={() => onSelectApplicantId(interviewee.applicantId)}

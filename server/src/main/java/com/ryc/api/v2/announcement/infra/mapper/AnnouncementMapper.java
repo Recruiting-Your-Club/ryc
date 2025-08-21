@@ -42,7 +42,8 @@ public class AnnouncementMapper {
         .activityPeriod(announcementEntity.getActivityPeriod())
         .announcementType(announcementEntity.getAnnouncementType())
         .hasInterview(announcementEntity.getHasInterview())
-        .isDeleted(announcementEntity.getIsDeleted())
+        .createdAt(announcementEntity.getCreatedAt())
+        .updatedAt(announcementEntity.getUpdatedAt())
         .build();
   }
 
@@ -75,7 +76,6 @@ public class AnnouncementMapper {
         .announcementType(announcement.getAnnouncementType())
         .hasInterview(announcement.getHasInterview())
         .summaryDescription(announcement.getSummaryDescription())
-        .isDeleted(announcement.getIsDeleted())
         .build();
   }
 }

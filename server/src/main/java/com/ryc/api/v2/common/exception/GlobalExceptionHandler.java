@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import com.ryc.api.v2.common.exception.custom.InterviewException;
 import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,9 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
-import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
-import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.common.exception.custom.NoPermissionException;
+import com.ryc.api.v2.common.exception.custom.*;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
 @RestControllerAdvice
@@ -88,6 +85,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
     return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(InvalidFormatException.class)
+  public ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode);
   }
 
   @Override

@@ -41,6 +41,7 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
+            .filter(a -> !a.getIsDeleted())
             .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
     return AnnouncementMapper.toDomain(announcementEntity);
@@ -74,10 +75,8 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public List<Announcement> findAllByIsDeleted(Boolean isDeleted) {
-    return announcementJpaRepository.findAllByIsDeleted(isDeleted).stream()
-        .map(AnnouncementMapper::toDomain)
-        .toList();
+  public List<Announcement> findAll() {
+    return announcementJpaRepository.findAll().stream().map(AnnouncementMapper::toDomain).toList();
   }
 
   @Override
@@ -107,5 +106,31 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
         .getApplicationForm()
         .getPersonalInfoQuestions()
         .contains(PersonalInfoQuestionType.PROFILE_IMAGE);
+  }
+
+  @Override
+  public String findClubNameByAnnouncementId(String announcementId) {
+    return announcementJpaRepository
+        .findClubNameByAnnouncementId(announcementId)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException("Club not found for announcementId: " + announcementId));
+  }
+
+  @Override
+  public List<String> findIdsByClubId(String clubId) {
+    return announcementJpaRepository.findIdsByClubId(clubId);
+  }
+
+  /*
+   * jpaRepository.deleteAllByIdIn(List<String> ids)을 수행하지 않고, entity를 조회한 후 삭제합니다.
+   * jpaRepository.deleteAllByIdIn는 JPQL 기반의 직접 삭제 쿼리이기 때문에
+   * SqlDelete가 적용되지않아 Soft Delete와 cascade가 적용되지 않습니다.
+   * 따라서, entity를 조회한 후 삭제하는 방식으로 Soft Delete를 적용합니다.
+   */
+  @Override
+  public void deleteAllByIdIn(List<String> announcementIds) {
+    List<AnnouncementEntity> entities = announcementJpaRepository.findAllByIdIn(announcementIds);
+    announcementJpaRepository.deleteAll(entities);
   }
 }

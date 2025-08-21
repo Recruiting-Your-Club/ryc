@@ -4,7 +4,7 @@ import { http, HttpResponse } from 'msw';
 import applicantDocumentList from '../data/applicant/applicantDocumentList.json';
 
 const applicantHandler = [
-    http.get(`${BASE_URL}announcements/:announcementId/applicants/:applicantId`, ({ params }) => {
+    http.get(`${BASE_URL}announcements/:announcementId/applications/:applicantId`, ({ params }) => {
         const { applicantId } = params as {
             applicantId: string;
         };

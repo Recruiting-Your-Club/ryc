@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
+import { useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text } from '@ssoc/ui';
 
 import {
@@ -16,8 +17,15 @@ import {
 } from './MyClubPage.style';
 
 function MyClubPage() {
-    //query hooks
+    // prop destruction
+    // lib hooks
+    const { goTo } = useRouter();
+    // initial values
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
     const { data: myClubs } = useSuspenseQuery(myClubQueries.all());
+    // calculated values
 
     return (
         <div css={myClubPageLayout}>
@@ -28,7 +36,12 @@ function MyClubPage() {
                 <ul css={myClubList}>
                     {myClubs.map((club) => (
                         <li key={club.id}>
-                            <Button variant="transparent" size="xl" sx={clubItem}>
+                            <Button
+                                variant="transparent"
+                                size="xl"
+                                sx={clubItem}
+                                onClick={() => goTo(`/clubs/${club.id}`)}
+                            >
                                 <Avatar radius="10px" imageURL={club.imageUrl} />
                                 <div css={clubItemText}>
                                     <Text textAlign="start">{club.name}</Text>
@@ -47,7 +60,12 @@ function MyClubPage() {
                         </li>
                     ))}
                 </ul>
-                <Button variant="transparent" size="xl" sx={searchButton}>
+                <Button
+                    variant="transparent"
+                    size="xl"
+                    sx={searchButton}
+                    onClick={() => goTo('/club-create')}
+                >
                     <div css={plusButton}>+</div>
                     <Text type="bodyRegular" color="primary">
                         새 동아리 만들기

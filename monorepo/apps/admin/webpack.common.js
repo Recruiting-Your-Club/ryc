@@ -23,7 +23,7 @@ module.exports = {
                 use: ['@svgr/webpack'],
             },
             {
-                test: /\.(png|jpe?g|gif)$/,
+                test: /\.(png|jpe?g|gif|webp)$/,
                 type: 'asset/resource',
             },
             {
@@ -64,6 +64,7 @@ module.exports = {
         }),
         new Dotenv({
             path: path.resolve(__dirname, './', dotenvFilename),
+            systemvars: true,
         }),
     ],
 };

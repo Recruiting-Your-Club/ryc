@@ -36,6 +36,4 @@ public class EvaluationEntity extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   private EvaluationType type;
-
-  private Boolean deleted;
 }

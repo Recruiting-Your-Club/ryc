@@ -1,10 +1,19 @@
 import { applicantHandler } from './applicantHandler';
 import { clubHandler } from './clubHandler';
+import { emailHandler } from './emailHandler';
 import { evaluationHandler } from './evaluationHandler';
 import { stepHandler } from './stepHandler';
 import { announcementHandler } from './announcementHandler';
 import { interviewHandler } from './interviewHandler';
 
-const handlers = [...clubHandler, ...interviewHandler, ...announcementHandler, ...applicantHandler, ...evaluationHandler, ...stepHandler];
+const handlers = [
+    ...clubHandler,
+    ...interviewHandler,
+    ...announcementHandler,
+    ...applicantHandler,
+    ...evaluationHandler,
+    ...stepHandler,
+    ...emailHandler,
+];
 
 export { handlers };

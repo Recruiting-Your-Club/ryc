@@ -3,6 +3,8 @@ package com.ryc.api.v2.evaluation.presentation.dto.response;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
+
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -74,8 +76,8 @@ public record EvaluationSearchResponse(
       @Schema(description = "평가 ID", example = "evaluation-123") String evaluationId,
       @Schema(description = "평가자 ID", example = "admin-123") String evaluatorId,
       @Schema(description = "평가자 이름", example = "조상준") String evaluatorName,
-      @Schema(description = "평가자 프로필 썸네일 이미지", example = "https://example.com/profile1.jpg\"")
-          String evaluatorThumbnailUrl,
+      @Schema(description = "평가자 프로필 ", example = "https://example.com/profile1.jpg\"")
+          FileGetResponse evaluatorRepresentativeImage,
       @Schema(description = "평가자 프로필 존재여부", example = "true") boolean isEvaluatorImagePresent,
       @Schema(description = "평가 점수", example = "4.5") BigDecimal score,
       @Schema(description = "평가 코멘트", example = "지원서를 읽고 감명 받았습니다.") String comment,

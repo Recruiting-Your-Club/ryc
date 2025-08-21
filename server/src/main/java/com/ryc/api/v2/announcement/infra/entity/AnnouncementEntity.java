@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+import org.hibernate.annotations.SQLDelete;
+
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
@@ -15,6 +17,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "announcements")
+@SQLDelete(sql = "UPDATE announcements SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -59,7 +62,7 @@ public class AnnouncementEntity extends BaseEntity {
   @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
   private ApplicationFormEntity applicationForm;
 
-  private Boolean isDeleted;
+  @Builder.Default private Boolean isDeleted = Boolean.FALSE;
 
   public void update(AnnouncementEntity announcement) {
     // announcement update

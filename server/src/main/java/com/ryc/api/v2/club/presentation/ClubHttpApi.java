@@ -99,4 +99,15 @@ public class ClubHttpApi {
     List<DetailClubResponse> responses = clubFacade.getMyClubs(userDetail.getId());
     return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
+
+  @DeleteMapping("/{id}")
+  @HasRole(Role.OWNER)
+  @Operation(summary = "동아리 삭제 API", description = "해당 기능은 동아리 회장만 사용 가능합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<Void> deleteClub(@PathVariable String id) {
+    clubFacade.deleteClub(id);
+    return ResponseEntity.noContent().build();
+  }
 }

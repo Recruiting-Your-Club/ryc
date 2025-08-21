@@ -36,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
-  private final ApplicationEventPublisher eventPublisher;
+  private final ApplicationEventPublisher applicationEventPublisher;
   private final JwtTokenManager jwtTokenManager;
   private final JwtProperties jwtProperties;
 
@@ -102,7 +102,8 @@ public class EmailPasswordAuthenticationFilter extends UsernamePasswordAuthentic
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime();
 
-    eventPublisher.publishEvent(new RefreshTokenIssuedEvent(adminId, refreshToken, expirationTime));
+    applicationEventPublisher.publishEvent(
+        new RefreshTokenIssuedEvent(adminId, refreshToken, expirationTime));
 
     // RT HttpOnly, Secure, SameSite=Strict 쿠키 옵션 설정
     ResponseCookie cookie =

@@ -9,5 +9,5 @@ export interface MainCardProps {
     status?: string;
     clubTags?: ClubTag[];
     link?: string;
-    imageURL?: string;
+    representativeImage?: string;
 }
