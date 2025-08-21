@@ -1,13 +1,14 @@
 package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
-import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
@@ -29,6 +30,19 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
         announcementJpaRepository.findAllByClubId(clubId);
 
     return announcementEntities.stream().map(AnnouncementMapper::toDomain).toList();
+  }
+
+  @Override
+  public Map<String, List<Announcement>> findAllByClubIds(List<String> clubIds) {
+    Map<String, List<Announcement>> collect =
+        announcementJpaRepository.findAllByClubIdIn(clubIds).stream()
+            .map(AnnouncementMapper::toDomain)
+            .collect(Collectors.groupingBy(Announcement::getClubId));
+
+    clubIds.stream()
+        .filter(id -> !collect.containsKey(id))
+        .forEach(id -> collect.put(id, List.of()));
+    return collect;
   }
 
   /**
@@ -72,29 +86,6 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
 
       return AnnouncementMapper.toDomain(savedAnnouncement);
     }
-  }
-
-  @Override
-  public List<Announcement> findAll() {
-    return announcementJpaRepository.findAll().stream().map(AnnouncementMapper::toDomain).toList();
-  }
-
-  @Override
-  public void saveAll(List<Announcement> announcements) {
-
-    List<AnnouncementEntity> announcementEntities =
-        announcements.stream().map(domain -> AnnouncementMapper.toEntity(domain)).toList();
-
-    announcementEntities.forEach(
-        announcementEntity -> {
-          announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
-        });
-    announcementJpaRepository.saveAll(announcementEntities);
-  }
-
-  @Override
-  public List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds) {
-    return announcementJpaRepository.getStatusesByClubIds(clubIds);
   }
 
   @Override

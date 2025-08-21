@@ -1,8 +1,7 @@
 package com.ryc.api.v2.announcement.domain;
 
 import java.util.List;
-
-import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
+import java.util.Map;
 
 /*
  * AnnouncementEntity는 Soft Delete를 지원합니다.
@@ -22,17 +21,13 @@ public interface AnnouncementRepository {
    */
   List<Announcement> findAllByClubId(String clubId);
 
+  Map<String, List<Announcement>> findAllByClubIds(List<String> clubIds);
+
   /**
    * @param announcementId announcementId
    * @return 해당 announcement의 Announcement (with Application)
    */
   Announcement findById(String announcementId);
-
-  List<Announcement> findAll();
-
-  void saveAll(List<Announcement> announcements);
-
-  List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds);
 
   boolean imageAllowed(String announcementId);
 

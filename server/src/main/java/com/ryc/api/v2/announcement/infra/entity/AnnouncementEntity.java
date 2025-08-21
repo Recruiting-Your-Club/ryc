@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 
 import org.hibernate.annotations.SQLDelete;
 
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
 import com.ryc.api.v2.announcement.infra.vo.TagVO;
@@ -48,6 +47,7 @@ public class AnnouncementEntity extends BaseEntity {
   @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
   @ElementCollection
+  @CollectionTable(name = "announcement_tags", joinColumns = @JoinColumn(name = "announcement_id"))
   @OrderBy("displayOrder ASC")
   private List<TagVO> tags;
 
@@ -55,9 +55,6 @@ public class AnnouncementEntity extends BaseEntity {
   private AnnouncementType announcementType;
 
   private String activityPeriod;
-
-  @Enumerated(EnumType.STRING)
-  private AnnouncementStatus announcementStatus;
 
   @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
   private ApplicationFormEntity applicationForm;
@@ -75,7 +72,6 @@ public class AnnouncementEntity extends BaseEntity {
     this.field = announcement.getField();
     this.announcementType = announcement.getAnnouncementType();
     this.activityPeriod = announcement.getActivityPeriod();
-    this.announcementStatus = announcement.getAnnouncementStatus();
     this.isDeleted = announcement.getIsDeleted();
     this.tags = announcement.getTags();
     this.announcementPeriodInfoVO = announcement.getAnnouncementPeriodInfoVO();

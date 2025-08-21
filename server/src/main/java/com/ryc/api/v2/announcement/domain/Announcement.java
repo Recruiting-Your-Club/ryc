@@ -54,12 +54,11 @@ public class Announcement {
       String target,
       String field,
       List<Tag> tags,
-      AnnouncementStatus announcementStatus,
       AnnouncementType announcementType,
       Boolean hasInterview,
       AnnouncementPeriodInfo announcementPeriodInfo,
-      String activityPeriod,
       ApplicationForm applicationForm,
+      String activityPeriod,
       LocalDateTime createdAt,
       LocalDateTime updatedAt) {
 
@@ -75,6 +74,8 @@ public class Announcement {
     // 2. 선택 멤버 변수 기본값 처리
     List<Tag> resolvedTags = tags != null ? tags : List.of();
     Boolean resolvedHasInterview = hasInterview != null ? hasInterview : Boolean.TRUE;
+    AnnouncementStatus status =
+        AnnouncementStatus.from(announcementPeriodInfo.applicationPeriod(), announcementType);
 
     // 3. 검증
     AnnouncementValidator.validate(
@@ -87,7 +88,7 @@ public class Announcement {
         sanitizeTarget,
         sanitizeField,
         resolvedTags,
-        announcementStatus,
+        status,
         announcementType,
         resolvedHasInterview,
         announcementPeriodInfo,
@@ -106,12 +107,12 @@ public class Announcement {
     this.target = sanitizeTarget;
     this.field = sanitizeField;
     this.tags = resolvedTags;
-    this.announcementStatus = announcementStatus;
+    this.announcementStatus = status;
     this.announcementType = announcementType;
     this.hasInterview = resolvedHasInterview;
     this.announcementPeriodInfo = announcementPeriodInfo;
-    this.activityPeriod = sanitizeActivityPeriod;
     this.applicationForm = applicationForm;
+    this.activityPeriod = sanitizeActivityPeriod;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -132,11 +133,7 @@ public class Announcement {
 
     AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
 
-    // 2. 현재 기간과 지원 기간을 비교하여 상태 반환
-    AnnouncementStatus announcementStatus =
-        AnnouncementStatus.from(announcementPeriodInfo, announcementType);
-
-    // 4. Announcement 생성
+    // Announcement 생성
     Announcement announcement =
         Announcement.builder()
             .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
@@ -151,13 +148,12 @@ public class Announcement {
             .tags(tags)
             // Client에서 필요가 없어져서 True로 삽입 추후 확장 가능성에 의해 필드값은 삭제 X
             .hasInterview(true)
-            .announcementStatus(announcementStatus)
             .announcementType(announcementType)
             .applicationForm(applicationForm)
             .activityPeriod(request.activityPeriod())
             .build();
 
-    // 5. 유효성 검사
+    // 유효성 검사
     announcement.validate();
     return announcement;
   }
@@ -177,9 +173,6 @@ public class Announcement {
         AnnouncementPeriodInfo.from(request.periodInfo());
     AnnouncementType announcementType = AnnouncementType.from(request.announcementType());
 
-    AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(updatedAnnouncementPeriodInfo, announcementType);
-
     // 3. announcement 생성
     Announcement announcement =
         Announcement.builder()
@@ -195,7 +188,6 @@ public class Announcement {
             .hasInterview(true)
             .activityPeriod(request.activityPeriod())
             .tags(updatedTags)
-            .announcementStatus(updatedAnnouncementStatus)
             .announcementType(announcementType)
             .announcementPeriodInfo(updatedAnnouncementPeriodInfo)
             .build();
@@ -207,8 +199,6 @@ public class Announcement {
 
   /** status 갱신 메소드 */
   public Announcement updateStatus() {
-    AnnouncementStatus updatedAnnouncementStatus =
-        AnnouncementStatus.from(this.announcementPeriodInfo, this.announcementType);
 
     return Announcement.builder()
         .id(this.id)
@@ -223,7 +213,6 @@ public class Announcement {
         .activityPeriod(this.activityPeriod)
         .tags(this.tags)
         .applicationForm(this.applicationForm)
-        .announcementStatus(updatedAnnouncementStatus)
         .announcementType(this.announcementType)
         .announcementPeriodInfo(this.announcementPeriodInfo)
         .createdAt(this.createdAt)

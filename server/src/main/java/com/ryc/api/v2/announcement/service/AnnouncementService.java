@@ -1,7 +1,6 @@
 package com.ryc.api.v2.announcement.service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
-import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementProcess;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
@@ -130,39 +128,16 @@ public class AnnouncementService {
     return AnnouncementUpdateResponse.of(updatedAnnouncement, imageResponses);
   }
 
-  @Transactional
-  public void updateAnnouncementStatus() {
-    // 1. 삭제되지 않은 공고 불러오기
-    List<Announcement> announcements = announcementRepository.findAll();
-
-    // 2.공고 상태 업데이트
-    List<Announcement> updatedAnnouncements =
-        announcements.stream().map(Announcement::updateStatus).toList();
-
-    // 3. 공고 저장
-    announcementRepository.saveAll(updatedAnnouncements);
-  }
-
-  /**
-   * TODO: club도메인에서 jpql로 공고 상태 조회로 최적화
-   *
-   * @param clubIds 모든 클럽 Id리스트
-   * @return 모든 클럽의 공고 상태
-   */
+  // TODO: club도메인에서 jpql로 공고 상태 조회로 최적화
   public Map<String, AnnouncementStatus> getStatusesByClubIds(List<String> clubIds) {
-    // 1. Mapping
-    Map<String, AnnouncementStatus> statuses =
-        announcementRepository.getStatusesByClubIds(clubIds).stream()
-            .collect(
-                Collectors.toMap(
-                    ClubAnnouncementStatusDto::clubId, ClubAnnouncementStatusDto::status));
+    Map<String, List<Announcement>> announcementsMap =
+        announcementRepository.findAllByClubIds(clubIds);
+    Map<String, AnnouncementStatus> statuses = new HashMap<>();
 
-    // 2. 공고가 없는 경우 EMPTY 삽입
-    clubIds.forEach(
-        clubId -> {
-          if (!statuses.containsKey(clubId)) {
-            statuses.put(clubId, AnnouncementStatus.EMPTY);
-          }
+    announcementsMap.forEach(
+        (clubId, announcements) -> {
+          AnnouncementStatus status = getAnnouncementStatuses(announcements);
+          statuses.put(clubId, status);
         });
 
     return statuses;
@@ -199,6 +174,34 @@ public class AnnouncementService {
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     List<String> ids = announcementRepository.findIdsByClubId(event.clubId());
     deleteAnnouncements(ids);
+  }
+
+  /*
+   * 파라미터로 받은 공고 목록을 조합하여
+   * 하나의 공고 상태를 결정하는 메소드
+   */
+  private AnnouncementStatus getAnnouncementStatuses(List<Announcement> announcements) {
+    if (announcements.isEmpty()) {
+      return AnnouncementStatus.EMPTY;
+    }
+
+    boolean hasRecruiting =
+        announcements.stream()
+            .anyMatch(
+                announcement ->
+                    announcement.getAnnouncementStatus() == AnnouncementStatus.RECRUITING);
+    boolean hasUpcoming =
+        announcements.stream()
+            .anyMatch(
+                announcement ->
+                    announcement.getAnnouncementStatus() == AnnouncementStatus.UPCOMING);
+
+    if (hasRecruiting) {
+      return AnnouncementStatus.RECRUITING;
+    } else if (hasUpcoming) {
+      return AnnouncementStatus.UPCOMING;
+    }
+    return AnnouncementStatus.CLOSED;
   }
 
   private boolean shouldIncludeProcess(AnnouncementProcess process, Announcement announcement) {
