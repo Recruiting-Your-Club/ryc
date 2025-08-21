@@ -307,6 +307,9 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   QUESTION_LABEL_NULL_OR_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "질문은 null 혹은 empty일 수 없습니다."),
   QUESTION_LABEL_TOO_LONG(HttpStatus.INTERNAL_SERVER_ERROR, "질문은 500자를 초과할 수 없습니다."),
 
+  // Question Description
+  QUESTION_DESCRIPTION_TOO_LONG(HttpStatus.INTERNAL_SERVER_ERROR, "질문 설명은 200자를 초과할 수 없습니다."),
+
   // Question IsRequired
   QUESTION_IS_REQUIRED_NULL(HttpStatus.INTERNAL_SERVER_ERROR, "질문 IsRequired는 null일 수 없습니다."),
 
