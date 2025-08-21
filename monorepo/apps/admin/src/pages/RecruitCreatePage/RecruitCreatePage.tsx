@@ -1,6 +1,6 @@
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
-import React, { act, useEffect, useMemo, useRef, useState } from 'react';
+import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
@@ -8,6 +8,7 @@ import { Button, Dialog, Stepper } from '@ssoc/ui';
 import { useStepper } from '@ssoc/ui';
 
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
+import { buildAnnouncementSubmitRequest } from './buildAnnouncementSubmitRequest';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
 import { PreivewStep } from './PreviewStep';
@@ -67,6 +68,9 @@ function RecruitCreatePage() {
         tags: ['중앙동아리'],
     });
 
+    //공고 상세 설명 글 상태 관리
+    const [detailDescription, setDetailDescription] = useState<string>('');
+
     //공고 모집 관련 이미지 상태 관리
     const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
 
@@ -76,6 +80,15 @@ function RecruitCreatePage() {
         phone: false,
         photo: false,
     });
+
+    // const submitJson = buildAnnouncementSubmitRequest({
+    //     recruitDetailInfo,
+    //     basicInfoFields,
+    //     preQuestions: questions,
+    //     applicationQuestions,
+    //     detailDescription,
+    //     imageUrls,
+    // })
 
     // form hooks
     // query hooks
@@ -132,14 +145,6 @@ function RecruitCreatePage() {
     };
     //-----------------------------//
 
-    //상시모집, 제한모집 구분 함수
-    const getAnnouncementType = (period: Period) => {
-        const { startDate, endDate } = period ?? { startDate: '', endDate: '' };
-        return startDate === '9999-12-31' && endDate === '9999-12-31'
-            ? 'ALWAYS_OPEN'
-            : 'LIMITED_TIME';
-    };
-
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
         setRecruitDetailInfo((prev) => ({
@@ -147,6 +152,10 @@ function RecruitCreatePage() {
             ...updateFields,
         }));
     };
+
+    const handleDetailDescriptionChange = useCallback((html: string) => {
+        setDetailDescription(html);
+    }, []);
 
     const handleFileChage = (recruitFiles: File[]) => {
         setRecuritFiles(recruitFiles);
@@ -180,6 +189,8 @@ function RecruitCreatePage() {
                         recruitFiles={recruitFiles}
                         onChange={handleInputChange}
                         onFileChange={handleFileChage}
+                        detailDescription={detailDescription}
+                        onDetailDescriptionChange={handleDetailDescriptionChange}
                     />
                 );
             case 1:
