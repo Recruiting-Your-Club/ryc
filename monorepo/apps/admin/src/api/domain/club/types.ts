@@ -78,3 +78,20 @@ export interface Club {
     clubSummaries: summaries[];
     clubDetailImages: string[];
 }
+
+export interface ClubByInviteCode {
+    id: string;
+    name: string;
+    shortDescription: string;
+    representativeImage: RepresentativeImage;
+    category: string;
+    clubTags: ClubTag[];
+    announcementStatus: announcementStatus;
+}
+
+type RepresentativeImage = {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
+};
