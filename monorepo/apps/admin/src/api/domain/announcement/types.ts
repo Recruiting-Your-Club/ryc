@@ -114,5 +114,20 @@ export interface AnnouncementSubmitRequest {
     tags: string[];
     applicationForm: {
         personalInfoQuestionTypes: PersonalInfoQuestion[];
+        preQuestions: QuestionRequest[];
+        applicationQuestions: QuestionRequest[];
     };
+    images: string[];
+}
+
+export interface QuestionRequest {
+    questionType: QuestionType;
+    label: string;
+    isRequired: boolean;
+    description?: string;
+    options?: OptionRequest[];
+}
+
+export interface OptionRequest {
+    option: string;
 }
