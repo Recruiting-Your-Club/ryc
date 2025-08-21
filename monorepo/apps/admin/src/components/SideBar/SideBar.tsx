@@ -51,7 +51,7 @@ import {
 } from './SideBar.style';
 
 function SideBar() {
-    // prop destruction
+    // prop destructiondevelop
     // lib hooks
     const location = useLocation();
     const { clubId, announcementId } = useParams();

@@ -21,7 +21,7 @@ const evaluationQueries = {
         queryOptions({
             queryKey: evaluationKeys.evaluationSummary(clubId, applicantIdList, type),
             queryFn: () => {
-                const params = { clubId, applicantIdList: applicantIdList };
+                const params = { clubId: clubId, applicantIdList: applicantIdList };
 
                 return type === 'document'
                     ? postApplicationEvaluationSummary(params)

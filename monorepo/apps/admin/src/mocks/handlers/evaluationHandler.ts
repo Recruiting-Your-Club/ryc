@@ -1,4 +1,4 @@
-import type { EvaluationSummary, MyEvaluationStatus } from '@api/domain/evaluation/types';
+import type { MyEvaluationStatus, PerEvaluationSummary } from '@api/domain/evaluation/types';
 import { BASE_URL } from '@constants/api';
 import { http, HttpResponse } from 'msw';
 
@@ -14,9 +14,9 @@ const evaluationHandler = [
             applicantIdList: string[];
         };
 
-        const filtered = (applicationEvaluationSummary as EvaluationSummary[]).filter((summary) =>
-            applicantIdList.includes(summary.applicantId),
-        );
+        const filtered = (
+            applicationEvaluationSummary.overviewDataList as PerEvaluationSummary[]
+        ).filter((summary) => applicantIdList.includes(summary.applicantId));
 
         return HttpResponse.json(filtered, { status: 200 });
     }),
@@ -26,9 +26,9 @@ const evaluationHandler = [
             applicantIdList: string[];
         };
 
-        const filtered = (interviewEvaluationSummary as EvaluationSummary[]).filter((summary) =>
-            applicantIdList.includes(summary.applicantId),
-        );
+        const filtered = (
+            interviewEvaluationSummary.overviewDataList as PerEvaluationSummary[]
+        ).filter((summary) => applicantIdList.includes(summary.applicantId));
 
         return HttpResponse.json(filtered, { status: 200 });
     }),

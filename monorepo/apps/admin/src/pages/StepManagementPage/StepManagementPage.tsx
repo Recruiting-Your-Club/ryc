@@ -59,6 +59,7 @@ function StepManagementPage() {
     const { data: stepApplicantList = [] } = useSuspenseQuery(
         stepQueries.allStepApplicants(announcementId!, clubId!),
     );
+
     const { mutate: updateStatus } = stepMutations.useUpdateStepApplicantStatus();
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
@@ -76,7 +77,7 @@ function StepManagementPage() {
     );
 
     // calculated values
-    const isThreeStepProcess = totalSteps.process.length === 3;
+    const isThreeStepProcess = totalSteps?.process?.length === 3;
 
     const documentStepApplicants = stepApplicantList.filter(
         (applicant) =>
@@ -89,23 +90,27 @@ function StepManagementPage() {
         ),
     );
 
-    const documentApplicantIds = documentStepApplicants.map((applicant) => applicant.applicantId);
-    const interviewApplicantIds = interviewStepApplicants.map((applicant) => applicant.applicantId);
+    const documentApplicantIds =
+        documentStepApplicants.map((applicant) => applicant.applicantId) ?? [];
+    const interviewApplicantIds =
+        interviewStepApplicants.map((applicant) => applicant.applicantId) ?? [];
 
-    const { data: documentEvaluationSummaryList = [] } = useSuspenseQuery(
-        evaluationQueries.evaluationSummary({
+    const { data: documentEvaluationSummaryList } = useQuery({
+        ...evaluationQueries.evaluationSummary({
             clubId: clubId!,
             applicantIdList: documentApplicantIds,
             type: 'document',
         }),
-    );
-    const { data: interviewEvaluationSummaryList = [] } = useSuspenseQuery(
-        evaluationQueries.evaluationSummary({
+        enabled: interviewApplicantIds.length > 0,
+    });
+    const { data: interviewEvaluationSummaryList } = useQuery({
+        ...evaluationQueries.evaluationSummary({
             clubId: clubId!,
             applicantIdList: interviewApplicantIds,
             type: 'interview',
         }),
-    );
+        enabled: interviewApplicantIds.length > 0,
+    });
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
             clubId: clubId!,
@@ -162,8 +167,8 @@ function StepManagementPage() {
         () =>
             mergeApplicantWithSummary(
                 stepApplicantList,
-                documentEvaluationSummaryList,
-                interviewEvaluationSummaryList,
+                documentEvaluationSummaryList?.overviewDataList ?? [],
+                interviewEvaluationSummaryList?.overviewDataList ?? [],
                 isThreeStepProcess,
             ),
         [stepApplicantList, documentEvaluationSummaryList, interviewEvaluationSummaryList],

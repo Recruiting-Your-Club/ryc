@@ -1,11 +1,12 @@
+import Search from '@assets/images/search.svg';
 import { IntervieweeCard, InterviewTimeTable } from '@components';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import Search from '@ssoc/assets/images/search.svg';
 import { Button, Dropdown, Input, Text } from '@ssoc/ui';
 import { convertDate } from '@ssoc/utils';
 
 import {
+    s_buttonGroup,
     s_intervieweeCardGroupWrapper,
     s_invervieweeCardContainer,
     s_listContainer,
@@ -92,8 +93,9 @@ function IntervieweeList({
                             <InterviewTimeTable
                                 interviewSchedules={interviewSchedules}
                                 selectedInterviewLabel={selectedInterviewLabel}
-                                onSelect={(label) => setSelectedInterviewLabel(label)}
+                                setSelectedLabel={(label) => setSelectedInterviewLabel(label)}
                                 onOpenChange={setOpen}
+                                listSx={s_buttonGroup}
                             />
                         </Dropdown.Content>
                     </Dropdown>

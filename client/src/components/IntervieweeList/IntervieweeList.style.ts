@@ -74,3 +74,7 @@ export const s_invervieweeCardContainer = (isList: boolean = true) => css`
         justify-content: center;
     `}
 `;
+
+export const s_buttonGroup = css`
+    height: 22rem;
+`;

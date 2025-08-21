@@ -1,8 +1,10 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
 import {
     AnnouncementPage,
+    ApplicantScheduleLoadingPage,
     ClubCreatePage,
     ClubEditPage,
     EntryPage,
@@ -17,6 +19,10 @@ import {
     StepManagementPage,
     TestPage,
 } from './pages';
+
+const LazyApplicantSchedulePage = lazy(
+    () => import('./pages/ApplicantSchedulePage/ApplicantSchedulePage'),
+);
 
 const router = createBrowserRouter([
     {
@@ -49,7 +55,14 @@ const router = createBrowserRouter([
             { path: 'document-evaluation/:clubId/:announcementId', element: <ClubCreatePage /> },
 
             { path: 'interviewee-schedule/:clubId', element: <NonAnnouncementPage /> },
-            { path: 'interviewee-schedule/:clubId/:announcementId', element: <LoginPage /> },
+            {
+                path: 'interviewee-schedule/:clubId/:announcementId',
+                element: (
+                    <Suspense fallback={<ApplicantScheduleLoadingPage />}>
+                        <LazyApplicantSchedulePage />
+                    </Suspense>
+                ),
+            },
 
             { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
             { path: 'recruitment/success', element: <RecruitSuccessPage /> },
