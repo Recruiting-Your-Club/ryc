@@ -9,15 +9,15 @@ public interface ClubRoleRepository {
 
   ClubRole save(ClubRole clubRole);
 
-  Invite saveInvite(Invite newInvite);
+  ClubInvite saveInvite(ClubInvite newClubInvite);
 
   List<ClubRole> findRolesByClubId(String clubId);
 
   List<Club> findClubsByAdminId(String adminId);
 
-  Optional<Invite> findInviteOptionalByClubId(String clubId);
+  Optional<ClubInvite> findInviteOptionalByClubId(String clubId);
 
-  Invite findInviteById(String inviteId);
+  ClubInvite findInviteById(String inviteId);
 
   boolean existsByAdminIdAndClubId(String adminId, String clubId);
 
@@ -35,5 +35,5 @@ public interface ClubRoleRepository {
 
   void deleteAllByAdminId(String adminId);
 
-  void deleteInvite(Invite invite);
+  void deleteInvite(ClubInvite clubInvite);
 }
