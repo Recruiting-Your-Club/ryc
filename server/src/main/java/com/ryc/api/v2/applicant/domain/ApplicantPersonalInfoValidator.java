@@ -20,8 +20,7 @@ final class ApplicantPersonalInfoValidator extends DomainValidator {
       Pattern.compile(
           "^[a-zA-Z0-9](?:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\\.[a-zA-Z]{2,}$");
   private static final Pattern STUDENT_ID_PATTERN = Pattern.compile("^[0-9]{8}$");
-  private static final Pattern PHONE_NUMBER_PATTERN =
-      Pattern.compile("^01[0-9]-[0-9]{4}-[0-9]{4}$");
+  private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^01[0-9]{8}$");
 
   private static final int MIN_NAME_LENGTH = 2;
   private static final int MAX_NAME_LENGTH = 30;
