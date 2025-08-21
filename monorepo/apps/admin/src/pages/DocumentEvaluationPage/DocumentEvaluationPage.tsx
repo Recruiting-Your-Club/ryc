@@ -59,7 +59,11 @@ function DocumentEvaluationPage() {
             ].includes(selectedApplicant.status),
     });
     const { data: myDocumentEvaluationStatus } = useSuspenseQuery(
-        evaluationQueries.myEvaluationStatus({ clubId: clubId!, type: 'application' }),
+        evaluationQueries.myEvaluationStatus({
+            clubId: clubId!,
+            announcementId: announcementId!,
+            type: 'application',
+        }),
     );
 
     const { handlePostComment, handleUpdateComment, handleDeleteComment } = useEvaluation(
@@ -108,13 +112,21 @@ function DocumentEvaluationPage() {
             <div css={listContainer}>
                 <ApplicantList
                     applicantList={stepApplicantList}
-                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                    selectedApplicantId={selectedApplicant?.applicantId ?? ''}
                     onSelectApplicantId={handleSelectApplicantId}
                     myEvaluationStatusList={myDocumentEvaluationStatus} // 몰라
                 />
             </div>
             <div css={informationContainer}>
                 <InformationBox
+                    profileImage={
+                        applicantDocument?.profileImage ?? {
+                            id: '',
+                            originalFileName: '',
+                            url: '',
+                            contentType: '',
+                        }
+                    }
                     personalInformation={applicantDocument?.personalInfos ?? []}
                     preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
                     applicationQuestionAnswers={applicantDocument?.applicationQuestionAnswers ?? []}

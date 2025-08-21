@@ -1,5 +1,5 @@
 import type { QuestionAnswer } from '@api/domain/applicant/types';
-import { DocumentBox } from '@components';
+import { DocumentBox, FileDownloader } from '@components';
 import React, { useState } from 'react';
 
 import { Avatar, Text, TextToggle } from '@ssoc/ui';
@@ -19,6 +19,7 @@ import {
 import type { InformationBoxProps } from './types';
 
 function InformationBox({
+    profileImage,
     personalInformation,
     preQuestionAnswers,
     applicationQuestionAnswers,
@@ -52,11 +53,24 @@ function InformationBox({
                 return question.textAnswer || '답변 미작성';
 
             case 'SINGLE_CHOICE':
-            case 'MULTIPLE_CHOICE':
-                return question.selectedOptionIds?.join(', ') || '답변 미선택';
+            case 'MULTIPLE_CHOICE': {
+                if (!question.selectedOptionIds?.length) {
+                    return '답변 미선택';
+                }
+
+                const selectedOptions = question.selectedOptionIds
+                    .map(
+                        (id) =>
+                            question.questionOptions?.find((option) => option.optionId === id)
+                                ?.option,
+                    )
+                    .filter((option): option is string => Boolean(option));
+
+                return selectedOptions.length > 0 ? selectedOptions.join(', ') : '답변 미선택';
+            }
 
             case 'FILE':
-                return question.fileUrl || '파일 미첨부';
+                return question.file?.originalFileName || '파일 미첨부';
 
             default:
                 return '답변 미작성';
@@ -104,7 +118,21 @@ function InformationBox({
                                                 key={document.questionId}
                                                 index={index}
                                                 question={document.questionLabel}
-                                                answer={formatAnswer(document)}
+                                                answer={
+                                                    document.questionType === 'FILE' &&
+                                                    document.file?.url ? (
+                                                        <FileDownloader
+                                                            fileName={
+                                                                document.file?.originalFileName
+                                                                    .split('/')
+                                                                    .pop() || 'download'
+                                                            }
+                                                            fileData={document.file?.url}
+                                                        />
+                                                    ) : (
+                                                        formatAnswer(document)
+                                                    )
+                                                }
                                             />
                                         ))}
                                     </>
@@ -114,7 +142,7 @@ function InformationBox({
                     )}
                 {personalInformation.length > 0 && !isToggle && (
                     <div css={s_personalDataWrapper}>
-                        <Avatar sx={s_avatar} imageURL={getPersonalValue('PROFILE_IMAGE')} />
+                        <Avatar sx={s_avatar} imageURL={profileImage?.url ?? ''} />
                         <div css={s_textGroup}>
                             {textMap
                                 .filter((item) => item.value.trim().length > 0)

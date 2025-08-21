@@ -35,7 +35,7 @@ function PersonalScoreCard({
     // calculated values
     // handlers
     const handleEditFunction = () => {
-        onHandleForm({
+        onHandleForm?.({
             isOpenForm: true,
             comment,
             score,

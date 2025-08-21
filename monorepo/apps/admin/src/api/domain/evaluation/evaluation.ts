@@ -102,10 +102,11 @@ async function deleteEvaluation(params: {
 
 async function getMyEvaluationStatus(params: {
     clubId: string;
+    announcementId: string;
     type: 'application' | 'interview';
 }): Promise<MyEvaluationStatus> {
     return await httpRequest.get({
-        url: `evaluation/${params.type}s/my-status`,
+        url: `evaluation/${params.type}s/my-status?announcementId=${params.announcementId}`,
         headers: { 'X-CLUB-ID': params.clubId },
         isAuthRequire: true,
     });

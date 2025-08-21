@@ -10,9 +10,9 @@ export interface PersonalScoreCardProps {
     name: string;
     score: number;
     comment: string;
-    commentId: string;
+    commentId?: string;
     isUser?: boolean;
     isEditable?: boolean;
-    handleDelete: () => void;
-    onHandleForm: (nextState: Partial<FormState>) => void;
+    handleDelete?: () => void;
+    onHandleForm?: (nextState: Partial<FormState>) => void;
 }

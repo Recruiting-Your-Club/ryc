@@ -9,7 +9,7 @@ async function getApplicantDocument(params: {
 }): Promise<ApplicantDocument> {
     const { announcementId, applicantId, clubId } = params;
     return await httpRequest.get({
-        url: `announcements/${announcementId}/applicants/${applicantId}`,
+        url: `announcements/${announcementId}/applications/${applicantId}`,
         headers: {
             'X-CLUB-ID': clubId,
         },

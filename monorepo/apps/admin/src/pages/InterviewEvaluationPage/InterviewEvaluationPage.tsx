@@ -90,7 +90,7 @@ function InterviewEvaluationPage() {
                     imagePresent: Boolean(applicant.applicantSummary.imageResponse),
                     status: 'INTERVIEW_PENDING',
                     submittedAt: '',
-                    profileImage: applicant.applicantSummary.imageResponse,
+                    representativeImage: applicant.applicantSummary.imageResponse,
                     interviewDate: dayjs(matchedSlot.period.startDate).format('YYYY-MM-DD'),
                     interviewName: matchedSlot.id,
                     startTime: dayjs(matchedSlot.period.startDate).format('HH:mm'),
@@ -172,7 +172,7 @@ function InterviewEvaluationPage() {
                 submittedAt: '',
                 imageAllowed: Boolean(imageResponse),
                 imagePresent: Boolean(imageResponse),
-                profileImage: imageResponse ?? null,
+                representativeImage: imageResponse ?? null,
             };
         });
     };
@@ -191,6 +191,14 @@ function InterviewEvaluationPage() {
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
                     <InformationBox
+                        profileImage={
+                            applicantDocument?.profileImage ?? {
+                                id: '',
+                                originalFileName: '',
+                                url: '',
+                                contentType: '',
+                            }
+                        }
                         personalInformation={applicantDocument?.personalInfos ?? []}
                         preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
                         applicationQuestionAnswers={

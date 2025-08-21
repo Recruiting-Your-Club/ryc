@@ -1,6 +1,8 @@
 import type { PersonalInfo, QuestionAnswer } from '@api/domain/applicant/types';
+import type { ProfileImageInformation } from '@api/domain/step/types';
 
 export interface InformationBoxProps {
+    profileImage: ProfileImageInformation;
     personalInformation: PersonalInfo[];
     preQuestionAnswers: QuestionAnswer[];
     applicationQuestionAnswers: QuestionAnswer[];

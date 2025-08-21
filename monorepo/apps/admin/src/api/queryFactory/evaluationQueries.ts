@@ -48,11 +48,19 @@ const evaluationQueries = {
                     : postDetailInterviewEvaluation(params);
             },
         }),
-    myEvaluationStatus: ({ clubId, type }: { clubId: string; type: EvaluationType }) =>
+    myEvaluationStatus: ({
+        clubId,
+        announcementId,
+        type,
+    }: {
+        clubId: string;
+        announcementId: string;
+        type: EvaluationType;
+    }) =>
         queryOptions({
-            queryKey: evaluationKeys.myEvaluationStatus(clubId, type),
+            queryKey: evaluationKeys.myEvaluationStatus(clubId, announcementId, type),
             queryFn: () => {
-                const params = { clubId, type };
+                const params = { clubId, announcementId, type };
 
                 return getMyEvaluationStatus(params);
             },

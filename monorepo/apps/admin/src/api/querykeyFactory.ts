@@ -56,8 +56,8 @@ const evaluationKeys = {
         ['evaluation-summary', clubId, ...applicantIds, type] as const,
     evaluationDetail: (clubId: string, applicantIds: string[], type: EvaluationType) =>
         ['evaluation-detail', clubId, ...applicantIds, type] as const,
-    myEvaluationStatus: (clubId: string, type: EvaluationType) =>
-        ['my-evaluation-status', clubId, type] as const,
+    myEvaluationStatus: (clubId: string, announcementId: string, type: EvaluationType) =>
+        ['my-evaluation-status', clubId, announcementId, type] as const,
 };
 
 const announcementKeys = {
