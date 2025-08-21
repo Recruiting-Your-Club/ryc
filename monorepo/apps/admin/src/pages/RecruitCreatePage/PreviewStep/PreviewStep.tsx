@@ -87,10 +87,11 @@ function PreivewStep({ preivewData, recruitFiles }: PreviewStepProps) {
 
     const clubPersonalInfoQuestions = [...clubPersonalQuestions, ...personalQuestions];
 
-    const imageUrls = useMemo(
-        () => recruitFiles.map((f) => URL.createObjectURL(f)),
-        [recruitFiles],
-    );
+    const imageUrls = useMemo(() => {
+        return recruitFiles
+            .filter((f) => f.type.startsWith('image/')) // 이미지 파일만 사용
+            .map((f) => URL.createObjectURL(f));
+    }, [recruitFiles]);
 
     // 자기소개서 질문
     const detailQuestions = useMemo(
@@ -153,12 +154,6 @@ function PreivewStep({ preivewData, recruitFiles }: PreviewStepProps) {
             width: '7.2rem',
         },
     ];
-
-    useEffect(() => {
-        return () => {
-            imageUrls.forEach((u) => URL.revokeObjectURL(u));
-        };
-    }, [imageUrls]);
 
     return (
         <div css={s_announcementPage}>
