@@ -354,4 +354,4 @@ function ApplicantSchedulePage() {
     );
 }
 
-export { ApplicantSchedulePage };
+export default ApplicantSchedulePage;

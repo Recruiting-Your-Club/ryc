@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 
 import theme from '@ssoc/styles';
-import { hexToRgb } from '@ssoc/utils';
 
 export const s_applicantSchedulePageContainer = css`
     width: 100%;

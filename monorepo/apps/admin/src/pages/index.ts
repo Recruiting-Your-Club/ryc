@@ -4,3 +4,4 @@ export * from './TestPage';
 export * from './ClubCreatePage';
 export * from './ClubSearchPage';
 export * from './MyClubPage';
+export * from './LoadingPage';
