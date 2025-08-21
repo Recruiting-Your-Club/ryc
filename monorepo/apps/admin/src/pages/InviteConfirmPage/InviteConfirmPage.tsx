@@ -1,10 +1,13 @@
 import { roleMutations } from '@api/hooks';
+import { myClubQueries } from '@api/queryFactory';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import BaseImage from '@ssoc/assets/images/basicImage.png';
-import { Button, ClubCard, Text, useToast } from '@ssoc/ui';
+import { Button, ClubCard, SpinSpinner, Text, useToast } from '@ssoc/ui';
+import { getCategory } from '@ssoc/utils';
 
+import { HttpError } from '../../api/common/httpError';
 import { useAuthStore } from '../../stores/authStore';
 import {
     s_buttonContainer,
@@ -13,9 +16,6 @@ import {
     s_inviteConfirmPageCard,
     s_inviteConfirmPageContainer,
 } from './InviteConfirmPage.style';
-
-const clubName = 'EN#';
-const clubCategory = '학술동아리';
 
 const InviteConfirmPage = () => {
     // prop destruction
@@ -29,6 +29,14 @@ const InviteConfirmPage = () => {
     // state, ref, querystring hooks
     // form hooks
     // query hooks
+
+    const { data: clubInfo, isLoading: isClubInfoLoading } = useQuery({
+        ...myClubQueries.detail(clubId || ''),
+        enabled: !!clubId,
+        staleTime: 5 * 60 * 1000,
+        retry: false,
+    });
+
     const { mutate: acceptInvite, isPending } = roleMutations.usePostInviteCode({
         clubId: clubId || '',
         inviteCode: inviteCode || '',
@@ -36,22 +44,31 @@ const InviteConfirmPage = () => {
             toast.success('초대에 참여되었습니다.');
             navigate(`/settings/${clubId}`);
         },
-        onError: () => {
+        onError: (error) => {
+            // 500 에러인 경우 전역 처리에 위임
+            if (error instanceof HttpError && error.statusCode === 500) {
+                return;
+            }
             toast.error('초대 처리 중 오류가 발생했습니다.');
         },
     });
 
     // calculated values
+    const tags = clubInfo?.clubTags?.map((tag) => `#${tag.name}`) || [];
     // handlers
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (!clubId || !inviteCode) {
             toast.error('잘못된 초대 링크입니다.');
             return;
         }
-        if (!accessToken) {
+
+        const currentToken = accessToken;
+
+        if (!currentToken) {
             navigate('/login', { state: { from: location.pathname } });
             return;
         }
+
         acceptInvite();
     };
 
@@ -68,18 +85,22 @@ const InviteConfirmPage = () => {
                     초대 수락
                 </Text>
                 <div css={s_clubInfoCard}>
-                    <ClubCard
-                        imageURL={BaseImage}
-                        imageName={clubName}
-                        title={clubName}
-                        type={clubCategory}
-                        status="progress"
-                        tag={['#학술', '#코딩', '#프로그래밍']}
-                    />
+                    {isClubInfoLoading ? (
+                        <SpinSpinner />
+                    ) : (
+                        <ClubCard
+                            imageURL={clubInfo?.representativeImage?.url || ''}
+                            imageName={clubInfo?.representativeImage?.originalFileName || ''}
+                            title={clubInfo?.name || '테스트 동아리'}
+                            type={getCategory(clubInfo?.category || '')}
+                            status="progress"
+                            tag={tags.length > 0 ? tags : ['#테스트', '#동아리']}
+                        />
+                    )}
                 </div>
                 <div css={s_confirmText}>
                     <Text type="bodyRegular" color="primary">
-                        {clubName}
+                        {clubInfo?.name || '테스트 동아리'}
                     </Text>
                     <Text type="bodyRegular"> 동아리에 참여하시겠습니까?</Text>
                 </div>
