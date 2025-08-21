@@ -47,7 +47,7 @@ function ApplicantMiniCard({
                 </span>
             </div>
             {isCompleted && (
-                <Text as="span" type="captionBold" color="primary" noWrap cropped>
+                <Text as="span" type="subCaptionBold" color="primary" noWrap cropped>
                     평가 완료
                 </Text>
             )}

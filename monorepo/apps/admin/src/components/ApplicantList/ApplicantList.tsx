@@ -22,6 +22,7 @@ function ApplicantList({
     applicantList,
     selectedApplicantId,
     onSelectApplicantId,
+    myEvaluationStatusList,
     titleMode = 'titleString',
     children,
     sx,
@@ -44,6 +45,10 @@ function ApplicantList({
         [searchText],
     );
     const visibleApplicants: StepApplicant[] = searchApplicants(applicantList);
+
+    const evaluatedIdSet = new Set(
+        myEvaluationStatusList?.evaluatedApplicantIds.flatMap((id) => id) ?? [],
+    );
 
     // handlers
     // effects
@@ -78,6 +83,7 @@ function ApplicantList({
                                 applicant={applicant}
                                 onClick={() => onSelectApplicantId(applicant.applicantId)}
                                 isActivated={selectedApplicantId === applicant.applicantId}
+                                isCompleted={evaluatedIdSet.has(applicant.applicantId)}
                             />
                         ))
                     ) : (

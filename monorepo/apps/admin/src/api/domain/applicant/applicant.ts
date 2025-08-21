@@ -13,6 +13,7 @@ async function getApplicantDocument(params: {
         headers: {
             'X-CLUB-ID': clubId,
         },
+        isAuthRequire: true,
     });
 }
 

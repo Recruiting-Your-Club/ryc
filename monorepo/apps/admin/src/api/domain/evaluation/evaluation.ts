@@ -36,7 +36,7 @@ async function postDetailApplicationEvaluation(params: {
 }): Promise<Evaluation> {
     return await httpRequest.post({
         url: `evaluation/applications/search`,
-        body: params,
+        body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,
         },
@@ -50,7 +50,7 @@ async function postDetailInterviewEvaluation(params: {
 }): Promise<Evaluation> {
     return await httpRequest.post({
         url: `evaluation/interviews/search`,
-        body: params,
+        body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,
         },
@@ -100,14 +100,13 @@ async function deleteEvaluation(params: {
     });
 }
 
-async function postMyEvaluationStatus(params: {
-    applicantIdList: string[];
+async function getMyEvaluationStatus(params: {
     clubId: string;
+    announcementId: string;
     type: 'application' | 'interview';
 }): Promise<MyEvaluationStatus> {
-    return await httpRequest.post({
-        url: `evaluation/${params.type}s/my-status`,
-        body: { applicantIdList: params.applicantIdList },
+    return await httpRequest.get({
+        url: `evaluation/${params.type}s/my-status?announcementId=${params.announcementId}`,
         headers: { 'X-CLUB-ID': params.clubId },
         isAuthRequire: true,
     });
@@ -121,5 +120,5 @@ export {
     postPersonalEvaluation,
     putEvaluationScoreAndComment,
     deleteEvaluation,
-    postMyEvaluationStatus,
+    getMyEvaluationStatus,
 };

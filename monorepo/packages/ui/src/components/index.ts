@@ -3,6 +3,7 @@ export * from './Button';
 export * from './Input';
 export * from './Card';
 export * from './Rating';
+export * from './Table';
 export * from './Tag';
 export * from './Text';
 export * from './Dialog';

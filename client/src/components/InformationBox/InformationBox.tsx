@@ -5,15 +5,15 @@ import { Avatar, DocumentBox, Text, TextToggle } from '@components';
 
 import {
     s_avatar,
-    s_boxContainer,
     s_contentSection,
+    s_boxContainer,
     s_documentTypeTextWrapper,
     s_documentWrapper,
-    s_invisibleText,
     s_personalDataWrapper,
     s_textGroup,
     s_titleSection,
     s_titleText,
+    s_invisibleText,
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
 

@@ -1,10 +1,11 @@
 import {
+    getMyEvaluationStatus,
     postApplicationEvaluationSummary,
     postDetailApplicationEvaluation,
     postDetailInterviewEvaluation,
     postInterviewEvaluationSummary,
-    postMyEvaluationStatus,
 } from '@api/domain';
+import type { EvaluationType } from '@api/domain/evaluation/types';
 import { evaluationKeys } from '@api/querykeyFactory';
 import { queryOptions } from '@tanstack/react-query';
 
@@ -16,14 +17,14 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'document' | 'interview';
+        type: EvaluationType;
     }) =>
         queryOptions({
             queryKey: evaluationKeys.evaluationSummary(clubId, applicantIdList, type),
             queryFn: () => {
-                const params = { clubId: clubId, applicantIdList: applicantIdList };
+                const params = { clubId, applicantIdList: applicantIdList };
 
-                return type === 'document'
+                return type === 'application'
                     ? postApplicationEvaluationSummary(params)
                     : postInterviewEvaluationSummary(params);
             },
@@ -35,33 +36,33 @@ const evaluationQueries = {
     }: {
         clubId: string;
         applicantIdList: string[];
-        type: 'document' | 'interview';
+        type: EvaluationType;
     }) =>
         queryOptions({
             queryKey: evaluationKeys.evaluationDetail(clubId, applicantIdList, type),
             queryFn: () => {
                 const params = { clubId, applicantIdList: applicantIdList };
 
-                return type === 'document'
+                return type === 'application'
                     ? postDetailApplicationEvaluation(params)
                     : postDetailInterviewEvaluation(params);
             },
         }),
     myEvaluationStatus: ({
         clubId,
-        applicantIdList,
+        announcementId,
         type,
     }: {
         clubId: string;
-        applicantIdList: string[];
-        type: 'application' | 'interview';
+        announcementId: string;
+        type: EvaluationType;
     }) =>
         queryOptions({
-            queryKey: evaluationKeys.myEvaluationStatus(clubId, applicantIdList, type),
+            queryKey: evaluationKeys.myEvaluationStatus(clubId, announcementId, type),
             queryFn: () => {
-                const params = { clubId, applicantIdList, type };
+                const params = { clubId, announcementId, type };
 
-                return postMyEvaluationStatus(params);
+                return getMyEvaluationStatus(params);
             },
         }),
 };

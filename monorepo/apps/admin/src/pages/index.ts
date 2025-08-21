@@ -4,6 +4,7 @@ export * from './TestPage';
 export * from './RecruitCreatePage';
 export * from './ClubCreatePage';
 export * from './MyClubPage';
+export * from './DocumentEvaluationPage';
 export * from './LoadingPage';
 export * from './AnnouncementPage';
 export * from './InterviewEvaluationPage';

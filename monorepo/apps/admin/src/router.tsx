@@ -7,8 +7,9 @@ import {
     ApplicantScheduleLoadingPage,
     ClubCreatePage,
     ClubEditPage,
+    DocumentEvaluationLoadingPage,
     EntryPage,
-    InterviewEvaluationPage,
+    InterviewEvaluationLoadingPage,
     LoginPage,
     MyClubPage,
     NonAnnouncementPage,
@@ -16,13 +17,20 @@ import {
     RecruitCreatePage,
     RecruitSuccessPage,
     RegisterPage,
-    StepManagementPage,
+    StepManagementLoadingPage,
     TestPage,
 } from './pages';
 
+const LazyInterviewEvaluationPage = lazy(
+    () => import('./pages/InterviewEvaluationPage/InterviewEvaluationPage'),
+);
+const LazyDocumentEvaluationPage = lazy(
+    () => import('./pages/DocumentEvaluationPage/DocumentEvaluationPage'),
+);
 const LazyApplicantSchedulePage = lazy(
     () => import('./pages/ApplicantSchedulePage/ApplicantSchedulePage'),
 );
+const LazyStepManagementPage = lazy(() => import('./pages/StepManagementPage/StepManagementPage'));
 
 const router = createBrowserRouter([
     {
@@ -43,16 +51,34 @@ const router = createBrowserRouter([
             { path: 'announcements/edit/:clubId/:announcementId', element: <ClubCreatePage /> },
 
             { path: 'applicants/:clubId', element: <NonAnnouncementPage /> },
-            { path: 'applicants/:clubId/:announcementId', element: <StepManagementPage /> },
+            {
+                path: 'applicants/:clubId/:announcementId',
+                element: (
+                    <Suspense fallback={<StepManagementLoadingPage />}>
+                        <LazyStepManagementPage />
+                    </Suspense>
+                ),
+            },
 
             { path: 'interview-evaluation/:clubId', element: <NonAnnouncementPage /> },
             {
                 path: 'interview-evaluation/:clubId/:announcementId',
-                element: <InterviewEvaluationPage />,
+                element: (
+                    <Suspense fallback={<InterviewEvaluationLoadingPage />}>
+                        <LazyInterviewEvaluationPage />
+                    </Suspense>
+                ),
             },
 
             { path: 'document-evaluation/:clubId', element: <NonAnnouncementPage /> },
-            { path: 'document-evaluation/:clubId/:announcementId', element: <ClubCreatePage /> },
+            {
+                path: 'document-evaluation/:clubId/:announcementId',
+                element: (
+                    <Suspense fallback={<DocumentEvaluationLoadingPage />}>
+                        <LazyDocumentEvaluationPage />
+                    </Suspense>
+                ),
+            },
 
             { path: 'interviewee-schedule/:clubId', element: <NonAnnouncementPage /> },
             {

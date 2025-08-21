@@ -100,7 +100,12 @@ const interviewHandler = [
             applicantId: movedApplicant.applicantId,
             applicantEmail: movedApplicant.applicantEmail,
             applicantName: movedApplicant.applicantName,
-            imageResponse: movedApplicant.imageResponse,
+            imageResponse: movedApplicant.imageResponse ?? {
+                id: '',
+                url: '',
+                originalFileName: '',
+                contentType: '',
+            },
         } satisfies UnreservedApplicant);
 
         return HttpResponse.json({ message: '삭제 성공' }, { status: 200 });

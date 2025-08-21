@@ -169,17 +169,8 @@ const evaluationHandler = [
         return HttpResponse.json(evaluationDetail, { status: 201 });
     }),
 
-    http.post(`${BASE_URL}evaluation/:type/my-status`, async ({ request }) => {
-        const { applicantIdList } = (await request.json()) as { applicantIdList: string[] };
-
-        const filtered: MyEvaluationStatus = {
-            applicantEvaluationStatuses:
-                myApplicationEvaluationStatus.applicantEvaluationStatuses.filter((status) =>
-                    applicantIdList.includes(status.applicantId),
-                ),
-        };
-
-        return HttpResponse.json(filtered, { status: 200 });
+    http.get(`${BASE_URL}evaluation/:type` + `s/my-status`, async () => {
+        return HttpResponse.json(myApplicationEvaluationStatus, { status: 200 });
     }),
 ];
 

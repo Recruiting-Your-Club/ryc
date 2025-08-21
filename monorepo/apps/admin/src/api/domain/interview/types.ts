@@ -21,7 +21,7 @@ export interface InterviewApplicant {
             url: string;
             originalFileName: string;
             contentType: string;
-        };
+        } | null;
     };
 }
 
