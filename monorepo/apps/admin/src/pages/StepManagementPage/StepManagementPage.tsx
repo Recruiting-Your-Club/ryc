@@ -101,7 +101,7 @@ function StepManagementPage() {
             applicantIdList: documentApplicantIds,
             type: 'application',
         }),
-        enabled: interviewApplicantIds.length > 0,
+        enabled: documentApplicantIds.length > 0,
     });
     const { data: interviewEvaluationSummaryList } = useQuery({
         ...evaluationQueries.evaluationSummary({
