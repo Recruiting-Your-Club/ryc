@@ -114,7 +114,7 @@ export const userStarScore = (empty?: boolean) => css`
     min-height: 5rem;
 `;
 
-export const userEvaluation = css`
+export const s_userEvaluation = css`
     flex: 2;
     width: 100%;
     background-color: ${theme.colors.white};
@@ -133,7 +133,7 @@ export const s_myEvaluationTitleContainer = css`
     justify-content: space-between;
 `;
 
-export const textareaCss = css`
+export const s_textarea = css`
     margin: -1.2rem 0;
     background-color: ${theme.colors.gray[200]};
     border: none;
@@ -144,13 +144,15 @@ export const textareaCss = css`
     }
 `;
 
-export const svgButtonGroup = css`
+export const s_buttonContainerForEdit = css`
     display: flex;
-    margin: 0.5rem 0;
+    width: 100%;
+    gap: 0.5rem;
 `;
 
-export const svgButtonCss = css`
-    width: 1.2rem;
-    height: 1.2rem;
-    cursor: pointer;
+export const s_cancelButton = css`
+    background-color: ${theme.colors.gray[300]};
+    &:hover {
+        background-color: ${theme.colors.gray[400]};
+    }
 `;

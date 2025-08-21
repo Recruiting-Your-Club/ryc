@@ -1,15 +1,18 @@
+import {
+    autoLogout,
+    getStatusCode,
+    shouldAttemptRefresh,
+    tryRefreshAccessToken,
+} from '@api/utils/retry';
 import { useAuthStore } from '@stores/authStore';
 
 import { httpClient } from './httpClient';
 import { HttpError } from './httpError';
-import type { RequestBodyOption, RequestWithoutBodyOption } from './types';
+import type { InternalRetryableOption, RequestBodyOption, RequestWithoutBodyOption } from './types';
 import type { HttpMethod } from './types';
 
 const httpRequest = {
-    async request<T>(
-        method: HttpMethod,
-        option: RequestBodyOption | RequestWithoutBodyOption,
-    ): Promise<T> {
+    async request<T>(method: HttpMethod, option: InternalRetryableOption): Promise<T> {
         const attempt = async (): Promise<T> => {
             const response = await httpClient.createHttpRequest({
                 method,
@@ -22,14 +25,17 @@ const httpRequest = {
         try {
             return await attempt();
         } catch (error) {
-            if (error instanceof HttpError && error.statusCode === 401) {
-                //silent refresh (access Token 재발급 시도)
-                const newToken = await useAuthStore.getState().bootstrap();
+            const status = getStatusCode(error);
+
+            if (shouldAttemptRefresh(status, option)) {
+                const newToken = await tryRefreshAccessToken();
                 if (newToken) {
-                    //재시도
-                    return await attempt();
+                    return this.request<T>(method, { ...option, retried: true });
                 }
+
+                await autoLogout();
             }
+
             throw error;
         }
     },

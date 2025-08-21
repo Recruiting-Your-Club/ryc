@@ -59,7 +59,7 @@ public class EvaluationHttpApi {
   }
 
   @HasRole(Role.MEMBER)
-  @PostMapping("/applicaitons/search")
+  @PostMapping("/applications/search")
   @Operation(summary = "지원자의 지원서 평가 리스트 검색 API")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
@@ -87,34 +87,34 @@ public class EvaluationHttpApi {
   }
 
   @HasRole(Role.MEMBER)
-  @PostMapping("/applicaitons/my-status")
+  @GetMapping("/applications/my-status")
   @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 지원서 평가 수행 여부 조회 API")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyApplicationEvaluationStatusForApplicants(
-          @AuthenticationPrincipal CustomUserDetail userDetail,
-          @Valid @RequestBody MyEvaluationStatusSearchRequest body) {
+          @RequestParam String announcementId,
+          @AuthenticationPrincipal CustomUserDetail userDetail) {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
-            body, userDetail.getId(), EvaluationType.APPLICATION);
+            userDetail.getId(), announcementId, EvaluationType.APPLICATION);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @HasRole(Role.MEMBER)
-  @PostMapping("/interviews/my-status")
+  @GetMapping("/interviews/my-status")
   @Operation(summary = "지원자들에 대해, 해당 로그인한 평가자의 면접 평가 수행 여부 조회 API")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyInterviewEvaluationStatusForApplicants(
-          @AuthenticationPrincipal CustomUserDetail userDetail,
-          @Valid @RequestBody MyEvaluationStatusSearchRequest body) {
+          @RequestParam String announcementId,
+          @AuthenticationPrincipal CustomUserDetail userDetail) {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
-            body, userDetail.getId(), EvaluationType.INTERVIEW);
+            userDetail.getId(), announcementId, EvaluationType.INTERVIEW);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 

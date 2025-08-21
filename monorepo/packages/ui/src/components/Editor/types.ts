@@ -18,9 +18,11 @@ export interface EditorContextType {
     setSavedRange: Dispatch<SetStateAction<Range | null>>;
 }
 
-export interface EditorProps {
+export interface TextareaProps {
     height?: string;
     radius?: string;
+    value?: string;
+    onChange?: (value: string) => void;
     sx?: CSSObject;
 }
 

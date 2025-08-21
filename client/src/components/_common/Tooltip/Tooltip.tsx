@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { tooltipContainter, tooltipStyle } from './Tooltip.style';
 import type { TooltipProps } from './types';
+import { useMediaQuery } from '@hooks/useMediaQuery';
 
 function Tooltip({
     content,
@@ -11,9 +12,17 @@ function Tooltip({
     wrapperSx,
     tooltipSx,
 }: TooltipProps) {
+    // prop destruction
+    // lib hooks
+    const isMobile = useMediaQuery('mobile');
+    // initial values
+    // state, ref, querystring hooks
     const [visible, setVisible] = useState<boolean>();
     const timeoutRef = useRef<NodeJS.Timeout>();
-
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
     const showTooltip = () => {
         timeoutRef.current = setTimeout(() => {
             setVisible(true);
@@ -24,7 +33,7 @@ function Tooltip({
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         setVisible(false);
     };
-
+    // effects
     useEffect(() => {
         return () => {
             if (timeoutRef.current) {
@@ -41,7 +50,9 @@ function Tooltip({
         >
             {children}
             {!disabled && visible && (
-                <div css={[tooltipStyle(direction), tooltipSx]}>{content}</div>
+                <span css={[tooltipStyle(direction, content.length, isMobile), tooltipSx]}>
+                    {content}
+                </span>
             )}
         </div>
     );

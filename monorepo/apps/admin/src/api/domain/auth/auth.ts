@@ -1,12 +1,12 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type { Login, LoginResponse, Register, RegisterResponse } from './types';
+import type { Login, LoginResponse, MyInformation, Register, RegisterResponse } from './types';
 
 async function login(data: Login): Promise<LoginResponse> {
     const response = await httpRequest.post({
         url: 'auth/login',
         body: data,
-        isAuthRequire: false,
+        isAuthRequire: true,
     });
     return response as LoginResponse;
 }
@@ -20,4 +20,19 @@ async function register(data: Register): Promise<RegisterResponse> {
     return response as RegisterResponse;
 }
 
-export { login, register };
+async function checkEmail(email: string): Promise<boolean> {
+    const response = await httpRequest.get({
+        url: `admin/emails/duplicate-check?email=${email}`,
+        isAuthRequire: false,
+    });
+    return response as boolean;
+}
+async function myInformation(): Promise<MyInformation> {
+    const response = await httpRequest.get({
+        url: 'admin/me',
+        isAuthRequire: true,
+    });
+    return response as MyInformation;
+}
+
+export { login, register, checkEmail, myInformation };

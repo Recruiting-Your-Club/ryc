@@ -1,8 +1,16 @@
-import { interviewQueries } from '@api/queryFactory';
+import type { InterviewApplicant, UnreservedApplicant } from '@api/domain/interview/types';
+import type { StepApplicant } from '@api/domain/step/types';
+import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
 import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { useMemo, useState } from 'react';
+import { INITIAL_EVALUATION_SUMMARY } from '@constants/evaluationPage';
+import { useEvaluation } from '@hooks/components';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { useToast } from '@ssoc/ui';
 
 import {
     s_evaluationBoxWrapper,
@@ -11,91 +19,212 @@ import {
     s_interviewInformationPageContainer,
     s_selectionContainer,
 } from './InterviewEvaluationPage.style';
-import { getInitialId } from './utils/getInitialId';
 
 function InterviewEvaluationPage() {
     // prop destruction
     // lib hooks
-    // initial values
-    const { data: intervieweelist = [] } = useSuspenseQuery(interviewQueries.allInterviewees());
-    const initialId = getInitialId(intervieweelist);
+    const { toast } = useToast();
+    const { clubId, announcementId } = useParams();
 
+    // initial values
     // state, ref, querystring hooks
-    const [selectedApplicantId, setSelectedApplicantId] = useState<number>(initialId ?? 1);
+    const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
+    const [slotId, setSlotId] = useState<string | null>(null);
 
     // form hooks
     // query hooks
-    const { data: interviewSchedulelist = [] } = useSuspenseQuery(
-        interviewQueries.allInterviewSchedules(),
+    const { data: interviewSlots = [] } = useSuspenseQuery(
+        interviewQueries.interviewSlot(announcementId!, clubId!),
     );
-    const { data: intervieweeDetail } = useSuspenseQuery(
-        interviewQueries.getIntervieweeDetail(selectedApplicantId),
-    );
-    const { data: document } = useSuspenseQuery(interviewQueries.getDocument(selectedApplicantId));
-    const { data: evaluation } = useSuspenseQuery(
-        interviewQueries.getInterviewEvaluation(selectedApplicantId),
+    const { data: slotApplicants } = useQuery({
+        ...interviewQueries.interviewInformation(announcementId!, slotId ?? '', clubId!),
+        enabled: !!slotId && slotId !== '',
+    });
+    const { data: applicantDocument } = useQuery({
+        ...applicantQueries.getApplicantDocument(
+            announcementId!,
+            selectedApplicant?.applicantId ?? '',
+            clubId!,
+        ),
+        enabled: !!selectedApplicant?.applicantId,
+    });
+    const { data: interviewEvaluationDetail } = useQuery({
+        ...evaluationQueries.evaluationDetail({
+            clubId: clubId!,
+            applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
+            type: 'interview',
+        }),
+        enabled:
+            !!selectedApplicant &&
+            [
+                'DOCUMENT_PENDING',
+                'DOCUMENT_FAIL',
+                'INTERVIEW_PENDING',
+                'INTERVIEW_FAIL',
+                'FINAL_PASS',
+                'FINAL_FAIL',
+            ].includes(selectedApplicant.status),
+    });
+
+    const { handlePostComment, handleUpdateComment, handleDeleteComment } = useEvaluation(
+        'interview',
+        selectedApplicant?.applicantId ?? '',
+        getEvaluationActionCallbacks,
     );
 
     // calculated values
-    const flatScheduleList = useMemo(
-        () =>
-            interviewSchedulelist.flatMap((schedule) =>
-                schedule.interviewSets.map((set) => ({
-                    ...set,
-                    date: schedule.date,
-                })),
-            ),
-        [interviewSchedulelist],
-    );
+    const finalIntervieweeList: EnrichedInterviewee[] = useMemo(() => {
+        if (!slotApplicants) return [];
 
-    const finalIntervieweeList = useMemo(
-        () =>
-            intervieweelist
-                .map((interviewee) => {
-                    const matchedSet = flatScheduleList.find(
-                        (schedule) => schedule.id === interviewee.interviewSetId,
-                    );
-                    if (!matchedSet) return null;
+        return slotApplicants
+            .map((applicant) => {
+                const matchedSlot = interviewSlots.find((slot) => slot.id === slotId);
 
-                    return {
-                        ...interviewee,
-                        interviewDate: matchedSet.date,
-                        interviewName: matchedSet.name,
-                        startTime: matchedSet.startTime,
-                        endTime: matchedSet.endTime,
-                    };
-                })
-                .filter(Boolean) as EnrichedInterviewee[],
-        [intervieweelist, flatScheduleList],
-    );
+                if (!matchedSlot) return null;
+
+                return {
+                    applicantId: applicant.applicantSummary.applicantId,
+                    name: applicant.applicantSummary.applicantName,
+                    email: applicant.applicantSummary.applicantEmail,
+                    imageAllowed: Boolean(applicant.applicantSummary.imageResponse),
+                    imagePresent: Boolean(applicant.applicantSummary.imageResponse),
+                    status: 'INTERVIEW_PENDING',
+                    submittedAt: '',
+                    representativeImage: applicant.applicantSummary.imageResponse,
+                    interviewDate: dayjs(matchedSlot.period.startDate).format('YYYY-MM-DD'),
+                    interviewName: matchedSlot.id,
+                    startTime: dayjs(matchedSlot.period.startDate).format('HH:mm'),
+                    endTime: dayjs(matchedSlot.period.endDate).format('HH:mm'),
+                };
+            })
+            .filter((item): item is EnrichedInterviewee => item !== null);
+    }, [slotApplicants, interviewSlots]);
 
     // handlers
+    const handleSelectApplicantId = (applicantId: string) => {
+        if (!slotApplicants) return;
+
+        const foundApplicant = toStepApplicants(slotApplicants).find(
+            (applicant) => applicant.applicantId === applicantId,
+        );
+
+        if (foundApplicant) {
+            setSelectedApplicant(foundApplicant);
+        }
+    };
+
     // effects
+    useEffect(() => {
+        if (slotId === null && interviewSlots.length > 0) {
+            setSlotId(interviewSlots[0].id ?? '');
+        }
+    }, [interviewSlots]);
+
+    // etc
+    function getEvaluationActionCallbacks(status: string) {
+        return {
+            onSuccess: () => {
+                toast(`작성하신 평가가 ${status}되었어요!`, {
+                    type: 'success',
+                    toastTheme: 'colored',
+                });
+            },
+            onError: () => {
+                toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+            },
+        };
+    }
+
+    const getApplicantInformation = (applicant: InterviewApplicant | UnreservedApplicant) => {
+        if ('applicantSummary' in applicant) {
+            return {
+                applicantId: applicant.applicantSummary.applicantId,
+                applicantName: applicant.applicantSummary.applicantName,
+                applicantEmail: applicant.applicantSummary.applicantEmail,
+                imageResponse: applicant.applicantSummary.imageResponse,
+            };
+        }
+        return {
+            applicantId: applicant.applicantId,
+            applicantName: applicant.applicantName,
+            applicantEmail: applicant.applicantEmail,
+            imageResponse: applicant.imageResponse,
+        };
+    };
+
+    const toStepApplicants = (
+        interviewees: InterviewApplicant[] | UnreservedApplicant[],
+    ): StepApplicant[] => {
+        if (!Array.isArray(interviewees)) return [];
+
+        return interviewees.map((applicant) => {
+            const { applicantId, applicantName, applicantEmail, imageResponse } =
+                getApplicantInformation(applicant);
+
+            return {
+                applicantId,
+                name: applicantName,
+                email: applicantEmail,
+                status: 'INTERVIEW_PENDING',
+                submittedAt: '',
+                imageAllowed: Boolean(imageResponse),
+                imagePresent: Boolean(imageResponse),
+                representativeImage: imageResponse ?? null,
+            };
+        });
+    };
 
     return (
         <div css={s_interviewInformationPageContainer}>
             <div css={s_selectionContainer}>
                 <IntervieweeList
                     intervieweeList={finalIntervieweeList}
-                    interviewSchedules={interviewSchedulelist}
-                    selectedApplicantId={selectedApplicantId}
-                    onSelectApplicant={setSelectedApplicantId}
+                    interviewSlots={interviewSlots}
+                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                    onSelectApplicantId={handleSelectApplicantId}
+                    onInterviewSlotId={setSlotId}
                 />
             </div>
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
                     <InformationBox
-                        applicant={intervieweeDetail}
-                        documentList={document}
-                        isVisible={interviewSchedulelist.length > 0}
+                        profileImage={
+                            applicantDocument?.profileImage ?? {
+                                id: '',
+                                originalFileName: '',
+                                url: '',
+                                contentType: '',
+                            }
+                        }
+                        personalInformation={applicantDocument?.personalInfos ?? []}
+                        preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                        applicationQuestionAnswers={
+                            applicantDocument?.applicationQuestionAnswers ?? []
+                        }
                     />
                 </div>
                 <div css={s_evaluationBoxWrapper}>
-                    <EvaluationBox evaluation={evaluation} />
+                    <EvaluationBox
+                        clubId={clubId!}
+                        selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                        evaluation={
+                            interviewEvaluationDetail?.evaluationsOfApplicants?.find(
+                                (evaluation) =>
+                                    evaluation.applicantId ===
+                                    (selectedApplicant?.applicantId ?? ''),
+                            ) ?? INITIAL_EVALUATION_SUMMARY
+                        }
+                        onPostComment={handlePostComment}
+                        onDeleteComment={handleDeleteComment}
+                        onUpdateComment={handleUpdateComment}
+                    />
                 </div>
             </div>
         </div>
     );
 }
 
-export { InterviewEvaluationPage };
+export default InterviewEvaluationPage;

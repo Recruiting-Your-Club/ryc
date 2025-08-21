@@ -1,48 +1,29 @@
 import type { SerializedStyles } from '@emotion/react';
 import React from 'react';
 
+import StarSVG from '@ssoc/assets/images/star.svg';
+
 import { s_halfStar, s_size, s_star } from './Rating.style';
-
-export type StarSize = 'xs' | 's' | 'md' | 'lg' | 'xl';
-const STAR_PATH =
-    'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z';
-const STAR_VIEWBOX = '0 0 24 24';
-
-interface StarProps {
-    filled: boolean;
-    partialFill?: number;
-    size: StarSize;
-    customCSS?: SerializedStyles;
-    onClick?: () => void;
-    onMouseEnter?: () => void;
-    onMouseLeave?: () => void;
-}
-
-function StarSVG() {
-    return (
-        <svg viewBox={STAR_VIEWBOX}>
-            <path d={STAR_PATH} />
-        </svg>
-    );
-}
+import type { StarProps } from './types';
 
 export function Star({
     filled,
     partialFill,
     size,
-    customCSS,
+    sx,
+    type,
     onClick,
     onMouseEnter,
     onMouseLeave,
 }: StarProps) {
-    const cssProp = [s_size(size), s_star(filled)];
+    const cssProp = [s_size(size), s_star(filled, type)];
 
     return (
         <button
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            css={[cssProp, customCSS]}
+            css={[cssProp, sx]}
         >
             <StarSVG />
 

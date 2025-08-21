@@ -13,10 +13,8 @@ public record ClubUpdateRequest(
     @NotBlank(message = "동아리 이름은 비워둘 수 없습니다.") @Schema(description = "동아리 이름") String name,
     @Schema(description = "동아리 요약 설명") String shortDescription,
     @Schema(description = "동아리 상세 설명") String detailDescription,
-    @Schema(description = "동아리 이미지 URL") String imageUrl,
-    @Schema(description = "동아리 썸네일 URL") String thumbnailUrl,
-    @NotBlank(message = "동아리 카테고리는 비워둘 수 없습니다.")
-        @Schema(
+    @Schema(description = "동아리 대표 이미지") String representativeImage,
+    @Schema(
             description = "동아리 카테고리",
             allowableValues = {
               "PERFORMANCE_ARTS",
@@ -29,7 +27,7 @@ public record ClubUpdateRequest(
         String category,
     @Valid @Schema(description = "동아리 태그 리스트") List<ClubTagRequest> clubTags,
     @Valid @Schema(description = "동아리 요약 리스트") List<ClubSummaryRequest> clubSummaries,
-    @Valid @Schema(description = "동아리 상세 이미지 리스트") List<ClubDetailImageRequest> clubDetailImages) {
+    @Valid @Schema(description = "동아리 상세 이미지 리스트") List<String> clubDetailImages) {
 
   public ClubUpdateRequest {
     clubTags = clubTags == null ? List.of() : clubTags;
@@ -48,7 +46,7 @@ public record ClubUpdateRequest(
   }
 
   @Override
-  public List<ClubDetailImageRequest> clubDetailImages() {
+  public List<String> clubDetailImages() {
     return List.copyOf(clubDetailImages);
   }
 }

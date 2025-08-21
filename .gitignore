@@ -6,3 +6,6 @@
 
 ### Ignore JetBrains IDE settings folder ###
 **/.idea
+node_modules
+.env.production
+.env.development

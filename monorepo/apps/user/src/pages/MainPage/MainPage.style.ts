@@ -41,7 +41,11 @@ export const totalClubContainer = css`
     flex-direction: column;
     align-items: start;
     padding: 0rem 0.5rem;
+    padding-left: 1rem;
     gap: 0.5rem;
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        padding-left: 0.5rem;
+    }
 `;
 
 export const clubCategoryContainer = css`
@@ -52,6 +56,30 @@ export const clubCategoryContainer = css`
     height: 3.5rem;
 `;
 
+export const categoryProgressContainer = css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    width: 100%;
+    padding-right: 1rem;
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        justify-content: end;
+    }
+`;
+export const categoryDropdown = css`
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        display: none;
+    }
+    width: 8.5rem;
+`;
+export const dropdownItem = css`
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    overflow-y: auto;
+    gap: 0.5rem;
+`;
 export const divider = css`
     width: 100%;
     background-color: ${theme.colors.gray[200]};

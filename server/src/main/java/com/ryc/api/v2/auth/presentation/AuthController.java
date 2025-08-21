@@ -49,7 +49,7 @@ public class AuthController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @GetMapping("/refreshToken")
+  @GetMapping("/refresh-token")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
@@ -60,7 +60,7 @@ public class AuthController {
     ResponseCookie cookie =
         ResponseCookie.from("refresh-token", refreshResult.refreshToken())
             .httpOnly(true)
-            .secure(false)
+            .secure(true)
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
             .sameSite("None")

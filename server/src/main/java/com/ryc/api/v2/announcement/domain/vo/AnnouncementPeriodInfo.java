@@ -12,12 +12,17 @@ import lombok.Builder;
  * @param finalResultPeriod 최종발표 기간
  * @param documentResultPeriod 서류 결과 발표 기간 (면접 진행시)
  */
-@Builder
 public record AnnouncementPeriodInfo(
-    Period applicationPeriod,
+    Period applicationPeriod, // 이 필드만 필수입력
     Period interviewPeriod,
     Period finalResultPeriod,
     Period documentResultPeriod) {
+
+  @Builder
+  public AnnouncementPeriodInfo {
+    AnnouncementPeriodInfoValidator.validate(applicationPeriod);
+  }
+
   public static AnnouncementPeriodInfo from(AnnouncementPeriodInfoRequest periodInfo) {
     Period finalResultPeriod = Period.from(periodInfo.finalResultPeriod());
     Period documentResultPeriod = Period.from(periodInfo.documentResultPeriod());

@@ -1,6 +1,5 @@
 package com.ryc.api.v2.interview.infra.jpa;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +19,7 @@ public interface InterviewSlotJpaRepository extends JpaRepository<InterviewSlotE
 
   List<InterviewSlotEntity> findByAnnouncementId(String announcementId);
 
-  @Query(
-      "SELECT s FROM InterviewSlotEntity s WHERE s.announcementId = :announcementId AND s.period.startDate = :interviewDate")
-  List<InterviewSlotEntity> findByAnnouncementIdAndDate(
-      String announcementId, LocalDate interviewDate);
+  void deleteAllByAnnouncementId(String announcementId);
+
+  boolean existsByAnnouncementId(String announcementId);
 }

@@ -12,11 +12,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
+import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementDeletedRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementCreateResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetAllResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementGetDetailResponse;
-import com.ryc.api.v2.announcement.presentation.dto.response.AnnouncementUpdateResponse;
+import com.ryc.api.v2.announcement.presentation.dto.response.*;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 import com.ryc.api.v2.applicationForm.service.ApplicationFormService;
@@ -137,5 +135,28 @@ public class AnnouncementHttpApi {
       @PathVariable("announcement-id") String announcementId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
+  }
+
+  @Operation(summary = "공고 단계(process) 정보")
+  @GetMapping("/announcements/{announcement-id}/process")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<AnnouncementProcessGetResponse> getAnnouncementProcess(
+      @PathVariable("announcement-id") String announcementId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(announcementService.getAnnouncementProcess(announcementId));
+  }
+
+  @DeleteMapping("announcements")
+  @HasRole(Role.OWNER)
+  @Operation(summary = "공고 삭제", description = "공고들을 삭제합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_OWNER"})
+  public ResponseEntity<Void> deleteAnnouncements(
+      @Valid @RequestBody AnnouncementDeletedRequest body) {
+    announcementService.deleteAnnouncements(body.announcementIds());
+    return ResponseEntity.noContent().build();
   }
 }

@@ -33,7 +33,7 @@ function RecruitCard(props: RecruitCardProps) {
                     <Text noWrap cropped>
                         {title}
                     </Text>
-                    <Text color="caption" sx={deadlineText(diffDay)} noWrap>
+                    <Text color="caption" sx={deadlineText(diffDay)} noWrap cropped>
                         {displayText}
                     </Text>
                 </div>

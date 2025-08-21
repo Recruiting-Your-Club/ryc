@@ -2,22 +2,19 @@ package com.ryc.api.v2.announcement.infra;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.announcement.domain.Announcement;
-import com.ryc.api.v2.announcement.domain.AnnouncementImage;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
-import com.ryc.api.v2.announcement.domain.dto.ClubAnnouncementStatusDto;
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.announcement.infra.jpa.*;
 import com.ryc.api.v2.announcement.infra.mapper.AnnouncementMapper;
+import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
-import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
-import com.ryc.api.v2.s3.infra.jpa.FileMetadataJpaRepository;
+import com.ryc.api.v2.file.infra.jpa.FileMetadataJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +32,19 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     return announcementEntities.stream().map(AnnouncementMapper::toDomain).toList();
   }
 
+  @Override
+  public Map<String, List<Announcement>> findAllByClubIds(List<String> clubIds) {
+    Map<String, List<Announcement>> collect =
+        announcementJpaRepository.findAllByClubIdIn(clubIds).stream()
+            .map(AnnouncementMapper::toDomain)
+            .collect(Collectors.groupingBy(Announcement::getClubId));
+
+    clubIds.stream()
+        .filter(id -> !collect.containsKey(id))
+        .forEach(id -> collect.put(id, List.of()));
+    return collect;
+  }
+
   /**
    * Announcement with Application
    *
@@ -45,26 +55,18 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
     AnnouncementEntity announcementEntity =
         announcementJpaRepository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+            .filter(a -> !a.getIsDeleted())
+            .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
     return AnnouncementMapper.toDomain(announcementEntity);
   }
 
   @Override
   public Announcement save(Announcement announcement) {
-    List<String> fileMetadataIds =
-        announcement.getImages().stream().map(image -> image.getFileMetadataId()).toList();
-
-    Map<String, FileMetadataEntity> fileMetadataMap =
-        fileMetadataJpaRepository.findAllById(fileMetadataIds).stream()
-            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
-
     // create
     if (announcement.getId().equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
-      AnnouncementEntity announcementEntity =
-          AnnouncementMapper.toEntity(announcement, fileMetadataMap);
+      AnnouncementEntity announcementEntity = AnnouncementMapper.toEntity(announcement);
       announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
-      announcementEntity.getImages().forEach(image -> image.setAnnouncement(announcementEntity));
 
       AnnouncementEntity savedAnnouncement = announcementJpaRepository.save(announcementEntity);
       return AnnouncementMapper.toDomain(savedAnnouncement);
@@ -74,10 +76,9 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
       AnnouncementEntity announcementEntity =
           announcementJpaRepository
               .findById(announcement.getId())
-              .orElseThrow(() -> new EntityNotFoundException("announcement not found"));
+              .orElseThrow(() -> new NoSuchElementException("announcement not found"));
 
-      AnnouncementEntity updatedInfoEntity =
-          AnnouncementMapper.toEntity(announcement, fileMetadataMap);
+      AnnouncementEntity updatedInfoEntity = AnnouncementMapper.toEntity(announcement);
       announcementEntity.update(updatedInfoEntity);
       announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
 
@@ -88,42 +89,39 @@ public class AnnouncementRepositoryImpl implements AnnouncementRepository {
   }
 
   @Override
-  public List<Announcement> findAllByIsDeleted(Boolean isDeleted) {
-    return announcementJpaRepository.findAllByIsDeleted(isDeleted).stream()
-        .map(AnnouncementMapper::toDomain)
-        .toList();
+  public boolean imageAllowed(String announcementId) {
+    return announcementJpaRepository
+        .findById(announcementId)
+        .filter(announcementEntity -> !announcementEntity.getIsDeleted())
+        .orElseThrow(() -> new NoSuchElementException("announcement not found"))
+        .getApplicationForm()
+        .getPersonalInfoQuestions()
+        .contains(PersonalInfoQuestionType.PROFILE_IMAGE);
   }
 
   @Override
-  public void saveAll(List<Announcement> announcements) {
-    List<String> allFileMetadataIds =
-        announcements.stream()
-            .flatMap(ann -> ann.getImages().stream())
-            .map(AnnouncementImage::getFileMetadataId)
-            .distinct()
-            .toList();
-
-    java.util.Map<String, FileMetadataEntity> fileMetadataMap =
-        fileMetadataJpaRepository.findAllById(allFileMetadataIds).stream()
-            .collect(Collectors.toMap(FileMetadataEntity::getId, entity -> entity));
-
-    List<AnnouncementEntity> announcementEntities =
-        announcements.stream()
-            .map(domain -> AnnouncementMapper.toEntity(domain, fileMetadataMap))
-            .toList();
-
-    announcementEntities.forEach(
-        announcementEntity -> {
-          announcementEntity.getApplicationForm().setAnnouncement(announcementEntity);
-          announcementEntity
-              .getImages()
-              .forEach(image -> image.setAnnouncement(announcementEntity));
-        });
-    announcementJpaRepository.saveAll(announcementEntities);
+  public String findClubNameByAnnouncementId(String announcementId) {
+    return announcementJpaRepository
+        .findClubNameByAnnouncementId(announcementId)
+        .orElseThrow(
+            () ->
+                new NoSuchElementException("Club not found for announcementId: " + announcementId));
   }
 
   @Override
-  public List<ClubAnnouncementStatusDto> getStatusesByClubIds(List<String> clubIds) {
-    return announcementJpaRepository.getStatusesByClubIds(clubIds);
+  public List<String> findIdsByClubId(String clubId) {
+    return announcementJpaRepository.findIdsByClubId(clubId);
+  }
+
+  /*
+   * jpaRepository.deleteAllByIdIn(List<String> ids)을 수행하지 않고, entity를 조회한 후 삭제합니다.
+   * jpaRepository.deleteAllByIdIn는 JPQL 기반의 직접 삭제 쿼리이기 때문에
+   * SqlDelete가 적용되지않아 Soft Delete와 cascade가 적용되지 않습니다.
+   * 따라서, entity를 조회한 후 삭제하는 방식으로 Soft Delete를 적용합니다.
+   */
+  @Override
+  public void deleteAllByIdIn(List<String> announcementIds) {
+    List<AnnouncementEntity> entities = announcementJpaRepository.findAllByIdIn(announcementIds);
+    announcementJpaRepository.deleteAll(entities);
   }
 }

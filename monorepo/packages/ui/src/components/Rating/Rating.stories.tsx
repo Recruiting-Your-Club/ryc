@@ -39,7 +39,7 @@ export const TenStars: Story = {
 
 export const Display: Story = {
     args: {
-        value: 4.3,
+        value: 3.5,
         totalStars: 5,
         size: 'lg',
         type: 'display',

@@ -8,7 +8,7 @@ import com.ryc.api.v2.application.domain.AnswerChoice;
 import com.ryc.api.v2.application.infra.entity.AnswerChoiceEntity;
 import com.ryc.api.v2.application.infra.entity.AnswerEntity;
 import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
-import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
+import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
 
 public class AnswerMapper {
   public static Answer toDomain(AnswerEntity entity) {

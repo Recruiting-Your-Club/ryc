@@ -21,7 +21,6 @@ public class ApplicantMapper {
         .name(entity.getName())
         .announcementId(entity.getAnnouncementId())
         .status(entity.getStatus())
-        .isDeleted(entity.getIsDeleted())
         .email(entity.getEmail())
         .personalInfos(personalInfos)
         .build();
@@ -35,14 +34,20 @@ public class ApplicantMapper {
             .map(ApplicantPersonalInfoMapper::toEntity)
             .collect(Collectors.toCollection(ArrayList::new));
 
-    return ApplicantEntity.builder()
-        .id(domain.getId())
-        .announcementId(domain.getAnnouncementId())
-        .status(domain.getStatus())
-        .isDeleted(domain.getIsDeleted())
-        .email(domain.getEmail())
-        .name(domain.getName())
-        .personalInfos(personalInfos)
-        .build();
+    ApplicantEntity applicantEntity =
+        ApplicantEntity.builder()
+            .id(domain.getId())
+            .announcementId(domain.getAnnouncementId())
+            .status(domain.getStatus())
+            .email(domain.getEmail())
+            .name(domain.getName())
+            .personalInfos(personalInfos)
+            .build();
+
+    for (ApplicantPersonalInfoEntity infoEntity : personalInfos) {
+      infoEntity.setApplicant(applicantEntity);
+    }
+
+    return applicantEntity;
   }
 }

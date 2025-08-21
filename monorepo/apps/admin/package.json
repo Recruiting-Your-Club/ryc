@@ -4,8 +4,8 @@
     "private": true,
     "scripts": {
         "start": "webpack serve --open --config webpack.prod.js",
-        "dev": "webpack serve --open --config webpack.dev.js",
-        "build": "webpack --config webpack.prod.js",
+        "dev": "NODE_ENV=development webpack serve --open --config webpack.dev.js",
+        "build": "NODE_ENV=production webpack --config webpack.prod.js",
         "lint": "eslint --fix .",
         "format": "prettier --write .",
         "test": "jest --coverage ",
@@ -20,6 +20,7 @@
         ]
     },
     "dependencies": {
+        "@channel.io/channel-web-sdk-loader": "^2.0.0",
         "@emotion/react": "^11.13.0",
         "@ssoc/assets": "workspace:*",
         "@ssoc/constants": "workspace:*",

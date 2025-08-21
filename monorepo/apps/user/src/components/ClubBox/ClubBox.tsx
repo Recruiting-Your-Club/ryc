@@ -2,19 +2,10 @@ import React from 'react';
 
 import { Text } from '@ssoc/ui';
 
-import { clubBoxContainer, clubBoxItem } from './ClubBox.style';
+import { clubBoxContainer, clubBoxItem, s_TextSx } from './ClubBox.style';
 import type { ClubBoxProps } from './types';
 
 function ClubBox({ data }: ClubBoxProps) {
-    // prop destruction
-    // lib hooks
-    // initial values
-    // state, ref, querystring hooks
-    // form hooks
-    // query hooks
-    // calculated values
-    // handlers
-    // effects
     return (
         <div css={clubBoxContainer}>
             {data?.map((data) => (
@@ -23,13 +14,13 @@ function ClubBox({ data }: ClubBoxProps) {
                         as="div"
                         type="bodyRegular"
                         color="caption"
-                        sx={{ width: '40%' }}
+                        sx={s_TextSx}
                         textAlign="start"
                         noWrap
                     >
                         {data.title}
                     </Text>
-                    <Text as="div" type="bodyRegular" textAlign="start" noWrap>
+                    <Text as="div" type="bodyRegular" textAlign="start" noWrap cropped>
                         {data.value}
                     </Text>
                 </div>

@@ -1,6 +1,6 @@
 import type { CSSObject } from '@emotion/react';
 import type { ReactNode, SetStateAction } from 'react';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import { useClickOutside } from '@ssoc/hooks';
 
@@ -18,14 +18,18 @@ import { DropdownTrigger } from './DropdownTrigger';
 import type { DropdownProps } from './types';
 
 function DropdownRoot({
+    id: propId,
     children,
     onOpenChange,
     defaultOpen,
     open: controlledOpen,
     sx,
-}: DropdownProps) {
+}: DropdownProps & { id?: string }) {
     //prop destruction
     //lib hooks
+    const autoId = useId();
+    const id = propId ?? autoId;
+
     //state, ref, querystring hooks
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen || false);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -45,14 +49,31 @@ function DropdownRoot({
             }
             //일단 상태 변경 값은 무조건 적용해야 할 것 같아서 if-else문 밖에 적용
             onOpenChange?.(newValue);
+
+            if (newValue) {
+                window.dispatchEvent(new CustomEvent('close-all-dropdowns', { detail: id }));
+            }
         },
-        [controlledOpen, onOpenChange, open],
+        [controlledOpen, onOpenChange, open, id],
     );
 
-    const contextValue = useMemo(() => ({ open, setOpen, triggerRef, contentRef }), [open]);
+    const contextValue = useMemo(() => ({ id, open, setOpen, triggerRef, contentRef }), [id, open]);
 
     //effects
     useClickOutside([triggerRef, contentRef], () => setOpen(false));
+
+    useEffect(() => {
+        const handler = (event: Event) => {
+            const customEvent = event as CustomEvent<string>;
+            if (customEvent.detail !== id) {
+                setOpen(false);
+            }
+        };
+        window.addEventListener('close-all-dropdowns', handler);
+        return () => {
+            window.removeEventListener('close-all-dropdowns', handler);
+        };
+    }, [id, setOpen]);
 
     return (
         <DropdownContext.Provider value={contextValue}>

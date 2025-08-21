@@ -1,6 +1,7 @@
+import React from 'react';
+
 import Alert from '@ssoc/assets/images/alert.svg';
 import Check from '@ssoc/assets/images/check.svg';
-import React from 'react';
 
 import { Button } from '../Button';
 import type { ButtonSize } from '../Button';
@@ -13,7 +14,7 @@ function ConfirmDialog({
     type = 'text',
     title = 'Sample Title입니다.',
     content = 'Sample Content입니다.',
-    dialogSize = 'md',
+    dialogSize = 'sm',
     open,
     backdrop = false,
     titlePosition = 'start',

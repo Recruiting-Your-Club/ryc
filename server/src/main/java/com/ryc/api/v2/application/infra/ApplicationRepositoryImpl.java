@@ -1,20 +1,21 @@
 package com.ryc.api.v2.application.infra;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.application.domain.Answer;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
+import com.ryc.api.v2.application.infra.entity.ApplicationEntity;
 import com.ryc.api.v2.application.infra.jpa.ApplicationJpaRepository;
 import com.ryc.api.v2.application.infra.mapper.ApplicationMapper;
-import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
-import com.ryc.api.v2.s3.infra.jpa.FileMetadataJpaRepository;
+import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
+import com.ryc.api.v2.file.infra.jpa.FileMetadataJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,13 +45,27 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     return applicationJpaRepository
         .findByApplicantId(applicantId)
         .map(ApplicationMapper::toDomain)
-        .orElseThrow(() -> new EntityNotFoundException("Application not found"));
+        .orElseThrow(() -> new NoSuchElementException("Application not found"));
   }
 
   @Override
-  public List<Application> findAllByApplicantIdIn(List<String> applicantIds) {
-    return applicationJpaRepository.findAllByApplicantIdIn(applicantIds).stream()
-        .map(ApplicationMapper::toDomain)
-        .collect(Collectors.toList());
+  public Map<String, LocalDateTime> findCreatedAtByApplicantIds(List<String> applicantIds) {
+    if (applicantIds == null || applicantIds.isEmpty()) {
+      return Map.of();
+    }
+
+    List<Object[]> objects = applicationJpaRepository.findCreatedAtByApplicantIds(applicantIds);
+    return objects.stream()
+        .collect(
+            Collectors.toMap(
+                object -> (String) object[0], // applicantId
+                object -> (LocalDateTime) object[1])); // createdAt
+  }
+
+  @Override
+  public void deleteAllByApplicantIds(List<String> applicantIds) {
+    // cascade 적용하기 위해 ApplicationEntity를 조회하여 삭제
+    List<ApplicationEntity> entities = applicationJpaRepository.findAllById(applicantIds);
+    applicationJpaRepository.deleteAll(entities);
   }
 }

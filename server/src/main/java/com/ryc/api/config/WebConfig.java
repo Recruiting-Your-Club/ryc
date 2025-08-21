@@ -8,11 +8,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-  @Value("${DEV_CLIENT_URL}")
-  private String DEV_CLIENT_URL;
+  @Value("${CLIENT_URL}")
+  private String CLIENT_URL;
+
+  @Value("${ADMIN_CLIENT_URL}")
+  private String ADMIN_CLIENT_URL;
 
   @Value("${LOCAL_CLIENT_URL}")
   private String LOCAL_CLIENT_URL;
+
+  @Value("${LOCAL_CLIENT_HTTPS_URL}")
+  private String LOCAL_CLIENT_HTTPS_URL;
 
   @Value("${DEV_SERVER_URL}")
   private String DEV_SERVER_URL;
@@ -22,13 +28,17 @@ public class WebConfig implements WebMvcConfigurer {
     registry
         .addMapping("/**")
         .allowedOrigins(
+            CLIENT_URL,
+            CLIENT_URL + "/",
+            ADMIN_CLIENT_URL,
+            ADMIN_CLIENT_URL + "/",
             LOCAL_CLIENT_URL,
             LOCAL_CLIENT_URL + "/",
-            DEV_CLIENT_URL,
-            DEV_CLIENT_URL + "/",
+            LOCAL_CLIENT_HTTPS_URL,
+            LOCAL_CLIENT_HTTPS_URL + "/",
             DEV_SERVER_URL,
             DEV_SERVER_URL + "/") // 허용할 Origin
-        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // 허용할 HTTP 메서드
         .allowCredentials(true) // 쿠키 인증 요청 허용
         .allowedHeaders("*")
         .maxAge(3600); // 옵션 요청 캐시 시간 (초)

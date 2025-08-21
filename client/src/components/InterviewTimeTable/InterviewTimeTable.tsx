@@ -1,6 +1,5 @@
 import { Calendar, Divider, InterviewInformationButton, Text } from '@components';
-import { convertDate } from '@utils/convertDate';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
     s_calendar,
     s_interviewInformationButtonGroupWrapper,
@@ -8,32 +7,42 @@ import {
     s_timeContentContainer,
 } from './InterviewTimeTable.style';
 import type { InterviewTimeTableProps } from './types';
+import dayjs from 'dayjs';
 
 function InterviewTimeTable({
-    interviewSchedules,
-    selectedInterviewLabel,
+    interviewSlots,
+    selectedInterviewSlotId,
     onSelect,
+    setSelectedLabel,
     onOpenChange,
+    sx,
+    timeContentSx,
+    listSx,
 }: InterviewTimeTableProps) {
     // prop destruction
     // lib hooks
     // initial values
     // state, ref, querystring hooks
     const [highlightedDate, setHighlightedDate] = useState<string>(() => {
-        if (interviewSchedules.length > 0 && interviewSchedules[0].date)
-            return interviewSchedules[0].date;
+        if (interviewSlots.length > 0 && interviewSlots[0].period.startDate)
+            return dayjs(interviewSlots[0].period.startDate).format('YYYY-MM-DD');
         return '';
     });
 
     // form hooks
     // query hooks
     // calculated values
-    const scheduleMap = useMemo(() => {
-        return new Map(interviewSchedules.map((schedule) => [schedule.date, schedule]));
-    }, [interviewSchedules]);
-    const scheduleToShow = scheduleMap.get(highlightedDate);
+    // const slotsMap = useMemo(() => {
+    //     return new Map(interviewSlots.map((slot) => [slot.period.startDate, slot]));
+    // }, [interviewSlots]);
+    // const slotsToShow = slotsMap.get(highlightedDate);
+    const slotsToShow = interviewSlots.filter(
+        (slot) => dayjs(slot.period.startDate).format('YYYY-MM-DD') === highlightedDate,
+    );
 
-    const enabledDates = interviewSchedules.map((schedule) => schedule.date);
+    const enabledDates = interviewSlots.map((slot) =>
+        dayjs(slot.period.startDate).format('YYYY-MM-DD'),
+    );
 
     // handlers
     const handleCalendar = (newSelected: string[]) => {
@@ -41,14 +50,17 @@ function InterviewTimeTable({
     };
 
     const handleButtonClick = (label: string) => {
-        onSelect(label);
-        onOpenChange((prev) => !prev);
+        if (onSelect) {
+            onSelect(label); // 외부 제어
+        } else if (setSelectedLabel) {
+            setSelectedLabel(label); // 내부 기본 동작
+            onOpenChange?.(false);
+        }
     };
-
     // effects
 
     return (
-        <div css={s_interviewTimeTableContainer}>
+        <div css={[s_interviewTimeTableContainer, sx]}>
             <Calendar
                 mode="custom"
                 onSelect={handleCalendar}
@@ -60,22 +72,25 @@ function InterviewTimeTable({
                 shadow={false}
             />
             <Divider />
-            <div css={s_timeContentContainer}>
+            <div css={[s_timeContentContainer, timeContentSx]}>
                 <Text as="span" type="bodyBold" textAlign="center">
                     {highlightedDate}
                 </Text>
-                <div css={s_interviewInformationButtonGroupWrapper(Boolean(scheduleToShow))}>
-                    {scheduleToShow ? (
-                        scheduleToShow.interviewSets.map((schedule) => {
-                            const label = `${convertDate(scheduleToShow.date)} ${schedule.name}`;
+                <div css={[s_interviewInformationButtonGroupWrapper(Boolean(slotsToShow)), listSx]}>
+                    {slotsToShow.length > 0 ? (
+                        slotsToShow.map((slot) => {
+                            const startTime = dayjs(slot.period.startDate).format('HH:mm');
+                            const endTime = dayjs(slot.period.endDate).format('HH:mm');
+                            const label = `${dayjs(highlightedDate).format('MM.DD')} ${startTime}`;
+
                             return (
                                 <InterviewInformationButton
-                                    key={label}
+                                    key={slot.id}
                                     label={label}
-                                    startTime={schedule.startTime}
-                                    endTime={schedule.endTime}
+                                    startTime={startTime}
+                                    endTime={endTime}
                                     onClick={() => handleButtonClick(label)}
-                                    isSelected={selectedInterviewLabel === label}
+                                    isSelected={selectedInterviewSlotId === slot.id}
                                 />
                             );
                         })

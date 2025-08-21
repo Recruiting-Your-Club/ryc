@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import Search from '@ssoc/assets/images/search.svg';
 import theme from '@ssoc/styles';
 import { Button, Input, Text } from '@ssoc/ui';
@@ -12,24 +13,9 @@ function Header() {
         <header css={headerBarContainer}>
             <div css={homeNavContainer}>
                 <Link to="/">
-                    <Text as="h1" type="h4Light" color="caption">
-                        <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
-                            R
-                        </Text.HighLight>
-                        ecruiting
-                    </Text>
-                    <Text as="h1" type="h4Light" color="caption" textAlign="start">
-                        <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
-                            Y
-                        </Text.HighLight>
-                        our
-                        <Text.HighLight sx={{ color: 'black', fontWeight: 'bold' }}>
-                            C
-                        </Text.HighLight>
-                        lub
-                    </Text>
+                    <img src={mainLogo} alt="mainLogo" width="100%" height="55rem" />
                 </Link>
-                <nav css={navContainer}>
+                {/* <nav css={navContainer}>
                     <Input
                         variant="transparent"
                         startNode={
@@ -46,7 +32,7 @@ function Header() {
                         }}
                         placeholder="동아리명 검색 또는 키워드 입력"
                     />
-                </nav>
+                </nav> */}
             </div>
         </header>
     );

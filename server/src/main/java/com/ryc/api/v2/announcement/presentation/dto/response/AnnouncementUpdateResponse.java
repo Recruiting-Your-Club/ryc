@@ -7,6 +7,7 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -36,10 +37,11 @@ public record AnnouncementUpdateResponse(
     @Schema(description = "최종 발표 기간") PeriodResponse finalResultPeriod,
 
     // 이미지
-    @Schema(description = "이미지") List<ImageResponse> images,
+    @Schema(description = "이미지") List<FileGetResponse> images,
     @Schema(description = "태그", example = "[\"TAG1\", \"TAG2\"]") List<String> tags) {
 
-  public static AnnouncementUpdateResponse from(Announcement announcement) {
+  public static AnnouncementUpdateResponse of(
+      Announcement announcement, List<FileGetResponse> images) {
     ApplicationFormResponse application =
         ApplicationFormResponse.from(announcement.getApplicationForm());
     PeriodResponse applicationPeriod =
@@ -51,8 +53,6 @@ public record AnnouncementUpdateResponse(
     PeriodResponse finalResultPeriod =
         PeriodResponse.from(announcement.getAnnouncementPeriodInfo().finalResultPeriod());
 
-    List<ImageResponse> images =
-        announcement.getImages().stream().map(ImageResponse::from).toList();
     List<String> tags = announcement.getTags().stream().map(Tag::label).toList();
 
     return AnnouncementUpdateResponse.builder()

@@ -16,4 +16,5 @@ const getCategory = (category: string) => {
             return '미정';
     }
 };
+
 export { getCategory };

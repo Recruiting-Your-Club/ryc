@@ -1,204 +1,516 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import type { AnnouncementList } from '@api/domain/announcement/types';
+import { announcementQueries } from '@api/queryFactory/announcementQueries';
+import { myClubQueries } from '@api/queryFactory/clubQueries';
+import { userQueries } from '@api/queryFactory/userQueries';
+import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
+import ChevronUpDown from '@assets/images/chevron-up-down.svg';
+import Club from '@assets/images/club.svg';
+import { useQuery } from '@tanstack/react-query';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 import AplicantManage from '@ssoc/assets/images/AplicantManage.svg';
 import ApplicationManage from '@ssoc/assets/images/ApplicationManage.svg';
-import basicImage from '@ssoc/assets/images/basicImage.png';
+import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
 import EditApplication from '@ssoc/assets/images/EditApplication.svg';
 import Home from '@ssoc/assets/images/Home.svg';
+import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import Ryc from '@ssoc/assets/images/Ryc.svg';
 import UserSet from '@ssoc/assets/images/UserSet.svg';
 import { useRouter } from '@ssoc/hooks';
-import { Button, Divider } from '@ssoc/ui';
+import { Avatar, Button, Dropdown, Text, Tooltip } from '@ssoc/ui';
 
 import {
-    contentContainer,
+    addClubButton,
+    announcementWrapper,
+    chevronDoubleRightWrapper,
+    chevronRightWrapper,
+    chevronUpDownWrapper,
+    clubActive,
+    clubSideBarContainer,
+    clubTextWrapper,
+    clubWrapper,
+    createAnnouncementButton,
+    dropDownChevronWrapper,
+    dropdownClubContainer,
+    dropDownClubWrapper,
+    dropdownContainer,
+    dropDownLogoutWrapper,
+    dropdownTriggerContainer,
+    dropDownTriggerWrapper,
     emptyContainer,
-    imageContainer,
-    menuButton,
+    homeLogoContainer,
+    homeLogoTextWrapper,
+    mainMenuContainer,
     menuContainer,
     menuContent,
     menuListContainer,
-    menuTitle,
+    menuTextWrapper,
     navContainer,
-    sectionContainer,
     sideBarContainer,
+    subMenuContainer,
+    subMenuWrapper,
 } from './SideBar.style';
 
-interface MenuItem {
-    id: number;
-    menu: string;
-    icon: React.ReactNode;
-}
-interface SubMenuItem {
-    parentId: number;
-    subMenu: string;
-    link: string;
-}
-
-interface SideBarProps {
-    menu?: MenuItem[];
-    subMenu?: SubMenuItem[];
-}
-
-function SideBar({ menu, subMenu }: SideBarProps) {
-    // prop destruction
-    const defaultMenuItems: MenuItem[] = [
-        { id: 1, menu: '모집공고', icon: <Home /> },
-        { id: 2, menu: '지원자 관리', icon: <AplicantManage /> },
-        { id: 3, menu: '공고 편집', icon: <EditApplication /> },
-        { id: 4, menu: '면접 관리', icon: <ApplicationManage /> },
-        { id: 5, menu: '사용자 설정', icon: <UserSet /> },
-    ];
-
-    const defaultSubMenuItems: SubMenuItem[] = [
-        { parentId: 1, subMenu: '모집공고', link: '/manager/recruitment' },
-        { parentId: 2, subMenu: '단계별 통합 관리', link: '/manager/steps' },
-        { parentId: 2, subMenu: '불합격자 관리', link: '/manager/rejected' },
-        { parentId: 3, subMenu: '공고 편집', link: '/manager/edit' },
-        {
-            parentId: 4,
-            subMenu: '시간대 별 지원자 편집',
-            link: '/manager/time-slots',
-        },
-        { parentId: 4, subMenu: '면접 평가', link: '/interview-evaluation' },
-        { parentId: 4, subMenu: '면접 공통 질문 설정', link: '/manager/questions' },
-        { parentId: 5, subMenu: '사용자 권한 설정', link: '/manager/setting' },
-    ];
-    const menuItems = Array.isArray(menu) ? menu : defaultMenuItems;
-    const subMenuItems = Array.isArray(subMenu) ? subMenu : defaultSubMenuItems;
-
+function SideBar() {
+    // prop destructiondevelop
     // lib hooks
     const location = useLocation();
+    const { clubId, announcementId } = useParams();
     const { goTo } = useRouter();
 
     // initial values
-    const getCurrentBase = <T extends string | number>(
-        callback: (activatedSubMenu?: SubMenuItem) => T,
-    ): T => {
-        const currentPath = location.pathname;
-        const activatedSubMenu = subMenuItems.find((item) => item.link === currentPath);
-        return callback(activatedSubMenu);
-    };
+    const navMenu = useMemo(
+        () => [
+            {
+                id: 1,
+                menu: '동아리 관리',
+                icon: <Club />,
+                subMenus: [{ menu: '동아리 소개', link: '/clubs' }],
+            },
+            {
+                id: 2,
+                menu: '공고 관리',
+                icon: <Home />,
+                subMenus: [
+                    { menu: '모집 공고', link: '/announcements' },
+                    { menu: '공고 생성', link: '/announcements/create' },
+                    { menu: '공고 편집', link: '/announcements/edit' },
+                ],
+            },
+            {
+                id: 3,
+                menu: '지원자 관리',
+                icon: <AplicantManage />,
+                subMenus: [{ menu: '지원자 관리', link: '/applicants' }],
+            },
+            {
+                id: 4,
+                menu: '평가 관리',
+                icon: <EditApplication />,
+                subMenus: [
+                    { menu: '서류 평가', link: '/document-evaluation' },
+                    { menu: '면접 평가', link: '/interview-evaluation' },
+                ],
+            },
+            {
+                id: 5,
+                menu: '면접 관리',
+                icon: <ApplicationManage />,
+                subMenus: [{ menu: '지원자 면접 일정 관리', link: '/interviewee-schedule' }],
+            },
+            {
+                id: 6,
+                menu: '사용자 설정',
+                icon: <UserSet />,
+                subMenus: [{ menu: '사용자 권한 설정', link: '/settings' }],
+            },
+        ],
+        [],
+    );
 
-    const getInitialMenuTitle = () => {
-        return getCurrentBase((activatedSubMenu) => {
-            return activatedSubMenu ? activatedSubMenu.subMenu : subMenuItems[0].subMenu;
-        });
-    };
+    const getActiveSubMenu = useCallback(
+        (pathname: string) => {
+            let activeLink = '';
+            for (const main of navMenu) {
+                for (const sub of main.subMenus) {
+                    if (pathname.startsWith(sub.link) && sub.link.length > activeLink.length) {
+                        activeLink = sub.link;
+                    }
+                }
+            }
+            return activeLink;
+        },
+        [navMenu],
+    );
 
-    const getInitialMenuId = () => {
-        return getCurrentBase((activatedSubMenu) => {
-            return activatedSubMenu ? activatedSubMenu.parentId : 1;
-        });
-    };
+    const getMainMenuId = useCallback(
+        (activeSubMenuLink: string) => {
+            const activatedMenu = navMenu.find((item) =>
+                item.subMenus.some((subMenu) => subMenu.link === activeSubMenuLink),
+            );
+            return activatedMenu?.id || 1;
+        },
+        [navMenu],
+    );
 
     // state, ref, querystring hooks
-    const [activeMenu, setActiveMenu] = useState<number | undefined>(getInitialMenuId);
-    const [activeSubMenu, setActiveSubMenu] = useState<string>(getInitialMenuTitle);
+    const [activeSubMenu, setActiveSubMenu] = useState<string>(getActiveSubMenu(location.pathname));
+    const [activeMenus, setActiveMenus] = useState<number[]>([getMainMenuId(activeSubMenu)]);
     const [isExpanded, setIsExpanded] = useState(true);
-    const [filteredSubMenu, setFilteredSubMenu] = useState<SubMenuItem[]>([]);
+    const [currentClub, setCurrentClub] = useState<string>(clubId ?? '');
+    const [queryOn, setQueryOn] = useState<boolean>(false);
+    const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>();
 
     // form hooks
     // query hooks
-    // calculated values
+    const { data: myClub, isLoading: clubLoading } = useQuery(myClubQueries.all());
+    const { data: announcementList } = useQuery(
+        announcementQueries.getListByClub(clubId || '', queryOn),
+    );
+    const { data: myInformation } = useQuery(userQueries.getMyInformation());
 
-    // effects
-    useEffect(() => {
-        // 접힌 상태에서는 활성 메뉴 초기화
-        if (!isExpanded) {
-            setActiveMenu(undefined);
-        } else if (activeMenu) {
-            setFilteredSubMenu(subMenuItems.filter((item) => item.parentId === activeMenu));
-        }
-    }, [isExpanded, activeMenu]);
+    // calculated values
+    const isMenuActive = (id: number) => activeMenus.includes(id);
+
+    const announcementsByStatus = useMemo(() => {
+        if (!announcementList) return { upcoming: [], recruiting: [], closed: [] };
+
+        return announcementList.reduce(
+            (acc, announcement) => {
+                if (announcement.announcementStatus === 'UPCOMING') {
+                    acc.upcoming.push(announcement);
+                }
+                if (announcement.announcementStatus === 'RECRUITING') {
+                    acc.recruiting.push(announcement);
+                }
+                if (announcement.announcementStatus === 'CLOSED') {
+                    acc.closed.push(announcement);
+                }
+                return acc;
+            },
+            {
+                upcoming: [] as AnnouncementList[],
+                recruiting: [] as AnnouncementList[],
+                closed: [] as AnnouncementList[],
+            },
+        );
+    }, [announcementList]);
 
     // handlers
-    const handleCollapsed = (id: number) => {
-        if (!isExpanded || activeMenu !== id) {
-            setActiveMenu(id);
-            setIsExpanded(true);
-        } else {
-            setIsExpanded(false);
-        }
+    const handleSubMenuClick = (link: string) => {
+        const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
+        const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
+        goTo(`${link}/${clubId}${announcementIdPath}`);
     };
+
+    // 공고 선택하면 모집 공고로 이동
+    const handleSelectAnnouncement = (announcement: AnnouncementList) => {
+        setCurrentAnnouncement(announcement);
+        const targetPath = `/announcements/${clubId}/${announcement.announcementId}`;
+        setActiveSubMenu('/announcements');
+        goTo(targetPath);
+    };
+
+    const handleCollapsed = useCallback(
+        (id: number) => {
+            if (!isExpanded) {
+                setIsExpanded(true);
+                setActiveMenus([id]);
+            } else {
+                setActiveMenus((prev) => {
+                    if (prev.includes(id)) {
+                        // 이미 열려있으면 닫는다
+                        return prev.filter((menuId) => menuId !== id);
+                    } else {
+                        // 닫혀있으면 연다
+                        return [...prev, id];
+                    }
+                });
+            }
+        },
+        [isExpanded],
+    );
+
+    //useEffect
+    useEffect(() => {
+        const newActiveSubMenu = getActiveSubMenu(location.pathname);
+        setActiveSubMenu(newActiveSubMenu);
+        const newMainMenuId = getMainMenuId(newActiveSubMenu);
+        setActiveMenus((prev) => {
+            if (prev.includes(newMainMenuId)) {
+                return prev;
+            }
+            return [...prev, newMainMenuId];
+        });
+    }, [location.pathname, getActiveSubMenu, getMainMenuId]);
 
     return (
         <>
-            <aside css={sideBarContainer}>
-                <section css={sectionContainer}>
-                    <nav css={navContainer}>
-                        <Button
-                            variant="transparent"
-                            size="lg"
-                            sx={{
-                                marginBottom: '1rem',
-                                width: '4rem',
-                                height: '4rem',
-                                padding: '0',
-                            }}
-                        >
-                            <Ryc width="100%" height="100%" css={{ borderRadius: '10px' }} />
-                        </Button>
-                        {menuItems.map((item) => (
-                            <div key={item.id} css={menuListContainer}>
-                                <Button
-                                    variant="transparent"
-                                    size="lg"
-                                    sx={menuButton(item.id === activeMenu)}
+            <div css={clubSideBarContainer}>
+                <div css={{ maxHeight: '70rem', overflowY: 'hidden' }}>
+                    {!clubLoading &&
+                        myClub?.map((club) => (
+                            <div
+                                key={club.id}
+                                css={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    width: '100%',
+                                    gap: '0.3rem',
+                                }}
+                            >
+                                <div css={clubActive(club.id === currentClub)} />
+                                <button
+                                    css={clubWrapper}
                                     onClick={() => {
-                                        handleCollapsed(item.id);
+                                        setCurrentClub(club.id);
+                                        // 현재 대표 경로를 유지한 채 clubId만 교체
+                                        const representativePath = getActiveSubMenu(
+                                            location.pathname,
+                                        );
+                                        const announcementIdParam = announcementId
+                                            ? `/${announcementId}`
+                                            : '';
+                                        goTo(
+                                            `${representativePath}/${club.id}${announcementIdParam}`,
+                                        );
                                     }}
                                 >
-                                    {item.icon}
-                                </Button>
+                                    <Tooltip content={club.name}>
+                                        <img
+                                            src={club.representativeImage?.url}
+                                            alt="club"
+                                            width="100%"
+                                            height="100%"
+                                            css={{ borderRadius: '10px' }}
+                                        />
+                                    </Tooltip>
+                                </button>
                             </div>
                         ))}
-                    </nav>
+                </div>
+                <Tooltip content="동아리 생성">
+                    <button css={addClubButton} onClick={() => goTo('/club-create')}>
+                        +
+                    </button>
+                </Tooltip>
+            </div>
+            <aside css={sideBarContainer}>
+                <div css={homeLogoContainer}>
+                    <Button
+                        variant="text"
+                        onClick={() => {
+                            if (!activeMenus.includes(1)) handleCollapsed(1);
+                            handleSubMenuClick('/clubs');
+                        }}
+                        sx={homeLogoTextWrapper(isExpanded)}
+                    >
+                        SSOC
+                        {/* <img src={mainLogo} alt="mainLogo" width="80rem" height="50rem" /> */}
+                    </Button>
+                    <Button
+                        variant="transparent"
+                        size="md"
+                        sx={{ color: 'black' }}
+                        onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                        <ChevronDoubleRight css={chevronDoubleRightWrapper(isExpanded)} />
+                    </Button>
+                </div>
+
+                <nav css={navContainer(isExpanded)}>
+                    <Dropdown
+                        sx={dropdownContainer(isExpanded)}
+                        onOpenChange={() => setQueryOn(true)}
+                    >
+                        <Dropdown.Trigger sx={dropdownTriggerContainer}>
+                            <div css={dropDownTriggerWrapper}>
+                                {isExpanded && (
+                                    <div css={dropDownChevronWrapper(isExpanded)}>
+                                        <div css={announcementWrapper(isExpanded)}>
+                                            <Text
+                                                as="div"
+                                                type="bodySemibold"
+                                                cropped
+                                                noWrap
+                                                sx={{ maxWidth: '18rem', marginTop: '0.2rem' }}
+                                            >
+                                                {currentAnnouncement?.title ||
+                                                    '공고를 선택해주세요'}
+                                            </Text>
+                                        </div>
+                                        <ChevronUpDown css={chevronUpDownWrapper} />
+                                    </div>
+                                )}
+                            </div>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content
+                            offsetX={isExpanded ? 32 : 20}
+                            offsetY={isExpanded ? 10 : 10}
+                            sx={{
+                                zIndex: 1001,
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                            }}
+                        >
+                            <Dropdown.Item sx={dropdownClubContainer}>
+                                <Text
+                                    as="div"
+                                    type="subCaptionRegular"
+                                    color="caption"
+                                    textAlign="start"
+                                    sx={{ width: '100%' }}
+                                >
+                                    예정된 공고
+                                </Text>
+                                {announcementsByStatus.upcoming?.map((announcement) => (
+                                    <Button
+                                        variant="transparent"
+                                        key={announcement.announcementId}
+                                        sx={dropDownClubWrapper}
+                                        onClick={() => {
+                                            handleSelectAnnouncement(announcement);
+                                        }}
+                                    >
+                                        <Text as="div" type="captionRegular" cropped noWrap>
+                                            {announcement.title}
+                                        </Text>
+                                    </Button>
+                                ))}
+                                <Text
+                                    as="div"
+                                    type="subCaptionRegular"
+                                    color="caption"
+                                    textAlign="start"
+                                    sx={{ width: '100%' }}
+                                >
+                                    진행중 공고
+                                </Text>
+                                {announcementsByStatus.recruiting?.map((announcement) => (
+                                    <Button
+                                        variant="transparent"
+                                        key={announcement.announcementId}
+                                        sx={dropDownClubWrapper}
+                                        onClick={() => {
+                                            handleSelectAnnouncement(announcement);
+                                        }}
+                                    >
+                                        <Text as="div" type="captionRegular" cropped noWrap>
+                                            {announcement.title}
+                                        </Text>
+                                    </Button>
+                                ))}
+                                <Text
+                                    as="div"
+                                    type="subCaptionRegular"
+                                    color="caption"
+                                    textAlign="start"
+                                    sx={{ width: '100%' }}
+                                >
+                                    마감된 공고
+                                </Text>
+                                {announcementsByStatus.closed?.map((announcement) => (
+                                    <Button
+                                        variant="transparent"
+                                        key={announcement.announcementId}
+                                        sx={dropDownClubWrapper}
+                                        onClick={() => {
+                                            handleSelectAnnouncement(announcement);
+                                        }}
+                                    >
+                                        <Text as="div" type="captionRegular" cropped noWrap>
+                                            {announcement.title}
+                                        </Text>
+                                    </Button>
+                                ))}
+                            </Dropdown.Item>
+                            <Button
+                                variant="transparent"
+                                size="full"
+                                sx={createAnnouncementButton}
+                                onClick={() => handleSubMenuClick('/announcements/create')}
+                            >
+                                공고 생성
+                            </Button>
+                        </Dropdown.Content>
+                    </Dropdown>
+
+                    {navMenu.map((MainMenu) => (
+                        <div key={MainMenu.id} css={menuListContainer}>
+                            <Button
+                                variant="text"
+                                size="full"
+                                sx={menuContainer(isMenuActive(MainMenu.id))}
+                                onClick={() => {
+                                    handleCollapsed(MainMenu.id);
+                                }}
+                                zIndex={1000}
+                            >
+                                <Tooltip content={MainMenu.menu}>{MainMenu.icon}</Tooltip>
+                                {isExpanded && (
+                                    <div css={mainMenuContainer}>
+                                        <Text
+                                            as="div"
+                                            type="bodyRegular"
+                                            sx={menuTextWrapper(isExpanded)}
+                                        >
+                                            {MainMenu.menu}
+                                        </Text>
+                                        <ChevronRight
+                                            css={chevronRightWrapper(isMenuActive(MainMenu.id))}
+                                        />
+                                    </div>
+                                )}
+                            </Button>
+
+                            {isExpanded && (
+                                <div css={subMenuContainer(isMenuActive(MainMenu.id))}>
+                                    {MainMenu.subMenus.map((subMenu) => (
+                                        <div css={subMenuWrapper} key={subMenu.menu}>
+                                            <Button
+                                                key={subMenu.menu}
+                                                variant="text"
+                                                onClick={() => handleSubMenuClick(subMenu.link)}
+                                                sx={menuContent(activeSubMenu === subMenu.link)}
+                                            >
+                                                {subMenu.menu}
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    ))}
                     <div css={emptyContainer} />
 
-                    <div css={imageContainer}>
-                        <img
-                            src={basicImage}
-                            alt="User profile"
-                            width="100%"
-                            height="100%"
-                            style={{ borderRadius: '10px' }}
-                        />
-                    </div>
-                </section>
+                    <Dropdown sx={{ width: '100%', marginBottom: '1.5rem' }}>
+                        <Dropdown.Trigger sx={dropdownTriggerContainer}>
+                            <div css={dropDownTriggerWrapper}>
+                                <Avatar
+                                    imageURL={myInformation?.representativeImage?.url}
+                                    size="md"
+                                    shape="round"
+                                />
 
-                <section css={contentContainer(isExpanded)}>
-                    {menuItems
-                        .filter((item) => item.id === activeMenu)
-                        .map((item) => (
-                            <div key={item.id} css={menuTitle}>
-                                {item.menu}
+                                {isExpanded && (
+                                    <div css={dropDownChevronWrapper(isExpanded)}>
+                                        <div css={clubTextWrapper(isExpanded)}>
+                                            <Text as="div" type="captionRegular">
+                                                {myInformation?.name}
+                                            </Text>
+                                            <Text as="div" type="captionRegular">
+                                                {myInformation?.email}
+                                            </Text>
+                                        </div>
+                                        <ChevronUpDown css={chevronUpDownWrapper} />
+                                    </div>
+                                )}
                             </div>
-                        ))}
-
-                    <Divider
-                        width="90"
-                        color="gray"
-                        weight="1"
-                        sx={{ marginTop: '2rem', marginBottom: '1rem' }}
-                    />
-                    <div css={menuContainer}>
-                        {filteredSubMenu.map((item) => (
-                            <Button
-                                key={item.subMenu}
-                                variant="text"
-                                onClick={() => {
-                                    setActiveSubMenu(item.subMenu);
-                                    goTo(item.link);
-                                }}
-                                sx={menuContent(activeSubMenu === item.subMenu)}
-                            >
-                                {item.subMenu}
-                            </Button>
-                        ))}
-                    </div>
-                </section>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content
+                            offsetX={isExpanded ? 32 : 20}
+                            offsetY={0}
+                            sx={{
+                                zIndex: 10001,
+                                border: 'none',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                            }}
+                        >
+                            <Dropdown.Item sx={dropdownClubContainer}>
+                                <Button variant="transparent" size="full">
+                                    계정설정
+                                </Button>
+                                <Button
+                                    variant="transparent"
+                                    size="full"
+                                    sx={dropDownLogoutWrapper}
+                                >
+                                    로그아웃
+                                </Button>
+                            </Dropdown.Item>
+                        </Dropdown.Content>
+                    </Dropdown>
+                </nav>
             </aside>
         </>
     );

@@ -85,6 +85,11 @@ export const s_valueText = css`
     flex: 1;
 `;
 
+export const s_documentTypeTextWrapper = css`
+    align-self: flex-start;
+    padding: 0 1rem;
+`;
+
 export const s_invisibleText = css`
     height: 100%;
     display: flex;

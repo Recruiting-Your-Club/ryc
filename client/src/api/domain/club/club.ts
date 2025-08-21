@@ -3,7 +3,7 @@ import type { AllClub, Club, MyClub } from './types';
 
 async function getAllClubs(): Promise<AllClub[]> {
     const response = await httpRequest.get({
-        url: 'clubs/all',
+        url: 'clubs',
     });
     return response as AllClub[];
 }

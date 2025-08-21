@@ -9,9 +9,12 @@ export const clubBoxContainer = css`
     column-gap: 10rem;
     row-gap: 2rem;
     background-color: ${theme.colors.gray[100]};
-    padding: 2rem 3rem;
+    padding: 2rem 2rem;
     border-radius: 15px;
 
+    @media (min-width: ${theme.breakpoint.mobile}) {
+        padding: 2rem 3rem;
+    }
     @media (min-width: ${theme.breakpoint.tabletMini}) {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -21,5 +24,12 @@ export const clubBoxItem = css`
     display: flex;
     @media (max-width: ${theme.breakpoint.mobile}) {
         gap: 2rem;
+    }
+`;
+
+export const s_TextSx = css`
+    width: 40%;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: auto;
     }
 `;

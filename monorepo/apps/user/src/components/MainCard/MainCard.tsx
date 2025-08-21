@@ -22,7 +22,7 @@ function MainCard({
     status = 'progress',
     clubTags = [{ name: '연극' }, { name: '워크숍' }],
     link = 'http://localhost:3000/manager',
-    imageURL = '',
+    representativeImage = '',
 }: MainCardProps) {
     // prop destruction
     // lib hooks
@@ -37,7 +37,13 @@ function MainCard({
     return (
         <Link
             to={link}
-            state={{ title: title, category: category, clubLogo: imageURL }}
+            state={{
+                title: title,
+                category: category,
+                clubLogo: representativeImage,
+                description: description,
+                status: status,
+            }}
             css={cardContainer}
         >
             <div css={cardHeaderContainer}>
@@ -46,7 +52,7 @@ function MainCard({
                         shape="square"
                         size="xl"
                         radius="10px"
-                        imageURL={imageURL}
+                        imageURL={representativeImage}
                         imageName="logo"
                     />
                     <div css={cardTitleContainer}>

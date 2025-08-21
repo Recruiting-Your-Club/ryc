@@ -1,10 +1,13 @@
-import { ClubNavigation } from '@components';
+import { ClubDetailRecruitmentLoadingPage } from '@pages/LoadingPage';
 import { getCategory } from '@utils/changeCategory';
-import React, { useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-import { Text } from '@ssoc/ui';
+import { Avatar, Text } from '@ssoc/ui';
 
+import { ClubNavigation } from '../../components/ClubNavigation/ClubNavigation';
+import { useClubStore } from '../../stores';
 import {
     clubDetailPageContainer,
     clubHeader,
@@ -14,13 +17,17 @@ import {
     contentContainer,
 } from './ClubDetailPage.style';
 import { ClubIntroPage } from './ClubIntroPage';
-import { RecruitmentPage } from './RecruitmentPage';
+
+const LazyRecruitmentPage = lazy(() => import('./RecruitmentPage/RecruitmentPage'));
 
 function ClubDetailPage() {
     // prop destruction
     const location = useLocation();
-    const { title, category, clubLogo } = location.state;
+    const { title, category, clubLogo, description, status } = location.state;
+    const { id: clubId } = useParams<{ id: string }>();
     // lib hooks
+    const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
+        useClubStore();
     // initial values
     const navigationItem = useMemo(
         () => [
@@ -31,11 +38,15 @@ function ClubDetailPage() {
             },
             {
                 title: '모집 공고',
-                page: <RecruitmentPage />,
+                page: (
+                    <Suspense fallback={<ClubDetailRecruitmentLoadingPage />}>
+                        <LazyRecruitmentPage />
+                    </Suspense>
+                ),
                 width: '6.4rem',
             },
         ],
-        [],
+        [clubId],
     );
 
     // state, ref, querystring hooks
@@ -44,19 +55,36 @@ function ClubDetailPage() {
     // calculated values
     // handlers
     // effects
+    useEffect(() => {
+        setClubName(title);
+        setClubLogo(clubLogo);
+        setClubCategory(category);
+        setClubDescription(description);
+        setClubStatus(status);
+    }, [title, clubLogo, category, description, status]);
 
     return (
         <div css={clubDetailPageContainer}>
             <div css={contentContainer}>
                 <div css={clubHeader}>
                     <div css={clubImage}>
-                        <img
-                            src={clubLogo}
-                            alt="대표이미지"
-                            width="100%"
-                            height="100%"
-                            css={{ borderRadius: '10px' }}
-                        />
+                        {clubLogo ? (
+                            <img
+                                src={clubLogo}
+                                alt="대표이미지"
+                                width="100%"
+                                height="100%"
+                                css={{ borderRadius: '10px' }}
+                            />
+                        ) : (
+                            <Avatar
+                                shape="square"
+                                size="full"
+                                radius="10px"
+                                imageURL={clubLogo}
+                                imageName="logo"
+                            />
+                        )}
                     </div>
                     <div css={clubHeaderTextContainer}>
                         <Text as="h4" type="h1Semibold" textAlign="start" sx={clubHeaderTitle}>

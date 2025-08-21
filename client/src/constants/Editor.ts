@@ -43,6 +43,15 @@ export const textButtons = [
     { text: 'background', Svg: BackgroundText },
 ];
 
+export const sizeOptions = [
+    { value: '10px', label: '10px' },
+    { value: '12px', label: '12px' },
+    { value: '14px', label: '14px' },
+    { value: '16px', label: '16px' },
+    { value: '24px', label: '24px' },
+    { value: '36px', label: '36px' },
+];
+
 export const DEFAULT_FONT_SIZE: Size = '14px';
 export const MAX_FONT_SIZE: Size = '36px';
 export const DEFAULT_TEXT_ALIGN: Align = 'inherit';
