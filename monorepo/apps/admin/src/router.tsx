@@ -56,7 +56,6 @@ const router = createBrowserRouter([
             { path: 'club-create', element: <ClubCreatePage /> },
             { path: 'myClub', element: <MyClubPage /> },
             { path: 'invite/:clubId/:inviteCode', element: <InviteConfirmPage /> },
-            { path: ':inviteCode', element: <InviteConfirmPage /> },
         ],
     },
 ]);
