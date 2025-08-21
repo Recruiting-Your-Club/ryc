@@ -131,3 +131,7 @@ export interface QuestionRequest {
 export interface OptionRequest {
     option: string;
 }
+
+export interface PostAnnouncementResponse {
+    announcementId: string;
+}
