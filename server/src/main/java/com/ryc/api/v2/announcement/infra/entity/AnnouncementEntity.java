@@ -1,11 +1,10 @@
 package com.ryc.api.v2.announcement.infra.entity;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
+
+import org.hibernate.annotations.SQLDelete;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
@@ -18,6 +17,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "announcements")
+@SQLDelete(sql = "UPDATE announcements SET is_deleted = true WHERE id = ?")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,11 +43,9 @@ public class AnnouncementEntity extends BaseEntity {
 
   private String target;
 
-  @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
+  private String field;
 
-  @OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
-  @OrderBy("displayOrder ASC")
-  private List<AnnouncementImageEntity> images;
+  @Embedded AnnouncementPeriodInfoVO announcementPeriodInfoVO;
 
   @ElementCollection
   @OrderBy("displayOrder ASC")
@@ -64,7 +62,7 @@ public class AnnouncementEntity extends BaseEntity {
   @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
   private ApplicationFormEntity applicationForm;
 
-  private Boolean isDeleted;
+  @Builder.Default private Boolean isDeleted = Boolean.FALSE;
 
   public void update(AnnouncementEntity announcement) {
     // announcement update
@@ -74,30 +72,12 @@ public class AnnouncementEntity extends BaseEntity {
     this.hasInterview = announcement.getHasInterview();
     this.detailDescription = announcement.getDetailDescription();
     this.target = announcement.getTarget();
+    this.field = announcement.getField();
     this.announcementType = announcement.getAnnouncementType();
     this.activityPeriod = announcement.getActivityPeriod();
     this.announcementStatus = announcement.getAnnouncementStatus();
     this.isDeleted = announcement.getIsDeleted();
     this.tags = announcement.getTags();
-
-    Map<String, AnnouncementImageEntity> existingImagesMap =
-        this.images.stream().collect(Collectors.toMap(AnnouncementImageEntity::getId, i -> i));
-    List<AnnouncementImageEntity> updatedImages = new ArrayList<>();
-
-    for (AnnouncementImageEntity newImage : announcement.getImages()) {
-      AnnouncementImageEntity existingImage = existingImagesMap.get(newImage.getId());
-      if (existingImage != null) {
-        existingImage.setFileMetadata(newImage.getFileMetadata());
-        existingImage.setDisplayOrder(newImage.getDisplayOrder());
-        updatedImages.add(existingImage);
-        existingImagesMap.remove(newImage.getId());
-      } else {
-        newImage.setAnnouncement(this);
-        updatedImages.add(newImage);
-      }
-    }
-    this.images.clear();
-    this.images.addAll(updatedImages);
     this.announcementPeriodInfoVO = announcement.getAnnouncementPeriodInfoVO();
 
     // applicationForm update

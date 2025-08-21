@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, Tag, Text } from '@components';
 import {
     cardBodyContainer,
@@ -12,6 +12,7 @@ import type { MainCardProps } from './types';
 import { getCategory } from '@utils/changeCategory';
 import { Link } from 'react-router-dom';
 import { TagStatus } from './TagStatus';
+import { useClubStore } from '@stores/clubStore';
 
 function MainCard({
     title = 'En#',
@@ -35,7 +36,13 @@ function MainCard({
     return (
         <Link
             to={link}
-            state={{ title: title, category: category, clubLogo: imageURL }}
+            state={{
+                title: title,
+                category: category,
+                clubLogo: imageURL,
+                description: description,
+                status: status,
+            }}
             css={cardContainer}
         >
             <div css={cardHeaderContainer}>

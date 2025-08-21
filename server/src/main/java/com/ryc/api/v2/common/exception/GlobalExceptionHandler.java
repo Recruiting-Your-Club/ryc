@@ -20,9 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
-import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
-import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.common.exception.custom.NoPermissionException;
+import com.ryc.api.v2.common.exception.custom.*;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
 @RestControllerAdvice
@@ -40,6 +38,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode);
   }
 
+  @ExceptionHandler(InterviewException.class)
+  public ResponseEntity<Object> handleInterviewException(InterviewException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode);
+  }
+
   // DataIntegrityViolationException은 JPA에서 중복된 데이터 삽입 시 발생하는 예외
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Object> handleDataIntegrityViolationException(
@@ -51,7 +55,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(BusinessRuleException.class)
   public ResponseEntity<Object> handleBusinessRuleException(BusinessRuleException e) {
     ErrorCode errorCode = e.getErrorCode();
-    return handleExceptionInternal(errorCode);
+
+    ErrorResponse errorResponse =
+        ErrorResponse.builder().code(errorCode.name()).message(e.getFormattedMessage()).build();
+
+    return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
   }
 
   // EmptyResultDataAccessException은 JPA에서 존재하지 않는 데이터를 삭제하려고 할 때 발생하는 예외
@@ -77,6 +85,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
     ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
     return handleExceptionInternal(errorCode, e.getMessage());
+  }
+
+  @ExceptionHandler(InvalidFormatException.class)
+  public ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e) {
+    ErrorCode errorCode = e.getErrorCode();
+    return handleExceptionInternal(errorCode);
   }
 
   @Override

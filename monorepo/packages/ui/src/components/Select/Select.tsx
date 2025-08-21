@@ -1,37 +1,28 @@
-import type { CSSObject } from '@emotion/react';
-import type { ReactNode } from 'react';
-import { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useClickOutside } from '@ssoc/hooks';
 
 import { s_select, s_size } from './Select.styles';
 import { SelectContent } from './SelectContent';
-import { SelectContext } from './SelectContext';
+import { SelectContext, useSelectContext } from './SelectContext';
 import { SelectGroup } from './SelectGroup';
 import { SelectItem } from './SelectItem';
 import { SelectLabel } from './SelectLabel';
 import { SelectSeparator } from './SelectSeparator';
 import { SelectTrigger } from './SelectTrigger';
 import { SelectValue } from './SelectValue';
-
-export type SelectSize = 'xs' | 's' | 'md' | 'lg' | 'xl' | 'full';
+import type { SelectProps } from './types';
 
 /**
  * Select 루트 컴포넌트
  */
-interface SelectProps {
-    children: ReactNode;
-    value?: string;
-    size?: SelectSize;
-    onValueChange?: (value: string) => void;
-    sx?: CSSObject;
-}
 
 function SelectRoot({
     children,
     value: controlledValue,
     onValueChange,
     size = 'md',
+    options,
     sx,
 }: SelectProps) {
     const [open, setOpen] = useState(false);
@@ -56,6 +47,15 @@ function SelectRoot({
         () => ({ open, setOpen, value, setValue, label, setLabel, triggerRef, contentRef }),
         [open, value, label],
     );
+
+    useEffect(() => {
+        if (!value) return;
+
+        const found = options?.find((option) => option.value === value);
+        if (found) {
+            setLabel(found.label);
+        }
+    }, [value, options]);
 
     return (
         <SelectContext.Provider value={contextValue}>

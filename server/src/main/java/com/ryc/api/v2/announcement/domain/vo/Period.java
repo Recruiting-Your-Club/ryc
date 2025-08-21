@@ -12,33 +12,22 @@ import lombok.Builder;
  * @param startDate 시작 날짜
  * @param endDate 끝 날짜
  */
-@Builder
 public record Period(LocalDateTime startDate, LocalDateTime endDate) {
+
+  @Builder
+  public Period {
+    PeriodValidator.validate(startDate, endDate);
+  }
+
   public static Period from(PeriodRequest periodRequest) {
     // 1. null 체크
     if (periodRequest == null) return null;
 
     // 2. Period로 변환
-    Period period =
-        Period.builder()
-            .startDate(periodRequest.startDate())
-            .endDate(periodRequest.endDate())
-            .build();
-
-    // 3. checkBusinessRules
-    period.validate();
-    return period;
-  }
-
-  /**
-   * 기간 checkBusinessRules
-   *
-   * @throws IllegalArgumentException 시작날짜보다 끝 날짜가 빠른 경우
-   */
-  public void validate() {
-    if (startDate.isAfter(endDate)) {
-      throw new IllegalArgumentException("startDate should be before endDate");
-    }
+    return Period.builder()
+        .startDate(periodRequest.startDate())
+        .endDate(periodRequest.endDate())
+        .build();
   }
 
   public Boolean isOverlap(Period other) {

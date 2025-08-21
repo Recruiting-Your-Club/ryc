@@ -5,7 +5,7 @@ import java.util.List;
 import jakarta.persistence.*;
 
 import com.ryc.api.v2.common.entity.BaseEntity;
-import com.ryc.api.v2.s3.infra.entity.FileMetadataEntity;
+import com.ryc.api.v2.file.infra.entity.FileMetadataEntity;
 
 import lombok.*;
 

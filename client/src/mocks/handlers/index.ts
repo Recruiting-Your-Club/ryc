@@ -1,15 +1,19 @@
+import { applicantHandler } from './applicantHandler';
 import { clubHandler } from './clubHandler';
+import { emailHandler } from './emailHandler';
+import { evaluationHandler } from './evaluationHandler';
+import { stepHandler } from './stepHandler';
 import { announcementHandler } from './announcementHandler';
 import { interviewHandler } from './interviewHandler';
-import { applicantHandler } from './applicantHandler';
-import { stepHandler } from './stepHandler';
 
 const handlers = [
     ...clubHandler,
-    ...applicantHandler,
     ...interviewHandler,
     ...announcementHandler,
+    ...applicantHandler,
+    ...evaluationHandler,
     ...stepHandler,
+    ...emailHandler,
 ];
 
 export { handlers };

@@ -7,10 +7,20 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class AnswerChoice {
   private final String id;
   private final String optionId;
+
+  @Builder
+  private AnswerChoice(String id, String optionId) {
+
+    // 검증
+    AnswerChoiceValidator.validate(id, optionId);
+
+    // 할당
+    this.id = id;
+    this.optionId = optionId;
+  }
 
   public static AnswerChoice initialize(AnswerChoiceCreateRequest request) {
     return AnswerChoice.builder()

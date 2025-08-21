@@ -19,6 +19,7 @@ import Check from '@assets/images/check.svg';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { clubQueries } from '@api/queryFactory';
 import { CLUB_CATEGORIES } from '@constants/club';
+import { getStatus } from '@utils/changeCategory';
 
 function MainPage() {
     // prop destruction
@@ -43,7 +44,8 @@ function MainPage() {
             filteredClub = clublist?.filter((club) => currentCategory.eng === club.category) || [];
         }
         if (isProgress) {
-            filteredClub = filteredClub?.filter((club) => club.status === 'progress') || [];
+            filteredClub =
+                filteredClub?.filter((club) => club.announcementStatus === 'RECRUITING') || [];
         }
         return filteredClub;
     }, [currentCategory, isProgress, clublist]);
@@ -117,7 +119,7 @@ function MainPage() {
                         title={club.name}
                         category={club.category}
                         description={club.shortDescription}
-                        //status={data.status}
+                        status={getStatus(club.announcementStatus || '')}
                         clubTags={club.clubTags}
                         imageURL={club.imageUrl}
                         link={club.id}

@@ -23,7 +23,7 @@ function Avatar({ shape = 'square', size = 'xl', radius, imageURL, imageName, sx
     return (
         <>
             <img
-                src={imageURL ? imageURL : BasicImage}
+                src={imageURL?.trim() ? imageURL : BasicImage}
                 alt={imageName ? imageName : 'BasicImage'}
                 css={cssProp}
             />

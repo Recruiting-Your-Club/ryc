@@ -16,11 +16,19 @@ public enum AnnouncementStatus {
    * @param announcementPeriodInfo 공고 기간 정보
    * @return AnnouncementStatus
    */
-  public static AnnouncementStatus from(AnnouncementPeriodInfo announcementPeriodInfo) {
+  public static AnnouncementStatus from(
+      AnnouncementPeriodInfo announcementPeriodInfo, AnnouncementType type) {
+    // TODO: 서비스에서 announcementPeriodInfo, type null 아닌상태로 들어오는거 보장하듯이 코드 짜야함. 근데 지금 이게 init에서 호출되어서
+    // 이 검증책임이 Announcement한테 달림. 서비스로 빼야함
     LocalDateTime now = LocalDateTime.now();
-    if (now.isBefore(announcementPeriodInfo.applicationPeriod().startDate())) {
+    LocalDateTime startDate = announcementPeriodInfo.applicationPeriod().startDate();
+    LocalDateTime endDate = announcementPeriodInfo.applicationPeriod().endDate();
+
+    if (type == AnnouncementType.ALWAYS_OPEN) {
+      return AnnouncementStatus.RECRUITING;
+    } else if (now.isBefore(startDate)) {
       return AnnouncementStatus.UPCOMING;
-    } else if (now.isBefore(announcementPeriodInfo.applicationPeriod().endDate())) {
+    } else if (now.isBefore(endDate)) {
       return AnnouncementStatus.RECRUITING;
     } else {
       return AnnouncementStatus.CLOSED;

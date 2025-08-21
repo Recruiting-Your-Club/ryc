@@ -16,6 +16,7 @@ import lombok.Builder;
  * @param title 공고 제목
  * @param summaryDescription 요약 설명
  * @param target 대상
+ * @param field 모집 분야
  * @param announcementStatus 공고 상태
  * @param announcementType 공고 유형
  * @param applicationStartDate 지원 시작 날짜
@@ -30,6 +31,7 @@ public record AnnouncementGetAllResponse(
     @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집") String title,
     @Schema(description = "요약 설명", example = "코딩 동아리에서 신입 qnd 모집합니다.") String summaryDescription,
     @Schema(description = "대상", example = "컴퓨터공학과 학생") String target,
+    @Schema(description = "모집 분야", example = "백엔드") String field,
     @Schema(description = "공고 상태", example = "RECRUITING") AnnouncementStatus announcementStatus,
     @Schema(description = "공고 유형", example = "LIMITED_TIME") AnnouncementType announcementType,
     @Schema(description = "지원 시작 날짜", example = "2025-06-01T09:00", type = "string")
@@ -43,6 +45,7 @@ public record AnnouncementGetAllResponse(
         .title(announcement.getTitle())
         .summaryDescription(announcement.getSummaryDescription())
         .target(announcement.getTarget())
+        .field(announcement.getField())
         .announcementStatus(announcement.getAnnouncementStatus())
         .announcementType(announcement.getAnnouncementType())
         .applicationStartDate(

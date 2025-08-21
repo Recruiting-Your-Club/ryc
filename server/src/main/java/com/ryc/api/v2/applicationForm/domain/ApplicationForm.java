@@ -15,7 +15,6 @@ import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
 public class ApplicationForm {
   private final String id;
@@ -23,6 +22,31 @@ public class ApplicationForm {
   private final List<Question> applicationQuestions;
   private final List<PersonalInfoQuestionType> personalInfoQuestionTypes;
   private final List<Question> preQuestions;
+
+  @Builder
+  private ApplicationForm(
+      String id,
+      List<Question> applicationQuestions,
+      List<PersonalInfoQuestionType> personalInfoQuestionTypes,
+      List<Question> preQuestions) {
+
+    // 1. 멤버 변수 기본값 처리
+    List<Question> resolvedApplicationQuestions =
+        applicationQuestions != null ? applicationQuestions : List.of();
+    List<PersonalInfoQuestionType> resolvedPersonalInfoQuestionTypes =
+        personalInfoQuestionTypes != null ? personalInfoQuestionTypes : List.of();
+    List<Question> resolvedPreQuestions = preQuestions != null ? preQuestions : List.of();
+
+    // 3. 검증
+    ApplicationFormValidator.validate(
+        id, resolvedApplicationQuestions, resolvedPersonalInfoQuestionTypes, resolvedPreQuestions);
+
+    // 4. 할당
+    this.id = id;
+    this.applicationQuestions = resolvedApplicationQuestions;
+    this.personalInfoQuestionTypes = resolvedPersonalInfoQuestionTypes;
+    this.preQuestions = resolvedPreQuestions;
+  }
 
   /**
    * @param request create request

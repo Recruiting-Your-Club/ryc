@@ -20,17 +20,18 @@ public class ApplicantEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(nullable = false, name = "announcement_id")
-  private String announcementId;
-
-  private String email;
+  @Column(nullable = false)
   private String name;
+
+  @Column(nullable = false)
+  private String email;
+
+  @Column(nullable = false)
+  private String announcementId;
 
   @Enumerated(EnumType.STRING)
   private ApplicantStatus status;
 
   @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ApplicantPersonalInfoEntity> personalInfos;
-
-  private Boolean isDeleted;
 }

@@ -1,43 +1,222 @@
-{
-    "name": "PATCH API 테스트 동아리",
-    "detailDescription": "정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다.",
-    "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
-    "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
-    "category": "PERFORMANCE_ARTS",
-    "clubTags": [
-        {
-            "name": "연극"
-        },
-        {
-            "name": "워크숍"
-        }
-    ],
-    "clubSummaries": [
-        {
-            "title": "주요 활동",
-            "value": "정기적인 공연과 대본 워크숍"
-        },
-        {
-            "title": "특징",
-            "value": "자체 대본 제작 및 발표회 진행"
-        },
-        {
-            "title": "활동 장소",
-            "value": "예술관 소극장 및 강의실"
-        },
-        {
-            "title": "활동 형식",
-            "value": "소규모 연극 스터디 및 공연 준비"
-        }
-    ],
-    "clubDetailImages": [
-        {
-            "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
-            "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png"
-        },
-        {
-            "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424097.png",
-            "thumbnailUrl": null
-        }
-    ]
-}
+[
+    {
+        "id": "a1b2c3d4-e5f6-7890-1234-abcdef123456",
+        "name": "연극 동아리",
+        "detailDescription": "정기적인 연극 공연 및 대본 워크숍을 통해 공연예술을 연구합니다. 우리 동아리는 연극에 대한 열정을 가진 학생들이 모여 창의적인 공연을 만들어가는 공간입니다. 매월 정기 공연을 통해 실력을 기르고, 다양한 연극제에 참가하여 경험을 쌓습니다. 초보자부터 경험자까지 모두 환영하며, 연출, 배우, 무대기술, 조명, 음향 등 다양한 분야에서 활동할 수 있습니다. 연극을 통해 자신의 창의성을 표현하고, 팀워크를 배우며, 무대 위에서의 자신감을 기를 수 있는 최고의 동아리입니다.",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
+        "category": "PERFORMANCE_ARTS",
+        "clubTags": [
+            {
+                "name": "연극"
+            },
+            {
+                "name": "워크숍"
+            }
+        ],
+        "clubSummaries": [
+            {
+                "title": "주요 활동",
+                "value": "정기적인 공연과 대본 워크숍"
+            },
+            {
+                "title": "특징",
+                "value": "자체 대본 제작 및 발표회 진행"
+            },
+            {
+                "title": "활동 장소",
+                "value": "예술관 소극장 및 강의실"
+            },
+            {
+                "title": "활동 형식",
+                "value": "소규모 연극 스터디 및 공연 준비"
+            }
+        ],
+        "clubDetailImages": [
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png",
+                "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424084.png"
+            },
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6424/6424097.png",
+                "thumbnailUrl": null
+            }
+        ]
+    },
+    {
+        "id": "b2c3d4e5-f6a7-8901-2345-bcdefa234567",
+        "name": "세계문화탐방단",
+        "detailDescription": "세계 각국의 문화를 탐방하고 교류하는 동아리입니다. 우리는 다양한 국가의 문화, 역사, 전통을 배우고 체험하는 것을 목표로 합니다. 정기적인 문화 체험 프로그램, 국제 학생들과의 교류, 문화 축제 참가 등을 통해 글로벌 시각을 기를 수 있습니다. 언어, 음식, 예술, 전통 등 다양한 분야에서 문화를 탐구하며, 세계 시민으로서의 자질을 기를 수 있는 최고의 동아리입니다.",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422202.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422202.png",
+        "category": "CULTURE",
+        "clubTags": [
+            {
+                "name": "문화"
+            },
+            {
+                "name": "체험활동"
+            }
+        ],
+        "clubSummaries": [
+            {
+                "title": "주요 활동",
+                "value": "문화 체험 및 국제 교류"
+            },
+            {
+                "title": "특징",
+                "value": "다양한 국가 문화 탐방"
+            },
+            {
+                "title": "활동 장소",
+                "value": "국제교류관 및 문화시설"
+            },
+            {
+                "title": "활동 형식",
+                "value": "문화 체험 및 워크숍"
+            }
+        ],
+        "clubDetailImages": [
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422202.png",
+                "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422202.png"
+            },
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422203.png",
+                "thumbnailUrl": null
+            }
+        ]
+    },
+    {
+        "id": "c3d4e5f6-a7b8-9012-3456-cdefab345678",
+        "name": "FC UNIV",
+        "detailDescription": "축구를 사랑하는 학생들이 모여 함께 운동하고 경기를 즐기는 체육 동아리입니다. 우리는 단순히 축구만 하는 것이 아니라, 팀워크, 리더십, 협동심을 기르는 것을 목표로 합니다. 정기적인 훈련, 대학간 친선경기, 리그 참가 등을 통해 실력을 향상시키고, 건강한 신체와 정신을 기를 수 있습니다. 초보자부터 실력자까지 모두 환영하며, 축구를 통해 진정한 스포츠맨십을 배울 수 있는 동아리입니다.",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422210.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422210.png",
+        "category": "SPORTS",
+        "clubTags": [
+            {
+                "name": "리그참가"
+            },
+            {
+                "name": "축구"
+            }
+        ],
+        "clubSummaries": [
+            {
+                "title": "주요 활동",
+                "value": "정기 훈련 및 대학간 경기"
+            },
+            {
+                "title": "특징",
+                "value": "대학 축구 리그 참가"
+            },
+            {
+                "title": "활동 장소",
+                "value": "운동장 및 체육관"
+            },
+            {
+                "title": "활동 형식",
+                "value": "팀 훈련 및 경기"
+            }
+        ],
+        "clubDetailImages": [
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422210.png",
+                "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422210.png"
+            },
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422211.png",
+                "thumbnailUrl": null
+            }
+        ]
+    },
+    {
+        "id": "d4e5f6a7-b8c9-0123-4567-defabc456789",
+        "name": "알고리즘 마스터즈",
+        "detailDescription": "알고리즘과 프로그래밍을 함께 공부하는 학술 동아리입니다. 우리는 컴퓨터 과학의 기초가 되는 알고리즘을 체계적으로 학습하고, 실제 문제 해결 능력을 기르는 것을 목표로 합니다. 정기적인 스터디, 알고리즘 대회 참가, 프로젝트 개발 등을 통해 실력을 향상시키고, 논리적 사고와 문제 해결 능력을 기를 수 있습니다. 프로그래밍에 관심이 있는 모든 학생을 환영하며, 함께 성장하며 미래의 IT 인재가 될 수 있는 동아리입니다.",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422200.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422200.png",
+        "category": "ACADEMIC",
+        "clubTags": [
+            {
+                "name": "알고리즘"
+            },
+            {
+                "name": "코딩스터디"
+            }
+        ],
+        "clubSummaries": [
+            {
+                "title": "주요 활동",
+                "value": "알고리즘 스터디 및 대회 참가"
+            },
+            {
+                "title": "특징",
+                "value": "프로그래밍 프로젝트 개발"
+            },
+            {
+                "title": "활동 장소",
+                "value": "컴퓨터실 및 스터디룸"
+            },
+            {
+                "title": "활동 형식",
+                "value": "스터디 및 프로젝트"
+            }
+        ],
+        "clubDetailImages": [
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422200.png",
+                "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422200.png"
+            },
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/6422/6422201.png",
+                "thumbnailUrl": null
+            }
+        ]
+    },
+    {
+        "id": "e5f6a7b8-c9d0-1234-5678-efabcd567890",
+        "name": "봉사가 좋아",
+        "detailDescription": "봉사활동을 통해 지역사회에 기여하고 나눔의 가치를 실천하는 동아리입니다. 우리는 다양한 봉사 활동을 통해 사회적 책임감과 공동체 의식을 기르는 것을 목표로 합니다. 노인복지관 봉사, 환경보호 활동, 교육 봉사, 재난구호 활동 등을 통해 실질적인 도움을 주고, 더 나은 사회를 만들어가는 데 기여합니다. 봉사에 대한 열정과 따뜻한 마음을 가진 모든 학생을 환영하며, 함께 나누며 성장할 수 있는 의미 있는 동아리입니다.",
+        "imageUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",
+        "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",
+        "category": "VOLUNTEER",
+        "clubTags": [
+            {
+                "name": "봉사"
+            },
+            {
+                "name": "지역연계"
+            }
+        ],
+        "clubSummaries": [
+            {
+                "title": "주요 활동",
+                "value": "다양한 봉사활동 참여"
+            },
+            {
+                "title": "특징",
+                "value": "지역사회와의 연계 활동"
+            },
+            {
+                "title": "활동 장소",
+                "value": "복지관, 학교, 지역시설"
+            },
+            {
+                "title": "활동 형식",
+                "value": "정기 봉사 및 특별활동"
+            }
+        ],
+        "clubDetailImages": [
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png",
+                "thumbnailUrl": "https://cdn-icons-png.flaticon.com/128/233/233976.png"
+            },
+            {
+                "imageUrl": "https://cdn-icons-png.flaticon.com/128/233/233977.png",
+                "thumbnailUrl": null
+            }
+        ]
+    }
+]

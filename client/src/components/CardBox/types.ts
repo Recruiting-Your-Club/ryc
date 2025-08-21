@@ -1,13 +1,29 @@
 import type { CSSObject } from '@emotion/react';
-import type { ReactNode } from 'react';
 
-export type Step = 'normal' | 'final';
+export type Step = 'document' | 'interview' | 'final';
+
+export interface MergedStepApplicant {
+    applicantId: string;
+    name: string;
+    email: string;
+    status: string;
+    submittedAt: string;
+    completedEvaluatorCount: number;
+    totalEvaluatorCount: number;
+    averageScore: number;
+}
 
 export interface CardBoxProps {
     stepTitle: string;
     step: Step;
-    toggleDropdown?: () => void;
+    searchText: string;
+    passedApplicantList: MergedStepApplicant[];
+    failedApplicantList: MergedStepApplicant[];
+    handleOpen: (applicant: MergedStepApplicant) => void;
+    handleApplicantStatus: (applicantIds: string[], newStatus: string) => void;
+    statusLabel: { label: string; status: string }[];
+    statusInOwnStep: { pass: string; fail: string };
+    onEmailDialogOpen: (target: string, ids: string[], isInterviewDialog?: boolean) => void;
     height?: string;
-    children?: ReactNode;
     sx?: CSSObject;
 }

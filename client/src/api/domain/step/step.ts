@@ -1,36 +1,47 @@
 import { httpRequest } from '@api/common/httpRequest';
+
 import type { Step, StepApplicant } from './types';
 
-async function getTotalSteps(): Promise<Step> {
+async function getTotalSteps({ announcementId }: { announcementId: string }): Promise<Step> {
     const response = await httpRequest.get({
-        url: 'step/all',
+        url: `announcements/${announcementId}/process`,
+        isAuthRequire: true,
     });
     return response as Step;
 }
 
-async function getAllStepApplicants(params: {
+async function getAllStepApplicants({
+    announcementId,
+    clubId,
+}: {
     announcementId: string;
     clubId: string;
 }): Promise<StepApplicant[]> {
-    const { announcementId, clubId } = params;
     return await httpRequest.get({
         url: `announcements/${announcementId}/applications`,
         headers: {
             'X-CLUB-ID': clubId,
         },
+        isAuthRequire: true,
     });
 }
 
 async function updateStepApplicantsStatus({
     applicantId,
     status,
+    clubId,
 }: {
     applicantId: string;
     status: string;
+    clubId: string;
 }): Promise<void> {
     await httpRequest.patch({
-        url: `step-applicants/${applicantId}/status`,
+        url: `applicants/${applicantId}/status`,
         body: { status },
+        headers: {
+            'X-CLUB-ID': clubId,
+        },
+        isAuthRequire: true,
     });
 }
 

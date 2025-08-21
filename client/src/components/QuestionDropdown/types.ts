@@ -1,9 +1,9 @@
-import type { DetailQuestion, PersonalQuestion, Answer } from '@pages/ClubApplyPage/types';
+import type { QuestionResponse, Answer } from '@pages/ClubApplyPage/types';
 
 export interface QuestionDropdownProps {
     completedQuestionsCount: number;
-    personalQuestions: PersonalQuestion[];
-    detailQuestions: DetailQuestion[];
+    personalQuestions: QuestionResponse[];
+    detailQuestions: QuestionResponse[];
     requiredQuestionsCompleted: boolean;
     allQuestionsCount: number;
     answers: Answer[];

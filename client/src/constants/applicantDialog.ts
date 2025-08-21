@@ -1,0 +1,2 @@
+export const EVALUATION_FIRST_PAGE = 0;
+export const EVALUATION_SECOND_PAGE = 1;

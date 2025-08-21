@@ -10,3 +10,6 @@ export interface CreateClientOptions {
 
 export type RequestBodyOption = Omit<CreateClientOptions, 'method'>;
 export type RequestWithoutBodyOption = Omit<RequestBodyOption, 'body'>;
+export type InternalRetryableOption = (RequestBodyOption | RequestWithoutBodyOption) & {
+    retried?: boolean;
+};

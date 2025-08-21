@@ -58,7 +58,7 @@ export const perButtonCss = css`
 `;
 
 export const svgCss = (isColor: boolean) => css`
-    height: 60%;
+    height: 2rem;
     color: ${theme.colors.black};
     align-items: center;
     justify-content: center;
@@ -69,7 +69,7 @@ export const svgCss = (isColor: boolean) => css`
 `;
 
 export const textColorSvgCss = (isColor: boolean, selectedColor?: string) => css`
-    height: 60%;
+    height: 2rem;
     color: ${theme.colors.black};
     align-items: center;
     justify-content: center;

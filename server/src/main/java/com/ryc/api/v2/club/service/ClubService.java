@@ -9,10 +9,14 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
-import com.ryc.api.v2.club.presentation.dto.response.ClubGetResponse;
-import com.ryc.api.v2.club.presentation.dto.response.ClubUpdateResponse;
+import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
+import com.ryc.api.v2.common.util.HtmlImageParser;
+import com.ryc.api.v2.file.domain.FileDomainType;
+import com.ryc.api.v2.file.domain.FileMetaData;
+import com.ryc.api.v2.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,39 +25,71 @@ import lombok.RequiredArgsConstructor;
 public class ClubService {
 
   private final ClubRepository clubRepository;
+  private final FileService fileService;
+  private final HtmlImageParser htmlImageParser;
 
   @Transactional
   public Club createClub(ClubCreateRequest body) {
-    Club club = Club.initialize(body.name(), body.imageUrl(), body.thumbnailUrl(), body.category());
-
-    if (clubRepository.existsByName(club.getName())) {
+    if (clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
+    Club club = Club.initialize(body.name(), body.category());
 
-    return clubRepository.save(club);
+    Club savedClub = clubRepository.save(club);
+
+    fileService.claimOwnership(
+        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
+    return savedClub;
   }
 
   @Transactional
-  public ClubUpdateResponse updateClub(String clubId, ClubUpdateRequest body) {
+  public DetailClubResponse updateClub(String clubId, ClubUpdateRequest body) {
     Club previousClub = clubRepository.findById(clubId);
 
-    if (body.name() != null && clubRepository.existsByName(body.name())) {
+    if (!previousClub.getName().equals(body.name()) && clubRepository.existsByName(body.name())) {
       throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
     }
 
     Club newClub = previousClub.update(body);
     Club savedClub = clubRepository.save(newClub);
 
-    return ClubUpdateResponse.builder()
+    List<String> detailDescriptionImages =
+        htmlImageParser.extractImageIds(body.detailDescription());
+
+    if (detailDescriptionImages.size() > 10) {
+      throw new ClubException(ClubErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
+    }
+    fileService.claimOwnership(
+        detailDescriptionImages, savedClub.getId(), FileDomainType.CLUB_POST_IMAGE);
+    fileService.claimOwnership(
+        body.clubDetailImages(), savedClub.getId(), FileDomainType.CLUB_IMAGE);
+    fileService.claimOwnership(
+        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
+
+    List<FileMetaData> images = fileService.findAllByAssociatedId(savedClub.getId());
+    FileGetResponse representativeImage =
+        images.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
+            .findFirst()
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .orElse(null);
+
+    List<FileGetResponse> detailImages =
+        images.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .toList();
+
+    return DetailClubResponse.builder()
+        .id(savedClub.getId())
         .name(savedClub.getName())
+        .representativeImage(representativeImage)
         .shortDescription(savedClub.getShortDescription())
         .detailDescription(savedClub.getDetailDescription())
-        .imageUrl(savedClub.getImageUrl())
-        .thumbnailUrl(savedClub.getThumbnailUrl())
         .category(savedClub.getCategory())
         .clubTags(savedClub.getClubTags())
         .clubSummaries(savedClub.getClubSummaries())
-        .clubDetailImages(savedClub.getClubDetailImages())
+        .clubDetailImages(detailImages)
         .build();
   }
 
@@ -63,22 +99,33 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubGetResponse getClub(String clubId) {
+  public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
-    return ClubGetResponse.builder()
+    FileGetResponse representativeImage =
+        fileService.findAllByAssociatedId(clubId).stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
+            .findFirst()
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .orElse(null);
+
+    return DetailClubResponse.builder()
+        .id(club.getId())
         .name(club.getName())
         .detailDescription(club.getDetailDescription())
-        .imageUrl(club.getImageUrl())
-        .thumbnailUrl(club.getThumbnailUrl())
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .clubSummaries(club.getClubSummaries())
-        .clubDetailImages(club.getClubDetailImages())
+        .representativeImage(representativeImage)
         .build();
   }
 
   @Transactional(readOnly = true)
-  public boolean isValidClubId(String clubId) {
+  public boolean existClubById(String clubId) {
     return clubRepository.existsById(clubId);
+  }
+
+  @Transactional
+  public void deleteClub(String id) {
+    clubRepository.deleteById(id);
   }
 }

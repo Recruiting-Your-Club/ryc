@@ -1,35 +1,36 @@
-import { Avatar, DocumentBox, Text, TextToggle } from '@components';
+import type { QuestionAnswer } from '@api/domain/applicant/types';
 import React, { useState } from 'react';
+
+import { Avatar, DocumentBox, Text, TextToggle } from '@components';
+
 import {
     s_avatar,
     s_boxContainer,
     s_contentSection,
+    s_documentTypeTextWrapper,
     s_documentWrapper,
     s_invisibleText,
-    s_labelText,
     s_personalDataWrapper,
-    s_textContainer,
     s_textGroup,
     s_titleSection,
     s_titleText,
-    s_valueText,
 } from './InformationBox.style';
 import type { InformationBoxProps } from './types';
 
 function InformationBox({
-    applicant,
-    documentList,
+    personalInformation,
+    preQuestionAnswers,
+    applicationQuestionAnswers,
     height,
-    isVisible = true,
 }: InformationBoxProps) {
     // prop destruction
     // lib hooks
     // initial value
-    const personalInformationMap = [
-        { label: '이름', value: applicant?.name },
-        { label: '이메일', value: applicant?.email },
-        { label: '학번', value: applicant?.studentId },
-        { label: '전화번호', value: applicant?.phone },
+    const textMap = [
+        { label: '이름', value: getPersonalValue('NAME') },
+        { label: '이메일', value: getPersonalValue('EMAIL') },
+        { label: '학번', value: getPersonalValue('STUDENT_ID') },
+        { label: '전화번호', value: getPersonalValue('PHONE_NUMBER') },
     ];
 
     // state, ref, querystring hooks
@@ -38,8 +39,39 @@ function InformationBox({
     // form hooks
     // query hooks
     // calculated values
+    const documentGroups = [
+        { label: '▶ 사전질문', documents: preQuestionAnswers ?? [] },
+        { label: '▶ 자기소개서', documents: applicationQuestionAnswers ?? [] },
+    ];
+
+    const formatAnswer = (question: QuestionAnswer): string => {
+        switch (question.questionType) {
+            case 'LONG_ANSWER':
+            case 'SHORT_ANSWER':
+                return question.textAnswer || '답변 미작성';
+
+            case 'SINGLE_CHOICE':
+            case 'MULTIPLE_CHOICE':
+                return question.selectedOptionIds?.join(', ') || '답변 미선택';
+
+            case 'FILE':
+                return question.fileUrl || '파일 미첨부';
+
+            default:
+                return '답변 미작성';
+        }
+    };
+
     // handlers
     // effects
+    // etc
+    function getPersonalValue(type: string) {
+        return (
+            personalInformation.find((information) => information.questionType === type)?.value ||
+            ''
+        );
+    }
+
     return (
         <div css={s_boxContainer(height)}>
             <div css={s_titleSection}>
@@ -55,47 +87,65 @@ function InformationBox({
                 />
             </div>
             <div css={s_contentSection}>
-                {isVisible && applicant && isToggle && (
-                    <div css={s_documentWrapper}>
-                        {documentList?.detail.map((document, index) => (
-                            <DocumentBox
-                                key={document.id}
-                                index={index}
-                                question={document.question}
-                                answer={document.answer}
-                            />
-                        ))}
-                    </div>
-                )}
-                {isVisible && applicant && !isToggle && (
+                {(preQuestionAnswers.length > 0 || applicationQuestionAnswers.length > 0) &&
+                    isToggle && (
+                        <div css={s_documentWrapper}>
+                            {documentGroups.map(({ label, documents }) =>
+                                documents.length > 0 ? (
+                                    <>
+                                        <div css={s_documentTypeTextWrapper}>
+                                            <Text as="span" type="bodyBold" textAlign="start">
+                                                {label}
+                                            </Text>
+                                        </div>
+                                        {documents.map((document, index) => (
+                                            <DocumentBox
+                                                key={document.questionId}
+                                                index={index}
+                                                question={document.questionLabel}
+                                                answer={formatAnswer(document)}
+                                            />
+                                        ))}
+                                    </>
+                                ) : null,
+                            )}
+                        </div>
+                    )}
+                {personalInformation.length > 0 && !isToggle && (
                     <div css={s_personalDataWrapper}>
-                        <Avatar sx={s_avatar} />
+                        <Avatar sx={s_avatar} imageURL={getPersonalValue('PROFILE_IMAGE')} />
                         <div css={s_textGroup}>
-                            {personalInformationMap.map((item) => (
-                                <div key={item.label} css={s_textContainer}>
+                            {textMap
+                                .filter((item) => item.value.trim().length > 0)
+                                .map((item) => (
                                     <Text
+                                        key={item.label}
                                         as="span"
                                         type="captionSemibold"
                                         color="primary"
                                         textAlign="end"
-                                        sx={s_labelText}
                                     >
                                         {item.label}
                                     </Text>
+                                ))}
+                        </div>
+                        <div css={s_textGroup}>
+                            {textMap
+                                .filter((item) => item.value.trim().length > 0)
+                                .map((item) => (
                                     <Text
+                                        key={item.label}
                                         as="span"
                                         type="captionRegular"
                                         textAlign="start"
-                                        sx={s_valueText}
                                     >
                                         {item.value}
                                     </Text>
-                                </div>
-                            ))}
+                                ))}
                         </div>
                     </div>
                 )}
-                {!isVisible && (
+                {!personalInformation?.length && (
                     <div css={s_invisibleText}>
                         <Text as="span" type="captionSemibold" textAlign="center" sx={s_titleText}>
                             지원자 정보가 없습니다.

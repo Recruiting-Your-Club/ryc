@@ -1,5 +1,5 @@
 import React from 'react';
-import { clubBoxContainer, clubBoxItem } from './ClubBox.style';
+import { clubBoxContainer, clubBoxItem, s_TextSx } from './ClubBox.style';
 import { Text } from '@components';
 import type { ClubBoxProps } from './types';
 
@@ -21,7 +21,7 @@ function ClubBox({ data }: ClubBoxProps) {
                         as="div"
                         type="bodyRegular"
                         color="caption"
-                        sx={{ width: '40%' }}
+                        sx={s_TextSx}
                         textAlign="start"
                         noWrap
                     >
