@@ -8,14 +8,36 @@ import type { QuestionProps, QuestionType } from '@components/QuestionForm/types
 
 import type { BasicInfoFields, Period, RecruitDetailInfo } from './types';
 
-export const ALWAYS_OPEN_SENTINEL = '9999-12-31';
+export const ALWAYS_OPEN_SENTINEL_DATE = '9999-12-31';
+export const ALWAYS_OPEN_SENTINEL = '9999-12-31T00:00';
 
-function isAlwaysOpen(period: Period) {
-    return period?.startDate === ALWAYS_OPEN_SENTINEL && period?.endDate === ALWAYS_OPEN_SENTINEL;
+function toServerDateTime(date?: string): string {
+    if (!date) return '';
+    return date.includes('T') ? date : `${date}T00:00`;
+}
+
+function isSentinel(value?: string): boolean {
+    if (!value) return false;
+    const onlyDate = value.split('T')[0];
+    return onlyDate === ALWAYS_OPEN_SENTINEL_DATE;
+}
+
+function isAlwaysOpen(p: Period) {
+    return isSentinel(p?.startDate) && isSentinel(p?.endDate);
 }
 
 function getAnnouncementType(period: Period): 'ALWAYS_OPEN' | 'LIMITED_TIME' {
     return isAlwaysOpen(period) ? 'ALWAYS_OPEN' : 'LIMITED_TIME';
+}
+
+function normalizePeriod(p: Period): Period {
+    if (isAlwaysOpen(p)) {
+        return { startDate: ALWAYS_OPEN_SENTINEL, endDate: ALWAYS_OPEN_SENTINEL };
+    }
+    return {
+        startDate: toServerDateTime(p?.startDate),
+        endDate: toServerDateTime(p?.endDate),
+    };
 }
 
 export function toServerQuestionType(type: QuestionType) {
@@ -88,15 +110,18 @@ export function buildAnnouncementSubmitRequest(args: {
         imageFileIds,
     } = args;
 
-    const applicationPeriod = recruitDetailInfo.documentPeriod;
+    const applicationPeriod = normalizePeriod(recruitDetailInfo.documentPeriod);
+    const interviewPeriod = normalizePeriod(recruitDetailInfo.interviewSchedule);
+    const documentResultPeriod = normalizePeriod(recruitDetailInfo.documentResult);
+    const finalResultPeriod = normalizePeriod(recruitDetailInfo.finalResult);
 
     return {
         title: recruitDetailInfo.recruitmentSubject.trim(),
         periodInfo: {
-            applicationPeriod: recruitDetailInfo.documentPeriod,
-            interviewPeriod: recruitDetailInfo.interviewSchedule,
-            documentResultPeriod: recruitDetailInfo.documentResult,
-            finalResultPeriod: recruitDetailInfo.finalResult,
+            applicationPeriod,
+            interviewPeriod,
+            documentResultPeriod,
+            finalResultPeriod,
         },
         numberOfPeople: (recruitDetailInfo.recruitmentNumber ?? '').toString(),
         detailDescription: detailDescription?.trim() ?? '',
