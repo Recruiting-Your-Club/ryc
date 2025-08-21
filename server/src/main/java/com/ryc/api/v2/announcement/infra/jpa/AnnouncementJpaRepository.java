@@ -23,7 +23,10 @@ public interface AnnouncementJpaRepository extends JpaRepository<AnnouncementEnt
   @Query("SELECT a.id FROM AnnouncementEntity a WHERE a.clubId = :clubId AND a.isDeleted = false")
   List<String> findIdsByClubId(String clubId);
 
+  @Query(
+      "SELECT a FROM AnnouncementEntity a WHERE a.id IN :announcementIds AND a.isDeleted = false")
   List<AnnouncementEntity> findAllByIdIn(List<String> announcementIds);
 
+  @Query("SELECT a FROM AnnouncementEntity a WHERE a.clubId IN :clubIds AND a.isDeleted = false")
   List<AnnouncementEntity> findAllByClubIdIn(List<String> clubIds);
 }
