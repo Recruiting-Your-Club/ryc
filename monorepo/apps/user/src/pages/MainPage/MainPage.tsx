@@ -107,14 +107,16 @@ function MainPage() {
                         모집중인 동아리만 보기
                     </Button>
                     <Dropdown sx={categoryDropdown}>
-                        <Dropdown.Trigger sx={{ border: 'none', backgroundColor: 'transparent' }}>
+                        <Dropdown.Trigger
+                            sx={{ border: 'none', backgroundColor: 'transparent', width: '100%' }}
+                        >
                             <Text type="captionSemibold" color="caption">
                                 {currentCategory.name === '전체'
                                     ? '카테고리'
                                     : currentCategory.name}
                             </Text>
                         </Dropdown.Trigger>
-                        <Dropdown.Content sx={{ border: 'none' }}>
+                        <Dropdown.Content sx={{ border: 'none' }} offsetX={-2}>
                             <Dropdown.Item sx={dropdownItem}>
                                 {CLUB_CATEGORIES.map((category) => (
                                     <Dropdown.Label
