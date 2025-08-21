@@ -59,7 +59,7 @@ public class EvaluationHttpApi {
   }
 
   @HasRole(Role.MEMBER)
-  @PostMapping("/applicaitons/search")
+  @PostMapping("/applications/search")
   @Operation(summary = "지원자의 지원서 평가 리스트 검색 API")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},

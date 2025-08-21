@@ -61,17 +61,14 @@ public class Evaluation {
    */
   public static Evaluation initialize(
       EvaluationRequest request, EvaluationType type, String adminId) {
-    Evaluation evaluation =
-        Evaluation.builder()
-            .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
-            .evaluatorId(adminId)
-            .evaluateeId(request.applicantId())
-            .score(request.score())
-            .comment(request.comment())
-            .type(type)
-            .build();
-
-    return evaluation;
+    return Evaluation.builder()
+        .id(DomainDefaultValues.DEFAULT_INITIAL_ID)
+        .evaluatorId(adminId)
+        .evaluateeId(request.applicantId())
+        .score(request.score())
+        .comment(request.comment())
+        .type(type)
+        .build();
   }
 
   public Evaluation update(EvaluationUpdateRequest body) {

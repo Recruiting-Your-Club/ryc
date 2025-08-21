@@ -28,6 +28,8 @@ public class EvaluationMapper {
         .score(evaluationEntity.getScore())
         .comment(evaluationEntity.getComment())
         .type(evaluationEntity.getType())
+        .createdAt(evaluationEntity.getCreatedAt())
+        .updatedAt(evaluationEntity.getUpdatedAt())
         .build();
   }
 }
