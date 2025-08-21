@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.ryc.api.v2.club.infra.entity.ClubEntity;
+
 import lombok.*;
 
 @Getter
@@ -15,17 +17,21 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class InviteEntity {
+@Table(name = "club_invites")
+public class ClubInviteEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  private String clubId;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "club_id", nullable = false)
+  private ClubEntity club;
 
   @CreatedDate
   @Column(nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
+  @Column(nullable = false, updatable = false)
   private LocalDateTime expiresAt;
 }

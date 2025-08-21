@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ryc.api.v2.role.infra.entity.InviteEntity;
+import com.ryc.api.v2.role.infra.entity.ClubInviteEntity;
 
-public interface InviteJpaRepository extends JpaRepository<InviteEntity, String> {
+public interface InviteJpaRepository extends JpaRepository<ClubInviteEntity, String> {
 
-  Optional<InviteEntity> findByClubId(String clubId);
+  Optional<ClubInviteEntity> findByClub_Id(String clubId);
 }

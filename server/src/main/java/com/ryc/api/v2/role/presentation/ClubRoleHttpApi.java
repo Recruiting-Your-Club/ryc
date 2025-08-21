@@ -36,8 +36,8 @@ public class ClubRoleHttpApi {
   @PostMapping("clubs/{club-id}/invites")
   @HasRole(Role.MEMBER)
   @Operation(
-      summary = "동아리 초대 링크 생성",
-      description = "동아리 초대 링크를 생성합니다.<br>만약 기존에 존재하면서, 만료되지 않은 초대 링크가 있다면, 해당 링크를 반환합니다.")
+      summary = "동아리 초대 코드 생성",
+      description = "동아리 초대 코드를 생성합니다.<br>만약 기존에 존재하면서, 만료되지 않은 초대 코드가 있다면, 해당 코드를 반환합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})

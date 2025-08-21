@@ -9,15 +9,15 @@ import org.springframework.stereotype.Repository;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
+import com.ryc.api.v2.role.domain.ClubInvite;
 import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
-import com.ryc.api.v2.role.domain.Invite;
+import com.ryc.api.v2.role.infra.entity.ClubInviteEntity;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
-import com.ryc.api.v2.role.infra.entity.InviteEntity;
 import com.ryc.api.v2.role.infra.jpa.ClubRoleJpaRepository;
 import com.ryc.api.v2.role.infra.jpa.InviteJpaRepository;
+import com.ryc.api.v2.role.infra.mapper.ClubInviteMapper;
 import com.ryc.api.v2.role.infra.mapper.ClubRoleMapper;
-import com.ryc.api.v2.role.infra.mapper.InviteMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,10 +36,10 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
-  public Invite saveInvite(Invite newInvite) {
-    InviteEntity inviteEntity = InviteMapper.toEntity(newInvite);
-    InviteEntity savedInviteEntity = inviteJpaRepository.save(inviteEntity);
-    return InviteMapper.toDomain(savedInviteEntity);
+  public ClubInvite saveInvite(ClubInvite newClubInvite) {
+    ClubInviteEntity clubInviteEntity = ClubInviteMapper.toEntity(newClubInvite);
+    ClubInviteEntity savedClubInviteEntity = inviteJpaRepository.save(clubInviteEntity);
+    return ClubInviteMapper.toDomain(savedClubInviteEntity);
   }
 
   @Override
@@ -55,15 +55,15 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
-  public Optional<Invite> findInviteOptionalByClubId(String clubId) {
-    return inviteJpaRepository.findByClubId(clubId).map(InviteMapper::toDomain);
+  public Optional<ClubInvite> findInviteOptionalByClubId(String clubId) {
+    return inviteJpaRepository.findByClub_Id(clubId).map(ClubInviteMapper::toDomain);
   }
 
   @Override
-  public Invite findInviteById(String inviteId) {
+  public ClubInvite findInviteById(String inviteId) {
     return inviteJpaRepository
         .findById(inviteId)
-        .map(InviteMapper::toDomain)
+        .map(ClubInviteMapper::toDomain)
         .orElseThrow(() -> new NoSuchElementException("Invite not found with id: " + inviteId));
   }
 
@@ -109,7 +109,7 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
-  public void deleteInvite(Invite invite) {
-    inviteJpaRepository.deleteById(invite.getId());
+  public void deleteInvite(ClubInvite clubInvite) {
+    inviteJpaRepository.deleteById(clubInvite.getId());
   }
 }

@@ -1,7 +1,5 @@
 package com.ryc.api.v2.role.service;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -18,16 +16,13 @@ import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
-import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.file.domain.FileDomainType;
-import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
+import com.ryc.api.v2.role.domain.ClubInvite;
 import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
-import com.ryc.api.v2.role.domain.Invite;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.presentation.dto.response.ClubInviteAcceptResponse;
 import com.ryc.api.v2.role.presentation.dto.response.ClubInviteCreatedResponse;
@@ -52,46 +47,51 @@ public class ClubRoleService {
 
   @Transactional
   public ClubInviteCreatedResponse createInviteCode(String clubId) {
-    Optional<Invite> optional = clubRoleRepository.findInviteOptionalByClubId(clubId);
-    Invite invite;
+    Optional<ClubInvite> optional = clubRoleRepository.findInviteOptionalByClubId(clubId);
+    ClubInvite clubInvite;
 
     // 만약 초대 링크가 존재하지 않거나 만료되었을 경우 새로 생성
     if (optional.isEmpty()) {
-      Invite newInvite = Invite.initialize(clubId);
-      invite = clubRoleRepository.saveInvite(newInvite);
+      clubInvite = createAndSaveInvite(clubId);
     } else {
-      invite = optional.get();
+      clubInvite = optional.get();
 
-      if (invite.isExpired()) {
-        clubRoleRepository.deleteInvite(invite);
+      if (clubInvite.isExpired()) {
+        clubRoleRepository.deleteInvite(clubInvite);
 
-        Invite newInvite = Invite.initialize(clubId);
-        invite = clubRoleRepository.saveInvite(newInvite);
+        clubInvite = createAndSaveInvite(clubId);
       }
     }
 
     return ClubInviteCreatedResponse.builder()
-        .inviteCode(invite.getId())
-        .expiresAt(invite.getExpiresAt())
+        .inviteCode(clubInvite.getId())
+        .expiresAt(clubInvite.getExpiresAt())
         .build();
   }
 
   @Transactional
   public ClubInviteAcceptResponse acceptInvite(
       String newAdminId, String clubId, String inviteCode) {
+
     // 이미 동아리 멤버인 경우 예외 처리
     if (clubRoleRepository.existsByAdminIdAndClubId(newAdminId, clubId)) {
       throw new ClubException(ClubErrorCode.CLUB_MEMBER_ALREADY_EXISTS);
     }
 
     // 초대 코드가 존재하지 않거나 만료된 경우 예외 처리
-    Invite invite = clubRoleRepository.findInviteById(inviteCode);
-    if (invite.isExpired()) {
+    ClubInvite clubInvite = clubRoleRepository.findInviteById(inviteCode);
+    if (clubInvite.isExpired()) {
       throw new ClubException(ClubErrorCode.CLUB_INVITE_EXPIRED);
     }
 
     Admin newAdmin = adminService.getAdminById(newAdminId);
     Club club = clubRepository.findById(clubId);
+
+    // 동아리 아이디와 초대 코드가 일치하지 않는 경우 예외 처리
+    if (!club.getId().equals(clubId)) {
+      throw new NoSuchElementException("동아리 아이디와 초대 코드가 일치하지 않습니다.");
+    }
+
     ClubRole clubRole = assignRole(newAdmin, club, Role.MEMBER);
     return ClubInviteAcceptResponse.builder()
         .clubRoleId(clubRole.getId())
@@ -148,44 +148,19 @@ public class ClubRoleService {
   }
 
   @Transactional(readOnly = true)
-  public List<DetailClubResponse> getMyClubs(String adminId) {
-    List<Club> clubs = clubRoleRepository.findClubsByAdminId(adminId);
+  public List<Club> getMyClubs(String adminId) {
+    return clubRoleRepository.findClubsByAdminId(adminId);
+  }
 
-    List<FileMetaData> fileMetaData =
-        fileService.findAllByAssociatedIdIn(clubs.stream().map(Club::getId).toList());
-    Map<String, FileGetResponse> representativeImageMap =
-        fileMetaData.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
-            .collect(
-                Collectors.toMap(
-                    FileMetaData::getAssociatedId,
-                    image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image))));
+  @Transactional(readOnly = true)
+  public Club getClubByInviteCode(String inviteCode) {
+    ClubInvite clubInvite = clubRoleRepository.findInviteById(inviteCode);
 
-    Map<String, List<FileGetResponse>> detailImageMap =
-        fileMetaData.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
-            .collect(
-                Collectors.groupingBy(
-                    FileMetaData::getAssociatedId,
-                    Collectors.mapping(
-                        image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
-                        toList())));
+    if (clubInvite.isExpired()) {
+      throw new ClubException(ClubErrorCode.CLUB_INVITE_EXPIRED);
+    }
 
-    return clubs.stream()
-        .map(
-            club ->
-                DetailClubResponse.builder()
-                    .id(club.getId())
-                    .name(club.getName())
-                    .shortDescription(club.getShortDescription())
-                    .detailDescription(club.getDetailDescription())
-                    .category(club.getCategory())
-                    .clubTags(club.getClubTags())
-                    .clubSummaries(club.getClubSummaries())
-                    .representativeImage(representativeImageMap.get(club.getId()))
-                    .clubDetailImages(detailImageMap.get(club.getId()))
-                    .build())
-        .toList();
+    return clubInvite.getClub();
   }
 
   @Transactional(readOnly = true)
@@ -216,5 +191,11 @@ public class ClubRoleService {
     }
 
     clubRoleRepository.deleteAllByAdminId(event.adminId());
+  }
+
+  private ClubInvite createAndSaveInvite(String clubId) {
+    Club club = clubRepository.findById(clubId);
+    ClubInvite newClubInvite = ClubInvite.initialize(club);
+    return clubRoleRepository.saveInvite(newClubInvite);
   }
 }

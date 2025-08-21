@@ -14,7 +14,7 @@ public enum ClubErrorCode implements ErrorCode {
   CLUB_OWNER_CANNOT_BE_DELETED(HttpStatus.BAD_REQUEST, "동아리 회장은 삭제할 수 없습니다."),
   CLUB_CATEGORY_BAD_REQUEST(HttpStatus.BAD_REQUEST, "존재하지 않는 동아리 카테고리입니다."),
   POST_IMAGE_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "detailDescription의 이미지 수는 10개 이하 입니다."),
-  CLUB_INVITE_EXPIRED(HttpStatus.CONFLICT, "동아리 초대 링크가 만료되었습니다."),
+  CLUB_INVITE_EXPIRED(HttpStatus.CONFLICT, "동아리 초대 코드가 만료되었습니다."),
   ;
 
   private final HttpStatus httpStatus;
