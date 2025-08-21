@@ -35,8 +35,8 @@ async function postDetailApplicationEvaluation(params: {
     applicantIdList: string[];
 }): Promise<Evaluation> {
     return await httpRequest.post({
-        url: `evaluation/applications/search`,
-        body: params,
+        url: `evaluation/applicaitons/search`,
+        body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,
         },
@@ -50,7 +50,7 @@ async function postDetailInterviewEvaluation(params: {
 }): Promise<Evaluation> {
     return await httpRequest.post({
         url: `evaluation/interviews/search`,
-        body: params,
+        body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,
         },
