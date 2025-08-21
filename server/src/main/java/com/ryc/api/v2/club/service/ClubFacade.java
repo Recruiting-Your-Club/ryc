@@ -1,5 +1,6 @@
 package com.ryc.api.v2.club.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class ClubFacade {
   @Transactional(readOnly = true)
   public SimpleClubResponse getClubByInviteCode(String inviteCode) {
     Club club = clubRoleService.getClubByInviteCode(inviteCode);
-    return clubService.createSimpleClubResponse(club, null);
+    return clubService.createSimpleClubResponse(club, Collections.emptyMap());
   }
 
   @Transactional
