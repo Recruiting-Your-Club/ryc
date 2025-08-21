@@ -21,7 +21,7 @@ const interviewHandler = [
     }),
 
     http.get(
-        `${BASE_URL}announcements/:announcementId/interviews/unreserved-applicants`,
+        `${BASE_URL}admin/announcements/:announcementId/interviews/unreserved-applicants`,
         async () => {
             return HttpResponse.json(unreservedApplicants, { status: 200 });
         },

@@ -45,11 +45,11 @@ function ApplicantSchedulePage() {
     const [slot1Id, setSlot1Id] = useState<string | null>(null);
 
     const [selectedInterviewLabel, setSelectedInterviewLabel] = useState<SelectedLabel>({
-        label: '',
+        label: '면접 일정 없음',
         interviewSlotId: null,
     });
     const [selectedStandardInterviewLabel, setSelectedStandardInterviewLabel] =
-        useState<SelectedLabel>({ label: '', interviewSlotId: null });
+        useState<SelectedLabel>({ label: '면접 일정 없음', interviewSlotId: null });
 
     // form hooks
     // query hooks
@@ -159,7 +159,7 @@ function ApplicantSchedulePage() {
         const finalReservationId =
             'applicantSummary' in selected ? selected.interviewReservationId : '';
 
-        if (targetSlotId === '') {
+        if (targetSlotId === '' && currentSlotId !== '') {
             deleteReservation({
                 reservationId: finalReservationId,
                 clubId: clubId!,
@@ -244,7 +244,7 @@ function ApplicantSchedulePage() {
                 submittedAt: '',
                 imageAllowed: Boolean(imageResponse),
                 imagePresent: Boolean(imageResponse),
-                profileImage: imageResponse ?? null,
+                representativeImage: imageResponse ?? null,
             };
         });
     };

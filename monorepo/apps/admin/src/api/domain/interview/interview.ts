@@ -8,6 +8,7 @@ async function getInterviewSlot(params: {
     return await httpRequest.get({
         url: `admin/announcements/${params.announcementId}/interview-slots`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -20,6 +21,7 @@ async function getInterviewInformation(params: {
     return await httpRequest.get({
         url: `admin/interview-slots/${params.interviewSlotId}/reservations`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -29,8 +31,9 @@ async function getUnreservedApplicant(params: {
     clubId: string;
 }): Promise<UnreservedApplicant[]> {
     return await httpRequest.get({
-        url: `announcements/${params.announcementId}/interviews/unreserved-applicants`,
+        url: `admin/announcements/${params.announcementId}/interviews/unreserved-applicants`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -45,6 +48,7 @@ async function putInterviewReservation(params: {
         url: `admin/applicants/${params.applicantId}/interview-reservation`,
         body: { interviewSlotId: params.interviewSlotId },
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 
@@ -56,6 +60,7 @@ async function deleteInterviewReservation(params: {
     await httpRequest.delete({
         url: `admin/interview-reservations/${params.reservationId}`,
         headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
     });
 }
 

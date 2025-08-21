@@ -1,7 +1,7 @@
 import type {
     Evaluation,
     EvaluationDetailWithSummary,
-    EvaluationSummary,
+    PerEvaluationSummary,
 } from '@api/domain/evaluation/types';
 import type { StepApplicant } from '@api/domain/step/types';
 import type { MergedStepApplicant } from '@components/CardBox/types';
@@ -16,8 +16,8 @@ export const getEvaluations = (
 
 export const mergeApplicantWithSummary = (
     applicants: StepApplicant[],
-    documentSummaries: EvaluationSummary[],
-    interviewSummaries: EvaluationSummary[],
+    documentSummaries: PerEvaluationSummary[],
+    interviewSummaries: PerEvaluationSummary[],
     isThreeStepProcess: boolean,
 ) => {
     return applicants.map((applicant) => {
