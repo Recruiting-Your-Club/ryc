@@ -38,4 +38,5 @@ export * from './FileUpLoader';
 export * from './Footer';
 export * from './QuestionDropdown';
 export * from './ImageEditDialog';
+export * from './ComponentMover';
 export * from './FileDownloader';

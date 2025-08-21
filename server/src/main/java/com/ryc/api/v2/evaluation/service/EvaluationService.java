@@ -5,16 +5,21 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
+import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.domain.event.ApplicantDeletedEvent;
+import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.evaluation.domain.Evaluation;
 import com.ryc.api.v2.evaluation.domain.EvaluationRepository;
 import com.ryc.api.v2.evaluation.domain.EvaluationType;
 import com.ryc.api.v2.evaluation.presentation.dto.request.*;
 import com.ryc.api.v2.evaluation.presentation.dto.response.*;
+import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +31,7 @@ public class EvaluationService {
   private final AdminRepository adminRepository;
   private final ClubRoleRepository clubRoleRepository;
   private final ApplicantRepository applicantRepository;
+  private final FileService fileService;
 
   @Transactional
   public ApplicationEvaluationResponse evaluateApplication(
@@ -69,8 +75,16 @@ public class EvaluationService {
     // 평가자 아이디 - 이름 매핑
     Map<String, String> evaluatorNameMap = getEvaluatorNameMap(evaluations);
 
-    // 평가자 아이디 - 썸네일 url 매핑
-    Map<String, String> evaluatorThumbnailMap = getEvaluatorThumbnailMap(evaluations);
+    List<String> evaluatorIds = evaluations.stream().map(Evaluation::getEvaluatorId).toList();
+
+    Map<String, FileGetResponse> evaluatorImageMap =
+        fileService.findAllByAssociatedIdIn(evaluatorIds).stream()
+            .map(
+                m ->
+                    Map.entry(
+                        m.getAssociatedId(),
+                        FileGetResponse.of(m, fileService.getPrivateFileGetUrl(m))))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     // applicantId 별로 평가 데이터를 생성
     List<EvaluationSearchResponse.EvaluationsOfApplicant> response =
@@ -84,7 +98,7 @@ public class EvaluationService {
                         entry.getKey(),
                         entry.getValue(),
                         evaluatorNameMap,
-                        evaluatorThumbnailMap,
+                        evaluatorImageMap,
                         currentAdminId,
                         totalEvaluatorCount))
             .toList();
@@ -160,8 +174,24 @@ public class EvaluationService {
   @Transactional
   public void deleteEvaluation(String evaluationId) {
     // TODO: 본인 평가 ID인지 검증 필요
-    //  현재 물리 삭제로 구현. 추후 의논 후 논리/물리 삭제 기준 설계 필요.
     evaluationRepository.deleteById(evaluationId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
+    event.applicantIds().stream()
+        .filter(evaluationRepository::existsByApplicantId)
+        .forEach(evaluationRepository::deleteAllByApplicantId);
+  }
+
+  @Transactional
+  @EventListener
+  protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
+    if (!evaluationRepository.existsByAdminId(event.adminId())) {
+      return;
+    }
+    evaluationRepository.deleteAllByAdminId(event.adminId());
   }
 
   /**
@@ -180,19 +210,6 @@ public class EvaluationService {
   }
 
   /**
-   * 평가자 ID를 기준으로 썸네일 이미지 URL을 매핑한 Map을 반환합니다.
-   *
-   * @param evaluations 평가 데이터 리스트
-   * @return evaluatorId -> evaluatorThumbnailUrl 매핑 Map
-   */
-  private Map<String, String> getEvaluatorThumbnailMap(List<Evaluation> evaluations) {
-    Set<String> evaluatorIds =
-        evaluations.stream().map(Evaluation::getEvaluatorId).collect(Collectors.toSet());
-
-    return adminRepository.findThumbnailUrlByIds(evaluatorIds.stream().toList());
-  }
-
-  /**
    * 지원자 1명에 대한 평가 요약 및 상세 정보를 생성합니다.
    *
    * @param evaluations 평가 데이터 리스트
@@ -205,7 +222,7 @@ public class EvaluationService {
       String applicantId,
       List<Evaluation> evaluations,
       Map<String, String> evaluatorNameMap,
-      Map<String, String> evaluatorThumbnailMap,
+      Map<String, FileGetResponse> evaluatorThumbnailMap,
       String currentAdminId,
       int totalEvaluatorCount) {
 
@@ -221,8 +238,8 @@ public class EvaluationService {
                         .evaluatorId(evaluation.getEvaluatorId())
                         .evaluatorName(
                             evaluatorNameMap.getOrDefault(evaluation.getEvaluatorId(), "알수없음"))
-                        .evaluatorThumbnailUrl(
-                            evaluatorThumbnailMap.getOrDefault(evaluation.getEvaluatorId(), ""))
+                        .evaluatorRepresentativeImage(
+                            evaluatorThumbnailMap.getOrDefault(evaluation.getEvaluatorId(), null))
                         .isEvaluatorImagePresent(
                             evaluatorThumbnailMap.containsKey(evaluation.getEvaluatorId()))
                         .score(evaluation.getScore())

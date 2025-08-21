@@ -14,4 +14,12 @@ public interface EvaluationRepository {
   Evaluation findEvaluationById(String evaluationId);
 
   void deleteById(String evaluationId);
+
+  void deleteAllByApplicantId(String applicantId);
+
+  void deleteAllByAdminId(String adminId);
+
+  boolean existsByApplicantId(String applicantId);
+
+  boolean existsByAdminId(String adminId);
 }

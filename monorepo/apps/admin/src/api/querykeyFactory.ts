@@ -22,6 +22,7 @@ queryClient.prefetchQueries({
   queryFn: () => fetchTodo(id),
 })
 */
+import type { EvaluationType } from './domain/evaluation/types';
 
 const clubKeys = {
     all: ['clubs'] as const,
@@ -52,15 +53,12 @@ const stepKeys = {
 };
 
 const evaluationKeys = {
-    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+    evaluationSummary: (clubId: string, applicantIds: string[], type: EvaluationType) =>
         ['evaluation-summary', clubId, ...applicantIds, type] as const,
-    evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+    evaluationDetail: (clubId: string, applicantIds: string[], type: EvaluationType) =>
         ['evaluation-detail', clubId, ...applicantIds, type] as const,
-    myEvaluationStatus: (
-        clubId: string,
-        applicantIds: string[],
-        type: 'application' | 'interview',
-    ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
+    myEvaluationStatus: (clubId: string, announcementId: string, type: EvaluationType) =>
+        ['my-evaluation-status', clubId, announcementId, type] as const,
 };
 
 const announcementKeys = {

@@ -15,6 +15,7 @@ import {
     RegisterPage,
     StepManagementPage,
     TestPage,
+    ApplicantSchedulePage,
     RecruitmentLoadingPage,
     ClubApplySuccessPage,
 } from './pages';
@@ -90,8 +91,8 @@ const router = createBrowserRouter([
             { path: 'announcements/edit', element: <RecruitCreatePage /> },
             { path: 'applicants', element: <StepManagementPage /> },
             { path: 'evaluations/document', element: <DocumentEvaluationPage /> },
-            { path: 'evaluations/interview', element: <RegisterPage /> },
-            { path: 'interviews/schedule', element: <LoginPage /> },
+            { path: 'evaluations/interview', element: <InterviewEvaluationPage /> },
+            { path: 'interviews/schedule', element: <ApplicantSchedulePage /> },
             { path: 'settings', element: <LoginPage /> },
         ],
     },

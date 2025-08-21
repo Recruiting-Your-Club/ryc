@@ -9,7 +9,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/gildong.jpg",
         "status": "FINAL_PASS",
         "submittedAt": "2025-08-08T10:00:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-1",
             "url": "https://example.com/images/gildong.jpg",
             "originalFileName": "profile-image-1.jpg",
@@ -26,7 +26,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/younghee.jpg",
         "status": "FINAL_FAIL",
         "submittedAt": "2025-08-08T10:05:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-2",
             "url": "https://example.com/images/younghee.jpg",
             "originalFileName": "profile-image-2.jpg",
@@ -43,7 +43,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:10:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -60,7 +60,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/eunji.jpg",
         "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:15:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-4",
             "url": "https://example.com/images/eunji.jpg",
             "originalFileName": "profile-image-4.jpg",
@@ -77,7 +77,7 @@
         "thumbnailUrl": "",
         "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T10:20:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -94,7 +94,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/jihun.jpg",
         "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T10:25:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-6",
             "url": "https://example.com/images/jihun.jpg",
             "originalFileName": "profile-image-6.jpg",
@@ -111,7 +111,7 @@
         "thumbnailUrl": "",
         "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:30:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -128,7 +128,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/sungmin.jpg",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:35:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-8",
             "url": "https://example.com/images/sungmin.jpg",
             "originalFileName": "profile-image-8.jpg",
@@ -145,7 +145,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/seohyun.jpg",
         "status": "FINAL_PASS",
         "submittedAt": "2025-08-08T10:40:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-9",
             "url": "https://example.com/images/seohyun.jpg",
             "originalFileName": "profile-image-9.jpg",
@@ -162,7 +162,7 @@
         "thumbnailUrl": "",
         "status": "FINAL_FAIL",
         "submittedAt": "2025-08-08T10:45:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -179,7 +179,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/jia.jpg",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T10:50:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-11",
             "url": "https://example.com/images/jia.jpg",
             "originalFileName": "profile-image-11.jpg",
@@ -196,7 +196,7 @@
         "thumbnailUrl": "",
         "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T10:55:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -213,7 +213,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/jiyeon.jpg",
         "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T11:00:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-13",
             "url": "https://example.com/images/jiyeon.jpg",
             "originalFileName": "profile-image-13.jpg",
@@ -230,7 +230,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T11:05:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -247,7 +247,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/hana.jpg",
         "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:10:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-15",
             "url": "https://example.com/images/hana.jpg",
             "originalFileName": "profile-image-15.jpg",
@@ -264,7 +264,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T11:15:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -281,7 +281,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/hamin.jpg",
         "status": "FINAL_PASS",
         "submittedAt": "2025-08-08T11:20:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-17",
             "url": "https://example.com/images/hamin.jpg",
             "originalFileName": "profile-image-17.jpg",
@@ -298,7 +298,7 @@
         "thumbnailUrl": "",
         "status": "FINAL_FAIL",
         "submittedAt": "2025-08-08T11:25:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -315,7 +315,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/eunchae.jpg",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T11:30:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-19",
             "url": "https://example.com/images/eunchae.jpg",
             "originalFileName": "profile-image-19.jpg",
@@ -332,7 +332,7 @@
         "thumbnailUrl": "",
         "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:35:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -349,7 +349,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/jiwoo.jpg",
         "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T11:40:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-21",
             "url": "https://example.com/images/jiwoo.jpg",
             "originalFileName": "profile-image-21.jpg",
@@ -366,7 +366,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T11:45:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -383,7 +383,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/hyuna.jpg",
         "status": "INTERVIEW_PENDING",
         "submittedAt": "2025-08-08T11:50:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-23",
             "url": "https://example.com/images/hyuna.jpg",
             "originalFileName": "profile-image-23.jpg",
@@ -400,7 +400,7 @@
         "thumbnailUrl": "",
         "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T11:55:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -417,7 +417,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/eunjin.jpg",
         "status": "FINAL_PASS",
         "submittedAt": "2025-08-08T12:00:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-25",
             "url": "https://example.com/images/eunjin.jpg",
             "originalFileName": "profile-image-25.jpg",
@@ -434,7 +434,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T12:05:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -451,7 +451,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/sungmin2.jpg",
         "status": "FINAL_FAIL",
         "submittedAt": "2025-08-08T12:10:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-27",
             "url": "https://example.com/images/sungmin2.jpg",
             "originalFileName": "profile-image-27.jpg",
@@ -468,7 +468,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_FAIL",
         "submittedAt": "2025-08-08T12:15:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",
@@ -485,7 +485,7 @@
         "thumbnailUrl": "https://example.com/thumbnails/seungho.jpg",
         "status": "INTERVIEW_FAIL",
         "submittedAt": "2025-08-08T12:20:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "img-29",
             "url": "https://example.com/images/seungho.jpg",
             "originalFileName": "profile-image-29.jpg",
@@ -502,7 +502,7 @@
         "thumbnailUrl": "",
         "status": "DOCUMENT_PENDING",
         "submittedAt": "2025-08-08T12:25:00Z",
-        "profileImage": {
+        "representativeImage": {
             "id": "",
             "url": "",
             "originalFileName": "",

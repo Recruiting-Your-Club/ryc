@@ -22,4 +22,6 @@ public interface ApplicantRepository {
   Boolean existsByAnnouncementIdAndEmail(String announcementId, String email);
 
   Map<String, String> findApplicantImageUrlsByIds(List<String> ids);
+
+  void deleteAllByIdIn(List<String> ids);
 }

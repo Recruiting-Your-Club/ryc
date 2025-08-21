@@ -3,15 +3,29 @@ package com.ryc.api.v2.applicationForm.domain;
 import com.ryc.api.v2.applicationForm.presentation.request.QuestionOptionCreateRequest;
 import com.ryc.api.v2.applicationForm.presentation.request.QuestionOptionUpdateRequest;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class QuestionOption {
-  private String id;
-  private String option;
+  private final String id;
+  private final String option;
+
+  @Builder
+  private QuestionOption(String id, String option) {
+
+    // 1. 정제
+    String sanitizedOption = DataResolveUtil.sanitizeString(option);
+
+    // 2. 검증
+    QuestionOptionValidator.validate(id, sanitizedOption);
+
+    // 3. 할당
+    this.id = id;
+    this.option = sanitizedOption;
+  }
 
   /**
    * create 메소드

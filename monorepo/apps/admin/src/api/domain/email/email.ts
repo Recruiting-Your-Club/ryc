@@ -13,6 +13,7 @@ async function postPlainEmail(params: {
         url: `announcements/${announcementId}/emails`,
         headers: { 'X-ClUB-ID': clubId },
         body: email,
+        isAuthRequire: true,
     });
 }
 
@@ -27,6 +28,7 @@ async function postInterviewEmail(params: {
         url: `admin/clubs/${clubId}/announcements/${announcementId}/interview-slots`,
         headers: { 'X-CLUB-ID': clubId },
         body: email,
+        isAuthRequire: true,
     });
 }
 

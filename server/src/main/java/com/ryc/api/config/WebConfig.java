@@ -38,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
             LOCAL_CLIENT_HTTPS_URL + "/",
             DEV_SERVER_URL,
             DEV_SERVER_URL + "/") // 허용할 Origin
-        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // 허용할 HTTP 메서드
         .allowCredentials(true) // 쿠키 인증 요청 허용
         .allowedHeaders("*")
         .maxAge(3600); // 옵션 요청 캐시 시간 (초)

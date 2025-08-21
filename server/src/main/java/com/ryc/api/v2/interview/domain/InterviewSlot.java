@@ -11,11 +11,8 @@ import com.ryc.api.v2.common.exception.custom.InterviewException;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder
-@RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class InterviewSlot {
 
   private final String id;
@@ -24,6 +21,34 @@ public class InterviewSlot {
   private final Integer maxNumberOfPeople;
   private final Period period;
   private final List<InterviewReservation> interviewReservations;
+
+  @Builder
+  private InterviewSlot(
+      String id,
+      String creatorId,
+      String announcementId,
+      Integer maxNumberOfPeople,
+      Period period,
+      List<InterviewReservation> interviewReservations) {
+
+    // 1. 정제 (Period, InterviewReservation는 이미 도메인 객체이므로 정제 불필요)
+
+    // 2. 선택 멤버 변수 기본값 처리
+    List<InterviewReservation> resolvedInterviewReservations =
+        interviewReservations != null ? interviewReservations : List.of();
+
+    // 3. 검증
+    InterviewSlotValidator.validate(
+        id, creatorId, announcementId, maxNumberOfPeople, period, resolvedInterviewReservations);
+
+    // 4. 할당
+    this.id = id;
+    this.creatorId = creatorId;
+    this.announcementId = announcementId;
+    this.maxNumberOfPeople = maxNumberOfPeople;
+    this.period = period;
+    this.interviewReservations = List.copyOf(resolvedInterviewReservations);
+  }
 
   public static InterviewSlot initialize(
       String creatorId,
@@ -35,6 +60,7 @@ public class InterviewSlot {
     Period period =
         Period.builder().startDate(start).endDate(start.plusMinutes(interviewDuration)).build();
 
+    // 상태 검증
     if (!period.startDate().toLocalDate().equals(period.endDate().toLocalDate())) {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_PERIOD_INVALID);
     }

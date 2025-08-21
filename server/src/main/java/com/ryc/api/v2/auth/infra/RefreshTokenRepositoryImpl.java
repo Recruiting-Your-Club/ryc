@@ -48,4 +48,14 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
   public void flush() {
     refreshTokenJpaRepository.flush();
   }
+
+  @Override
+  public void deleteByAdminId(String adminId) {
+    refreshTokenJpaRepository.deleteByAdminEntityId(adminId);
+  }
+
+  @Override
+  public boolean existsByAdminId(String adminId) {
+    return refreshTokenJpaRepository.existsByAdminEntityId(adminId);
+  }
 }

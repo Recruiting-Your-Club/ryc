@@ -1,4 +1,5 @@
 import { getAllAnnouncements, getAnnouncementsByClub, getDetailAnnouncement } from '@api/domain';
+import type { DetailAnnouncement } from '@api/domain/announcement/types';
 import { announcementKeys } from '@api/querykeyFactory';
 import { DEFAULT_GCTIME } from '@constants/gcTime';
 import { DEFAULT_STALETIME, PREFETCH_STALETIME } from '@constants/staleTime';
@@ -26,7 +27,7 @@ const announcementQueries = {
         }),
 
     detail: (announcementId: string) =>
-        queryOptions({
+        queryOptions<DetailAnnouncement>({
             queryKey: announcementKeys.detail(announcementId),
             queryFn: () => getDetailAnnouncement(announcementId),
             staleTime: DEFAULT_STALETIME,

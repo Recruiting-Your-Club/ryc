@@ -17,7 +17,6 @@ public class EvaluationMapper {
         .score(evaluation.getScore())
         .comment(evaluation.getComment())
         .type(evaluation.getType())
-        .deleted(evaluation.getDeleted())
         .build();
   }
 
@@ -29,7 +28,8 @@ public class EvaluationMapper {
         .score(evaluationEntity.getScore())
         .comment(evaluationEntity.getComment())
         .type(evaluationEntity.getType())
-        .deleted(evaluationEntity.getDeleted())
+        .createdAt(evaluationEntity.getCreatedAt())
+        .updatedAt(evaluationEntity.getUpdatedAt())
         .build();
   }
 }

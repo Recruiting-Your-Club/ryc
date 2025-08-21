@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantSummaryResponse;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
@@ -42,10 +43,9 @@ public class InterviewHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<InterviewSlotsByDateResponse>> getInterviewSlotsForAdmin(
+  public ResponseEntity<List<InterviewSlotResponse>> getInterviewSlotsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<InterviewSlotsByDateResponse> responses =
-        interviewService.getInterviewSlots(announcementId);
+    List<InterviewSlotResponse> responses = interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
 
@@ -94,10 +94,10 @@ public class InterviewHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<List<UnReservedApplicantGetResponse>> getUnReservedApplicants(
+  public ResponseEntity<List<ApplicantSummaryResponse>> getInterviewUnReservationsForAdmin(
       @PathVariable("announcement-id") String announcementId) {
-    List<UnReservedApplicantGetResponse> response =
-        interviewService.getUnReservedApplicants(announcementId);
+    List<ApplicantSummaryResponse> response =
+        interviewService.getInterviewUnReservations(announcementId);
     return ResponseEntity.ok(response);
   }
 
@@ -158,5 +158,17 @@ public class InterviewHttpApi {
     InterviewReservationUpdateResponse response =
         interviewService.changeInterviewReservation(applicantId, body);
     return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("admin/interview-reservations/{reservation-id}")
+  @HasRole(Role.MEMBER)
+  @Operation(summary = "면접 예약자를 미지정자로 변경", description = "동아리 관리자가 면접 예약자를 미지정자로 변경합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<Void> deleteInterviewReservation(
+      @PathVariable("reservation-id") String reservationId) {
+    interviewService.deleteInterviewReservation(reservationId);
+    return ResponseEntity.noContent().build();
   }
 }

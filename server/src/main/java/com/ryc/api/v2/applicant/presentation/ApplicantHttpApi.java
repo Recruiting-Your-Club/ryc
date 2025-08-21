@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantDeletedRequest;
 import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantStatusRequest;
 import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantGetResponse;
 import com.ryc.api.v2.applicant.service.ApplicantService;
@@ -62,5 +63,16 @@ public class ApplicantHttpApi {
           String status) {
     List<ApplicantGetResponse> response = applicantService.getApplicants(announcementId, status);
     return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("/applicants")
+  @HasRole(Role.OWNER)
+  @Operation(summary = "지원자 삭제", description = "지원자들을 삭제합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_OWNER"})
+  public ResponseEntity<Void> deleteApplicants(@RequestBody ApplicantDeletedRequest request) {
+    applicantService.deleteApplicants(request.applicantIds());
+    return ResponseEntity.noContent().build();
   }
 }
