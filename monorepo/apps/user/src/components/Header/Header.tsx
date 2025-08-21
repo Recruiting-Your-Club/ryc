@@ -6,13 +6,13 @@ import Search from '@ssoc/assets/images/search.svg';
 import theme from '@ssoc/styles';
 import { Button, Input, Text } from '@ssoc/ui';
 
-import { headerBarContainer, homeNavContainer, navContainer } from './Header.style';
+import { headerBarContainer, homeNavContainer, navContainer, s_homeLogo } from './Header.style';
 
 function Header() {
     return (
         <header css={headerBarContainer}>
             <div css={homeNavContainer}>
-                <Link to="/">
+                <Link to="/" css={s_homeLogo}>
                     <img src={mainLogo} alt="mainLogo" width="100%" height="55rem" />
                 </Link>
                 {/* <nav css={navContainer}>

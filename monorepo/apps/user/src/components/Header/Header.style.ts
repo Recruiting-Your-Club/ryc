@@ -19,6 +19,10 @@ export const homeNavContainer = css`
     max-width: 100rem;
 `;
 
+export const s_homeLogo = css`
+    height: 100%;
+    width: 10rem;
+`;
 export const homeImage = css`
     border-radius: 0.5rem;
 `;
