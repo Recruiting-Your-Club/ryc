@@ -5,6 +5,7 @@ import type {
     CreateClubResponse,
     DetailClubResponse,
     MyClubResponse,
+    UpdateClub,
 } from './types';
 
 async function getMyClub(): Promise<MyClubResponse[]> {
@@ -28,7 +29,7 @@ async function getClub(id: string): Promise<Club> {
     });
     return response as Club;
 }
-async function updateClub(id: string, club: Club): Promise<Club> {
+async function updateClub(id: string, club: UpdateClub): Promise<Club> {
     const response = await httpRequest.put({
         url: `clubs/${id}`,
         headers: {

@@ -80,6 +80,16 @@ export interface Club {
     name: string;
     shortDescription: string;
     detailDescription: string;
+    representativeImage: RepresentativeImage;
+    category: string;
+    clubTags: ClubTag[];
+    clubSummaries: summaries[];
+    clubDetailImages: string[];
+}
+export interface UpdateClub {
+    name: string;
+    shortDescription: string;
+    detailDescription: string;
     representativeImage: string;
     category: string;
     clubTags: ClubTag[];
