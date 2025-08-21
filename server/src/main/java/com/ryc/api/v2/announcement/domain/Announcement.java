@@ -100,19 +100,19 @@ public class Announcement {
     // 4. 할당
     this.id = id;
     this.clubId = clubId;
-    this.title = title;
-    this.numberOfPeople = numberOfPeople;
-    this.detailDescription = detailDescription;
-    this.summaryDescription = summaryDescription;
-    this.target = target;
-    this.field = field;
-    this.tags = tags;
+    this.title = sanitizeTitle;
+    this.numberOfPeople = sanitizeNumberOfPeople;
+    this.detailDescription = sanitizeDetailDescription;
+    this.summaryDescription = sanitizeSummaryDescription;
+    this.target = sanitizeTarget;
+    this.field = sanitizeField;
+    this.tags = resolvedTags;
     this.announcementStatus = status;
     this.announcementType = announcementType;
-    this.hasInterview = hasInterview;
+    this.hasInterview = resolvedHasInterview;
     this.announcementPeriodInfo = announcementPeriodInfo;
     this.applicationForm = applicationForm;
-    this.activityPeriod = activityPeriod;
+    this.activityPeriod = sanitizeActivityPeriod;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
