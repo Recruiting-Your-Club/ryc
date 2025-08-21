@@ -31,6 +31,11 @@ const router = createBrowserRouter([
                 element: <RecruitCreatePage />,
             },
 
+            {
+                path: 'announcements/create/:clubId/success/:announcementId',
+                element: <RecruitSuccessPage />,
+            },
+
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
             { path: 'announcements/edit/:clubId', element: <NonAnnouncementPage /> },
@@ -52,7 +57,6 @@ const router = createBrowserRouter([
             { path: 'interviewee-schedule/:clubId/:announcementId', element: <LoginPage /> },
 
             { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
-            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },
     {

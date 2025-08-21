@@ -1,8 +1,9 @@
+import { useCreateAnnouncement } from '@api/hooks/useCreateAnnouncement';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
 import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { generatePath, useLocation, useParams } from 'react-router-dom';
 
 import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Button, Dialog, Stepper, useFileUpLoader, useToast } from '@ssoc/ui';
@@ -34,6 +35,7 @@ function RecruitCreatePage() {
 
     const { removeHistoryAndGo } = useRouter();
     const { toast } = useToast();
+    const { clubId } = useParams();
 
     const {
         questions,
@@ -97,11 +99,34 @@ function RecruitCreatePage() {
                 detailDescription,
                 imageFileIds,
             }),
-        [recruitDetailInfo, basicInfoFields, questions, applicationQuestions, detailDescription],
+        [
+            recruitDetailInfo,
+            basicInfoFields,
+            questions,
+            applicationQuestions,
+            detailDescription,
+            imageFileIds,
+        ],
     );
 
     // form hooks
     // query hooks
+    const { mutate: postAnnouncement, isPending: isSubmitting } = useCreateAnnouncement({
+        clubId: clubId!,
+        onSuccess: ({ announcementId }) => {
+            setIsDialogOpen(false);
+            const successPath = generatePath(
+                '/announcements/create/:clubId/success/:announcementId',
+                { clubId: clubId ?? '', announcementId },
+            );
+            removeHistoryAndGo(successPath);
+        },
+        onError: () => {
+            setIsDialogOpen(false);
+            toast.error('공고 등록에 실패했습니다.');
+        },
+    });
+
     // calculated values
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
 
@@ -198,8 +223,7 @@ function RecruitCreatePage() {
     };
 
     const handleConfirmSubmit = () => {
-        const currentPath = location.pathname;
-        removeHistoryAndGo(`${currentPath}/success`);
+        postAnnouncement(submitJson);
     };
 
     // effects
