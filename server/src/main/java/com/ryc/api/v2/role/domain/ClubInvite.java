@@ -4,26 +4,28 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 
 import java.time.LocalDateTime;
 
+import com.ryc.api.v2.club.domain.Club;
+
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Invite {
+public class ClubInvite {
 
   private final String id;
-  private final String clubId;
+  private final Club club;
   private final LocalDateTime expiresAt;
 
   @Builder
-  public Invite(String id, String clubId, LocalDateTime expiresAt) {
+  public ClubInvite(String id, Club club, LocalDateTime expiresAt) {
     this.id = id;
-    this.clubId = clubId;
+    this.club = club;
     this.expiresAt = expiresAt;
   }
 
-  public static Invite initialize(String clubId) {
+  public static ClubInvite initialize(Club club) {
     LocalDateTime newExpiresAt = LocalDateTime.now().plusDays(2);
-    return Invite.builder().id(DEFAULT_INITIAL_ID).clubId(clubId).expiresAt(newExpiresAt).build();
+    return ClubInvite.builder().id(DEFAULT_INITIAL_ID).club(club).expiresAt(newExpiresAt).build();
   }
 
   public boolean isExpired() {
