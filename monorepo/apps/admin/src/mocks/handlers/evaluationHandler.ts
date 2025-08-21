@@ -33,7 +33,7 @@ const evaluationHandler = [
         return HttpResponse.json(filtered, { status: 200 });
     }),
 
-    http.post(`${BASE_URL}evaluation/applicaitons/search`, async ({ request }) => {
+    http.post(`${BASE_URL}evaluation/applications/search`, async ({ request }) => {
         const { applicantIdList } = (await request.json()) as {
             applicantIdList: string[];
         };

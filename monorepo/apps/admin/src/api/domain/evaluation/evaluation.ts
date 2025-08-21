@@ -35,7 +35,7 @@ async function postDetailApplicationEvaluation(params: {
     applicantIdList: string[];
 }): Promise<Evaluation> {
     return await httpRequest.post({
-        url: `evaluation/applicaitons/search`,
+        url: `evaluation/applications/search`,
         body: { clubId: params.clubId, applicantIdList: params.applicantIdList },
         headers: {
             'X-CLUB-ID': params.clubId,

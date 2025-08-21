@@ -4,7 +4,7 @@ import type {
     UnreservedApplicant,
 } from '@api/domain/interview/types';
 import type { StepApplicant } from '@api/domain/step/types';
-import { interviewMutations } from '@api/hooks';
+import { useInterviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
 import { ApplicantList, ComponentMover, InterviewSlotDropdown } from '@components';
@@ -68,10 +68,12 @@ function ApplicantSchedulePage() {
         interviewQueries.unreservedApplicant(announcementId!, clubId!),
     );
 
-    const { mutate: updateIntervieweeList } = interviewMutations.useUpdateInterviewReservation(
+    const { mutate: updateIntervieweeList } = useInterviewMutations.useUpdateInterviewReservation(
         announcementId!,
     );
-    const { mutate: deleteReservation } = interviewMutations.useDeleteReservation(announcementId!);
+    const { mutate: deleteReservation } = useInterviewMutations.useDeleteReservation(
+        announcementId!,
+    );
 
     // calculated values
     const standardInterviewees = useMemo(() => slot0Applicants ?? [], [slot0Applicants]);
