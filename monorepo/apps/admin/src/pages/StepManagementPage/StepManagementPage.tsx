@@ -1,8 +1,8 @@
 import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicantWithoutImage } from '@api/domain/step/types';
-import { stepMutations } from '@api/hooks';
-import { emailMutations } from '@api/hooks/emailMutations';
+import { useStepMutations } from '@api/hooks';
+import { useEmailMutations } from '@api/hooks/useEmailMutations';
 import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFactory';
 import { stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
@@ -60,7 +60,7 @@ function StepManagementPage() {
         stepQueries.allStepApplicants(announcementId!, clubId!),
     );
 
-    const { mutate: updateStatus } = stepMutations.useUpdateStepApplicantStatus();
+    const { mutate: updateStatus } = useStepMutations.useUpdateStepApplicantStatus();
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
             announcementId!,
@@ -71,8 +71,8 @@ function StepManagementPage() {
         enabled: !!selectedApplicant?.applicantId,
     });
 
-    const { mutate: sendPlainEmail } = emailMutations.usePostPlainEmail(() => setIsOpen(false));
-    const { mutate: sendInterviewEmail } = emailMutations.usePostInterviewEmail(() =>
+    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen(false));
+    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(() =>
         setIsInterviewOpen(false),
     );
 
@@ -99,7 +99,7 @@ function StepManagementPage() {
         ...evaluationQueries.evaluationSummary({
             clubId: clubId!,
             applicantIdList: documentApplicantIds,
-            type: 'document',
+            type: 'application',
         }),
         enabled: interviewApplicantIds.length > 0,
     });
@@ -115,7 +115,7 @@ function StepManagementPage() {
         ...evaluationQueries.evaluationDetail({
             clubId: clubId!,
             applicantIdList: selectedApplicant ? [selectedApplicant.applicantId] : [],
-            type: 'document',
+            type: 'application',
         }),
         enabled:
             !!selectedApplicant &&
@@ -228,8 +228,6 @@ function StepManagementPage() {
         }
 
         applicantIds.forEach((id) => {
-            const oldStatus = stepApplicantList.find((a) => a.applicantId === id)?.status;
-
             updateStatus(
                 { applicantId: id, status: newStatus, clubId: clubId! },
                 {
@@ -237,21 +235,6 @@ function StepManagementPage() {
                         queryClient.invalidateQueries({
                             queryKey: stepKeys.allStepApplicants(announcementId!, clubId!),
                         });
-
-                        // queryClient.invalidateQueries({
-                        //     queryKey: stepKeys.allStepApplicants(
-                        //         announcementId!,
-                        //         clubId!,
-                        //         oldStatus,
-                        //     ),
-                        // });
-                        // queryClient.invalidateQueries({
-                        //     queryKey: stepKeys.allStepApplicants(
-                        //         announcementId!,
-                        //         clubId!,
-                        //         newStatus,
-                        //     ),
-                        // });
                     },
                 },
             );
@@ -433,4 +416,4 @@ function StepManagementPage() {
     );
 }
 
-export { StepManagementPage };
+export default StepManagementPage;
