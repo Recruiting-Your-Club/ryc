@@ -4,6 +4,8 @@ import { useMutation } from '@tanstack/react-query';
 
 import { useToast } from '@ssoc/ui';
 
+import { HttpError } from '../common/httpError';
+
 type EmailMutationParams<T> = {
     announcementId: string;
     clubId: string;
@@ -25,8 +27,12 @@ const useEmailMutation = <T>(
                 toastTheme: 'colored',
             });
         },
-        onError: () => {
+        onError: (error) => {
             onClose();
+            // 500 에러인 경우 전역 처리에 위임
+            if (error instanceof HttpError && error.statusCode === 500) {
+                return;
+            }
             toast('이메일 전송에 실패했어요.', { type: 'error', toastTheme: 'colored' });
         },
     });
