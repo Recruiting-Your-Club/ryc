@@ -38,6 +38,11 @@ public class ApplicantService {
     Applicant applicant = applicantRepository.findById(applicantId);
     ApplicantStatus newStatus = ApplicantStatus.from(statusRequest.status());
 
+    if (applicant.getStatus() == newStatus) {
+      throw new IllegalArgumentException(
+          "Applicant status is already " + newStatus + ". No change needed.");
+    }
+
     Applicant updatedApplicant = applicant.updateStatus(newStatus);
     applicantRepository.save(updatedApplicant);
   }
