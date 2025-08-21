@@ -24,6 +24,7 @@ export const s_clubMemberRolePageTableContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
 `;
 
 export const s_firstHeaderCellContainer = css`
@@ -70,6 +71,8 @@ export const s_tableCellDropdownSx = css`
     align-items: center;
     justify-content: flex-end;
     width: 100%;
+    position: relative;
+    z-index: 10;
 `;
 
 export const s_dropdownTriggerSx = css`
@@ -81,6 +84,11 @@ export const s_dropdownItemSx = css`
     display: flex;
     align-items: center;
     justify-content: center;
+`;
+
+export const s_dropdownContentSx = css`
+    position: fixed;
+    z-index: 9999;
 `;
 
 export const s_tableCellNoActionSx = css`
