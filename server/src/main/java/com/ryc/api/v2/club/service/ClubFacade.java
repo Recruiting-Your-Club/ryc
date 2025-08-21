@@ -19,7 +19,6 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
-import com.ryc.api.v2.file.service.FileService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.service.ClubRoleService;
 
@@ -33,7 +32,6 @@ public class ClubFacade {
   private final ClubRoleService clubRoleService;
   private final AdminService adminService;
   private final AnnouncementService announcementService;
-  private final FileService fileService;
   private final ApplicationEventPublisher eventPublisher;
 
   @Transactional

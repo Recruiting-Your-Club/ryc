@@ -145,19 +145,18 @@ public class ClubService {
       status = null;
     }
 
-    Map<String, FileGetResponse> representativeImageMap =
+    FileGetResponse representativeImageResponse =
         fileService.findAllByAssociatedId(club.getId()).stream()
             .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
-            .collect(
-                Collectors.toMap(
-                    FileMetaData::getAssociatedId,
-                    image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image))));
+            .findFirst()
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .orElse(null);
 
     return SimpleClubResponse.builder()
         .id(club.getId())
         .name(club.getName())
         .shortDescription(club.getShortDescription())
-        .representativeImage(representativeImageMap.get(club.getId()))
+        .representativeImage(representativeImageResponse)
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .announcementStatus(status)
