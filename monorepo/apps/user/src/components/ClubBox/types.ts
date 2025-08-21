@@ -1,6 +1,6 @@
 export interface ClubBoxItem {
     title: string;
-    value: string;
+    content: string;
 }
 export interface ClubBoxProps {
     data?: ClubBoxItem[];
