@@ -72,6 +72,7 @@ public class ClubRoleService {
   @Transactional
   public ClubInviteAcceptResponse acceptInvite(
       String newAdminId, String clubId, String inviteCode) {
+
     // 이미 동아리 멤버인 경우 예외 처리
     if (clubRoleRepository.existsByAdminIdAndClubId(newAdminId, clubId)) {
       throw new ClubException(ClubErrorCode.CLUB_MEMBER_ALREADY_EXISTS);
@@ -85,6 +86,12 @@ public class ClubRoleService {
 
     Admin newAdmin = adminService.getAdminById(newAdminId);
     Club club = clubRepository.findById(clubId);
+
+    // 동아리 아이디와 초대 코드가 일치하지 않는 경우 예외 처리
+    if (!club.getId().equals(clubId)) {
+      throw new NoSuchElementException("동아리 아이디와 초대 코드가 일치하지 않습니다.");
+    }
+
     ClubRole clubRole = assignRole(newAdmin, club, Role.MEMBER);
     return ClubInviteAcceptResponse.builder()
         .clubRoleId(clubRole.getId())
