@@ -291,11 +291,15 @@ export const dropDownTriggerWrapper = css`
     gap: 1rem;
     width: 100%;
 `;
-export const dropDownChevronWrapper = css`
+export const dropDownChevronWrapper = (isExpanded: boolean) => css`
     display: flex;
     flex-grow: 1;
     align-items: center;
     justify-content: space-between;
+    ${!isExpanded &&
+    css`
+        display: none;
+    `}
 `;
 export const chevronUpDownWrapper = css`
     width: 1.5rem;

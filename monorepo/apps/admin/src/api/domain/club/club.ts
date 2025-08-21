@@ -1,5 +1,12 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { Club, DetailClubResponse, MyClubResponse } from './types';
+import type {
+    Club,
+    CreateClub,
+    CreateClubResponse,
+    DetailClubResponse,
+    MyClubResponse,
+    UpdateClub,
+} from './types';
 
 async function getMyClub(): Promise<MyClubResponse[]> {
     const response = await httpRequest.get({
@@ -22,7 +29,7 @@ async function getClub(id: string): Promise<Club> {
     });
     return response as Club;
 }
-async function updateClub(id: string, club: Club): Promise<Club> {
+async function updateClub(id: string, club: UpdateClub): Promise<Club> {
     const response = await httpRequest.put({
         url: `clubs/${id}`,
         headers: {
@@ -34,4 +41,13 @@ async function updateClub(id: string, club: Club): Promise<Club> {
     return response as Club;
 }
 
-export { getMyClub, getClub, updateClub, getDetailClub };
+async function createClub(club: CreateClub): Promise<CreateClubResponse> {
+    const response = await httpRequest.post({
+        url: 'clubs',
+        body: club,
+        isAuthRequire: true,
+    });
+    return response as CreateClubResponse;
+}
+
+export { getMyClub, getClub, updateClub, getDetailClub, createClub };

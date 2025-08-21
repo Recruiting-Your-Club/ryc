@@ -42,7 +42,7 @@ function MyClubPage() {
                                 sx={clubItem}
                                 onClick={() => goTo(`/clubs/${club.id}`)}
                             >
-                                <Avatar radius="10px" imageURL={club.imageUrl} />
+                                <Avatar radius="10px" imageURL={club.representativeImage?.url} />
                                 <div css={clubItemText}>
                                     <Text textAlign="start">{club.name}</Text>
                                     <Text

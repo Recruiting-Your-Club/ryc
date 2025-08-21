@@ -8,7 +8,6 @@ export const headerBarContainer = css`
     align-items: center;
     width: 100%; /* 패딩 포함한 width 계산 */
     height: 6rem;
-    padding: 0 1rem;
     background-color: ${theme.colors.white};
     border-bottom: 0.5px solid ${theme.colors.disabled};
 `;

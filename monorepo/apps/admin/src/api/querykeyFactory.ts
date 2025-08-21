@@ -27,6 +27,7 @@ import type { EvaluationType } from './domain/evaluation/types';
 const clubKeys = {
     all: ['clubs'] as const,
     detail: (id: string) => ['detail', id] as const,
+    create: (id: string) => ['create', id] as const,
 };
 
 const interviewKeys = {
@@ -67,5 +68,17 @@ const announcementKeys = {
         [...announcementKeys.all, 'detail', announcementId] as const,
     listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
 };
+const userKeys = {
+    checkDuplicateEmail: (email: string) => ['check-duplicate-email', email] as const,
+    myInformation: () => ['my-information'] as const,
+};
 
-export { clubKeys, interviewKeys, announcementKeys, applicantKeys, evaluationKeys, stepKeys };
+export {
+    clubKeys,
+    interviewKeys,
+    announcementKeys,
+    applicantKeys,
+    evaluationKeys,
+    stepKeys,
+    userKeys,
+};

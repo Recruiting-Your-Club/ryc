@@ -23,7 +23,6 @@ export const leftContainer = css`
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-left: 2rem;
 `;
 
 export const roleContainer = css`

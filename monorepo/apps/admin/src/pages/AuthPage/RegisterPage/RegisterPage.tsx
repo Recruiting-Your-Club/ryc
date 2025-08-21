@@ -1,5 +1,7 @@
+import { userQueries } from '@api/queryFactory';
 import { css } from '@emotion/react';
 import { useRegister } from '@hooks/useRegister';
+import { useQuery } from '@tanstack/react-query';
 import type { FormEvent } from 'react';
 import React, { useState } from 'react';
 
@@ -31,11 +33,43 @@ function RegisterPage() {
     // form hooks
     // query hooks
     const { mutate: register, isPending, error } = useRegister();
+    const {
+        data: isDuplicateEmail,
+        isLoading: emailLoading,
+        refetch: refetchEmail,
+    } = useQuery(userQueries.checkDuplicateEmail(email));
 
     // calculated values
     // handlers
+    const checkValidateEmail = async () => {
+        if (email) {
+            await refetchEmail();
+        } else {
+            toast.error('이메일을 입력해주세요.', {
+                toastTheme: 'white',
+            });
+            return;
+        }
+        if (isDuplicateEmail) {
+            toast.error('이미 존재하는 이메일이에요.', {
+                toastTheme: 'white',
+            });
+            return;
+        } else {
+            toast.success('사용 가능한 이메일이에요.', {
+                toastTheme: 'white',
+            });
+            return;
+        }
+    };
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
+        if (!isDuplicateEmail) {
+            toast.error('이메일 중복확인을 해주세요.', {
+                toastTheme: 'white',
+            });
+            return;
+        }
         if (password !== passwordConfirm) {
             toast.error('비밀번호가 일치하지 않습니다.', {
                 toastTheme: 'black',
@@ -70,6 +104,8 @@ function RegisterPage() {
                                 width: 11rem;
                                 margin-bottom: 0.1rem;
                             `}
+                            onClick={checkValidateEmail}
+                            loading={emailLoading}
                         >
                             중복확인
                         </Button>

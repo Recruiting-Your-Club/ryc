@@ -80,3 +80,12 @@ export const createSubmitButton = css`
     width: 100%;
     margin-top: 3rem;
 `;
+
+export const s_createClubTagDropdown = css`
+    width: 100%;
+    height: 3.5rem;
+    justify-content: start;
+    align-items: center;
+    border: 1px solid ${theme.colors.gray[200]};
+    border-radius: 5px;
+`;
