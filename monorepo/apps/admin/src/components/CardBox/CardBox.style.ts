@@ -7,6 +7,7 @@ import type { Step } from './types';
 
 export const s_boxContainer = (height: string = '100%', step: Step, width?: string) => css`
     width: 27rem;
+    min-width: 27rem;
     height: ${height};
     border-radius: 10px;
     background-color: rgba(${hexToRgb(theme.colors.gray[100])}, 1);

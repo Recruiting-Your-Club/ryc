@@ -58,6 +58,7 @@ export const s_searchBarSkeleton = css`
 
 export const s_cardBoxSkeleton = css`
     width: 27rem;
+    min-width: 26rem;
     height: 100%;
     background-color: #fff;
     border-radius: 8px;
@@ -73,7 +74,7 @@ export const s_cardTitleSkeleton = css`
     ${s_skeleton}
     width: 40%;
     height: 3rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
     border-radius: 10px;
 `;
 

@@ -9,6 +9,7 @@ import {
     numberOptions,
     timeOptions,
 } from '@constants/interviewSettingDialog';
+import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -99,12 +100,10 @@ function InterviewSettingDialog({
         Object.entries(interviewInformation).forEach(([date, info]) => {
             info.selectedTimeList.forEach((time) => {
                 const startDate = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
-                const endDate = dayjs(startDate)
-                    .add(Number(info.perTime), 'minute')
-                    .format('YYYY-MM-DDTHH:mm');
 
                 result.push({
-                    interviewPeriod: { startDate, endDate },
+                    start: startDate,
+                    interviewDuration: Number(info.perTime),
                     numberOfPeople: Number(info.maxNumber),
                 });
             });
@@ -146,6 +145,27 @@ function InterviewSettingDialog({
         setSelectedDates((prev) => (prev.includes(newDate) ? prev : [...prev, newDate]));
     };
 
+    const handleSendEmail = async () => {
+        let contentToSend = emailContent;
+
+        try {
+            contentToSend = await convertImageToBase64(emailContent);
+        } catch (error) {
+            // 변환 실패 -> 원본 이미지 사용 (다른 이미지는 변환 계속)
+            // eslint-disable-next-line no-empty
+        }
+
+        handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend);
+        if (
+            interviewDetailInformationList.length !== 0 &&
+            emailTitle.length !== 0 &&
+            contentToSend.length !== 0
+        ) {
+            handleReset();
+            handleResetContent();
+        }
+    };
+
     // effects
     useEffect(() => {
         setCurrentDate(highlightedDate.at(-1)!);
@@ -173,6 +193,14 @@ function InterviewSettingDialog({
             setEndTime(DEFAULT_END_TIME);
         }
     }, [timeValue]);
+
+    useEffect(() => {
+        if (!emailContent) return;
+
+        convertImageToBase64(emailContent).then((convertedHtml) => {
+            setEmailContent(convertedHtml);
+        });
+    }, [emailContent]);
 
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
@@ -306,19 +334,7 @@ function InterviewSettingDialog({
                             </Editor.Root>
                         </div>
                         <div css={s_submitButtonWrapper}>
-                            <Button
-                                onClick={() => {
-                                    handleInterviewEmail(
-                                        interviewDetailInformationList,
-                                        emailTitle,
-                                        emailContent,
-                                    );
-                                    handleReset();
-                                    handleResetContent();
-                                }}
-                            >
-                                이메일 보내기
-                            </Button>
+                            <Button onClick={handleSendEmail}>이메일 보내기</Button>
                         </div>
                     </div>
                 </Dialog.Content>

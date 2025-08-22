@@ -69,6 +69,8 @@ export const s_emailContainer = css`
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    justify-content: center; /* 세로 가운데 정렬 */
+    /* align-items: stretch; */
 `;
 
 export const s_titleInput = css`
@@ -131,12 +133,12 @@ export const s_titleWrapper = css`
 
 export const s_contentWrapper = css`
     flex: 8.5;
-    height: 100%;
+    /* height: 100%; */
     display: flex;
     flex-direction: column;
     min-height: 35rem;
     gap: 1rem;
-    overflow: hidden;
+    /* overflow: hidden; */
 `;
 
 export const s_submitButtonWrapper = css`
@@ -210,7 +212,7 @@ export const s_editorRoot = css`
 `;
 
 export const s_editorToolbar = css`
-    flex: 0.8;
+    /* flex: 0.8; */
     height: 4rem;
     max-height: 4rem;
     background-color: ${theme.colors.white};
@@ -219,8 +221,8 @@ export const s_editorToolbar = css`
 `;
 
 export const s_editorTextarea = css`
-    flex: 9.2;
-    height: 100%;
+    /* flex: 9.2; */
+    height: 80%;
     resize: none;
     border-radius: 8px;
     transition: border-color 0.3s ease-in-out;
