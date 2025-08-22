@@ -46,4 +46,19 @@ async function postAnnouncement(
     return response as PostAnnouncementResponse;
 }
 
+async function putAnnouncement(
+    clubId: string,
+    announcementId: string,
+    payload: AnnouncementSubmitRequest,
+): Promise<void> {
+    await httpRequest.put({
+        url: `clubs/${clubId}/announcements/${announcementId}`,
+        isAuthRequire: true,
+        headers: {
+            'X-CLUB-ID': clubId,
+        },
+        body: payload,
+    });
+}
+
 export { getAnnouncementsByClub, getDetailAnnouncement, getAllAnnouncements, postAnnouncement };
