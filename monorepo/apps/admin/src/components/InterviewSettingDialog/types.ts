@@ -5,7 +5,7 @@ export interface InterviewSettingDialogProps {
     open: boolean;
     handleClose: () => void;
     handleInterviewEmail: (
-        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
     ) => void;

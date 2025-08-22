@@ -252,21 +252,22 @@ function StepManagementPage() {
     };
 
     const handleInterviewEmail = (
-        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
     ) => {
-        if (numberOfPeopleByInterviewDates.length === 0) {
+        if (numberOfPeopleByInterviewDateRequests.length === 0) {
             toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
             return;
         }
+
         if (!validateEmailInputs(subject, content)) return;
 
         sendInterviewEmail({
             announcementId: announcementId!,
             clubId: clubId!,
             email: {
-                numberOfPeopleByInterviewDates,
+                numberOfPeopleByInterviewDateRequests,
                 emailSendRequest: { recipients: emailTargetList, subject, content },
             },
         });
