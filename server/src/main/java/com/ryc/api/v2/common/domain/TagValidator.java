@@ -1,4 +1,4 @@
-package com.ryc.api.v2.announcement.domain.vo;
+package com.ryc.api.v2.common.domain;
 
 import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.ANNOUNCEMENT_ID_NULL_OR_EMPTY;
 import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.ANNOUNCEMENT_TAG_LABEL_TOO_LONG;

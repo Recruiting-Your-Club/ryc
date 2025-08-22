@@ -7,11 +7,11 @@ import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.util.DataResolveUtil;
 
@@ -195,29 +195,6 @@ public class Announcement {
     // 4. 유효성 검사
     announcement.validate();
     return announcement;
-  }
-
-  /** status 갱신 메소드 */
-  public Announcement updateStatus() {
-
-    return Announcement.builder()
-        .id(this.id)
-        .title(this.title)
-        .clubId(this.clubId)
-        .numberOfPeople(this.numberOfPeople)
-        .detailDescription(this.detailDescription)
-        .summaryDescription(this.summaryDescription)
-        .target(this.target)
-        .field(this.field)
-        .hasInterview(true)
-        .activityPeriod(this.activityPeriod)
-        .tags(this.tags)
-        .applicationForm(this.applicationForm)
-        .announcementType(this.announcementType)
-        .announcementPeriodInfo(this.announcementPeriodInfo)
-        .createdAt(this.createdAt)
-        .updatedAt(this.updatedAt)
-        .build();
   }
 
   /**

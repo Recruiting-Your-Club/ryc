@@ -1,9 +1,9 @@
-package com.ryc.api.v2.announcement.infra.mapper;
+package com.ryc.api.v2.common.infra.mapper;
 
-import com.ryc.api.v2.announcement.domain.vo.Tag;
-import com.ryc.api.v2.announcement.infra.vo.TagVO;
+import com.ryc.api.v2.common.domain.Tag;
+import com.ryc.api.v2.common.infra.vo.TagVO;
 
-public class AnnouncementTagMapper {
+public class TagMapper {
   public static Tag toDomain(TagVO tagVO) {
     return Tag.builder().label(tagVO.getLabel()).build();
   }

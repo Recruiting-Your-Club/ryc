@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 
 import com.ryc.api.v2.announcement.infra.entity.AnnouncementEntity;
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
-import com.ryc.api.v2.common.entity.BaseEntity;
+import com.ryc.api.v2.common.infra.entity.BaseEntity;
 
 import lombok.*;
 

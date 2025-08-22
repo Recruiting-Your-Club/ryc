@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.validator.DomainValidator;
 
 /** Announcement 도메인 전용 Validator */

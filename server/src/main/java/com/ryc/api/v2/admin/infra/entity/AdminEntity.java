@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.SQLDelete;
 
 import com.ryc.api.v2.admin.domain.AdminDefaultRole;
-import com.ryc.api.v2.common.entity.BaseEntity;
+import com.ryc.api.v2.common.infra.entity.BaseEntity;
 
 import lombok.*;
 

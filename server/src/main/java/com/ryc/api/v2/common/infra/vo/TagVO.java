@@ -1,4 +1,4 @@
-package com.ryc.api.v2.announcement.infra.vo;
+package com.ryc.api.v2.common.infra.vo;
 
 import jakarta.persistence.Embeddable;
 

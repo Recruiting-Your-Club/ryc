@@ -5,8 +5,8 @@ import java.util.List;
 import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
-import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
