@@ -41,13 +41,13 @@ function ClubIntroPage() {
                 {club?.clubDetailImages?.map((images) => (
                     <button
                         css={imageItem}
-                        key={images.imageUrl}
+                        key={images.id}
                         onClick={() => {
                             setOpen(true);
-                            handleImageClick(images.imageUrl);
+                            handleImageClick(images.url);
                         }}
                     >
-                        <Image src={images.imageUrl} alt="동아리 사진" />
+                        <Image src={images.url} alt="동아리 사진" />
                     </button>
                 ))}
             </div>
