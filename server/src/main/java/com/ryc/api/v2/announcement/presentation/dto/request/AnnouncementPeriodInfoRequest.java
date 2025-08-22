@@ -2,6 +2,8 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
+import com.ryc.api.v2.common.dto.request.PeriodRequest;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 

@@ -5,7 +5,7 @@ import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.ryc.api.v2.announcement.domain.vo.Period;
+import com.ryc.api.v2.common.domain.Period;
 import com.ryc.api.v2.common.validator.DomainValidator;
 
 final class InterviewSlotValidator extends DomainValidator {

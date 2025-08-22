@@ -2,6 +2,7 @@ package com.ryc.api.v2.announcement.domain.vo;
 
 import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.APPLICATION_PERIOD_NULL;
 
+import com.ryc.api.v2.common.domain.Period;
 import com.ryc.api.v2.common.validator.DomainValidator;
 
 /** AnnouncementPeriodInfo 도메인 전용 Validator */

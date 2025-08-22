@@ -9,6 +9,7 @@ import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
 import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.common.dto.response.PeriodResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

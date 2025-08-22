@@ -1,9 +1,10 @@
 package com.ryc.api.v2.announcement.infra.mapper;
 
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Period;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
-import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
+import com.ryc.api.v2.common.domain.Period;
+import com.ryc.api.v2.common.infra.mapper.PeriodMapper;
+import com.ryc.api.v2.common.infra.vo.PeriodVO;
 
 public class AnnouncementPeriodInfoMapper {
 

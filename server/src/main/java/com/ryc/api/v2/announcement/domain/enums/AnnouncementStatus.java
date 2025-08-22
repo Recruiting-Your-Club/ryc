@@ -2,7 +2,7 @@ package com.ryc.api.v2.announcement.domain.enums;
 
 import java.time.LocalDateTime;
 
-import com.ryc.api.v2.announcement.domain.vo.Period;
+import com.ryc.api.v2.common.domain.Period;
 
 public enum AnnouncementStatus {
   UPCOMING,
