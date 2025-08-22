@@ -61,4 +61,10 @@ async function putAnnouncement(
     });
 }
 
-export { getAnnouncementsByClub, getDetailAnnouncement, getAllAnnouncements, postAnnouncement };
+export {
+    getAnnouncementsByClub,
+    getDetailAnnouncement,
+    getAllAnnouncements,
+    postAnnouncement,
+    putAnnouncement,
+};
