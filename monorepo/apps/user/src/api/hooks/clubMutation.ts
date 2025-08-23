@@ -21,7 +21,6 @@ const useSubmitInterviewReservation = () => {
             error,
             { clubId = '', announcementId = '', applicantId = '' }: InterviewReservationParams,
         ) => {
-            // 500 에러인 경우 전역 처리에 위임 (콘솔 로깅은 제외)
             if (error instanceof HttpError && error.statusCode === 500) {
                 return;
             }
