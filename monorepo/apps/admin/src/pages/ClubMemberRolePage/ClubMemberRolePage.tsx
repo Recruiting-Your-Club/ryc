@@ -54,12 +54,11 @@ const ClubMemberRolePage = () => {
             onSuccess: (res) => {
                 const code = res.inviteCode;
                 const origin = window.location.origin;
-                const invitePath = `/invite/${clubId}/${code}`;
+                const invitePath = `/${clubId}/${code}`;
                 setInviteUrl(`${origin}${invitePath}`);
                 openDialog();
             },
             onError: (error) => {
-                // 500 에러인 경우 전역 처리에 위임
                 if (error instanceof HttpError && error.statusCode === 500) {
                     return;
                 }
@@ -70,7 +69,6 @@ const ClubMemberRolePage = () => {
     const {
         data: userList,
         isLoading,
-        isError,
         error,
     } = useQuery({
         ...roleQueries.getClubMemberList(clubId || ''),
@@ -85,10 +83,8 @@ const ClubMemberRolePage = () => {
                     member.adminName.toLowerCase().includes(searchText.trim().toLowerCase()),
                 )
                 ?.sort((a, b) => {
-                    // Owner를 맨 위로 정렬
                     if (a.role === 'OWNER' && b.role !== 'OWNER') return -1;
                     if (a.role !== 'OWNER' && b.role === 'OWNER') return 1;
-                    // 나머지는 이름순 정렬
                     return a.joinedAt.localeCompare(b.joinedAt);
                 }),
         [userList, searchText],
@@ -132,6 +128,9 @@ const ClubMemberRolePage = () => {
                 setIsKickConfirmOpen(false);
             },
             onError: () => {
+                if (error instanceof HttpError && error.statusCode === 500) {
+                    return;
+                }
                 toast.error('내보내기에 실패했습니다.');
                 setIsKickConfirmOpen(false);
             },

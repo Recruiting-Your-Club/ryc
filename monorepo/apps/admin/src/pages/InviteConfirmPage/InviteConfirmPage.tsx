@@ -1,5 +1,6 @@
 import { roleMutations } from '@api/hooks';
 import { myClubQueries } from '@api/queryFactory';
+import { roleQueries } from '@api/queryFactory/roleQueries';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -24,16 +25,21 @@ const InviteConfirmPage = () => {
     const { toast } = useToast();
     const location = useLocation();
     const { clubId, inviteCode } = useParams();
-    const accessToken = useAuthStore((s) => s.accessToken);
+    const accessToken = useAuthStore((state) => state.accessToken);
     // initial values
     // state, ref, querystring hooks
     // form hooks
     // query hooks
 
-    const { data: clubInfo, isLoading: isClubInfoLoading } = useQuery({
+    // const { data: clubInfo, isLoading: isClubInfoLoading } = useQuery({
+    //     ...roleQueries.getClubInfoByInviteCode(inviteCode || ''),
+    //     enabled: !!inviteCode,
+    //     retry: false,
+    // });
+
+    const { data: clubInformation, isLoading: isClubInformationLoading } = useQuery({
         ...myClubQueries.detail(clubId || ''),
         enabled: !!clubId,
-        staleTime: 5 * 60 * 1000,
         retry: false,
     });
 
@@ -45,7 +51,6 @@ const InviteConfirmPage = () => {
             navigate(`/settings/${clubId}`);
         },
         onError: (error) => {
-            // 500 에러인 경우 전역 처리에 위임
             if (error instanceof HttpError && error.statusCode === 500) {
                 return;
             }
@@ -54,7 +59,7 @@ const InviteConfirmPage = () => {
     });
 
     // calculated values
-    const tags = clubInfo?.clubTags?.map((tag) => `#${tag.name}`) || [];
+    const tags = clubInformation?.clubTags?.map((tag) => `#${tag.name}`) || [];
     // handlers
     const handleConfirm = async () => {
         if (!clubId || !inviteCode) {
@@ -85,22 +90,21 @@ const InviteConfirmPage = () => {
                     초대 수락
                 </Text>
                 <div css={s_clubInfoCard}>
-                    {isClubInfoLoading ? (
+                    {isClubInformationLoading ? (
                         <SpinSpinner />
                     ) : (
                         <ClubCard
-                            imageURL={clubInfo?.representativeImage?.url || ''}
-                            imageName={clubInfo?.representativeImage?.originalFileName || ''}
-                            title={clubInfo?.name || '테스트 동아리'}
-                            type={getCategory(clubInfo?.category || '')}
-                            status="progress"
-                            tag={tags.length > 0 ? tags : ['#테스트', '#동아리']}
+                            imageURL={clubInformation?.representativeImage?.url || ''}
+                            imageName={clubInformation?.representativeImage?.originalFileName || ''}
+                            title={clubInformation?.name || ''}
+                            type={getCategory(clubInformation?.category || '')}
+                            tag={tags}
                         />
                     )}
                 </div>
                 <div css={s_confirmText}>
                     <Text type="bodyRegular" color="primary">
-                        {clubInfo?.name || '테스트 동아리'}
+                        {clubInformation?.name}
                     </Text>
                     <Text type="bodyRegular"> 동아리에 참여하시겠습니까?</Text>
                 </div>
