@@ -73,6 +73,7 @@ const announcementKeys = {
 
 const roleKeys = {
     clubMemberList: (clubId: string) => ['club-member-list', clubId] as const,
+    clubInfoByInviteCode: (inviteCode: string) => ['club-info-by-invite-code', inviteCode] as const,
 };
 
 export {

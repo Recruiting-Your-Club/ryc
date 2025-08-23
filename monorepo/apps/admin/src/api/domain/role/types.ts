@@ -1,7 +1,7 @@
 export type AdminProfileImage = {
     id: string;
     url: string;
-    orginalFileName: string;
+    originalFileName: string;
     contentType: string;
 };
 
@@ -22,4 +22,19 @@ export interface EnrollmentClubResponse {
     clubRoleId: string;
     role: string;
     joinedAt: string;
+}
+
+export interface ClubInfoResponse {
+    id: string;
+    name: string;
+    representativeImage: AdminProfileImage;
+    shortDescription: string;
+    category: string;
+    clubTags: ClubTag[];
+    announcementStatus: string;
+}
+
+export interface ClubTag {
+    id: string;
+    name: string;
 }
