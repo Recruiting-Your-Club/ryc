@@ -8,7 +8,11 @@ import { useToast } from '@ssoc/ui';
 
 import { HttpError } from '../api/common/httpError';
 
-function useLogin() {
+interface UseLoginOptions {
+    redirectPath?: string;
+}
+
+function useLogin(options?: UseLoginOptions) {
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const { removeHistoryAndGo } = useRouter();
     const { toast } = useToast();
@@ -17,10 +21,9 @@ function useLogin() {
         mutationFn: login,
         onSuccess: (data) => {
             setAccessToken(data.accessToken);
-            removeHistoryAndGo('/myClub');
+            removeHistoryAndGo(options?.redirectPath || '/myClub');
         },
         onError: (error) => {
-            // 500 에러인 경우 전역 처리에 위임
             if (error instanceof HttpError && error.statusCode === 500) {
                 return;
             }
