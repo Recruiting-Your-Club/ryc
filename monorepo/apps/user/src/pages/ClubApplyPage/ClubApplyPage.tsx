@@ -12,9 +12,9 @@ import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
 import { HttpError } from '../../api/common/httpError';
+import { usePostApplicationAnswers } from '../../api/hooks';
 import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
 import { BASE_URL } from '../../constants/api';
-import { usePostApplicationAnswers } from '../../hooks';
 import { useClubStore } from '../../stores';
 import { useApplicationStore } from '../../stores';
 import { getCategory } from '../../utils/changeCategory';
