@@ -1,12 +1,44 @@
+import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
+import { ClubMemberRolePage } from '@pages/ClubMemberRolePage';
 import { useState } from 'react';
 
-import { Button, Stepper } from '@ssoc/ui';
+import { Button, Editor, Stepper } from '@ssoc/ui';
 
 function TestPage() {
     const [activeStep, setActiveStep] = useState(0);
+    const [content, setContent] = useState('');
+
+    // 이미지 업로드 처리 훅
+    const { isUploading, handleContentChange } = useEditorImageUpload({
+        location: 'ANNOUNCEMENT_EDITOR',
+    });
+
     return (
         <div style={{ width: '800px' }}>
-            <Stepper activeStep={activeStep}>
+            {isUploading && (
+                <div
+                    style={{
+                        padding: '8px',
+                        backgroundColor: '#f0f8ff',
+                        border: '1px solid #007acc',
+                        borderRadius: '4px',
+                        marginBottom: '8px',
+                    }}
+                >
+                    이미지를 업로드 중입니다...
+                </div>
+            )}
+
+            <Editor.Root>
+                <Editor.Toolbar />
+                <Editor.Textarea
+                    value={content}
+                    onChange={(newContent) => handleContentChange(newContent, setContent)}
+                    height="400px"
+                />
+            </Editor.Root>
+
+            {/* <Stepper activeStep={activeStep}>
                 <Stepper.Step>
                     <Stepper.Label>Step 1</Stepper.Label>
                 </Stepper.Step>
@@ -45,7 +77,7 @@ function TestPage() {
                 >
                     다음
                 </Button>
-            </div>
+            </div> */}
         </div>
     );
 }
