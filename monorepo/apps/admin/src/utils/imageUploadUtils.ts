@@ -11,10 +11,7 @@ export interface ImageUploadResult {
 }
 
 export interface ImageUploadOptions {
-    uploadFiles: (
-        file: File,
-        location: string,
-    ) => Promise<Array<{ fileMetadataId: string; presignedUrl: string }>>;
+    uploadFiles: (file: File, location: string) => Promise<Array<{ fileMetadataId: string }>>;
     getFileDownloadUrl: (params: {
         metadataId: string;
         accessToken: string;
@@ -36,7 +33,6 @@ export const getImageDownloadUrl = async (
 ): Promise<string> => {
     try {
         if (!accessToken) {
-            console.error('액세스 토큰이 없습니다');
             return '';
         }
 
@@ -47,7 +43,6 @@ export const getImageDownloadUrl = async (
 
         return response.url;
     } catch (error) {
-        console.error('파일 URL 조회 실패:', error);
         return '';
     }
 };
@@ -68,7 +63,6 @@ export const uploadBase64Image = async (
     } = options;
 
     if (!accessToken) {
-        console.error('액세스 토큰이 필요합니다');
         return null;
     }
 
@@ -81,7 +75,6 @@ export const uploadBase64Image = async (
         const fileMetadataId = uploadResults[0]?.fileMetadataId;
 
         if (!fileMetadataId) {
-            console.error('파일 업로드 실패: fileMetadataId가 없습니다');
             return null;
         }
 
@@ -89,13 +82,11 @@ export const uploadBase64Image = async (
         const imageUrl = await getImageDownloadUrl(fileMetadataId, accessToken, getFileDownloadUrl);
 
         if (!imageUrl) {
-            console.error('이미지 URL 조회 실패');
             return null;
         }
 
         return { fileMetadataId, imageUrl };
     } catch (error) {
-        console.error('이미지 업로드 중 오류:', error);
         return null;
     }
 };
