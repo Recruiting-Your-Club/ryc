@@ -81,7 +81,6 @@ export const processBase64ImagesInHtml = async (
 
         return updatedContent;
     } catch (error) {
-        console.error('이미지 처리 실패:', error);
         return htmlContent; // 실패 시 원본 콘텐츠 반환
     } finally {
         onUploadComplete?.();
