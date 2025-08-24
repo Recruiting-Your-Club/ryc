@@ -155,7 +155,8 @@ export const mobileQuestionStatus = css`
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    display: none;
+    justify-content: flex-end;
+    width: 50%;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;

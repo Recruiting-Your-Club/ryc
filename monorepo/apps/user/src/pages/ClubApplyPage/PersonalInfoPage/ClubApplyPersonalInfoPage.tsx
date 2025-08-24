@@ -35,7 +35,7 @@ function ClubApplyPersonalInfoPage({
     //lib hooks
     // initial values
     // state, ref, querystring hooks
-    const { getFiles, updateFiles } = useApplicationStore();
+    const { getFiles } = useApplicationStore();
     const filesByQuestion = getFiles(announcementId);
     //calculated values
 
@@ -59,7 +59,6 @@ function ClubApplyPersonalInfoPage({
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
                                 onFilesChange={(newFiles: File[]) => {
-                                    updateFiles(announcementId, question.id, newFiles);
                                     onFileUpload(
                                         question.id,
                                         question.label,
@@ -93,7 +92,6 @@ function ClubApplyPersonalInfoPage({
                                 sx={s_fileUploaderSx}
                                 files={filesByQuestion[question.id] ?? []}
                                 onFilesChange={(newFiles: File[]) => {
-                                    updateFiles(announcementId, question.id, newFiles);
                                     onFileUpload(
                                         question.id,
                                         question.label,

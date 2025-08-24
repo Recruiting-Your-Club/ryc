@@ -49,7 +49,7 @@ function ClubApplyPage() {
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
-    const { getAnswers, setAnswers: setApplicationAnswers } = useApplicationStore();
+    const { getAnswers, setAnswers: setApplicationAnswers, updateFiles } = useApplicationStore();
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
     const { toast } = useToast();
@@ -175,6 +175,9 @@ function ClubApplyPage() {
         files: File[],
     ) => {
         try {
+            // File 객체를 store에 저장 (페이지 이동 시 파일 유지용)
+            updateFiles(announcementId || '', questionId, files);
+
             if (files.length === 0) {
                 handleAnswerChange(questionId, questionTitle, '');
                 return;
