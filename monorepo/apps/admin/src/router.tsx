@@ -45,6 +45,11 @@ const router = createBrowserRouter([
                 element: <RecruitCreatePage />,
             },
 
+            {
+                path: 'announcements/create/:clubId/success/:announcementId',
+                element: <RecruitSuccessPage />,
+            },
+
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
             { path: 'announcements/:clubId/:announcementId?', element: <AnnouncementPage /> },
@@ -95,7 +100,6 @@ const router = createBrowserRouter([
             },
 
             { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
-            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },
     {

@@ -96,7 +96,11 @@ function RecruitmentPage({
                                         handleImageClick(url);
                                     }}
                                 >
-                                    <Image src={url} alt="동아리 사진" />
+                                    <Image
+                                        src={url}
+                                        alt="동아리 사진"
+                                        onLoad={() => URL.revokeObjectURL(url)}
+                                    />
                                 </button>
                             ))}
                     </div>

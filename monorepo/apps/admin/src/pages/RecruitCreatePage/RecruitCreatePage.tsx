@@ -1,13 +1,16 @@
+import { useCreateAnnouncement } from '@api/hooks/useCreateAnnouncement';
+import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
-import React, { act, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { generatePath, useLocation, useParams } from 'react-router-dom';
 
-import { useRouter } from '@ssoc/hooks';
-import { Button, Dialog, Stepper } from '@ssoc/ui';
+import { useFileUpload, useRouter } from '@ssoc/hooks';
+import { Button, Dialog, Stepper, useFileUpLoader, useToast } from '@ssoc/ui';
 import { useStepper } from '@ssoc/ui';
 
 import { BasicInfoStep } from './BasicInfoStep/BasicInfoStep';
+import { buildAnnouncementSubmitRequest } from './buildAnnouncementSubmitRequest';
 import { DescriptionStepPage } from './DescriptionStep/DescriptionStep';
 import { PersonalStatementStep } from './PersonalStatementStep/PersonalStatementStep';
 import { PreivewStep } from './PreviewStep';
@@ -31,6 +34,8 @@ function RecruitCreatePage() {
     );
 
     const { removeHistoryAndGo } = useRouter();
+    const { toast } = useToast();
+    const { clubId } = useParams();
 
     const {
         questions,
@@ -45,6 +50,8 @@ function RecruitCreatePage() {
     } = useQuestion();
 
     const location = useLocation();
+
+    const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
 
     // initial values
 
@@ -67,8 +74,12 @@ function RecruitCreatePage() {
         tags: ['중앙동아리'],
     });
 
+    //공고 상세 설명 글 상태 관리
+    const [detailDescription, setDetailDescription] = useState<string>('');
+
     //공고 모집 관련 이미지 상태 관리
     const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
+    const [imageFileIds, setImageFileIds] = useState<string[]>([]);
 
     //체크박스를 통한 신원 정보 상태관리
     const [basicInfoFields, setBasicInfoFields] = useState<BasicInfoFields>({
@@ -77,8 +88,45 @@ function RecruitCreatePage() {
         photo: false,
     });
 
+    //json 파싱 데이터
+    const submitJson = useMemo(
+        () =>
+            buildAnnouncementSubmitRequest({
+                recruitDetailInfo,
+                basicInfoFields,
+                preQuestions: questions,
+                applicationQuestions,
+                detailDescription,
+                imageFileIds,
+            }),
+        [
+            recruitDetailInfo,
+            basicInfoFields,
+            questions,
+            applicationQuestions,
+            detailDescription,
+            imageFileIds,
+        ],
+    );
+
     // form hooks
     // query hooks
+    const { mutate: postAnnouncement, isPending: isSubmitting } = useCreateAnnouncement({
+        clubId: clubId!,
+        onSuccess: ({ announcementId }) => {
+            setIsDialogOpen(false);
+            const successPath = generatePath(
+                '/announcements/create/:clubId/success/:announcementId',
+                { clubId: clubId ?? '', announcementId },
+            );
+            removeHistoryAndGo(successPath);
+        },
+        onError: () => {
+            setIsDialogOpen(false);
+            toast.error('공고 등록에 실패했습니다.');
+        },
+    });
+
     // calculated values
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
 
@@ -132,14 +180,6 @@ function RecruitCreatePage() {
     };
     //-----------------------------//
 
-    //상시모집, 제한모집 구분 함수
-    const getAnnouncementType = (period: Period) => {
-        const { startDate, endDate } = period ?? { startDate: '', endDate: '' };
-        return startDate === '9999-12-31' && endDate === '9999-12-31'
-            ? 'ALWAYS_OPEN'
-            : 'LIMITED_TIME';
-    };
-
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
         setRecruitDetailInfo((prev) => ({
@@ -148,9 +188,31 @@ function RecruitCreatePage() {
         }));
     };
 
-    const handleFileChage = (recruitFiles: File[]) => {
-        setRecuritFiles(recruitFiles);
-    };
+    const handleDetailDescriptionChange = useCallback((html: string) => {
+        setDetailDescription(html);
+    }, []);
+
+    const handleFilesChage = useCallback(
+        async (files: File[]) => {
+            setRecuritFiles(files);
+
+            try {
+                if (!files.length) {
+                    setImageFileIds([]);
+                    return;
+                }
+
+                const ids = await uploadFiles(files, 'ANNOUNCEMENT_CREATE_IMAGE');
+                setImageFileIds(ids);
+                toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
+            } catch (error) {
+                setImageFileIds([]);
+                console.error(error);
+                toast.error('파일 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.');
+            }
+        },
+        [uploadFiles],
+    );
 
     const handleNextClick = () => {
         if (isLast) {
@@ -161,8 +223,7 @@ function RecruitCreatePage() {
     };
 
     const handleConfirmSubmit = () => {
-        const currentPath = location.pathname;
-        removeHistoryAndGo(`${currentPath}/success`);
+        postAnnouncement(submitJson);
     };
 
     // effects
@@ -179,7 +240,10 @@ function RecruitCreatePage() {
                         recruitDetailInfo={recruitDetailInfo}
                         recruitFiles={recruitFiles}
                         onChange={handleInputChange}
-                        onFileChange={handleFileChage}
+                        onFilesChange={handleFilesChage}
+                        isFileUploading={isFileUploading}
+                        detailDescription={detailDescription}
+                        onDetailDescriptionChange={handleDetailDescriptionChange}
                     />
                 );
             case 1:
@@ -204,7 +268,7 @@ function RecruitCreatePage() {
                     />
                 );
             case 3:
-                return <PreivewStep />;
+                return <PreivewStep preivewData={submitJson} recruitFiles={recruitFiles} />;
             default:
                 <div>error</div>;
         }
@@ -233,7 +297,11 @@ function RecruitCreatePage() {
                     <Button onClick={prev} disabled={isFirst}>
                         이전
                     </Button>
-                    <Button onClick={handleNextClick} disabled={!isCurrentStepValid()}>
+                    <Button
+                        onClick={handleNextClick}
+                        disabled={!isCurrentStepValid()}
+                        loading={isFileUploading}
+                    >
                         {isLast ? '완료' : '다음'}
                     </Button>
                     <Dialog
