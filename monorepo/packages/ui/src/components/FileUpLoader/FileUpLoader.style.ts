@@ -13,8 +13,14 @@ export const s_fileUpLoaderHelperText = css`
     position: absolute;
     top: 1rem;
     right: 0;
-    ${theme.typography.subCaptionLight};
-    color: ${theme.colors.gray[600]};
+    width: 50%;
+`;
+
+export const s_helperTextSx = css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
 `;
 
 export const s_fileUpLoaderInput = css`
@@ -69,7 +75,7 @@ export const s_fileUpLoaderItemList = css`
     padding: 0;
     margin: 0;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     max-height: 8rem;
 `;
 
@@ -93,9 +99,13 @@ export const s_fileRow = css`
     align-items: center;
     gap: 0.5rem;
     padding-right: 1rem;
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        grid-template-columns: 15% 25% 20% 20% 20%;
+    }
 `;
 
 export const s_fileHeaderText = (align: Align) => css`
+    width: 80%;
     text-align: ${align};
 `;
 
@@ -137,4 +147,10 @@ export const s_fileImagePreview = css`
     width: 1.25rem;
     height: 1.25rem;
     object-fit: contain;
+`;
+
+export const s_fileLink = css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 `;
