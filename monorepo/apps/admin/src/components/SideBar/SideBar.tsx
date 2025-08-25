@@ -5,6 +5,7 @@ import { userQueries } from '@api/queryFactory/userQueries';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import Club from '@assets/images/club.svg';
+import ssoc from '@assets/images/ssoc.png';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -263,7 +264,7 @@ function SideBar() {
                                 >
                                     <Tooltip content={club.name}>
                                         <img
-                                            src={club.representativeImage?.url}
+                                            src={club.representativeImage?.url || ssoc}
                                             alt="club"
                                             width="100%"
                                             height="100%"

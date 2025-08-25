@@ -27,3 +27,6 @@ export interface RepresentativeImage {
     originalFileName: string;
     contentType: string;
 }
+export interface CheckDuplicateEmailResponse {
+    duplicated: boolean;
+}

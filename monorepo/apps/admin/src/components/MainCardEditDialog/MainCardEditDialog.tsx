@@ -1,5 +1,6 @@
 import type { Club } from '@api/domain/club/types';
 import type { UpdateClub } from '@api/domain/club/types';
+import ssoc from '@assets/images/ssoc.png';
 import { HashTagInput } from '@components';
 import type { Tag } from '@components/HashTagInput/types';
 import { useUpdateClub } from '@hooks/useUpdateClub';
@@ -88,7 +89,7 @@ function MainCardEditDialog({
                             category={club?.category}
                             description={shortDescription}
                             clubTags={hashTags}
-                            representativeImage={club?.representativeImage.url}
+                            representativeImage={club?.representativeImage?.url || ssoc}
                         />
                     </div>
                     <div css={s_inputContainer}>
