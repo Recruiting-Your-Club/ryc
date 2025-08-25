@@ -21,7 +21,10 @@ function MainCard({
     category = '학술동아리',
     description = 'IT 동아리 EN# 신규 멤버 모집이야쥐기네~~~~~~',
     status = 'progress',
-    clubTags = [{ name: '연극' }, { name: '워크숍' }],
+    clubTags = [
+        { id: '1', name: '연극' },
+        { id: '2', name: '워크숍' },
+    ],
     link = 'http://localhost:3000/manager',
     representativeImage = '',
 }: MainCardProps) {

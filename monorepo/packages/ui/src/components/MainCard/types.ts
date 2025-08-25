@@ -1,4 +1,5 @@
 interface ClubTag {
+    id: string;
     name: string;
 }
 

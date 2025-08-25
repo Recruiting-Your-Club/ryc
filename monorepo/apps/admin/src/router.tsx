@@ -17,7 +17,7 @@ import {
     RecruitCreatePage,
     RecruitSuccessPage,
     RegisterPage,
-    StepManagementPage,
+    //StepManagementPage,
     StepManagementLoadingPage,
     TestPage,
 } from './pages';
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
 
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
-            { path: 'announcements/:clubId/:announcementId?', element: <StepManagementPage /> },
+            { path: 'announcements/:clubId/:announcementId?', element: <LazyStepManagementPage /> },
             { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
             { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
 

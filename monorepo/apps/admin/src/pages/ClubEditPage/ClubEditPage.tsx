@@ -1,6 +1,7 @@
 import type { Club, UpdateClub } from '@api/domain/club/types';
 import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
+import { ClubBox, ImageRegister, MainCardEditDialog } from '@components';
 import { BASE_URL } from '@constants/api';
 import { useUpdateClub } from '@hooks/useUpdateClub';
 import { useQuery } from '@tanstack/react-query';
@@ -10,10 +11,10 @@ import { useParams } from 'react-router-dom';
 import { useFileUpload } from '@ssoc/hooks';
 import { Button, Divider, FileUpLoader } from '@ssoc/ui';
 import { Editor, Image, ImageDialog, Input, Select, Text, useToast } from '@ssoc/ui';
+import { imageUrlToFile } from '@ssoc/utils';
 import { getCategory } from '@ssoc/utils';
 import { blobUrlToFile } from '@ssoc/utils';
 
-import { ClubBox, ImageRegister } from '../../components';
 import type { ClubBoxItem } from '../../components/ClubBox/types';
 import {
     s_buttonWrapper,
@@ -57,10 +58,12 @@ function ClubEditPage() {
     const [introText, setIntroText] = useState<string>('');
     const [expandedImage, setExpandedImage] = useState<string>();
     const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[]>(defaultClubSummaries);
-    const [clubDetailImages, setClubDetailImages] = useState<string[]>([]);
+    const [detailImagesInFileUploader, setDetailImagesInFileUploader] = useState<File[]>([]);
+    const [openClubCardDialog, setOpenClubCardDialog] = useState(false);
+
     // form hooks
     // query hooks
-    const { data: club } = useQuery(myClubQueries.getClub(clubId ?? ''));
+    const { data: club } = useQuery(myClubQueries.detail(clubId ?? ''));
     const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
     const { uploadFiles, error } = useFileUpload(BASE_URL);
 
@@ -132,9 +135,13 @@ function ClubEditPage() {
             <Text textAlign="start">{club?.detailDescription}</Text>
         </div>
     );
-    //FIXME: 추후에 이미지 서버에서 받아와서 초기값으로 바꿔줘야함
+
     const editModeImageList = (
-        <FileUpLoader sx={{ marginTop: '5rem' }}>
+        <FileUpLoader
+            sx={{ marginTop: '5rem' }}
+            files={detailImagesInFileUploader}
+            onFilesChange={setDetailImagesInFileUploader}
+        >
             <FileUpLoader.Button text="이미지 추가" />
             <FileUpLoader.Box text="동아리 이미지 업로드" />
         </FileUpLoader>
@@ -145,13 +152,13 @@ function ClubEditPage() {
                 {club?.clubDetailImages?.map((image) => (
                     <button
                         css={s_imageItem}
-                        key={image}
+                        key={image.id}
                         onClick={() => {
                             setOpen(true);
-                            handleImageExpanded(image);
+                            handleImageExpanded(image.url);
                         }}
                     >
-                        <Image src={image} alt="동아리 사진" />
+                        <Image src={image.url} alt="동아리 사진" />
                     </button>
                 ))}
             </div>
@@ -166,20 +173,6 @@ function ClubEditPage() {
         </>
     );
     // handlers
-    const saveClubImage = async () => {
-        if (!croppedImage) return;
-        const file = await blobUrlToFile(croppedImage, 'club_logo');
-        try {
-            return await uploadFiles(file, 'CLUB_INTRODUCTION_IMAGE');
-        } catch (error) {
-            toast.error('이미지 업로드에 실패했어요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            throw error;
-        }
-    };
-
     const handleImageExpanded = (url: string) => {
         setExpandedImage(url);
     };
@@ -196,17 +189,39 @@ function ClubEditPage() {
     const handleDeleteItem = (id: string) => {
         setClubSummaries(clubSummaries?.filter((item) => item.id !== id));
     };
-    const handleCancelEdit = () => {
-        setClubSummaries(club?.clubSummaries || defaultClubSummaries);
-        setIntroText(club?.detailDescription || '');
-        setImage(club?.representativeImage?.url || ssoc);
-        setCroppedImage(club?.representativeImage?.url || ssoc);
-        setClubCategory(club?.category || '');
-        setClubName(club?.name || '');
-        setClubDetailImages(club?.clubDetailImages || []);
+
+    const saveClubImage = async () => {
+        // 기본 이미지: null
+        // 로고는 편집하지않고 다른 텍스트만 편집했을 때: web-url
+        // 로고 편집했을 떄: blob
+        if (!croppedImage) return; // 기본 이미지
+        if (!croppedImage.includes('blob')) return club?.representativeImage?.id; // 편집하지 않은 이미지
+        const file = await blobUrlToFile(croppedImage, 'club_logo'); // 편집한 이미지
+        try {
+            const fileMetadataId = await uploadFiles(file, 'CLUB_CREATE');
+            return fileMetadataId?.[0];
+        } catch (error) {
+            toast.error('이미지 업로드에 실패했어요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            throw error;
+        }
     };
+
+    const saveClubDetailImages = async () => {
+        if (detailImagesInFileUploader.length === 0) return [];
+
+        const fileMetadataIds = await uploadFiles(
+            detailImagesInFileUploader,
+            'CLUB_INTRODUCTION_IMAGE',
+        );
+        return fileMetadataIds;
+    };
+
     const updateClubData = async () => {
-        const fileMetadataIds = await saveClubImage();
+        const clobLogoImage = await saveClubImage(); // 클럽 로고
+        const detailImagesFileMetadataIds = await saveClubDetailImages();
         const updatedClubData: UpdateClub = {
             name: clubName, // 동아리 타이틀
             shortDescription: club?.shortDescription || '',
@@ -214,8 +229,8 @@ function ClubEditPage() {
             category: clubCategory, // 카테고리
             clubTags: club?.clubTags || [], // 동아리 태그
             clubSummaries: clubSummaries || [], // 동아리 요약
-            representativeImage: fileMetadataIds?.[0] ?? '', // 동아리 대표 이미지
-            clubDetailImages: clubDetailImages, // 동아리 상세 이미지
+            representativeImage: clobLogoImage ?? null, // 동아리 대표 이미지
+            clubDetailImages: detailImagesFileMetadataIds ?? null, // 동아리 상세 이미지 리스트
         };
         return updatedClubData;
     };
@@ -237,17 +252,26 @@ function ClubEditPage() {
             console.error(error);
         }
     };
-    // effects
-    useEffect(() => {
+
+    const resetForm = () => {
         setIntroText(club?.detailDescription || '');
         setImage(club?.representativeImage?.url || ssoc);
         setCroppedImage(club?.representativeImage?.url || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
-        setClubDetailImages(club?.clubDetailImages || []);
+        imageUrlToFile(club?.clubDetailImages).then((detailImages) => {
+            setDetailImagesInFileUploader(detailImages || []);
+        });
         if (club?.clubSummaries && club?.clubSummaries.length > 0) {
             setClubSummaries(club?.clubSummaries);
         }
+    };
+    const handleCancelEdit = () => {
+        resetForm();
+    };
+    // effects
+    useEffect(() => {
+        resetForm();
     }, [club]);
 
     return (
@@ -284,13 +308,22 @@ function ClubEditPage() {
                                 </Button>
                             </>
                         ) : (
-                            <Button
-                                variant="text"
-                                sx={s_buttonWrapper}
-                                onClick={() => setIsEditMode(!isEditMode)}
-                            >
-                                수정
-                            </Button>
+                            <>
+                                <Button
+                                    variant="text"
+                                    sx={s_buttonWrapper}
+                                    onClick={() => setOpenClubCardDialog(true)}
+                                >
+                                    동아리 카드
+                                </Button>
+                                <Button
+                                    variant="text"
+                                    sx={s_buttonWrapper}
+                                    onClick={() => setIsEditMode(!isEditMode)}
+                                >
+                                    수정
+                                </Button>
+                            </>
                         )}
                     </div>
                 </div>
@@ -305,6 +338,12 @@ function ClubEditPage() {
                 {isEditMode ? editModeIntroduce : readModeIntroduce}
                 {isEditMode ? editModeImageList : readModeImageList}
             </div>
+            <MainCardEditDialog
+                clubId={clubId ?? ''}
+                open={openClubCardDialog}
+                onClose={() => setOpenClubCardDialog(false)}
+                club={club as unknown as Club}
+            />
         </div>
     );
 }

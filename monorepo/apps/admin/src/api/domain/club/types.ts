@@ -24,9 +24,9 @@ export interface DetailClubResponse {
     detailDescription: string;
     representativeImage: RepresentativeImage;
     category: category;
-    clubTags: clubTag[];
-    clubSummaries: clubSummaries[];
-    clubDetailImages: clubDetailImages[];
+    clubTags?: clubTag[];
+    clubSummaries?: clubSummaries[];
+    clubDetailImages?: clubDetailImages[];
 }
 
 export type category =
@@ -48,7 +48,7 @@ type clubSummaries = {
     content: string;
 };
 
-type clubDetailImages = {
+export type clubDetailImages = {
     id: string;
     url: string;
     originalFileName: string;
@@ -74,6 +74,7 @@ interface summaries {
 }
 
 interface ClubTag {
+    id: string;
     name: string;
 }
 export interface Club {
@@ -84,17 +85,17 @@ export interface Club {
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: string[];
+    clubDetailImages: RepresentativeImage[];
 }
 export interface UpdateClub {
     name: string;
     shortDescription: string;
     detailDescription: string;
-    representativeImage: string;
+    representativeImage: string | null;
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: string[];
+    clubDetailImages: string[] | null;
 }
 export interface CreateClub {
     name: string;

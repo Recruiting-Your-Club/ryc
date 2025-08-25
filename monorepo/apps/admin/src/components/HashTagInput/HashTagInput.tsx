@@ -20,6 +20,7 @@ function HashTagInput({
     onTagsChange,
     placeholder = 'ex)백엔드, 프로그래밍, ...',
     maxTags,
+    sx,
 }: TagInputProps) {
     // prop destruction
     // lib hooks
@@ -34,7 +35,7 @@ function HashTagInput({
     // query hooks
     // calculated values
     const addTag = (tag: Tag) => {
-        if (tag && !tags.includes(tag) && (!maxTags || tags.length < maxTags)) {
+        if (tag && !tags?.includes(tag) && (!maxTags || tags.length < maxTags)) {
             onTagsChange([...tags, tag]);
             setInputValue('');
         }
@@ -69,7 +70,7 @@ function HashTagInput({
 
     return (
         <div
-            css={s_container}
+            css={[s_container, sx]}
             onClick={handleContainerClick}
             role="button"
             tabIndex={0}
@@ -82,7 +83,7 @@ function HashTagInput({
                 }
             }}
         >
-            {tags.map((tag) => (
+            {tags?.map((tag) => (
                 <div key={tag.id} css={s_tag}>
                     <Text type="captionRegular" sx={s_hash}>
                         #
@@ -109,7 +110,7 @@ function HashTagInput({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={tags.length === 0 ? placeholder : ''}
+                placeholder={tags?.length === 0 ? placeholder : ''}
                 css={s_input}
                 disabled={maxTags ? tags.length >= maxTags : false}
             />

@@ -7,6 +7,7 @@ export const s_contentContainer = css`
 `;
 export const s_inputContainer = css`
     display: flex;
+    max-width: 30rem;
     width: 100%;
     flex-direction: column;
     justify-content: space-around;

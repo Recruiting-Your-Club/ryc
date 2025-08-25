@@ -16,11 +16,6 @@ const myClubQueries = {
             queryFn: () => getDetailClub(clubId),
             staleTime: DEFAULT_STALETIME,
         }),
-    getClub: (id: string) =>
-        queryOptions({
-            queryKey: clubKeys.detail(id),
-            queryFn: () => getClub(id),
-        }),
 };
 
 export { myClubQueries };

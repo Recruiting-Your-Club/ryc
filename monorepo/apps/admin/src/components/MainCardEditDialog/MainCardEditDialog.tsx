@@ -1,30 +1,78 @@
 import type { Club } from '@api/domain/club/types';
+import type { UpdateClub } from '@api/domain/club/types';
 import { HashTagInput } from '@components';
 import type { Tag } from '@components/HashTagInput/types';
+import { useUpdateClub } from '@hooks/useUpdateClub';
 import { useState } from 'react';
 
-import { Input, Text } from '@ssoc/ui';
+import { Input, Text, useToast } from '@ssoc/ui';
 import { Button, Dialog, MainCard } from '@ssoc/ui';
 
 import { s_contentContainer, s_inputContainer } from './MadinCardEditDialog.style';
 
 function MainCardEditDialog({
+    clubId,
     open,
     onClose,
     club,
 }: {
+    clubId: string;
     open: boolean;
     onClose: () => void;
     club: Club;
 }) {
+    // prop destruction
+    // lib hooks
+    const { toast } = useToast();
+    // initial values
+    // state, ref, querystring hooks
     const [shortDescription, setShortDescription] = useState(club?.shortDescription);
-    const [hashTags, setHashTags] = useState(club?.clubTags);
+    const [hashTags, setHashTags] = useState(
+        club?.clubTags || [{ id: crypto.randomUUID(), name: '동아리 태그' }],
+    );
+    // form hooks
+    // query hooks
+    const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
+    // calculated values
+    // handlers
+    const updateClubData = async () => {
+        const updatedClubData: UpdateClub = {
+            name: club?.name, // 동아리 타이틀
+            shortDescription: shortDescription ?? club?.shortDescription,
+            detailDescription: club?.detailDescription,
+            category: club?.category,
+            clubTags: hashTags ?? club?.clubTags,
+            clubSummaries: club?.clubSummaries,
+            representativeImage: club?.representativeImage.id ?? null,
+            clubDetailImages: club?.clubDetailImages?.map((image) => image.id) ?? null,
+        };
+        return updatedClubData;
+    };
     const handleShortDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setShortDescription(event.target.value);
     };
     const handleTagsChange = (newTags: Tag[]) => {
         setHashTags(newTags);
     };
+    const handleSaveClubData = async () => {
+        const updatedClubData = await updateClubData();
+        try {
+            await updateClub({ id: clubId, club: updatedClubData });
+            toast('동아리 정보가 업데이트 되었어요.', {
+                toastTheme: 'white',
+                type: 'success',
+            });
+        } catch (error) {
+            toast('동아리 정보 수정에 실패했습니다. 다시 시도해주세요.', {
+                toastTheme: 'white',
+                type: 'error',
+            });
+            console.error(error);
+        }
+        onClose();
+    };
+    // effects
+
     return (
         <Dialog open={open} handleClose={onClose} size="lg" backdrop={false}>
             <Dialog.Header>
@@ -34,13 +82,15 @@ function MainCardEditDialog({
             </Dialog.Header>
             <Dialog.Content>
                 <div css={s_contentContainer}>
-                    <MainCard
-                        title={club?.name}
-                        category={club?.category}
-                        description={shortDescription}
-                        clubTags={hashTags}
-                        representativeImage={club?.representativeImage.url}
-                    />
+                    <div css={{ pointerEvents: 'none', cursor: 'default' }}>
+                        <MainCard
+                            title={club?.name}
+                            category={club?.category}
+                            description={shortDescription}
+                            clubTags={hashTags}
+                            representativeImage={club?.representativeImage.url}
+                        />
+                    </div>
                     <div css={s_inputContainer}>
                         <div css={{ gap: '2rem' }}>
                             <Text
@@ -74,8 +124,12 @@ function MainCardEditDialog({
                 </div>
             </Dialog.Content>
             <Dialog.Action position="end">
-                <Button variant="primary">저장</Button>
-                <Button variant="outlined">취소</Button>
+                <Button variant="primary" onClick={handleSaveClubData} loading={isUpdateLoading}>
+                    저장
+                </Button>
+                <Button variant="outlined" onClick={onClose}>
+                    취소
+                </Button>
             </Dialog.Action>
         </Dialog>
     );
