@@ -11,6 +11,12 @@ export type Direction =
     | 'left'
     | 'right';
 
+export type Position = {
+    top: number;
+    left: number;
+    transform: string;
+};
+
 export interface TooltipProps {
     content: string;
     direction?: Direction;
@@ -18,5 +24,15 @@ export interface TooltipProps {
     delay?: number;
     disabled?: boolean;
     wrapperSx?: CSSObject;
+    tooltipSx?: CSSObject;
+}
+
+export interface TooltipPortalProps {
+    position: Position;
+    disabled: boolean;
+    visible: boolean;
+    content: string;
+    isMobile: boolean;
+    tooltipRef: React.RefObject<HTMLDivElement>;
     tooltipSx?: CSSObject;
 }
