@@ -261,7 +261,7 @@ function SideBar() {
                                         );
                                     }}
                                 >
-                                    <Tooltip content={club.name}>
+                                    <Tooltip content={club.name} direction="bottomRight">
                                         <img
                                             src={club.representativeImage?.url}
                                             alt="club"
