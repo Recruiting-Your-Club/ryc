@@ -148,9 +148,10 @@ public class FileService {
     validateExpectedType(newFiles, expectedType);
 
     // 2. 기존에 연결되어 있는 파일 조회
-    List<FileMetaData> existingFiles = fileMetaDataRepository.findAllByAssociatedId(associatedId);
     Map<String, FileMetaData> existingFileMap =
-        existingFiles.stream().collect(Collectors.toMap(FileMetaData::getId, Function.identity()));
+        fileMetaDataRepository.findAllByAssociatedId(associatedId).stream()
+            .filter(file -> file.getFileDomainType() == expectedType)
+            .collect(Collectors.toMap(FileMetaData::getId, Function.identity()));
 
     // 3. 기존 파일 중 제거되지 못한 파일 제거
     List<FileMetaData> filesToUpdate =
