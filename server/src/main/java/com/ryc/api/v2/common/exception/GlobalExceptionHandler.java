@@ -64,8 +64,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(BusinessRuleException.class)
-  public ResponseEntity<Object> handleBusinessRuleException(BusinessRuleException e) {
+  public ResponseEntity<Object> handleBusinessRuleException(
+      BusinessRuleException e, HttpServletRequest request) {
     ErrorCode errorCode = e.getErrorCode();
+
+    if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
+      eventPublisher.publishEvent(
+          new ServerErrorEvent(request.getRequestURI(), e.getFormattedMessage()));
+    }
 
     ErrorResponse errorResponse =
         ErrorResponse.builder().code(errorCode.name()).message(e.getFormattedMessage()).build();
