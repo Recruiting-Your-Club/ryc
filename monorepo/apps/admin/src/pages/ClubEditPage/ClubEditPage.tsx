@@ -199,7 +199,9 @@ function ClubEditPage() {
         const file = await blobUrlToFile(croppedImage, 'club_logo'); // 편집한 이미지
         try {
             const fileMetadataId = await uploadFiles(file, 'CLUB_CREATE');
-            return typeof fileMetadataId?.[0] === 'string' ? fileMetadataId[0] : '';
+            return typeof fileMetadataId?.[0]?.fileMetadataId === 'string'
+                ? fileMetadataId[0].fileMetadataId
+                : '';
         } catch (error) {
             toast.error('이미지 업로드에 실패했어요.', {
                 type: 'error',
@@ -216,7 +218,9 @@ function ClubEditPage() {
             detailImagesInFileUploader,
             'CLUB_INTRODUCTION_IMAGE',
         );
-        return fileMetadataIds.map((id) => (typeof id === 'string' ? id : ''));
+        return fileMetadataIds.map((id) =>
+            typeof id?.fileMetadataId === 'string' ? id.fileMetadataId : '',
+        );
     };
 
     const updateClubData = async () => {
@@ -232,6 +236,7 @@ function ClubEditPage() {
             representativeImage: clobLogoImage ?? null, // 동아리 대표 이미지
             clubDetailImages: detailImagesFileMetadataIds ?? null, // 동아리 상세 이미지 리스트
         };
+
         return updatedClubData;
     };
 

@@ -81,7 +81,10 @@ function ClubCreatePage() {
         if (!croppedImage) return;
         const file = await blobUrlToFile(croppedImage, 'club_logo');
         try {
-            return await uploadFiles(file, 'CLUB_CREATE');
+            const fileMetadataId = await uploadFiles(file, 'CLUB_CREATE');
+            return typeof fileMetadataId?.[0]?.fileMetadataId === 'string'
+                ? fileMetadataId[0].fileMetadataId
+                : '';
         } catch (error) {
             toast.error('이미지 업로드에 실패했어요.', {
                 type: 'error',
@@ -119,12 +122,11 @@ function ClubCreatePage() {
     const createClubData = async () => {
         const selectedLabel = getSelectedLabel();
         // 이미지 저장
-        const fileMetadataIds = await saveClubImage();
+        const fileMetadataId = await saveClubImage();
         const createdClub = {
             name: createClubName.trim(),
             category: selectedLabel,
-            representativeImage:
-                typeof fileMetadataIds?.[0] === 'string' ? fileMetadataIds[0] : null,
+            representativeImage: fileMetadataId,
         };
         if (!checkClubData(createdClub)) {
             return null;
