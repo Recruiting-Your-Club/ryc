@@ -1,14 +1,16 @@
 import { useUpdateAnnouncement } from '@api/hooks/useUpdateAnnouncement';
 import { announcementQueries } from '@api/queryFactory';
+import AttentionTriangle from '@assets/images/attention-triangle.svg';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
+import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
 import { useQuestion } from '@hooks/useQuestion';
 import {
     BasicInfoStep,
     DescriptionStepPage,
     PersonalStatementStep,
 } from '@pages/RecruitCreatePage';
-import { buildAnnouncementSubmitRequest } from '@pages/RecruitCreatePage/buildAnnouncementSubmitRequest';
+import { buildAnnouncementPutSubmitRequest } from '@pages/RecruitCreatePage/buildAnnouncementSubmitRequest';
 import { PreivewStep } from '@pages/RecruitCreatePage/PreviewStep';
 import type { BasicInfoFields, RecruitDetailInfo } from '@pages/RecruitCreatePage/types';
 import { useQuery } from '@tanstack/react-query';
@@ -17,16 +19,22 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { generatePath, useParams } from 'react-router-dom';
 
 import { useFileUpload, useRouter } from '@ssoc/hooks';
-import { Button, Dialog, Stepper, useStepper, useToast } from '@ssoc/ui';
+import { Button, Dialog, Stepper, Text, useStepper, useToast } from '@ssoc/ui';
 
 import {
+    s_captionText,
     s_dialogContent,
     s_dialogHeader,
+    s_iconContainer,
     s_prohibitDragArea,
     s_recruitCreatePageContainer,
     s_stepButtonContainer,
     s_stepComponent,
     s_stepWrapper,
+    s_textBox,
+    s_warningIcon,
+    s_warningIconWrapper,
+    s_warningPageContainer,
 } from './RecruitEditPage.style';
 
 function RecruitEditPage() {
@@ -54,6 +62,9 @@ function RecruitEditPage() {
     } = useQuestion();
 
     const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
+    const { isUploading, handleContentChange } = useEditorImageUpload({
+        location: 'ANNOUNCEMENT_EDITOR',
+    });
 
     // initial values
 
@@ -90,12 +101,16 @@ function RecruitEditPage() {
         photo: false,
     });
 
+    //공고 지원서 폼 아이디 상태 관리
+    const [applicationFormId, setApplicationFormId] = useState<string>('');
+
     //json 파싱 데이터
     const submitJson = useMemo(
         () =>
-            buildAnnouncementSubmitRequest({
+            buildAnnouncementPutSubmitRequest({
                 recruitDetailInfo,
                 basicInfoFields,
+                applicationFormId,
                 preQuestions: questions,
                 applicationQuestions,
                 detailDescription,
@@ -104,6 +119,7 @@ function RecruitEditPage() {
         [
             recruitDetailInfo,
             basicInfoFields,
+            applicationFormId,
             questions,
             applicationQuestions,
             detailDescription,
@@ -133,6 +149,9 @@ function RecruitEditPage() {
 
     // calculated values
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
+    const isRecruitEditable = detailAnnouncement
+        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs())
+        : true;
 
     //--------Step별 유효성 검사--------//
     //step1 검사
@@ -192,7 +211,7 @@ function RecruitEditPage() {
     };
 
     const handleDetailDescriptionChange = useCallback((html: string) => {
-        setDetailDescription(html);
+        handleContentChange(html, setDetailDescription);
     }, []);
 
     const handleFilesChage = useCallback(
@@ -206,7 +225,7 @@ function RecruitEditPage() {
                 }
 
                 const ids = await uploadFiles(files, 'ANNOUNCEMENT_CREATE_IMAGE');
-                setImageFileIds(ids);
+                setImageFileIds(ids.map((id) => id.fileMetadataId));
                 toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
             } catch (error) {
                 setImageFileIds([]);
@@ -236,6 +255,7 @@ function RecruitEditPage() {
 
     useEffect(() => {
         if (detailAnnouncement) {
+            setApplicationFormId(detailAnnouncement.id);
             setDetailDescription(detailAnnouncement.detailDescription);
             const convertToFiles = async () => {
                 const files = await Promise.all(
@@ -393,56 +413,76 @@ function RecruitEditPage() {
     };
 
     return (
-        <div css={s_recruitCreatePageContainer} ref={containerRef}>
-            <div css={s_stepWrapper}>
-                <Stepper activeStep={activeStep} sx={s_prohibitDragArea}>
-                    <Stepper.Step>
-                        <Stepper.Label>공고 상세 정보 작성</Stepper.Label>
-                    </Stepper.Step>
-                    <Stepper.Step>
-                        <Stepper.Label>사전 질문 설정</Stepper.Label>
-                    </Stepper.Step>
-                    <Stepper.Step>
-                        <Stepper.Label>자기소개서 설정</Stepper.Label>
-                    </Stepper.Step>
-                    <Stepper.Step>
-                        <Stepper.Label>미리보기</Stepper.Label>
-                    </Stepper.Step>
-                </Stepper>
+        <>
+            {isRecruitEditable ? (
+                <div css={s_recruitCreatePageContainer} ref={containerRef}>
+                    <div css={s_stepWrapper}>
+                        <Stepper activeStep={activeStep} sx={s_prohibitDragArea}>
+                            <Stepper.Step>
+                                <Stepper.Label>공고 상세 정보 작성</Stepper.Label>
+                            </Stepper.Step>
+                            <Stepper.Step>
+                                <Stepper.Label>사전 질문 설정</Stepper.Label>
+                            </Stepper.Step>
+                            <Stepper.Step>
+                                <Stepper.Label>자기소개서 설정</Stepper.Label>
+                            </Stepper.Step>
+                            <Stepper.Step>
+                                <Stepper.Label>미리보기</Stepper.Label>
+                            </Stepper.Step>
+                        </Stepper>
 
-                <div css={s_stepComponent}>{stepComponent(activeStep)}</div>
-                <div css={s_stepButtonContainer}>
-                    <Button onClick={prev} disabled={isFirst}>
-                        이전
-                    </Button>
-                    <Button
-                        onClick={handleNextClick}
-                        disabled={!isCurrentStepValid()}
-                        loading={isFileUploading}
-                    >
-                        {isLast ? '완료' : '다음'}
-                    </Button>
-                    <Dialog
-                        open={isDialogOpen}
-                        handleClose={() => {
-                            setIsDialogOpen(false);
-                        }}
-                    >
-                        <Dialog.Header sx={s_dialogHeader}>제출 확인</Dialog.Header>
-                        <Dialog.Content sx={s_dialogContent}>
-                            <p>정말 모집 공고를 수정하시겠습니까?</p>
-                            <p>모집이 시작된 후 수정이 불가능합니다.</p>
-                        </Dialog.Content>
-                        <Dialog.Action position="end">
-                            <Button onClick={handleConfirmSubmit}>확인</Button>
-                            <Button onClick={() => setIsDialogOpen(false)} variant="outlined">
-                                취소
+                        <div css={s_stepComponent}>{stepComponent(activeStep)}</div>
+                        <div css={s_stepButtonContainer}>
+                            <Button onClick={prev} disabled={isFirst}>
+                                이전
                             </Button>
-                        </Dialog.Action>
-                    </Dialog>
+                            <Button
+                                onClick={handleNextClick}
+                                disabled={!isCurrentStepValid()}
+                                loading={isFileUploading}
+                            >
+                                {isLast ? '완료' : '다음'}
+                            </Button>
+                            <Dialog
+                                open={isDialogOpen}
+                                handleClose={() => {
+                                    setIsDialogOpen(false);
+                                }}
+                            >
+                                <Dialog.Header sx={s_dialogHeader}>제출 확인</Dialog.Header>
+                                <Dialog.Content sx={s_dialogContent}>
+                                    <p>정말 모집 공고를 수정하시겠습니까?</p>
+                                    <p>모집이 시작된 후 수정이 불가능합니다.</p>
+                                </Dialog.Content>
+                                <Dialog.Action position="end">
+                                    <Button onClick={handleConfirmSubmit}>확인</Button>
+                                    <Button
+                                        onClick={() => setIsDialogOpen(false)}
+                                        variant="outlined"
+                                    >
+                                        취소
+                                    </Button>
+                                </Dialog.Action>
+                            </Dialog>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            ) : (
+                <div css={s_warningPageContainer}>
+                    <div css={s_textBox}>
+                        <div css={s_iconContainer}>
+                            <div css={s_warningIconWrapper}>
+                                <AttentionTriangle css={s_warningIcon} />
+                            </div>
+                        </div>
+                        <Text type="h3Semibold" sx={s_captionText}>
+                            이미 모집이 시작된 공고는 수정할 수 없어요!
+                        </Text>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
 
