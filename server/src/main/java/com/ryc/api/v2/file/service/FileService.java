@@ -192,7 +192,7 @@ public class FileService {
   @Transactional
   public void claimOwnership(
       List<String> fileMetaDataIds, String associatedId, FileDomainType expectedType) {
-    if (fileMetaDataIds == null || fileMetaDataIds.isEmpty()) return;
+    if (fileMetaDataIds == null) return;
 
     List<FileMetaData> filesToUpdate =
         processAssociatedFiles(fileMetaDataIds, associatedId, expectedType);
