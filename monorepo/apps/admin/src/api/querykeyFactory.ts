@@ -26,7 +26,7 @@ queryClient.prefetchQueries({
 const clubKeys = {
     all: ['clubs'] as const,
     detail: (id: string) => ['detail', id] as const,
-    invite: (inviteCode: string) => ['invite', inviteCode] as const,
+    clubInfoByInviteCode: (inviteCode: string) => ['club-info-by-invite-code', inviteCode] as const,
 };
 
 const interviewKeys = {
@@ -73,7 +73,6 @@ const announcementKeys = {
 
 const roleKeys = {
     clubMemberList: (clubId: string) => ['club-member-list', clubId] as const,
-    clubInfoByInviteCode: (inviteCode: string) => ['club-info-by-invite-code', inviteCode] as const,
 };
 
 export {

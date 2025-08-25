@@ -1,11 +1,6 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type {
-    ClubInfoResponse,
-    ClubMember,
-    EnrollmentClubResponse,
-    InvitesResponse,
-} from './types';
+import type { ClubMember, EnrollmentClubResponse, InvitesResponse } from './types';
 
 async function getClubMemberList(params: { clubId: string }): Promise<ClubMember[]> {
     const response = await httpRequest.get({
@@ -47,19 +42,4 @@ async function postInviteCode(params: {
     return response as EnrollmentClubResponse;
 }
 
-async function getClubInfoByInviteCode(params: { inviteCode: string }): Promise<ClubInfoResponse> {
-    const response = await httpRequest.get({
-        url: `clubs/invites/${params.inviteCode}`,
-        isAuthRequire: true,
-    });
-
-    return response as ClubInfoResponse;
-}
-
-export {
-    getClubMemberList,
-    deleteClubMember,
-    postClubIdAndGetInviteUrl,
-    postInviteCode,
-    getClubInfoByInviteCode,
-};
+export { getClubMemberList, deleteClubMember, postClubIdAndGetInviteUrl, postInviteCode };

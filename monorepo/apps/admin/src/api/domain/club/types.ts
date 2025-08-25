@@ -83,15 +83,8 @@ export interface ClubByInviteCode {
     id: string;
     name: string;
     shortDescription: string;
-    representativeImage: RepresentativeImage;
+    representativeImage: clubDetailImages;
     category: string;
     clubTags: ClubTag[];
     announcementStatus: announcementStatus;
 }
-
-type RepresentativeImage = {
-    id: string;
-    url: string;
-    originalFileName: string;
-    contentType: string;
-};

@@ -24,16 +24,6 @@ export interface EnrollmentClubResponse {
     joinedAt: string;
 }
 
-export interface ClubInfoResponse {
-    id: string;
-    name: string;
-    representativeImage: AdminProfileImage;
-    shortDescription: string;
-    category: string;
-    clubTags: ClubTag[];
-    announcementStatus: string;
-}
-
 export interface ClubTag {
     id: string;
     name: string;
