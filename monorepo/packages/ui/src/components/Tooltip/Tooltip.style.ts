@@ -8,11 +8,9 @@ import type { Direction } from './types';
 export const fadeInScale = keyframes`
   0% {
     opacity: 0;
-    transform: scale(0.95);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
   }
 `;
 
@@ -89,9 +87,50 @@ export const tooltipStyle = (direction: Direction, contentLength: number, isMobi
         white-space: normal;
     `}
 
-    z-index: 999;
+    z-index: 999999;
     animation: ${fadeInScale} 0.2s ease-in-out;
     ${theme.typography.subCaptionRegular};
     text-align: center;
+
     ${positionStyles[direction]};
+`;
+
+export const tooltipPortalStyle = (
+    contentLength: number,
+    isMobile: boolean,
+    position: { top: number; left: number; transform: string },
+) => css`
+    position: fixed;
+    top: ${position.top}px;
+    left: ${position.left}px;
+    transform: ${position.transform};
+    z-index: 999999;
+    pointer-events: none;
+
+    background-color: ${theme.colors.black};
+    color: ${theme.colors.white};
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    min-width: 10rem;
+    white-space: nowrap;
+
+    ${!isMobile &&
+    contentLength > 50 &&
+    css`
+        width: 35rem;
+        max-width: 35rem;
+        white-space: normal;
+    `}
+
+    ${isMobile &&
+    contentLength > 30 &&
+    css`
+        width: 25rem;
+        max-width: 25rem;
+        white-space: normal;
+    `}
+
+    animation: ${fadeInScale} 0.2s ease-in-out;
+    ${theme.typography.subCaptionRegular};
+    text-align: center;
 `;
