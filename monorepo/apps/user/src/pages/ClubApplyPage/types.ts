@@ -29,6 +29,7 @@ export interface Answer {
 }
 
 export interface ClubApplyPersonalInfoPageProps {
+    announcementId: string;
     answers: Answer[];
     clubPersonalQuestions: QuestionResponse[];
     onAnswerChange: (

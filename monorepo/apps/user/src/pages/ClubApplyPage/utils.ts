@@ -134,8 +134,16 @@ export const makeAnsewerDataForSubmit = (answers: Answer[]): ApplicationSubmissi
     const applicationData = {
         answers: applicationAnswers.map((answer) => ({
             questionId: answer.id === null ? '' : answer.id,
-            textAnswer: answer.optionIds ? null : answer.value,
-            fileMetadataId: answer.questionType === 'FILE' ? answer.value : null,
+            textAnswer:
+                answer.optionIds ||
+                answer.questionType === 'FILE' ||
+                answer.questionType === 'PROFILE_IMAGE'
+                    ? null
+                    : answer.value,
+            fileMetadataId:
+                answer.questionType === 'FILE' || answer.questionType === 'PROFILE_IMAGE'
+                    ? answer.value
+                    : null,
             answerChoices:
                 answer.optionIds?.map((optionId) => ({
                     optionId: optionId,

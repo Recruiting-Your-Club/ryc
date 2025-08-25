@@ -107,21 +107,32 @@ public class ClubService {
   @Transactional(readOnly = true)
   public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
+
+    List<FileMetaData> images = fileService.findAllByAssociatedId(clubId);
+
     FileGetResponse representativeImage =
-        fileService.findAllByAssociatedId(clubId).stream()
+        images.stream()
             .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
             .findFirst()
             .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
             .orElse(null);
 
+    List<FileGetResponse> detailImages =
+        images.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .toList();
+
     return DetailClubResponse.builder()
         .id(club.getId())
         .name(club.getName())
+        .shortDescription(club.getShortDescription())
         .detailDescription(club.getDetailDescription())
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .clubSummaries(club.getClubSummaries())
         .representativeImage(representativeImage)
+        .clubDetailImages(detailImages)
         .build();
   }
 
@@ -163,6 +174,7 @@ public class ClubService {
         .build();
   }
 
+  @Transactional
   public List<DetailClubResponse> createDetailClubResponses(List<Club> clubs) {
     List<FileMetaData> fileMetaData =
         fileService.findAllByAssociatedIdIn(clubs.stream().map(Club::getId).toList());

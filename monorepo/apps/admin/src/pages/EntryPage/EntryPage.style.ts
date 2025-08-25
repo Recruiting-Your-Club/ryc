@@ -16,7 +16,7 @@ const fadeInUp = keyframes`
 export const s_container = css`
     height: 100%;
     width: 100%;
-    background-image: url('https://d2eqevpna0t9fh.cloudfront.net/public/assets/background.webp');
+    background-image: url('https://d2eqevpna0t9fh.cloudfront.net/public/assets/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -1,6 +1,13 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type { Login, LoginResponse, MyInformation, Register, RegisterResponse } from './types';
+import type {
+    CheckDuplicateEmailResponse,
+    Login,
+    LoginResponse,
+    MyInformation,
+    Register,
+    RegisterResponse,
+} from './types';
 
 async function login(data: Login): Promise<LoginResponse> {
     const response = await httpRequest.post({
@@ -20,12 +27,12 @@ async function register(data: Register): Promise<RegisterResponse> {
     return response as RegisterResponse;
 }
 
-async function checkEmail(email: string): Promise<boolean> {
+async function checkEmail(email: string): Promise<CheckDuplicateEmailResponse> {
     const response = await httpRequest.get({
         url: `admin/emails/duplicate-check?email=${email}`,
         isAuthRequire: false,
     });
-    return response as boolean;
+    return response as CheckDuplicateEmailResponse;
 }
 async function myInformation(): Promise<MyInformation> {
     const response = await httpRequest.get({

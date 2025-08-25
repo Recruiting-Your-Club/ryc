@@ -1,4 +1,10 @@
-import { getClub, getDetailClub, getMyClub, updateClub } from '@api/domain';
+import {
+    getClub,
+    getClubInfoByInviteCode,
+    getDetailClub,
+    getMyClub,
+    updateClub,
+} from '@api/domain';
 import { clubKeys } from '@api/querykeyFactory';
 import { DEFAULT_STALETIME } from '@constants/staleTime';
 import { queryOptions } from '@tanstack/react-query';
@@ -20,6 +26,11 @@ const myClubQueries = {
         queryOptions({
             queryKey: clubKeys.detail(id),
             queryFn: () => getClub(id),
+        }),
+    getClubInfoByInviteCode: (inviteCode: string) =>
+        queryOptions({
+            queryKey: ['clubInfoByInviteCode', inviteCode],
+            queryFn: () => getClubInfoByInviteCode({ inviteCode }),
         }),
 };
 

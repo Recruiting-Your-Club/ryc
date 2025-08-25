@@ -5,9 +5,8 @@ import React, { useMemo, useState } from 'react';
 import banner from '@ssoc/assets/images/banner.png';
 import basicImage from '@ssoc/assets/images/basicImage.png';
 import Check from '@ssoc/assets/images/check.svg';
-import { Button, Dropdown, Text } from '@ssoc/ui';
+import { Button, Dropdown, MainCard, Text } from '@ssoc/ui';
 
-import { MainCard } from '../../components/MainCard/MainCard';
 import { CLUB_CATEGORIES } from '../../constants/club';
 import {
     bannerContainer,
