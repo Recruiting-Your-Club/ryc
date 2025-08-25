@@ -19,6 +19,7 @@ import {
     RecruitCreatePage,
     RecruitSuccessPage,
     RegisterPage,
+    //StepManagementPage,
     StepManagementLoadingPage,
     TestPage,
 } from './pages';

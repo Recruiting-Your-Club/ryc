@@ -31,9 +31,9 @@ export interface DetailClubResponse {
     detailDescription: string;
     representativeImage: RepresentativeImage;
     category: category;
-    clubTags: clubTag[];
-    clubSummaries: clubSummaries[];
-    clubDetailImages: ClubDetailImages[];
+    clubTags?: clubTag[];
+    clubSummaries?: clubSummaries[];
+    clubDetailImages?: clubDetailImages[];
 }
 
 export type category =
@@ -55,6 +55,13 @@ type clubSummaries = {
     content: string;
 };
 
+export type clubDetailImages = {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
+};
+
 type announcementStatus = 'RECRUITING' | 'UPCOMING' | 'CLOSED' | 'EMPTY';
 
 export interface AllClub {
@@ -74,6 +81,7 @@ interface summaries {
 }
 
 interface ClubTag {
+    id: string;
     name: string;
 }
 export interface Club {
@@ -84,7 +92,7 @@ export interface Club {
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: string[];
+    clubDetailImages: RepresentativeImage[];
 }
 
 export interface ClubByInviteCode {
@@ -101,11 +109,11 @@ export interface UpdateClub {
     name: string;
     shortDescription: string;
     detailDescription: string;
-    representativeImage: string;
+    representativeImage: string | null;
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: string[];
+    clubDetailImages: string[] | null;
 }
 export interface CreateClub {
     name: string;
