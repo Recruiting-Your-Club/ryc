@@ -1,5 +1,6 @@
 import { ClubInformationBox, ImageDialog } from '@components';
 import dayjs from 'dayjs';
+import DOMPurify from 'dompurify';
 import React, { useMemo, useState } from 'react';
 
 import { Image, Text } from '@ssoc/ui';
@@ -81,9 +82,12 @@ function RecruitmentPage({
             <div css={s_contentContainer}>
                 <div css={s_contentBody}>
                     <ClubInformationBox data={clubBoxData} />
-                    <Text textAlign="start" sx={s_textContainer}>
-                        {detailDescription}
-                    </Text>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(detailDescription ?? ''),
+                        }}
+                        css={s_textContainer}
+                    />
 
                     <div css={s_imageListContainer}>
                         {images &&
