@@ -1,3 +1,4 @@
+import type { PersonalInfoQuestion } from '@api/domain/announcement/types';
 import type { CSSObject } from '@emotion/react';
 
 export type QuestionType =
@@ -8,21 +9,21 @@ export type QuestionType =
     | 'SHORT_ANSWER';
 
 export interface AnnouncementInfoPageProps {
-    id: string;
-    title: string;
-    summaryDescription: string;
-    detailDescription: string;
-    target: string;
-    field: string;
-    announcementStatus: 'UPCOMING' | 'RECRUITING' | 'CLOSED' | 'EMPTY';
-    announcementType: 'ALWAYS_OPEN' | 'LIMITED_TIME';
-    activityPeriod: string;
-    numberOfPeople: string;
-    applicationPeriod: Period; //서류 접수 기간
-    interviewPeriod: Period; //면접 날짜
-    documentResultPeriod: Period; // 서류평가 결과
-    finalResultPeriod: Period; //최종 결과
-    images: string[];
+    id?: string;
+    title?: string;
+    summaryDescription?: string;
+    detailDescription?: string;
+    target?: string;
+    field?: string;
+    announcementStatus?: 'UPCOMING' | 'RECRUITING' | 'CLOSED' | 'EMPTY';
+    announcementType?: 'ALWAYS_OPEN' | 'LIMITED_TIME';
+    activityPeriod?: string;
+    numberOfPeople?: string;
+    applicationPeriod?: Period; //서류 접수 기간
+    interviewPeriod?: Period; //면접 날짜
+    documentResultPeriod?: Period; // 서류평가 결과
+    finalResultPeriod?: Period; //최종 결과
+    images?: string[];
 }
 
 export interface PersonalInfoPageProps {
@@ -32,10 +33,16 @@ export interface PersonalInfoPageProps {
 
 export interface PersonalQuestion {
     id: string;
-    type: QuestionType;
     label: string;
+    type: QuestionType | PersonalInfoQuestion;
+    options?: QuestionOption[];
     isRequired: boolean;
-    options: string[];
+    description?: string;
+}
+
+export interface QuestionOption {
+    id: string;
+    option: string;
 }
 
 export interface DetailQuestionPageProps {
@@ -48,7 +55,7 @@ export interface DetailQuestion {
     type: QuestionType;
     label: string;
     isRequired: boolean;
-    subLabel: string;
+    description?: string;
 }
 
 interface Period {

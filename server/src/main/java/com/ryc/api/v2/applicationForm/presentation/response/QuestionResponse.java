@@ -20,6 +20,7 @@ public record QuestionResponse(
     @Schema(description = "질문 ID", example = "e23e4567-e89b-12d3-a456-426614174000") String id,
     @Schema(description = "질문 유형", example = "LONG_ANSWER") QuestionType type,
     @Schema(description = "질문 내용", example = "자신의 개발 경험을 적어주세요.") String label,
+    @Schema(description = "질문 설명", example = "자유롭게 서술해 주십시오 (500자 이하)") String description,
     @Schema(description = "필수 여부", example = "true") Boolean isRequired,
     @Schema(description = "선택 옵션 목록 (SELECT 유형인 경우)", example = "[\"보기1\",\"보기2\"]")
         List<QuestionOptionResponse> options) {
@@ -35,6 +36,7 @@ public record QuestionResponse(
         .id(question.getId())
         .type(question.getQuestionType())
         .label(question.getLabel())
+        .description(question.getDescription())
         .isRequired(question.isRequired())
         .options(options)
         .build();

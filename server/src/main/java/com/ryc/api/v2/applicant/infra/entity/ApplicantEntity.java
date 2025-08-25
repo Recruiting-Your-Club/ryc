@@ -34,6 +34,4 @@ public class ApplicantEntity extends BaseEntity {
 
   @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ApplicantPersonalInfoEntity> personalInfos;
-
-  private Boolean isDeleted;
 }

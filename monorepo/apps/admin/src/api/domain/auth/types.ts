@@ -16,3 +16,14 @@ export interface LoginResponse {
 export interface RegisterResponse {
     message: string;
 }
+export interface MyInformation {
+    name: string;
+    email: string;
+    representativeImage: RepresentativeImage;
+}
+export interface RepresentativeImage {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
+}

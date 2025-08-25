@@ -18,6 +18,11 @@ public enum S3ErrorCode implements ErrorCode {
       HttpStatus.BAD_REQUEST, "%s is invalid content type in %s. (%s are allowed)."),
   FILE_NOT_FOUND_AT_S3(HttpStatus.NOT_FOUND, "%s is not found at S3."),
   S3_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S3 server error"),
+  INVALID_PRIVATE_FILE_REQUEST(
+      HttpStatus.BAD_REQUEST, "file access request is required private file"),
+  INVALID_ACCESS_TOKEN(HttpStatus.BAD_REQUEST, "invalid access token"),
+  INVALID_FILE_STATUS(HttpStatus.BAD_REQUEST, "invalid file status"),
+  DUPLICATED_CONFIRM_REQUEST(HttpStatus.BAD_REQUEST, "duplicated file confirm request"),
   ;
   private final HttpStatus httpStatus;
   private final String message;

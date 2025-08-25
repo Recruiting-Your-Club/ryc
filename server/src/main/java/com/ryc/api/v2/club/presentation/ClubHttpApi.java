@@ -99,4 +99,28 @@ public class ClubHttpApi {
     List<DetailClubResponse> responses = clubFacade.getMyClubs(userDetail.getId());
     return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
+
+  @GetMapping("/invites/{invite-code}")
+  @Operation(
+      summary = "동아리 초대 코드로 동아리 조회 API",
+      description = "동아리 초대 코드를 통해 동아리를 조회합니다. 초대 코드가 유효하지 않거나 만료된 경우 예외가 발생합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class, ClubErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND", "CLUB_INVITE_EXPIRED"})
+  public ResponseEntity<SimpleClubResponse> getClubByInviteCode(
+      @PathVariable("invite-code") String inviteCode) {
+    SimpleClubResponse response = clubFacade.getClubByInviteCode(inviteCode);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @DeleteMapping("/{id}")
+  @HasRole(Role.OWNER)
+  @Operation(summary = "동아리 삭제 API", description = "해당 기능은 동아리 회장만 사용 가능합니다.")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"RESOURCE_NOT_FOUND"})
+  public ResponseEntity<Void> deleteClub(@PathVariable String id) {
+    clubFacade.deleteClub(id);
+    return ResponseEntity.noContent().build();
+  }
 }

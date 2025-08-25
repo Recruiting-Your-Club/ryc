@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import Search from '@ssoc/assets/images/search.svg';
 import theme from '@ssoc/styles';
 import { Button, Input, Text } from '@ssoc/ui';
@@ -12,9 +13,7 @@ function Header() {
         <header css={headerBarContainer}>
             <div css={homeNavContainer}>
                 <Link to="/">
-                    <Text as="h1" type="h1Bold" color="black">
-                        SSOC
-                    </Text>
+                    <img src={mainLogo} alt="mainLogo" width="100%" height="55rem" />
                 </Link>
                 {/* <nav css={navContainer}>
                     <Input

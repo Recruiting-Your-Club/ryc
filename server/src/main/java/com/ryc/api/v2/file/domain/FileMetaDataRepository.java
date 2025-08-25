@@ -7,6 +7,8 @@ public interface FileMetaDataRepository {
 
   FileMetaData findById(String id);
 
+  List<FileMetaData> findAll();
+
   List<FileMetaData> findAllByIdIn(List<String> fileMetaDataIds);
 
   List<FileMetaData> findAllByAssociatedId(String associatedId);

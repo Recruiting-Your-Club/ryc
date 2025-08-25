@@ -21,7 +21,6 @@ public class ApplicantMapper {
         .name(entity.getName())
         .announcementId(entity.getAnnouncementId())
         .status(entity.getStatus())
-        .isDeleted(entity.getIsDeleted())
         .email(entity.getEmail())
         .personalInfos(personalInfos)
         .build();
@@ -40,7 +39,6 @@ public class ApplicantMapper {
             .id(domain.getId())
             .announcementId(domain.getAnnouncementId())
             .status(domain.getStatus())
-            .isDeleted(domain.getIsDeleted())
             .email(domain.getEmail())
             .name(domain.getName())
             .personalInfos(personalInfos)

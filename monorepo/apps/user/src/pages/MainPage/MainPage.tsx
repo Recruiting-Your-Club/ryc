@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 
 import banner from '@ssoc/assets/images/banner.png';
+import basicImage from '@ssoc/assets/images/basicImage.png';
 import Check from '@ssoc/assets/images/check.svg';
 import { Button, Dropdown, Text } from '@ssoc/ui';
 
@@ -40,7 +41,6 @@ function MainPage() {
     // form hooks
     // query hooks
     const { data: clublist } = useSuspenseQuery(clubQueries.all());
-
     // calculated values
     const filteredClubData = useMemo(() => {
         let filteredClub = clublist || [];
@@ -75,7 +75,12 @@ function MainPage() {
     return (
         <div css={mainPageContainer}>
             <div css={bannerContainer}>
-                <img src={banner} alt="배너 이미지" width="100%" height="100%" />
+                <img
+                    src="https://d2eqevpna0t9fh.cloudfront.net/public/assets/banner.webp"
+                    alt="배너 이미지"
+                    width="100%"
+                    height="100%"
+                />
             </div>
             <div css={totalClubContainer}>
                 <Text type="bodySemibold" color="black">
@@ -107,14 +112,16 @@ function MainPage() {
                         모집중인 동아리만 보기
                     </Button>
                     <Dropdown sx={categoryDropdown}>
-                        <Dropdown.Trigger sx={{ border: 'none', backgroundColor: 'transparent' }}>
+                        <Dropdown.Trigger
+                            sx={{ border: 'none', backgroundColor: 'transparent', width: '100%' }}
+                        >
                             <Text type="captionSemibold" color="caption">
                                 {currentCategory.name === '전체'
                                     ? '카테고리'
                                     : currentCategory.name}
                             </Text>
                         </Dropdown.Trigger>
-                        <Dropdown.Content sx={{ border: 'none' }}>
+                        <Dropdown.Content sx={{ border: 'none' }} offsetX={-2}>
                             <Dropdown.Item sx={dropdownItem}>
                                 {CLUB_CATEGORIES.map((category) => (
                                     <Dropdown.Label
@@ -149,7 +156,7 @@ function MainPage() {
                         description={club.shortDescription}
                         status={club.announcementStatus || ''}
                         clubTags={club.clubTags}
-                        representativeImage={club.representativeImage}
+                        representativeImage={club.representativeImage?.url || basicImage}
                         link={club.id}
                     />
                 ))}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import File from '@ssoc/assets/images/File.svg';
+
 import { Text } from '../../components/Text';
 import { s_fileUpLoaderEmptyView, s_fileUpLoaderIcon } from './FileUpLoader.style';
 

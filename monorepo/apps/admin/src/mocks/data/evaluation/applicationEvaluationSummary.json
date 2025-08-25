@@ -1,182 +1,184 @@
-[
-    {
-        "applicantId": "1",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.4
-    },
-    {
-        "applicantId": "2",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.5
-    },
-    {
-        "applicantId": "3",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.1
-    },
-    {
-        "applicantId": "4",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.7
-    },
-    {
-        "applicantId": "5",
-        "completedEvaluatorCount": 1,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.6
-    },
-    {
-        "applicantId": "6",
-        "completedEvaluatorCount": 1,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.6
-    },
-    {
-        "applicantId": "7",
-        "completedEvaluatorCount": 1,
-        "totalEvaluatorCount": 6,
-        "averageScore": 2.0
-    },
-    {
-        "applicantId": "8",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 1.7
-    },
-    {
-        "applicantId": "9",
-        "completedEvaluatorCount": 2,
-        "totalEvaluatorCount": 6,
-        "averageScore": 1.5
-    },
-    {
-        "applicantId": "10",
-        "completedEvaluatorCount": 1,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.3
-    },
-    {
-        "applicantId": "11",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.2
-    },
-    {
-        "applicantId": "12",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 1.9
-    },
-    {
-        "applicantId": "13",
-        "completedEvaluatorCount": 0,
-        "totalEvaluatorCount": 6,
-        "averageScore": 3.2
-    },
-    {
-        "applicantId": "14",
-        "completedEvaluatorCount": 2,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.3
-    },
-    {
-        "applicantId": "15",
-        "completedEvaluatorCount": 2,
-        "totalEvaluatorCount": 6,
-        "averageScore": 3.2
-    },
-    {
-        "applicantId": "16",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 1.9
-    },
-    {
-        "applicantId": "17",
-        "completedEvaluatorCount": 0,
-        "totalEvaluatorCount": 6,
-        "averageScore": 1.4
-    },
-    {
-        "applicantId": "18",
-        "completedEvaluatorCount": 0,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.5
-    },
-    {
-        "applicantId": "19",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.2
-    },
-    {
-        "applicantId": "20",
-        "completedEvaluatorCount": 1,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.7
-    },
-    {
-        "applicantId": "21",
-        "completedEvaluatorCount": 0,
-        "totalEvaluatorCount": 6,
-        "averageScore": 3.7
-    },
-    {
-        "applicantId": "22",
-        "completedEvaluatorCount": 3,
-        "totalEvaluatorCount": 6,
-        "averageScore": 3.4
-    },
-    {
-        "applicantId": "23",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 6,
-        "averageScore": 2.9
-    },
-    {
-        "applicantId": "24",
-        "completedEvaluatorCount": 3,
-        "totalEvaluatorCount": 6,
-        "averageScore": 3.5
-    },
-    {
-        "applicantId": "25",
-        "completedEvaluatorCount": 4,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.8
-    },
-    {
-        "applicantId": "26",
-        "completedEvaluatorCount": 3,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.3
-    },
-    {
-        "applicantId": "27",
-        "completedEvaluatorCount": 0,
-        "totalEvaluatorCount": 6,
-        "averageScore": 3.2
-    },
-    {
-        "applicantId": "28",
-        "completedEvaluatorCount": 5,
-        "totalEvaluatorCount": 6,
-        "averageScore": 0.3
-    },
-    {
-        "applicantId": "29",
-        "completedEvaluatorCount": 3,
-        "totalEvaluatorCount": 6,
-        "averageScore": 4.4
-    },
-    {
-        "applicantId": "30",
-        "completedEvaluatorCount": 6,
-        "totalEvaluatorCount": 6,
-        "averageScore": 1.7
-    }
-]
+{
+    "overviewDataList": [
+        {
+            "applicantId": "1",
+            "completedEvaluatorCount": 5,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.4
+        },
+        {
+            "applicantId": "2",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.5
+        },
+        {
+            "applicantId": "3",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.1
+        },
+        {
+            "applicantId": "4",
+            "completedEvaluatorCount": 5,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.7
+        },
+        {
+            "applicantId": "5",
+            "completedEvaluatorCount": 1,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.6
+        },
+        {
+            "applicantId": "6",
+            "completedEvaluatorCount": 1,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.6
+        },
+        {
+            "applicantId": "7",
+            "completedEvaluatorCount": 1,
+            "totalEvaluatorCount": 6,
+            "averageScore": 2.0
+        },
+        {
+            "applicantId": "8",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 1.7
+        },
+        {
+            "applicantId": "9",
+            "completedEvaluatorCount": 2,
+            "totalEvaluatorCount": 6,
+            "averageScore": 1.5
+        },
+        {
+            "applicantId": "10",
+            "completedEvaluatorCount": 1,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.3
+        },
+        {
+            "applicantId": "11",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.2
+        },
+        {
+            "applicantId": "12",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 1.9
+        },
+        {
+            "applicantId": "13",
+            "completedEvaluatorCount": 0,
+            "totalEvaluatorCount": 6,
+            "averageScore": 3.2
+        },
+        {
+            "applicantId": "14",
+            "completedEvaluatorCount": 2,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.3
+        },
+        {
+            "applicantId": "15",
+            "completedEvaluatorCount": 2,
+            "totalEvaluatorCount": 6,
+            "averageScore": 3.2
+        },
+        {
+            "applicantId": "16",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 1.9
+        },
+        {
+            "applicantId": "17",
+            "completedEvaluatorCount": 0,
+            "totalEvaluatorCount": 6,
+            "averageScore": 1.4
+        },
+        {
+            "applicantId": "18",
+            "completedEvaluatorCount": 0,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.5
+        },
+        {
+            "applicantId": "19",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.2
+        },
+        {
+            "applicantId": "20",
+            "completedEvaluatorCount": 1,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.7
+        },
+        {
+            "applicantId": "21",
+            "completedEvaluatorCount": 0,
+            "totalEvaluatorCount": 6,
+            "averageScore": 3.7
+        },
+        {
+            "applicantId": "22",
+            "completedEvaluatorCount": 3,
+            "totalEvaluatorCount": 6,
+            "averageScore": 3.4
+        },
+        {
+            "applicantId": "23",
+            "completedEvaluatorCount": 5,
+            "totalEvaluatorCount": 6,
+            "averageScore": 2.9
+        },
+        {
+            "applicantId": "24",
+            "completedEvaluatorCount": 3,
+            "totalEvaluatorCount": 6,
+            "averageScore": 3.5
+        },
+        {
+            "applicantId": "25",
+            "completedEvaluatorCount": 4,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.8
+        },
+        {
+            "applicantId": "26",
+            "completedEvaluatorCount": 3,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.3
+        },
+        {
+            "applicantId": "27",
+            "completedEvaluatorCount": 0,
+            "totalEvaluatorCount": 6,
+            "averageScore": 3.2
+        },
+        {
+            "applicantId": "28",
+            "completedEvaluatorCount": 5,
+            "totalEvaluatorCount": 6,
+            "averageScore": 0.3
+        },
+        {
+            "applicantId": "29",
+            "completedEvaluatorCount": 3,
+            "totalEvaluatorCount": 6,
+            "averageScore": 4.4
+        },
+        {
+            "applicantId": "30",
+            "completedEvaluatorCount": 6,
+            "totalEvaluatorCount": 6,
+            "averageScore": 1.7
+        }
+    ]
+}

@@ -22,11 +22,13 @@ queryClient.prefetchQueries({
   queryFn: () => fetchTodo(id),
 })
 */
+import type { EvaluationType } from './domain/evaluation/types';
 
 const clubKeys = {
     all: ['clubs'] as const,
     detail: (id: string) => ['detail', id] as const,
     clubInfoByInviteCode: (inviteCode: string) => ['club-info-by-invite-code', inviteCode] as const,
+    create: (id: string) => ['create', id] as const,
 };
 
 const interviewKeys = {
@@ -52,15 +54,12 @@ const stepKeys = {
 };
 
 const evaluationKeys = {
-    evaluationSummary: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+    evaluationSummary: (clubId: string, applicantIds: string[], type: EvaluationType) =>
         ['evaluation-summary', clubId, ...applicantIds, type] as const,
-    evaluationDetail: (clubId: string, applicantIds: string[], type: 'document' | 'interview') =>
+    evaluationDetail: (clubId: string, applicantIds: string[], type: EvaluationType) =>
         ['evaluation-detail', clubId, ...applicantIds, type] as const,
-    myEvaluationStatus: (
-        clubId: string,
-        applicantIds: string[],
-        type: 'application' | 'interview',
-    ) => ['my-evaluation-status', clubId, ...applicantIds, type] as const,
+    myEvaluationStatus: (clubId: string, announcementId: string, type: EvaluationType) =>
+        ['my-evaluation-status', clubId, announcementId, type] as const,
 };
 
 const announcementKeys = {
@@ -69,6 +68,10 @@ const announcementKeys = {
     detail: (announcementId: string) =>
         [...announcementKeys.all, 'detail', announcementId] as const,
     listByClub: (clubId: string) => ['announcements', 'list', clubId] as const,
+};
+const userKeys = {
+    checkDuplicateEmail: (email: string) => ['check-duplicate-email', email] as const,
+    myInformation: () => ['my-information'] as const,
 };
 
 const roleKeys = {
@@ -83,4 +86,5 @@ export {
     evaluationKeys,
     stepKeys,
     roleKeys,
+    userKeys,
 };

@@ -1,6 +1,10 @@
 export type EvaluationType = 'application' | 'interview';
 
 export interface EvaluationSummary {
+    overviewDataList: PerEvaluationSummary[];
+}
+
+export interface PerEvaluationSummary {
     applicantId: string;
     completedEvaluatorCount: number;
     totalEvaluatorCount: number;
@@ -32,7 +36,7 @@ export interface Evaluation {
 }
 
 export interface MyEvaluationStatus {
-    applicantEvaluationStatuses: PerEvaluationStatus[];
+    evaluatedApplicantIds: string[];
 }
 
 export interface PerEvaluationStatus {

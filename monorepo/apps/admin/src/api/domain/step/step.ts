@@ -43,7 +43,7 @@ async function updateStepApplicantsStatus({
 }): Promise<void> {
     await httpRequest.patch({
         url: `applicants/${applicantId}/status`,
-        body: { status },
+        body: { status: status },
         headers: {
             'X-CLUB-ID': clubId,
         },

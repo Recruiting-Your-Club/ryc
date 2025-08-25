@@ -1,6 +1,7 @@
-import { Button } from '@components/_common/Button';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+
+import { Button } from '@ssoc/ui';
 
 import { ConfirmDialog } from '.';
 

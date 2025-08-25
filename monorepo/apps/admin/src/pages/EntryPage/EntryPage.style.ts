@@ -1,4 +1,3 @@
-import backgroundImage from '@assets/images/background.webp';
 import { css, keyframes } from '@emotion/react';
 
 import theme from '@ssoc/styles';
@@ -17,7 +16,7 @@ const fadeInUp = keyframes`
 export const s_container = css`
     height: 100%;
     width: 100%;
-    background-image: url(${backgroundImage});
+    background-image: url('https://d2eqevpna0t9fh.cloudfront.net/public/assets/background.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

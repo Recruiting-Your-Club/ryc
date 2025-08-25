@@ -71,6 +71,7 @@ export const categoryDropdown = css`
     @media (min-width: ${theme.breakpoint.mobile}) {
         display: none;
     }
+    width: 8.5rem;
 `;
 export const dropdownItem = css`
     display: flex;

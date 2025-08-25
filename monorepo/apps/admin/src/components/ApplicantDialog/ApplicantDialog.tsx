@@ -80,11 +80,24 @@ function ApplicantDialog({
                 return question.textAnswer ?? '답변 미작성';
 
             case 'SINGLE_CHOICE':
-            case 'MULTIPLE_CHOICE':
-                return question.selectedOptionIds?.join(', ') ?? '답변 미선택';
+            case 'MULTIPLE_CHOICE': {
+                if (!question.selectedOptionIds?.length) {
+                    return '답변 미선택';
+                }
+
+                const selectedOptions = question.selectedOptionIds
+                    .map(
+                        (id) =>
+                            question.questionOptions?.find((option) => option.optionId === id)
+                                ?.option,
+                    )
+                    .filter((option): option is string => Boolean(option));
+
+                return selectedOptions.length > 0 ? selectedOptions.join(', ') : '답변 미선택';
+            }
 
             case 'FILE':
-                return question.fileUrl ?? '파일 미첨부';
+                return question.file?.originalFileName ?? '파일 미첨부';
 
             default:
                 return '답변 미작성';
@@ -174,14 +187,14 @@ function ApplicantDialog({
                                                         question={document.questionLabel}
                                                         answer={
                                                             document.questionType === 'FILE' &&
-                                                            document.fileUrl ? (
+                                                            document.file?.url ? (
                                                                 <FileDownloader
                                                                     fileName={
-                                                                        document.fileUrl
+                                                                        document.file.originalFileName
                                                                             .split('/')
                                                                             .pop() || 'download'
                                                                     }
-                                                                    fileData={document.fileUrl}
+                                                                    fileData={document.file.url}
                                                                 />
                                                             ) : (
                                                                 formatAnswer(document)

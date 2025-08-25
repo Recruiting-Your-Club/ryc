@@ -11,20 +11,28 @@ export interface SlotPeriod {
 }
 
 export interface InterviewApplicant {
-    interviewSlotId: string;
-    interviewReservations: ApplicantReservedInterview[];
+    interviewReservationId: string;
+    applicantSummary: {
+        applicantId: string;
+        applicantEmail: string;
+        applicantName: string;
+        imageResponse: {
+            id: string;
+            url: string;
+            originalFileName: string;
+            contentType: string;
+        } | null;
+    };
 }
 
 export interface UnreservedApplicant {
-    unreservedApplicants: ApplicantForInterviewSlot[];
-}
-
-export interface ApplicantReservedInterview extends ApplicantForInterviewSlot {
-    interviewReservationId: string;
-}
-
-export interface ApplicantForInterviewSlot {
     applicantId: string;
     applicantEmail: string;
     applicantName: string;
+    imageResponse: {
+        id: string;
+        url: string;
+        originalFileName: string;
+        contentType: string;
+    };
 }

@@ -1,14 +1,17 @@
-import type { Club } from '@api/domain/club/types';
+import type { Club, UpdateClub } from '@api/domain/club/types';
 import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
+import { BASE_URL } from '@constants/api';
 import { useUpdateClub } from '@hooks/useUpdateClub';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useFileUpload } from '@ssoc/hooks';
 import { Button, Divider, FileUpLoader } from '@ssoc/ui';
 import { Editor, Image, ImageDialog, Input, Select, Text, useToast } from '@ssoc/ui';
 import { getCategory } from '@ssoc/utils';
+import { blobUrlToFile } from '@ssoc/utils';
 
 import { ClubBox, ImageRegister } from '../../components';
 import type { ClubBoxItem } from '../../components/ClubBox/types';
@@ -36,6 +39,14 @@ function ClubEditPage() {
         { id: crypto.randomUUID(), title: '연락처', content: '미정' },
         { id: crypto.randomUUID(), title: '정기모임', content: '미정' },
     ];
+    const options = [
+        { value: 'PERFORMANCE_ARTS', label: '공연동아리' },
+        { value: 'CULTURE', label: '문화동아리' },
+        { value: 'SPORTS', label: '체육동아리' },
+        { value: 'ACADEMIC', label: '학술동아리' },
+        { value: 'VOLUNTEER', label: '봉사동아리' },
+        { value: 'RELIGION', label: '종교동아리' },
+    ];
     // state, ref, querystring hooks
     const [isEditMode, setIsEditMode] = useState(false);
     const [image, setImage] = useState<string>(ssoc);
@@ -51,6 +62,7 @@ function ClubEditPage() {
     // query hooks
     const { data: club } = useQuery(myClubQueries.getClub(clubId ?? ''));
     const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
+    const { uploadFiles, error } = useFileUpload(BASE_URL);
 
     // calculated values
     const editModeLogo = (
@@ -71,7 +83,6 @@ function ClubEditPage() {
             css={{ borderRadius: '10px' }}
         />
     );
-    //FIXME: Select value 값 리팩토링한 Select로 바꿔줘야함
     const editModeClubNameAndCategory = (
         <>
             <Input
@@ -79,17 +90,16 @@ function ClubEditPage() {
                 onChange={(event) => setClubName(event.target.value)}
                 inputSx={{ height: '3rem' }}
             />
-            <Select value={clubCategory} onValueChange={setClubCategory} size="s">
+            <Select value={clubCategory} onValueChange={setClubCategory} size="s" options={options}>
                 <Select.Trigger sx={{ height: '2.8rem', width: '10rem' }}>
                     <Select.Value />
                 </Select.Trigger>
                 <Select.Content>
-                    <Select.Item value="PERFORMANCE_ARTS">공연동아리</Select.Item>
-                    <Select.Item value="CULTURE">문화동아리</Select.Item>
-                    <Select.Item value="SPORTS">체육동아리</Select.Item>
-                    <Select.Item value="ACADEMIC">학술동아리</Select.Item>
-                    <Select.Item value="VOLUNTEER">봉사동아리</Select.Item>
-                    <Select.Item value="RELIGION">종교동아리</Select.Item>
+                    {options.map(({ value, label }) => (
+                        <Select.Item key={value} value={value}>
+                            {label}
+                        </Select.Item>
+                    ))}
                 </Select.Content>
             </Select>
         </>
@@ -156,6 +166,20 @@ function ClubEditPage() {
         </>
     );
     // handlers
+    const saveClubImage = async () => {
+        if (!croppedImage) return;
+        const file = await blobUrlToFile(croppedImage, 'club_logo');
+        try {
+            return await uploadFiles(file, 'CLUB_INTRODUCTION_IMAGE');
+        } catch (error) {
+            toast.error('이미지 업로드에 실패했어요.', {
+                type: 'error',
+                toastTheme: 'white',
+            });
+            throw error;
+        }
+    };
+
     const handleImageExpanded = (url: string) => {
         setExpandedImage(url);
     };
@@ -175,50 +199,53 @@ function ClubEditPage() {
     const handleCancelEdit = () => {
         setClubSummaries(club?.clubSummaries || defaultClubSummaries);
         setIntroText(club?.detailDescription || '');
-        setImage(club?.imageUrl || ssoc);
-        setCroppedImage(club?.imageUrl || ssoc);
+        setImage(club?.representativeImage?.url || ssoc);
+        setCroppedImage(club?.representativeImage?.url || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
     };
-    const updateClubData = () => {
-        const updatedClubData: Club = {
+    const updateClubData = async () => {
+        const fileMetadataIds = await saveClubImage();
+        const updatedClubData: UpdateClub = {
             name: clubName, // 동아리 타이틀
-            category: clubCategory, // 카테고리
+            shortDescription: club?.shortDescription || '',
             detailDescription: introText, // 동아리 소개
+            category: clubCategory, // 카테고리
+            clubTags: club?.clubTags || [], // 동아리 태그
             clubSummaries: clubSummaries || [], // 동아리 요약
-            imageUrl: croppedImage, // 동아리 대표 이미지
+            representativeImage: fileMetadataIds?.[0] ?? '', // 동아리 대표 이미지
             clubDetailImages: clubDetailImages, // 동아리 상세 이미지
         };
         return updatedClubData;
     };
+
+    //FIXME: 불러온 동아리 값, 수정한 동아리 값 비교 후 동일하면 쿼리 안날리게 수정해야함
     const handleSaveEdited = async () => {
-        const updatedClubData = updateClubData();
-        if (JSON.stringify(club) !== JSON.stringify(updatedClubData)) {
-            try {
-                await updateClub({ id: clubId ?? '', club: updatedClubData });
-                toast('동아리 정보가 업데이트 되었어요.', {
-                    toastTheme: 'white',
-                    type: 'success',
-                });
-            } catch (error) {
-                toast('업데이트에 실패했습니다. 다시 시도해주세요.', {
-                    toastTheme: 'white',
-                    type: 'error',
-                });
-                console.error(error);
-            }
+        const updatedClubData = await updateClubData();
+        try {
+            await updateClub({ id: clubId ?? '', club: updatedClubData });
+            toast('동아리 정보가 업데이트 되었어요.', {
+                toastTheme: 'white',
+                type: 'success',
+            });
+        } catch (error) {
+            toast('업데이트에 실패했습니다. 다시 시도해주세요.', {
+                toastTheme: 'white',
+                type: 'error',
+            });
+            console.error(error);
         }
     };
     // effects
     useEffect(() => {
         setIntroText(club?.detailDescription || '');
-        setImage(club?.imageUrl || ssoc);
-        setCroppedImage(club?.imageUrl || ssoc);
+        setImage(club?.representativeImage?.url || ssoc);
+        setCroppedImage(club?.representativeImage?.url || ssoc);
         setClubCategory(club?.category || '');
         setClubName(club?.name || '');
         setClubDetailImages(club?.clubDetailImages || []);
-        if (club?.clubSummaries && clubSummaries.length > 0) {
+        if (club?.clubSummaries && club?.clubSummaries.length > 0) {
             setClubSummaries(club?.clubSummaries);
         }
     }, [club]);

@@ -53,11 +53,12 @@ const evaluationKeys = {
 };
 
 const interviewKeys = {
-    allInterviewSchedules: ['interviewschedules'] as const,
-    allInterviewees: ['interviewees'] as const,
-    intervieweeDetail: (id: number) => ['interviewee-detail', id] as const,
-    documentDetail: (id: number) => ['document-detail', id] as const,
-    evaluationDetail: (id: number) => ['evaluation-detail', id] as const,
+    interviewSlot: (announcementId: string, clubId: string) =>
+        ['interview-slot', announcementId, clubId] as const,
+    interviewInformation: (announcementId: string, interviewSlotId: string, clubId: string) =>
+        ['interview-information', announcementId, interviewSlotId, clubId] as const,
+    unreservedApplicant: (announcementId: string, clubId: string) =>
+        ['unreserved-applicant', announcementId, clubId] as const,
 };
 
 const myClubKeys = {

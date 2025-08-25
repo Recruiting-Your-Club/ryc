@@ -7,11 +7,9 @@ export interface StepApplicant {
     email: string;
     imageAllowed: boolean;
     imagePresent: boolean;
-    imageUrl: string;
-    thumbnailUrl: string;
     status: string;
     submittedAt: string;
-    profileImage: ProfileImageInformation;
+    representativeImage: ProfileImageInformation | null;
 }
 
 export interface StepApplicantWithoutImage {
@@ -30,5 +28,5 @@ export interface ProfileImageInformation {
 }
 
 export interface Step {
-    process: RecruitmentStep[];
+    processes: RecruitmentStep[];
 }

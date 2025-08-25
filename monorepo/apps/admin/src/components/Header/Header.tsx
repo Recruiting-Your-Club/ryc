@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import MainLogo from '@ssoc/assets/images/MainLogo.svg';
+import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import { Text } from '@ssoc/ui';
 
 import { headerContainer, leftContainer, logoContainer } from './Header.style';
@@ -9,14 +10,9 @@ function Header() {
     return (
         <>
             <header css={headerContainer}>
-                <div css={leftContainer}>
-                    {/* <div css={logoContainer}>
-                        <MainLogo width="100%" heigth="100%" />
-                    </div> */}
-                    <Text as="h1" type="h2Bold">
-                        SSOC
-                    </Text>
-                </div>
+                <Link to="/" css={leftContainer}>
+                    <img src={mainLogo} alt="mainLogo" width="100%" height="55rem" />
+                </Link>
             </header>
         </>
     );
