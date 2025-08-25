@@ -95,5 +95,12 @@ export const s_tableCellNoActionSx = css`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 100%;
+    width: 95%;
+`;
+
+export const s_searchButtonSx = css`
+    pointer-events: none;
+    &:hover {
+        background-color: transparent;
+    }
 `;

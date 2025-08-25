@@ -2,7 +2,7 @@ import { roleMutations } from '@api/hooks';
 import { roleQueries } from '@api/queryFactory/roleQueries';
 import { ConfirmDialog } from '@components/ConfirmDialog';
 import { InviteMemberDialog } from '@components/InviteMemberDialog';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -23,6 +23,7 @@ import {
     s_dropdownTriggerSx,
     s_inputSx,
     s_memberCellContainer,
+    s_searchButtonSx,
     s_tableCellDropdownSx,
     s_tableCellNoActionSx,
     s_tableCellSx,
@@ -36,9 +37,9 @@ const ClubMemberRolePage = () => {
     const { open, openDialog, closeDialog } = useDialog();
     const { toast } = useToast();
     const { clubId } = useParams();
+    const queryClient = useQueryClient();
     // initial values
     // state, ref, querystring hooks
-    const [currentUserRole] = useState<'회장' | '동아리원'>('회장');
     const [isKickConfirmOpen, setIsKickConfirmOpen] = useState(false);
     const [inviteUrl, setInviteUrl] = useState('');
     const [searchText, setSearchText] = useState('');
@@ -106,16 +107,6 @@ const ClubMemberRolePage = () => {
     };
     // handlers
     const handleClickKickMember = (memberId: string) => {
-        if (currentUserRole !== '회장') {
-            toast.error('회장만 멤버를 내보낼 수 있습니다.');
-            return;
-        }
-
-        if (!memberId) {
-            toast.error('내보낼 멤버를 선택해주세요.');
-            return;
-        }
-
         setSelectedId(memberId);
         setIsKickConfirmOpen(true);
     };
@@ -123,12 +114,24 @@ const ClubMemberRolePage = () => {
     const handleConfirmKickMember = () => {
         deleteMember(selectedId, {
             onSuccess: () => {
-                toast.success('멤버를 내보냈습니다.');
+                toast.success('멤버를 내보냈어요.');
                 setSelectedId('');
                 setIsKickConfirmOpen(false);
+
+                queryClient.invalidateQueries({
+                    queryKey: roleQueries.getClubMemberList(clubId || '').queryKey,
+                });
             },
-            onError: () => {
+            onError: (error) => {
                 if (error instanceof HttpError && error.statusCode === 500) {
+                    return;
+                } else if (error instanceof HttpError && error.statusCode === 400) {
+                    toast.error('회장은 내보낼 수 없어요.');
+                    setIsKickConfirmOpen(false);
+                    return;
+                } else if (error instanceof HttpError && error.statusCode === 403) {
+                    toast.error('동아리원은 내보내기 권한이 없어요.');
+                    setIsKickConfirmOpen(false);
                     return;
                 }
                 toast.error('내보내기에 실패했습니다.');
@@ -148,8 +151,8 @@ const ClubMemberRolePage = () => {
                 <Input
                     variant="transparent"
                     startNode={
-                        <Button variant="text" size="s">
-                            <Search width="1.5rem" height="1.5rem" />
+                        <Button variant="text" size="s" sx={s_searchButtonSx}>
+                            <Search width="1.5rem" height="1.5rem" css={s_searchButtonSx} />
                         </Button>
                     }
                     inputSx={s_inputSx}
@@ -207,7 +210,7 @@ const ClubMemberRolePage = () => {
                                     </Table.Cell>
                                     <Table.Cell>{formatDate(member.joinedAt)}</Table.Cell>
                                     <Table.Cell>{translateRole(member.role)}</Table.Cell>
-                                    {member.role !== 'OWNER' && currentUserRole === '회장' ? (
+                                    {member.role !== 'OWNER' ? (
                                         <Table.Cell sx={s_tableCellDropdownSx}>
                                             <Dropdown>
                                                 <Dropdown.Trigger asChild sx={s_dropdownTriggerSx}>
