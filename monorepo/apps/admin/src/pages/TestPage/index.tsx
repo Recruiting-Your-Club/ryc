@@ -55,11 +55,6 @@ function TestPage() {
             >
                 <Button onClick={() => setOpenClubCardDialog(true)}>동아리 카드 수정</Button>
             </div>
-            <MainCardEditDialog
-                open={openClubCardDialog}
-                onClose={() => setOpenClubCardDialog(false)}
-                club={club}
-            />
         </div>
     );
 }
