@@ -1,6 +1,5 @@
 import { roleMutations } from '@api/hooks';
 import { myClubQueries } from '@api/queryFactory';
-import { roleQueries } from '@api/queryFactory/roleQueries';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -31,15 +30,9 @@ const InviteConfirmPage = () => {
     // form hooks
     // query hooks
 
-    // const { data: clubInfo, isLoading: isClubInfoLoading } = useQuery({
-    //     ...roleQueries.getClubInfoByInviteCode(inviteCode || ''),
-    //     enabled: !!inviteCode,
-    //     retry: false,
-    // });
-
-    const { data: clubInformation, isLoading: isClubInformationLoading } = useQuery({
-        ...myClubQueries.detail(clubId || ''),
-        enabled: !!clubId,
+    const { data: clubInfo, isLoading: isClubInfoLoading } = useQuery({
+        ...myClubQueries.getClubInfoByInviteCode(inviteCode || ''),
+        enabled: !!inviteCode,
         retry: false,
     });
 
@@ -53,13 +46,16 @@ const InviteConfirmPage = () => {
         onError: (error) => {
             if (error instanceof HttpError && error.statusCode === 500) {
                 return;
+            } else if (error instanceof HttpError && error.statusCode === 409) {
+                toast.error('이미 초대에 참여한 동아리입니다.');
+                return;
             }
             toast.error('초대 처리 중 오류가 발생했습니다.');
         },
     });
 
     // calculated values
-    const tags = clubInformation?.clubTags?.map((tag) => `#${tag.name}`) || [];
+    const tags = clubInfo?.clubTags?.map((tag) => `#${tag.name}`) || [];
     // handlers
     const handleConfirm = async () => {
         if (!clubId || !inviteCode) {
@@ -90,21 +86,21 @@ const InviteConfirmPage = () => {
                     초대 수락
                 </Text>
                 <div css={s_clubInfoCard}>
-                    {isClubInformationLoading ? (
+                    {isClubInfoLoading ? (
                         <SpinSpinner />
                     ) : (
                         <ClubCard
-                            imageURL={clubInformation?.representativeImage?.url || ''}
-                            imageName={clubInformation?.representativeImage?.originalFileName || ''}
-                            title={clubInformation?.name || ''}
-                            type={getCategory(clubInformation?.category || '')}
+                            imageURL={clubInfo?.representativeImage?.url || ''}
+                            imageName={clubInfo?.representativeImage?.originalFileName || ''}
+                            title={clubInfo?.name || ''}
+                            type={getCategory(clubInfo?.category || '')}
                             tag={tags}
                         />
                     )}
                 </div>
                 <div css={s_confirmText}>
                     <Text type="bodyRegular" color="primary">
-                        {clubInformation?.name}
+                        {clubInfo?.name}
                     </Text>
                     <Text type="bodyRegular"> 동아리에 참여하시겠습니까?</Text>
                 </div>
