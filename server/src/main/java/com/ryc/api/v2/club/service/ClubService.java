@@ -163,6 +163,7 @@ public class ClubService {
         .build();
   }
 
+  @Transactional
   public List<DetailClubResponse> createDetailClubResponses(List<Club> clubs) {
     List<FileMetaData> fileMetaData =
         fileService.findAllByAssociatedIdIn(clubs.stream().map(Club::getId).toList());
