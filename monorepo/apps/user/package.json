@@ -31,6 +31,7 @@
         "@ssoc/utils": "workspace:*",
         "@tanstack/react-query": "^5.74.7",
         "dayjs": "^1.11.13",
+        "dompurify": "^3.2.6",
         "dotenv-webpack": "^8.1.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
