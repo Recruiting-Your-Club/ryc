@@ -3,6 +3,7 @@ import { httpRequest } from '@api/common/httpRequest';
 import type {
     Announcement,
     AnnouncementList,
+    AnnouncementPutSubmitRequest,
     AnnouncementSubmitRequest,
     DetailAnnouncement,
     PostAnnouncementResponse,
@@ -49,7 +50,7 @@ async function postAnnouncement(
 async function putAnnouncement(
     clubId: string,
     announcementId: string,
-    payload: AnnouncementSubmitRequest,
+    payload: AnnouncementPutSubmitRequest,
 ): Promise<void> {
     await httpRequest.put({
         url: `clubs/${clubId}/announcements/${announcementId}`,
