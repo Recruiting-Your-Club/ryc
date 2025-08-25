@@ -1,3 +1,4 @@
+export * from './roleMutations';
 export * from './useInterviewMutations';
 export * from './useStepMutations';
 export * from './useEmailMutations';

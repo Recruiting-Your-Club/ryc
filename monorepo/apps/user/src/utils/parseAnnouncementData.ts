@@ -61,19 +61,35 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
         },
         {
             title: '서류 접수',
-            value: applicationPeriod ? applicationPeriod : '미정',
+            value: applicationPeriod
+                ? applicationPeriod[0] === '9'
+                    ? '상시 모집'
+                    : applicationPeriod
+                : '미정',
         },
         {
             title: '면접 기간',
-            value: interviewPeriod ? interviewPeriod : '미정',
+            value: interviewPeriod
+                ? interviewPeriod[0] === '9'
+                    ? '상시 모집'
+                    : interviewPeriod
+                : '미정',
         },
         {
             title: '서류 발표',
-            value: documentResultPeriod ? documentResultPeriod : '미정',
+            value: documentResultPeriod
+                ? documentResultPeriod[0] === '9'
+                    ? '상시 모집'
+                    : documentResultPeriod
+                : '미정',
         },
         {
             title: '최종 합격',
-            value: finalResultPeriod ? finalResultPeriod : '미정',
+            value: finalResultPeriod
+                ? finalResultPeriod[0] === '9'
+                    ? '상시 모집'
+                    : finalResultPeriod
+                : '미정',
         },
     ];
 };

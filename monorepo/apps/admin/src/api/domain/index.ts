@@ -6,3 +6,4 @@ export * from './applicant/applicant';
 export * from './evaluation/evaluation';
 export * from './step/step';
 export * from './announcement/announcement';
+export * from './role/role';

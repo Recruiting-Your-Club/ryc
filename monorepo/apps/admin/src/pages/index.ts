@@ -11,4 +11,6 @@ export * from './InterviewEvaluationPage';
 export * from './ClubEditPage';
 export * from './EntryPage';
 export * from './StepManagementPage';
+export * from './ClubMemberRolePage';
+export * from './InviteConfirmPage';
 export * from './NonAnnouncementPage';

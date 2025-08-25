@@ -20,7 +20,12 @@ import {
 function ClubApplySuccessPage() {
     // prop destruction
     // lib hooks
-    const { announcementId } = useParams<{ announcementId: string }>();
+    const params = useParams<{
+        announcementId: string;
+        applicantId: string;
+        applicationId: string;
+    }>();
+    const { announcementId } = params;
     const { clubName, clubField } = useClubStore();
     const { getAnswers, clear } = useApplicationStore();
 
@@ -33,13 +38,14 @@ function ClubApplySuccessPage() {
     // calculated values
     const userName = applicationAnswers.find((answer) => answer.questionTitle === '이름')?.value;
     const userEmail = applicationAnswers.find((answer) => answer.questionTitle === '이메일')?.value;
+
     // handlers
+    const handleGoHome = () => {
+        clear(announcementId);
+        goTo('/');
+    };
+
     // effects
-    useEffect(() => {
-        return () => {
-            clear(announcementId);
-        };
-    }, []);
 
     return (
         <div css={s_applicationSuccessPageContainer}>
@@ -74,7 +80,7 @@ function ClubApplySuccessPage() {
                 </div>
             </div>
             <div css={s_goToHomeButtonWrapper}>
-                <Button size="full" color="primary" onClick={() => goTo('/')}>
+                <Button size="full" color="primary" onClick={handleGoHome}>
                     홈으로 이동
                 </Button>
             </div>

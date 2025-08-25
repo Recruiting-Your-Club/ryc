@@ -28,9 +28,9 @@ interface ClubCardProps {
     imageName?: string;
     title: string;
     type: string;
-    status: tagVariant;
+    status?: tagVariant;
     tag: string[];
-    path: string;
+    path?: string;
 }
 
 const RECRUITMENT_STATUS: Record<tagVariant, string> = {
@@ -69,7 +69,7 @@ function ClubCard({
     // handlers
 
     return (
-        <CardRoot width={width} radius={radius} hover={hover} onClick={() => goTo(path)}>
+        <CardRoot width={width} radius={radius} hover={hover} onClick={() => path && goTo(path)}>
             <CardTopBody>
                 <Avatar
                     shape={avatarShape}
@@ -84,7 +84,7 @@ function ClubCard({
                     subTitle={type}
                 />
                 <div css={statusTag}>
-                    <Tag text={RECRUITMENT_STATUS[status]} variant={status} />
+                    {status && <Tag text={RECRUITMENT_STATUS[status]} variant={status} />}
                 </div>
             </CardTopBody>
             <CardBottomBody />

@@ -6,7 +6,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from '@ssoc/hooks';
 import { useToast } from '@ssoc/ui';
 
-function useLogin() {
+import { HttpError } from '../api/common/httpError';
+
+interface UseLoginOptions {
+    redirectPath?: string;
+}
+
+function useLogin(options?: UseLoginOptions) {
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const { removeHistoryAndGo } = useRouter();
     const { toast } = useToast();
@@ -15,9 +21,12 @@ function useLogin() {
         mutationFn: login,
         onSuccess: (data) => {
             setAccessToken(data.accessToken);
-            removeHistoryAndGo('/myClub');
+            removeHistoryAndGo(options?.redirectPath || '/myClub');
         },
         onError: (error) => {
+            if (error instanceof HttpError && error.statusCode === 500) {
+                return;
+            }
             toast.error('로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.', {
                 toastTheme: 'black',
                 position: 'topCenter',

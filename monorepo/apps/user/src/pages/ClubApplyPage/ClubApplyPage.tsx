@@ -11,9 +11,10 @@ import { useParams } from 'react-router-dom';
 import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
+import { HttpError } from '../../api/common/httpError';
+import { usePostApplicationAnswers } from '../../api/hooks';
 import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
 import { BASE_URL } from '../../constants/api';
-import { usePostApplicationAnswers } from '../../hooks';
 import { useClubStore } from '../../stores';
 import { useApplicationStore } from '../../stores';
 import { getCategory } from '../../utils/changeCategory';
@@ -48,7 +49,7 @@ function ClubApplyPage() {
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
-    const { getAnswers, setAnswers: setApplicationAnswers } = useApplicationStore();
+    const { getAnswers, setAnswers: setApplicationAnswers, updateFiles } = useApplicationStore();
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
     const { toast } = useToast();
@@ -63,7 +64,19 @@ function ClubApplyPage() {
             setIsSubmitDialogOpen(false);
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
-        onError: () => {
+        onError: (error) => {
+            if (error instanceof HttpError && error.statusCode === 500) {
+                setIsSubmitDialogOpen(false);
+                return;
+            } else if (error instanceof HttpError && error.statusCode === 409) {
+                const errorResponse = error.errorResponse as { code?: string; message?: string };
+
+                if (errorResponse?.code === 'DUPLICATE_APPLICATION') {
+                    toast.error('이미 해당 공고에 지원한 이메일입니다.');
+                    setIsSubmitDialogOpen(false);
+                    return;
+                }
+            }
             toast.error('제출에 실패했어요.');
             setIsSubmitDialogOpen(false);
         },
@@ -169,18 +182,19 @@ function ClubApplyPage() {
         files: File[],
     ) => {
         try {
+            updateFiles(announcementId || '', questionId, files);
+
             if (files.length === 0) {
                 handleAnswerChange(questionId, questionTitle, '');
                 return;
             }
 
             const fileMetadataIds = await uploadFiles(files, questionType);
-            const value = fileMetadataIds.join(',');
+            const value = fileMetadataIds.map((result) => result.fileMetadataId).join(',');
             handleAnswerChange(questionId, questionTitle, value);
 
             toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
         } catch (error) {
-            console.error('File upload failed:', error);
             toast.error('파일 업로드에 실패했습니다.');
         }
     };
@@ -299,6 +313,7 @@ function ClubApplyPage() {
             title: '사전질문',
             page: (
                 <ClubApplyPersonalInfoPage
+                    announcementId={announcementId || ''}
                     answers={answers}
                     clubPersonalQuestions={clubPersonalInfoQuestions}
                     onAnswerChange={handleAnswerChange}

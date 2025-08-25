@@ -27,6 +27,7 @@ import type { EvaluationType } from './domain/evaluation/types';
 const clubKeys = {
     all: ['clubs'] as const,
     detail: (id: string) => ['detail', id] as const,
+    clubInfoByInviteCode: (inviteCode: string) => ['club-info-by-invite-code', inviteCode] as const,
     create: (id: string) => ['create', id] as const,
 };
 
@@ -73,6 +74,10 @@ const userKeys = {
     myInformation: () => ['my-information'] as const,
 };
 
+const roleKeys = {
+    clubMemberList: (clubId: string) => ['club-member-list', clubId] as const,
+};
+
 export {
     clubKeys,
     interviewKeys,
@@ -80,5 +85,6 @@ export {
     applicantKeys,
     evaluationKeys,
     stepKeys,
+    roleKeys,
     userKeys,
 };

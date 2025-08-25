@@ -101,6 +101,7 @@ function RecruitmentPage() {
                 <Button
                     size="full"
                     onClick={() => goTo(`/announcements/${parsedAnnouncementData.id}/application`)}
+                    disabled={isExpired}
                 >
                     지원하기
                 </Button>

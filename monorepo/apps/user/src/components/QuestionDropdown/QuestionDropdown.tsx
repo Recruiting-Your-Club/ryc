@@ -2,6 +2,7 @@ import { getAnswer } from '@pages/ClubApplyPage/utils';
 import React from 'react';
 
 import ArrowDown from '@ssoc/assets/images/downArrow.svg';
+import { useMediaQuery } from '@ssoc/hooks';
 import { Dropdown, Text } from '@ssoc/ui';
 
 import {
@@ -30,6 +31,7 @@ function QuestionDropdown({
 }: QuestionDropdownProps) {
     //props destruction
     //lib hooks
+    const isMobile = useMediaQuery('mobile');
     //initial values
     const baseOffsetX = 8;
     const baseOffsetY = 7;
@@ -38,6 +40,9 @@ function QuestionDropdown({
     //query hooks
     //calculated values
     const offsetY = baseOffsetY + (allQuestionsCount - 1) * 1.8;
+    const questionStatusText = isMobile
+        ? `(${completedQuestionsCount} / ${allQuestionsCount})`
+        : `작성된 항목 (${completedQuestionsCount} / ${allQuestionsCount})`;
     //effects
     return (
         <div css={questionStatusContainer}>
@@ -47,7 +52,7 @@ function QuestionDropdown({
                     requiredQuestionsCompleted || completedQuestionsCount === allQuestionsCount,
                 )}
             >
-                작성된 항목 ({completedQuestionsCount} / {allQuestionsCount})
+                {questionStatusText}
             </Text>
             <Dropdown>
                 <Dropdown.Trigger asChild sx={s_dropdownTriggerSx}>
