@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ import com.ryc.api.v2.applicationForm.domain.ApplicationFormRepository;
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
+import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
 
@@ -41,6 +43,7 @@ public class ApplicationService {
   private final ApplicantRepository applicantRepository;
   private final ApplicationFormRepository applicationFormRepository;
   private final FileService fileService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public ApplicationSubmissionResponse submitApplication(
@@ -99,6 +102,15 @@ public class ApplicationService {
         (fileId, answerId) ->
             fileService.claimOwnership(
                 List.of(fileId), answerId, FileDomainType.ANSWER_ATTACHMENT));
+
+    eventPublisher.publishEvent(
+        ApplicationSuccessEmailEvent.builder()
+            .announcementId(announcement.getId())
+            .announcementTitle(announcement.getTitle())
+            .submittedDate(announcement.getCreatedAt())
+            .applicantName(savedApplicant.getName())
+            .applicantEmail(savedApplicant.getEmail())
+            .build());
 
     return ApplicationSubmissionResponse.of(savedApplicant.getId(), savedApplication.getId());
   }
