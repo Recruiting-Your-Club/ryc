@@ -241,19 +241,17 @@ function RecruitEditPage() {
                 const files = await Promise.all(
                     detailAnnouncement.images.map(async (image) => {
                         try {
-                            const response = await fetch(image.url); // 이미지 URL에서 blob 요청
+                            const response = await fetch(image.url);
                             const blob = await response.blob();
                             return new File([blob], image.originalFileName, {
                                 type: image.contentType,
                             });
                         } catch (error) {
-                            console.error(`이미지 변환 실패: ${image.url}`, error);
-                            return null; // 실패한 건 건너뜀
+                            return null;
                         }
                     }),
                 );
 
-                // null 제외하고 상태에 저장
                 setRecruitFiles(files.filter((file): file is File => file !== null));
             };
 

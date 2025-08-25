@@ -78,7 +78,7 @@ function RecruitCreatePage() {
     const [detailDescription, setDetailDescription] = useState<string>('');
 
     //공고 모집 관련 이미지 상태 관리
-    const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
+    const [recruitFiles, setRecruitFiles] = useState<File[]>([]);
     const [imageFileIds, setImageFileIds] = useState<string[]>([]);
 
     //체크박스를 통한 신원 정보 상태관리
@@ -194,7 +194,7 @@ function RecruitCreatePage() {
 
     const handleFilesChage = useCallback(
         async (files: File[]) => {
-            setRecuritFiles(files);
+            setRecruitFiles(files);
 
             try {
                 if (!files.length) {
