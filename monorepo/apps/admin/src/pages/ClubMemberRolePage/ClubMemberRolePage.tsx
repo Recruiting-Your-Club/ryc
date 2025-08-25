@@ -55,7 +55,7 @@ const ClubMemberRolePage = () => {
             onSuccess: (res) => {
                 const code = res.inviteCode;
                 const origin = window.location.origin;
-                const invitePath = `/${clubId}/${code}`;
+                const invitePath = `/${code}`;
                 setInviteUrl(`${origin}${invitePath}`);
                 openDialog();
             },
