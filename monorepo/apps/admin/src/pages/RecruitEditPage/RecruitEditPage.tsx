@@ -1,6 +1,5 @@
 import { useUpdateAnnouncement } from '@api/hooks/useUpdateAnnouncement';
 import { announcementQueries } from '@api/queryFactory';
-import { announcementKeys } from '@api/querykeyFactory';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useQuestion } from '@hooks/useQuestion';
@@ -81,7 +80,7 @@ function RecruitEditPage() {
     const [detailDescription, setDetailDescription] = useState<string>('');
 
     //공고 모집 관련 이미지 상태 관리
-    const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
+    const [recruitFiles, setRecruitFiles] = useState<File[]>([]);
     const [imageFileIds, setImageFileIds] = useState<string[]>([]);
 
     //체크박스를 통한 신원 정보 상태관리
@@ -198,7 +197,7 @@ function RecruitEditPage() {
 
     const handleFilesChage = useCallback(
         async (files: File[]) => {
-            setRecuritFiles(files);
+            setRecruitFiles(files);
 
             try {
                 if (!files.length) {
@@ -237,6 +236,29 @@ function RecruitEditPage() {
 
     useEffect(() => {
         if (detailAnnouncement) {
+            setDetailDescription(detailAnnouncement.detailDescription);
+            const convertToFiles = async () => {
+                const files = await Promise.all(
+                    detailAnnouncement.images.map(async (image) => {
+                        try {
+                            const response = await fetch(image.url); // 이미지 URL에서 blob 요청
+                            const blob = await response.blob();
+                            return new File([blob], image.originalFileName, {
+                                type: image.contentType,
+                            });
+                        } catch (error) {
+                            console.error(`이미지 변환 실패: ${image.url}`, error);
+                            return null; // 실패한 건 건너뜀
+                        }
+                    }),
+                );
+
+                // null 제외하고 상태에 저장
+                setRecruitFiles(files.filter((file): file is File => file !== null));
+            };
+
+            convertToFiles();
+            setImageFileIds(detailAnnouncement.images.map((image) => image.id));
             setRecruitDetailInfo({
                 recruitmentSubject: detailAnnouncement.title,
                 recruitmentSummaryDescription: detailAnnouncement.summaryDescription,
@@ -275,6 +297,57 @@ function RecruitEditPage() {
                     ),
                 },
                 tags: detailAnnouncement.tags,
+            });
+            setBasicInfoFields({
+                studentId:
+                    detailAnnouncement.applicationForm.personalInfoQuestionTypes.includes(
+                        'STUDENT_ID',
+                    ),
+                phone: detailAnnouncement.applicationForm.personalInfoQuestionTypes.includes(
+                    'PHONE_NUMBER',
+                ),
+                photo: detailAnnouncement.applicationForm.personalInfoQuestionTypes.includes(
+                    'PROFILE_IMAGE',
+                ),
+            });
+            hydrateAll({
+                preQuestions: detailAnnouncement.applicationForm.preQuestions.map((question) => ({
+                    id: question.id,
+                    type:
+                        question.type === 'SHORT_ANSWER'
+                            ? 'short'
+                            : question.type === 'LONG_ANSWER'
+                              ? 'long'
+                              : question.type === 'SINGLE_CHOICE'
+                                ? 'single'
+                                : question.type === 'MULTIPLE_CHOICE'
+                                  ? 'multiple'
+                                  : 'file',
+                    title: question.label,
+                    options: question.options?.map((option) => ({
+                        id: option.id,
+                        text: option.option,
+                    })),
+                    required: question.isRequired,
+                })),
+                applicationQuestions: detailAnnouncement.applicationForm.applicationQuestions.map(
+                    (question) => ({
+                        id: question.id,
+                        type:
+                            question.type === 'SHORT_ANSWER'
+                                ? 'short'
+                                : question.type === 'LONG_ANSWER'
+                                  ? 'long'
+                                  : question.type === 'SINGLE_CHOICE'
+                                    ? 'single'
+                                    : question.type === 'MULTIPLE_CHOICE'
+                                      ? 'multiple'
+                                      : 'file',
+                        title: question.label,
+                        subContent: question.description,
+                        required: question.isRequired,
+                    }),
+                ),
             });
         }
     }, [detailAnnouncement]);
