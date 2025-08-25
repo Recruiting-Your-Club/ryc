@@ -153,7 +153,7 @@ function RecruitEditPage() {
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
     const isRecruitEditable = detailAnnouncement
         ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs())
-        : true;
+        : false;
 
     //--------Step별 유효성 검사--------//
     //step1 검사
@@ -416,7 +416,7 @@ function RecruitEditPage() {
 
     return (
         <>
-            {!isRecruitEditable ? (
+            {isRecruitEditable ? (
                 <div css={s_recruitCreatePageContainer} ref={containerRef}>
                     <div css={s_stepWrapper}>
                         <Stepper activeStep={activeStep} sx={s_prohibitDragArea}>
