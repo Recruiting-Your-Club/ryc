@@ -3,9 +3,9 @@ package com.ryc.api.v2.interview.infra.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ryc.api.v2.announcement.domain.vo.Period;
-import com.ryc.api.v2.announcement.infra.mapper.PeriodMapper;
-import com.ryc.api.v2.announcement.infra.vo.PeriodVO;
+import com.ryc.api.v2.common.domain.Period;
+import com.ryc.api.v2.common.infra.mapper.PeriodMapper;
+import com.ryc.api.v2.common.infra.vo.PeriodVO;
 import com.ryc.api.v2.interview.domain.InterviewReservation;
 import com.ryc.api.v2.interview.domain.InterviewSlot;
 import com.ryc.api.v2.interview.infra.entity.InterviewReservationEntity;

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.announcement.domain.vo;
+package com.ryc.api.v2.common.domain;
 
 import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
 

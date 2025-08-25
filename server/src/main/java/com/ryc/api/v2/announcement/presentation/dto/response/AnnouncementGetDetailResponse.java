@@ -6,9 +6,10 @@ import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
+import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
+import com.ryc.api.v2.common.dto.response.PeriodResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -22,7 +23,6 @@ import lombok.Builder;
  * @param field 모집분야
  * @param announcementStatus 공고 상태
  * @param announcementType 공고 유형
- * @param hasInterview 인터뷰 여부
  * @param activityPeriod 활동 기간
  * @param numberOfPeople 모집 인원
  * @param applicationPeriod 지원 기간

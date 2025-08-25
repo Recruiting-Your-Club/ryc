@@ -5,7 +5,7 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.ryc.api.v2.announcement.domain.vo.Period;
+import com.ryc.api.v2.common.domain.Period;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
 

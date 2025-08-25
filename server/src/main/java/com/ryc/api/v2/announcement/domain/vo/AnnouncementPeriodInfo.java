@@ -1,6 +1,7 @@
 package com.ryc.api.v2.announcement.domain.vo;
 
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementPeriodInfoRequest;
+import com.ryc.api.v2.common.domain.Period;
 
 import lombok.Builder;
 

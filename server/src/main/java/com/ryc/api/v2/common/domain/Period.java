@@ -1,8 +1,8 @@
-package com.ryc.api.v2.announcement.domain.vo;
+package com.ryc.api.v2.common.domain;
 
 import java.time.LocalDateTime;
 
-import com.ryc.api.v2.announcement.presentation.dto.request.PeriodRequest;
+import com.ryc.api.v2.common.dto.request.PeriodRequest;
 
 import lombok.Builder;
 
@@ -28,16 +28,5 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
         .startDate(periodRequest.startDate())
         .endDate(periodRequest.endDate())
         .build();
-  }
-
-  public Boolean isOverlap(Period other) {
-    return (startDate.isBefore(other.startDate) && endDate.isAfter(other.endDate))
-        || (startDate.isBefore(other.startDate) && endDate.isBefore(other.endDate))
-        || (startDate.isAfter(other.startDate) && endDate.isAfter(other.endDate));
-  }
-
-  /** 파라미터의 Period보다 이전 Period인지 여부 */
-  public Boolean isBefore(Period other) {
-    return endDate.isBefore(other.startDate);
   }
 }

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.announcement.presentation.dto.request;
+package com.ryc.api.v2.common.dto.request;
 
 import java.time.LocalDateTime;
 

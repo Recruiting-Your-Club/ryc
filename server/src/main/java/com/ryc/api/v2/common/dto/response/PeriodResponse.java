@@ -1,8 +1,8 @@
-package com.ryc.api.v2.announcement.presentation.dto.response;
+package com.ryc.api.v2.common.dto.response;
 
 import java.time.LocalDateTime;
 
-import com.ryc.api.v2.announcement.domain.vo.Period;
+import com.ryc.api.v2.common.domain.Period;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.ryc.api.v2.common.entity;
+package com.ryc.api.v2.common.infra.entity;
 
 import java.time.LocalDateTime;
 
