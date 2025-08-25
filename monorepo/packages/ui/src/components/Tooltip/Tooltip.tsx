@@ -36,49 +36,47 @@ function Tooltip({
     //calculated values
     const calculatePosition = (triggerRect: DOMRect) => {
         const { top: triggerTop, bottom, left: triggerLeft, right, width, height } = triggerRect;
-        const scrollX = window.pageXOffset;
-        const scrollY = window.pageYOffset;
         const margin = 8;
 
         const positionMap = {
             top: {
-                top: triggerTop + scrollY - margin,
-                left: triggerLeft + scrollX + width / 2,
+                top: triggerTop - margin,
+                left: triggerLeft + width / 2,
                 transform: 'translateX(-50%) translateY(-100%)',
             },
             topLeft: {
-                top: triggerTop + scrollY - margin,
-                left: right + scrollX,
+                top: triggerTop - margin,
+                left: right,
                 transform: 'translateX(-100%) translateY(-100%)',
             },
             topRight: {
-                top: triggerTop + scrollY - margin,
-                left: triggerLeft + scrollX,
+                top: triggerTop - margin,
+                left: triggerLeft,
                 transform: 'translateY(-100%)',
             },
             bottom: {
-                top: bottom + scrollY + margin,
-                left: triggerLeft + scrollX + width / 2,
+                top: bottom + margin,
+                left: triggerLeft + width / 2,
                 transform: 'translateX(-50%)',
             },
             bottomLeft: {
-                top: bottom + scrollY + margin,
-                left: right + scrollX,
+                top: bottom + margin,
+                left: right,
                 transform: 'translateX(-100%)',
             },
             bottomRight: {
-                top: bottom + scrollY + margin,
-                left: triggerLeft + scrollX,
+                top: bottom + margin,
+                left: triggerLeft,
                 transform: '',
             },
             left: {
-                top: triggerTop + scrollY + height / 2,
-                left: triggerLeft + scrollX - margin,
+                top: triggerTop + height / 2,
+                left: triggerLeft - margin,
                 transform: 'translateX(-100%) translateY(-50%)',
             },
             right: {
-                top: triggerTop + scrollY + height / 2,
-                left: right + scrollX + margin,
+                top: triggerTop + height / 2,
+                left: right + margin,
                 transform: 'translateY(-50%)',
             },
         };

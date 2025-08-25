@@ -100,7 +100,7 @@ export const tooltipPortalStyle = (
     isMobile: boolean,
     position: { top: number; left: number; transform: string },
 ) => css`
-    position: absolute;
+    position: fixed;
     top: ${position.top}px;
     left: ${position.left}px;
     transform: ${position.transform};
