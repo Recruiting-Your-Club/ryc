@@ -5,6 +5,13 @@ interface RepresentativeImage {
     contentType: string;
 }
 
+interface ClubDetailImages {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
+}
+
 export interface MyClubResponse {
     id: string;
     name: string;
@@ -14,7 +21,7 @@ export interface MyClubResponse {
     category: category;
     clubTags: clubTag[];
     clubSummaries: clubSummaries[];
-    clubDetailImages: clubDetailImages[];
+    clubDetailImages: ClubDetailImages[];
 }
 
 export interface DetailClubResponse {
@@ -26,7 +33,7 @@ export interface DetailClubResponse {
     category: category;
     clubTags: clubTag[];
     clubSummaries: clubSummaries[];
-    clubDetailImages: clubDetailImages[];
+    clubDetailImages: ClubDetailImages[];
 }
 
 export type category =
