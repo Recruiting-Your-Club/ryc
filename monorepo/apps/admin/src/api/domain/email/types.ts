@@ -5,11 +5,12 @@ export interface Email {
 }
 
 export interface InterviewEmail {
-    numberOfPeopleByInterviewDates: InterviewDetailInformation[];
+    numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[];
     emailSendRequest: Email;
 }
 
 export interface InterviewDetailInformation {
-    interviewPeriod: { startDate: string; endDate: string };
+    start: string;
+    interviewDuration: number;
     numberOfPeople: number;
 }

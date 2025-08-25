@@ -26,7 +26,8 @@ export const s_content = css`
     flex-direction: column;
     padding: 2rem 4rem;
     gap: 2rem;
-    overflow: hidden;
+    justify-content: center;
+    overflow-y: hidden;
 `;
 
 export const s_titleInput = css`
@@ -73,7 +74,7 @@ export const s_editorRoot = css`
 `;
 
 export const s_editorToolbar = css`
-    flex: 0.6;
+    /* flex: 0.6; */
     height: 4rem;
     max-height: 4rem;
     background-color: ${theme.colors.white};
@@ -83,7 +84,8 @@ export const s_editorToolbar = css`
 `;
 
 export const s_editorTextarea = css`
-    flex: 9.4;
+    /* flex: 9.4; */
+    height: 80%;
     border-radius: 8px;
     transition: border-color 0.3s ease-in-out;
     &:focus {

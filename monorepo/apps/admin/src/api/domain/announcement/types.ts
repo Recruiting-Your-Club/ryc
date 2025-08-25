@@ -51,7 +51,7 @@ export interface ApplicationForm {
     id: string;
     applicationQuestions: ApplicationQuestion[];
     preQuestions: PreQuestion[];
-    personalInfoQuestions: PersonalInfoQuestion[];
+    personalInfoQuestionTypes: PersonalInfoQuestion[];
 }
 
 export type PersonalInfoQuestion =
@@ -114,5 +114,24 @@ export interface AnnouncementSubmitRequest {
     tags: string[];
     applicationForm: {
         personalInfoQuestionTypes: PersonalInfoQuestion[];
+        preQuestions: QuestionRequest[];
+        applicationQuestions: QuestionRequest[];
     };
+    images: string[];
+}
+
+export interface QuestionRequest {
+    questionType: QuestionType;
+    label: string;
+    isRequired: boolean;
+    description?: string;
+    options?: OptionRequest[];
+}
+
+export interface OptionRequest {
+    option: string;
+}
+
+export interface PostAnnouncementResponse {
+    announcementId: string;
 }

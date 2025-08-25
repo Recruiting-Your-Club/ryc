@@ -30,8 +30,9 @@ public class EvaluationEntity extends BaseEntity {
   @JoinColumn(name = "applicant_id")
   private ApplicantEntity applicantEntity;
 
-  // TODO: BigDecimal -> DB 매핑 타입
+  @Column(precision = 2, scale = 1)
   private BigDecimal score;
+
   private String comment;
 
   @Enumerated(EnumType.STRING)

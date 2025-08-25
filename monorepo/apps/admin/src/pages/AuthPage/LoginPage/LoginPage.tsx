@@ -1,6 +1,7 @@
 import { useLogin } from '@hooks/useLogin';
 import type { FormEvent } from 'react';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Input, PasswordInput } from '@ssoc/ui';
@@ -13,10 +14,16 @@ import {
     titleContainer,
 } from './LoginPage.style';
 
+interface LocationState {
+    from?: string;
+}
+
 function LoginPage() {
     // prop destruction
     // lib hooks
     const { removeHistoryAndGo } = useRouter();
+    const location = useLocation();
+    const state = location.state as LocationState | null;
 
     // initial values
     // state, ref, querystring hooks
@@ -25,7 +32,13 @@ function LoginPage() {
 
     // form hooks
     // query hooks
-    const { mutate: login, isPending, error } = useLogin();
+    const {
+        mutate: login,
+        isPending,
+        error,
+    } = useLogin({
+        redirectPath: state?.from,
+    });
 
     // calculated values
     // handlers

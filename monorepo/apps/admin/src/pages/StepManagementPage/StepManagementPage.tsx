@@ -53,7 +53,7 @@ function StepManagementPage() {
     // form hooks
     // query hooks
     const queryClient = useQueryClient();
-    const { data: totalSteps = { process: [] } } = useSuspenseQuery(
+    const { data: totalSteps = { processes: [] } } = useSuspenseQuery(
         stepQueries.getTotalSteps(announcementId!),
     );
     const { data: stepApplicantList = [] } = useSuspenseQuery(
@@ -77,7 +77,7 @@ function StepManagementPage() {
     );
 
     // calculated values
-    const isThreeStepProcess = totalSteps?.process?.length === 3;
+    const isThreeStepProcess = totalSteps?.processes?.length === 3;
 
     const documentStepApplicants = stepApplicantList.filter(
         (applicant) =>
@@ -101,7 +101,7 @@ function StepManagementPage() {
             applicantIdList: documentApplicantIds,
             type: 'application',
         }),
-        enabled: interviewApplicantIds.length > 0,
+        enabled: documentApplicantIds.length > 0,
     });
     const { data: interviewEvaluationSummaryList } = useQuery({
         ...evaluationQueries.evaluationSummary({
@@ -252,21 +252,22 @@ function StepManagementPage() {
     };
 
     const handleInterviewEmail = (
-        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
     ) => {
-        if (numberOfPeopleByInterviewDates.length === 0) {
+        if (numberOfPeopleByInterviewDateRequests.length === 0) {
             toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
             return;
         }
+
         if (!validateEmailInputs(subject, content)) return;
 
         sendInterviewEmail({
             announcementId: announcementId!,
             clubId: clubId!,
             email: {
-                numberOfPeopleByInterviewDates,
+                numberOfPeopleByInterviewDateRequests,
                 emailSendRequest: { recipients: emailTargetList, subject, content },
             },
         });

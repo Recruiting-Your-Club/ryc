@@ -4,7 +4,7 @@ export const formatDate = (timestamp: number): string => {
 };
 
 export const getExtension = (fileName: string): string => {
-    return fileName.split('.').pop()?.toLowerCase() || '';
+    return fileName?.split('.').pop()?.toLowerCase() || '';
 };
 export const formatBytes = (bytes: number): string => {
     const kb = bytes / 1024;

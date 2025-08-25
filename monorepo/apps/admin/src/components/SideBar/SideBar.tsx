@@ -181,7 +181,11 @@ function SideBar() {
     const handleSubMenuClick = (link: string) => {
         const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
         const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
-        goTo(`${link}/${clubId}${announcementIdPath}`);
+        if (link === '/settings') {
+            goTo(`/settings/${clubId}`);
+        } else {
+            goTo(`${link}/${clubId}${announcementIdPath}`);
+        }
     };
 
     // 공고 선택하면 모집 공고로 이동

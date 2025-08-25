@@ -6,7 +6,7 @@ import PdfIcon from '@ssoc/assets/images/PdfIcon.svg';
 
 import { Button } from '../../components/Button';
 import { FileExtension } from '../../constants';
-import { s_fileImagePreview, s_fileItem, s_fileRow } from './FileUpLoader.style';
+import { s_fileImagePreview, s_fileItem, s_fileLink, s_fileRow } from './FileUpLoader.style';
 import { useFileUpLoaderInteractionContext } from './FileUpLoaderInteractionContext';
 import { FileUpLoaderItemCell } from './FileUpLoaderItemCell';
 import { useFileUpLoaderStateContext } from './FileUpLoaderStateContext';
@@ -55,6 +55,7 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
                         download={file.name}
                         target="_blank"
                         rel="noopener noreferrer"
+                        css={s_fileLink}
                     >
                         {file.name}
                     </a>

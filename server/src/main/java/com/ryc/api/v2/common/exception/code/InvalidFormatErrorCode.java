@@ -185,7 +185,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // Personal Info Phone Number
   PERSONAL_INFO_INVALID_PHONE_NUMBER_FORMAT(
-      HttpStatus.INTERNAL_SERVER_ERROR, "지원자 전화번호는 01X-XXXX-XXXX 형식이어야 합니다."),
+      HttpStatus.INTERNAL_SERVER_ERROR, "지원자 전화번호는 01XXXXXXXXX 형식이며 총 11자리이어야 합니다."),
 
   // Personal Info Profile Image
   PERSONAL_INFO_PROFILE_IMAGE_METADATA_ID_NULL_OR_EMPTY(

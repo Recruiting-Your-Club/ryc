@@ -30,3 +30,4 @@ export * from './Select';
 export * from './ConfirmDialog';
 export * from './Select';
 export * from './MainCard';
+export * from './ClubCard';

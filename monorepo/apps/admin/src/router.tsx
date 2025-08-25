@@ -7,9 +7,11 @@ import {
     ApplicantScheduleLoadingPage,
     ClubCreatePage,
     ClubEditPage,
+    ClubMemberRolePage,
     DocumentEvaluationLoadingPage,
     EntryPage,
     InterviewEvaluationLoadingPage,
+    InviteConfirmPage,
     LoginPage,
     MyClubPage,
     NonAnnouncementPage,
@@ -46,9 +48,14 @@ const router = createBrowserRouter([
                 element: <RecruitCreatePage />,
             },
 
+            {
+                path: 'announcements/create/:clubId/success/:announcementId',
+                element: <RecruitSuccessPage />,
+            },
+
             { path: 'clubs/:clubId/:announcementId?', element: <ClubEditPage /> },
 
-            { path: 'announcements/:clubId/:announcementId?', element: <LazyStepManagementPage /> },
+            { path: 'announcements/:clubId/:announcementId?', element: <AnnouncementPage /> },
             { path: 'announcements/create/:clubId/:announcementId?', element: <ClubCreatePage /> },
             { path: 'announcements/edit/:clubId/:announcementId?', element: <ClubCreatePage /> },
 
@@ -95,7 +102,9 @@ const router = createBrowserRouter([
                 ),
             },
 
-            { path: 'settings/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'interviewee-schedule/:clubId/:announcementId?', element: <LoginPage /> },
+            { path: 'settings/:clubId', element: <ClubMemberRolePage /> },
+            { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'recruitment/success', element: <RecruitSuccessPage /> },
         ],
     },
@@ -110,6 +119,7 @@ const router = createBrowserRouter([
             { path: 'test', element: <TestPage /> },
             { path: 'club-create', element: <ClubCreatePage /> },
             { path: 'myClub', element: <MyClubPage /> },
+            { path: ':inviteCode?', element: <InviteConfirmPage /> },
         ],
     },
 ]);

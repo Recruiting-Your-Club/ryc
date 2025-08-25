@@ -31,6 +31,14 @@ export const recruitCardHeader = css`
     gap: 1rem;
 `;
 
+export const recruitCardHeaderTitle = css`
+    width: 75%;
+`;
+
+export const recruitCardHeaderDeadline = css`
+    width: 25%;
+`;
+
 export const deadlineText = (diffDay: number) => css`
     ${diffDay <= 3 &&
     css`

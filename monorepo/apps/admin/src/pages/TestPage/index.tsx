@@ -1,7 +1,7 @@
 import { MainCardEditDialog } from '@components';
 import { useState } from 'react';
 
-import { Button, Stepper } from '@ssoc/ui';
+import { Button, Editor, Stepper } from '@ssoc/ui';
 
 function TestPage() {
     const [activeStep, setActiveStep] = useState(0);

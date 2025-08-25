@@ -1,5 +1,5 @@
 import type { InterviewSlot } from '@api/domain/club/types';
-import { useSubmitInterviewReservation } from '@api/mutaionFactory';
+import { useSubmitInterviewReservation } from '@api/hooks';
 import { clubQueries } from '@api/queryFactory/clubQueries';
 import Clock from '@assets/images/clock.svg';
 import User from '@assets/images/user.svg';

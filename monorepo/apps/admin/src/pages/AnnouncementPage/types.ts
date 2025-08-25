@@ -1,3 +1,4 @@
+import type { PersonalInfoQuestion } from '@api/domain/announcement/types';
 import type { CSSObject } from '@emotion/react';
 
 export type QuestionType =
@@ -32,10 +33,16 @@ export interface PersonalInfoPageProps {
 
 export interface PersonalQuestion {
     id: string;
-    type: QuestionType;
     label: string;
+    type: QuestionType | PersonalInfoQuestion;
+    options?: QuestionOption[];
     isRequired: boolean;
-    options: string[];
+    description?: string;
+}
+
+export interface QuestionOption {
+    id: string;
+    option: string;
 }
 
 export interface DetailQuestionPageProps {

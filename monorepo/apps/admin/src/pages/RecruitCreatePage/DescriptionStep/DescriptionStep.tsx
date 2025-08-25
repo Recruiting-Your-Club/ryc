@@ -30,7 +30,10 @@ function DescriptionStepPage({
     recruitDetailInfo,
     recruitFiles,
     onChange,
-    onFileChange,
+    onFilesChange,
+    detailDescription,
+    onDetailDescriptionChange,
+    isFileUploading = false,
 }: DescriptionProps) {
     return (
         <>
@@ -130,7 +133,10 @@ function DescriptionStepPage({
                 <FieldLabel label="상세 정보" description="자세한 모집 공고 내용을 입력해주세요" />
                 <Editor.Root>
                     <Editor.Toolbar />
-                    <Editor.Textarea />
+                    <Editor.Textarea
+                        value={detailDescription}
+                        onChange={onDetailDescriptionChange}
+                    />
                 </Editor.Root>
             </div>
             <div css={s_descriptionWrapper}>
@@ -141,7 +147,8 @@ function DescriptionStepPage({
                 <FileUpLoader
                     sx={s_descriptionFileUploader}
                     files={recruitFiles}
-                    onFilesChange={onFileChange}
+                    onFilesChange={onFilesChange}
+                    disabled={isFileUploading}
                 >
                     <FileUpLoader.Button />
                     <FileUpLoader.HelperText>
