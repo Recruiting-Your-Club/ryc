@@ -65,10 +65,17 @@ function ClubApplyPage() {
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
         onError: (error) => {
-            // 500 에러인 경우 전역 처리에 위임
             if (error instanceof HttpError && error.statusCode === 500) {
                 setIsSubmitDialogOpen(false);
                 return;
+            } else if (error instanceof HttpError && error.statusCode === 409) {
+                const errorResponse = error.errorResponse as { code?: string; message?: string };
+
+                if (errorResponse?.code === 'DUPLICATE_APPLICATION') {
+                    toast.error('이미 해당 공고에 지원한 이메일입니다.');
+                    setIsSubmitDialogOpen(false);
+                    return;
+                }
             }
             toast.error('제출에 실패했어요.');
             setIsSubmitDialogOpen(false);
@@ -175,7 +182,6 @@ function ClubApplyPage() {
         files: File[],
     ) => {
         try {
-            // File 객체를 store에 저장 (페이지 이동 시 파일 유지용)
             updateFiles(announcementId || '', questionId, files);
 
             if (files.length === 0) {
@@ -184,12 +190,11 @@ function ClubApplyPage() {
             }
 
             const fileMetadataIds = await uploadFiles(files, questionType);
-            const value = fileMetadataIds.join(',');
+            const value = fileMetadataIds.map((result) => result.fileMetadataId).join(',');
             handleAnswerChange(questionId, questionTitle, value);
 
             toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
         } catch (error) {
-            console.error('File upload failed:', error);
             toast.error('파일 업로드에 실패했습니다.');
         }
     };
