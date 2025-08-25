@@ -118,7 +118,7 @@ export interface UpdateClub {
 export interface CreateClub {
     name: string;
     category: string;
-    representativeImage: string;
+    representativeImage: string | null;
 }
 export interface CreateClubResponse {
     clubId: string;

@@ -63,7 +63,7 @@ function ClubCreatePage() {
 
     // state, ref, querystring hooks
     const [createClubName, setCreateClubName] = useState('동아리 이름');
-    const [clubTag, setClubTag] = useState('동아리의 대표적인 태그를 선택해주세요.');
+    const [clubTag, setClubTag] = useState('공연 동아리');
     const [image, setImage] = useState<string>();
     const [croppedImage, setCroppedImage] = useState<string>();
     // form hooks
@@ -114,14 +114,6 @@ function ClubCreatePage() {
             });
             return false;
         }
-
-        if (!createdClub.representativeImage) {
-            toast.error('동아리 대표 이미지를 등록해주세요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            return false;
-        }
         return true;
     };
     const createClubData = async () => {
@@ -131,7 +123,8 @@ function ClubCreatePage() {
         const createdClub = {
             name: createClubName.trim(),
             category: selectedLabel,
-            representativeImage: fileMetadataIds?.[0] ?? '',
+            representativeImage:
+                typeof fileMetadataIds?.[0] === 'string' ? fileMetadataIds[0] : null,
         };
         if (!checkClubData(createdClub)) {
             return null;

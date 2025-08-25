@@ -199,7 +199,7 @@ function ClubEditPage() {
         const file = await blobUrlToFile(croppedImage, 'club_logo'); // 편집한 이미지
         try {
             const fileMetadataId = await uploadFiles(file, 'CLUB_CREATE');
-            return fileMetadataId?.[0];
+            return typeof fileMetadataId?.[0] === 'string' ? fileMetadataId[0] : '';
         } catch (error) {
             toast.error('이미지 업로드에 실패했어요.', {
                 type: 'error',
@@ -216,7 +216,7 @@ function ClubEditPage() {
             detailImagesInFileUploader,
             'CLUB_INTRODUCTION_IMAGE',
         );
-        return fileMetadataIds;
+        return fileMetadataIds.map((id) => (typeof id === 'string' ? id : ''));
     };
 
     const updateClubData = async () => {
