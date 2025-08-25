@@ -1,6 +1,8 @@
+import type { ApplicationQuestion, Option, PreQuestion } from '@api/domain/announcement/types';
 import { useUpdateAnnouncement } from '@api/hooks/useUpdateAnnouncement';
 import { announcementQueries } from '@api/queryFactory';
 import AttentionTriangle from '@assets/images/attention-triangle.svg';
+import type { QuestionType } from '@components/QuestionForm/types';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
@@ -201,6 +203,37 @@ function RecruitEditPage() {
                 return true;
         }
     };
+
+    const mapQuestion = (
+        question: PreQuestion | ApplicationQuestion,
+        includeOptions = false,
+        includeSubContent = false,
+    ) => {
+        return {
+            id: question.id,
+            type: (question.type === 'SHORT_ANSWER'
+                ? 'short'
+                : question.type === 'LONG_ANSWER'
+                  ? 'long'
+                  : question.type === 'SINGLE_CHOICE'
+                    ? 'single'
+                    : question.type === 'MULTIPLE_CHOICE'
+                      ? 'multiple'
+                      : 'file') as QuestionType,
+            title: question.label,
+            ...(includeOptions &&
+                'options' in question && {
+                    options: question.options?.map((option: Option) => ({
+                        id: option.id,
+                        text: option.option,
+                    })),
+                }),
+            ...(includeSubContent &&
+                'description' in question && { subContent: question.description }),
+            required: question.isRequired,
+        };
+    };
+
     //-----------------------------//
     // handlers
     const handleInputChange = (updateFields: Partial<RecruitDetailInfo>) => {
@@ -329,42 +362,11 @@ function RecruitEditPage() {
                 ),
             });
             hydrateAll({
-                preQuestions: detailAnnouncement.applicationForm.preQuestions.map((question) => ({
-                    id: question.id,
-                    type:
-                        question.type === 'SHORT_ANSWER'
-                            ? 'short'
-                            : question.type === 'LONG_ANSWER'
-                              ? 'long'
-                              : question.type === 'SINGLE_CHOICE'
-                                ? 'single'
-                                : question.type === 'MULTIPLE_CHOICE'
-                                  ? 'multiple'
-                                  : 'file',
-                    title: question.label,
-                    options: question.options?.map((option) => ({
-                        id: option.id,
-                        text: option.option,
-                    })),
-                    required: question.isRequired,
-                })),
+                preQuestions: detailAnnouncement.applicationForm.preQuestions.map((question) =>
+                    mapQuestion(question, true),
+                ),
                 applicationQuestions: detailAnnouncement.applicationForm.applicationQuestions.map(
-                    (question) => ({
-                        id: question.id,
-                        type:
-                            question.type === 'SHORT_ANSWER'
-                                ? 'short'
-                                : question.type === 'LONG_ANSWER'
-                                  ? 'long'
-                                  : question.type === 'SINGLE_CHOICE'
-                                    ? 'single'
-                                    : question.type === 'MULTIPLE_CHOICE'
-                                      ? 'multiple'
-                                      : 'file',
-                        title: question.label,
-                        subContent: question.description,
-                        required: question.isRequired,
-                    }),
+                    (question) => mapQuestion(question, false, true),
                 ),
             });
         }
@@ -414,7 +416,7 @@ function RecruitEditPage() {
 
     return (
         <>
-            {isRecruitEditable ? (
+            {!isRecruitEditable ? (
                 <div css={s_recruitCreatePageContainer} ref={containerRef}>
                     <div css={s_stepWrapper}>
                         <Stepper activeStep={activeStep} sx={s_prohibitDragArea}>
