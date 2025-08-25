@@ -1,8 +1,14 @@
 import type {
+    AnnouncementPutSubmitRequest,
     AnnouncementSubmitRequest,
+    ApplicationQuestion,
+    DetailAnnouncement,
     OptionRequest,
+    OptionRequestWithId,
     PersonalInfoQuestion,
+    PreQuestion,
     QuestionRequest,
+    QuestionWithIdRequest,
 } from '@api/domain/announcement/types';
 import type { QuestionProps, QuestionType } from '@components/QuestionForm/types';
 
@@ -63,6 +69,13 @@ function toOptionRequest(options?: QuestionProps['options']): OptionRequest[] {
     return cleaned.map((text) => ({ option: text }));
 }
 
+function toOptionRequestWithId(options?: QuestionProps['options']): OptionRequestWithId[] {
+    return (options ?? []).map((option) => ({
+        id: option.id,
+        option: option.text.trim(),
+    }));
+}
+
 function toQuestionRequest(question: QuestionProps): QuestionRequest {
     const questionType = toServerQuestionType(question.type);
     const label = question.title.trim();
@@ -81,8 +94,34 @@ function toQuestionRequest(question: QuestionProps): QuestionRequest {
     };
 }
 
+// 아이디 추가 버전
+function toQuestionWithIdRequest(question: QuestionProps): QuestionWithIdRequest {
+    const id = question.id;
+    const questionType = toServerQuestionType(question.type);
+    const label = question.title.trim();
+
+    const options =
+        questionType === 'SINGLE_CHOICE' || questionType === 'MULTIPLE_CHOICE'
+            ? toOptionRequestWithId(question.options)
+            : undefined;
+
+    return {
+        id,
+        questionType,
+        label,
+        isRequired: !!question.required,
+        description: question.subContent?.trim() || undefined,
+        options,
+    };
+}
+
 function toQuestionRequests(questions: QuestionProps[]): QuestionRequest[] {
     return (questions ?? []).map(toQuestionRequest);
+}
+
+// 아이디 추가 버전
+function toQuestionWithIdRequests(questions: QuestionProps[]): QuestionWithIdRequest[] {
+    return (questions ?? []).map(toQuestionWithIdRequest);
 }
 
 function mapPersonalInfoQuestions(basicInfoFiedls: BasicInfoFields): PersonalInfoQuestion[] {
@@ -135,6 +174,56 @@ export function buildAnnouncementSubmitRequest(args: {
             personalInfoQuestionTypes: mapPersonalInfoQuestions(basicInfoFields),
             preQuestions: toQuestionRequests(preQuestions),
             applicationQuestions: toQuestionRequests(applicationQuestions),
+        },
+        images: imageFileIds ?? [],
+    };
+}
+
+export function buildAnnouncementPutSubmitRequest(args: {
+    recruitDetailInfo: RecruitDetailInfo;
+    basicInfoFields: BasicInfoFields;
+    applicationFormId: string;
+    preQuestions: QuestionProps[];
+    applicationQuestions: QuestionProps[];
+    detailDescription: string;
+    imageFileIds: string[];
+}): AnnouncementPutSubmitRequest {
+    const {
+        recruitDetailInfo,
+        basicInfoFields,
+        applicationFormId,
+        preQuestions,
+        applicationQuestions,
+        detailDescription,
+        imageFileIds,
+    } = args;
+
+    const applicationPeriod = normalizePeriod(recruitDetailInfo.documentPeriod);
+    const interviewPeriod = normalizePeriod(recruitDetailInfo.interviewSchedule);
+    const documentResultPeriod = normalizePeriod(recruitDetailInfo.documentResult);
+    const finalResultPeriod = normalizePeriod(recruitDetailInfo.finalResult);
+
+    return {
+        title: recruitDetailInfo.recruitmentSubject.trim(),
+        periodInfo: {
+            applicationPeriod,
+            interviewPeriod,
+            documentResultPeriod,
+            finalResultPeriod,
+        },
+        numberOfPeople: (recruitDetailInfo.recruitmentNumber ?? '').toString(),
+        detailDescription: detailDescription?.trim() ?? '',
+        summaryDescription: recruitDetailInfo.recruitmentSummaryDescription.trim(),
+        activityPeriod: (recruitDetailInfo.activityPeriod ?? '').trim(),
+        target: (recruitDetailInfo.recruitmentTarget ?? '').trim(),
+        field: (recruitDetailInfo.recruitmentField ?? '').trim(),
+        announcementType: getAnnouncementType(applicationPeriod), // 'ALWAYS_OPEN' | 'LIMITED_TIME'
+        tags: Array.isArray(recruitDetailInfo.tags) ? recruitDetailInfo.tags : [],
+        applicationForm: {
+            id: applicationFormId,
+            personalInfoQuestionTypes: mapPersonalInfoQuestions(basicInfoFields),
+            preQuestions: toQuestionWithIdRequests(preQuestions),
+            applicationQuestions: toQuestionWithIdRequests(applicationQuestions),
         },
         images: imageFileIds ?? [],
     };

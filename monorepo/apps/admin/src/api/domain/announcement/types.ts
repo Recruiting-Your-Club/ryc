@@ -128,8 +128,49 @@ export interface QuestionRequest {
     options?: OptionRequest[];
 }
 
+export interface QuestionRequestWithOptionId {
+    questionType: QuestionType;
+    label: string;
+    isRequired: boolean;
+    description?: string;
+    options?: OptionRequestWithId[];
+}
+
+export interface AnnouncementPutSubmitRequest {
+    title: string;
+    periodInfo: {
+        applicationPeriod: Period;
+        interviewPeriod: Period;
+        documentResultPeriod: Period;
+        finalResultPeriod: Period;
+    };
+    numberOfPeople: string;
+    detailDescription: string;
+    summaryDescription: string;
+    activityPeriod: string;
+    target: string;
+    field: string;
+    announcementType: 'ALWAYS_OPEN' | 'LIMITED_TIME';
+    tags: string[];
+    applicationForm: {
+        id: string;
+        personalInfoQuestionTypes: PersonalInfoQuestion[];
+        preQuestions: QuestionWithIdRequest[];
+        applicationQuestions: QuestionWithIdRequest[];
+    };
+    images: string[];
+}
+
+export interface QuestionWithIdRequest extends QuestionRequestWithOptionId {
+    id: string;
+}
+
 export interface OptionRequest {
     option: string;
+}
+
+export interface OptionRequestWithId extends OptionRequest {
+    id: string;
 }
 
 export interface PostAnnouncementResponse {

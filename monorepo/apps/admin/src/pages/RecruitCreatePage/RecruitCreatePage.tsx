@@ -1,6 +1,7 @@
 import { useCreateAnnouncement } from '@api/hooks/useCreateAnnouncement';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
+import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
 import { useQuestion } from '@hooks/useQuestion';
 import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { generatePath, useLocation, useParams } from 'react-router-dom';
@@ -52,6 +53,9 @@ function RecruitCreatePage() {
     const location = useLocation();
 
     const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
+    const { isUploading, handleContentChange } = useEditorImageUpload({
+        location: 'ANNOUNCEMENT_EDITOR',
+    });
 
     // initial values
 
@@ -78,7 +82,7 @@ function RecruitCreatePage() {
     const [detailDescription, setDetailDescription] = useState<string>('');
 
     //공고 모집 관련 이미지 상태 관리
-    const [recruitFiles, setRecuritFiles] = useState<File[]>([]);
+    const [recruitFiles, setRecruitFiles] = useState<File[]>([]);
     const [imageFileIds, setImageFileIds] = useState<string[]>([]);
 
     //체크박스를 통한 신원 정보 상태관리
@@ -189,12 +193,12 @@ function RecruitCreatePage() {
     };
 
     const handleDetailDescriptionChange = useCallback((html: string) => {
-        setDetailDescription(html);
+        handleContentChange(html, setDetailDescription);
     }, []);
 
     const handleFilesChage = useCallback(
         async (files: File[]) => {
-            setRecuritFiles(files);
+            setRecruitFiles(files);
 
             try {
                 if (!files.length) {
@@ -203,7 +207,7 @@ function RecruitCreatePage() {
                 }
 
                 const ids = await uploadFiles(files, 'ANNOUNCEMENT_CREATE_IMAGE');
-                setImageFileIds(ids);
+                setImageFileIds(ids.map((id) => id.fileMetadataId));
                 toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
             } catch (error) {
                 setImageFileIds([]);
