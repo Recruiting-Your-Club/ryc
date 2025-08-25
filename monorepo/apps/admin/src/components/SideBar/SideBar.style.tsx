@@ -58,6 +58,11 @@ export const clubSideBarContainer = css`
     z-index: 1001;
     background-color: ${theme.colors.white};
     border-right: 1px solid ${theme.colors.gray[200]};
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 export const addClubButton = css`
     display: flex;
@@ -266,6 +271,8 @@ export const navContainer = (isExpanded: boolean) => css`
     background-color: ${theme.colors.white};
     transition: width 0.2s ease;
     width: ${isExpanded ? '23rem' : '4rem'};
+    overflow-x: hidden;
+    overflow-y: hidden;
 `;
 
 export const dropdownContainer = (isExpanded: boolean) => css`
@@ -313,7 +320,15 @@ export const dropdownClubContainer = css`
     overflow-y: auto;
     gap: 0.5rem;
     cursor: default;
-    overflow-y: auto;
+
+    /* 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
     :hover {
         background-color: transparent;
     }

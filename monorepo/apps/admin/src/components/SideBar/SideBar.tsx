@@ -232,7 +232,16 @@ function SideBar() {
     return (
         <>
             <div css={clubSideBarContainer}>
-                <div css={{ maxHeight: '70rem', overflowY: 'hidden' }}>
+                <div
+                    css={{
+                        maxHeight: '70rem',
+                        overflowY: 'auto',
+                        scrollbarWidth: 'none',
+                        '&::-webkit-scrollbar': {
+                            display: 'none',
+                        },
+                    }}
+                >
                     {!clubLoading &&
                         myClub?.map((club) => (
                             <div
@@ -274,7 +283,7 @@ function SideBar() {
                             </div>
                         ))}
                 </div>
-                <Tooltip content="동아리 생성">
+                <Tooltip content="동아리 생성" direction="bottomRight">
                     <button css={addClubButton} onClick={() => goTo('/club-create')}>
                         +
                     </button>
@@ -430,7 +439,9 @@ function SideBar() {
                                 }}
                                 zIndex={1000}
                             >
-                                <Tooltip content={MainMenu.menu}>{MainMenu.icon}</Tooltip>
+                                <Tooltip content={MainMenu.menu} direction="bottomRight">
+                                    {MainMenu.icon}
+                                </Tooltip>
                                 {isExpanded && (
                                     <div css={mainMenuContainer}>
                                         <Text
@@ -492,8 +503,9 @@ function SideBar() {
                             </div>
                         </Dropdown.Trigger>
                         <Dropdown.Content
-                            offsetX={isExpanded ? 32 : 20}
+                            offsetX={isExpanded ? 1 : 0}
                             offsetY={0}
+                            placement="right"
                             sx={{
                                 zIndex: 10001,
                                 border: 'none',
