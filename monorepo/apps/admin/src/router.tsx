@@ -23,6 +23,7 @@ import {
     //StepManagementPage,
     StepManagementLoadingPage,
     TestPage,
+    UserPage,
 } from './pages';
 
 const LazyInterviewEvaluationPage = lazy(
@@ -109,6 +110,7 @@ const router = createBrowserRouter([
             { path: 'settings/:clubId', element: <ClubMemberRolePage /> },
             { path: 'recruitment', element: <RecruitCreatePage /> },
             { path: 'recruitment/success', element: <RecruitSuccessPage /> },
+            { path: 'user', element: <UserPage /> },
         ],
     },
     {
