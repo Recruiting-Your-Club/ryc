@@ -61,6 +61,7 @@ public class AuthController {
         ResponseCookie.from("refresh-token", refreshResult.refreshToken())
             .httpOnly(true)
             .secure(true)
+            .domain(".ssoc.kr")
             .path("/api/v2/auth")
             .maxAge(jwtProperties.getRefreshToken().getExpirationMinute() * 60L)
             .sameSite("None")
@@ -85,9 +86,10 @@ public class AuthController {
         ResponseCookie.from("refresh-token", "")
             .httpOnly(true)
             .secure(true)
+            .domain(".ssoc.kr")
             .path("/api/v2/auth")
             .maxAge(0)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     return ResponseEntity.status(HttpStatus.OK)
