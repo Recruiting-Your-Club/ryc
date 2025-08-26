@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.auth.presentation.request.LoginRequest;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2/auth")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "인증/인가")
 public class AuthController {
   private final AuthService authService;
