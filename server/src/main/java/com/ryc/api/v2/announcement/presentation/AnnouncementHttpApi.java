@@ -137,7 +137,7 @@ public class AnnouncementHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<ApplicationFormResponse> getApplicationForm(
-      @PathVariable("announcement-id") String announcementId) {
+      @PathVariable("announcement-id") @NotBlank @UUID String announcementId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
   }
@@ -148,7 +148,7 @@ public class AnnouncementHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<AnnouncementProcessGetResponse> getAnnouncementProcess(
-      @PathVariable("announcement-id") String announcementId) {
+      @PathVariable("announcement-id") @NotBlank @UUID String announcementId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(announcementService.getAnnouncementProcess(announcementId));
   }
