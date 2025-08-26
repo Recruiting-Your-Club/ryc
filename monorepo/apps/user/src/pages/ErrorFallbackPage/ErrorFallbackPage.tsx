@@ -86,7 +86,12 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
                     <Button onClick={resetErrorBoundary}>다시 시도</Button>
                 </div>
             )}
-            <Button size="xs" variant="text" onClick={() => goTo('/')} sx={s_homeTextButton}>
+            <Button
+                size="xs"
+                variant="text"
+                onClick={() => (window.location.href = '/')}
+                sx={s_homeTextButton}
+            >
                 처음으로
             </Button>
         </div>
