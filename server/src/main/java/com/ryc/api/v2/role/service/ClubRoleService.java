@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
@@ -174,6 +175,7 @@ public class ClubRoleService {
   }
 
   @EventListener
+  @Transactional(propagation =  Propagation.MANDATORY)
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     if (!clubRoleRepository.existsByClubId(event.clubId())) {
       return;
@@ -183,6 +185,7 @@ public class ClubRoleService {
   }
 
   @EventListener
+  @Transactional(propagation =  Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!clubRoleRepository.existsByAdminId(event.adminId())) {
       return;
