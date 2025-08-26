@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
@@ -170,6 +171,7 @@ public class AnnouncementService {
   }
 
   @EventListener
+  @Transactional(propagation =  Propagation.MANDATORY)
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     List<String> ids = announcementRepository.findIdsByClubId(event.clubId());
     deleteAnnouncements(ids);

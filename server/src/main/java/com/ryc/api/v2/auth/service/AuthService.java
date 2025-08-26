@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
@@ -128,6 +129,7 @@ public class AuthService {
   }
 
   @EventListener
+  @Transactional(propagation =  Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!refreshTokenRepository.existsByAdminId(event.adminId())) {
       return;

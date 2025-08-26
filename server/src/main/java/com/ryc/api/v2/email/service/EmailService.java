@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -113,7 +114,7 @@ public class EmailService {
 
   @Async
   @TransactionalEventListener
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   protected void createInterviewSlotEmails(InterviewSlotEmailEvent event) {
     List<Email> emails = new ArrayList<>();
 
@@ -138,7 +139,7 @@ public class EmailService {
 
   @Async
   @TransactionalEventListener
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   protected void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
     String subject = String.format("[면접 예약 완료] %s 면접 예약이 정상적으로 완료되었습니다.", event.clubName());
     String content =
@@ -155,7 +156,7 @@ public class EmailService {
 
   @Async
   @TransactionalEventListener
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   protected void createApplicationSuccessEmails(ApplicationSuccessEmailEvent event) {
     String subject = String.format("[지원서 접수 완료] %s 지원서가 정상적으로 접수되었습니다.", event.announcementTitle());
     String content =
@@ -171,6 +172,7 @@ public class EmailService {
   }
 
   @EventListener
+  @Transactional(propagation =  Propagation.MANDATORY)
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()
         .filter(emailRepository::existsByAnnouncementId)
@@ -178,6 +180,7 @@ public class EmailService {
   }
 
   @EventListener
+  @Transactional(propagation =  Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!emailRepository.existsByAdminId(event.adminId())) {
       return;
