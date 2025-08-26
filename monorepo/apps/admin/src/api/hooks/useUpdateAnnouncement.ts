@@ -1,5 +1,5 @@
 import { putAnnouncement } from '@api/domain';
-import type { AnnouncementSubmitRequest } from '@api/domain/announcement/types';
+import type { AnnouncementPutSubmitRequest } from '@api/domain/announcement/types';
 import { useMutation } from '@tanstack/react-query';
 
 interface UseUpdateAnnouncementParams {
@@ -16,7 +16,7 @@ export const useUpdateAnnouncement = ({
     onError,
 }: UseUpdateAnnouncementParams) => {
     return useMutation({
-        mutationFn: (payload: AnnouncementSubmitRequest) =>
+        mutationFn: (payload: AnnouncementPutSubmitRequest) =>
             putAnnouncement(clubId, announcementId, payload),
         onSuccess,
         onError,
