@@ -302,7 +302,6 @@ public class InterviewService {
     interviewRepository.deleteReservationById(reservationId);
   }
 
-  @Transactional
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()

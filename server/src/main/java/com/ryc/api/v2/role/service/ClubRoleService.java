@@ -174,7 +174,6 @@ public class ClubRoleService {
   }
 
   @EventListener
-  @Transactional
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     if (!clubRoleRepository.existsByClubId(event.clubId())) {
       return;
@@ -183,7 +182,6 @@ public class ClubRoleService {
     clubRoleRepository.deleteByClubId(event.clubId());
   }
 
-  @Transactional
   @EventListener
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!clubRoleRepository.existsByAdminId(event.adminId())) {

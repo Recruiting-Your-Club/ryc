@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>지원서 제출 완료 안내</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; padding: 24px;">
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 32px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);">
+
+    <h2 style="color: #333;">🎉 지원서가 성공적으로 제출되었습니다!</h2>
+
+    <p>안녕하세요, <strong>${applicantName}</strong>님.</p>
+    <p>
+        <strong>"${announcementTitle}"</strong>에 대한 귀하의 지원서가 정상적으로 접수되었습니다.<br />
+        아래 정보를 확인해주세요.
+    </p>
+
+    <hr style="margin: 24px 0;" />
+
+    <h3 style="color: #555;">📄 지원 정보</h3>
+    <ul style="list-style: none; padding-left: 0;">
+        <li><strong>모집 공고:</strong> ${announcementTitle}</li>
+        <li><strong>제출일:</strong> ${submittedDate}</li>
+    </ul>
+
+    <p style="margin-top: 8px; color: #888;">
+        ※ 추후 채용 일정이 확정되면 별도의 이메일로 안내드릴 예정입니다.
+    </p>
+
+    <hr style="margin: 24px 0;" />
+
+<!--    <p>-->
+<!--        제출한 내용을 다시 확인하고 싶다면 아래 버튼을 눌러주세요.-->
+<!--    </p>-->
+
+<!--    <p style="text-align: center; margin: 24px 0;">-->
+<!--        <a href="${applicationViewLink}" style="display: inline-block; padding: 12px 24px; background-color: #4caf50; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">-->
+<!--            지원서 확인하기-->
+<!--        </a>-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--        문의 사항이 있으시면 해당 동아리 관리자에게 직접 연락해주세요.-->
+<!--    </p>-->
+
+    <p style="margin-top: 32px;">감사합니다.<br /><strong>SSOC 운영팀 드림</strong></p>
+</div>
+</body>
+</html>
