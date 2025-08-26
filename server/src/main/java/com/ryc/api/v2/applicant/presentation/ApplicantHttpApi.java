@@ -54,18 +54,17 @@ public class ApplicantHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<List<ApplicantGetResponse>> getApplicants(
-      @PathVariable("announcement-id") String announcementId,
-      @RequestParam(value = "status", required = false)
-          @Schema(
+      @PathVariable("announcement-id") @NotBlank @UUID String announcementId,
+      @Schema(
               allowableValues = {
-                "DOCUMENT_PENDING",
-                "DOCUMENT_FAIL",
-                "INTERVIEW_PENDING",
-                "INTERVIEW_FAIL",
-                "FINAL_PASS",
-                "FINAL_FAIL",
+                      "DOCUMENT_PENDING",
+                      "DOCUMENT_FAIL",
+                      "INTERVIEW_PENDING",
+                      "INTERVIEW_FAIL",
+                      "FINAL_PASS",
+                      "FINAL_FAIL",
               })
-          String status) {
+      @RequestParam(value = "status", required = false) @NotBlank String status) {
     List<ApplicantGetResponse> response = applicantService.getApplicants(announcementId, status);
     return ResponseEntity.ok(response);
   }
