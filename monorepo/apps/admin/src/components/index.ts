@@ -36,3 +36,4 @@ export * from './DialogSection';
 export * from './TagInput';
 export * from './MainCardEditDialog';
 export * from './HashTagInput';
+export * from './ErrorDialog';

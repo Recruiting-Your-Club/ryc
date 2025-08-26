@@ -15,6 +15,7 @@ import {
 } from '@constants/stepManagementPage';
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
@@ -69,11 +70,12 @@ function StepManagementPage() {
         ),
 
         enabled: !!selectedApplicant?.applicantId,
+        throwOnError: true,
     });
 
-    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen(false));
-    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(() =>
-        setIsInterviewOpen(false),
+    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
+    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
+        () => setIsInterviewOpen,
     );
 
     // calculated values
@@ -102,6 +104,7 @@ function StepManagementPage() {
             type: 'application',
         }),
         enabled: documentApplicantIds.length > 0,
+        throwOnError: true,
     });
     const { data: interviewEvaluationSummaryList } = useQuery({
         ...evaluationQueries.evaluationSummary({
@@ -110,6 +113,7 @@ function StepManagementPage() {
             type: 'interview',
         }),
         enabled: interviewApplicantIds.length > 0,
+        throwOnError: true,
     });
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -127,6 +131,7 @@ function StepManagementPage() {
                 'FINAL_PASS',
                 'FINAL_FAIL',
             ].includes(selectedApplicant.status),
+        throwOnError: true,
     });
     const { data: interviewEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -139,6 +144,7 @@ function StepManagementPage() {
             ['INTERVIEW_PENDING', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
                 selectedApplicant.status,
             ),
+        throwOnError: true,
     });
 
     const statusLabel = isThreeStepProcess

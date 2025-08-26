@@ -2537,6 +2537,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-easy-crop: "npm:^5.4.2"
+    react-error-boundary: "npm:^6.0.0"
     react-router-dom: "npm:^7.1.5"
     storybook: "npm:^8.5.4"
     webpack: "npm:^5.97.1"
@@ -2673,6 +2674,7 @@ __metadata:
     msw: "npm:^2.9.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    react-error-boundary: "npm:^6.0.0"
     react-router-dom: "npm:^7.1.5"
     storybook: "npm:^8.5.4"
     webpack: "npm:^5.97.1"
@@ -10843,6 +10845,17 @@ __metadata:
     react: ">=16.4.0"
     react-dom: ">=16.4.0"
   checksum: 10c0/6cb29a82ecc2b856b81810ba77bf58aef944cccd6ae695a03d8b9fd0558d005eb2530945952851643f6b627d442dbd8e6258ba1a606d44a2582629263379f383
+  languageName: node
+  linkType: hard
+
+"react-error-boundary@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "react-error-boundary@npm:6.0.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 10c0/1914d600dee95a14f14af4afe9867b0d35c26c4f7826d23208800ba2a99728659029aad60a6ef95e13430b4d79c2c4c9b3585f50bf508450478760d2e4e732d8
   languageName: node
   linkType: hard
 

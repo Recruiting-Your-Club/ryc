@@ -14,21 +14,21 @@ type EmailMutationParams<T> = {
 
 const useEmailMutation = <T>(
     mutationFn: (params: EmailMutationParams<T>) => Promise<void>,
-    onClose: () => void,
+    onClose: (isClosed: boolean) => void,
 ) => {
     const { toast } = useToast();
 
     return useMutation({
         mutationFn,
         onSuccess: () => {
-            onClose();
+            onClose(true);
             toast('이메일 전송이 완료되었어요!', {
                 type: 'success',
                 toastTheme: 'colored',
             });
         },
         onError: (error) => {
-            onClose();
+            onClose(false);
             // 500 에러인 경우 전역 처리에 위임
             if (error instanceof HttpError && error.statusCode === 500) {
                 return;
@@ -39,8 +39,9 @@ const useEmailMutation = <T>(
 };
 
 export const useEmailMutations = {
-    usePostPlainEmail: (onClose: () => void) => useEmailMutation<Email>(postPlainEmail, onClose),
+    usePostPlainEmail: (onClose: (isClosed: boolean) => void) =>
+        useEmailMutation<Email>(postPlainEmail, () => onClose),
 
-    usePostInterviewEmail: (onClose: () => void) =>
-        useEmailMutation<InterviewEmail>(postInterviewEmail, onClose),
+    usePostInterviewEmail: (onClose: (isClosed: boolean) => void) =>
+        useEmailMutation<InterviewEmail>(postInterviewEmail, () => onClose),
 };

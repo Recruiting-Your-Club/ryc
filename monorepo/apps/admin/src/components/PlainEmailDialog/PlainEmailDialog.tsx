@@ -50,7 +50,7 @@ function PlainEmailDialog({ open, handleClose, handlePlainEmail }: PlainEmailDia
 
         handlePlainEmail(emailTitle, contentToSend);
 
-        if (emailTitle.length !== 0 && contentToSend.length !== 0) {
+        if (!open && emailTitle.length !== 0 && contentToSend.length !== 0) {
             handleReset();
         }
     };

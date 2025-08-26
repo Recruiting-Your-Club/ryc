@@ -152,7 +152,7 @@ function RecruitEditPage() {
     // calculated values
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
     const isRecruitEditable = detailAnnouncement
-        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs())
+        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs(), 'day')
         : false;
 
     //--------Step별 유효성 검사--------//
@@ -478,7 +478,7 @@ function RecruitEditPage() {
                                 <AttentionTriangle css={s_warningIcon} />
                             </div>
                         </div>
-                        <Text type="h3Semibold" sx={s_captionText}>
+                        <Text type="h4Bold" sx={s_captionText}>
                             이미 모집이 시작된 공고는 수정할 수 없어요!
                         </Text>
                     </div>

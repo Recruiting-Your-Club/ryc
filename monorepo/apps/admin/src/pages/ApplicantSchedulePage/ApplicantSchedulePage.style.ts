@@ -5,7 +5,7 @@ import theme from '@ssoc/styles';
 export const s_applicantSchedulePageContainer = css`
     width: 100%;
     height: 100vh;
-    /* max-height: 100vh; */
+    max-height: 100vh;
     overflow: hidden;
     padding: 2rem 2rem;
     display: flex;
@@ -21,6 +21,7 @@ export const s_alertSvgContainer = css`
 
 export const s_contentContainer = css`
     display: flex;
+    height: 90%;
     padding: 0rem 2rem;
     flex: 1;
     justify-content: center;
