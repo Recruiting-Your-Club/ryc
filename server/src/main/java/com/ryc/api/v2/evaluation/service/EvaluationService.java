@@ -179,7 +179,7 @@ public class EvaluationService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
     event.applicantIds().stream()
         .filter(evaluationRepository::existsByApplicantId)
@@ -187,7 +187,7 @@ public class EvaluationService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!evaluationRepository.existsByAdminId(event.adminId())) {
       return;

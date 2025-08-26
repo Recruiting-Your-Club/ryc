@@ -185,7 +185,9 @@ public class FileService {
   public void claimOwnership(
       String fileMetaDataId, String associatedId, FileDomainType expectedType) {
     List<String> fileMetaDataIds =
-        (fileMetaDataId != null) ? Collections.singletonList(fileMetaDataId) : null;
+        (fileMetaDataId != null)
+            ? Collections.singletonList(fileMetaDataId)
+            : Collections.emptyList();
     claimOwnership(fileMetaDataIds, associatedId, expectedType);
   }
 

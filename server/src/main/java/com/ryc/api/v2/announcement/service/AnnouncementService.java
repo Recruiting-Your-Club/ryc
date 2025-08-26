@@ -171,7 +171,7 @@ public class AnnouncementService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     List<String> ids = announcementRepository.findIdsByClubId(event.clubId());
     deleteAnnouncements(ids);

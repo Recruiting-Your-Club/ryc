@@ -1,4 +1,4 @@
-package com.ryc.api.v2.admin.presentation.response;
+package com.ryc.api.v2.admin.presentation.dto.response;
 
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 

@@ -175,7 +175,7 @@ public class ClubRoleService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     if (!clubRoleRepository.existsByClubId(event.clubId())) {
       return;
@@ -185,7 +185,7 @@ public class ClubRoleService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!clubRoleRepository.existsByAdminId(event.adminId())) {
       return;

@@ -172,7 +172,7 @@ public class EmailService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()
         .filter(emailRepository::existsByAnnouncementId)
@@ -180,7 +180,7 @@ public class EmailService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!emailRepository.existsByAdminId(event.adminId())) {
       return;

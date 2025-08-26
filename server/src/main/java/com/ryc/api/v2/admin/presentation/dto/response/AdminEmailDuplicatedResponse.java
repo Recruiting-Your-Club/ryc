@@ -1,4 +1,4 @@
-package com.ryc.api.v2.admin.presentation.response;
+package com.ryc.api.v2.admin.presentation.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

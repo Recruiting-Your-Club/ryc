@@ -7,8 +7,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.ryc.api.v2.admin.presentation.response.AdminEmailDuplicatedResponse;
-import com.ryc.api.v2.admin.presentation.response.MyInformationGetResponse;
+import com.ryc.api.v2.admin.presentation.dto.request.AdminProfileUpdateRequest;
+import com.ryc.api.v2.admin.presentation.dto.response.AdminEmailDuplicatedResponse;
+import com.ryc.api.v2.admin.presentation.dto.response.MyInformationGetResponse;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
@@ -37,6 +38,19 @@ public class AdminHttpApi {
   public ResponseEntity<AdminEmailDuplicatedResponse> checkEmailDuplicate(
       @RequestParam @Email String email) {
     AdminEmailDuplicatedResponse response = adminService.checkEmailDuplicate(email);
+    return ResponseEntity.ok(response);
+  }
+
+  @PatchMapping
+  @Operation(
+      summary = "나의 프로필 사진 수정",
+      description = "나의 프로필 사진을 수정합니다.<br>만약 Image을 넣지 않거나 null로 넣을 경우 프로필 사진이 삭제됩니다.")
+  public ResponseEntity<MyInformationGetResponse> updateAdminProfile(
+      @AuthenticationPrincipal CustomUserDetail userDetail,
+      @RequestBody AdminProfileUpdateRequest request) {
+    MyInformationGetResponse response =
+        adminService.updateAdminProfile(
+            userDetail.getId(), userDetail.getUsername(), userDetail.getEmail(), request);
     return ResponseEntity.ok(response);
   }
 

@@ -304,7 +304,7 @@ public class InterviewService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()
         .filter(interviewRepository::existsSlotsByAnnouncementId)
