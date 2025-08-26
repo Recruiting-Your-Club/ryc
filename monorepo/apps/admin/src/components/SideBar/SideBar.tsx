@@ -515,7 +515,11 @@ function SideBar() {
                             }}
                         >
                             <Dropdown.Item sx={dropdownClubContainer}>
-                                <Button variant="transparent" size="full">
+                                <Button
+                                    variant="transparent"
+                                    size="full"
+                                    onClick={() => goTo('/user')}
+                                >
                                     계정설정
                                 </Button>
                                 <Button
