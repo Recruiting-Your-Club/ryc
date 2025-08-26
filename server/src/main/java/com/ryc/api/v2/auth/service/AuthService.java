@@ -129,7 +129,7 @@ public class AuthService {
   }
 
   @EventListener
-  @Transactional(propagation =  Propagation.MANDATORY)
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!refreshTokenRepository.existsByAdminId(event.adminId())) {
       return;
