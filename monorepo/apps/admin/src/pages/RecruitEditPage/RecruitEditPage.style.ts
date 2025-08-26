@@ -59,7 +59,7 @@ export const s_textBox = css`
 `;
 
 export const s_iconContainer = css`
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
