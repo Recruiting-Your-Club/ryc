@@ -5,9 +5,10 @@ import { hexToRgb } from '@ssoc/utils';
 
 export const s_stepManagementPageContainer = css`
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 `;
 
 export const s_topContainer = css`

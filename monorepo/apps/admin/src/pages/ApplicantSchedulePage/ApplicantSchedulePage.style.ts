@@ -4,9 +4,9 @@ import theme from '@ssoc/styles';
 
 export const s_applicantSchedulePageContainer = css`
     width: 100%;
-    height: 100%;
-    max-height: 100vh;
-    overflow: visible;
+    height: 100vh;
+    /* max-height: 100vh; */
+    overflow: hidden;
     padding: 2rem 2rem;
     display: flex;
     flex-direction: column;
