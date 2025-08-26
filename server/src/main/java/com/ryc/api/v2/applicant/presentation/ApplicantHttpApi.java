@@ -4,7 +4,10 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantDeletedRequest;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v2")
+@Validated
 @Tag(name = "지원자")
 public class ApplicantHttpApi {
 
@@ -37,7 +41,8 @@ public class ApplicantHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<Void> changeApplicantStatus(
-      @PathVariable String id, @Valid @RequestBody ApplicantStatusRequest statusRequest) {
+          @PathVariable @NotBlank @UUID String id,
+          @Valid @RequestBody ApplicantStatusRequest statusRequest) {
     applicantService.changeApplicantStatus(id, statusRequest);
     return ResponseEntity.noContent().build();
   }
