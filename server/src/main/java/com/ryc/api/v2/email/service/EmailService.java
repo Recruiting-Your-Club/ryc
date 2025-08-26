@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
@@ -111,7 +112,7 @@ public class EmailService {
   }
 
   @Async
-  @EventListener
+  @TransactionalEventListener
   @Transactional
   protected void createInterviewSlotEmails(InterviewSlotEmailEvent event) {
     List<Email> emails = new ArrayList<>();
@@ -136,7 +137,7 @@ public class EmailService {
   }
 
   @Async
-  @EventListener
+  @TransactionalEventListener
   @Transactional
   protected void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
     String subject = String.format("[면접 예약 완료] %s 면접 예약이 정상적으로 완료되었습니다.", event.clubName());
@@ -149,15 +150,11 @@ public class EmailService {
             .replace("${endTime}", event.period().endDate().toLocalTime().toString());
 
     createEmails(
-        ssocEmailId,
-        event.announcementId(),
-        List.of(event.applicantEmail()),
-        subject,
-        content);
+        ssocEmailId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
   }
 
   @Async
-  @EventListener
+  @TransactionalEventListener
   @Transactional
   protected void createApplicationSuccessEmails(ApplicationSuccessEmailEvent event) {
     String subject = String.format("[지원서 접수 완료] %s 지원서가 정상적으로 접수되었습니다.", event.announcementTitle());
@@ -170,11 +167,7 @@ public class EmailService {
                 event.submittedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
     createEmails(
-        ssocEmailId,
-        event.announcementId(),
-        List.of(event.applicantEmail()),
-        subject,
-        content);
+        ssocEmailId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
   }
 
   @Transactional
