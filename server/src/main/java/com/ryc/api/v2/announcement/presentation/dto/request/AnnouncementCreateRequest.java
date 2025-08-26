@@ -75,7 +75,10 @@ public record AnnouncementCreateRequest(
     @Schema(description = "공고 지원서") @NotNull(message = "applicationForm 필드를 빈값으로 둘 수 없습니다.") @Valid
         ApplicationFormCreateRequest applicationForm,
     @Schema(description = "이미지 목록")
-        List<@NotBlank(message = "이미지 메타데이터 id는 빈 값일 수 없습니다.") @UUID(message = "이미지 메타데이터 id는 UUID 포멧을 준수하여야 합니다.") String> images) {
+        List<
+                @NotBlank(message = "이미지 메타데이터 id는 빈 값일 수 없습니다.")
+                @UUID(message = "이미지 메타데이터 id는 UUID 포멧을 준수하여야 합니다.") String>
+            images) {
 
   // @Schema는 get함수에 사용해야 작동함.
   @Schema(description = "태그", example = "[\"프로그래밍\", \"웹개발\", \"백엔드\"]")

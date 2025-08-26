@@ -3,8 +3,8 @@ package com.ryc.api.v2.applicant.presentation;
 import java.util.List;
 
 import jakarta.validation.Valid;
-
 import jakarta.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,8 +41,11 @@ public class ApplicantHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<Void> changeApplicantStatus(
-          @PathVariable @NotBlank(message = "지원자 아이디는 공백일 수 없습니다.") @UUID(message = "지원자 아이디는 UUID 포멧이어야 합니다.") String id,
-          @Valid @RequestBody ApplicantStatusRequest statusRequest) {
+      @PathVariable
+          @NotBlank(message = "지원자 아이디는 공백일 수 없습니다.")
+          @UUID(message = "지원자 아이디는 UUID 포멧이어야 합니다.")
+          String id,
+      @Valid @RequestBody ApplicantStatusRequest statusRequest) {
     applicantService.changeApplicantStatus(id, statusRequest);
     return ResponseEntity.noContent().build();
   }
@@ -54,17 +57,22 @@ public class ApplicantHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<List<ApplicantGetResponse>> getApplicants(
-      @PathVariable("announcement-id") @NotBlank(message = "공고 아이디는 공백일 수 없습니다.") @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId,
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
       @Schema(
               allowableValues = {
-                      "DOCUMENT_PENDING",
-                      "DOCUMENT_FAIL",
-                      "INTERVIEW_PENDING",
-                      "INTERVIEW_FAIL",
-                      "FINAL_PASS",
-                      "FINAL_FAIL",
+                "DOCUMENT_PENDING",
+                "DOCUMENT_FAIL",
+                "INTERVIEW_PENDING",
+                "INTERVIEW_FAIL",
+                "FINAL_PASS",
+                "FINAL_FAIL",
               })
-      @RequestParam(value = "status", required = false) @NotBlank(message = "지원자 상태는 공백일 수 없습니다.") String status) {
+          @RequestParam(value = "status", required = false)
+          @NotBlank(message = "지원자 상태는 공백일 수 없습니다.")
+          String status) {
     List<ApplicantGetResponse> response = applicantService.getApplicants(announcementId, status);
     return ResponseEntity.ok(response);
   }
@@ -75,7 +83,8 @@ public class ApplicantHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_OWNER"})
-  public ResponseEntity<Void> deleteApplicants(@Valid @RequestBody ApplicantDeletedRequest request) {
+  public ResponseEntity<Void> deleteApplicants(
+      @Valid @RequestBody ApplicantDeletedRequest request) {
     applicantService.deleteApplicants(request.applicantIds());
     return ResponseEntity.noContent().build();
   }
