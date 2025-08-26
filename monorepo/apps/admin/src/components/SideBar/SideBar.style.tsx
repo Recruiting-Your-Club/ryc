@@ -271,8 +271,7 @@ export const navContainer = (isExpanded: boolean) => css`
     background-color: ${theme.colors.white};
     transition: width 0.2s ease;
     width: ${isExpanded ? '23rem' : '4rem'};
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: visible;
 `;
 
 export const dropdownContainer = (isExpanded: boolean) => css`
@@ -320,14 +319,6 @@ export const dropdownClubContainer = css`
     overflow-y: auto;
     gap: 0.5rem;
     cursor: default;
-
-    /* 스크롤바 숨기기 */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-
-    &::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
-    }
 
     :hover {
         background-color: transparent;

@@ -340,8 +340,9 @@ function SideBar() {
                             </div>
                         </Dropdown.Trigger>
                         <Dropdown.Content
-                            offsetX={isExpanded ? 32 : 20}
-                            offsetY={isExpanded ? 10 : 10}
+                            offsetX={isExpanded ? 2 : 0}
+                            offsetY={10}
+                            placement="right"
                             sx={{
                                 zIndex: 1001,
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
