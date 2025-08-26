@@ -1,6 +1,7 @@
 package com.ryc.api.v2.auth.presentation;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.validator.request.annotation.JWT;
 import com.ryc.api.v2.security.jwt.JwtProperties;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,7 +57,9 @@ public class AuthController {
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  public ResponseEntity<?> refreshToken(@CookieValue("refresh-token") String refreshToken) {
+  public ResponseEntity<?> refreshToken(
+      @CookieValue("refresh-token") @NotBlank(message = "기존 리프레시 토큰은 빈값일 수 없습니다.") @JWT
+          String refreshToken) {
     TokenRefreshResult refreshResult = authService.refreshToken(refreshToken);
 
     TokenRefreshResponse response = new TokenRefreshResponse(refreshResult.accessToken());
@@ -78,7 +82,10 @@ public class AuthController {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<?> logout(
-      @CookieValue(value = "refresh-token", required = false) String refreshToken) {
+      @CookieValue(value = "refresh-token", required = false)
+          @NotBlank(message = "기존 리프레시 토큰은 빈값일 수 없습니다.")
+          @JWT
+          String refreshToken) {
     if (refreshToken != null) {
       authService.logout(refreshToken);
     }

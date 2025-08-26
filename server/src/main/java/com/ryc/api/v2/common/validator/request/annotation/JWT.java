@@ -14,15 +14,16 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-import com.ryc.api.v2.common.validator.request.UserNameValidator;
+import com.ryc.api.v2.common.validator.request.JWTValidator;
+import com.ryc.api.v2.common.validator.request.annotation.JWT.List;
 
 @Documented
-@Constraint(validatedBy = UserNameValidator.class)
+@Constraint(validatedBy = JWTValidator.class)
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-@Repeatable(UserName.List.class)
-public @interface UserName {
-  String message() default "유효하지 않은 이름 형식입니다.";
+@Repeatable(List.class)
+public @interface JWT {
+  String message() default "잘못된 JWT 형식입니다.";
 
   Class<?>[] groups() default {};
 
@@ -32,6 +33,6 @@ public @interface UserName {
   @Retention(RUNTIME)
   @Documented
   public @interface List {
-    UserName[] value();
+    JWT[] value();
   }
 }
