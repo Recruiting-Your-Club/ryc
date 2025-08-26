@@ -59,10 +59,12 @@ function ApplicantSchedulePage() {
     const { data: slot0Applicants } = useQuery({
         ...interviewQueries.interviewInformation(announcementId!, slot0Id ?? '', clubId!),
         enabled: !!slot0Id && slot0Id !== '',
+        throwOnError: true,
     });
     const { data: slot1Applicants } = useQuery({
         ...interviewQueries.interviewInformation(announcementId!, slot1Id ?? '', clubId!),
         enabled: !!slot1Id && slot1Id !== '',
+        throwOnError: true,
     });
     const { data: unreservedApplicants } = useSuspenseQuery(
         interviewQueries.unreservedApplicant(announcementId!, clubId!),

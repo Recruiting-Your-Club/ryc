@@ -39,6 +39,7 @@ function InterviewEvaluationPage() {
     const { data: slotApplicants } = useQuery({
         ...interviewQueries.interviewInformation(announcementId!, slotId ?? '', clubId!),
         enabled: !!slotId && slotId !== '',
+        throwOnError: true,
     });
     const { data: applicantDocument } = useQuery({
         ...applicantQueries.getApplicantDocument(
@@ -47,6 +48,7 @@ function InterviewEvaluationPage() {
             clubId!,
         ),
         enabled: !!selectedApplicant?.applicantId,
+        throwOnError: true,
     });
     const { data: interviewEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -64,6 +66,7 @@ function InterviewEvaluationPage() {
                 'FINAL_PASS',
                 'FINAL_FAIL',
             ].includes(selectedApplicant.status),
+        throwOnError: true,
     });
 
     const { handlePostComment, handleUpdateComment, handleDeleteComment } = useEvaluation(
