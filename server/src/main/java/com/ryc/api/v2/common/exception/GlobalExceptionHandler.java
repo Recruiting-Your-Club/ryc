@@ -136,7 +136,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
     // TODO: 예기치 못한 모든 예외는 해당 진입점으로 들어옴. 이때 e.message는 errorCode의 메시지로 응답하고, 내부 로그를 찍는 방식이 더 적절해보임.
     // DB에러와 같이 노출되면 안되는 값이 노출될 가능성
-    return handleExceptionInternal(errorCode, e.getMessage(), request);
+    return handleExceptionInternal(errorCode, request);
   }
 
   // handleExceptionInternal Method

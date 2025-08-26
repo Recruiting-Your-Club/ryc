@@ -66,7 +66,7 @@ public class AnnouncementHttpApi {
       })
   public ResponseEntity<AnnouncementCreateResponse> create(
       @PathVariable("club-id") @NotBlank @UUID String clubId,
-      @Valid @RequestBody AnnouncementCreateRequest body) {
+      @RequestBody @Valid AnnouncementCreateRequest body) {
     AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     URI location =
@@ -81,7 +81,7 @@ public class AnnouncementHttpApi {
   @GetMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 목록 조회")
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
-      @PathVariable("club-id") String clubId) {
+      @PathVariable("club-id") @NotBlank @UUID String clubId) {
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
   }
 
@@ -91,7 +91,7 @@ public class AnnouncementHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("announcement-id") String announcementId) {
+      @PathVariable("announcement-id") @NotBlank @UUID String announcementId) {
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
   }
 
@@ -124,8 +124,8 @@ public class AnnouncementHttpApi {
         "RESOURCE_NOT_FOUND"
       })
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      @PathVariable("club-id") String clubId,
-      @PathVariable("announcement-id") String announcementId,
+      @PathVariable("club-id") @NotBlank @UUID String clubId,
+      @PathVariable("announcement-id") @NotBlank @UUID String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(announcementService.updateAnnouncement(body, announcementId, clubId));
