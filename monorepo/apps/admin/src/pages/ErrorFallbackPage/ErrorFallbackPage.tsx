@@ -16,10 +16,17 @@ import {
 import type { ErrorFallbackPageProps } from './types';
 
 function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps) {
+    // prop destruction
+    // lib hooks
     const { goTo } = useRouter();
 
+    // initial values
     let message = '알 수 없는 오류가 발생했습니다.';
 
+    // state, ref, querystring hooks
+    // form hooks
+    // query hooks
+    // calculated values
     if (error.statusCode === 500) {
         message = '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
     } else if (error.statusCode === 404) {
@@ -33,6 +40,9 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
     } else {
         message = error.message;
     }
+
+    // handlers
+    // effects
 
     return (
         <div css={s_fallbackContainer}>
