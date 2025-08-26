@@ -87,17 +87,17 @@ public class AuthService {
     // TODO: RefreshToken 날짜값 JWT 패키지로 함수 분리
     final String newRefreshTokenValue =
         jwtTokenManager.generateRefreshToken(admin.getId(), AdminDefaultRole.USER.name());
+
     final RefreshToken newRefreshToken =
-        RefreshToken.builder()
-            .token(newRefreshTokenValue)
-            .adminId(admin.getId())
-            .expirationTime(
-                jwtTokenManager
-                    .getExpirationDateFromToken(TokenType.REFRESH_TOKEN, newRefreshTokenValue)
-                    .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime())
-            .build();
+        RefreshToken.initialize(
+            admin.getId(),
+            newRefreshTokenValue,
+            jwtTokenManager
+                .getExpirationDateFromToken(TokenType.REFRESH_TOKEN, newRefreshTokenValue)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
+
     refreshTokenRepository.save(newRefreshToken, admin);
 
     // 6. 신규 at, rt 전송
