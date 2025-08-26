@@ -152,7 +152,7 @@ function RecruitEditPage() {
     // calculated values
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
     const isRecruitEditable = detailAnnouncement
-        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs())
+        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs(), 'day')
         : false;
 
     //--------Step별 유효성 검사--------//
