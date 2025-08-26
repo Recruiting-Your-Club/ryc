@@ -4,9 +4,12 @@ import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2")
+@Validated
 @Tag(name = "공고")
 public class AnnouncementHttpApi {
 
@@ -61,7 +65,8 @@ public class AnnouncementHttpApi {
         "INVALID_PARAMETER"
       })
   public ResponseEntity<AnnouncementCreateResponse> create(
-      @PathVariable("club-id") String clubId, @Valid @RequestBody AnnouncementCreateRequest body) {
+      @PathVariable("club-id") @NotBlank @UUID String clubId,
+      @Valid @RequestBody AnnouncementCreateRequest body) {
     AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
     URI location =

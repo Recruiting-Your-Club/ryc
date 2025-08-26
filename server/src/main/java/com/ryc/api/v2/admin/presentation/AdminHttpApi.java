@@ -1,6 +1,7 @@
 package com.ryc.api.v2.admin.presentation;
 
 import jakarta.validation.constraints.NotBlank;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +36,7 @@ public class AdminHttpApi {
       value = {CommonErrorCode.class},
       include = {"INVALID_PARAMETER"})
   public ResponseEntity<AdminEmailDuplicatedResponse> checkEmailDuplicate(
-      @RequestParam @NotBlank @Email String email) {
+      @RequestParam @NotBlank(message = "이메일은 공백일 수 없습니다.") @Email String email) {
     AdminEmailDuplicatedResponse response = adminService.checkEmailDuplicate(email);
     return ResponseEntity.ok(response);
   }
