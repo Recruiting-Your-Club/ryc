@@ -73,9 +73,9 @@ function StepManagementPage() {
         throwOnError: true,
     });
 
-    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen(false));
-    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(() =>
-        setIsInterviewOpen(false),
+    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
+    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
+        () => setIsInterviewOpen,
     );
 
     // calculated values
