@@ -5,7 +5,7 @@ import theme from '@ssoc/styles';
 export const s_cardContainer = (isActivated: boolean) => css`
     display: flex;
     width: 18rem;
-    height: 100%;
+    height: 5rem;
     background-color: white;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 30px;
