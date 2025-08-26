@@ -65,7 +65,7 @@ public class AnnouncementHttpApi {
         "INVALID_PARAMETER"
       })
   public ResponseEntity<AnnouncementCreateResponse> create(
-      @PathVariable("club-id") @NotBlank @UUID String clubId,
+      @PathVariable("club-id") @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.") @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.") String clubId,
       @RequestBody @Valid AnnouncementCreateRequest body) {
     AnnouncementCreateResponse response = announcementService.createAnnouncement(clubId, body);
 
@@ -81,7 +81,7 @@ public class AnnouncementHttpApi {
   @GetMapping("/clubs/{club-id}/announcements")
   @Operation(summary = "클럽 공고 목록 조회")
   public ResponseEntity<List<AnnouncementGetAllResponse>> getAnnouncementsByClubId(
-      @PathVariable("club-id") @NotBlank @UUID String clubId) {
+      @PathVariable("club-id") @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.") @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.") String clubId) {
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findAllByClubId(clubId));
   }
 
@@ -91,7 +91,7 @@ public class AnnouncementHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<AnnouncementGetDetailResponse> getAnnouncementDetail(
-      @PathVariable("announcement-id") @NotBlank @UUID String announcementId) {
+      @PathVariable("announcement-id") @NotBlank(message = "공고 아이디는 공백일 수 없습니다.") @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId) {
     return ResponseEntity.status(HttpStatus.OK).body(announcementService.findById(announcementId));
   }
 
@@ -124,8 +124,8 @@ public class AnnouncementHttpApi {
         "RESOURCE_NOT_FOUND"
       })
   public ResponseEntity<AnnouncementUpdateResponse> updateAnnouncementDetail(
-      @PathVariable("club-id") @NotBlank @UUID String clubId,
-      @PathVariable("announcement-id") @NotBlank @UUID String announcementId,
+      @PathVariable("club-id") @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.") @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.") String clubId,
+      @PathVariable("announcement-id") @NotBlank(message = "공고 아이디는 공백일 수 없습니다.") @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId,
       @Valid @RequestBody AnnouncementUpdateRequest body) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(announcementService.updateAnnouncement(body, announcementId, clubId));
@@ -137,7 +137,7 @@ public class AnnouncementHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<ApplicationFormResponse> getApplicationForm(
-      @PathVariable("announcement-id") @NotBlank @UUID String announcementId) {
+      @PathVariable("announcement-id") @NotBlank(message = "공고 아이디는 공백일 수 없습니다.") @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(applicationFormService.getApplicationFormByAnnouncementId(announcementId));
   }
@@ -148,7 +148,7 @@ public class AnnouncementHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<AnnouncementProcessGetResponse> getAnnouncementProcess(
-      @PathVariable("announcement-id") @NotBlank @UUID String announcementId) {
+      @PathVariable("announcement-id") @NotBlank(message = "공고 아이디는 공백일 수 없습니다.") @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(announcementService.getAnnouncementProcess(announcementId));
   }
