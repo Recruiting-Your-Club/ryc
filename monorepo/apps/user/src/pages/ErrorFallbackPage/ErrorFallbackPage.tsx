@@ -1,4 +1,14 @@
 import AttentionTriangle from '@assets/images/attention-triangle.svg';
+import {
+    DEFAULT_DESCRIPTION,
+    ERROR_500_DESCRIPTION,
+    ERROR_CODE_400,
+    ERROR_CODE_403,
+    ERROR_CODE_404_DATA,
+    ERROR_CODE_500,
+    ERROR_DEFAULT,
+} from '@constants/errorText';
+import React from 'react';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Text } from '@ssoc/ui';
@@ -21,22 +31,28 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
     const { goTo } = useRouter();
 
     // initial values
-    let message = '알 수 없는 오류가 발생했습니다.';
+    let message = ERROR_DEFAULT;
 
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
-    if (error.statusCode === 500) {
-        message = '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-    } else if (error.statusCode === 404) {
-        message = '요청하신 데이터를 찾을 수 없습니다.';
-    } else if (error.statusCode === 403) {
-        message = '페이지 접근 권한이 없습니다.';
-    } else if (error.statusCode == 400) {
-        message = '잘못된 요청입니다. 페이지를 새로고침 후 다시 시도해주세요.';
-    } else {
-        message = error.message;
+    switch (error.statusCode) {
+        case 500:
+            message = ERROR_CODE_500;
+            break;
+        case 404:
+            message = ERROR_CODE_404_DATA;
+            break;
+        case 403:
+            message = ERROR_CODE_403;
+            break;
+        case 400:
+            message = ERROR_CODE_400;
+            break;
+        default:
+            message = error.message ?? ERROR_DEFAULT;
+            break;
     }
 
     // handlers
@@ -51,15 +67,13 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
                     </div>
                 </div>
                 <Text type="h1Bold" sx={s_captionText}>
-                    {error.statusCode ? `${error.statusCode} ERROR` : 'ERROR'}
+                    ERROR
                 </Text>
                 <Text type="h4Semibold" sx={s_captionText}>
                     {message}
                 </Text>
                 <Text type="captionRegular">
-                    {error.statusCode === 500
-                        ? '불편을 드려 죄송합니다.\n지속적으로 오류가 발생할 경우, 아래 버튼을 통해 오류 신고 부탁드립니다.'
-                        : '불편을 드려 죄송합니다.\n궁금한 점이 있으시면 언제든지 채널톡을 통해 문의해주세요!'}
+                    {error.statusCode === 500 ? ERROR_500_DESCRIPTION : DEFAULT_DESCRIPTION}
                 </Text>
             </div>
             {error.statusCode === 500 ? (
