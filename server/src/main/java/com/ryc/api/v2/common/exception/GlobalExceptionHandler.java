@@ -60,7 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleDataIntegrityViolationException(
       DataIntegrityViolationException e, HttpServletRequest request) {
     ErrorCode errorCode = CommonErrorCode.DUPLICATE_RESOURCE;
-    return handleExceptionInternal(errorCode, e.getMessage(), request);
+    return handleExceptionInternal(errorCode, request);
   }
 
   @ExceptionHandler(BusinessRuleException.class)
@@ -101,13 +101,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode, e.getMessage(), request);
   }
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Object> handleConstraintViolationException(
-      ConstraintViolationException e, HttpServletRequest request) {
-    ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
-    return handleExceptionInternal(errorCode, e.getMessage(), request);
-  }
-
   @ExceptionHandler(InvalidFormatException.class)
   public ResponseEntity<Object> handleInvalidFormatException(
       InvalidFormatException e, HttpServletRequest request) {
@@ -115,6 +108,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode, request);
   }
 
+  /**
+   * Spring Validation 어노테이션 @Validated 사용 시, MethodValidationInterceptor 에서 발생하는 검증 예외 주의. 우리
+   * 서버는 @RequestBody의 직렬화 과정에서는 JSP 표준 @Valid 어노테이션을 사용한다. 따라서 ConstraintViolationException 예외의
+   * 진입점인 해당 핸들러는, @PathVariable , @RequestParam 검증 실패시만 작동한다.
+   */
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Object> handleConstraintViolationException(
+      ConstraintViolationException e, HttpServletRequest request) {
+    ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+    return handleExceptionInternal(e, errorCode);
+  }
+
+  /** JSP @Valid 어노테이션 이용시 발생 예외처리 */
   @Override
   public ResponseEntity<Object> handleMethodArgumentNotValid(
       MethodArgumentNotValidException e,
@@ -128,6 +134,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler({Exception.class})
   public ResponseEntity<Object> handleAllExceptions(Exception e, HttpServletRequest request) {
     ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+    // TODO: 예기치 못한 모든 예외는 해당 진입점으로 들어옴. 이때 e.message는 errorCode의 메시지로 응답하고, 내부 로그를 찍는 방식이 더 적절해보임.
+    // DB에러와 같이 노출되면 안되는 값이 노출될 가능성
     return handleExceptionInternal(errorCode, e.getMessage(), request);
   }
 
@@ -136,8 +144,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       ErrorCode errorCode, HttpServletRequest request) {
 
     if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-      eventPublisher.publishEvent(
-          new ServerErrorEvent(request.getRequestURI(), errorCode.getMessage()));
+      publishServerErrorEvent(errorCode, request);
     }
     return ResponseEntity.status(errorCode.getHttpStatus()).body(makeErrorResponse(errorCode));
   }
@@ -150,6 +157,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     return ResponseEntity.status(errorCode.getHttpStatus())
         .body(makeErrorResponse(errorCode, message));
+  }
+
+  private ResponseEntity<Object> handleExceptionInternal(
+      ConstraintViolationException e, ErrorCode errorCode) {
+    return ResponseEntity.status(errorCode.getHttpStatus()).body(makeErrorResponse(e, errorCode));
   }
 
   private ResponseEntity<Object> handleExceptionInternal(BindException e, ErrorCode errorCode) {
@@ -165,6 +177,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return ErrorResponse.builder().code(errorCode.name()).message(message).build();
   }
 
+  private ErrorResponse makeErrorResponse(ConstraintViolationException e, ErrorCode errorCode) {
+    List<ErrorResponse.ValidationError> validationErrorList =
+        e.getConstraintViolations().stream()
+            .map(ErrorResponse.ValidationError::of)
+            .collect(Collectors.toList());
+
+    return ErrorResponse.builder()
+        .code(errorCode.name())
+        .message(errorCode.getMessage())
+        .errors(validationErrorList)
+        .build();
+  }
+
   private ErrorResponse makeErrorResponse(BindException e, ErrorCode errorCode) {
     List<ErrorResponse.ValidationError> validationErrorList =
         e.getBindingResult().getFieldErrors().stream()
@@ -176,5 +201,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .message(errorCode.getMessage())
         .errors(validationErrorList)
         .build();
+  }
+
+  private void publishServerErrorEvent(ErrorCode errorCode, HttpServletRequest request) {
+    eventPublisher.publishEvent(
+        new ServerErrorEvent(request.getRequestURI(), errorCode.getMessage()));
+  }
+
+  private void publishServerErrorEvent(String message, HttpServletRequest request) {
+    eventPublisher.publishEvent(new ServerErrorEvent(request.getRequestURI(), message));
   }
 }

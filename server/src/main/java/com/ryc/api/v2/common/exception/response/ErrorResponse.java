@@ -2,6 +2,8 @@ package com.ryc.api.v2.common.exception.response;
 
 import java.util.List;
 
+import jakarta.validation.ConstraintViolation;
+
 import org.springframework.validation.FieldError;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,6 +29,12 @@ public class ErrorResponse {
           .field(fieldError.getField())
           .message(fieldError.getDefaultMessage())
           .build();
+    }
+
+    public static ValidationError of(final ConstraintViolation<?> violation) {
+      String field = violation.getPropertyPath().toString();
+      String message = violation.getMessage();
+      return ValidationError.builder().field(field).message(message).build();
     }
   }
 }
