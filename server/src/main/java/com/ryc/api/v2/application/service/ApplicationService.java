@@ -107,7 +107,7 @@ public class ApplicationService {
         ApplicationSuccessEmailEvent.builder()
             .announcementId(announcement.getId())
             .announcementTitle(announcement.getTitle())
-            .submittedDate(announcement.getCreatedAt())
+            .submittedDate(savedApplication.getCreatedAt())
             .applicantName(savedApplicant.getName())
             .applicantEmail(savedApplicant.getEmail())
             .build());
