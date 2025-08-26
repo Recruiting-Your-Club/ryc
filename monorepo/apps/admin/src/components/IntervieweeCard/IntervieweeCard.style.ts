@@ -23,6 +23,10 @@ export const s_cardContainer = (isActivated: boolean) => css`
     `}
 `;
 
+export const s_avatar = css`
+    flex-shrink: 0;
+`;
+
 export const s_informationContainer = css`
     display: flex;
     flex-direction: column;
