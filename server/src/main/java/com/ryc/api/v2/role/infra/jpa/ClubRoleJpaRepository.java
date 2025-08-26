@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
+import com.ryc.api.v2.club.infra.projection.MyClubProjection;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
 public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, String> {
@@ -23,7 +23,7 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
           WHERE r.admin.id = :adminId AND r.club.id = :clubId AND r.role = 'OWNER'
         ) THEN true ELSE false END
       """)
-  boolean existsOwnerRoleByAdminIdAndClubId(
+  boolean existsOwnerRoleByAdmin_IdAndClub_Id(
       @Param("adminId") String adminId, @Param("clubId") String clubId);
 
   boolean existsByClub_Id(String clubId);
@@ -39,13 +39,12 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
 
   void deleteByAdmin_IdAndClub_Id(String adminId, String clubId);
 
-  @Query(
-      """
-        SELECT c FROM ClubRoleEntity r
-        JOIN r.club c
-        WHERE r.admin.id = :adminId
-      """)
-  List<ClubEntity> findClubsByAdminId(String adminId);
+  @Query("""
+  SELECT r FROM ClubRoleEntity r
+  JOIN FETCH r.club
+  WHERE r.admin.id = :adminId
+""")
+  List<MyClubProjection> findClubsAndRolesByAdmin_Id(String adminId);
 
   void deleteByClub_Id(String clubId);
 

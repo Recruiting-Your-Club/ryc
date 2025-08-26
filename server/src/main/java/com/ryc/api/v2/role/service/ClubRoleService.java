@@ -17,6 +17,7 @@ import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
+import com.ryc.api.v2.club.service.dto.MyClubDTO;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
@@ -149,8 +150,8 @@ public class ClubRoleService {
   }
 
   @Transactional(readOnly = true)
-  public List<Club> getMyClubs(String adminId) {
-    return clubRoleRepository.findClubsByAdminId(adminId);
+  public List<MyClubDTO> getMyClubs(String adminId) {
+    return clubRoleRepository.findMyClubsByAdminId(adminId);
   }
 
   @Transactional(readOnly = true)
