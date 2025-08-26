@@ -44,7 +44,7 @@ public class AdminHttpApi {
   @PatchMapping
   @Operation(
       summary = "나의 프로필 사진 수정",
-      description = "나의 프로필 사진을 수정합니다.<br>만약 Image 필드에 null을 넣으면 기존 이미지를 제거합니다.")
+      description = "나의 프로필 사진을 수정합니다.<br>만약 Image을 넣지 않거나 null로 넣을 경우 프로필 사진이 삭제됩니다.")
   public ResponseEntity<MyInformationGetResponse> updateAdminProfile(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @RequestBody AdminProfileUpdateRequest request) {
