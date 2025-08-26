@@ -132,7 +132,6 @@ public class ApplicantService {
     applicationRepository.deleteAllByApplicantIds(applicantIds);
   }
 
-  @Transactional
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event

@@ -170,7 +170,6 @@ public class EmailService {
         ssocEmailId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
   }
 
-  @Transactional
   @EventListener
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()
@@ -178,7 +177,6 @@ public class EmailService {
         .forEach(emailRepository::deleteAllByAnnouncementId);
   }
 
-  @Transactional
   @EventListener
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!emailRepository.existsByAdminId(event.adminId())) {

@@ -170,7 +170,6 @@ public class AnnouncementService {
   }
 
   @EventListener
-  @Transactional
   protected void handleClubDeletedEvent(ClubDeletedEvent event) {
     List<String> ids = announcementRepository.findIdsByClubId(event.clubId());
     deleteAnnouncements(ids);

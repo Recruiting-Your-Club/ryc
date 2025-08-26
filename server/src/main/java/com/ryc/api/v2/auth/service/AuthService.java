@@ -127,7 +127,6 @@ public class AuthService {
     }
   }
 
-  @Transactional
   @EventListener
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!refreshTokenRepository.existsByAdminId(event.adminId())) {
