@@ -95,11 +95,11 @@ export const uploadBase64Image = async (
  * img 태그에 fileMetadataId 속성을 추가하는 함수
  */
 export const addFileMetadataToImgTag = (imgTag: string, fileMetadataId: string): string => {
-    if (imgTag.includes('data-file-metadata-id')) {
+    if (imgTag.includes('file-metadata-id')) {
         return imgTag;
     }
 
-    return imgTag.replace('<img', `<img data-file-metadata-id="${fileMetadataId}"`);
+    return imgTag.replace('<img', `<img file-metadata-id="${fileMetadataId}"`);
 };
 
 /**
