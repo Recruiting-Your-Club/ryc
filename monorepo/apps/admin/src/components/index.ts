@@ -37,3 +37,4 @@ export * from './TagInput';
 export * from './MainCardEditDialog';
 export * from './HashTagInput';
 export * from './ErrorDialog';
+export * from './EmailVerificationDialog';
