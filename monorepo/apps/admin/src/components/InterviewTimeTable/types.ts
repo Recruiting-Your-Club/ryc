@@ -5,7 +5,7 @@ import type { Dispatch, SetStateAction } from 'react';
 export interface InterviewTimeTableProps {
     interviewSlots: InterviewSlot[];
     selectedInterviewSlotId: string | null;
-    onSelect?: (label: string) => void;
+    onSelect?: (label: { slotId: string; label: string }) => void;
     setSelectedLabel?: Dispatch<SetStateAction<string>>;
     onOpenChange?: Dispatch<SetStateAction<boolean>>;
     sx?: CSSObject;

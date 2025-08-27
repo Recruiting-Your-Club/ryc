@@ -91,11 +91,11 @@ function IntervieweeList({
                                             'MM월 DD일',
                                         );
                                         const time = dayjs(slot.period.startDate).format('HH:mm');
-                                        return `${date} ${time}` === label;
+                                        return `${date} ${time}` === label.label;
                                     });
 
                                     setSelectedInterviewLabel({
-                                        label,
+                                        label: label.label,
                                         interviewSlotId: matchedSlot ? matchedSlot.id : '',
                                     });
                                     onInterviewSlotId(matchedSlot ? matchedSlot.id : '');

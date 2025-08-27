@@ -107,9 +107,9 @@ function ApplicantSchedulePage() {
             setSlotId: Dispatch<SetStateAction<string | null>>,
             setDropdown: Dispatch<SetStateAction<boolean>>,
         ) =>
-        (label: string) => {
+        ({ label, slotId }: { label: string; slotId: string }) => {
             const targetSetId = getTargetLabelId();
-            const newSetId = findInterviewSetIdByLabel(label);
+            const newSetId = slotId;
 
             const isSame = newSetId !== null && newSetId === targetSetId;
 
