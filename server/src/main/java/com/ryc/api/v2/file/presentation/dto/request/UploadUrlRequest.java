@@ -1,16 +1,12 @@
 package com.ryc.api.v2.file.presentation.dto.request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UploadUrlRequest(
-    @NotBlank
-        @Min(value = 1, message = "파일 이름은 1자 이상이어야 합니다.")
-        @Max(value = 255, message = "파일 이름은 255자 이하이어야 합니다.")
-        String fileName,
+    @NotBlank @Size(min = 1, max = 255, message = "파일 이름은 1자 이상, 255자 이하이어야 합니다.") String fileName,
     @Schema(
             description = "파일 타입",
             example = "CLUB_PROFILE",

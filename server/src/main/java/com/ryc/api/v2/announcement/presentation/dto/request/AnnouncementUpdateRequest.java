@@ -3,10 +3,7 @@ package com.ryc.api.v2.announcement.presentation.dto.request;
 import java.util.List;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import org.hibernate.validator.constraints.UUID;
 
@@ -34,8 +31,7 @@ import lombok.Builder;
 public record AnnouncementUpdateRequest(
     @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
         @NotBlank(message = "공고 제목은 필수 항목입니다.")
-        @Min(value = 2, message = "공고 제목의 최소길이는 2자입니다.")
-        @Max(value = 100, message = "공고 제목의 최대길이는 100자입니다.")
+        @Size(min = 2, max = 100, message = "공고 제목의 길이는 2자 이상 100자이하 입니다.")
         String title,
     @Schema(description = "기간 정보")
         @NotNull(message = "공고 기한 정보 필드는 빈값일 수 없습니다. 최소 지원서 접수기간은 필수 입력해주십시오.")
@@ -43,27 +39,27 @@ public record AnnouncementUpdateRequest(
         AnnouncementPeriodInfoRequest periodInfo,
     @Schema(description = "모집 인원", example = "10명 이내")
         @NullOrNotBlank
-        @Max(value = 50, message = "모집인원의 최대길이는 50자입니다.")
+        @Size(max = 50, message = "모집인원의 최대길이는 50자입니다.")
         String numberOfPeople,
     @Schema(description = "상세 정보", example = "코딩 동아리에서 신입 qnd 모집합니다. ")
         @NullOrNotBlank
-        @Max(value = 10000, message = "공고 상세 설명은 10000자를 초과할 수 없습니다.")
+        @Size(max = 10000, message = "공고 상세 설명은 10000자를 초과할 수 없습니다.")
         String detailDescription,
     @Schema(description = "요약 소개", example = "코딩 동아리에서 신입 qnd 모집합니다.")
         @NullOrNotBlank
-        @Max(value = 300, message = "공고 요약 설명은 300자를 초과할 수 없습니다.")
+        @Size(max = 300, message = "공고 요약 설명은 300자를 초과할 수 없습니다.")
         String summaryDescription,
     @Schema(description = "활동 기간", example = "2023-01-01 ~ 2023-12-31")
         @NullOrNotBlank
-        @Max(value = 100, message = "활동 기간은 100자를 초과할 수 없습니다.")
+        @Size(max = 100, message = "활동 기간은 100자를 초과할 수 없습니다.")
         String activityPeriod,
     @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
         @NullOrNotBlank
-        @Max(value = 50, message = "모집 대상은 50자를 초과할 수 없습니다.")
+        @Size(max = 50, message = "모집 대상은 50자를 초과할 수 없습니다.")
         String target,
     @Schema(description = "모집 분야", example = "백엔드")
         @NullOrNotBlank
-        @Max(value = 50, message = "모집 분야는 50자를 초과할 수 없습니다.")
+        @Size(max = 50, message = "모집 분야는 50자를 초과할 수 없습니다.")
         String field,
     @Schema(
             description = "공고 타입",

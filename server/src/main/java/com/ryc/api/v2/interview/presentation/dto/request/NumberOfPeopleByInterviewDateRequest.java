@@ -18,7 +18,7 @@ public record NumberOfPeopleByInterviewDateRequest(
         LocalDateTime start,
     @Schema(description = "면접 당 진행 시간(분)")
         @NotNull(message = "면접 당 진행 시간은 null일 수 없습니다.")
-        @Min(value = 1, message = "면접 당 진행 시간은 0 이하일 수 없습니다.")
+        @Min(value = 1, message = "면접 당 진행 시간은 0분 이하일 수 없습니다.")
         Integer interviewDuration,
     @Schema(description = "인원 수")
         @NotNull(message = "면접 날짜별 인원 수는 null일 수 없습니다.")
