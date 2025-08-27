@@ -30,6 +30,21 @@ function EmailVerificationDialog({
     // query hooks
     // calculated values
     // handlers
+    const handleInputChange = (index: number, value: string) => {
+        if (value.length > 1) return;
+
+        const next = [...code];
+        next[index] = value;
+        setCode(next);
+        setStatus('idle');
+        setMessage('');
+
+        //다음 input으로 자동 포커스 줄 수 있게
+        if (value && index < codeLength - 1) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    };
+
     // effects
     useEffect(() => {
         if (isOpen) {
