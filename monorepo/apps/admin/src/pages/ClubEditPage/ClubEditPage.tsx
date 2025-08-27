@@ -5,6 +5,7 @@ import { ClubBox, ImageRegister, MainCardEditDialog } from '@components';
 import { BASE_URL } from '@constants/api';
 import { useUpdateClub } from '@hooks/useUpdateClub';
 import { useQuery } from '@tanstack/react-query';
+import DOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -132,7 +133,11 @@ function ClubEditPage() {
     );
     const readModeIntroduce = (
         <div css={s_introduceContainer}>
-            <Text textAlign="start">{club?.detailDescription}</Text>
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(club?.detailDescription ?? ''),
+                }}
+            />
         </div>
     );
 
