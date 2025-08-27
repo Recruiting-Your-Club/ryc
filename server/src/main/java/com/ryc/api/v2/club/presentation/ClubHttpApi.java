@@ -15,6 +15,7 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
+import com.ryc.api.v2.club.presentation.dto.response.MyClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
 import com.ryc.api.v2.club.service.ClubFacade;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
@@ -94,9 +95,9 @@ public class ClubHttpApi {
 
   @GetMapping("/my")
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
-  public ResponseEntity<List<DetailClubResponse>> getMyClubs(
+  public ResponseEntity<List<MyClubGetResponse>> getMyClubs(
       @AuthenticationPrincipal CustomUserDetail userDetail) {
-    List<DetailClubResponse> responses = clubFacade.getMyClubs(userDetail.getId());
+    List<MyClubGetResponse> responses = clubFacade.getMyClubs(userDetail.getId());
     return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
 

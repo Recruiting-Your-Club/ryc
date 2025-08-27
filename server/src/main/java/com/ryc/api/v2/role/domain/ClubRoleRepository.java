@@ -3,7 +3,7 @@ package com.ryc.api.v2.role.domain;
 import java.util.List;
 import java.util.Optional;
 
-import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.service.dto.MyClubDTO;
 
 public interface ClubRoleRepository {
 
@@ -13,7 +13,7 @@ public interface ClubRoleRepository {
 
   List<ClubRole> findRolesByClubId(String clubId);
 
-  List<Club> findClubsByAdminId(String adminId);
+  List<MyClubDTO> findMyClubsByAdminId(String adminId);
 
   Optional<ClubInvite> findInviteOptionalByClubId(String clubId);
 
