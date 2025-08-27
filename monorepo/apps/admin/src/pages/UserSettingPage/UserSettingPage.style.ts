@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import theme from '@ssoc/styles/dist/src/theme';
+import theme from '@ssoc/styles';
 
 export const s_userPageContainer = css`
     display: flex;
@@ -17,10 +17,8 @@ export const s_userInfoBox = css`
     flex-direction: column;
     width: 100%;
     max-width: 80rem;
-    background-color: ${theme.colors.white};
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
 `;
 
 export const s_header = css`
@@ -49,6 +47,8 @@ export const s_clubGrid = css`
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
     margin-top: 1rem;
+    max-height: 35rem;
+    overflow-y: auto;
 `;
 
 export const s_clubCard = css`
