@@ -96,8 +96,8 @@ function EmailVerificationDialog({
 
         try {
             await onResendCode?.();
-            setResendCooldown(10);
-            setStatus('idle');
+            setResendCooldown(30);
+            setStatus('info');
             setMessage('인증 코드가 재전송되었습니다.');
             setCode(empty);
             inputRefs.current[0]?.focus();
@@ -123,6 +123,13 @@ function EmailVerificationDialog({
         }
     }, [isOpen, empty]);
 
+    useEffect(() => {
+        if (resendCooldown > 0) {
+            const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [resendCooldown]);
+
     return (
         <Dialog open={isOpen} handleClose={() => onClose()}>
             <Dialog.Content>
@@ -145,13 +152,27 @@ function EmailVerificationDialog({
                                 maxLength={1}
                                 value={digit}
                                 onChange={(event) => handleInputChange(index, event.target.value)}
-                            ></input>
+                                onKeyDown={(event) => handleKeyDown(index, event)}
+                            />
                         ))}
                     </div>
+                    {message && <div>{message}</div>}
                 </div>
             </Dialog.Content>
-
-            <Button>인증하기</Button>
+            <div>
+                <Button
+                    onClick={() => handleVerify()}
+                    disabled={isLoading || code.some((digit) => digit === '')}
+                >
+                    {isLoading ? '인증 중...' : '인증하기'}
+                </Button>
+                <div>
+                    코드를 받지 못하셨나요?
+                    <button onClick={handleResendCode} disabled={resendCooldown > 0}>
+                        {resendCooldown > 0 ? `재전송 (${resendCooldown}초)` : '코드 재전송'}
+                    </button>
+                </div>
+            </div>
         </Dialog>
     );
 }

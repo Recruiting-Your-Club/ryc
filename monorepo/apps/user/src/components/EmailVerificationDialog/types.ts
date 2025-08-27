@@ -7,4 +7,4 @@ export interface EmailVerificationDialogProps {
     codeLength?: number;
 }
 
-export type EmailStatus = 'idle' | 'success' | 'error';
+export type EmailStatus = 'idle' | 'success' | 'error' | 'info';
