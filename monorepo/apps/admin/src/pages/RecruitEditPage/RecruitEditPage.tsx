@@ -137,7 +137,7 @@ function RecruitEditPage() {
         announcementId: announcementId!,
         onSuccess: () => {
             setIsDialogOpen(false);
-            const afterPath = generatePath('announcements/:clubId/:announcementId', {
+            const afterPath = generatePath('/announcements/:clubId/:announcementId', {
                 clubId: clubId ?? '',
                 announcementId: announcementId ?? '',
             });
