@@ -39,11 +39,12 @@ public interface ClubRoleJpaRepository extends JpaRepository<ClubRoleEntity, Str
 
   void deleteByAdmin_IdAndClub_Id(String adminId, String clubId);
 
-  @Query("""
-  SELECT r FROM ClubRoleEntity r
-  JOIN FETCH r.club
-  WHERE r.admin.id = :adminId
-""")
+  @Query(
+      """
+    SELECT r.club AS club, r.role AS role
+    FROM ClubRoleEntity r
+    WHERE r.admin.id = :adminId
+  """)
   List<MyClubProjection> findClubsAndRolesByAdmin_Id(String adminId);
 
   void deleteByClub_Id(String clubId);
