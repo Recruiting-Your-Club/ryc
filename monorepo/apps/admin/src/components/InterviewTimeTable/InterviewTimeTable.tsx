@@ -35,10 +35,6 @@ function InterviewTimeTable({
     // form hooks
     // query hooks
     // calculated values
-    // const slotsMap = useMemo(() => {
-    //     return new Map(interviewSlots.map((slot) => [slot.period.startDate, slot]));
-    // }, [interviewSlots]);
-    // const slotsToShow = slotsMap.get(highlightedDate);
     const slotsToShow = interviewSlots.filter(
         (slot) => dayjs(slot.period.startDate).format('YYYY-MM-DD') === highlightedDate,
     );

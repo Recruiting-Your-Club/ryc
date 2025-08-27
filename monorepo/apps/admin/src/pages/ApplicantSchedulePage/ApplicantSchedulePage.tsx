@@ -15,7 +15,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Text, useToast } from '@ssoc/ui';
-import { convertDate } from '@ssoc/utils';
 
 import {
     s_alertSvg,
@@ -203,15 +202,6 @@ function ApplicantSchedulePage() {
         }
         return { label: '면접 일정 없음', interviewSlotId: '' };
     }
-
-    const findInterviewSetIdByLabel = (label: string): string | null => {
-        for (const slot of interviewSlots) {
-            const date = convertDate(dayjs(slot.period.startDate).format('YYYY-MM-DD'));
-            const fullLabel = `${date} ${dayjs(slot.period.startDate).format('HH:mm')}`;
-            if (fullLabel === label) return slot.id;
-        }
-        return null;
-    };
 
     const getApplicantInformation = (applicant: InterviewApplicant | UnreservedApplicant) => {
         if ('applicantSummary' in applicant) {
