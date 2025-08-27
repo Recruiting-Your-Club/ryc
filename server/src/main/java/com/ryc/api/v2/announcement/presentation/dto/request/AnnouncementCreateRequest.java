@@ -8,7 +8,6 @@ import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.UUID;
 
 import com.ryc.api.v2.applicationForm.presentation.request.ApplicationFormCreateRequest;
-import com.ryc.api.v2.common.validator.request.annotation.NullOrNotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -38,27 +37,21 @@ public record AnnouncementCreateRequest(
         @Valid
         AnnouncementPeriodInfoRequest periodInfo,
     @Schema(description = "모집 인원", example = "10명 이내")
-        @NullOrNotBlank
         @Size(max = 50, message = "모집인원의 최대길이는 50자입니다.")
         String numberOfPeople,
     @Schema(description = "상세 정보", example = "코딩 동아리에서 신입 qnd 모집합니다. ")
-        @NullOrNotBlank
         @Size(max = 10000, message = "공고 상세 설명은 10000자를 초과할 수 없습니다.")
         String detailDescription,
     @Schema(description = "요약 소개", example = "코딩 동아리에서 신입 qnd 모집합니다.")
-        @NullOrNotBlank
         @Size(max = 300, message = "공고 요약 설명은 300자를 초과할 수 없습니다.")
         String summaryDescription,
     @Schema(description = "활동 기간", example = "2023-01-01 ~ 2023-12-31")
-        @NullOrNotBlank
         @Size(max = 100, message = "활동 기간은 100자를 초과할 수 없습니다.")
         String activityPeriod,
     @Schema(description = "모집 대상", example = "컴퓨터공학과 학생")
-        @NullOrNotBlank
         @Size(max = 50, message = "모집 대상은 50자를 초과할 수 없습니다.")
         String target,
     @Schema(description = "모집 분야", example = "백엔드")
-        @NullOrNotBlank
         @Size(max = 50, message = "모집 분야는 50자를 초과할 수 없습니다.")
         String field,
     @Schema(
