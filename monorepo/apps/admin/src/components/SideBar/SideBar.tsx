@@ -259,7 +259,7 @@ function SideBar() {
                                     css={clubWrapper}
                                     onClick={() => {
                                         setCurrentClub(club.id);
-                                        // 현재 대표 경로를 유지한 채 clubId만 교체
+                                        //현재 대표 경로를 유지한 채 clubId만 교체
                                         const representativePath = getActiveSubMenu(
                                             location.pathname,
                                         );
@@ -269,6 +269,12 @@ function SideBar() {
                                         goTo(
                                             `${representativePath}/${club.id}${announcementIdParam}`,
                                         );
+                                        // setCurrentAnnouncement(undefined);
+                                        // setActiveSubMenu('/clubs');
+                                        // setActiveMenus((prev) =>
+                                        //     prev.includes(1) ? prev : [...prev, 1],
+                                        // );
+                                        // goTo(`/clubs/${club.id}`);
                                     }}
                                 >
                                     <Tooltip content={club.name} direction="bottomRight">
