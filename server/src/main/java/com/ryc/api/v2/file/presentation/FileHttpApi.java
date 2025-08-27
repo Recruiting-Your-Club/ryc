@@ -24,13 +24,13 @@ public class FileHttpApi {
 
   @PostMapping("/presigned-url")
   public ResponseEntity<UploadUrlResponse> getUploadPresignedUrl(
-      @RequestBody @Valid UploadUrlRequest request) {
+      @Valid @RequestBody UploadUrlRequest request) {
     UploadUrlResponse response = fileService.getUploadPresignedUrl(request);
     return ResponseEntity.ok(response);
   }
 
   @PostMapping("/confirm-upload")
-  public ResponseEntity<Void> confirmUpload(@RequestBody @Valid UploadConfirmRequest request) {
+  public ResponseEntity<Void> confirmUpload(@Valid @RequestBody UploadConfirmRequest request) {
     fileService.confirmUpload(request);
     return ResponseEntity.ok().build();
   }

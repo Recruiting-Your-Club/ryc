@@ -121,7 +121,10 @@ public class ClubHttpApi {
       include = {"RESOURCE_NOT_FOUND", "CLUB_INVITE_EXPIRED"})
   // TODO: 동아리 초대코드 포멧 검사
   public ResponseEntity<SimpleClubResponse> getClubByInviteCode(
-      @PathVariable("invite-code") @NotBlank(message = "동아리 초대코드는 공백일 수 없습니다.") String inviteCode) {
+      @PathVariable("invite-code")
+          @NotBlank(message = "동아리 초대코드는 공백일 수 없습니다.")
+          @UUID(message = "동아리 초대코드는 UUID 포멧이어야 합니다.")
+          String inviteCode) {
     SimpleClubResponse response = clubFacade.getClubByInviteCode(inviteCode);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
