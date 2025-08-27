@@ -85,6 +85,22 @@ function EmailVerificationDialog({
         }
     };
 
+    const handleResendCode = async () => {
+        if (resendCooldown > 0) return;
+
+        try {
+            await onResendCode?.();
+            setResendCooldown(10);
+            setStatus('idle');
+            setMessage('인증 코드가 재전송되었습니다.');
+            setCode(empty);
+            inputRefs.current[0]?.focus();
+        } catch (error) {
+            setStatus('error');
+            setMessage('코드 재전송 중 오류가 발생했습니다.');
+        }
+    };
+
     // effects
     useEffect(() => {
         if (isOpen) {
