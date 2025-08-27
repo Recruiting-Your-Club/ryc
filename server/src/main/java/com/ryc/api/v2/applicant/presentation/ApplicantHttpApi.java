@@ -18,6 +18,7 @@ import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
+import com.ryc.api.v2.common.validator.request.annotation.NullOrNotBlank;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +72,7 @@ public class ApplicantHttpApi {
                 "FINAL_FAIL",
               })
           @RequestParam(value = "status", required = false)
-          @NotBlank(message = "지원자 상태는 공백일 수 없습니다.")
+          @NullOrNotBlank(message = "지원자 상태는 공백일 수 없습니다.")
           String status) {
     List<ApplicantGetResponse> response = applicantService.getApplicants(announcementId, status);
     return ResponseEntity.ok(response);
