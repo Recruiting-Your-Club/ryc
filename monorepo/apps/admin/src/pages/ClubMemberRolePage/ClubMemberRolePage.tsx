@@ -171,7 +171,7 @@ const ClubMemberRolePage = () => {
                 </Button>
             </div>
             <div css={s_clubMemberRolePageTableContainer}>
-                <Table sxTable={s_tableSx}>
+                <Table sxWrapper={s_tableSx}>
                     <Table.Header>
                         <Table.Row>
                             <Table.ColumnHeaderCell sx={s_tableHeaderCellSx}>
@@ -216,7 +216,11 @@ const ClubMemberRolePage = () => {
                                                 <Dropdown.Trigger asChild sx={s_dropdownTriggerSx}>
                                                     <Meatball width="1.5rem" height="1.5rem" />
                                                 </Dropdown.Trigger>
-                                                <Dropdown.Content sx={s_dropdownContentSx}>
+                                                <Dropdown.Content
+                                                    sx={s_dropdownContentSx}
+                                                    offsetX={5}
+                                                    placement="bottom"
+                                                >
                                                     <Dropdown.Item
                                                         onItemSelect={() =>
                                                             handleClickKickMember(member.adminId)
