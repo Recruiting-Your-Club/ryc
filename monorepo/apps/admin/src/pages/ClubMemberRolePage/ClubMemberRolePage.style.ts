@@ -71,8 +71,6 @@ export const s_tableCellDropdownSx = css`
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    position: relative;
-    z-index: 10;
 `;
 
 export const s_dropdownTriggerSx = css`
@@ -87,7 +85,6 @@ export const s_dropdownItemSx = css`
 `;
 
 export const s_dropdownContentSx = css`
-    position: fixed;
     z-index: 9999;
 `;
 
