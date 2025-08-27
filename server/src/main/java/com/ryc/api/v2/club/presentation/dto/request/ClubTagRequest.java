@@ -1,12 +1,18 @@
 package com.ryc.api.v2.club.presentation.dto.request;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.UUID;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ClubTagRequest(
-    @Pattern(regexp = "^[0-9a-fA-F\\-]{36}$", message = "id는 유효한 UUID 형식이어야 합니다.")
-        @Schema(description = "동아리 태그 ID")
+    @Schema(description = "동아리 태그 ID")
+        @NotBlank(message = "동아리 태그 id는 빈값일 수 없습니다.")
+        @UUID(message = "동아리 태그 id는 UUID 포멧이어야 합니다.")
         String id,
-    @NotBlank(message = "동아리 태그 이름은 비워둘 수 없습니다.") @Schema(description = "동아리 태그") String name) {}
+    @Schema(description = "동아리 태그")
+        @NotBlank(message = "동아리 태그 이름은 비워둘 수 없습니다.")
+        @Max(value = 30, message = "동아리 태그 이름은 30자를 초과할 수 없습니다.")
+        String name) {}
