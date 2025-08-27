@@ -24,7 +24,7 @@ function EmailVerificationDialog({
     const [status, setStatus] = useState<EmailStatus>('idle');
     const [message, setMessage] = useState('');
     const [resendCooldown, setResendCooldown] = useState(0);
-    const inputRefs = useRef<HTMLInputElement[]>([]);
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     // form hooks
     // query hooks
@@ -42,6 +42,12 @@ function EmailVerificationDialog({
         //다음 input으로 자동 포커스 줄 수 있게
         if (value && index < codeLength - 1) {
             inputRefs.current[index + 1]?.focus();
+        }
+    };
+
+    const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
+        if (e.key === 'Backspace' && !code[index] && index > 0) {
+            inputRefs.current[index - 1]?.focus();
         }
     };
 
@@ -132,7 +138,14 @@ function EmailVerificationDialog({
                 <div>
                     <div>
                         {code.map((digit, index) => (
-                            <input key={index}></input>
+                            <input
+                                key={index}
+                                ref={(element) => (inputRefs.current[index] = element)}
+                                type="text"
+                                maxLength={1}
+                                value={digit}
+                                onChange={(event) => handleInputChange(index, event.target.value)}
+                            ></input>
                         ))}
                     </div>
                 </div>
