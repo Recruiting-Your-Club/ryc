@@ -10,7 +10,6 @@ import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
-import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.validator.DomainValidator;
 
@@ -173,15 +172,9 @@ final class AnnouncementValidator extends DomainValidator {
     validateNotNull(applicationForm, ANNOUNCEMENT_APPLICATION_FORM_NULL);
   }
 
-  private static void validateCreatedAt(String id, LocalDateTime createdAt) {
-    // 영속화 이전은 NULL 허용
-    if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) return;
-    validateNotNull(createdAt, ANNOUNCEMENT_CREATED_AT_NULL);
-  }
+  // 영속성 레이어를 거친 경우에만 service에서 상태검증으로 null 제한 체크
+  private static void validateCreatedAt(String id, LocalDateTime createdAt) {}
 
-  private static void validateUpdatedAt(String id, LocalDateTime updatedAt) {
-    // 영속화 이전은 NULL 허용
-    if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) return;
-    validateNotNull(updatedAt, ANNOUNCEMENT_UPDATED_AT_NULL);
-  }
+  // 영속성 레이어를 거친 경우에만 service에서 상태검증으로 null 제한 체크
+  private static void validateUpdatedAt(String id, LocalDateTime updatedAt) {}
 }
