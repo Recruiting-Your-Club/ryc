@@ -53,6 +53,36 @@ function EmailVerificationDialog({
             setMessage(`${codeLength}자리를 모두 입력해주세요`);
             return;
         }
+
+        setIsLoading(true);
+        setStatus('idle');
+        setMessage('');
+
+        try {
+            const isValid = (await onVerify?.(codeToVerify)) ?? false;
+
+            //인증 성공 시
+            if (isValid) {
+                setStatus('success');
+                setMessage('이메일 인증이 완료되었습니다.');
+                setTimeout(() => {
+                    onClose();
+                }, 1000);
+            }
+            //인증 실패 시
+            else {
+                setStatus('error');
+                setMessage('인증 코드가 올바르지 않습니다. 다시 확인해주세요.');
+                setCode(empty);
+                //실패시 값 초기화 및 처음 input으로 focus
+                inputRefs.current[0]?.focus();
+            }
+        } catch {
+            setStatus('error');
+            setMessage('인증 중 오류가 발생했습니다. 다시 시도해주세요');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // effects
