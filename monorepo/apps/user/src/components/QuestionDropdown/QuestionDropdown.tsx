@@ -28,24 +28,22 @@ function QuestionDropdown({
     allQuestionsCount,
     answers,
     onQuestionFocus,
+    sx,
 }: QuestionDropdownProps) {
     //props destruction
     //lib hooks
     const isMobile = useMediaQuery('mobile');
     //initial values
-    const baseOffsetX = 8;
-    const baseOffsetY = 7;
     //state, ref, querystring hooks
     //form hooks
     //query hooks
     //calculated values
-    const offsetY = baseOffsetY + (allQuestionsCount - 1) * 1.8;
     const questionStatusText = isMobile
         ? `(${completedQuestionsCount} / ${allQuestionsCount})`
         : `작성된 항목 (${completedQuestionsCount} / ${allQuestionsCount})`;
     //effects
     return (
-        <div css={questionStatusContainer}>
+        <div css={[questionStatusContainer, sx]}>
             <Text
                 type="subCaptionRegular"
                 sx={questionStatusTextSx(
@@ -58,7 +56,7 @@ function QuestionDropdown({
                 <Dropdown.Trigger asChild sx={s_dropdownTriggerSx}>
                     <ArrowDown css={s_arrowDown} />
                 </Dropdown.Trigger>
-                <Dropdown.Content offsetX={baseOffsetX} offsetY={offsetY} sx={s_dropdownContent}>
+                <Dropdown.Content offsetX={2} offsetY={1} placement="bottom" sx={s_dropdownContent}>
                     <Dropdown.Label sx={s_dropdownLabelTopSx}>사전질문</Dropdown.Label>
                     <Dropdown.Group>
                         {personalQuestions.map((question) => (
