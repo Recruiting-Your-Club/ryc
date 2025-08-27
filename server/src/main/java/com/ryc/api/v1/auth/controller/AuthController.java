@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v1.auth.dto.request.LoginRequest;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "auth")
 public class AuthController {
   private final AuthService authService;
