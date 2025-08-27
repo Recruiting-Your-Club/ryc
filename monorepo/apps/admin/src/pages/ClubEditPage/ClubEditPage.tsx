@@ -3,6 +3,7 @@ import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
 import { ClubBox, ImageRegister, MainCardEditDialog } from '@components';
 import { BASE_URL } from '@constants/api';
+import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
 import { useUpdateClub } from '@hooks/useUpdateClub';
 import { useQuery } from '@tanstack/react-query';
 import DOMPurify from 'dompurify';
@@ -34,6 +35,7 @@ function ClubEditPage() {
     // lib hooks
     const { clubId } = useParams();
     const { toast } = useToast();
+
     // initial values
     const defaultClubSummaries = [
         { id: crypto.randomUUID(), title: '회장', content: '미정' },
@@ -67,6 +69,7 @@ function ClubEditPage() {
     const { data: club } = useQuery(myClubQueries.detail(clubId ?? ''));
     const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
     const { uploadFiles, error } = useFileUpload(BASE_URL);
+    const { handleContentChange } = useEditorImageUpload({ location: 'CLUB_EDITOR' });
 
     // calculated values
     const editModeLogo = (
@@ -128,7 +131,11 @@ function ClubEditPage() {
     const editModeIntroduce = (
         <Editor.Root sx={{ marginTop: '5rem' }}>
             <Editor.Toolbar />
-            <Editor.Textarea value={introText} onChange={setIntroText} sx={{ height: '100rem' }} />
+            <Editor.Textarea
+                value={introText}
+                onChange={(newContent) => handleContentChange(newContent, setIntroText)}
+                sx={{ height: '100rem' }}
+            />
         </Editor.Root>
     );
     const readModeIntroduce = (
