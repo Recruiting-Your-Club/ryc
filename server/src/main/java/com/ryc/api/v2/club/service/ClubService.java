@@ -99,45 +99,6 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public List<DetailClubResponse> createDetailClubResponses(List<Club> clubs) {
-    List<FileMetaData> fileMetaData =
-        fileService.findAllByAssociatedIdIn(clubs.stream().map(Club::getId).toList());
-
-    Map<String, FileGetResponse> representativeImageMap =
-        fileMetaData.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
-            .collect(
-                Collectors.toMap(
-                    FileMetaData::getAssociatedId,
-                    image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image))));
-
-    Map<String, List<FileGetResponse>> detailImageMap =
-        fileMetaData.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
-            .collect(
-                Collectors.groupingBy(
-                    FileMetaData::getAssociatedId,
-                    Collectors.mapping(
-                        image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
-                        toList())));
-
-    return clubs.stream()
-        .map(
-            club ->
-                DetailClubResponse.builder()
-                    .id(club.getId())
-                    .name(club.getName())
-                    .shortDescription(club.getShortDescription())
-                    .detailDescription(club.getDetailDescription())
-                    .category(club.getCategory())
-                    .clubTags(club.getClubTags())
-                    .clubSummaries(club.getClubSummaries())
-                    .representativeImage(representativeImageMap.get(club.getId()))
-                    .clubDetailImages(detailImageMap.get(club.getId()))
-                    .build())
-        .toList();
-  }
-
   public ClubImageDTO getClubImageDTO(String clubId) {
     List<FileMetaData> images = fileService.findAllByAssociatedId(clubId);
 
@@ -157,6 +118,37 @@ public class ClubService {
     return new ClubImageDTO(profileImage, detailImages);
   }
 
+  @Transactional(readOnly = true)
+  public Map<String, ClubImageDTO> getClubImageDTOs(List<String> clubIds) {
+    List<FileMetaData> images = fileService.findAllByAssociatedIdIn(clubIds);
+
+    Map<String, FileGetResponse> representativeImageMap =
+        images.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
+            .collect(
+                Collectors.toMap(
+                    FileMetaData::getAssociatedId,
+                    image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image))));
+
+    Map<String, List<FileGetResponse>> detailImageMap =
+        images.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
+            .collect(
+                Collectors.groupingBy(
+                    FileMetaData::getAssociatedId,
+                    Collectors.mapping(
+                        image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
+                        toList())));
+
+    return clubIds.stream()
+        .collect(
+            Collectors.toMap(
+                clubId -> clubId,
+                clubId ->
+                    new ClubImageDTO(
+                        representativeImageMap.get(clubId), detailImageMap.get(clubId))));
+  }
+
   public DetailClubResponse createDetailClubResponse(Club club, ClubImageDTO clubImageResponse) {
     return DetailClubResponse.builder()
         .id(club.getId())
@@ -166,7 +158,7 @@ public class ClubService {
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .clubSummaries(club.getClubSummaries())
-        .representativeImage(clubImageResponse.profileImage())
+        .representativeImage(clubImageResponse.representativeImage())
         .clubDetailImages(clubImageResponse.detailImages())
         .build();
   }

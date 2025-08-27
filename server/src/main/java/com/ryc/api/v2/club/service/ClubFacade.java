@@ -2,7 +2,6 @@ package com.ryc.api.v2.club.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -58,12 +57,9 @@ public class ClubFacade {
   @Transactional(readOnly = true)
   public List<MyClubGetResponse> getMyClubs(String adminId) {
     List<MyClubDTO> myClubDTOS = clubRoleService.getMyClubs(adminId);
-    Map<String, ClubImageDTO> imageDTOMap =
-        myClubDTOS.stream()
-            .collect(
-                Collectors.toMap(
-                    clubDTO -> clubDTO.club().getId(),
-                    clubDTO -> clubService.getClubImageDTO(clubDTO.club().getId())));
+    List<String> myClubIds = myClubDTOS.stream().map(dto -> dto.club().getId()).toList();
+
+    Map<String, ClubImageDTO> imageDTOMap = clubService.getClubImageDTOs(myClubIds);
 
     return myClubDTOS.stream()
         .map(
@@ -79,23 +75,24 @@ public class ClubFacade {
   @Transactional(readOnly = true)
   public List<SimpleClubResponse> getAllClubWithAnnouncementStatus() {
     List<Club> clubs = clubService.getAllClub();
-    Map<String, AnnouncementStatus> statuses =
-        announcementService.getStatusesByClubIds(clubs.stream().map(Club::getId).toList());
+    List<String> clubIds = clubs.stream().map(Club::getId).toList();
+
+    Map<String, AnnouncementStatus> statuses = announcementService.getStatusesByClubIds(clubIds);
+
+    Map<String, ClubImageDTO> imageDTOMap = clubService.getClubImageDTOs(clubIds);
 
     return clubs.stream()
         .map(
-            club -> {
-              ClubImageDTO clubImage = clubService.getClubImageDTO(club.getId());
-              return SimpleClubResponse.builder()
-                  .id(club.getId())
-                  .name(club.getName())
-                  .shortDescription(club.getShortDescription())
-                  .representativeImage(clubImage.profileImage())
-                  .category(club.getCategory())
-                  .clubTags(club.getClubTags())
-                  .announcementStatus(statuses.get(club.getId()))
-                  .build();
-            })
+            club ->
+                SimpleClubResponse.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .shortDescription(club.getShortDescription())
+                    .representativeImage(imageDTOMap.get(club.getId()).representativeImage())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .announcementStatus(statuses.get(club.getId()))
+                    .build())
         .toList();
   }
 
@@ -107,7 +104,7 @@ public class ClubFacade {
         .id(club.getId())
         .name(club.getName())
         .shortDescription(club.getShortDescription())
-        .representativeImage(clubImage.profileImage())
+        .representativeImage(clubImage.representativeImage())
         .category(club.getCategory())
         .clubTags(club.getClubTags())
         .build();

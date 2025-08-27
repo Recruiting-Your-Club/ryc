@@ -4,4 +4,5 @@ import java.util.List;
 
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 
-public record ClubImageDTO(FileGetResponse profileImage, List<FileGetResponse> detailImages) {}
+public record ClubImageDTO(
+    FileGetResponse representativeImage, List<FileGetResponse> detailImages) {}
