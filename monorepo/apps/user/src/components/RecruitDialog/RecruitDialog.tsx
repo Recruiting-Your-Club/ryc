@@ -98,7 +98,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                     size="xl"
                     onClick={() => {
                         handleClose?.();
-                        goTo(`/announcements/${announcementDetaildata?.id}/application`);
+                        goTo(`/announcements/${announcementDetaildata?.id}/agreement`);
                     }}
                     sx={applyButton}
                     zIndex={10}
