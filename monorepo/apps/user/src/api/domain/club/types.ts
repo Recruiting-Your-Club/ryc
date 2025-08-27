@@ -8,6 +8,7 @@ type images = {
     thumbnailUrl: string;
 };
 interface ClubTag {
+    id: string;
     name: string;
 }
 export interface AllClub {

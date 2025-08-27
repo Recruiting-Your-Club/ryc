@@ -5,16 +5,16 @@ import type {
     CreateClub,
     CreateClubResponse,
     DetailClubResponse,
-    MyClubResponse,
+    MyClub,
     UpdateClub,
 } from './types';
 
-async function getMyClub(): Promise<MyClubResponse[]> {
+async function getMyClub(): Promise<MyClub[]> {
     const response = await httpRequest.get({
         url: 'clubs/my',
         isAuthRequire: true,
     });
-    return response as MyClubResponse[];
+    return response as MyClub[];
 }
 
 async function getDetailClub(clubId: string): Promise<DetailClubResponse> {

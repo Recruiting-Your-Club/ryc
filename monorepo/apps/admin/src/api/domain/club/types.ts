@@ -11,6 +11,7 @@ interface ClubDetailImages {
     originalFileName: string;
     contentType: string;
 }
+type MyRole = 'OWNER' | 'MEMBER';
 
 export interface MyClubResponse {
     id: string;
@@ -22,6 +23,11 @@ export interface MyClubResponse {
     clubTags: clubTag[];
     clubSummaries: clubSummaries[];
     clubDetailImages: ClubDetailImages[];
+}
+
+export interface MyClub {
+    myClubResponse: MyClubResponse;
+    myRole: MyRole;
 }
 
 export interface DetailClubResponse {
