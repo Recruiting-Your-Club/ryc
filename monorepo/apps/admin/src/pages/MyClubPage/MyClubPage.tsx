@@ -35,16 +35,19 @@ function MyClubPage() {
                 </Text>
                 <ul css={myClubList}>
                     {myClubs.map((club) => (
-                        <li key={club.id}>
+                        <li key={club.myClubResponse.id}>
                             <Button
                                 variant="transparent"
                                 size="xl"
                                 sx={clubItem}
-                                onClick={() => goTo(`/clubs/${club.id}`)}
+                                onClick={() => goTo(`/clubs/${club.myClubResponse.id}`)}
                             >
-                                <Avatar radius="10px" imageURL={club.representativeImage?.url} />
+                                <Avatar
+                                    radius="10px"
+                                    imageURL={club.myClubResponse.representativeImage?.url}
+                                />
                                 <div css={clubItemText}>
-                                    <Text textAlign="start">{club.name}</Text>
+                                    <Text textAlign="start">{club.myClubResponse.name}</Text>
                                     <Text
                                         textAlign="start"
                                         type="captionRegular"
@@ -52,7 +55,7 @@ function MyClubPage() {
                                         noWrap
                                         cropped
                                     >
-                                        {club.shortDescription}
+                                        {club.myClubResponse.shortDescription}
                                     </Text>
                                 </div>
                                 <ChevronRight width="25" height="25" strokeWidth={2} />
