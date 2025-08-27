@@ -13,7 +13,12 @@ function EmailVerificationDialog({
     onResendCode,
     codeLength = 6,
 }: EmailVerificationDialogProps) {
+    // prop destruction
+    // lib hooks
+    // initial values
     const empty = useMemo(() => Array.from({ length: codeLength }, () => ''), [codeLength]);
+
+    // state, ref, querystring hooks
     const [code, setCode] = useState(empty);
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState<EmailStatus>('idle');
@@ -21,6 +26,11 @@ function EmailVerificationDialog({
     const [resendCooldown, setResendCooldown] = useState(0);
     const inputRefs = useRef<HTMLInputElement[]>([]);
 
+    // form hooks
+    // query hooks
+    // calculated values
+    // handlers
+    // effects
     useEffect(() => {
         if (isOpen) {
             setTimeout(() => inputRefs.current[0]?.focus(), 100);
