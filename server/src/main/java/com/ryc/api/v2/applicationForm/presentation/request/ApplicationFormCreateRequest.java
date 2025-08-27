@@ -2,6 +2,7 @@ package com.ryc.api.v2.applicationForm.presentation.request;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,17 +18,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @Schema(description = "공고 지원서")
 public record ApplicationFormCreateRequest(
-    @NotEmpty(message = "personalInfoQuestionTypes shouldn't be empty")
-        List<
-                @NotNull(message = "personalInfoQuestionType shouldn't be null")
-                PersonalInfoQuestionType>
+    @NotEmpty(message = "지원자에게 필수로 받을 개인정보 타입 리스트는 빈값일 수 없습니다.")
+        List<@NotNull(message = "각 개인정보 타입은 null일 수 없습니다.") PersonalInfoQuestionType>
             personalInfoQuestionTypes,
-    @NotNull(message = "preQuestions shouldn't be null")
-        List<@NotNull(message = "preQuestion shouldn't be null") QuestionCreateRequest>
-            preQuestions,
-    @NotNull(message = "applicationQuestions shouldn't be null")
-        List<@NotNull(message = "applicationQuestion shouldn't be null") QuestionCreateRequest>
-            applicationQuestions) {
+    List<@NotNull(message = "각 사전질문은 null 일 수 없습니다.") @Valid QuestionCreateRequest> preQuestions,
+    List<@NotNull(message = "각 질문은 null 일 수 없습니다.") @Valid QuestionCreateRequest>
+        applicationQuestions) {
+
   @Override
   public List<QuestionCreateRequest> preQuestions() {
     return List.copyOf(preQuestions);
