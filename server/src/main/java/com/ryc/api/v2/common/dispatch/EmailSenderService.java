@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.email.domain.Email;
-import com.ryc.api.v2.email.domain.EmailSentStatus;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.service.EmailService;
 
 import lombok.RequiredArgsConstructor;

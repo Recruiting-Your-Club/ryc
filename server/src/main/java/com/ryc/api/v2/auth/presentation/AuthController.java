@@ -16,6 +16,7 @@ import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.email.service.EmailVerificationService;
 import com.ryc.api.v2.security.jwt.JwtProperties;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
   private final AuthService authService;
   private final JwtProperties jwtProperties;
+  private final EmailVerificationService emailVerificationService;
 
   @PostMapping("/login")
   @Operation(summary = "Login", description = "사용자 로그인 인증 후, 인증 성공시 토큰 발행")
