@@ -34,7 +34,7 @@ function EmailVerificationDialog({
             setMessage('');
             setResendCooldown(0);
         }
-    });
+    }, [isOpen, empty]);
 
     return (
         <Dialog open={isOpen} handleClose={() => onClose()}>
