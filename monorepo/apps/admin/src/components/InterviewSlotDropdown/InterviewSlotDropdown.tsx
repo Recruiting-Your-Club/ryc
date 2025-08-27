@@ -21,7 +21,7 @@ function InterviewSlotDropdown({
                         {selectedInterviewLabel.label}
                     </Button>
                 </Dropdown.Trigger>
-                <Dropdown.Content offsetX={11.7} offsetY={42}>
+                <Dropdown.Content offsetX={11}>
                     <InterviewTimeTable
                         interviewSlots={interviewSlots}
                         selectedInterviewSlotId={selectedInterviewLabel.interviewSlotId}

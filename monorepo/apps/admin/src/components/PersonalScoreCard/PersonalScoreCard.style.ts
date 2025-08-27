@@ -21,7 +21,7 @@ export const s_contentContainer = css`
 `;
 
 export const s_evaluatorSection = css`
-    flex: 4;
+    flex: 6;
     display: flex;
     align-items: center;
     gap: 0.7rem;
@@ -31,14 +31,14 @@ export const s_evaluatorSection = css`
 `;
 
 export const s_ratingSection = css`
-    flex: 6;
+    flex: 4;
     display: flex;
     justify-content: end;
 `;
 
 export const s_svgButtonGroup = css`
     display: flex;
-    margin: 0.5rem 0;
+    margin: 0.5rem 0.8rem;
 `;
 
 export const s_svgButton = css`

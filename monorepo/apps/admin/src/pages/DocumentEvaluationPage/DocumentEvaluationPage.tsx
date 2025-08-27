@@ -40,6 +40,7 @@ function DocumentEvaluationPage() {
         ),
 
         enabled: !!selectedApplicant?.applicantId,
+        throwOnError: true,
     });
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -57,6 +58,7 @@ function DocumentEvaluationPage() {
                 'FINAL_PASS',
                 'FINAL_FAIL',
             ].includes(selectedApplicant.status),
+        throwOnError: true,
     });
     const { data: myDocumentEvaluationStatus } = useSuspenseQuery(
         evaluationQueries.myEvaluationStatus({

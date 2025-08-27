@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
 import React, { useMemo, useState } from 'react';
 
-import { Image, Text } from '@ssoc/ui';
+import { Image } from '@ssoc/ui';
 
 import type { AnnouncementInfoPageProps } from '../types';
 import {

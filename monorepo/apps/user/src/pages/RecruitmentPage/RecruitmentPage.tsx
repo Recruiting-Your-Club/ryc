@@ -1,4 +1,5 @@
 import type { Image as ImageType } from '@api/domain/announcement/types';
+import DOMPurify from 'dompurify';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -77,9 +78,12 @@ function RecruitmentPage() {
 
                 <div css={contentBody}>
                     <ClubBox data={clubBoxData} />
-                    <Text textAlign="start" sx={textContainer}>
-                        {parsedAnnouncementData.detailDescription}
-                    </Text>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(parsedAnnouncementData.detailDescription),
+                        }}
+                        css={textContainer}
+                    />
 
                     <div css={imageListContainer}>
                         {parsedAnnouncementData.images.map((image: ImageType) => (

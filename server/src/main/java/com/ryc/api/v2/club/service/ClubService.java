@@ -9,13 +9,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
-import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
+import com.ryc.api.v2.club.service.dto.ClubImageDTO;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
@@ -72,31 +71,8 @@ public class ClubService {
     fileService.claimOwnership(
         body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
 
-    List<FileMetaData> images = fileService.findAllByAssociatedId(savedClub.getId());
-    FileGetResponse representativeImage =
-        images.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
-            .findFirst()
-            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
-            .orElse(null);
-
-    List<FileGetResponse> detailImages =
-        images.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
-            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
-            .toList();
-
-    return DetailClubResponse.builder()
-        .id(savedClub.getId())
-        .name(savedClub.getName())
-        .representativeImage(representativeImage)
-        .shortDescription(savedClub.getShortDescription())
-        .detailDescription(savedClub.getDetailDescription())
-        .category(savedClub.getCategory())
-        .clubTags(savedClub.getClubTags())
-        .clubSummaries(savedClub.getClubSummaries())
-        .clubDetailImages(detailImages)
-        .build();
+    ClubImageDTO clubImageResponse = getClubImageDTO(savedClub.getId());
+    return createDetailClubResponse(savedClub, clubImageResponse);
   }
 
   @Transactional(readOnly = true)
@@ -108,32 +84,8 @@ public class ClubService {
   public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
 
-    List<FileMetaData> images = fileService.findAllByAssociatedId(clubId);
-
-    FileGetResponse representativeImage =
-        images.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
-            .findFirst()
-            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
-            .orElse(null);
-
-    List<FileGetResponse> detailImages =
-        images.stream()
-            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
-            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
-            .toList();
-
-    return DetailClubResponse.builder()
-        .id(club.getId())
-        .name(club.getName())
-        .shortDescription(club.getShortDescription())
-        .detailDescription(club.getDetailDescription())
-        .category(club.getCategory())
-        .clubTags(club.getClubTags())
-        .clubSummaries(club.getClubSummaries())
-        .representativeImage(representativeImage)
-        .clubDetailImages(detailImages)
-        .build();
+    ClubImageDTO clubImageResponse = getClubImageDTO(clubId);
+    return createDetailClubResponse(club, clubImageResponse);
   }
 
   @Transactional(readOnly = true)
@@ -146,41 +98,32 @@ public class ClubService {
     clubRepository.deleteById(id);
   }
 
-  public SimpleClubResponse createSimpleClubResponse(
-      Club club, Map<String, AnnouncementStatus> statuses) {
-    AnnouncementStatus status;
+  @Transactional(readOnly = true)
+  public ClubImageDTO getClubImageDTO(String clubId) {
+    List<FileMetaData> images = fileService.findAllByAssociatedId(clubId);
 
-    if (statuses != null && statuses.containsKey(club.getId())) {
-      status = statuses.get(club.getId());
-    } else {
-      status = null;
-    }
-
-    FileGetResponse representativeImageResponse =
-        fileService.findAllByAssociatedId(club.getId()).stream()
+    FileGetResponse profileImage =
+        images.stream()
             .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
             .findFirst()
             .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
             .orElse(null);
 
-    return SimpleClubResponse.builder()
-        .id(club.getId())
-        .name(club.getName())
-        .shortDescription(club.getShortDescription())
-        .representativeImage(representativeImageResponse)
-        .category(club.getCategory())
-        .clubTags(club.getClubTags())
-        .announcementStatus(status)
-        .build();
+    List<FileGetResponse> detailImages =
+        images.stream()
+            .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
+            .map(image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)))
+            .toList();
+
+    return new ClubImageDTO(profileImage, detailImages);
   }
 
-  @Transactional
-  public List<DetailClubResponse> createDetailClubResponses(List<Club> clubs) {
-    List<FileMetaData> fileMetaData =
-        fileService.findAllByAssociatedIdIn(clubs.stream().map(Club::getId).toList());
+  @Transactional(readOnly = true)
+  public Map<String, ClubImageDTO> getClubImageDTOs(List<String> clubIds) {
+    List<FileMetaData> images = fileService.findAllByAssociatedIdIn(clubIds);
 
     Map<String, FileGetResponse> representativeImageMap =
-        fileMetaData.stream()
+        images.stream()
             .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_PROFILE)
             .collect(
                 Collectors.toMap(
@@ -188,7 +131,7 @@ public class ClubService {
                     image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image))));
 
     Map<String, List<FileGetResponse>> detailImageMap =
-        fileMetaData.stream()
+        images.stream()
             .filter(image -> image.getFileDomainType() == FileDomainType.CLUB_IMAGE)
             .collect(
                 Collectors.groupingBy(
@@ -197,20 +140,26 @@ public class ClubService {
                         image -> FileGetResponse.of(image, fileService.getPublicFileGetUrl(image)),
                         toList())));
 
-    return clubs.stream()
-        .map(
-            club ->
-                DetailClubResponse.builder()
-                    .id(club.getId())
-                    .name(club.getName())
-                    .shortDescription(club.getShortDescription())
-                    .detailDescription(club.getDetailDescription())
-                    .category(club.getCategory())
-                    .clubTags(club.getClubTags())
-                    .clubSummaries(club.getClubSummaries())
-                    .representativeImage(representativeImageMap.get(club.getId()))
-                    .clubDetailImages(detailImageMap.get(club.getId()))
-                    .build())
-        .toList();
+    return clubIds.stream()
+        .collect(
+            Collectors.toMap(
+                clubId -> clubId,
+                clubId ->
+                    new ClubImageDTO(
+                        representativeImageMap.get(clubId), detailImageMap.get(clubId))));
+  }
+
+  public DetailClubResponse createDetailClubResponse(Club club, ClubImageDTO clubImageResponse) {
+    return DetailClubResponse.builder()
+        .id(club.getId())
+        .name(club.getName())
+        .shortDescription(club.getShortDescription())
+        .detailDescription(club.getDetailDescription())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .clubSummaries(club.getClubSummaries())
+        .representativeImage(clubImageResponse.representativeImage())
+        .clubDetailImages(clubImageResponse.detailImages())
+        .build();
   }
 }

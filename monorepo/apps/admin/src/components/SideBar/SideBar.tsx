@@ -273,6 +273,12 @@ function SideBar() {
                                         goTo(
                                             `${representativePath}/${club.myClubResponse.id}${announcementIdParam}`,
                                         );
+                                        // setCurrentAnnouncement(undefined);
+                                        // setActiveSubMenu('/clubs');
+                                        // setActiveMenus((prev) =>
+                                        //     prev.includes(1) ? prev : [...prev, 1],
+                                        // );
+                                        // goTo(`/clubs/${club.id}`);
                                     }}
                                 >
                                     <Tooltip

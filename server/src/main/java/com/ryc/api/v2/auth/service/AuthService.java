@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
@@ -86,17 +87,17 @@ public class AuthService {
     // TODO: RefreshToken 날짜값 JWT 패키지로 함수 분리
     final String newRefreshTokenValue =
         jwtTokenManager.generateRefreshToken(admin.getId(), AdminDefaultRole.USER.name());
+
     final RefreshToken newRefreshToken =
-        RefreshToken.builder()
-            .token(newRefreshTokenValue)
-            .adminId(admin.getId())
-            .expirationTime(
-                jwtTokenManager
-                    .getExpirationDateFromToken(TokenType.REFRESH_TOKEN, newRefreshTokenValue)
-                    .toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime())
-            .build();
+        RefreshToken.initialize(
+            admin.getId(),
+            newRefreshTokenValue,
+            jwtTokenManager
+                .getExpirationDateFromToken(TokenType.REFRESH_TOKEN, newRefreshTokenValue)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
+
     refreshTokenRepository.save(newRefreshToken, admin);
 
     // 6. 신규 at, rt 전송
@@ -127,8 +128,8 @@ public class AuthService {
     }
   }
 
-  @Transactional
   @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!refreshTokenRepository.existsByAdminId(event.adminId())) {
       return;

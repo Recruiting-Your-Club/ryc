@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Avatar, Text } from '@ssoc/ui';
 
-import { s_cardContainer, s_informationContainer } from './IntervieweeCard.style';
+import { s_avatar, s_cardContainer, s_informationContainer } from './IntervieweeCard.style';
 import type { IntervieweeCardProps } from './types';
 
 function IntervieweeCard({
@@ -14,7 +14,7 @@ function IntervieweeCard({
 }: IntervieweeCardProps) {
     return (
         <button css={s_cardContainer(isActivated)} {...props}>
-            <Avatar shape="round" size="md" imageURL={imageUrl} />
+            <Avatar shape="round" size="md" imageURL={imageUrl} sx={s_avatar} />
             <div css={s_informationContainer}>
                 <Text as="span" textAlign="start" type="captionRegular" cropped>
                     {name}

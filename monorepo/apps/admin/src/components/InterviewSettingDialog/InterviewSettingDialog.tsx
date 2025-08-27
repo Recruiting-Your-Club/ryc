@@ -13,7 +13,7 @@ import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Button, Calendar, Dialog, Divider, Editor, Input, Select, Text } from '@ssoc/ui';
+import { Button, Calendar, Dialog, Divider, Editor, Input, Select, Text, useToast } from '@ssoc/ui';
 
 import {
     s_calendar,
@@ -48,6 +48,7 @@ function InterviewSettingDialog({
 }: InterviewSettingDialogProps) {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
     const [numberValue, setNumberValue] = useState<string>(DEFAULT_NUMBER_VALUE);
@@ -132,6 +133,14 @@ function InterviewSettingDialog({
         const newDate = newDates[0];
         const prevDate = highlightedDate[0];
 
+        if (dayjs(newDate).isBefore(dayjs(), 'day')) {
+            toast('현재 날짜보다 이전의 날짜는 선택할 수 없어요.', {
+                type: 'error',
+                toastTheme: 'black',
+            });
+            return;
+        }
+
         if (prevDate) {
             const shouldRemovePrev =
                 !interviewInformation[prevDate] ||
@@ -157,6 +166,7 @@ function InterviewSettingDialog({
 
         handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend);
         if (
+            !open &&
             interviewDetailInformationList.length !== 0 &&
             emailTitle.length !== 0 &&
             contentToSend.length !== 0

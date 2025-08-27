@@ -15,3 +15,5 @@ export * from './ClubMemberRolePage';
 export * from './InviteConfirmPage';
 export * from './NonAnnouncementPage';
 export * from './UserSettingPage';
+export * from './ErrorFallbackPage';
+export * from './RecruitEditPage';

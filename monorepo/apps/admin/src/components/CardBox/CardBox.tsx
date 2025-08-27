@@ -140,7 +140,7 @@ function CardBox({
                                 <MeatBallMenu css={s_svg} />
                             </Button>
                         </Dropdown.Trigger>
-                        <Dropdown.Content offsetX={6.2} offsetY={10} sx={s_dropdownContent}>
+                        <Dropdown.Content offsetX={6.2} sx={s_dropdownContent}>
                             <Dropdown.Group>
                                 {!fail && (
                                     <>

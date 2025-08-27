@@ -87,7 +87,7 @@ public class AuthController {
             .secure(true)
             .path("/api/v2/auth")
             .maxAge(0)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
 
     return ResponseEntity.status(HttpStatus.OK)

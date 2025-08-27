@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
@@ -302,8 +303,8 @@ public class InterviewService {
     interviewRepository.deleteReservationById(reservationId);
   }
 
-  @Transactional
   @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()
         .filter(interviewRepository::existsSlotsByAnnouncementId)

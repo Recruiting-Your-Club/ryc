@@ -2,9 +2,10 @@ import { css } from '@emotion/react';
 
 export const documentEvaluationPageContainer = css`
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding: 2rem 1rem;
     display: flex;
+    overflow: hidden;
 `;
 
 export const listContainer = css`
