@@ -15,5 +15,5 @@ public record EvaluationUpdateRequest(
         BigDecimal score,
     @Schema(description = "수정된 코멘트", example = "훌륭하십니다")
         @NotBlank(message = "평가는 빈값일 수 없습니다.")
-        @Max(value = 500, message = "평가는 500자를 초과할 수 없습니다.")
+        @Size(max = 500, message = "평가는 500자를 초과할 수 없습니다.")
         String comment) {}

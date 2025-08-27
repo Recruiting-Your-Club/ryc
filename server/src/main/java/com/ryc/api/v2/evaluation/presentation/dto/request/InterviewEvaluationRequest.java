@@ -14,6 +14,6 @@ public record InterviewEvaluationRequest(
         @DecimalMin(value = "0.0", inclusive = true, message = "점수는 최소 0.0 이상 이어야 합니다.")
         @DecimalMax(value = "5.0", inclusive = true, message = "점수는 최대 5.0 이하 이어야 합니다.")
         BigDecimal score,
-    @NotBlank(message = "평가는 빈값일 수 없습니다.") @Max(value = 500, message = "평가는 500자를 초과할 수 없습니다.")
+    @NotBlank(message = "평가는 빈값일 수 없습니다.") @Size(max = 500, message = "평가는 500자를 초과할 수 없습니다.")
         String comment)
     implements EvaluationRequest {}

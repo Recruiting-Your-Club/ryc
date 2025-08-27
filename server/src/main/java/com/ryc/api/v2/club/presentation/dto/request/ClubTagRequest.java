@@ -1,7 +1,7 @@
 package com.ryc.api.v2.club.presentation.dto.request;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.UUID;
 
@@ -14,5 +14,5 @@ public record ClubTagRequest(
         String id,
     @Schema(description = "동아리 태그")
         @NotBlank(message = "동아리 태그 이름은 비워둘 수 없습니다.")
-        @Max(value = 30, message = "동아리 태그 이름은 30자를 초과할 수 없습니다.")
+        @Size(max = 30, message = "동아리 태그 이름은 30자를 초과할 수 없습니다.")
         String name) {}
