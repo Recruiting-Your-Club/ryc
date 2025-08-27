@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Email from '@ssoc/assets/images/email.svg';
 import { Button, Dialog, Text } from '@ssoc/ui';
 
+import { s_emailIcon, s_emailIconContainer } from './EmailVerificationDialog.style';
 import type { EmailStatus, EmailVerificationDialogProps } from './types';
 
 function EmailVerificationDialog({
@@ -134,8 +135,8 @@ function EmailVerificationDialog({
         <Dialog open={isOpen} handleClose={() => onClose()}>
             <Dialog.Content>
                 <div>
-                    <div>
-                        <Email />
+                    <div css={s_emailIconContainer}>
+                        <Email css={s_emailIcon} />
                     </div>
                     <Text>이메일 인증</Text>
                     <Text>
