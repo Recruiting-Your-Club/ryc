@@ -1,9 +1,24 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import Check from '@ssoc/assets/images/check.svg';
 import Email from '@ssoc/assets/images/email.svg';
+import Warning from '@ssoc/assets/images/warningIcon.svg';
 import { Button, Dialog, Text } from '@ssoc/ui';
 
-import { s_emailIcon, s_emailIconContainer } from './EmailVerificationDialog.style';
+import {
+    s_checkIcon,
+    s_codeInput,
+    s_codeInputContainer,
+    s_contentContainer,
+    s_emailIcon,
+    s_emailIconContainer,
+    s_footerConatiner,
+    s_headerContainer,
+    s_infoContainer,
+    s_resendButton,
+    s_resendContainer,
+    s_textContainer,
+} from './EmailVerificationDialog.style';
 import type { EmailStatus, EmailVerificationDialogProps } from './types';
 
 function EmailVerificationDialog({
@@ -134,17 +149,19 @@ function EmailVerificationDialog({
     return (
         <Dialog open={isOpen} handleClose={() => onClose()}>
             <Dialog.Content>
-                <div>
+                <div css={s_headerContainer}>
                     <div css={s_emailIconContainer}>
                         <Email css={s_emailIcon} />
                     </div>
-                    <Text>이메일 인증</Text>
-                    <Text>
-                        {email}로 전송된 <br /> 6자리 인증 코드를 입력해주세요.
-                    </Text>
+                    <div css={s_textContainer}>
+                        <Text type="h3Semibold">이메일 인증</Text>
+                        <Text type="bodyRegular" color="subCaption">
+                            {email}로 전송된 <br /> 6자리 인증 코드를 입력해주세요.
+                        </Text>
+                    </div>
                 </div>
-                <div>
-                    <div>
+                <div css={s_contentContainer}>
+                    <div css={s_codeInputContainer}>
                         {code.map((digit, index) => (
                             <input
                                 key={index}
@@ -154,22 +171,39 @@ function EmailVerificationDialog({
                                 value={digit}
                                 onChange={(event) => handleInputChange(index, event.target.value)}
                                 onKeyDown={(event) => handleKeyDown(index, event)}
+                                css={s_codeInput({
+                                    hasValue: digit !== '',
+                                    isError: status === 'error',
+                                })}
+                                disabled={isLoading}
                             />
                         ))}
                     </div>
-                    {message && <div>{message}</div>}
+                    {message && (
+                        <div css={s_infoContainer({ isError: status === 'error' })}>
+                            {status === 'success' && <Check css={s_checkIcon} />}
+                            {status === 'error' && <Warning />}
+                            {status === 'info' && <Email />}
+                            {message}
+                        </div>
+                    )}
                 </div>
             </Dialog.Content>
-            <div>
+            <div css={s_footerConatiner}>
                 <Button
                     onClick={() => handleVerify()}
                     disabled={isLoading || code.some((digit) => digit === '')}
+                    size="full"
                 >
                     {isLoading ? '인증 중...' : '인증하기'}
                 </Button>
-                <div>
-                    코드를 받지 못하셨나요?
-                    <button onClick={handleResendCode} disabled={resendCooldown > 0}>
+                <div css={s_resendContainer}>
+                    코드를 받지 못하셨나요?{' '}
+                    <button
+                        onClick={handleResendCode}
+                        disabled={resendCooldown > 0}
+                        css={s_resendButton}
+                    >
                         {resendCooldown > 0 ? `재전송 (${resendCooldown}초)` : '코드 재전송'}
                     </button>
                 </div>
