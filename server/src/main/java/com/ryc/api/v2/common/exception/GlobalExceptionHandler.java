@@ -24,7 +24,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.custom.*;
-import com.ryc.api.v2.common.exception.event.ServerErrorEvent;
+import com.ryc.api.v2.common.exception.event.DiscordGeneralErrorEvent;
+import com.ryc.api.v2.common.exception.event.DiscordInternalServerErrorEvent;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -67,16 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleBusinessRuleException(
       BusinessRuleException e, HttpServletRequest request) {
     ErrorCode errorCode = e.getErrorCode();
-
-    if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-      eventPublisher.publishEvent(
-          new ServerErrorEvent(request.getRequestURI(), e.getFormattedMessage()));
-    }
-
-    ErrorResponse errorResponse =
-        ErrorResponse.builder().code(errorCode.name()).message(e.getFormattedMessage()).build();
-
-    return ResponseEntity.status(errorCode.getHttpStatus()).body(errorResponse);
+    return handleExceptionInternal(errorCode, e.getFormattedMessage(), request);
   }
 
   // EmptyResultDataAccessException은 JPA에서 존재하지 않는 데이터를 삭제하려고 할 때 발생하는 예외
@@ -142,29 +134,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   // handleExceptionInternal Method
   private ResponseEntity<Object> handleExceptionInternal(
       ErrorCode errorCode, HttpServletRequest request) {
-
-    if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-      publishServerErrorEvent(errorCode, request);
-    }
+    publishDiscordErrorEvent(errorCode, request);
     return ResponseEntity.status(errorCode.getHttpStatus()).body(makeErrorResponse(errorCode));
   }
 
   private ResponseEntity<Object> handleExceptionInternal(
       ErrorCode errorCode, String message, HttpServletRequest request) {
-
-    if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
-      eventPublisher.publishEvent(new ServerErrorEvent(request.getRequestURI(), message));
-    }
+    publishDiscordErrorEvent(errorCode, message, request);
     return ResponseEntity.status(errorCode.getHttpStatus())
         .body(makeErrorResponse(errorCode, message));
   }
 
   private ResponseEntity<Object> handleExceptionInternal(
       ConstraintViolationException e, ErrorCode errorCode) {
+    // TODO: publishDiscordErrorEvent
     return ResponseEntity.status(errorCode.getHttpStatus()).body(makeErrorResponse(e, errorCode));
   }
 
   private ResponseEntity<Object> handleExceptionInternal(BindException e, ErrorCode errorCode) {
+    // TODO: publishDiscordErrorEvent
     return ResponseEntity.status(errorCode.getHttpStatus()).body(makeErrorResponse(e, errorCode));
   }
 
@@ -203,12 +191,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .build();
   }
 
-  private void publishServerErrorEvent(ErrorCode errorCode, HttpServletRequest request) {
+  private void publishDiscordErrorEvent(ErrorCode errorCode, HttpServletRequest request) {
+    if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
+      eventPublisher.publishEvent(
+          new DiscordInternalServerErrorEvent(
+              request.getRequestURI(), errorCode, errorCode.getMessage()));
+      return;
+    }
     eventPublisher.publishEvent(
-        new ServerErrorEvent(request.getRequestURI(), errorCode.getMessage()));
+        new DiscordGeneralErrorEvent(request.getRequestURI(), errorCode, errorCode.getMessage()));
   }
 
-  private void publishServerErrorEvent(String message, HttpServletRequest request) {
-    eventPublisher.publishEvent(new ServerErrorEvent(request.getRequestURI(), message));
+  private void publishDiscordErrorEvent(
+      ErrorCode errorCode, String message, HttpServletRequest request) {
+    if (errorCode.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR) {
+      eventPublisher.publishEvent(
+          new DiscordInternalServerErrorEvent(request.getRequestURI(), errorCode, message));
+      return;
+    }
+    eventPublisher.publishEvent(
+        new DiscordGeneralErrorEvent(request.getRequestURI(), errorCode, message));
   }
 }
