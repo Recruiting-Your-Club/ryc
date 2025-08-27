@@ -3,12 +3,13 @@ package com.ryc.api.v2.email.presentation;
 import java.util.List;
 
 import jakarta.validation.Valid;
-
 import jakarta.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "이메일")
 public class EmailHttpApi {
 
@@ -46,8 +48,9 @@ public class EmailHttpApi {
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable("announcement-id")
-      @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
-      @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId,
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     List<EmailSendResponse> responses =
         emailService.createEmails(
