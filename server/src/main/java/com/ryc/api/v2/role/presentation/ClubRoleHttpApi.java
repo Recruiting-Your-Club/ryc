@@ -3,9 +3,13 @@ package com.ryc.api.v2.role.presentation;
 import java.net.URI;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "동아리 내 권한")
 public class ClubRoleHttpApi {
 
@@ -42,7 +47,10 @@ public class ClubRoleHttpApi {
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<ClubInviteCreatedResponse> createInviteCode(
-      @PathVariable("club-id") String clubId) {
+      @PathVariable("club-id")
+          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
+          String clubId) {
     ClubInviteCreatedResponse response = clubRoleService.createInviteCode(clubId);
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -59,8 +67,14 @@ public class ClubRoleHttpApi {
       include = {"RESOURCE_NOT_FOUND", "CLUB_MEMBER_ALREADY_EXISTS", "CLUB_INVITE_EXPIRED"})
   public ResponseEntity<ClubInviteAcceptResponse> acceptInvite(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id") String clubId,
-      @PathVariable("invite-code") String inviteCode) {
+      @PathVariable("club-id")
+          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
+          String clubId,
+      @PathVariable("invite-code")
+          @NotBlank(message = "동아리 초대코드는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 초대코드는 UUID 포멧을 준수하여야 합니다.")
+          String inviteCode) {
     ClubInviteAcceptResponse response =
         clubRoleService.acceptInvite(userDetail.getId(), clubId, inviteCode);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -73,7 +87,10 @@ public class ClubRoleHttpApi {
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<List<ClubRoleGetResponse>> getClubRoles(
-      @PathVariable("club-id") String clubId) {
+      @PathVariable("club-id")
+          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
+          String clubId) {
     return ResponseEntity.ok(clubRoleService.getClubRoles(clubId));
   }
 
@@ -91,8 +108,14 @@ public class ClubRoleHttpApi {
       })
   public ResponseEntity<Void> deleteRole(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id") String clubId,
-      @PathVariable("user-id") String userId) {
+      @PathVariable("club-id")
+          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
+          String clubId,
+      @PathVariable("user-id")
+          @NotBlank(message = "동아리원 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리원 id는 UUID 포멧을 준수하여야 합니다.")
+          String userId) {
     clubRoleService.deleteRole(userDetail.getId(), clubId, userId);
     return ResponseEntity.noContent().build();
   }
