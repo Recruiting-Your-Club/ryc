@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import Email from '@ssoc/assets/images/email.svg';
 import { Button, Dialog, Text } from '@ssoc/ui';
@@ -13,10 +13,28 @@ function EmailVerificationDialog({
     onResendCode,
     codeLength = 6,
 }: EmailVerificationDialogProps) {
-    const [code, setCode] = useState(['', '', '', '', '', '']);
+    const empty = useMemo(() => Array.from({ length: codeLength }, () => ''), [codeLength]);
+    const [code, setCode] = useState(empty);
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState<EmailStatus>('idle');
     const [message, setMessage] = useState('');
+    const [resendCooldown, setResendCooldown] = useState(0);
+    const inputRefs = useRef<HTMLInputElement[]>([]);
+
+    useEffect(() => {
+        if (isOpen) {
+            setTimeout(() => inputRefs.current[0]?.focus(), 100);
+            setCode(empty);
+            setStatus('idle');
+            setMessage('');
+            setResendCooldown(0);
+        } else {
+            setCode(empty);
+            setStatus('idle');
+            setMessage('');
+            setResendCooldown(0);
+        }
+    });
 
     return (
         <Dialog open={isOpen} handleClose={() => onClose()}>
