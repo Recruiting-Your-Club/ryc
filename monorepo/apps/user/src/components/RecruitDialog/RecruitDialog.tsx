@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -76,9 +77,12 @@ function RecruitDialog(props: RecruitmentDialogProps) {
             </Dialog.Header>
             <Dialog.Content sx={contentContainer}>
                 <ClubBox data={clubBoxData} />
-                <Text textAlign="start" sx={textContainer}>
-                    {announcementDetaildata?.detailDescription}
-                </Text>
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(announcementDetaildata?.detailDescription ?? ''),
+                    }}
+                    css={textContainer}
+                />
 
                 <div css={imageListContainer}>
                     {images.map((image) => (

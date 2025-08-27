@@ -34,6 +34,7 @@ export const contentContainer = css`
 
 export const textContainer = css`
     padding: 0 2rem;
+    width: 100%;
 `;
 
 export const imageListContainer = css`
