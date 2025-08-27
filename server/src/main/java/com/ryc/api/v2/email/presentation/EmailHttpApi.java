@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,7 +45,9 @@ public class EmailHttpApi {
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
   public ResponseEntity<List<EmailSendResponse>> sendEmail(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("announcement-id") String announcementId,
+      @PathVariable("announcement-id")
+      @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+      @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.") String announcementId,
       @Valid @RequestBody EmailSendRequest body) {
     List<EmailSendResponse> responses =
         emailService.createEmails(
