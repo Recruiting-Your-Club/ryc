@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import XIcon from '@ssoc/assets/images/gray_xicon.svg';
 import PdfIcon from '@ssoc/assets/images/PdfIcon.svg';
@@ -29,7 +29,13 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
         FileExtension.WEBP,
     ].includes(ext as FileExtension);
     const isPdf = ext === FileExtension.PDF;
-    const fileUrl = URL.createObjectURL(file);
+    const fileUrl = useMemo(() => URL.createObjectURL(file), [file]);
+
+    useEffect(() => {
+        return () => {
+            URL.revokeObjectURL(fileUrl);
+        };
+    }, [fileUrl]);
 
     // form hooks
     // query hooks
