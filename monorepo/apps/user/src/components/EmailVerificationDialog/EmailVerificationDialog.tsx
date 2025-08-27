@@ -45,6 +45,16 @@ function EmailVerificationDialog({
         }
     };
 
+    const handleVerify = async (verificationCode?: string) => {
+        const codeToVerify = verificationCode ?? code.join('');
+
+        if (codeToVerify.length !== codeLength) {
+            setStatus('error');
+            setMessage(`${codeLength}자리를 모두 입력해주세요`);
+            return;
+        }
+    };
+
     // effects
     useEffect(() => {
         if (isOpen) {
