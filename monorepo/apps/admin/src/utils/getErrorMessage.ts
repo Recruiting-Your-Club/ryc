@@ -31,3 +31,20 @@ export const getErrorMessage = (error: ErrorWithStatusCode): string => {
             return error.message ?? ERROR_DEFAULT;
     }
 };
+
+export const getErrorPlainMessageByErrorStatusCode = (errorStatusCode: number): string => {
+    switch (errorStatusCode) {
+        case 500:
+            return ERROR_CODE_500;
+        case 404:
+            return ERROR_CODE_404_DATA;
+        case 403:
+            return ERROR_CODE_403;
+        case 401:
+            return ERROR_CODE_401;
+        case 400:
+            return ERROR_CODE_400;
+        default:
+            return ERROR_DEFAULT;
+    }
+};
