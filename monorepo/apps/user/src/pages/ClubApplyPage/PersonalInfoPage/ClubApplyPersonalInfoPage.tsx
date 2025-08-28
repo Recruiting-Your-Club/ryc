@@ -1,3 +1,4 @@
+import { useSendEmailVerification, useVerifyEmailCode } from '@api/hooks';
 import { EmailVerificationDialog } from '@components/EmailVerificationDialog';
 import React, { useMemo, useState } from 'react';
 
@@ -44,26 +45,27 @@ function ClubApplyPersonalInfoPage({
     const { getFiles } = useApplicationStore();
     const filesByQuestion = getFiles(announcementId);
 
+    //query hooks
+    const sendMutation = useSendEmailVerification();
+    const verifyMutation = useVerifyEmailCode();
+
     const [verifyOpen, setVerifyOpen] = useState(false);
     const [dialogExpiresAt, setDialogExpiresAt] = useState<string>('');
     const [verifyingEmailLabel, setVerifyingEmailLabel] = useState<string | null>(null);
     const [isEmailLocked, setIsEmailLocked] = useState(false);
 
     const tokenKey = useMemo(() => 'email_verification_token', []);
-    const tokenEmailKey = useMemo(() => 'email_verification_address', []);
 
     //calculated values
     const lockEmail = (email: string) => {
         setIsEmailLocked(true);
         onEmailVerifiedChange?.(true);
-        sessionStorage.setItem(tokenEmailKey, email);
     };
 
     const unlockEmail = () => {
         setIsEmailLocked(false);
         onEmailVerifiedChange?.(false);
         sessionStorage.removeItem(tokenKey);
-        sessionStorage.removeItem(tokenEmailKey);
     };
 
     //handlers
@@ -123,12 +125,19 @@ function ClubApplyPersonalInfoPage({
                                 {!isThisLocked ? (
                                     <Button
                                         onClick={async () => {
-                                            if (!value) {
-                                                toast.error('이메일을 입력해주세요');
-                                            }
+                                            if (!value) return toast.error('이메일을 입력해주세요');
+                                            if (hasError)
+                                                return toast.error(
+                                                    '올바른 이메일 형식인지 확인해주세요.',
+                                                );
+
                                             try {
-                                                //const { expiresAt } = await requestEmailCode(value);
-                                                //setDialogExpiresAt(expiresAt);
+                                                const { expiresAt } =
+                                                    await sendMutation.mutateAsync({
+                                                        email: value,
+                                                    });
+
+                                                setDialogExpiresAt(expiresAt);
                                                 setVerifyingEmailLabel(question.label);
                                                 setVerifyOpen(true);
                                             } catch {
@@ -148,19 +157,31 @@ function ClubApplyPersonalInfoPage({
                                     onClose={() => setVerifyOpen(false)}
                                     email={value}
                                     expiresAt={dialogExpiresAt}
-                                    // onVerify={async (code) => {
-                                    //   const res = await verifyEmailCode(value, code);
-                                    //   if (res.ok && res.token) {
-                                    //     sessionStorage.setItem(tokenKey, res.token);
-                                    //     lockEmail(value);
-                                    //     return true;
-                                    //   }
-                                    //   return false;
-                                    // }}
-                                    // onResendCode={async () => {
-                                    //   const { expiresAt } = await resendEmailCode(value);
-                                    //   setDialogExpiresAt(expiresAt); // 새 만료시각 적용 → 다이얼로그 타이머 자동 갱신
-                                    // }}
+                                    onVerify={async (code) => {
+                                        try {
+                                            await verifyMutation.mutateAsync({
+                                                email: value,
+                                                code: Number(code),
+                                            });
+                                            sessionStorage.setItem(tokenKey, code);
+                                            lockEmail(value);
+                                            return true;
+                                        } catch {
+                                            return false;
+                                        }
+                                    }}
+                                    onResendCode={async () => {
+                                        try {
+                                            const { expiresAt } = await sendMutation.mutateAsync({
+                                                email: value,
+                                            });
+                                            setDialogExpiresAt(expiresAt);
+                                        } catch {
+                                            toast.error(
+                                                '코드 재전송에 실패했어요. 잠시 후 다시 시도해주세요',
+                                            );
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>
