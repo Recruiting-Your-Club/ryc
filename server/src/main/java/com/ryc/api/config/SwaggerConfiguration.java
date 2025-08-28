@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
@@ -23,6 +24,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -124,6 +126,12 @@ public class SwaggerConfiguration {
       if (handlerMethod.hasMethodAnnotation(HasRole.class)) {
         Parameter clubIdHeader = createClubIdHeader();
         operation.addParametersItem(clubIdHeader);
+      }
+
+      // 조건: 이메일 인증 코드를 필요로 하는 API에만 적용
+      if (handlerMethod.hasMethodAnnotation(VerifyEmailCode.class)) {
+        Parameter emailVerificationHeader = createEmailVerificationHeader();
+        operation.addParametersItem(emailVerificationHeader);
       }
 
       return operation;
@@ -317,5 +325,14 @@ public class SwaggerConfiguration {
         .description("동아리 식별자 헤더")
         .required(true)
         .schema(new StringSchema());
+  }
+
+  private Parameter createEmailVerificationHeader() {
+    return new Parameter()
+        .in("header")
+        .name("X-EMAIL-VERIFICATION-CODE")
+        .description("이메일 인증 코드 헤더")
+        .required(true)
+        .schema(new IntegerSchema());
   }
 }

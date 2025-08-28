@@ -14,6 +14,7 @@ import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
 import com.ryc.api.v2.auth.presentation.response.TokenRefreshResponse;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
+import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.email.service.EmailVerificationService;
@@ -42,6 +43,7 @@ public class AuthController {
   }
 
   @PostMapping("/register")
+  @VerifyEmailCode
   // TODO: DuplicateKeyException에 대한 예외 응답 코드 설정 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},

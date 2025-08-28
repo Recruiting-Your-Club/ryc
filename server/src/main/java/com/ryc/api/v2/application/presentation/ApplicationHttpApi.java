@@ -13,6 +13,7 @@ import com.ryc.api.v2.application.presentation.dto.response.ApplicationGetRespon
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissionResponse;
 import com.ryc.api.v2.application.service.ApplicationService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
@@ -29,6 +30,7 @@ public class ApplicationHttpApi {
   private final ApplicationService applicationService;
 
   @PostMapping
+  @VerifyEmailCode
   @Operation(summary = "공고 지원", operationId = "submitApplication")
   @ApiErrorCodeExample(
       value = {ApplicationCreateErrorCode.class, CommonErrorCode.class},
