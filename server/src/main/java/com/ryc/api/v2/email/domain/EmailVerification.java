@@ -1,5 +1,6 @@
 package com.ryc.api.v2.email.domain;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
 import com.ryc.api.v2.common.exception.code.EmailErrorCode;
@@ -12,23 +13,26 @@ import lombok.Getter;
 @Getter
 public class EmailVerification {
 
-  private Integer code;
+  private static final SecureRandom random = new SecureRandom();
+  private static final int DEFAULT_TTL_MINUTES = 3;
 
-  private String email;
+  private final Integer code;
 
-  private Boolean verified; // 이메일 인증 여부
+  private final String email;
 
-  private Boolean attempted; // 인증 시도 여부
+  private final Boolean verified; // 이메일 인증 여부
 
-  private LocalDateTime expiresAt;
+  private final Boolean attempted; // 인증 시도 여부
+
+  private final LocalDateTime expiresAt;
 
   public static EmailVerification initialize(String email) {
     return EmailVerification.builder()
-        .code((int) (Math.random() * 900000) + 100000) // 6자리 랜덤 코드 생성
+        .code(random.nextInt(900_000) + 100_000) // 6자리 랜덤 코드 생성
         .email(email)
         .verified(false)
         .attempted(false)
-        .expiresAt(LocalDateTime.now().plusMinutes(3))
+        .expiresAt(LocalDateTime.now().plusMinutes(DEFAULT_TTL_MINUTES))
         .build();
   }
 
