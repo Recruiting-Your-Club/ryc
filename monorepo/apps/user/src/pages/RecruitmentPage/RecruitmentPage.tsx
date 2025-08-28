@@ -1,7 +1,10 @@
 import type { Image as ImageType } from '@api/domain/announcement/types';
+import { announcementQueries } from '@api/queryFactory';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { parseAnnouncementClubBoxData } from '@utils/parseAnnouncementData';
 import DOMPurify from 'dompurify';
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Image, ImageDialog, Tag, Text } from '@ssoc/ui';
@@ -29,47 +32,76 @@ function RecruitmentPage() {
     // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
     const { goTo } = useRouter();
-    const location = useLocation();
+    const { announcementId } = useParams();
     const { applicationPeriod } = useClubStore();
-    const { clubBoxData, parsedAnnouncementData } = location.state;
     // initial values
     const { isExpired } = getDeadlineInfo(applicationPeriod?.endDate || '');
     // state, ref, querystring hooks
     const [imageUrl, setImageUrl] = useState<string>();
     // form hooks
     // query hooks
+    const { data: announcementDetail } = useSuspenseQuery(
+        announcementQueries.getAnnouncementDetail(announcementId || ''),
+    );
+
     // calculated values
+    const clubBoxData = announcementDetail ? parseAnnouncementClubBoxData(announcementDetail) : [];
+
+    const getTagVariant = (status: string) => {
+        switch (status) {
+            case 'RECRUITING':
+                return 'progress';
+            case 'CLOSED':
+                return 'end';
+            case 'UPCOMING':
+                return 'primary';
+            default:
+                return 'primary';
+        }
+    };
+    const getTagText = (status: string) => {
+        switch (status) {
+            case 'RECRUITING':
+                return '모집중';
+            case 'CLOSED':
+                return '마감';
+            case 'UPCOMING':
+                return '모집예정';
+            default:
+                return '지원불가';
+        }
+    };
     // handlers
     const handleImageClick = (url: string) => {
         setImageUrl(url);
     };
     // effects
-    const currentStatus = parsedAnnouncementData.announcementStatus;
+    const currentStatus = announcementDetail.announcementStatus;
 
     return (
         <div css={recruitmentContainer}>
             <div css={contentContainer}>
                 <div css={contentHeader}>
                     <Text as="h1" type="h1Semibold" textAlign="start">
-                        {parsedAnnouncementData.title}
+                        {announcementDetail.title}
                     </Text>
                     <div css={headerSubContainer}>
                         <div css={clubNameContainer}>
                             <Text as="h4" type="h4Light" color="caption">
-                                {parsedAnnouncementData.clubName}
+                                {announcementDetail.clubName}
                             </Text>
                             <Tag
-                                variant={parsedAnnouncementData.announcementStatusVariant}
-                                text={parsedAnnouncementData.announcementStatus}
+                                variant={getTagVariant(announcementDetail.announcementStatus)}
+                                text={getTagText(announcementDetail.announcementStatus)}
                             />
                         </div>
                         <Button
                             variant="primary"
                             size="xl"
                             onClick={() =>
-                                goTo(`/announcements/${parsedAnnouncementData.id}/agreement`)
+                                goTo(`/announcements/${announcementDetail.id}/agreement`)
                             }
-                            disabled={isExpired || currentStatus !== '모집중'}
+                            disabled={isExpired || currentStatus !== 'RECRUITING'}
                             sx={applyButtonAtDesktop}
                         >
                             지원하기
@@ -81,13 +113,13 @@ function RecruitmentPage() {
                     <ClubBox data={clubBoxData} />
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(parsedAnnouncementData.detailDescription),
+                            __html: DOMPurify.sanitize(announcementDetail.detailDescription),
                         }}
                         css={textContainer}
                     />
 
                     <div css={imageListContainer}>
-                        {parsedAnnouncementData.images.map((image: ImageType) => (
+                        {announcementDetail.images.map((image: ImageType) => (
                             <button
                                 css={imageItem}
                                 key={image.id}
@@ -105,8 +137,8 @@ function RecruitmentPage() {
             <div css={applyButtonAtMobile}>
                 <Button
                     size="full"
-                    onClick={() => goTo(`/announcements/${parsedAnnouncementData.id}/agreement`)}
-                    disabled={isExpired}
+                    onClick={() => goTo(`/announcements/${announcementDetail.id}/agreement`)}
+                    disabled={isExpired || currentStatus !== 'RECRUITING'}
                 >
                     지원하기
                 </Button>
