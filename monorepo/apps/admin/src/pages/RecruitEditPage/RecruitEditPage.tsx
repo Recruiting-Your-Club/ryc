@@ -142,6 +142,7 @@ function RecruitEditPage() {
                 announcementId: announcementId ?? '',
             });
             removeHistoryAndGo(afterPath);
+            toast('공고 편집이 완료되었어요!', { type: 'success', toastTheme: 'white' });
         },
         onError: () => {
             setIsDialogOpen(false);
