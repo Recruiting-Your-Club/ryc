@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeCreatedRequest;
+import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.email.presentation.dto.response.VerificationCodeCreatedResponse;
 import com.ryc.api.v2.email.service.EmailService;
@@ -64,8 +66,12 @@ public class EmailHttpApi {
   }
 
   @PatchMapping("/email-verifications")
-  public ResponseEntity<Void> verifyEmailCode(
-      @Valid @RequestBody VerificationCodeCreatedRequest body) {
+  @Operation(summary = "이메일 인증 코드 검증", description = "이메일 인증 코드를 검증합니다.")
+  @ApiErrorCodeExample(
+      value = {EmailErrorCode.class, CommonErrorCode.class},
+      include = {"EMAIL_VERIFICATION_CODE_EXPIRED", "INVALID_PARAMETER"})
+  public ResponseEntity<Void> verifyEmailCode(@Valid @RequestBody VerificationCodeRequest body) {
+    emailVerificationService.verificationEmailCode(body);
     return ResponseEntity.noContent().build();
   }
 }

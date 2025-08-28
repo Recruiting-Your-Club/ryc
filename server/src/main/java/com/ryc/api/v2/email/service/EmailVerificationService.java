@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.email.domain.EmailVerification;
 import com.ryc.api.v2.email.domain.EmailVerificationRepository;
+import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeRequest;
 import com.ryc.api.v2.email.presentation.dto.response.VerificationCodeCreatedResponse;
 
 @Service
@@ -53,6 +54,13 @@ public class EmailVerificationService {
     sendEmailVerificationCode(email, saved.getCode());
 
     return new VerificationCodeCreatedResponse(saved.getExpiresAt());
+  }
+
+  @Transactional
+  public void verificationEmailCode(VerificationCodeRequest body) {
+    EmailVerification emailVerification = verificationRepository.findByEmail(body.email());
+    EmailVerification verified = emailVerification.verify();
+    verificationRepository.save(verified);
   }
 
   private void sendEmailVerificationCode(String email, int code) {

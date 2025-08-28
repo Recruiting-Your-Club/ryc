@@ -1,5 +1,7 @@
 package com.ryc.api.v2.email.infra;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.email.domain.EmailVerification;
@@ -31,5 +33,14 @@ public class EmailVerificationRepositoryImpl implements EmailVerificationReposit
   @Override
   public void deleteByEmail(String email) {
     jpaRepository.deleteByEmail(email);
+  }
+
+  @Override
+  public EmailVerification findByEmail(String email) {
+    EmailVerificationEntity entity =
+        jpaRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new NoSuchElementException("이메일에 대한 인증 정보가 없습니다."));
+    return EmailVerificationMapper.toDomain(entity);
   }
 }

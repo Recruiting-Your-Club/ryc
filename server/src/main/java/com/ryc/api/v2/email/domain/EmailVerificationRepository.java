@@ -7,4 +7,6 @@ public interface EmailVerificationRepository {
   boolean existsByEmail(String email);
 
   void deleteByEmail(String email);
+
+  EmailVerification findByEmail(String email);
 }
