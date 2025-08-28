@@ -63,7 +63,7 @@ public class EmailVerificationService {
     verificationRepository.save(verified);
   }
 
-  @Transactional(readOnly = true)
+  @Transactional
   public boolean isVerified(int code) {
     EmailVerification emailVerification = verificationRepository.findByCode(code);
 
