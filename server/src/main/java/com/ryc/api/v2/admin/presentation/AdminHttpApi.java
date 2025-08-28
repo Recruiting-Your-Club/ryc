@@ -1,19 +1,14 @@
 package com.ryc.api.v2.admin.presentation;
 
-import jakarta.validation.constraints.NotBlank;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.admin.presentation.dto.request.AdminProfileUpdateRequest;
-import com.ryc.api.v2.admin.presentation.dto.response.AdminEmailDuplicatedResponse;
 import com.ryc.api.v2.admin.presentation.dto.response.MyInformationGetResponse;
 import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
-import com.ryc.api.v2.common.exception.code.CommonErrorCode;
-import com.ryc.api.v2.common.validator.request.annotation.Email;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,19 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class AdminHttpApi {
 
   private final AdminService adminService;
-
-  @GetMapping("/emails/duplicate-check")
-  @Operation(
-      summary = "이메일 중복 확인",
-      description = "주어진 이메일이 이미 사용 중인지 확인합니다. 사용 중이면 true, 아니면 false를 반환합니다.")
-  @ApiErrorCodeExample(
-      value = {CommonErrorCode.class},
-      include = {"INVALID_PARAMETER"})
-  public ResponseEntity<AdminEmailDuplicatedResponse> checkEmailDuplicate(
-      @RequestParam @NotBlank(message = "이메일은 공백일 수 없습니다.") @Email String email) {
-    AdminEmailDuplicatedResponse response = adminService.checkEmailDuplicate(email);
-    return ResponseEntity.ok(response);
-  }
 
   @PatchMapping
   @Operation(

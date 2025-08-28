@@ -16,8 +16,10 @@ import com.ryc.api.v2.application.presentation.dto.response.ApplicationGetRespon
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissionResponse;
 import com.ryc.api.v2.application.service.ApplicationService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,9 +35,10 @@ public class ApplicationHttpApi {
   private final ApplicationService applicationService;
 
   @PostMapping
+  @VerifyEmailCode
   @Operation(summary = "공고 지원", operationId = "submitApplication")
   @ApiErrorCodeExample(
-      value = {ApplicationCreateErrorCode.class, CommonErrorCode.class},
+      value = {ApplicationCreateErrorCode.class, CommonErrorCode.class, EmailErrorCode.class},
       include = {
         "MISSING_REQUIRED_PERSONAL_INFO_ANSWER",
         "MISSING_REQUIRED_ANSWER",
@@ -45,7 +48,10 @@ public class ApplicationHttpApi {
         "ANNOUNCEMENT_NOT_RECRUITING",
         "DUPLICATE_APPLICATION",
         "INVALID_PARAMETER",
-        "RESOURCE_NOT_FOUND"
+        "RESOURCE_NOT_FOUND",
+        "EMAIL_VERIFICATION_CODE_BAD_REQUEST",
+        "EMAIL_VERIFICATION_CODE_ALREADY_ATTEMPTED",
+        "EMAIL_VERIFICATION_CODE_INVALID"
       })
   public ResponseEntity<ApplicationSubmissionResponse> submitApplication(
       @PathVariable("announcement-id")

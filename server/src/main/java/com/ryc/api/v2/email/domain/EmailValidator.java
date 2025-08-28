@@ -5,6 +5,7 @@ import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.common.validator.DomainValidator;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 final class EmailValidator extends DomainValidator {
 

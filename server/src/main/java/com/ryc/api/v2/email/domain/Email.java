@@ -2,6 +2,7 @@ package com.ryc.api.v2.email.domain;
 
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;

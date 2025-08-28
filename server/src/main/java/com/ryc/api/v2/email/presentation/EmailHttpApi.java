@@ -10,19 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
+import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeCreatedRequest;
+import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+import com.ryc.api.v2.email.presentation.dto.response.VerificationCodeCreatedResponse;
 import com.ryc.api.v2.email.service.EmailService;
+import com.ryc.api.v2.email.service.EmailVerificationService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
@@ -38,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class EmailHttpApi {
 
   private final EmailService emailService;
+  private final EmailVerificationService emailVerificationService;
 
   @PostMapping("/announcements/{announcement-id}/emails")
   @HasRole(Role.MEMBER)
@@ -56,5 +58,27 @@ public class EmailHttpApi {
         emailService.createEmails(
             userDetail.getId(), announcementId, body.recipients(), body.subject(), body.content());
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
+  }
+
+  @PostMapping("/email-verifications")
+  @ApiErrorCodeExample(
+      value = {CommonErrorCode.class},
+      include = {"INVALID_PARAMETER"})
+  @Operation(summary = "이메일 인증 코드 생성", description = "이메일 인증 코드 생성을 요청합니다<br>인증 코드는 해당 이메일에 발송됩니다.")
+  public ResponseEntity<VerificationCodeCreatedResponse> createEmailVerificationCode(
+      @Valid @RequestBody VerificationCodeCreatedRequest body) {
+    VerificationCodeCreatedResponse response =
+        emailVerificationService.createEmailVerificationCode(body.email());
+    return ResponseEntity.ok(response);
+  }
+
+  @PatchMapping("/email-verifications")
+  @Operation(summary = "이메일 인증 코드 검증", description = "이메일 인증 코드를 검증합니다.")
+  @ApiErrorCodeExample(
+      value = {EmailErrorCode.class, CommonErrorCode.class},
+      include = {"EMAIL_VERIFICATION_CODE_EXPIRED", "EMAIL_ALREADY_VERIFIED", "INVALID_PARAMETER"})
+  public ResponseEntity<Void> verifyEmailCode(@Valid @RequestBody VerificationCodeRequest body) {
+    emailVerificationService.verificationEmailCode(body);
+    return ResponseEntity.ok().build();
   }
 }

@@ -43,6 +43,9 @@ public class SecurityConfiguration {
   @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}")
   private String[] whitelistPostPaths;
 
+  @Value("${SECURITY_WHITELIST_PATCH_METHOD_PATHS}")
+  private String[] whitelistPatchPaths;
+
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final JwtTokenManager jwtTokenManager;
@@ -77,6 +80,8 @@ public class SecurityConfiguration {
             request ->
                 request
                     .requestMatchers(whitelistAllPaths)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.PATCH, whitelistPatchPaths)
                     .permitAll()
                     .requestMatchers(regexMatchers(whitelistPostPaths, HttpMethod.POST))
                     .permitAll()
