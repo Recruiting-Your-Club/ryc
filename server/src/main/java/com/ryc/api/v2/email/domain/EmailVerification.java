@@ -36,13 +36,17 @@ public class EmailVerification {
         .build();
   }
 
-  public EmailVerification verify() {
+  public EmailVerification verify(int inputCode) {
     if (verified) {
       throw new BusinessRuleException(EmailErrorCode.EMAIL_ALREADY_VERIFIED);
     }
 
     if (LocalDateTime.now().isAfter(expiresAt)) {
       throw new BusinessRuleException(EmailErrorCode.EMAIL_VERIFICATION_CODE_EXPIRED);
+    }
+
+    if (inputCode != code) {
+      throw new BusinessRuleException(EmailErrorCode.EMAIL_VERIFICATION_CODE_INVALID);
     }
 
     return EmailVerification.builder()
