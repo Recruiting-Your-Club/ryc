@@ -72,6 +72,6 @@ public class EmailHttpApi {
       include = {"EMAIL_VERIFICATION_CODE_EXPIRED", "INVALID_PARAMETER"})
   public ResponseEntity<Void> verifyEmailCode(@Valid @RequestBody VerificationCodeRequest body) {
     emailVerificationService.verificationEmailCode(body);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().build();
   }
 }
