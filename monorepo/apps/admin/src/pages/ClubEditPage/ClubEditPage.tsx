@@ -1,11 +1,13 @@
 import type { Club, UpdateClub } from '@api/domain/club/types';
 import { myClubQueries } from '@api/queryFactory';
 import ssoc from '@assets/images/ssoc.png';
-import { ClubBox, ImageRegister, MainCardEditDialog } from '@components';
+import { ClubBox, ErrorDialog, ImageRegister, MainCardEditDialog } from '@components';
 import { BASE_URL } from '@constants/api';
 import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
 import { useUpdateClub } from '@hooks/useUpdateClub';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import DOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -63,10 +65,11 @@ function ClubEditPage() {
     const [clubSummaries, setClubSummaries] = useState<ClubBoxItem[]>(defaultClubSummaries);
     const [detailImagesInFileUploader, setDetailImagesInFileUploader] = useState<File[]>([]);
     const [openClubCardDialog, setOpenClubCardDialog] = useState(false);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
-    const { data: club } = useQuery(myClubQueries.detail(clubId ?? ''));
+    const { data: club } = useQuery({ ...myClubQueries.detail(clubId ?? ''), throwOnError: true });
     const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
     const { uploadFiles, error } = useFileUpload(BASE_URL);
     const { handleContentChange } = useEditorImageUpload({ location: 'CLUB_EDITOR' });
@@ -214,12 +217,19 @@ function ClubEditPage() {
             return typeof fileMetadataId?.[0]?.fileMetadataId === 'string'
                 ? fileMetadataId[0].fileMetadataId
                 : '';
-        } catch (error) {
-            toast.error('이미지 업로드에 실패했어요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            throw error;
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast(`이미지 업로드에 실패했어요.`, {
+                    type: 'error',
+                    toastTheme: 'white',
+                });
+            }
+            // throw error;
         }
     };
 
@@ -261,12 +271,18 @@ function ClubEditPage() {
                 toastTheme: 'white',
                 type: 'success',
             });
-        } catch (error) {
-            toast('업데이트에 실패했습니다. 다시 시도해주세요.', {
-                toastTheme: 'white',
-                type: 'error',
-            });
-            console.error(error);
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('오류로 인해 업데이트에 실패했어요.', {
+                    toastTheme: 'colored',
+                    type: 'error',
+                });
+            }
         }
     };
 
@@ -360,6 +376,11 @@ function ClubEditPage() {
                 open={openClubCardDialog}
                 onClose={() => setOpenClubCardDialog(false)}
                 club={club as unknown as Club}
+            />
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
             />
         </div>
     );

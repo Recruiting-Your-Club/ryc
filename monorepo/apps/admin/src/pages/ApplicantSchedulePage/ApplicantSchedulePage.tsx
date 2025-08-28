@@ -7,7 +7,7 @@ import type { StepApplicant } from '@api/domain/step/types';
 import { useInterviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
-import { ApplicantList, ComponentMover, InterviewSlotDropdown } from '@components';
+import { ApplicantList, ComponentMover, ErrorDialog, InterviewSlotDropdown } from '@components';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import type { Dispatch, SetStateAction } from 'react';
@@ -50,6 +50,8 @@ function ApplicantSchedulePage() {
     const [selectedStandardInterviewLabel, setSelectedStandardInterviewLabel] =
         useState<SelectedLabel>({ label: '면접 일정 없음', interviewSlotId: null });
 
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
     const { data: interviewSlots = [] } = useSuspenseQuery(
@@ -71,9 +73,11 @@ function ApplicantSchedulePage() {
 
     const { mutate: updateIntervieweeList } = useInterviewMutations.useUpdateInterviewReservation(
         announcementId!,
+        setErrorDialogOpen,
     );
     const { mutate: deleteReservation } = useInterviewMutations.useDeleteReservation(
         announcementId!,
+        setErrorDialogOpen,
     );
 
     // calculated values
@@ -344,6 +348,11 @@ function ApplicantSchedulePage() {
                     />
                 </div>
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }

@@ -2,9 +2,11 @@ import { HttpError } from '@api/common/httpError';
 import { useUserMutation } from '@api/hooks/userMutations';
 import { myClubQueries } from '@api/queryFactory';
 import { userQueries } from '@api/queryFactory/userQueries';
-import { ImageRegister } from '@components';
+import { ErrorDialog, ImageRegister } from '@components';
 import { BASE_URL } from '@constants/api';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useEffect, useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';
@@ -45,6 +47,8 @@ function UserSettingPage() {
     const [isProfileModifyMode, setIsProfileModifyMode] = useState(false);
     const [image, setImage] = useState<string>(BasicImage);
     const [croppedImage, setCroppedImage] = useState<string>(BasicImage);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     //form hooks
     //query hooks
     const { data: myClubs } = useSuspenseQuery(myClubQueries.all());
@@ -59,11 +63,18 @@ function UserSettingPage() {
                 setCroppedImage(data.representativeImage.url);
             }
         },
-        onError: (error) => {
-            if (error instanceof HttpError && error.statusCode === 500) {
-                return;
+        onError: (err) => {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('프로필 사진 업데이트에 실패했어요.', {
+                    toastTheme: 'colored',
+                    type: 'error',
+                });
             }
-            toast.error('프로필 사진 업데이트에 실패했습니다.');
         },
     });
     //calculated values
@@ -253,6 +264,11 @@ function UserSettingPage() {
                     수정완료
                 </Button>
             )}
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }

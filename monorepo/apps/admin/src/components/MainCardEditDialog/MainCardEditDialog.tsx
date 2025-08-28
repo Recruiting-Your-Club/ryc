@@ -4,6 +4,8 @@ import ssoc from '@assets/images/ssoc.png';
 import { HashTagInput } from '@components';
 import type { Tag } from '@components/HashTagInput/types';
 import { useUpdateClub } from '@hooks/useUpdateClub';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import { useState } from 'react';
 
 import { Input, Text, useToast } from '@ssoc/ui';
@@ -63,11 +65,17 @@ function MainCardEditDialog({
                 toastTheme: 'white',
                 type: 'success',
             });
-        } catch (error) {
-            toast('동아리 정보 수정에 실패했습니다. 다시 시도해주세요.', {
-                toastTheme: 'white',
-                type: 'error',
-            });
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            // Dialog에서는 500 에러 토스트로 처리
+            if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast(`동아리 정보 수정에 실패했습니다. 다시 시도해주세요.`, {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+            }
             console.error(error);
         }
         onClose();

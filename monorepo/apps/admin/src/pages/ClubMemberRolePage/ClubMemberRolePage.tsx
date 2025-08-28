@@ -1,8 +1,11 @@
 import { roleMutations } from '@api/hooks';
 import { roleQueries } from '@api/queryFactory/roleQueries';
+import { ErrorDialog } from '@components';
 import { ConfirmDialog } from '@components/ConfirmDialog';
 import { InviteMemberDialog } from '@components/InviteMemberDialog';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -44,6 +47,8 @@ const ClubMemberRolePage = () => {
     const [inviteUrl, setInviteUrl] = useState('');
     const [searchText, setSearchText] = useState('');
     const [selectedId, setSelectedId] = useState<string>('');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
     const { mutate: deleteMember, isPending: isDeleting } = roleMutations.useDeleteClubMember(
@@ -59,11 +64,18 @@ const ClubMemberRolePage = () => {
                 setInviteUrl(`${origin}${invitePath}`);
                 openDialog();
             },
-            onError: (error) => {
-                if (error instanceof HttpError && error.statusCode === 500) {
-                    return;
+            onError: (err) => {
+                const error = err as ErrorWithStatusCode;
+                if (error.statusCode === 500) {
+                    setErrorDialogOpen(true);
+                } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast(`초대 링크 생성에 실패했어요.`, {
+                        type: 'error',
+                        toastTheme: 'colored',
+                    });
                 }
-                toast.error('초대 링크 생성에 실패했습니다.');
             },
         });
 
@@ -74,6 +86,7 @@ const ClubMemberRolePage = () => {
     } = useQuery({
         ...roleQueries.getClubMemberList(clubId || ''),
         enabled: !!clubId,
+        throwOnError: true,
     });
 
     // calculated values
@@ -123,19 +136,18 @@ const ClubMemberRolePage = () => {
                 });
             },
             onError: (error) => {
+                setIsKickConfirmOpen(false);
                 if (error instanceof HttpError && error.statusCode === 500) {
+                    setErrorDialogOpen(true);
                     return;
                 } else if (error instanceof HttpError && error.statusCode === 400) {
                     toast.error('회장은 내보낼 수 없어요.');
-                    setIsKickConfirmOpen(false);
                     return;
                 } else if (error instanceof HttpError && error.statusCode === 403) {
                     toast.error('동아리원은 내보내기 권한이 없어요.');
-                    setIsKickConfirmOpen(false);
                     return;
                 }
                 toast.error('내보내기에 실패했습니다.');
-                setIsKickConfirmOpen(false);
             },
         });
     };
@@ -260,6 +272,11 @@ const ClubMemberRolePage = () => {
                     cancelButton={true}
                     handleClose={() => setIsKickConfirmOpen(false)}
                     actionHandler={handleConfirmKickMember}
+                />
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
                 />
             </div>
         </div>

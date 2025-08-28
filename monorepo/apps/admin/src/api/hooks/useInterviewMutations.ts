@@ -2,7 +2,9 @@ import { deleteInterviewReservation, putInterviewReservation } from '@api/domain
 import type { UnreservedApplicant } from '@api/domain/interview/types';
 import { type InterviewApplicant } from '@api/domain/interview/types';
 import { interviewKeys } from '@api/querykeyFactory';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 
 import { useToast } from '@ssoc/ui';
 
@@ -20,7 +22,10 @@ interface DeleteInterviewReservation {
 }
 
 export const useInterviewMutations = {
-    useUpdateInterviewReservation: (announcementId: string) => {
+    useUpdateInterviewReservation: (
+        announcementId: string,
+        onOpenDialog: (open: boolean) => void,
+    ) => {
         const queryClient = useQueryClient();
         const { toast } = useToast();
 
@@ -109,7 +114,7 @@ export const useInterviewMutations = {
                 return { prevOldSlot, prevNewSlot };
             },
 
-            onError: (_, variables, context) => {
+            onError: (error: ErrorWithStatusCode, variables, context) => {
                 if (context?.prevOldSlot) {
                     queryClient.setQueryData(
                         variables.oldInterviewSlotId === ''
@@ -132,10 +137,16 @@ export const useInterviewMutations = {
                         context.prevNewSlot,
                     );
                 }
-                toast('오류로 인해 일정 변경을 못했어요.', {
-                    toastTheme: 'colored',
-                    type: 'error',
-                });
+                if (error.statusCode === 500) {
+                    onOpenDialog(true);
+                } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast('오류로 인해 일정 변경을 못했어요.', {
+                        toastTheme: 'colored',
+                        type: 'error',
+                    });
+                }
             },
 
             onSuccess: (_, variables) => {
@@ -161,7 +172,7 @@ export const useInterviewMutations = {
         });
     },
 
-    useDeleteReservation: (announcementId: string) => {
+    useDeleteReservation: (announcementId: string, onOpenDialog: (open: boolean) => void) => {
         const queryClient = useQueryClient();
         const { toast } = useToast();
 
@@ -180,11 +191,17 @@ export const useInterviewMutations = {
                     queryKey: interviewKeys.unreservedApplicant(announcementId, variables.clubId),
                 });
             },
-            onError: () => {
-                toast('오류로 인해 일정 변경을 못했어요.', {
-                    toastTheme: 'colored',
-                    type: 'error',
-                });
+            onError: (error: ErrorWithStatusCode) => {
+                if (error.statusCode === 500) {
+                    onOpenDialog(true);
+                } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast('오류로 인해 일정 변경을 못했어요.', {
+                        toastTheme: 'colored',
+                        type: 'error',
+                    });
+                }
             },
         });
     },

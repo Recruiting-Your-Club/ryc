@@ -24,7 +24,7 @@ import {
     s_warningIcon,
     s_warningIconWrapper,
 } from './ErrorFallbackPage.style';
-import type { ErrorFallbackPageProps } from './types';
+import type { ErrorFallbackPageProps, ErrorResponse } from './types';
 
 function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps) {
     // prop destruction
@@ -52,7 +52,13 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
             message = ERROR_CODE_401;
             break;
         case 400:
-            message = ERROR_CODE_400;
+            if (error.response?.errors && Array.isArray(error.response.errors)) {
+                message = error.response.errors
+                    .map((error: ErrorResponse) => error.message)
+                    .join('\n');
+            } else {
+                message = error.message ? `${error.message} (400)` : ERROR_CODE_400;
+            }
             break;
         default:
             message = error.message ?? ERROR_DEFAULT;

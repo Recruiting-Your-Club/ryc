@@ -37,7 +37,10 @@ function NonAnnouncementPage() {
         data: announcementList,
         isLoading,
         error,
-    } = useQuery(announcementQueries.getListByClub(clubId || '', isDialogOpen));
+    } = useQuery({
+        ...announcementQueries.getListByClub(clubId || '', isDialogOpen),
+        throwOnError: true,
+    });
 
     // calculated values
     const announcementsByStatus = useMemo(() => {

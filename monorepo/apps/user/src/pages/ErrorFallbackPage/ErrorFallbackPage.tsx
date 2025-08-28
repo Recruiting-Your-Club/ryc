@@ -3,6 +3,7 @@ import {
     DEFAULT_DESCRIPTION,
     ERROR_500_DESCRIPTION,
     ERROR_CODE_400,
+    ERROR_CODE_401,
     ERROR_CODE_403,
     ERROR_CODE_404_DATA,
     ERROR_CODE_500,
@@ -23,7 +24,7 @@ import {
     s_warningIcon,
     s_warningIconWrapper,
 } from './ErrorFallbackPage.style';
-import type { ErrorFallbackPageProps } from './types';
+import type { ErrorFallbackPageProps, ErrorResponse } from './types';
 
 function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps) {
     // prop destruction
@@ -47,8 +48,17 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
         case 403:
             message = ERROR_CODE_403;
             break;
+        case 401:
+            message = ERROR_CODE_401;
+            break;
         case 400:
-            message = ERROR_CODE_400;
+            if (error.response?.errors && Array.isArray(error.response.errors)) {
+                message = error.response.errors
+                    .map((error: ErrorResponse) => error.message)
+                    .join('\n');
+            } else {
+                message = error.message ? `${error.message} (400)` : ERROR_CODE_400;
+            }
             break;
         default:
             message = error.message ?? ERROR_DEFAULT;
@@ -81,17 +91,16 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
                     <Button onClick={() => goTo('/')}>오류 신고</Button>
                     <Button onClick={resetErrorBoundary}>다시 시도</Button>
                 </div>
+            ) : error.statusCode === 401 ? (
+                <div css={s_buttonContainer}>
+                    <Button onClick={() => goTo('/login')}>로그인 하기</Button>
+                </div>
             ) : (
                 <div css={s_buttonContainer}>
                     <Button onClick={resetErrorBoundary}>다시 시도</Button>
                 </div>
             )}
-            <Button
-                size="xs"
-                variant="text"
-                onClick={() => (window.location.href = '/')}
-                sx={s_homeTextButton}
-            >
+            <Button size="xs" variant="text" onClick={() => goTo('/')} sx={s_homeTextButton}>
                 처음으로
             </Button>
         </div>

@@ -1,8 +1,11 @@
 import { useCreateAnnouncement } from '@api/hooks/useCreateAnnouncement';
+import { ErrorDialog } from '@components';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
 import { useQuestion } from '@hooks/useQuestion';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { act, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { generatePath, useLocation, useParams } from 'react-router-dom';
 
@@ -62,6 +65,7 @@ function RecruitCreatePage() {
     // state, ref, querystring hooks
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
@@ -125,9 +129,19 @@ function RecruitCreatePage() {
             );
             removeHistoryAndGo(successPath);
         },
-        onError: () => {
+        onError: (err) => {
             setIsDialogOpen(false);
-            toast.error('공고 등록에 실패했습니다.');
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('공고 등록에 실패했어요.', {
+                    toastTheme: 'colored',
+                    type: 'error',
+                });
+            }
         },
     });
 
@@ -326,6 +340,11 @@ function RecruitCreatePage() {
                             </Button>
                         </Dialog.Action>
                     </Dialog>
+                    <ErrorDialog
+                        open={errorDialogOpen}
+                        handleClose={() => setErrorDialogOpen(false)}
+                        errorStatusCode={500}
+                    />
                 </div>
             </div>
         </div>

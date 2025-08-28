@@ -26,9 +26,10 @@ function AnnouncementPage() {
     const { clubId, announcementId } = useParams();
 
     const { data: club } = useSuspenseQuery(myClubQueries.detail(clubId ?? ''));
-    const { data: detailClub } = useQuery<DetailAnnouncement>(
-        announcementQueries.detail(announcementId ?? ''),
-    );
+    const { data: detailClub } = useQuery<DetailAnnouncement>({
+        ...announcementQueries.detail(announcementId ?? ''),
+        throwOnError: true,
+    });
 
     const imageUrls = useMemo(
         () => (detailClub?.images ?? []).map((image) => image.url),

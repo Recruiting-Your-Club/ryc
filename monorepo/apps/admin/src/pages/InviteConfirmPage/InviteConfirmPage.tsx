@@ -1,7 +1,8 @@
 import { roleMutations } from '@api/hooks';
 import { myClubQueries } from '@api/queryFactory';
+import { ErrorDialog } from '@components';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
@@ -29,6 +30,8 @@ const InviteConfirmPage = () => {
     const accessToken = useAuthStore((state) => state.accessToken);
     // initial values
     // state, ref, querystring hooks
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
 
@@ -36,23 +39,24 @@ const InviteConfirmPage = () => {
         ...myClubQueries.getClubInfoByInviteCode(inviteCode || ''),
         enabled: !!inviteCode,
         retry: false,
+        throwOnError: true,
     });
 
     const { mutate: acceptInvite, isPending } = roleMutations.usePostInviteCode({
         clubId: clubInfo?.id || '',
         inviteCode: inviteCode || '',
         onSuccess: () => {
-            toast.success('초대에 참여되었습니다.');
+            toast.success('초대에 참여되었어요!');
             navigate(`/settings/${clubInfo?.id}`);
         },
         onError: (error) => {
             if (error instanceof HttpError && error.statusCode === 500) {
-                return;
+                setErrorDialogOpen(true);
             } else if (error instanceof HttpError && error.statusCode === 409) {
-                toast.error('이미 초대에 참여한 동아리입니다.');
+                toast.error('이미 초대에 참여한 동아리예요!');
                 return;
             }
-            toast.error('초대 처리 중 오류가 발생했습니다.');
+            toast.error('초대 처리 중 오류가 발생했어요.');
         },
     });
 
@@ -61,7 +65,7 @@ const InviteConfirmPage = () => {
     // handlers
     const handleConfirm = async () => {
         if (!inviteCode || !clubInfo?.id) {
-            toast.error('잘못된 초대 링크입니다.');
+            toast.error('잘못된 초대 링크예요.');
             return;
         }
 
@@ -126,6 +130,11 @@ const InviteConfirmPage = () => {
                     </Button>
                 </div>
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 };
