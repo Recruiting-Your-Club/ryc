@@ -27,6 +27,10 @@ public class EmailVerification {
   }
 
   public EmailVerification verify() {
+    if (this.verified) {
+      throw new BusinessRuleException(EmailErrorCode.EMAIL_ALREADY_VERIFIED);
+    }
+
     if (LocalDateTime.now().isAfter(expiresAt)) {
       throw new BusinessRuleException(EmailErrorCode.EMAIL_VERIFICATION_CODE_EXPIRED);
     }
