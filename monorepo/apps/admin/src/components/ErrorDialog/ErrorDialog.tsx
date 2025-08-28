@@ -1,5 +1,5 @@
 import { DEFAULT_DESCRIPTION, ERROR_500_DESCRIPTION } from '@constants/errorText';
-import { getErrorMessage } from '@utils/getErrorMessage';
+import { getErrorPlainMessageByErrorStatusCode } from '@utils/getErrorMessage';
 import React from 'react';
 
 import { useRouter } from '@ssoc/hooks';
@@ -8,13 +8,19 @@ import { Button, Dialog, Text } from '@ssoc/ui';
 import { s_textWrapper } from './ErrorDialog.style';
 import type { ErrorDialogProps } from './type';
 
-function ErrorDialog({ open, handleClose, error, content, subContent }: ErrorDialogProps) {
+function ErrorDialog({
+    open,
+    handleClose,
+    errorStatusCode,
+    content,
+    subContent,
+}: ErrorDialogProps) {
     // prop destruction
     // lib hooks
     const { goTo } = useRouter();
 
     // initial values
-    let message = getErrorMessage(error);
+    let message = getErrorPlainMessageByErrorStatusCode(errorStatusCode);
 
     // state, ref, querystring hooks
     // form hooks
@@ -40,13 +46,13 @@ function ErrorDialog({ open, handleClose, error, content, subContent }: ErrorDia
                     <Text type="subCaptionRegular" textAlign="center" sx={s_textWrapper}>
                         {subContent
                             ? subContent
-                            : error.statusCode === 500
+                            : errorStatusCode === 500
                               ? ERROR_500_DESCRIPTION
                               : DEFAULT_DESCRIPTION}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Action position="center">
-                    {error.statusCode === 500 ? (
+                    {errorStatusCode === 500 ? (
                         <div>
                             <Button
                                 onClick={() => {
@@ -57,7 +63,7 @@ function ErrorDialog({ open, handleClose, error, content, subContent }: ErrorDia
                                 오류 신고
                             </Button>
                         </div>
-                    ) : error.statusCode === 401 ? (
+                    ) : errorStatusCode === 401 ? (
                         <div>
                             <Button
                                 onClick={() => {
