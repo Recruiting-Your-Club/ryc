@@ -23,6 +23,9 @@ async function register(data: Register): Promise<RegisterResponse> {
         url: 'auth/register',
         body: data,
         isAuthRequire: false,
+        headers: {
+            'X-EMAIL-VERIFICATION-CODE': data.verifyCode,
+        },
     });
     return response as RegisterResponse;
 }

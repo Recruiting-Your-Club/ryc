@@ -1,5 +1,16 @@
-import { postInterviewEmail, postPlainEmail } from '@api/domain';
-import type { Email, InterviewEmail } from '@api/domain/email/types';
+import {
+    patchEmailVerification,
+    postEmailVerification,
+    postInterviewEmail,
+    postPlainEmail,
+} from '@api/domain';
+import type {
+    Email,
+    EmailVerificationSend,
+    InterviewEmail,
+    RequestPatchEmailVerification,
+    RequestPostEmailVerification,
+} from '@api/domain/email/types';
 import { useMutation } from '@tanstack/react-query';
 
 import { useToast } from '@ssoc/ui';
@@ -44,4 +55,16 @@ export const useEmailMutations = {
 
     usePostInterviewEmail: (onClose: (isClosed: boolean) => void) =>
         useEmailMutation<InterviewEmail>(postInterviewEmail, () => onClose),
+};
+
+export const useSendEmailVerification = () => {
+    return useMutation<EmailVerificationSend, unknown, RequestPostEmailVerification>({
+        mutationFn: (payload) => postEmailVerification(payload),
+    });
+};
+
+export const useVerifyEmailCode = () => {
+    return useMutation<void, unknown, RequestPatchEmailVerification>({
+        mutationFn: (payload) => patchEmailVerification(payload),
+    });
 };

@@ -12,7 +12,7 @@ function useRegister() {
     const { toast } = useToast();
 
     return useMutation<RegisterResponse, Error, Register>({
-        mutationFn: register,
+        mutationFn: (payload) => register(payload),
         onSuccess: () => {
             navigate('/login', { replace: true });
         },
