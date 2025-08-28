@@ -84,7 +84,7 @@ export const s_codeInput = ({ hasValue, isError }: CodeInputStyleProps) => css`
     }
 
     &:disabled {
-        background-color: ${theme.colors.gray[300]};
+        background-color: ${theme.colors.gray[200]};
         cursor: not-allowed;
     }
 `;
