@@ -124,6 +124,7 @@ function ClubApplyPersonalInfoPage({
 
                                 {!isThisLocked ? (
                                     <Button
+                                        variant="outlined"
                                         onClick={async () => {
                                             if (!value) return toast.error('이메일을 입력해주세요');
                                             if (hasError)
