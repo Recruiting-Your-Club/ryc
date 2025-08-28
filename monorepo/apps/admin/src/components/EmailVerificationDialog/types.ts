@@ -4,7 +4,7 @@ export interface EmailVerificationDialogProps {
     onClose: () => void;
     onVerify?: (code: string) => Promise<void>;
     onResendCode?: () => Promise<void>;
-    expiresAt?: string;
+    expiresAt: string;
     codeLength?: number;
 }
 
