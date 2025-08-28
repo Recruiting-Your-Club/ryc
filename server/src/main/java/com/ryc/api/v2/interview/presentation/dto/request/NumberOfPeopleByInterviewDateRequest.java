@@ -6,14 +6,15 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.ryc.api.v2.common.deserializer.EmptyStringToNullLocalDateTimeDeserializer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record NumberOfPeopleByInterviewDateRequest(
     @Schema(description = "면접 시작 날짜와 시간")
         @NotNull(message = "면접 시작 날짜와 시간은 null일 수 없습니다.")
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        @JsonDeserialize(using = EmptyStringToNullLocalDateTimeDeserializer.class)
         @Future(message = "면접 시작 시간은 미래의 시간이여야 합니다.")
         LocalDateTime start,
     @Schema(description = "면접 당 진행 시간(분)")
