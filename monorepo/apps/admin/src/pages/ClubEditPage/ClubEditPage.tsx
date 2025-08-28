@@ -217,12 +217,19 @@ function ClubEditPage() {
             return typeof fileMetadataId?.[0]?.fileMetadataId === 'string'
                 ? fileMetadataId[0].fileMetadataId
                 : '';
-        } catch (error) {
-            toast.error('이미지 업로드에 실패했어요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            throw error;
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast(`이미지 업로드에 실패했어요.`, {
+                    type: 'error',
+                    toastTheme: 'white',
+                });
+            }
+            // throw error;
         }
     };
 
@@ -265,18 +272,13 @@ function ClubEditPage() {
                 type: 'success',
             });
         } catch (err) {
-            // toast('업데이트에 실패했습니다. 다시 시도해주세요.', {
-            //     toastTheme: 'white',
-            //     type: 'error',
-            // });
-            // console.error(error);
             const error = err as ErrorWithStatusCode;
             if (error.statusCode === 500) {
                 setErrorDialogOpen(true);
             } else if (error.response?.errors[0].message || error.message) {
                 toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
             } else {
-                toast('오류로 인해 업데이트를 실패했어요.', {
+                toast('오류로 인해 업데이트에 실패했어요.', {
                     toastTheme: 'colored',
                     type: 'error',
                 });

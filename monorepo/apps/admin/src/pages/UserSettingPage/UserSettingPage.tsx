@@ -64,9 +64,6 @@ function UserSettingPage() {
             }
         },
         onError: (err) => {
-            // if (error instanceof HttpError && error.statusCode === 500) {
-            //     return;
-            // }
             const error = err as ErrorWithStatusCode;
             if (error.statusCode === 500) {
                 setErrorDialogOpen(true);
@@ -78,7 +75,6 @@ function UserSettingPage() {
                     type: 'error',
                 });
             }
-            // toast.error('프로필 사진 업데이트에 실패했습니다.');
         },
     });
     //calculated values

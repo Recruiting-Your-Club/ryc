@@ -12,7 +12,7 @@ interface UseLoginOptions {
     redirectPath?: string;
 }
 
-function useLogin(options?: UseLoginOptions) {
+function useLogin(onErrorDialogOpen: (open: boolean) => void, options?: UseLoginOptions) {
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const { removeHistoryAndGo } = useRouter();
     const { toast } = useToast();
@@ -25,6 +25,7 @@ function useLogin(options?: UseLoginOptions) {
         },
         onError: (error) => {
             if (error instanceof HttpError && error.statusCode === 500) {
+                onErrorDialogOpen(true);
                 return;
             }
             toast.error('로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.', {

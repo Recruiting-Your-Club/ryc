@@ -263,7 +263,7 @@ function StepManagementPage() {
                         } else if (error.response?.errors[0].message || error.message) {
                             toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
                         } else {
-                            toast('오류로 인해 일정 변경을 못했어요.', {
+                            toast('오류로 인해 상태 변경을 못했어요.', {
                                 toastTheme: 'colored',
                                 type: 'error',
                             });

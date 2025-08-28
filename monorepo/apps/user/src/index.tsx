@@ -33,14 +33,14 @@ function handleGlobalError(error: unknown) {
 const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error) => {
-            handleGlobalError(error);
+            throw error;
         },
     }),
-    mutationCache: new MutationCache({
-        onError: (error) => {
-            handleGlobalError(error);
-        },
-    }),
+    // mutationCache: new MutationCache({
+    //     onError: (error) => {
+    //         handleGlobalError(error);
+    //     },
+    // }),
 });
 
 function ToastManager() {

@@ -1,4 +1,5 @@
 import { userQueries } from '@api/queryFactory';
+import { ErrorDialog } from '@components';
 import { css } from '@emotion/react';
 import { useRegister } from '@hooks/useRegister';
 import { useQuery } from '@tanstack/react-query';
@@ -30,10 +31,11 @@ function RegisterPage() {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [isPossible, setIsPossible] = useState(false);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
-    const { mutate: register, isPending, error } = useRegister();
+    const { mutate: register, isPending, error } = useRegister(setErrorDialogOpen);
     const {
         data: isDuplicateEmail,
         isLoading: emailLoading,
@@ -180,6 +182,11 @@ function RegisterPage() {
                         이미 계정이 있으신가요?
                     </Button>
                 </div>
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
+                />
             </div>
         </form>
     );

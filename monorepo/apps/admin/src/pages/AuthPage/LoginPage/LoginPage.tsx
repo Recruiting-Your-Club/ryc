@@ -1,3 +1,4 @@
+import { ErrorDialog } from '@components';
 import { useLogin } from '@hooks/useLogin';
 import type { FormEvent } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ function LoginPage() {
     // state, ref, querystring hooks
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -37,7 +39,7 @@ function LoginPage() {
         mutate: login,
         isPending,
         error,
-    } = useLogin({
+    } = useLogin(setErrorDialogOpen, {
         redirectPath: state?.from,
     });
 
@@ -93,6 +95,11 @@ function LoginPage() {
                         계정이 없으신가요?
                     </Button>
                 </div>
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
+                />
             </div>
         </form>
     );

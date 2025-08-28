@@ -73,8 +73,9 @@ function ClubApplyPage() {
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
         onError: (error) => {
+            setIsSubmitDialogOpen(false);
+
             if (error instanceof HttpError && error.statusCode === 500) {
-                setIsSubmitDialogOpen(false);
                 setErrorDialogOpen(true);
                 return;
             } else if (error instanceof HttpError && error.statusCode === 409) {
@@ -82,22 +83,20 @@ function ClubApplyPage() {
 
                 if (errorResponse?.code === 'DUPLICATE_APPLICATION') {
                     toast.error('이미 해당 공고에 지원한 이메일입니다.');
-                    setIsSubmitDialogOpen(false);
                     return;
                 }
-            } else if (
-                (error as ErrorWithStatusCode).response?.errors[0].message ||
-                (error as ErrorWithStatusCode).message
-            ) {
-                setIsSubmitDialogOpen(false);
+            }
+
+            const err = error as ErrorWithStatusCode;
+            if (err.response?.errors[0].message || err.message) {
                 toast(returnErrorMessage(error as ErrorWithStatusCode), {
                     type: 'error',
                     toastTheme: 'colored',
                 });
                 return;
             }
+
             toast.error('제출에 실패했어요.');
-            setIsSubmitDialogOpen(false);
         },
     });
 

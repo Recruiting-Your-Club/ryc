@@ -159,7 +159,7 @@ function RecruitEditPage() {
             } else if (error.response?.errors[0].message || error.message) {
                 toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
             } else {
-                toast('공고 등록에 실패했어요.', {
+                toast('공고 편집에 실패했어요.', {
                     toastTheme: 'colored',
                     type: 'error',
                 });

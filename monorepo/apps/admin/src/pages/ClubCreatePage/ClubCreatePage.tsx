@@ -89,12 +89,19 @@ function ClubCreatePage() {
             return typeof fileMetadataId?.[0]?.fileMetadataId === 'string'
                 ? fileMetadataId[0].fileMetadataId
                 : '';
-        } catch (error) {
-            toast.error('이미지 업로드에 실패했어요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            throw error;
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast(`이미지 업로드에 실패했어요.`, {
+                    type: 'error',
+                    toastTheme: 'white',
+                });
+            }
+            // throw error;
         }
     };
 
@@ -157,11 +164,6 @@ function ClubCreatePage() {
             resetForm();
             removeHistoryAndGo(`/clubs/${result.clubId}`);
         } catch (err) {
-            // if (error instanceof Error) {
-            //     toast(error.message, {
-            //         type: 'error',
-            //     });
-            // }
             const error = err as ErrorWithStatusCode;
             if (error.statusCode === 500) {
                 setErrorDialogOpen(true);
