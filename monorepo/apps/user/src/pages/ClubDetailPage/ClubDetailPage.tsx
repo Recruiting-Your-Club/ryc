@@ -1,4 +1,6 @@
+import { clubQueries } from '@api/queryFactory';
 import { ClubDetailRecruitmentLoadingPage } from '@pages/LoadingPage';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getCategory } from '@utils/changeCategory';
 import React, { lazy, Suspense, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -23,11 +25,9 @@ const LazyRecruitmentPage = lazy(() => import('./RecruitmentPage/RecruitmentPage
 function ClubDetailPage() {
     // prop destruction
     const location = useLocation();
-    const { title, category, clubLogo, description, status } = location.state;
     const { id: clubId } = useParams<{ id: string }>();
     // lib hooks
-    const { setClubName, setClubLogo, setClubCategory, setClubDescription, setClubStatus } =
-        useClubStore();
+    const { setClubName, setClubLogo, setClubCategory, setClubDescription } = useClubStore();
     // initial values
     const navigationItem = useMemo(
         () => [
@@ -52,25 +52,26 @@ function ClubDetailPage() {
     // state, ref, querystring hooks
     // form hooks
     // query hooks
+    const { data: club } = useSuspenseQuery(clubQueries.getClub(clubId || ''));
+
     // calculated values
     // handlers
     // effects
     useEffect(() => {
-        setClubName(title);
-        setClubLogo(clubLogo);
-        setClubCategory(category);
-        setClubDescription(description);
-        setClubStatus(status);
-    }, [title, clubLogo, category, description, status]);
+        setClubName(club.name);
+        setClubLogo(club.representativeImage.url);
+        setClubCategory(club.category);
+        setClubDescription(club.detailDescription);
+    }, [club]);
 
     return (
         <div css={clubDetailPageContainer}>
             <div css={contentContainer}>
                 <div css={clubHeader}>
                     <div css={clubImage}>
-                        {clubLogo ? (
+                        {club.representativeImage.url ? (
                             <img
-                                src={clubLogo}
+                                src={club.representativeImage.url}
                                 alt="대표이미지"
                                 width="100%"
                                 height="100%"
@@ -81,14 +82,14 @@ function ClubDetailPage() {
                                 shape="square"
                                 size="full"
                                 radius="10px"
-                                imageURL={clubLogo}
+                                imageURL={club.representativeImage.url}
                                 imageName="logo"
                             />
                         )}
                     </div>
                     <div css={clubHeaderTextContainer}>
                         <Text as="h4" type="h1Semibold" textAlign="start" sx={clubHeaderTitle}>
-                            {title}
+                            {club.name}
                         </Text>
                         <Text
                             as="div"
@@ -97,7 +98,7 @@ function ClubDetailPage() {
                             textAlign="start"
                             sx={{ marginLeft: '0.4rem' }}
                         >
-                            {getCategory(category)}
+                            {getCategory(club.category)}
                         </Text>
                     </div>
                 </div>
