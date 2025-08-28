@@ -66,7 +66,7 @@ function ClubEditPage() {
 
     // form hooks
     // query hooks
-    const { data: club } = useQuery(myClubQueries.detail(clubId ?? ''));
+    const { data: club } = useQuery({ ...myClubQueries.detail(clubId ?? ''), throwOnError: true });
     const { mutateAsync: updateClub, isPending: isUpdateLoading } = useUpdateClub();
     const { uploadFiles, error } = useFileUpload(BASE_URL);
     const { handleContentChange } = useEditorImageUpload({ location: 'CLUB_EDITOR' });

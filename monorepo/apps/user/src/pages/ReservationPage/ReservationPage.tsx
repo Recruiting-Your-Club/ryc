@@ -57,9 +57,10 @@ function ReservationPage() {
     const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(true);
     // form hooks
     // query hooks
-    const { data: clubReservation } = useQuery(
-        clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''),
-    );
+    const { data: clubReservation } = useQuery({
+        ...clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''),
+        throwOnError: true,
+    });
     const { mutateAsync: submitInterviewReservation } = useSubmitInterviewReservation();
     // calculated values
 

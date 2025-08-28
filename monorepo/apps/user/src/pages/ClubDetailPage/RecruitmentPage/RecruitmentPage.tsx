@@ -37,11 +37,13 @@ function RecruitmentPage() {
     } = useQuery({
         ...announcementQueries.getAnnouncementList(clubId || ''),
         enabled: !!clubId,
+        throwOnError: true,
     });
 
     const { data: selectedAnnouncementDetail } = useQuery({
         ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId),
         enabled: !!selectedAnnouncementId,
+        throwOnError: true,
     });
 
     // calculated values

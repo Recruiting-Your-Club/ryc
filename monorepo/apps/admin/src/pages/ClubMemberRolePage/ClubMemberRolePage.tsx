@@ -74,6 +74,7 @@ const ClubMemberRolePage = () => {
     } = useQuery({
         ...roleQueries.getClubMemberList(clubId || ''),
         enabled: !!clubId,
+        throwOnError: true,
     });
 
     // calculated values

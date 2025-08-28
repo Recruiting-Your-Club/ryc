@@ -131,7 +131,10 @@ function RecruitEditPage() {
 
     // form hooks
     // query hooks
-    const { data: detailAnnouncement } = useQuery(announcementQueries.detail(announcementId!));
+    const { data: detailAnnouncement } = useQuery({
+        ...announcementQueries.detail(announcementId!),
+        throwOnError: true,
+    });
     const { mutate: putAnnouncement } = useUpdateAnnouncement({
         clubId: clubId!,
         announcementId: announcementId!,

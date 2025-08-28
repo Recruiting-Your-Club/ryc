@@ -36,6 +36,7 @@ const InviteConfirmPage = () => {
         ...myClubQueries.getClubInfoByInviteCode(inviteCode || ''),
         enabled: !!inviteCode,
         retry: false,
+        throwOnError: true,
     });
 
     const { mutate: acceptInvite, isPending } = roleMutations.usePostInviteCode({

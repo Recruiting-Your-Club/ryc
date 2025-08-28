@@ -38,7 +38,7 @@ function RegisterPage() {
         data: isDuplicateEmail,
         isLoading: emailLoading,
         refetch: refetchEmail,
-    } = useQuery(userQueries.checkDuplicateEmail(email));
+    } = useQuery({ ...userQueries.checkDuplicateEmail(email), throwOnError: true });
 
     // calculated values
     // handlers
