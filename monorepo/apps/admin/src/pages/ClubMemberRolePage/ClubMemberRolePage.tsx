@@ -1,5 +1,6 @@
 import { roleMutations } from '@api/hooks';
 import { roleQueries } from '@api/queryFactory/roleQueries';
+import { ErrorDialog } from '@components';
 import { ConfirmDialog } from '@components/ConfirmDialog';
 import { InviteMemberDialog } from '@components/InviteMemberDialog';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -44,6 +45,8 @@ const ClubMemberRolePage = () => {
     const [inviteUrl, setInviteUrl] = useState('');
     const [searchText, setSearchText] = useState('');
     const [selectedId, setSelectedId] = useState<string>('');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
     const { mutate: deleteMember, isPending: isDeleting } = roleMutations.useDeleteClubMember(
@@ -125,6 +128,8 @@ const ClubMemberRolePage = () => {
             },
             onError: (error) => {
                 if (error instanceof HttpError && error.statusCode === 500) {
+                    setIsKickConfirmOpen(false);
+                    setErrorDialogOpen(true);
                     return;
                 } else if (error instanceof HttpError && error.statusCode === 400) {
                     toast.error('회장은 내보낼 수 없어요.');
@@ -261,6 +266,11 @@ const ClubMemberRolePage = () => {
                     cancelButton={true}
                     handleClose={() => setIsKickConfirmOpen(false)}
                     actionHandler={handleConfirmKickMember}
+                />
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
                 />
             </div>
         </div>

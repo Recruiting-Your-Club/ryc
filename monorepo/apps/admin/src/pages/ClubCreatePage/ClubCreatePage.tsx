@@ -1,7 +1,9 @@
 import type { CreateClub } from '@api/domain/club/types';
 import { useCreateClub } from '@api/hooks/clubMutation';
-import { ImageRegister } from '@components';
+import { ErrorDialog, ImageRegister } from '@components';
 import { BASE_URL } from '@constants/api';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useState } from 'react';
 
 import { useFileUpload } from '@ssoc/hooks';
@@ -66,6 +68,8 @@ function ClubCreatePage() {
     const [clubTag, setClubTag] = useState('공연 동아리');
     const [image, setImage] = useState<string>();
     const [croppedImage, setCroppedImage] = useState<string>();
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
     const { uploadFiles, error } = useFileUpload(BASE_URL);
@@ -152,9 +156,20 @@ function ClubCreatePage() {
             });
             resetForm();
             removeHistoryAndGo(`/clubs/${result.clubId}`);
-        } catch (error) {
-            if (error instanceof Error) {
-                toast(error.message, {
+        } catch (err) {
+            // if (error instanceof Error) {
+            //     toast(error.message, {
+            //         type: 'error',
+            //     });
+            // }
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('오류로 인해 동아리 생성을 실패했어요.', {
+                    toastTheme: 'colored',
                     type: 'error',
                 });
             }
@@ -246,6 +261,11 @@ function ClubCreatePage() {
                     </Button>
                 </div>
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }

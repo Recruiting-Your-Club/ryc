@@ -2,11 +2,13 @@ import type { ApplicationQuestion, Option, PreQuestion } from '@api/domain/annou
 import { useUpdateAnnouncement } from '@api/hooks/useUpdateAnnouncement';
 import { announcementQueries } from '@api/queryFactory';
 import AttentionTriangle from '@assets/images/attention-triangle.svg';
+import { ErrorDialog } from '@components';
 import type { QuestionType } from '@components/QuestionForm/types';
 import { BASE_URL } from '@constants/api';
 import { INITIALRECRUITSTEP, TOTALRECRUITSTEPS } from '@constants/step';
 import { useEditorImageUpload } from '@hooks/useEditorImageUpload';
 import { useQuestion } from '@hooks/useQuestion';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import {
     BasicInfoStep,
     DescriptionStepPage,
@@ -16,6 +18,7 @@ import { buildAnnouncementPutSubmitRequest } from '@pages/RecruitCreatePage/buil
 import { PreivewStep } from '@pages/RecruitCreatePage/PreviewStep';
 import type { BasicInfoFields, RecruitDetailInfo } from '@pages/RecruitCreatePage/types';
 import { useQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { generatePath, useParams } from 'react-router-dom';
@@ -73,6 +76,7 @@ function RecruitEditPage() {
     // state, ref, querystring hooks
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     //공고 정보 상태 관리
     const [recruitDetailInfo, setRecruitDetailInfo] = useState<RecruitDetailInfo>({
@@ -147,9 +151,19 @@ function RecruitEditPage() {
             removeHistoryAndGo(afterPath);
             toast('공고 편집이 완료되었어요!', { type: 'success', toastTheme: 'white' });
         },
-        onError: () => {
+        onError: (err) => {
             setIsDialogOpen(false);
-            toast.error('공고 등록에 실패했습니다.');
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('공고 등록에 실패했어요.', {
+                    toastTheme: 'colored',
+                    type: 'error',
+                });
+            }
         },
     });
 
@@ -488,6 +502,11 @@ function RecruitEditPage() {
                     </div>
                 </div>
             )}
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </>
     );
 }

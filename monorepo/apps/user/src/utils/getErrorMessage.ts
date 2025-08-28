@@ -8,7 +8,7 @@ import {
 } from '@constants/errorText';
 import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 
-export const getErrorMessage = (error: ErrorWithStatusCode): string => {
+export const returnErrorMessage = (error: ErrorWithStatusCode): string => {
     switch (error.statusCode) {
         case 500:
             return ERROR_CODE_500;
