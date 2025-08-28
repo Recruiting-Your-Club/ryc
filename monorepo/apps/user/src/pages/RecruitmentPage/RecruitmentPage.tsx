@@ -44,6 +44,7 @@ function RecruitmentPage() {
         setImageUrl(url);
     };
     // effects
+    const currentStatus = parsedAnnouncementData.announcementStatus;
 
     return (
         <div css={recruitmentContainer}>
@@ -68,7 +69,7 @@ function RecruitmentPage() {
                             onClick={() =>
                                 goTo(`/announcements/${parsedAnnouncementData.id}/agreement`)
                             }
-                            disabled={isExpired}
+                            disabled={isExpired || currentStatus !== '모집중'}
                             sx={applyButtonAtDesktop}
                         >
                             지원하기
