@@ -27,6 +27,7 @@ function EmailVerificationDialog({
     onClose,
     onVerify,
     onResendCode,
+    expiresAt,
     codeLength = 6,
 }: EmailVerificationDialogProps) {
     // prop destruction
