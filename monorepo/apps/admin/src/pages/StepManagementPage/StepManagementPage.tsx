@@ -6,14 +6,22 @@ import { useEmailMutations } from '@api/hooks/useEmailMutations';
 import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFactory';
 import { stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
-import { ApplicantDialog, CardBox, InterviewSettingDialog, PlainEmailDialog } from '@components';
+import {
+    ApplicantDialog,
+    CardBox,
+    ErrorDialog,
+    InterviewSettingDialog,
+    PlainEmailDialog,
+} from '@components';
 import {
     DOCUMENT_STEP,
     FINAL_STEP_IN_THREE,
     FINAL_STEP_IN_TWO,
     INTERVIEW_STEP,
 } from '@constants/stepManagementPage';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useMemo, useState } from 'react';
 import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
@@ -41,6 +49,8 @@ function StepManagementPage() {
     const { toast } = useToast();
     const { announcementId, clubId } = useParams();
     // initial values
+    let hasError: boolean = false;
+
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicantWithoutImage | null>(
         null,
@@ -50,6 +60,7 @@ function StepManagementPage() {
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -242,6 +253,22 @@ function StepManagementPage() {
                             queryKey: stepKeys.allStepApplicants(announcementId!, clubId!),
                         });
                     },
+                    onError: (err) => {
+                        if (hasError) return;
+                        hasError = true;
+
+                        const error = err as ErrorWithStatusCode;
+                        if (error.statusCode === 500) {
+                            setErrorDialogOpen(true);
+                        } else if (error.response?.errors[0].message || error.message) {
+                            toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                        } else {
+                            toast('오류로 인해 일정 변경을 못했어요.', {
+                                toastTheme: 'colored',
+                                type: 'error',
+                            });
+                        }
+                    },
                 },
             );
         });
@@ -417,6 +444,11 @@ function StepManagementPage() {
                     open={isEmailOpen}
                     handleClose={handleEmailClose}
                     handlePlainEmail={handlePlainEmail}
+                />
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
                 />
             </div>
         </div>
