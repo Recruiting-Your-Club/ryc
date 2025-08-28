@@ -56,7 +56,10 @@ public class EmailVerification {
 
   public EmailVerification attempt() {
     // 이미 인증된 경우나 시도된 경우 예외 처리
-    if (!verified || attempted) {
+    if (!verified) {
+      throw new BusinessRuleException(EmailErrorCode.EMAIL_VERIFICATION_CODE_INVALID);
+    }
+    if (attempted) {
       throw new BusinessRuleException(EmailErrorCode.EMAIL_VERIFICATION_CODE_ALREADY_ATTEMPTED);
     }
 
