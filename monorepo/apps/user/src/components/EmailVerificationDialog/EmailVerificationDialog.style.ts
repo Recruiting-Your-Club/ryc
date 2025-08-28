@@ -109,6 +109,7 @@ export const s_footerConatiner = css`
 export const s_resendContainer = css`
     margin-top: 2rem;
     color: ${theme.colors.gray[600]};
+    padding-bottom: 1rem;
 `;
 
 export const s_resendButton = css`

@@ -1,3 +1,4 @@
+import { parseLocalDateTime } from '@utils/parseLocalDateTime';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import Check from '@ssoc/assets/images/check.svg';
@@ -27,12 +28,14 @@ function EmailVerificationDialog({
     onClose,
     onVerify,
     onResendCode,
+    expiresAt,
     codeLength = 6,
 }: EmailVerificationDialogProps) {
     // prop destruction
     // lib hooks
     // initial values
     const empty = useMemo(() => Array.from({ length: codeLength }, () => ''), [codeLength]);
+    const expiresAtDate = useMemo(() => parseLocalDateTime(expiresAt), [expiresAt]);
 
     // state, ref, querystring hooks
     const [code, setCode] = useState(empty);
@@ -40,6 +43,7 @@ function EmailVerificationDialog({
     const [status, setStatus] = useState<EmailStatus>('idle');
     const [message, setMessage] = useState('');
     const [resendCooldown, setResendCooldown] = useState(0);
+    const [now, setNow] = useState(() => Date.now());
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     // form hooks
@@ -124,6 +128,7 @@ function EmailVerificationDialog({
     };
 
     // effects
+    //초기화
     useEffect(() => {
         if (isOpen) {
             setTimeout(() => inputRefs.current[0]?.focus(), 100);
@@ -139,12 +144,28 @@ function EmailVerificationDialog({
         }
     }, [isOpen, empty]);
 
+    //재전송 시간 감소
     useEffect(() => {
         if (resendCooldown > 0) {
             const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
             return () => clearTimeout(timer);
         }
     }, [resendCooldown]);
+
+    //만료 타이머
+    useEffect(() => {
+        if (!isOpen || !expiresAtDate) return;
+
+        setNow(Date.now());
+        const id = setInterval(() => setNow(Date.now()), 1000);
+        const onVisibility = () => setNow(Date.now());
+
+        document.addEventListener('visibilitychange', onVisibility);
+        return () => {
+            clearInterval(id);
+            document.removeEventListener('visibilitychange', onVisibility);
+        };
+    }, [isOpen, expiresAtDate]);
 
     return (
         <Dialog open={isOpen} handleClose={() => onClose()}>
