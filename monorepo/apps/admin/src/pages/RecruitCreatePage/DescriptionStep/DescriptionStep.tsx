@@ -2,9 +2,10 @@ import { DatePicker } from '@components';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
 import { TagInput } from '@components/TagInput';
 import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
+import dayjs from 'dayjs';
 import React from 'react';
 
-import { Editor, Input } from '@ssoc/ui';
+import { Editor, Input, useToast } from '@ssoc/ui';
 import { FileUpLoader } from '@ssoc/ui';
 
 import type { Period, RecruitDetailInfo } from '../types';
@@ -35,6 +36,8 @@ function DescriptionStepPage({
     onDetailDescriptionChange,
     isFileUploading = false,
 }: DescriptionProps) {
+    const { toast } = useToast();
+
     return (
         <>
             <div css={s_descriptionWrapper}>
@@ -93,6 +96,16 @@ function DescriptionStepPage({
                                     onChange={(dates) => {
                                         if (isPeriodField) {
                                             const [d0, d1] = (dates ?? []) as string[];
+                                            if (dayjs(d0).isBefore(dayjs(), 'day')) {
+                                                toast(
+                                                    '현재 날짜보다 이전의 날짜는 선택할 수 없어요.',
+                                                    {
+                                                        type: 'error',
+                                                        toastTheme: 'white',
+                                                    },
+                                                );
+                                                return;
+                                            }
                                             if (mode === 'range') {
                                                 onChange({
                                                     [listKey]: {
