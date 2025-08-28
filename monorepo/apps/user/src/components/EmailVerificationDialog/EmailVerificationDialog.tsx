@@ -4,10 +4,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Check from '@ssoc/assets/images/check.svg';
 import Email from '@ssoc/assets/images/email.svg';
 import Warning from '@ssoc/assets/images/warningIcon.svg';
+import X from '@ssoc/assets/images/xIcon.svg';
 import { Button, Dialog, Text } from '@ssoc/ui';
 
 import {
     s_checkIcon,
+    s_closeButton,
     s_codeInput,
     s_codeInputContainer,
     s_contentContainer,
@@ -16,6 +18,7 @@ import {
     s_footerConatiner,
     s_headerContainer,
     s_infoContainer,
+    s_remainingTimeContainer,
     s_resendButton,
     s_resendContainer,
     s_textContainer,
@@ -49,6 +52,14 @@ function EmailVerificationDialog({
     // form hooks
     // query hooks
     // calculated values
+    const remainingSeconds = useMemo(() => {
+        return Math.max(0, Math.floor((expiresAtDate.getTime() - now) / 1000));
+    }, [expiresAtDate, now]);
+
+    const formatDate = (second: number) => {
+        return `${Math.floor(second / 60)}:${String(second % 60).padStart(2, '0')}`;
+    };
+
     // handlers
     const handleInputChange = (index: number, value: string) => {
         if (value.length > 1) return;
@@ -77,6 +88,12 @@ function EmailVerificationDialog({
         if (codeToVerify.length !== codeLength) {
             setStatus('error');
             setMessage(`${codeLength}자리를 모두 입력해주세요`);
+            return;
+        }
+
+        if (remainingSeconds !== null && remainingSeconds <= 0) {
+            setStatus('error');
+            setMessage('인증 시간이 만료되었습니다. 코드를 다시 요청해주세요.');
             return;
         }
 
@@ -171,6 +188,9 @@ function EmailVerificationDialog({
         <Dialog open={isOpen} handleClose={() => onClose()}>
             <Dialog.Content>
                 <div css={s_headerContainer}>
+                    <Button sx={s_closeButton} variant="transparent" onClick={onClose}>
+                        <X />
+                    </Button>
                     <div css={s_emailIconContainer}>
                         <Email css={s_emailIcon} />
                     </div>
@@ -196,10 +216,19 @@ function EmailVerificationDialog({
                                     hasValue: digit !== '',
                                     isError: status === 'error',
                                 })}
-                                disabled={isLoading}
+                                disabled={isLoading || remainingSeconds <= 0}
                             />
                         ))}
                     </div>
+                    {expiresAtDate && (
+                        <div css={s_remainingTimeContainer}>
+                            <Text color="subCaption" type="bodyRegular">
+                                {remainingSeconds! > 0
+                                    ? `인증 유효 시간: ${formatDate(remainingSeconds!)}`
+                                    : '인증 시간이 만료되었습니다.'}
+                            </Text>
+                        </div>
+                    )}
                     {message && (
                         <div css={s_infoContainer({ isError: status === 'error' })}>
                             {status === 'success' && <Check css={s_checkIcon} />}
@@ -213,7 +242,9 @@ function EmailVerificationDialog({
             <div css={s_footerConatiner}>
                 <Button
                     onClick={() => handleVerify()}
-                    disabled={isLoading || code.some((digit) => digit === '')}
+                    disabled={
+                        isLoading || code.some((digit) => digit === '') || remainingSeconds <= 0
+                    }
                     size="full"
                 >
                     {isLoading ? '인증 중...' : '인증하기'}

@@ -28,10 +28,18 @@ export const s_emailIcon = css`
 `;
 
 export const s_headerContainer = css`
+    width: 100%;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+`;
+
+export const s_closeButton = css`
+    position: absolute;
+    right: 8px;
+    top: 8px;
 `;
 
 export const s_textContainer = css`
@@ -43,7 +51,7 @@ export const s_textContainer = css`
 `;
 
 export const s_contentContainer = css`
-    padding: 2.4rem;
+    padding-top: 2.4rem;
 `;
 
 export const s_codeInputContainer = css`
@@ -122,4 +130,8 @@ export const s_resendButton = css`
         color: ${theme.colors.gray[600]};
         cursor: not-allowed;
     }
+`;
+
+export const s_remainingTimeContainer = css`
+    padding-top: 2rem;
 `;
