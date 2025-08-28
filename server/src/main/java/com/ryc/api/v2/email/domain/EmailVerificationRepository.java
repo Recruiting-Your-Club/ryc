@@ -13,4 +13,6 @@ public interface EmailVerificationRepository {
   EmailVerification findByCode(int code);
 
   void deleteByCode(int code);
+
+  void flush();
 }

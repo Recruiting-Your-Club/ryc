@@ -76,7 +76,12 @@ public class EmailHttpApi {
   @Operation(summary = "이메일 인증 코드 검증", description = "이메일 인증 코드를 검증합니다.")
   @ApiErrorCodeExample(
       value = {EmailErrorCode.class, CommonErrorCode.class},
-      include = {"EMAIL_VERIFICATION_CODE_EXPIRED", "EMAIL_ALREADY_VERIFIED", "INVALID_PARAMETER"})
+      include = {
+        "EMAIL_VERIFICATION_CODE_EXPIRED",
+        "EMAIL_ALREADY_VERIFIED",
+        "INVALID_PARAMETER",
+        "EMAIL_VERIFICATION_CODE_INVALID"
+      })
   public ResponseEntity<Void> verifyEmailCode(@Valid @RequestBody VerificationCodeRequest body) {
     emailVerificationService.verificationEmailCode(body);
     return ResponseEntity.ok().build();

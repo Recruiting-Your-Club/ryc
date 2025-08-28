@@ -46,6 +46,7 @@ public class EmailVerificationService {
   public VerificationCodeCreatedResponse createEmailVerificationCode(String email) {
     if (verificationRepository.existsByEmail(email)) {
       verificationRepository.deleteByEmail(email);
+      verificationRepository.flush();
     }
 
     EmailVerification emailVerification = EmailVerification.initialize(email);
@@ -59,7 +60,7 @@ public class EmailVerificationService {
   @Transactional
   public void verificationEmailCode(VerificationCodeRequest body) {
     EmailVerification emailVerification = verificationRepository.findByEmail(body.email());
-    EmailVerification verified = emailVerification.verify();
+    EmailVerification verified = emailVerification.verify(Integer.parseInt(body.code()));
     verificationRepository.save(verified);
   }
 
