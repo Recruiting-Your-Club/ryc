@@ -66,7 +66,7 @@ function RecruitmentPage() {
                             variant="primary"
                             size="xl"
                             onClick={() =>
-                                goTo(`/announcements/${parsedAnnouncementData.id}/application`)
+                                goTo(`/announcements/${parsedAnnouncementData.id}/agreement`)
                             }
                             disabled={isExpired}
                             sx={applyButtonAtDesktop}
@@ -104,7 +104,7 @@ function RecruitmentPage() {
             <div css={applyButtonAtMobile}>
                 <Button
                     size="full"
-                    onClick={() => goTo(`/announcements/${parsedAnnouncementData.id}/application`)}
+                    onClick={() => goTo(`/announcements/${parsedAnnouncementData.id}/agreement`)}
                     disabled={isExpired}
                 >
                     지원하기

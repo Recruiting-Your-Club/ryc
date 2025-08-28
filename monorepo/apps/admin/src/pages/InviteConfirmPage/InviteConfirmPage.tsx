@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
+import { useRouter } from '@ssoc/hooks';
 import { Button, ClubCard, SpinSpinner, Text, useToast } from '@ssoc/ui';
 import { getCategory } from '@ssoc/utils';
 
@@ -23,7 +24,8 @@ const InviteConfirmPage = () => {
     const navigate = useNavigate();
     const { toast } = useToast();
     const location = useLocation();
-    const { clubId, inviteCode } = useParams();
+    const { goBack } = useRouter();
+    const { inviteCode } = useParams();
     const accessToken = useAuthStore((state) => state.accessToken);
     // initial values
     // state, ref, querystring hooks
@@ -37,11 +39,11 @@ const InviteConfirmPage = () => {
     });
 
     const { mutate: acceptInvite, isPending } = roleMutations.usePostInviteCode({
-        clubId: clubId || '',
+        clubId: clubInfo?.id || '',
         inviteCode: inviteCode || '',
         onSuccess: () => {
             toast.success('초대에 참여되었습니다.');
-            navigate(`/settings/${clubId}`);
+            navigate(`/settings/${clubInfo?.id}`);
         },
         onError: (error) => {
             if (error instanceof HttpError && error.statusCode === 500) {
@@ -58,7 +60,7 @@ const InviteConfirmPage = () => {
     const tags = clubInfo?.clubTags?.map((tag) => `#${tag.name}`) || [];
     // handlers
     const handleConfirm = async () => {
-        if (!clubId || !inviteCode) {
+        if (!inviteCode || !clubInfo?.id) {
             toast.error('잘못된 초대 링크입니다.');
             return;
         }
@@ -74,7 +76,7 @@ const InviteConfirmPage = () => {
     };
 
     const handleCancel = () => {
-        navigate('/');
+        goBack();
     };
 
     // effects

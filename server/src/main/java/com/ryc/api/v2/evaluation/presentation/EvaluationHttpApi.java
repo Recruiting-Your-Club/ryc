@@ -1,10 +1,13 @@
 package com.ryc.api.v2.evaluation.presentation;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2/evaluation")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "평가")
 public class EvaluationHttpApi {
   private final EvaluationService evaluationService;
@@ -32,7 +36,6 @@ public class EvaluationHttpApi {
   @HasRole(Role.MEMBER)
   @PostMapping("/application")
   @Operation(summary = "지원서 평가 생성 API")
-  // TODO: Evaluation 객체에 validate 메서드가 활성화 된다면, 그에 맞는 예외 응답 코드 추가 필요
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
@@ -94,7 +97,10 @@ public class EvaluationHttpApi {
       include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyApplicationEvaluationStatusForApplicants(
-          @RequestParam String announcementId,
+          @RequestParam
+              @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
+              @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
+              String announcementId,
           @AuthenticationPrincipal CustomUserDetail userDetail) {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
@@ -110,7 +116,10 @@ public class EvaluationHttpApi {
       include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<MyEvaluationStatusSearchResponse>
       getMyInterviewEvaluationStatusForApplicants(
-          @RequestParam String announcementId,
+          @RequestParam
+              @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
+              @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
+              String announcementId,
           @AuthenticationPrincipal CustomUserDetail userDetail) {
     MyEvaluationStatusSearchResponse response =
         evaluationService.findMyEvaluationStatusForApplicants(
@@ -151,7 +160,10 @@ public class EvaluationHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"INVALID_PARAMETER", "RESOURCE_NOT_FOUND", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<EvaluationUpdateResponse> updateEvaluation(
-      @PathVariable("evaluation-id") String evaluationId,
+      @PathVariable("evaluation-id")
+          @NotBlank(message = "평가 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "평가 id는 UUID 포멧을 준수하여야 합니다.")
+          String evaluationId,
       @Valid @RequestBody EvaluationUpdateRequest body) {
     EvaluationUpdateResponse response = evaluationService.updateEvaluation(body, evaluationId);
     return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -163,7 +175,11 @@ public class EvaluationHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
-  public ResponseEntity<Void> deleteEvaluation(@PathVariable("evaluation-id") String evaluationId) {
+  public ResponseEntity<Void> deleteEvaluation(
+      @PathVariable("evaluation-id")
+          @NotBlank(message = "평가 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "평가 id는 UUID 포멧을 준수하여야 합니다.")
+          String evaluationId) {
     evaluationService.deleteEvaluation(evaluationId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }

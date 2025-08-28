@@ -39,10 +39,39 @@ function EditorTextarea({ height, radius, value, onChange, sx }: TextareaProps) 
     }, []);
 
     useEffect(() => {
-        if (editorRef.current && value !== undefined && editorRef.current.innerHTML !== value) {
+        if (!editorRef.current || value === undefined) return;
+        if (editorRef.current.innerHTML !== value) {
+            const selection = window.getSelection();
+            const savedRange =
+                selection && selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
+
             editorRef.current.innerHTML = value;
+
+            // 커서 복원
+            if (savedRange) {
+                selection?.removeAllRanges();
+                selection?.addRange(savedRange);
+            }
         }
     }, [value]);
+
+    useEffect(() => {
+        if (!editorRef.current) return;
+
+        const observer = new MutationObserver(() => {
+            const html = editorRef.current?.innerHTML || '';
+            onChange?.(html);
+        });
+
+        observer.observe(editorRef.current, {
+            subtree: true,
+            characterData: true,
+            attributes: true,
+            childList: true,
+        });
+
+        return () => observer.disconnect();
+    }, [editorRef.current]);
 
     return (
         <>

@@ -6,6 +6,7 @@ import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import Club from '@assets/images/club.svg';
 import ssoc from '@assets/images/ssoc.png';
+import { useAuthStore } from '@stores/authStore';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -59,6 +60,7 @@ function SideBar() {
     const location = useLocation();
     const { clubId, announcementId } = useParams();
     const { goTo } = useRouter();
+    const { logout } = useAuthStore();
 
     // initial values
     const navMenu = useMemo(
@@ -218,6 +220,10 @@ function SideBar() {
         [isExpanded],
     );
 
+    const handleLogout = () => {
+        logout?.();
+    };
+
     //useEffect
     useEffect(() => {
         const newActiveSubMenu = getActiveSubMenu(location.pathname);
@@ -315,8 +321,8 @@ function SideBar() {
                         }}
                         sx={homeLogoTextWrapper(isExpanded)}
                     >
-                        SSOC
-                        {/* <img src={mainLogo} alt="mainLogo" width="80rem" height="50rem" /> */}
+                        {/* SSOC */}
+                        <img src={mainLogo} alt="mainLogo" width="80rem" height="50rem" />
                     </Button>
                     <Button
                         variant="transparent"
@@ -541,6 +547,7 @@ function SideBar() {
                                     variant="transparent"
                                     size="full"
                                     sx={dropDownLogoutWrapper}
+                                    onClick={handleLogout}
                                 >
                                     로그아웃
                                 </Button>

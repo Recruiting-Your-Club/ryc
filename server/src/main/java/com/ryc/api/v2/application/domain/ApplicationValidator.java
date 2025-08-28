@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.validator.DomainValidator;
 
 /** 유효성(Validation) 검사 Util 클래스 접근 제한자 package-private 준수 */
@@ -48,9 +47,6 @@ final class ApplicationValidator extends DomainValidator {
     validateNotNull(answers, APPLICATION_ANSWERS_NULL);
   }
 
-  private static void validateCreatedAt(String id, LocalDateTime createdAt) {
-    // 영속화 이전은 NULL 허용
-    if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) return;
-    validateNotNull(createdAt, APPLICATION_CREATED_AT_NULL);
-  }
+  // 영속성 레이어를 거친 경우에만 service에서 상태검증으로 null 제한 체크
+  private static void validateCreatedAt(String id, LocalDateTime createdAt) {}
 }

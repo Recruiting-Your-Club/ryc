@@ -4,10 +4,13 @@ import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2/")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "면접")
 public class InterviewHttpApi {
 
@@ -44,7 +48,10 @@ public class InterviewHttpApi {
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<List<InterviewSlotResponse>> getInterviewSlotsForAdmin(
-      @PathVariable("announcement-id") String announcementId) {
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
+          String announcementId) {
     List<InterviewSlotResponse> responses = interviewService.getInterviewSlots(announcementId);
     return ResponseEntity.ok(responses);
   }
@@ -55,9 +62,18 @@ public class InterviewHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<InterviewSlotsApplicantViewResponse> getInterviewSlotsForApplicant(
-      @PathVariable("club-id") String clubId,
-      @PathVariable("announcement-id") String announcementId,
-      @RequestParam("applicant-id") String applicantId) {
+      @PathVariable("club-id")
+          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
+          String clubId,
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
+          String announcementId,
+      @RequestParam("applicant-id")
+          @NotBlank(message = "지원자 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "지원자 id는 UUID 포멧을 준수하여야 합니다.")
+          String applicantId) {
     InterviewSlotsApplicantViewResponse response =
         interviewService.getInterviewSlotsApplicantView(clubId, announcementId, applicantId);
     return ResponseEntity.ok(response);
@@ -69,7 +85,10 @@ public class InterviewHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<InterviewSlotPeopleCountResponse> getCountByInterviewSlot(
-      @PathVariable("interview-slot-id") String interviewSlotId) {
+      @PathVariable("interview-slot-id")
+          @NotBlank(message = "인터뷰 슬롯 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "인터뷰 슬롯 id는 UUID 포멧을 준수하여야 합니다.")
+          String interviewSlotId) {
     InterviewSlotPeopleCountResponse response =
         interviewService.getCountByInterviewSlot(interviewSlotId);
     return ResponseEntity.ok(response);
@@ -82,7 +101,10 @@ public class InterviewHttpApi {
       value = {PermissionErrorCode.class, CommonErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND"})
   public ResponseEntity<List<InterviewReservationGetResponse>> getInterviewReservationsForAdmin(
-      @PathVariable("interview-slot-id") String interviewSlotId) {
+      @PathVariable("interview-slot-id")
+          @NotBlank(message = "인터뷰 슬롯 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "인터뷰 슬롯 id는 UUID 포멧을 준수하여야 합니다.")
+          String interviewSlotId) {
     List<InterviewReservationGetResponse> response =
         interviewService.getInterviewReservations(interviewSlotId);
     return ResponseEntity.ok(response);
@@ -95,7 +117,10 @@ public class InterviewHttpApi {
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<List<ApplicantSummaryResponse>> getInterviewUnReservationsForAdmin(
-      @PathVariable("announcement-id") String announcementId) {
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
+          String announcementId) {
     List<ApplicantSummaryResponse> response =
         interviewService.getInterviewUnReservations(announcementId);
     return ResponseEntity.ok(response);
@@ -109,8 +134,14 @@ public class InterviewHttpApi {
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER", "INTERVIEW_SLOT_PERIOD_INVALID"})
   public ResponseEntity<List<InterviewSlotCreateResponse>> createInterviewSlots(
       @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable String clubId,
-      @PathVariable String announcementId,
+      @PathVariable
+          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
+          String clubId,
+      @PathVariable
+          @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
+          String announcementId,
       @Valid @RequestBody InterviewSlotCreateRequest body) {
     List<InterviewSlotCreateResponse> responses =
         interviewService.createInterviewSlots(userDetail.getId(), clubId, announcementId, body);
@@ -130,7 +161,10 @@ public class InterviewHttpApi {
         "APPLICANT_ALREADY_RESERVED"
       })
   public ResponseEntity<InterviewReservationCreateResponse> reservationInterview(
-      @PathVariable("interview-slot-id") String slotId,
+      @PathVariable("interview-slot-id")
+          @NotBlank(message = "인터뷰 슬롯 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "인터뷰 슬롯 id는 UUID 포멧을 준수하여야 합니다.")
+          String slotId,
       @Valid @RequestBody InterviewReservationRequest body) {
 
     InterviewReservationCreateResponse response =
@@ -153,7 +187,10 @@ public class InterviewHttpApi {
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND", "APPLICANT_ALREADY_RESERVED"})
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
-      @PathVariable("applicant-id") String applicantId,
+      @PathVariable("applicant-id")
+          @NotBlank(message = "지원자 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "지원자 id는 UUID 포멧을 준수하여야 합니다.")
+          String applicantId,
       @Valid @RequestBody InterviewReservationUpdatedRequest body) {
     InterviewReservationUpdateResponse response =
         interviewService.changeInterviewReservation(applicantId, body);
@@ -167,7 +204,10 @@ public class InterviewHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<Void> deleteInterviewReservation(
-      @PathVariable("reservation-id") String reservationId) {
+      @PathVariable("reservation-id")
+          @NotBlank(message = "면접 예약 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "면접 예약 id는 UUID 포멧을 준수하여야 합니다.")
+          String reservationId) {
     interviewService.deleteInterviewReservation(reservationId);
     return ResponseEntity.noContent().build();
   }

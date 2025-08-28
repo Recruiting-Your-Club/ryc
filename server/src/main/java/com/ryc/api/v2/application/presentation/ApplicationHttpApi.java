@@ -3,8 +3,11 @@ package com.ryc.api.v2.application.presentation;
 import java.net.URI;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.application.common.exception.code.ApplicationCreateErrorCode;
@@ -26,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/announcements/{announcement-id}/applications")
+@Validated
 @Tag(name = "지원서")
 public class ApplicationHttpApi {
   private final ApplicationService applicationService;
@@ -50,7 +54,10 @@ public class ApplicationHttpApi {
         "EMAIL_VERIFICATION_CODE_INVALID"
       })
   public ResponseEntity<ApplicationSubmissionResponse> submitApplication(
-      @PathVariable("announcement-id") String announcementId,
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
       @Valid @RequestBody ApplicationSubmissionRequest body) {
     ApplicationSubmissionResponse response =
         applicationService.submitApplication(body, announcementId);
@@ -70,8 +77,14 @@ public class ApplicationHttpApi {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<ApplicationGetResponse> getApplicationDetail(
-      @PathVariable("announcement-id") String announcementId,
-      @PathVariable("applicant-id") String applicantId) {
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
+      @PathVariable("applicant-id")
+          @NotBlank(message = "지원자 아이디는 공백일 수 없습니다.")
+          @UUID(message = "지원자 아이디는 UUID 포멧이어야 합니다.")
+          String applicantId) {
     ApplicationGetResponse response =
         applicationService.getApplicationDetail(announcementId, applicantId);
     return ResponseEntity.ok(response);
