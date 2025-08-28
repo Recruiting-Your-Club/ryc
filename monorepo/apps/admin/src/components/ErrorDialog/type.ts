@@ -1,7 +1,9 @@
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
+
 export interface ErrorDialogProps {
     open: boolean;
     handleClose: () => void;
-    errorStatusCode?: number;
+    error: ErrorWithStatusCode;
     content?: string;
     subContent?: string;
 }

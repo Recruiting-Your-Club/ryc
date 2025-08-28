@@ -1,13 +1,5 @@
-import {
-    DEFAULT_DESCRIPTION,
-    ERROR_500_DESCRIPTION,
-    ERROR_CODE_400,
-    ERROR_CODE_401,
-    ERROR_CODE_403,
-    ERROR_CODE_404_DATA,
-    ERROR_CODE_500,
-    ERROR_DEFAULT,
-} from '@constants/errorText';
+import { DEFAULT_DESCRIPTION, ERROR_500_DESCRIPTION } from '@constants/errorText';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React from 'react';
 
 import { useRouter } from '@ssoc/hooks';
@@ -16,45 +8,18 @@ import { Button, Dialog, Text } from '@ssoc/ui';
 import { s_textWrapper } from './ErrorDialog.style';
 import type { ErrorDialogProps } from './type';
 
-function ErrorDialog({
-    open,
-    handleClose,
-    errorStatusCode,
-    content,
-    subContent,
-}: ErrorDialogProps) {
+function ErrorDialog({ open, handleClose, error, content, subContent }: ErrorDialogProps) {
     // prop destruction
     // lib hooks
     const { goTo } = useRouter();
 
     // initial values
-    let message = ERROR_DEFAULT;
+    let message = getErrorMessage(error);
 
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
-    switch (errorStatusCode) {
-        case 500:
-            message = ERROR_CODE_500;
-            break;
-        case 404:
-            message = ERROR_CODE_404_DATA;
-            break;
-        case 403:
-            message = ERROR_CODE_403;
-            break;
-        case 401:
-            message = ERROR_CODE_401;
-            break;
-        case 400:
-            message = ERROR_CODE_400;
-            break;
-        default:
-            message = ERROR_DEFAULT;
-            break;
-    }
-
     if (content) message = content;
 
     // handlers
@@ -75,13 +40,13 @@ function ErrorDialog({
                     <Text type="subCaptionRegular" textAlign="center" sx={s_textWrapper}>
                         {subContent
                             ? subContent
-                            : errorStatusCode === 500
+                            : error.statusCode === 500
                               ? ERROR_500_DESCRIPTION
                               : DEFAULT_DESCRIPTION}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Action position="center">
-                    {errorStatusCode === 500 ? (
+                    {error.statusCode === 500 ? (
                         <div>
                             <Button
                                 onClick={() => {
@@ -92,7 +57,7 @@ function ErrorDialog({
                                 오류 신고
                             </Button>
                         </div>
-                    ) : errorStatusCode === 401 ? (
+                    ) : error.statusCode === 401 ? (
                         <div>
                             <Button
                                 onClick={() => {
