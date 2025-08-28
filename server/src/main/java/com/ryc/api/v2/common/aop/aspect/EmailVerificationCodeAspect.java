@@ -33,6 +33,7 @@ public class EmailVerificationCodeAspect {
     int code = Integer.parseInt(header);
     if (verificationService.isVerified(code)) {
       verificationService.deleteByCode(code);
+      return;
     }
 
     throw new BusinessRuleException(EmailErrorCode.EMAIL_VERIFICATION_CODE_INVALID);
