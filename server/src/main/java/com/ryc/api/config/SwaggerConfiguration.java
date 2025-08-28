@@ -25,7 +25,6 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -332,8 +331,9 @@ public class SwaggerConfiguration {
     return new Parameter()
         .in("header")
         .name(CustomHeaderConstant.EMAIL_VERIFICATION_CODE_HEADER_NAME)
-        .description("이메일 인증 코드 헤더")
+        .description("이메일 인증 코드 헤더(6자리 숫자)")
         .required(true)
-        .schema(new IntegerSchema());
+        .schema(new StringSchema().pattern("^[0-9]{6}$"))
+        .example("123456");
   }
 }
