@@ -51,6 +51,7 @@ public class SwaggerConfiguration {
 
   private final Set<String> whitelistGetPatterns;
   private final Set<String> whitelistPostPatterns;
+  private final Set<String> whitelistPatchPatterns;
 
   /*
    * SwaggerConfiguration 생성자입니다.
@@ -61,7 +62,8 @@ public class SwaggerConfiguration {
    */
   public SwaggerConfiguration(
       @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}") String[] whitelistGetPatterns,
-      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPatterns) {
+      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPatterns,
+      @Value("${SECURITY_WHITELIST_PATCH_METHOD_PATHS}") String[] whitelistPatchPatterns) {
     this.whitelistGetPatterns =
         Arrays.stream(whitelistGetPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
@@ -69,6 +71,11 @@ public class SwaggerConfiguration {
 
     this.whitelistPostPatterns =
         Arrays.stream(whitelistPostPatterns)
+            .map(path -> path.startsWith("/") ? path : "/" + path)
+            .collect(Collectors.toSet());
+
+    this.whitelistPatchPatterns =
+        Arrays.stream(whitelistPatchPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
             .collect(Collectors.toSet());
   }
@@ -203,6 +210,12 @@ public class SwaggerConfiguration {
       }
     } else if (httpOperation.method().equals("POST")) {
       for (String pattern : whitelistPostPatterns) {
+        if (path.matches(pattern)) {
+          return true;
+        }
+      }
+    } else if (httpOperation.method().equals("PATCH")) {
+      for (String pattern : whitelistPatchPatterns) {
         if (path.matches(pattern)) {
           return true;
         }
