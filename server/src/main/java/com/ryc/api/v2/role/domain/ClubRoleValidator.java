@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.common.constant.DomainDefaultValues;
 import com.ryc.api.v2.common.validator.DomainValidator;
 import com.ryc.api.v2.role.domain.enums.Role;
 
@@ -45,9 +44,5 @@ final class ClubRoleValidator extends DomainValidator {
     validateNotNull(admin, CLUB_ROLE_ADMIN_NULL);
   }
 
-  private static void validateJoinedAt(String id, LocalDateTime joinedAt) {
-    // 영속화 이전은 NULL 허용
-    if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) return;
-    validateNotNull(joinedAt, CLUB_ROLE_JOINED_AT_NULL);
-  }
+  private static void validateJoinedAt(String id, LocalDateTime joinedAt) {}
 }

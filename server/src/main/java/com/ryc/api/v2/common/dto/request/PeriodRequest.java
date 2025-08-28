@@ -2,7 +2,9 @@ package com.ryc.api.v2.common.dto.request;
 
 import java.time.LocalDateTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.ryc.api.v2.common.deserializer.EndOfDayLocalDateTimeDeserializer;
+import com.ryc.api.v2.common.deserializer.StartOfDayLocalDateTimeDeserializer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -20,12 +22,12 @@ public record PeriodRequest(
             pattern = "yyyy-MM-dd'T'HH:mm",
             description = "시작 날짜",
             example = "2025-06-29T00:00")
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+        @JsonDeserialize(using = StartOfDayLocalDateTimeDeserializer.class)
         LocalDateTime startDate,
     @Schema(
             type = "string",
             pattern = "yyyy-MM-dd'T'HH:mm",
             description = "끝 날짜",
-            example = "2025-07-20T00:00")
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+            example = "2025-07-20T23:59")
+        @JsonDeserialize(using = EndOfDayLocalDateTimeDeserializer.class)
         LocalDateTime endDate) {}
