@@ -49,6 +49,7 @@ public class EmailVerification {
         .code(this.code)
         .email(this.email)
         .verified(true)
+        .attempted(this.attempted)
         .expiresAt(this.expiresAt)
         .build();
   }
