@@ -38,6 +38,50 @@ function DescriptionStepPage({
 }: DescriptionProps) {
     const { toast } = useToast();
 
+    const validateDateSelection = (
+        listKey: string,
+        d0: string,
+        d1: string | null,
+        recruitDetailInfo: RecruitDetailInfo,
+    ): boolean => {
+        const now = dayjs();
+
+        if (dayjs(d0).isBefore(now, 'day')) {
+            return showError('현재 날짜보다 이전의 날짜는 선택할 수 없어요.');
+        }
+
+        if (listKey === 'documentPeriod' && recruitDetailInfo.documentResult.startDate) {
+            const resultStart = recruitDetailInfo.documentResult.startDate;
+            if ((d1 && d1 >= resultStart) || (!d1 && d0 >= resultStart)) {
+                return showError('서류 접수 기간은 서류 합격 발표 일자보다 이전이어야 해요!');
+            }
+        }
+
+        if (listKey === 'documentResult' && recruitDetailInfo.documentPeriod.endDate) {
+            const { startDate, endDate } = recruitDetailInfo.documentPeriod;
+            if (d0 <= endDate || d0 <= startDate) {
+                return showError('서류 합격 발표 일자는 서류 합격 기간 이후여야 해요!');
+            }
+        }
+
+        if (
+            listKey === 'documentResult' &&
+            recruitDetailInfo.documentPeriod.startDate &&
+            !recruitDetailInfo.documentPeriod.endDate
+        ) {
+            if (d0 <= recruitDetailInfo.documentPeriod.startDate) {
+                return showError('서류 합격 발표 일자는 서류 합격 기간 이후여야 해요!');
+            }
+        }
+
+        return true; // 통과
+    };
+
+    const showError = (message: string) => {
+        toast(message, { type: 'error', toastTheme: 'white' });
+        return false;
+    };
+
     return (
         <>
             <div css={s_descriptionWrapper}>
@@ -96,16 +140,17 @@ function DescriptionStepPage({
                                     onChange={(dates) => {
                                         if (isPeriodField) {
                                             const [d0, d1] = (dates ?? []) as string[];
-                                            if (dayjs(d0).isBefore(dayjs(), 'day')) {
-                                                toast(
-                                                    '현재 날짜보다 이전의 날짜는 선택할 수 없어요.',
-                                                    {
-                                                        type: 'error',
-                                                        toastTheme: 'white',
-                                                    },
-                                                );
+
+                                            if (
+                                                !validateDateSelection(
+                                                    listKey,
+                                                    d0,
+                                                    d1,
+                                                    recruitDetailInfo,
+                                                )
+                                            )
                                                 return;
-                                            }
+
                                             if (mode === 'range') {
                                                 onChange({
                                                     [listKey]: {
