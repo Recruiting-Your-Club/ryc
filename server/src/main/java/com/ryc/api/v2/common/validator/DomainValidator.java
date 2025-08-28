@@ -99,6 +99,8 @@ public abstract class DomainValidator {
   /** 유효한 시간 범위 검증 */
   protected static void validateDateRange(
       LocalDateTime startDate, LocalDateTime endDate, ErrorCode errorCode) {
+    // null 값에 대해 범위체크 생략
+    if (startDate == null || endDate == null) return;
     if (startDate.isAfter(endDate)) {
       throw new InvalidFormatException(errorCode);
     }
