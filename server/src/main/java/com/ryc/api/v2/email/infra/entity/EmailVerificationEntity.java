@@ -24,5 +24,9 @@ public class EmailVerificationEntity {
   private Boolean verified = Boolean.FALSE;
 
   @Column(nullable = false)
+  @Builder.Default
+  private Boolean attempted = Boolean.FALSE;
+
+  @Column(nullable = false)
   private LocalDateTime expiresAt;
 }

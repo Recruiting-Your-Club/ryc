@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.constant.CustomHeaderConstant;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.common.exception.custom.ClubException;
@@ -49,7 +50,7 @@ public class ClubRoleAspect {
   }
 
   private String extractClubId() {
-    String header = request.getHeader("X-CLUB-ID");
+    String header = request.getHeader(CustomHeaderConstant.CLUB_ID_HEADER_NAME);
 
     if (header == null) {
       throw new ClubException(ClubErrorCode.CLUB_ID_BAD_REQUEST);

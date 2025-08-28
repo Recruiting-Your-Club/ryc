@@ -9,4 +9,8 @@ public interface EmailVerificationRepository {
   void deleteByEmail(String email);
 
   EmailVerification findByEmail(String email);
+
+  EmailVerification findByCode(int code);
+
+  void deleteByCode(int code);
 }

@@ -63,6 +63,24 @@ public class EmailVerificationService {
     verificationRepository.save(verified);
   }
 
+  @Transactional(readOnly = true)
+  public boolean isVerified(int code) {
+    EmailVerification emailVerification = verificationRepository.findByCode(code);
+
+    if (!emailVerification.getVerified()) {
+      return false;
+    }
+
+    EmailVerification attemptdEmailVerification = emailVerification.attempt();
+    verificationRepository.save(attemptdEmailVerification);
+    return true;
+  }
+
+  @Transactional
+  public void deleteByCode(int code) {
+    verificationRepository.deleteByCode(code);
+  }
+
   private void sendEmailVerificationCode(String email, int code) {
     String subject = "[SSOC] 이메일 인증 코드입니다.";
     String content = emailVerificationTemplate.replace("${code}", String.valueOf(code));

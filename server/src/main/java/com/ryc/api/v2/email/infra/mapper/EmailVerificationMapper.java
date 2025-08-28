@@ -14,6 +14,7 @@ public class EmailVerificationMapper {
         .code(entity.getCode())
         .email(entity.getEmail())
         .verified(entity.getVerified())
+        .attempted(entity.getAttempted())
         .expiresAt(entity.getExpiresAt())
         .build();
   }
@@ -23,6 +24,7 @@ public class EmailVerificationMapper {
         .code(domain.getCode())
         .email(domain.getEmail())
         .verified(domain.getVerified())
+        .attempted(domain.getAttempted())
         .expiresAt(domain.getExpiresAt())
         .build();
   }

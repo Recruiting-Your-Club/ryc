@@ -17,6 +17,7 @@ import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
 import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.email.service.EmailVerificationService;
 import com.ryc.api.v2.security.jwt.JwtProperties;
 
@@ -46,8 +47,13 @@ public class AuthController {
   @VerifyEmailCode
   // TODO: DuplicateKeyException에 대한 예외 응답 코드 설정 필요
   @ApiErrorCodeExample(
-      value = {CommonErrorCode.class},
-      include = {"INVALID_PARAMETER"})
+      value = {CommonErrorCode.class, EmailErrorCode.class},
+      include = {
+        "INVALID_PARAMETER",
+        "EMAIL_VERIFICATION_CODE_BAD_REQUEST",
+        "EMAIL_VERIFICATION_CODE_ALREADY_ATTEMPTED",
+        "EMAIL_VERIFICATION_CODE_INVALID"
+      })
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
     RegisterResponse response = authService.register(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);

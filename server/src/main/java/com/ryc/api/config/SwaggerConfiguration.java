@@ -13,6 +13,7 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
+import com.ryc.api.v2.common.constant.CustomHeaderConstant;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
@@ -321,7 +322,7 @@ public class SwaggerConfiguration {
   private Parameter createClubIdHeader() {
     return new Parameter()
         .in("header")
-        .name("X-CLUB-ID")
+        .name(CustomHeaderConstant.CLUB_ID_HEADER_NAME)
         .description("동아리 식별자 헤더")
         .required(true)
         .schema(new StringSchema());
@@ -330,7 +331,7 @@ public class SwaggerConfiguration {
   private Parameter createEmailVerificationHeader() {
     return new Parameter()
         .in("header")
-        .name("X-EMAIL-VERIFICATION-CODE")
+        .name(CustomHeaderConstant.EMAIL_VERIFICATION_CODE_HEADER_NAME)
         .description("이메일 인증 코드 헤더")
         .required(true)
         .schema(new IntegerSchema());

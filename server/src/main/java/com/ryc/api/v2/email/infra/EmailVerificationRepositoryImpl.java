@@ -43,4 +43,18 @@ public class EmailVerificationRepositoryImpl implements EmailVerificationReposit
             .orElseThrow(() -> new NoSuchElementException("이메일에 대한 인증 정보가 없습니다."));
     return EmailVerificationMapper.toDomain(entity);
   }
+
+  @Override
+  public EmailVerification findByCode(int code) {
+    EmailVerificationEntity entity =
+        jpaRepository
+            .findById(code)
+            .orElseThrow(() -> new NoSuchElementException("코드에 대한 인증 정보가 없습니다."));
+    return EmailVerificationMapper.toDomain(entity);
+  }
+
+  @Override
+  public void deleteByCode(int code) {
+    jpaRepository.deleteById(code);
+  }
 }
