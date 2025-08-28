@@ -89,6 +89,7 @@ function RecruitmentPage() {
                                 content={announcement.summaryDescription}
                                 deadline={announcement.applicationEndDate}
                                 hashtags={announcement.tags}
+                                status={announcement.announcementStatus}
                                 onClick={() => handleCardClick(announcement.announcementId)}
                             />
                         </div>

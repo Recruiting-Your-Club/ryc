@@ -40,7 +40,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
     const parsedAnnouncementData = announcementDetaildata
         ? parseAnnouncementData(announcementDetaildata)
         : [];
-
+    const currentStatus = announcementDetaildata?.announcementStatus;
     // state, ref, querystring hooks
     // form hooks
     // query hooks
@@ -102,7 +102,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                     }}
                     sx={applyButton}
                     zIndex={10}
-                    disabled={isExpired}
+                    disabled={isExpired || currentStatus !== 'RECRUITING'}
                 >
                     지원하기
                 </Button>
