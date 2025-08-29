@@ -270,21 +270,21 @@ function SideBar() {
                                             goTo(`/clubs/${club.myClubResponse.id}`);
                                             return;
                                         }
-                                        const representativePath = getActiveSubMenu(
-                                            location.pathname,
-                                        );
-                                        const announcementIdParam = announcementId
-                                            ? `/${announcementId}`
-                                            : '';
-                                        goTo(
-                                            `${representativePath}/${club.myClubResponse.id}${announcementIdParam}`,
-                                        );
-                                        // setCurrentAnnouncement(undefined);
-                                        // setActiveSubMenu('/clubs');
-                                        // setActiveMenus((prev) =>
-                                        //     prev.includes(1) ? prev : [...prev, 1],
+                                        // const representativePath = getActiveSubMenu(
+                                        //     location.pathname,
                                         // );
-                                        // goTo(`/clubs/${club.id}`);
+                                        // const announcementIdParam = announcementId
+                                        //     ? `/${announcementId}`
+                                        //     : '';
+                                        // goTo(
+                                        //     `${representativePath}/${club.myClubResponse.id}${announcementIdParam}`,
+                                        // );
+                                        setCurrentAnnouncement(undefined);
+                                        setActiveSubMenu('/clubs');
+                                        setActiveMenus((prev) =>
+                                            prev.includes(1) ? prev : [...prev, 1],
+                                        );
+                                        goTo(`/clubs/${club.myClubResponse.id}`);
                                     }}
                                 >
                                     <Tooltip
