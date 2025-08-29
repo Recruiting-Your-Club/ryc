@@ -311,7 +311,8 @@ function ClubApplyPage() {
 
     const handleConfirmSubmit = () => {
         const answerData = makeAnsewerDataForSubmit(answers);
-        submitApplication(answerData);
+        const verifyCode = sessionStorage.getItem('email_verification_token') ?? '';
+        submitApplication({ data: answerData, verifyCode: verifyCode });
     };
 
     const handleQuestionFocus = (questionTitle: string, tab: string) => {

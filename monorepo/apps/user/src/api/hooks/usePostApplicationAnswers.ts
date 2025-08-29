@@ -11,14 +11,19 @@ interface UsePostApplicationAnswersProps {
     onError?: (error: Error) => void;
 }
 
+type SubmitVariables = {
+    data: ApplicationSubmissionRequest;
+    verifyCode: string;
+};
+
 export const usePostApplicationAnswers = ({
     announcementId,
     onSuccess,
     onError,
 }: UsePostApplicationAnswersProps) => {
     return useMutation({
-        mutationFn: (data: ApplicationSubmissionRequest) =>
-            postApplicationAnswers(announcementId, data),
+        mutationFn: ({ data, verifyCode }: SubmitVariables) =>
+            postApplicationAnswers(announcementId, data, verifyCode),
         onSuccess,
         onError,
     });
