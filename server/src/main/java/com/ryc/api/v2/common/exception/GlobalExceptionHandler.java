@@ -29,7 +29,9 @@ import com.ryc.api.v2.common.exception.event.DiscordInternalServerErrorEvent;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -129,6 +131,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // TODO: 예기치 못한 모든 예외는 해당 진입점으로 들어옴.
     //  현재 e.message는 errorCode의 메시지로 응답하는 형태. 예외 자체 메시지를 로그에 추가
     // DB에러와 같이 노출되면 안되는 값이 노출될 가능성. 절대 예외자체의 메시지를 응답값으로 넘기면 안됨. (errorCode의 메시지를 응답하기로 함.)
+
+    // TODO: 삭제 예정
+    log.error(errorCode.name(), e);
     return handleExceptionInternal(errorCode, request);
   }
 

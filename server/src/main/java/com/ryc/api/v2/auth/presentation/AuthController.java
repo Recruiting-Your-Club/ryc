@@ -67,7 +67,7 @@ public class AuthController {
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  public ResponseEntity<?> refreshToken(
+  public ResponseEntity<TokenRefreshResponse> refreshToken(
       @CookieValue("refresh-token") @NotBlank(message = "기존 리프레시 토큰은 빈값일 수 없습니다.") @JWT
           String refreshToken) {
     TokenRefreshResult refreshResult = authService.refreshToken(refreshToken);
