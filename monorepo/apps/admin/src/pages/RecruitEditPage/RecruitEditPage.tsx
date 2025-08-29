@@ -157,7 +157,7 @@ function RecruitEditPage() {
             if (error.statusCode === 500) {
                 setErrorDialogOpen(true);
             } else if (error.response?.errors[0].message || error.message) {
-                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'white' });
             } else {
                 toast('공고 편집에 실패했어요.', {
                     toastTheme: 'colored',
