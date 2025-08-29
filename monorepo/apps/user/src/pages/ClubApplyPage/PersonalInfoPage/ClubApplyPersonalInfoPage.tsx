@@ -1,6 +1,8 @@
-import React from 'react';
+import { useSendEmailVerification, useVerifyEmailCode } from '@api/hooks';
+import { EmailVerificationDialog } from '@components/EmailVerificationDialog';
+import React, { useMemo, useState } from 'react';
 
-import { Checkbox, Input, Radio, Text } from '@ssoc/ui';
+import { Button, Checkbox, Input, Radio, Text, useToast } from '@ssoc/ui';
 import { FileUpLoader } from '@ssoc/ui';
 
 import { useApplicationStore } from '../../../stores';
@@ -12,6 +14,9 @@ import {
     inputSx,
     labelContainer,
     labelSx,
+    s_emailInputContainer,
+    s_emailInputSx,
+    s_emailSx,
     s_fileUploaderSx,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
@@ -30,20 +35,159 @@ function ClubApplyPersonalInfoPage({
     onFocus,
     questionRefs,
     isFileUploading = false,
-}: ClubApplyPersonalInfoPageProps) {
+    onEmailVerifiedChange,
+}: ClubApplyPersonalInfoPageProps & { onEmailVerifiedChange?: (verify: boolean) => void }) {
     //props destruction
     //lib hooks
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
     const { getFiles } = useApplicationStore();
     const filesByQuestion = getFiles(announcementId);
+
+    //query hooks
+    const sendMutation = useSendEmailVerification();
+    const verifyMutation = useVerifyEmailCode();
+
+    const [verifyOpen, setVerifyOpen] = useState(false);
+    const [dialogExpiresAt, setDialogExpiresAt] = useState<string>('');
+    const [verifyingEmailLabel, setVerifyingEmailLabel] = useState<string | null>(null);
+    const [isEmailLocked, setIsEmailLocked] = useState(false);
+
+    const tokenKey = useMemo(() => 'email_verification_token', []);
+
     //calculated values
+    const lockEmail = (email: string) => {
+        setIsEmailLocked(true);
+        onEmailVerifiedChange?.(true);
+    };
+
+    const unlockEmail = () => {
+        setIsEmailLocked(false);
+        onEmailVerifiedChange?.(false);
+        sessionStorage.removeItem(tokenKey);
+    };
 
     //handlers
     //effects
     return (
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
+                if (question.type === 'EMAIL') {
+                    const value = getAnswer(answers, question.label);
+                    const hasError = getValidationError(question.label, value);
+                    const isThisLocked = isEmailLocked;
+
+                    return (
+                        <div
+                            key={question.id}
+                            css={clubApplyPersonalQuestionForm(hasError && touched[question.label])}
+                            tabIndex={-1}
+                            ref={(element) => {
+                                if (questionRefs.current) {
+                                    questionRefs.current[question.label] = element;
+                                }
+                            }}
+                        >
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular">{question.label}</Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <div css={s_emailInputContainer}>
+                                <Input
+                                    sx={s_emailSx}
+                                    variant="lined"
+                                    labelSx={labelSx}
+                                    inputSx={s_emailInputSx}
+                                    value={value}
+                                    onChange={(e) => {
+                                        // 잠금 시 변경 불가
+                                        if (isThisLocked) return;
+                                        onAnswerChange(question.id, question.label, e.target.value);
+                                    }}
+                                    error={hasError && touched[question.label]}
+                                    onFocus={() => onFocus(question.label)}
+                                    onBlur={() => onBlur(question.label)}
+                                    helperText={
+                                        touched[question.label]
+                                            ? getErrorMessage(question.label, value)
+                                            : undefined
+                                    }
+                                    helperSx={helperTextSx}
+                                    placeholder={getPlaceholder(question.label)}
+                                    disabled={isThisLocked}
+                                />
+
+                                {!isThisLocked ? (
+                                    <Button
+                                        variant="outlined"
+                                        onClick={async () => {
+                                            if (!value) return toast.error('이메일을 입력해주세요');
+                                            if (hasError)
+                                                return toast.error(
+                                                    '올바른 이메일 형식인지 확인해주세요.',
+                                                );
+
+                                            try {
+                                                const { expiresAt } =
+                                                    await sendMutation.mutateAsync({
+                                                        email: value,
+                                                    });
+
+                                                setDialogExpiresAt(expiresAt);
+                                                setVerifyingEmailLabel(question.label);
+                                                setVerifyOpen(true);
+                                            } catch {
+                                                // 실패 처리(나중에 훅으로 교체)
+                                            }
+                                        }}
+                                    >
+                                        이메일 인증
+                                    </Button>
+                                ) : (
+                                    <Button type="button" onClick={unlockEmail}>
+                                        이메일 변경
+                                    </Button>
+                                )}
+                                <EmailVerificationDialog
+                                    isOpen={verifyOpen}
+                                    onClose={() => setVerifyOpen(false)}
+                                    email={value}
+                                    expiresAt={dialogExpiresAt}
+                                    onVerify={async (code) => {
+                                        try {
+                                            await verifyMutation.mutateAsync({
+                                                email: value,
+                                                code: Number(code),
+                                            });
+                                            sessionStorage.setItem(tokenKey, code);
+                                            lockEmail(value);
+                                            return true;
+                                        } catch {
+                                            return false;
+                                        }
+                                    }}
+                                    onResendCode={async () => {
+                                        try {
+                                            const { expiresAt } = await sendMutation.mutateAsync({
+                                                email: value,
+                                            });
+                                            setDialogExpiresAt(expiresAt);
+                                        } catch {
+                                            toast.error(
+                                                '코드 재전송에 실패했어요. 잠시 후 다시 시도해주세요',
+                                            );
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    );
+                }
                 if (question.type === 'PROFILE_IMAGE') {
                     return (
                         <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>

@@ -12,16 +12,17 @@ function useRegister(onErrorDialogOpen: (open: boolean) => void) {
     const { toast } = useToast();
 
     return useMutation<RegisterResponse, Error, Register>({
-        mutationFn: register,
+        mutationFn: (payload) => register(payload),
         onSuccess: () => {
             navigate('/login', { replace: true });
+            toast.success('회원가입이 성공적으로 완료되었어요.');
         },
         onError: (error) => {
             if (error instanceof HttpError && error.statusCode === 500) {
                 onErrorDialogOpen(true);
                 return;
             }
-            toast.error('회원가입에 실패했습니다.', {
+            toast.error('회원가입에 실패했어요.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });

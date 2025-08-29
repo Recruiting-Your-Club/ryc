@@ -7,6 +7,7 @@ export interface Register {
     email: string;
     name: string;
     password: string;
+    verifyCode: string;
 }
 
 export interface LoginResponse {

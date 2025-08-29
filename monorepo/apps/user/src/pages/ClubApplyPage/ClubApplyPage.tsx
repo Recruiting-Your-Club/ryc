@@ -157,7 +157,11 @@ function ClubApplyPage() {
     const [activeTab, setActiveTab] = useState<string>('사전질문');
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
+    //이메일 인증 검증 여부
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+
     // calculated values
+
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         return allQuestions.filter((question) => question.isRequired).length;
@@ -170,12 +174,25 @@ function ClubApplyPage() {
             .every((question) => {
                 const answer = answers.find((answer) => answer.questionTitle === question.label);
                 if (!answer || !answer.value.trim()) return false;
+                if (question.type === 'EMAIL') {
+                    if (VALIDATION_PATTERNS[question.label as ValidationKey]) {
+                        if (getValidationError(question.label, answer.value)) return false;
+                    }
+                    // 인증 여부 반영
+                    return isEmailVerified;
+                }
                 if (VALIDATION_PATTERNS[question.label as ValidationKey]) {
                     return !getValidationError(question.label, answer.value);
                 }
                 return true;
             });
-    }, [answers, allQuestions, getValidationError]);
+    }, [answers, allQuestions, getValidationError, isEmailVerified]);
+
+    // 제출 버튼 disabled 계산에 반영
+    const isSubmitDisabled = useMemo(() => {
+        const baseReady = requiredQuestionsCompleted || completedQuestions === allQuestions.length;
+        return isSubmitting || !baseReady;
+    }, [isSubmitting, requiredQuestionsCompleted, completedQuestions, allQuestions.length]);
 
     const allocateFocus = (questionTitle: string) => {
         const element = questionRefs.current[questionTitle];
@@ -313,7 +330,8 @@ function ClubApplyPage() {
 
     const handleConfirmSubmit = () => {
         const answerData = makeAnsewerDataForSubmit(answers);
-        submitApplication(answerData);
+        const verifyCode = sessionStorage.getItem('email_verification_token') ?? '';
+        submitApplication({ data: answerData, verifyCode: verifyCode });
     };
 
     const handleQuestionFocus = (questionTitle: string, tab: string) => {
@@ -345,6 +363,7 @@ function ClubApplyPage() {
                     onFocus={handleFocus}
                     questionRefs={questionRefs}
                     isFileUploading={isFileUploading}
+                    onEmailVerifiedChange={setIsEmailVerified}
                 />
             ),
             width: '5.8rem',
@@ -369,20 +388,30 @@ function ClubApplyPage() {
 
     // effects
     useEffect(() => {
-        const completedCount = answers.filter((answer) => {
-            // 값이 비어있는 경우 제외
-            if (!answer.value.trim()) return false;
+        const count = allQuestions.reduce((acc, q) => {
+            const answer = answers.find((a) => a.questionTitle === q.label);
 
-            // 유효성 검사가 필요한 경우
-            if (VALIDATION_PATTERNS[answer.questionTitle as ValidationKey]) {
-                return !getValidationError(answer.questionTitle, answer.value);
+            // 값이 없으면 미완료
+            if (!answer || !answer.value.trim()) return acc;
+
+            // EMAIL: 형식 에러면 미완료, 형식 OK여도 인증 안 됐으면 미완료
+            if (q.type === 'EMAIL') {
+                if (VALIDATION_PATTERNS[q.label as ValidationKey]) {
+                    if (getValidationError(q.label, answer.value)) return acc;
+                }
+                return acc + (isEmailVerified ? 1 : 0);
             }
 
-            return true;
-        }).length;
+            // 그 외: 패턴 있으면 패턴 검증 통과해야 완료
+            if (VALIDATION_PATTERNS[q.label as ValidationKey]) {
+                return acc + (!getValidationError(q.label, answer.value) ? 1 : 0);
+            }
 
-        setCompletedQuestions(completedCount);
-    }, [answers, getValidationError]);
+            // 패턴 없으면 값만 있어도 완료
+            return acc + 1;
+        }, 0);
+        setCompletedQuestions(count);
+    }, [answers, allQuestions, isEmailVerified, getValidationError]);
 
     useEffect(() => {
         if (applicationAnswers.length > 0) {
@@ -458,11 +487,7 @@ function ClubApplyPage() {
                     variant="primary"
                     size="full"
                     loading={isSubmitting}
-                    disabled={
-                        !(
-                            requiredQuestionsCompleted || completedQuestions === allQuestions.length
-                        ) || isSubmitting
-                    }
+                    disabled={isSubmitDisabled}
                     onClick={handleSubmit}
                     sx={s_submitButtonSx}
                 >

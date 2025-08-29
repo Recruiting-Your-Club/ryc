@@ -57,3 +57,20 @@ export const s_fileUploaderSx = css`
     width: 100%;
     margin-top: 0;
 `;
+
+export const s_emailInputContainer = css`
+    display: flex;
+    width: 60%;
+    gap: 1rem;
+    align-items: flex-start;
+`;
+
+export const s_emailInputSx = css`
+    width: 100%;
+    height: 2.5rem;
+    padding: 0rem 0rem;
+`;
+
+export const s_emailSx = css`
+    width: 100%;
+`;

@@ -17,10 +17,14 @@ async function getApplicationForm(announcementId: string): Promise<ApplicationFo
 async function postApplicationAnswers(
     announcementId: string,
     data: ApplicationSubmissionRequest,
+    verifyCode: string,
 ): Promise<ApplicationSubmissionResponse> {
     const response = await httpRequest.post({
         url: `announcements/${announcementId}/applications`,
         body: data,
+        headers: {
+            'X-EMAIL-VERIFICATION-CODE': verifyCode,
+        },
     });
     return response as ApplicationSubmissionResponse;
 }
