@@ -147,12 +147,20 @@ function SideBar() {
 
     // form hooks
     // query hooks
-    const { data: myClub, isLoading: clubLoading } = useQuery(myClubQueries.all());
-    const { data: announcementList } = useQuery({
-        ...announcementQueries.getListByClub(clubId || '', queryOn),
-        enabled: !!clubId && queryOn,
+    const shouldFetchAnnouncements = !!clubId && (!!announcementId || queryOn);
+    const { data: myClub, isLoading: clubLoading } = useQuery({
+        ...myClubQueries.all(),
+        throwOnError: true,
     });
-    const { data: myInformation } = useQuery(userQueries.getMyInformation());
+    const { data: announcementList } = useQuery({
+        ...announcementQueries.getListByClub(clubId || '', true),
+        enabled: shouldFetchAnnouncements,
+        throwOnError: true,
+    });
+    const { data: myInformation } = useQuery({
+        ...userQueries.getMyInformation(),
+        throwOnError: true,
+    });
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
@@ -527,7 +535,7 @@ function SideBar() {
                                 <Button
                                     variant="transparent"
                                     size="full"
-                                    onClick={() => goTo('/user')}
+                                    onClick={() => handleSubMenuClick('/user')}
                                 >
                                     계정설정
                                 </Button>
