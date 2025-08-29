@@ -62,10 +62,22 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
                   .slice(2)
                   .replace(/-/g, '.');
 
-    const applicationPeriod = `${applicationStartDate} ~ ${applicationEndDate}`;
-    const interviewPeriod = `${interviewStartDate} ~ ${interviewEndDate}`;
-    const documentResultPeriod = `${documentResultStartDate} ~ ${documentResultEndDate}`;
-    const finalResultPeriod = `${finalResultStartDate} ~ ${finalResultEndDate}`;
+    const applicationPeriod =
+        announcementDetaildata.applicationPeriod === null
+            ? '미정'
+            : `${applicationStartDate} ~ ${applicationEndDate}`;
+    const interviewPeriod =
+        announcementDetaildata.interviewPeriod === null
+            ? '미정'
+            : `${interviewStartDate} ~ ${interviewEndDate}`;
+    const documentResultPeriod =
+        announcementDetaildata.documentResultPeriod === null
+            ? '미정'
+            : `${documentResultStartDate} ~ ${documentResultEndDate}`;
+    const finalResultPeriod =
+        announcementDetaildata.finalResultPeriod === null
+            ? '미정'
+            : `${finalResultStartDate} ~ ${finalResultEndDate}`;
 
     return [
         {
