@@ -493,7 +493,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // Email Subject
   EMAIL_SUBJECT_NULL_OR_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목은 null 혹은 empty일 수 없습니다."),
-  EMAIL_INVALID_SUBJECT_LENGTH(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목은 1자 이상 255자 이하여야 합니다."),
+  EMAIL_INVALID_SUBJECT_LENGTH(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목은 1자 이상 1000자 이하여야 합니다."),
 
   // Email Content
   EMAIL_CONTENT_NULL_OR_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 내용은 null 혹은 empty일 수 없습니다."),
