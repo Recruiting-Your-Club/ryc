@@ -1,11 +1,13 @@
 import type { InterviewApplicant, UnreservedApplicant } from '@api/domain/interview/types';
 import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
-import { EvaluationBox, InformationBox, IntervieweeList } from '@components';
+import { ErrorDialog, EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
 import { INITIAL_EVALUATION_SUMMARY } from '@constants/evaluationPage';
 import { useEvaluation } from '@hooks/components';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -30,6 +32,7 @@ function InterviewEvaluationPage() {
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
     const [slotId, setSlotId] = useState<string | null>(null);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -132,11 +135,17 @@ function InterviewEvaluationPage() {
                     toastTheme: 'colored',
                 });
             },
-            onError: () => {
-                toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
-                    type: 'error',
-                    toastTheme: 'colored',
-                });
+            onError: (error: ErrorWithStatusCode) => {
+                if (error.statusCode === 500) {
+                    setErrorDialogOpen(true);
+                } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
+                        type: 'error',
+                        toastTheme: 'colored',
+                    });
+                }
             },
         };
     }
@@ -226,6 +235,11 @@ function InterviewEvaluationPage() {
                     />
                 </div>
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }

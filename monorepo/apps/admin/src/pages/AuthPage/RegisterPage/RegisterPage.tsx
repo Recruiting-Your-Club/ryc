@@ -1,6 +1,7 @@
 import { useSendEmailVerification, useVerifyEmailCode } from '@api/hooks';
 import { userQueries } from '@api/queryFactory';
 import { EmailVerificationDialog } from '@components';
+import { ErrorDialog } from '@components';
 import { css } from '@emotion/react';
 import { useRegister } from '@hooks/useRegister';
 import { useQuery } from '@tanstack/react-query';
@@ -37,18 +38,21 @@ function RegisterPage() {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
 
+
     //인증 관련 state
     const [verifyOpen, setVerifyOpen] = useState(false);
     const [dialogExpiresAt, setDialogExpiresAt] = useState<string>('');
     const [isEmailLocked, setIsEmailLocked] = useState(false);
     const [isEmailVerified, setIsEmailVerified] = useState(false);
     const [verifyCode, setVerifyCode] = useState<string>('');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
-    const { mutate: register, isPending, error } = useRegister();
+    const { mutate: register, isPending, error } = useRegister(setErrorDialogOpen);
     const sendMutation = useSendEmailVerification();
     const verifyMutation = useVerifyEmailCode();
+
 
     // calculated values
     const lockEmail = () => {
@@ -119,8 +123,7 @@ function RegisterPage() {
             });
             return;
         }
-
-        //FIXME: code 받아서 header에 넘겨줘야함
+      
         register({
             email: trimmedEmail,
             name: trimmedName,
@@ -214,6 +217,11 @@ function RegisterPage() {
                         이미 계정이 있으신가요?
                     </Button>
                 </div>
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
+                />
             </div>
 
             <EmailVerificationDialog

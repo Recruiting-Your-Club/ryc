@@ -72,7 +72,7 @@ export const useFileUpload = (baseUrl: string) => {
                     fileType = 'ANNOUNCEMENT_IMAGE'; // 공고 이미지
                     break;
                 case 'USER_PROFILE': // 동아리 사용자 페이지
-                    fileType = 'USER_PROFILE_IMAGE'; // 동아리 사용자 페이지 사진
+                    fileType = 'USER_PROFILE'; // 동아리 사용자 페이지 사진
                     break;
                 default:
                     throw new Error('Invalid type');

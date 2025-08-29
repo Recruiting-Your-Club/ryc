@@ -1,13 +1,5 @@
-import {
-    DEFAULT_DESCRIPTION,
-    ERROR_500_DESCRIPTION,
-    ERROR_CODE_400,
-    ERROR_CODE_401,
-    ERROR_CODE_403,
-    ERROR_CODE_404_DATA,
-    ERROR_CODE_500,
-    ERROR_DEFAULT,
-} from '@constants/errorText';
+import { DEFAULT_DESCRIPTION, ERROR_500_DESCRIPTION } from '@constants/errorText';
+import { getErrorPlainMessageByErrorStatusCode } from '@utils/getErrorMessage';
 import React from 'react';
 
 import { useRouter } from '@ssoc/hooks';
@@ -28,33 +20,12 @@ function ErrorDialog({
     const { goTo } = useRouter();
 
     // initial values
-    let message = ERROR_DEFAULT;
+    let message = getErrorPlainMessageByErrorStatusCode(errorStatusCode);
 
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
-    switch (errorStatusCode) {
-        case 500:
-            message = ERROR_CODE_500;
-            break;
-        case 404:
-            message = ERROR_CODE_404_DATA;
-            break;
-        case 403:
-            message = ERROR_CODE_403;
-            break;
-        case 401:
-            message = ERROR_CODE_401;
-            break;
-        case 400:
-            message = ERROR_CODE_400;
-            break;
-        default:
-            message = ERROR_DEFAULT;
-            break;
-    }
-
     if (content) message = content;
 
     // handlers

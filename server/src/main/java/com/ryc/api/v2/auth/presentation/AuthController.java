@@ -1,11 +1,13 @@
 package com.ryc.api.v2.auth.presentation;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.auth.presentation.request.LoginRequest;
@@ -14,8 +16,12 @@ import com.ryc.api.v2.auth.presentation.response.RegisterResponse;
 import com.ryc.api.v2.auth.presentation.response.TokenRefreshResponse;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.auth.service.dto.TokenRefreshResult;
+import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
+import com.ryc.api.v2.common.exception.code.EmailErrorCode;
+import com.ryc.api.v2.common.validator.request.annotation.JWT;
+import com.ryc.api.v2.email.service.EmailVerificationService;
 import com.ryc.api.v2.security.jwt.JwtProperties;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,10 +31,12 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2/auth")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "인증/인가")
 public class AuthController {
   private final AuthService authService;
   private final JwtProperties jwtProperties;
+  private final EmailVerificationService emailVerificationService;
 
   @PostMapping("/login")
   @Operation(summary = "Login", description = "사용자 로그인 인증 후, 인증 성공시 토큰 발행")
@@ -40,10 +48,16 @@ public class AuthController {
   }
 
   @PostMapping("/register")
+  @VerifyEmailCode
   // TODO: DuplicateKeyException에 대한 예외 응답 코드 설정 필요
   @ApiErrorCodeExample(
-      value = {CommonErrorCode.class},
-      include = {"INVALID_PARAMETER"})
+      value = {CommonErrorCode.class, EmailErrorCode.class},
+      include = {
+        "INVALID_PARAMETER",
+        "EMAIL_VERIFICATION_CODE_BAD_REQUEST",
+        "EMAIL_VERIFICATION_CODE_ALREADY_ATTEMPTED",
+        "EMAIL_VERIFICATION_CODE_INVALID"
+      })
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest body) {
     RegisterResponse response = authService.register(body);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -53,7 +67,9 @@ public class AuthController {
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  public ResponseEntity<?> refreshToken(@CookieValue("refresh-token") String refreshToken) {
+  public ResponseEntity<?> refreshToken(
+      @CookieValue("refresh-token") @NotBlank(message = "기존 리프레시 토큰은 빈값일 수 없습니다.") @JWT
+          String refreshToken) {
     TokenRefreshResult refreshResult = authService.refreshToken(refreshToken);
 
     TokenRefreshResponse response = new TokenRefreshResponse(refreshResult.accessToken());
@@ -76,7 +92,10 @@ public class AuthController {
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<?> logout(
-      @CookieValue(value = "refresh-token", required = false) String refreshToken) {
+      @CookieValue(value = "refresh-token", required = false)
+          @NotBlank(message = "기존 리프레시 토큰은 빈값일 수 없습니다.")
+          @JWT
+          String refreshToken) {
     if (refreshToken != null) {
       authService.logout(refreshToken);
     }

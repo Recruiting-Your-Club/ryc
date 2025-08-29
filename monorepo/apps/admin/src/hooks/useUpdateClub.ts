@@ -14,13 +14,6 @@ const useUpdateClub = () => {
             queryClient.setQueryData(clubKeys.detail(id), response);
             return response;
         },
-        onError: (error) => {
-            // 500 에러인 경우 전역 처리에 위임 (콘솔 로깅은 제외)
-            if (error instanceof HttpError && error.statusCode === 500) {
-                return;
-            }
-            console.error(error);
-        },
     });
 };
 

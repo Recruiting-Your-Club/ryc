@@ -11,11 +11,11 @@ import type {
     RequestPatchEmailVerification,
     RequestPostEmailVerification,
 } from '@api/domain/email/types';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useMutation } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 
 import { useToast } from '@ssoc/ui';
-
-import { HttpError } from '../common/httpError';
 
 type EmailMutationParams<T> = {
     announcementId: string;
@@ -38,13 +38,13 @@ const useEmailMutation = <T>(
                 toastTheme: 'colored',
             });
         },
-        onError: (error) => {
+        onError: (error: ErrorWithStatusCode) => {
             onClose(false);
-            // 500 에러인 경우 전역 처리에 위임
-            if (error instanceof HttpError && error.statusCode === 500) {
-                return;
+            if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('이메일 전송에 실패했어요.', { type: 'error', toastTheme: 'colored' });
             }
-            toast('이메일 전송에 실패했어요.', { type: 'error', toastTheme: 'colored' });
         },
     });
 };

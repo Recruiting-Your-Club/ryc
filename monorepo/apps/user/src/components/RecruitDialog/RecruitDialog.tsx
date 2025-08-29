@@ -28,29 +28,22 @@ function RecruitDialog(props: RecruitmentDialogProps) {
     const { open, handleClose, announcementDetaildata } = props;
     // lib hooks
     const { goTo } = useRouter();
-    const navigate = useNavigate();
     // initial values
     const applicationEndDate = announcementDetaildata?.applicationPeriod?.endDate;
     const images = announcementDetaildata?.images || [];
     const { isExpired } = getDeadlineInfo(applicationEndDate || '');
-    const clubBoxData = announcementDetaildata
-        ? parseAnnouncementClubBoxData(announcementDetaildata)
-        : [];
-
-    const parsedAnnouncementData = announcementDetaildata
-        ? parseAnnouncementData(announcementDetaildata)
-        : [];
-
+    const currentStatus = announcementDetaildata?.announcementStatus;
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     // calculated values
+    const clubBoxData = announcementDetaildata
+        ? parseAnnouncementClubBoxData(announcementDetaildata)
+        : [];
     // handlers
     const handleFullPageView = () => {
         handleClose?.();
-        navigate(`/announcements/${announcementDetaildata?.id}`, {
-            state: { clubBoxData, parsedAnnouncementData },
-        });
+        goTo(`/announcements/${announcementDetaildata?.id}`);
     };
     //effects
 
@@ -98,11 +91,11 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                     size="xl"
                     onClick={() => {
                         handleClose?.();
-                        goTo(`/announcements/${announcementDetaildata?.id}/application`);
+                        goTo(`/announcements/${announcementDetaildata?.id}/agreement`);
                     }}
                     sx={applyButton}
                     zIndex={10}
-                    disabled={isExpired}
+                    disabled={isExpired || currentStatus !== 'RECRUITING'}
                 >
                     지원하기
                 </Button>

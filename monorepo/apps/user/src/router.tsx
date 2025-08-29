@@ -1,3 +1,4 @@
+import { ClubApplyAgreementPage } from '@pages/ClubApplyPage/ClubApplyAgreemetPage';
 import { ErrorFallbackPage } from '@pages/ErrorFallbackPage';
 import React, { lazy, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -77,6 +78,17 @@ const router = createBrowserRouter([
                         <Suspense fallback={<RecruitmentLoadingPage />}>
                             <LazyRecruitmentPage />
                         </Suspense>
+                    </ErrorBoundary>
+                ),
+            },
+            {
+                path: ':announcementId/agreement',
+                element: (
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <ClubApplyAgreementPage />
                     </ErrorBoundary>
                 ),
             },

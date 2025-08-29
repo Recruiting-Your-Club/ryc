@@ -24,6 +24,7 @@ import {
     RegisterPage,
     StepManagementLoadingPage,
     TestPage,
+    UserSettingPage,
 } from './pages';
 
 const LazyInterviewEvaluationPage = lazy(
@@ -216,6 +217,7 @@ const router = createBrowserRouter([
                 ),
             },
             { path: 'recruitment/success', element: <RecruitSuccessPage /> },
+            { path: 'user', element: <UserSettingPage /> },
         ],
     },
     {

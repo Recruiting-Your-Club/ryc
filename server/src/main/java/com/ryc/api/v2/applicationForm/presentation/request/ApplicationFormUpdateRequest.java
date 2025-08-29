@@ -2,9 +2,12 @@ package com.ryc.api.v2.applicationForm.presentation.request;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.UUID;
 
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 
@@ -18,20 +21,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @Schema(description = "공고 지원서")
 public record ApplicationFormUpdateRequest(
-    @NotBlank(message = "id shouldn't be blank")
-        @Schema(description = "공고 지원서 ID", example = "e23e4567-e89b-12d3-a456-426614174000")
+    @Schema(description = "공고 지원서 ID", example = "e23e4567-e89b-12d3-a456-426614174000")
+        @NotBlank(message = "지원서폼 id는 빈 값일 수 없습니다.")
+        @UUID(message = "지원서폼 id는 UUID 포멧이어야 합니다.")
         String id,
-    @NotEmpty(message = "personalInfoQuestionTypes shouldn't be empty")
-        List<
-                @NotNull(message = "personalInfoQuestionType shouldn't be null")
-                PersonalInfoQuestionType>
+    @NotEmpty(message = "지원자에게 필수로 받을 개인정보 타입 리스트는 빈값일 수 없습니다.")
+        List<@NotNull(message = "각 개인정보 타입은 null일 수 없습니다.") PersonalInfoQuestionType>
             personalInfoQuestionTypes,
-    @NotNull(message = "preQuestions shouldn't be null")
-        List<@NotNull(message = "preQuestion shouldn't be null") QuestionUpdateRequest>
-            preQuestions,
-    @NotNull(message = "applicationQuestions shouldn't be null")
-        List<@NotNull(message = "applicationQuestion shouldn't be null") QuestionUpdateRequest>
-            applicationQuestions) {
+    List<@NotNull(message = "각 사전질문은 null 일 수 없습니다.") @Valid QuestionUpdateRequest> preQuestions,
+    List<@NotNull(message = "각 질문은 null 일 수 없습니다.") @Valid QuestionUpdateRequest>
+        applicationQuestions) {
   @Override
   public List<QuestionUpdateRequest> preQuestions() {
     return List.copyOf(preQuestions);

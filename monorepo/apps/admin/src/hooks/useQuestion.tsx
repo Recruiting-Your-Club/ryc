@@ -1,5 +1,5 @@
 import type { QuestionProps, QuestionType } from '@components/QuestionForm/types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useId, useState } from 'react';
 
 const DEFAULT_OPTIONS = [
     { id: 'opt1', text: '' },
@@ -11,9 +11,11 @@ export const useQuestion = () => {
 
     const [applicationQuestions, setApplicationQuestions] = useState<QuestionProps[]>([]);
 
+    const newId = crypto.randomUUID();
+
     const addQuestion = () => {
         const newQuestion: QuestionProps = {
-            id: `q${Date.now()}`,
+            id: newId,
             type: 'short',
             title: '',
             required: false,
@@ -23,7 +25,7 @@ export const useQuestion = () => {
 
     const addApplicationQuestion = () => {
         const newQuestion: QuestionProps = {
-            id: `q${Date.now()}`,
+            id: newId,
             type: 'long',
             title: '',
             subContent: '',

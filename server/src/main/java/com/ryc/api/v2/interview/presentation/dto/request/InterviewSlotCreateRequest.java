@@ -15,7 +15,7 @@ public record InterviewSlotCreateRequest(
                 @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.") @Valid
                 NumberOfPeopleByInterviewDateRequest>
             numberOfPeopleByInterviewDateRequests,
-    @NotNull(message = "이메일 전송 요청 정보는 null일 수 없습니다.") @Valid @Schema(description = "이메일 전송 요청 정보")
+    @Schema(description = "이메일 전송 요청 정보") @NotNull(message = "이메일 전송 요청 정보는 null일 수 없습니다.") @Valid
         EmailSendRequest emailSendRequest) {
 
   @Override

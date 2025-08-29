@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ApplicantStatusRequest(
-    @NotBlank(message = "변경하려는 상태 데이터는 필수입니다.")
+    @NotBlank(message = "변경하려는 지원자 상태는 필수 입력입니다.")
         @Schema(
             description = "변경하려는 지원자 상태 데이터",
             allowableValues = {

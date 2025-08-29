@@ -4,7 +4,7 @@ import { Text } from '@ssoc/ui';
 import { getDeadlineInfo } from '@ssoc/utils/src/compareTime';
 
 import {
-    deadlineText,
+    deadlineTextSx,
     recruitCardBody,
     recruitCardContainer,
     recruitCardFooter,
@@ -16,7 +16,7 @@ import type { RecruitCardProps } from './types';
 
 function RecruitCard(props: RecruitCardProps) {
     // prop destruction
-    const { title, content, deadline, hashtags, onClick } = props;
+    const { title, content, deadline, hashtags, status, onClick } = props;
     // lib hooks
     // initial values
     // state, ref, querystring hooks
@@ -25,6 +25,35 @@ function RecruitCard(props: RecruitCardProps) {
     // calculated values
     const hashtagList = hashtags.map((tag) => `#${tag} `);
     const { displayText, diffDay } = getDeadlineInfo(deadline);
+
+    const deadlineText = (status: string) => {
+        switch (status) {
+            case 'UPCOMING':
+                return (
+                    <Text type="captionRegular" textAlign="right" color="caption" cropped>
+                        모집예정
+                    </Text>
+                );
+            case 'RECRUITING':
+                return (
+                    <Text
+                        type="captionRegular"
+                        textAlign="right"
+                        color="caption"
+                        sx={deadlineTextSx(diffDay)}
+                        cropped
+                    >
+                        {displayText}
+                    </Text>
+                );
+            case 'CLOSED':
+                return (
+                    <Text type="captionRegular" textAlign="right" color="warning" cropped>
+                        마감
+                    </Text>
+                );
+        }
+    };
     // handlers
     // effects
     return (
@@ -36,17 +65,7 @@ function RecruitCard(props: RecruitCardProps) {
                             {title}
                         </Text>
                     </div>
-                    <div css={recruitCardHeaderDeadline}>
-                        <Text
-                            type="captionRegular"
-                            textAlign="right"
-                            color="caption"
-                            sx={deadlineText(diffDay)}
-                            cropped
-                        >
-                            {displayText}
-                        </Text>
-                    </div>
+                    <div css={recruitCardHeaderDeadline}>{deadlineText(status || '')}</div>
                 </div>
 
                 <div css={recruitCardBody}>

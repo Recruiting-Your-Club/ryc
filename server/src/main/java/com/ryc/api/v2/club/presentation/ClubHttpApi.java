@@ -4,10 +4,13 @@ import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2/clubs")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "동아리")
 public class ClubHttpApi {
 
@@ -71,7 +75,11 @@ public class ClubHttpApi {
         "INVALID_PARAMETER"
       })
   public ResponseEntity<DetailClubResponse> updateClub(
-      @PathVariable String id, @Valid @RequestBody ClubUpdateRequest body) {
+      @PathVariable
+          @NotBlank(message = "동아리 id는 빈 값일 수 없습니다.")
+          @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.")
+          String id,
+      @Valid @RequestBody ClubUpdateRequest body) {
     DetailClubResponse response = clubFacade.updateClub(id, body);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
@@ -88,7 +96,11 @@ public class ClubHttpApi {
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  public ResponseEntity<DetailClubResponse> getClub(@PathVariable String id) {
+  public ResponseEntity<DetailClubResponse> getClub(
+      @PathVariable
+          @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.")
+          @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.")
+          String id) {
     DetailClubResponse response = clubFacade.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
@@ -108,8 +120,12 @@ public class ClubHttpApi {
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class, ClubErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "CLUB_INVITE_EXPIRED"})
+  // TODO: 동아리 초대코드 포멧 검사
   public ResponseEntity<SimpleClubResponse> getClubByInviteCode(
-      @PathVariable("invite-code") String inviteCode) {
+      @PathVariable("invite-code")
+          @NotBlank(message = "동아리 초대코드는 공백일 수 없습니다.")
+          @UUID(message = "동아리 초대코드는 UUID 포멧이어야 합니다.")
+          String inviteCode) {
     SimpleClubResponse response = clubFacade.getClubByInviteCode(inviteCode);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
@@ -120,7 +136,11 @@ public class ClubHttpApi {
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
-  public ResponseEntity<Void> deleteClub(@PathVariable String id) {
+  public ResponseEntity<Void> deleteClub(
+      @PathVariable
+          @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.")
+          @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.")
+          String id) {
     clubFacade.deleteClub(id);
     return ResponseEntity.noContent().build();
   }

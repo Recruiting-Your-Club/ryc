@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
 
 import com.ryc.api.v2.common.aop.annotation.HasRole;
+import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
+import com.ryc.api.v2.common.constant.CustomHeaderConstant;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ErrorCode;
 import com.ryc.api.v2.common.exception.response.ErrorResponse;
@@ -51,6 +53,7 @@ public class SwaggerConfiguration {
 
   private final Set<String> whitelistGetPatterns;
   private final Set<String> whitelistPostPatterns;
+  private final Set<String> whitelistPatchPatterns;
 
   /*
    * SwaggerConfiguration 생성자입니다.
@@ -61,7 +64,8 @@ public class SwaggerConfiguration {
    */
   public SwaggerConfiguration(
       @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}") String[] whitelistGetPatterns,
-      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPatterns) {
+      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPatterns,
+      @Value("${SECURITY_WHITELIST_PATCH_METHOD_PATHS}") String[] whitelistPatchPatterns) {
     this.whitelistGetPatterns =
         Arrays.stream(whitelistGetPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
@@ -69,6 +73,11 @@ public class SwaggerConfiguration {
 
     this.whitelistPostPatterns =
         Arrays.stream(whitelistPostPatterns)
+            .map(path -> path.startsWith("/") ? path : "/" + path)
+            .collect(Collectors.toSet());
+
+    this.whitelistPatchPatterns =
+        Arrays.stream(whitelistPatchPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
             .collect(Collectors.toSet());
   }
@@ -117,6 +126,12 @@ public class SwaggerConfiguration {
       if (handlerMethod.hasMethodAnnotation(HasRole.class)) {
         Parameter clubIdHeader = createClubIdHeader();
         operation.addParametersItem(clubIdHeader);
+      }
+
+      // 조건: 이메일 인증 코드를 필요로 하는 API에만 적용
+      if (handlerMethod.hasMethodAnnotation(VerifyEmailCode.class)) {
+        Parameter emailVerificationHeader = createEmailVerificationHeader();
+        operation.addParametersItem(emailVerificationHeader);
       }
 
       return operation;
@@ -203,6 +218,12 @@ public class SwaggerConfiguration {
       }
     } else if (httpOperation.method().equals("POST")) {
       for (String pattern : whitelistPostPatterns) {
+        if (path.matches(pattern)) {
+          return true;
+        }
+      }
+    } else if (httpOperation.method().equals("PATCH")) {
+      for (String pattern : whitelistPatchPatterns) {
         if (path.matches(pattern)) {
           return true;
         }
@@ -300,9 +321,19 @@ public class SwaggerConfiguration {
   private Parameter createClubIdHeader() {
     return new Parameter()
         .in("header")
-        .name("X-CLUB-ID")
+        .name(CustomHeaderConstant.CLUB_ID_HEADER_NAME)
         .description("동아리 식별자 헤더")
         .required(true)
         .schema(new StringSchema());
+  }
+
+  private Parameter createEmailVerificationHeader() {
+    return new Parameter()
+        .in("header")
+        .name(CustomHeaderConstant.EMAIL_VERIFICATION_CODE_HEADER_NAME)
+        .description("이메일 인증 코드 헤더(6자리 숫자)")
+        .required(true)
+        .schema(new StringSchema().pattern("^[0-9]{6}$"))
+        .example("123456");
   }
 }

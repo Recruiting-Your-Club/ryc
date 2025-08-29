@@ -1,4 +1,5 @@
 import { MainCardEditDialog } from '@components';
+import { UserSettingPage } from '@pages/UserSettingPage';
 import { useState } from 'react';
 
 import { Button, Editor, Stepper } from '@ssoc/ui';
@@ -44,18 +45,19 @@ function TestPage() {
         ],
     };
     return (
-        <div style={{ width: '800px' }}>
-            <div
-                style={{
-                    display: 'flex',
-                    marginTop: '2rem',
-                    textAlign: 'center',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Button onClick={() => setOpenClubCardDialog(true)}>동아리 카드 수정</Button>
-            </div>
-        </div>
+        // <div style={{ width: '800px' }}>
+        //     <div
+        //         style={{
+        //             display: 'flex',
+        //             marginTop: '2rem',
+        //             textAlign: 'center',
+        //             justifyContent: 'space-between',
+        //         }}
+        //     >
+        //         <Button onClick={() => setOpenClubCardDialog(true)}>동아리 카드 수정</Button>
+        //     </div>
+        // </div>
+        <UserSettingPage />
     );
 }
 export { TestPage };

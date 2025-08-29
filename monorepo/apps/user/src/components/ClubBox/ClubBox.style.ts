@@ -27,9 +27,15 @@ export const clubBoxItem = css`
     }
 `;
 
-export const s_TextSx = css`
+export const s_TextTitleSx = css`
     width: 40%;
     @media (max-width: ${theme.breakpoint.mobile}) {
-        width: auto;
+        width: 20%;
+    }
+`;
+
+export const s_TextContetnSx = css`
+    @media (max-width: ${theme.breakpoint.mobile}) {
+        width: 80%;
     }
 `;

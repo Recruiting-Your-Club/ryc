@@ -24,7 +24,7 @@ import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
-import com.ryc.api.v2.email.domain.EmailSentStatus;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
@@ -37,18 +37,18 @@ public class EmailService {
   private final String linkHtmlTemplate;
   private final String interviewReservationHtmlTemplate;
   private final String applicationSubmittedHtmlTemplate;
-  private final String ssocEmailId;
+  private final String ssocId;
   private final EmailRepository emailRepository;
 
   public EmailService(
       @Value("${CLIENT_URL}") String baseUri,
-      @Value("${SSOC_EMAIL_ID}") String ssocEmailId,
+      @Value("${SSOC_EMAIL_ID}") String ssocId,
       EmailRepository emailRepository,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
     this.emailRepository = emailRepository;
-    this.ssocEmailId = ssocEmailId;
+    this.ssocId = ssocId;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     try (InputStream is = resource.getInputStream()) {
@@ -150,8 +150,7 @@ public class EmailService {
             .replace("${startTime}", event.period().startDate().toLocalTime().toString())
             .replace("${endTime}", event.period().endDate().toLocalTime().toString());
 
-    createEmails(
-        ssocEmailId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+    createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
   }
 
   @Async
@@ -167,8 +166,7 @@ public class EmailService {
                 "${submittedDate}",
                 event.submittedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-    createEmails(
-        ssocEmailId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+    createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
   }
 
   @EventListener

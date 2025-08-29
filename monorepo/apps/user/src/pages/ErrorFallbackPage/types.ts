@@ -4,5 +4,13 @@ export interface ErrorFallbackPageProps {
 }
 
 export interface ErrorWithStatusCode extends Error {
-    statusCode?: number;
+    statusCode: number;
+    response?: {
+        errors: ErrorResponse[];
+    };
+}
+
+export interface ErrorResponse {
+    code: string;
+    message: string;
 }

@@ -35,10 +35,6 @@ function InterviewTimeTable({
     // form hooks
     // query hooks
     // calculated values
-    // const slotsMap = useMemo(() => {
-    //     return new Map(interviewSlots.map((slot) => [slot.period.startDate, slot]));
-    // }, [interviewSlots]);
-    // const slotsToShow = slotsMap.get(highlightedDate);
     const slotsToShow = interviewSlots.filter(
         (slot) => dayjs(slot.period.startDate).format('YYYY-MM-DD') === highlightedDate,
     );
@@ -52,9 +48,9 @@ function InterviewTimeTable({
         setHighlightedDate(newSelected[0] ?? '');
     };
 
-    const handleButtonClick = (label: string) => {
+    const handleButtonClick = (slotId: string, label: string) => {
         if (onSelect) {
-            onSelect(label); // 외부 제어
+            onSelect({ slotId, label }); // 외부 제어
         } else if (setSelectedLabel) {
             setSelectedLabel(label); // 내부 기본 동작
             onOpenChange?.(false);
@@ -92,7 +88,7 @@ function InterviewTimeTable({
                                     label={label}
                                     startTime={startTime}
                                     endTime={endTime}
-                                    onClick={() => handleButtonClick(label)}
+                                    onClick={() => handleButtonClick(slot.id, label)}
                                     isSelected={selectedInterviewSlotId === slot.id}
                                 />
                             );

@@ -1,10 +1,11 @@
+import { ErrorDialog } from '@components';
 import { useLogin } from '@hooks/useLogin';
 import type { FormEvent } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
-import { Button, Input, PasswordInput } from '@ssoc/ui';
+import { Button, Input, PasswordInput, useToast } from '@ssoc/ui';
 
 import {
     buttonContainer,
@@ -24,11 +25,13 @@ function LoginPage() {
     const { removeHistoryAndGo } = useRouter();
     const location = useLocation();
     const state = location.state as LocationState | null;
+    const { toast } = useToast();
 
     // initial values
     // state, ref, querystring hooks
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -36,17 +39,29 @@ function LoginPage() {
         mutate: login,
         isPending,
         error,
-    } = useLogin({
+    } = useLogin(setErrorDialogOpen, {
         redirectPath: state?.from,
     });
 
     // calculated values
+    const fromLogout = useCallback(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const reason = urlParams.get('reason');
+        if (reason === 'MANUAL') {
+            toast.success('로그아웃되었습니다.');
+        }
+    }, []);
+
     // handlers
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         login({ email, password });
     };
+
     // effects
+    useEffect(() => {
+        fromLogout();
+    }, []);
 
     return (
         <form css={LoginContainer} onSubmit={handleSubmit}>
@@ -80,6 +95,11 @@ function LoginPage() {
                         계정이 없으신가요?
                     </Button>
                 </div>
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
+                />
             </div>
         </form>
     );

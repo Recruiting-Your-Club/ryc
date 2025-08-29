@@ -7,7 +7,7 @@ import { useToast } from '@ssoc/ui';
 
 import { HttpError } from '../api/common/httpError';
 
-function useRegister() {
+function useRegister(onErrorDialogOpen: (open: boolean) => void) {
     const navigate = useNavigate();
     const { toast } = useToast();
 
@@ -18,8 +18,8 @@ function useRegister() {
             toast.success('회원가입이 성공적으로 완료되었어요.');
         },
         onError: (error) => {
-            // 500 에러인 경우 전역 처리에 위임
             if (error instanceof HttpError && error.statusCode === 500) {
+                onErrorDialogOpen(true);
                 return;
             }
             toast.error('회원가입에 실패했어요.', {

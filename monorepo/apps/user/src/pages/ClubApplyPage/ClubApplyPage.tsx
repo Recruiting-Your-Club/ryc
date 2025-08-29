@@ -4,7 +4,9 @@ import type {
     QuestionType,
 } from '@api/domain/announcement/types';
 import { announcementQueries } from '@api/queryFactory';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { returnErrorMessage } from '@utils/getErrorMessage';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +15,13 @@ import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
 import { HttpError } from '../../api/common/httpError';
 import { usePostApplicationAnswers } from '../../api/hooks';
-import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
+import {
+    ClubNavigation,
+    ClubSubmitCard,
+    ErrorDialog,
+    QuestionDropdown,
+    SubmitDialog,
+} from '../../components';
 import { BASE_URL } from '../../constants/api';
 import { useClubStore } from '../../stores';
 import { useApplicationStore } from '../../stores';
@@ -65,20 +73,30 @@ function ClubApplyPage() {
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
         onError: (error) => {
+            setIsSubmitDialogOpen(false);
+
             if (error instanceof HttpError && error.statusCode === 500) {
-                setIsSubmitDialogOpen(false);
+                setErrorDialogOpen(true);
                 return;
             } else if (error instanceof HttpError && error.statusCode === 409) {
                 const errorResponse = error.errorResponse as { code?: string; message?: string };
 
                 if (errorResponse?.code === 'DUPLICATE_APPLICATION') {
                     toast.error('이미 해당 공고에 지원한 이메일입니다.');
-                    setIsSubmitDialogOpen(false);
                     return;
                 }
             }
+
+            const err = error as ErrorWithStatusCode;
+            if (err.response?.errors[0].message || err.message) {
+                toast(returnErrorMessage(error as ErrorWithStatusCode), {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+                return;
+            }
+
             toast.error('제출에 실패했어요.');
-            setIsSubmitDialogOpen(false);
         },
     });
 
@@ -137,6 +155,7 @@ function ClubApplyPage() {
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<string>('사전질문');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     //이메일 인증 검증 여부
     const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -481,6 +500,11 @@ function ClubApplyPage() {
                 isSubmitting={isSubmitting}
                 onConfirm={handleConfirmSubmit}
                 onClose={() => setIsSubmitDialogOpen(false)}
+            />
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
             />
         </div>
     );

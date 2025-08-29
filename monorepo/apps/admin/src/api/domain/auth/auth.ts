@@ -45,4 +45,15 @@ async function myInformation(): Promise<MyInformation> {
     return response as MyInformation;
 }
 
-export { login, register, checkEmail, myInformation };
+async function updateMyInformation(params: {
+    representativeImage: string | null;
+}): Promise<MyInformation> {
+    const response = await httpRequest.patch({
+        url: 'admin',
+        isAuthRequire: true,
+        body: params,
+    });
+    return response as MyInformation;
+}
+
+export { login, register, checkEmail, myInformation, updateMyInformation };
