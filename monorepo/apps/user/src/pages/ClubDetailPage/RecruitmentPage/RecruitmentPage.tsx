@@ -61,10 +61,20 @@ function RecruitmentPage() {
     useEffect(() => {
         if (selectedAnnouncementDetail) {
             setApplicationPeriod({
-                startDate: selectedAnnouncementDetail.applicationPeriod.startDate,
-                endDate: selectedAnnouncementDetail.applicationPeriod.endDate,
+                startDate:
+                    selectedAnnouncementDetail.applicationPeriod === null
+                        ? '미정'
+                        : selectedAnnouncementDetail.applicationPeriod.startDate,
+                endDate:
+                    selectedAnnouncementDetail.applicationPeriod === null
+                        ? '미정'
+                        : selectedAnnouncementDetail.applicationPeriod.endDate,
             });
-            setClubField(selectedAnnouncementDetail.field);
+            setClubField(
+                selectedAnnouncementDetail.field === null
+                    ? '미정'
+                    : selectedAnnouncementDetail.field,
+            );
         }
     }, [selectedAnnouncementDetail, setApplicationPeriod, setClubField]);
 
