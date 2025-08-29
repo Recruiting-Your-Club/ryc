@@ -25,7 +25,7 @@ final class AnnouncementValidator extends DomainValidator {
 
   // 공통 상수
   private static final int MIN_TITLE_LENGTH = 2;
-  private static final int MAX_TITLE_LENGTH = 100;
+  private static final int MAX_TITLE_LENGTH = 200;
   private static final int MAX_DESCRIPTION_LENGTH = 10000;
   private static final int MAX_SUMMARY_DESCRIPTION_LENGTH = 300;
   private static final int MAX_TARGET_LENGTH = 50;
