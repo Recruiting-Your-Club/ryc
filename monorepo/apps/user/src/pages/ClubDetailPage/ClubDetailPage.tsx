@@ -59,7 +59,7 @@ function ClubDetailPage() {
     // effects
     useEffect(() => {
         setClubName(club.name);
-        setClubLogo(club.representativeImage.url);
+        setClubLogo(club.representativeImage?.url);
         setClubCategory(club.category);
         setClubDescription(club.detailDescription);
     }, [club]);
@@ -69,7 +69,7 @@ function ClubDetailPage() {
             <div css={contentContainer}>
                 <div css={clubHeader}>
                     <div css={clubImage}>
-                        {club.representativeImage.url ? (
+                        {club.representativeImage?.url ? (
                             <img
                                 src={club.representativeImage.url}
                                 alt="대표이미지"
@@ -78,13 +78,7 @@ function ClubDetailPage() {
                                 css={{ borderRadius: '10px' }}
                             />
                         ) : (
-                            <Avatar
-                                shape="square"
-                                size="full"
-                                radius="10px"
-                                imageURL={club.representativeImage.url}
-                                imageName="logo"
-                            />
+                            <Avatar shape="square" size="full" radius="10px" imageName="logo" />
                         )}
                     </div>
                     <div css={clubHeaderTextContainer}>
