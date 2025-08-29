@@ -195,7 +195,7 @@ const router = createBrowserRouter([
             },
 
             {
-                path: 'settings/:clubId',
+                path: 'settings/:clubId/:announcementId?',
                 element: (
                     <ErrorBoundary
                         FallbackComponent={ErrorFallbackPage}
@@ -205,19 +205,7 @@ const router = createBrowserRouter([
                     </ErrorBoundary>
                 ),
             },
-            {
-                path: 'recruitment',
-                element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
-                        <RecruitCreatePage />
-                    </ErrorBoundary>
-                ),
-            },
-            { path: 'recruitment/success', element: <RecruitSuccessPage /> },
-            { path: 'user', element: <UserSettingPage /> },
+            { path: 'user/:clubId/:announcementId?', element: <UserSettingPage /> },
         ],
     },
     {

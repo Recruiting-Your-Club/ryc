@@ -143,19 +143,31 @@ function SideBar() {
     const [isExpanded, setIsExpanded] = useState(true);
     const [currentClub, setCurrentClub] = useState<string>(clubId ?? '');
     const [queryOn, setQueryOn] = useState<boolean>(false);
-    const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>();
 
     // form hooks
     // query hooks
-    const { data: myClub, isLoading: clubLoading } = useQuery(myClubQueries.all());
-    const { data: announcementList } = useQuery({
-        ...announcementQueries.getListByClub(clubId || '', queryOn),
-        enabled: !!clubId && queryOn,
+    const shouldFetchAnnouncements = !!clubId && (!!announcementId || queryOn);
+    const { data: myClub, isLoading: clubLoading } = useQuery({
+        ...myClubQueries.all(),
+        throwOnError: true,
     });
-    const { data: myInformation } = useQuery(userQueries.getMyInformation());
+    const { data: announcementList } = useQuery({
+        ...announcementQueries.getListByClub(clubId || '', true),
+        enabled: shouldFetchAnnouncements,
+        throwOnError: true,
+    });
+    const { data: myInformation } = useQuery({
+        ...userQueries.getMyInformation(),
+        throwOnError: true,
+    });
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
+
+    const currentAnnouncement = useMemo(() => {
+        if (!announcementList || !announcementId) return undefined;
+        return announcementList.find((a) => a.announcementId === announcementId);
+    }, [announcementList, announcementId]);
 
     const announcementsByStatus = useMemo(() => {
         if (!announcementList) return { upcoming: [], recruiting: [], closed: [] };
@@ -185,16 +197,12 @@ function SideBar() {
     const handleSubMenuClick = (link: string) => {
         const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
         const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
-        if (link === '/settings') {
-            goTo(`/settings/${clubId}`);
-        } else {
-            goTo(`${link}/${clubId}${announcementIdPath}`);
-        }
+
+        goTo(`${link}/${clubId}${announcementIdPath}`);
     };
 
     // 공고 선택하면 모집 공고로 이동
     const handleSelectAnnouncement = (announcement: AnnouncementList) => {
-        setCurrentAnnouncement(announcement);
         const targetPath = `/announcements/${clubId}/${announcement.announcementId}`;
         setActiveSubMenu('/announcements');
         goTo(targetPath);
@@ -270,21 +278,12 @@ function SideBar() {
                                             goTo(`/clubs/${club.myClubResponse.id}`);
                                             return;
                                         }
-                                        const representativePath = getActiveSubMenu(
-                                            location.pathname,
+
+                                        setActiveSubMenu('/clubs');
+                                        setActiveMenus((prev) =>
+                                            prev.includes(1) ? prev : [...prev, 1],
                                         );
-                                        const announcementIdParam = announcementId
-                                            ? `/${announcementId}`
-                                            : '';
-                                        goTo(
-                                            `${representativePath}/${club.myClubResponse.id}${announcementIdParam}`,
-                                        );
-                                        // setCurrentAnnouncement(undefined);
-                                        // setActiveSubMenu('/clubs');
-                                        // setActiveMenus((prev) =>
-                                        //     prev.includes(1) ? prev : [...prev, 1],
-                                        // );
-                                        // goTo(`/clubs/${club.id}`);
+                                        goTo(`/clubs/${club.myClubResponse.id}`);
                                     }}
                                 >
                                     <Tooltip
@@ -539,7 +538,7 @@ function SideBar() {
                                 <Button
                                     variant="transparent"
                                     size="full"
-                                    onClick={() => goTo('/user')}
+                                    onClick={() => handleSubMenuClick('/user')}
                                 >
                                     계정설정
                                 </Button>
