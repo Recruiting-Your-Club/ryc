@@ -15,13 +15,14 @@ function useRegister() {
         mutationFn: (payload) => register(payload),
         onSuccess: () => {
             navigate('/login', { replace: true });
+            toast.success('회원가입이 성공적으로 완료되었어요.');
         },
         onError: (error) => {
             // 500 에러인 경우 전역 처리에 위임
             if (error instanceof HttpError && error.statusCode === 500) {
                 return;
             }
-            toast.error('회원가입에 실패했습니다.', {
+            toast.error('회원가입에 실패했어요.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });
