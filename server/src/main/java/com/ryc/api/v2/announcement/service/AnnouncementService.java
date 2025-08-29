@@ -95,10 +95,16 @@ public class AnnouncementService {
   public AnnouncementUpdateResponse updateAnnouncement(
       AnnouncementUpdateRequest request, String announcementId, String clubId) {
 
-    Announcement updateAnnouncement = Announcement.of(request, announcementId, clubId);
+    // 1. 기존 공고 상태 조회 및 상태검증
+    Announcement previousAnnouncement = announcementRepository.findById(announcementId);
+    if (AnnouncementStatus.UPCOMING != previousAnnouncement.getAnnouncementStatus()) {
+      throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+    }
+
+    Announcement announcementToUpdate = Announcement.of(request, announcementId, clubId);
 
     // 2. 업데이트된 Announcement 저장
-    Announcement updatedAnnouncement = announcementRepository.save(updateAnnouncement);
+    Announcement updatedAnnouncement = announcementRepository.save(announcementToUpdate);
 
     // 3. 이미지 파일 업데이트
     if (request.images().size() > 10) {
@@ -114,7 +120,7 @@ public class AnnouncementService {
     fileService.claimOwnership(postImages, announcementId, FileDomainType.ANNOUNCEMENT_POST_IMAGE);
 
     fileService.claimOwnership(
-        request.images(), updateAnnouncement.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
+        request.images(), announcementToUpdate.getId(), FileDomainType.ANNOUNCEMENT_IMAGE);
 
     List<FileGetResponse> imageResponses =
         fileService.findAllByAssociatedId(announcementId).stream()
