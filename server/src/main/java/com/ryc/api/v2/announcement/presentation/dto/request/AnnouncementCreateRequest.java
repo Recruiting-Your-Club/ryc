@@ -60,7 +60,10 @@ public record AnnouncementCreateRequest(
             allowableValues = {"ALWAYS_OPEN", "LIMITED_TIME"})
         @NotBlank(message = "공고타입은 빈 값일 수 없습니다. ALWAYS_OPEN (상시모집)과 LIMITED_TIME (기한한정)만 허용 가능합니다.")
         String announcementType,
-    List<@NotBlank(message = "각 동아리 태그는 빈값일 수 없습니다.") String> tags,
+    List<
+            @NotBlank(message = "각 공고 태그는 빈값일 수 없습니다.")
+            @Size(max = 20, message = "공고 태그 글자 수는 20자를 초과할 수 없습니다.") String>
+        tags,
     @Schema(description = "공고 지원서") @NotNull(message = "applicationForm 필드를 빈값으로 둘 수 없습니다.") @Valid
         ApplicationFormCreateRequest applicationForm,
     @Schema(description = "이미지 목록")
