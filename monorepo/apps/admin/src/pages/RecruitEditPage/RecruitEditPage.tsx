@@ -157,7 +157,7 @@ function RecruitEditPage() {
             if (error.statusCode === 500) {
                 setErrorDialogOpen(true);
             } else if (error.response?.errors[0].message || error.message) {
-                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'white' });
             } else {
                 toast('공고 편집에 실패했어요.', {
                     toastTheme: 'colored',
@@ -344,26 +344,32 @@ function RecruitEditPage() {
                     ),
                 },
                 documentResult: {
-                    startDate: dayjs(detailAnnouncement.documentResultPeriod.startDate).format(
-                        'YYYY-MM-DD',
-                    ),
-                    endDate: dayjs(detailAnnouncement.documentResultPeriod.endDate).format(
-                        'YYYY-MM-DD',
-                    ),
+                    startDate: detailAnnouncement.documentResultPeriod?.startDate
+                        ? dayjs(detailAnnouncement.documentResultPeriod.startDate).format(
+                              'YYYY-MM-DD',
+                          )
+                        : '',
+                    endDate: detailAnnouncement.documentResultPeriod?.startDate
+                        ? dayjs(detailAnnouncement.documentResultPeriod.endDate).format(
+                              'YYYY-MM-DD',
+                          )
+                        : '',
                 },
                 interviewSchedule: {
-                    startDate: dayjs(detailAnnouncement.interviewPeriod.startDate).format(
-                        'YYYY-MM-DD',
-                    ),
-                    endDate: dayjs(detailAnnouncement.interviewPeriod.endDate).format('YYYY-MM-DD'),
+                    startDate: detailAnnouncement.interviewPeriod?.startDate
+                        ? dayjs(detailAnnouncement.interviewPeriod.startDate).format('YYYY-MM-DD')
+                        : '',
+                    endDate: detailAnnouncement.interviewPeriod?.startDate
+                        ? dayjs(detailAnnouncement.interviewPeriod.endDate).format('YYYY-MM-DD')
+                        : '',
                 },
                 finalResult: {
-                    startDate: dayjs(detailAnnouncement.finalResultPeriod.startDate).format(
-                        'YYYY-MM-DD',
-                    ),
-                    endDate: dayjs(detailAnnouncement.finalResultPeriod.endDate).format(
-                        'YYYY-MM-DD',
-                    ),
+                    startDate: detailAnnouncement.finalResultPeriod?.startDate
+                        ? dayjs(detailAnnouncement.finalResultPeriod.startDate).format('YYYY-MM-DD')
+                        : '',
+                    endDate: detailAnnouncement.finalResultPeriod?.startDate
+                        ? dayjs(detailAnnouncement.finalResultPeriod.endDate).format('YYYY-MM-DD')
+                        : '',
                 },
                 tags: detailAnnouncement.tags,
             });
