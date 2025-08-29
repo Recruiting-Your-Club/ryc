@@ -185,11 +185,8 @@ function SideBar() {
     const handleSubMenuClick = (link: string) => {
         const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
         const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
-        if (link === '/settings') {
-            goTo(`/settings/${clubId}`);
-        } else {
-            goTo(`${link}/${clubId}${announcementIdPath}`);
-        }
+
+        goTo(`${link}/${clubId}${announcementIdPath}`);
     };
 
     // 공고 선택하면 모집 공고로 이동
@@ -270,15 +267,6 @@ function SideBar() {
                                             goTo(`/clubs/${club.myClubResponse.id}`);
                                             return;
                                         }
-                                        // const representativePath = getActiveSubMenu(
-                                        //     location.pathname,
-                                        // );
-                                        // const announcementIdParam = announcementId
-                                        //     ? `/${announcementId}`
-                                        //     : '';
-                                        // goTo(
-                                        //     `${representativePath}/${club.myClubResponse.id}${announcementIdParam}`,
-                                        // );
                                         setCurrentAnnouncement(undefined);
                                         setActiveSubMenu('/clubs');
                                         setActiveMenus((prev) =>

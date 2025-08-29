@@ -38,7 +38,6 @@ function RegisterPage() {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
 
-
     //인증 관련 state
     const [verifyOpen, setVerifyOpen] = useState(false);
     const [dialogExpiresAt, setDialogExpiresAt] = useState<string>('');
@@ -52,7 +51,6 @@ function RegisterPage() {
     const { mutate: register, isPending, error } = useRegister(setErrorDialogOpen);
     const sendMutation = useSendEmailVerification();
     const verifyMutation = useVerifyEmailCode();
-
 
     // calculated values
     const lockEmail = () => {
@@ -123,7 +121,7 @@ function RegisterPage() {
             });
             return;
         }
-      
+
         register({
             email: trimmedEmail,
             name: trimmedName,
