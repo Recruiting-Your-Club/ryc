@@ -130,6 +130,8 @@ function DocumentEvaluationPage() {
             </div>
             <div css={informationContainer}>
                 <InformationBox
+                    name={applicantDocument?.name ?? ''}
+                    email={applicantDocument?.email ?? ''}
                     profileImage={
                         applicantDocument?.profileImage ?? {
                             id: '',

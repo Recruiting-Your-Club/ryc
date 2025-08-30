@@ -152,13 +152,25 @@ function RecruitCreatePage() {
     //step1 검사
     const isDescriptionStepValid = useMemo(() => {
         return (
-            recruitDetailInfo.recruitmentSubject.trim() !== '' &&
+            recruitDetailInfo.recruitmentSubject.trim().length >= 2 &&
+            recruitDetailInfo.recruitmentSubject.trim().length <= 200 &&
             recruitDetailInfo.recruitmentSummaryDescription.trim() !== '' &&
+            (!recruitDetailInfo.recruitmentField ||
+                recruitDetailInfo.recruitmentField.length <= 12) &&
+            (!recruitDetailInfo.activityPeriod || recruitDetailInfo.activityPeriod.length <= 12) &&
+            (!recruitDetailInfo.recruitmentTarget ||
+                recruitDetailInfo.recruitmentTarget.length <= 12) &&
+            (!recruitDetailInfo.recruitmentNumber ||
+                recruitDetailInfo.recruitmentNumber.length <= 12) &&
             hasPeriod(recruitDetailInfo.documentPeriod)
         );
     }, [
         recruitDetailInfo.recruitmentSubject,
         recruitDetailInfo.documentPeriod,
+        recruitDetailInfo.recruitmentField,
+        recruitDetailInfo.activityPeriod,
+        recruitDetailInfo.recruitmentNumber,
+        recruitDetailInfo.recruitmentTarget,
         recruitDetailInfo.recruitmentSummaryDescription,
     ]);
 
