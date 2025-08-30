@@ -30,7 +30,7 @@ function RecruitSuccessPage() {
     // lib hooks
     const { toast } = useToast();
     const { removeHistoryAndGo } = useRouter();
-    const { announcementId } = useParams<{ announcementId?: string }>();
+    const { announcementId, clubId } = useParams<{ announcementId?: string; clubId?: string }>();
 
     const postingPath = announcementId
         ? generatePath('/announcements/:announcementId', { announcementId })
@@ -64,7 +64,7 @@ function RecruitSuccessPage() {
     };
 
     const handleNavigateToAdmin = () => {
-        removeHistoryAndGo('/');
+        removeHistoryAndGo(`/announcements/${clubId}/${announcementId}`);
     };
 
     // effects
