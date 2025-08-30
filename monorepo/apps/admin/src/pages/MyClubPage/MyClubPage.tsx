@@ -13,6 +13,7 @@ import {
     myClubPageContainer,
     myClubPageLayout,
     plusButton,
+    s_nonClub,
     searchButton,
 } from './MyClubPage.style';
 
@@ -28,6 +29,7 @@ function MyClubPage() {
     const { data: myClubs } = useSuspenseQuery(myClubQueries.all());
 
     // calculated values
+    const isEmpty = !myClubs || myClubs.length === 0;
 
     return (
         <div css={myClubPageLayout}>
@@ -35,36 +37,47 @@ function MyClubPage() {
                 <Text type="h4Bold" textAlign="start" sx={{ marginLeft: '0.5rem' }}>
                     나의 동아리 목록
                 </Text>
-                <ul css={myClubList}>
-                    {myClubs.map((club) => (
-                        <li key={club.myClubResponse.id}>
-                            <Button
-                                variant="transparent"
-                                size="xl"
-                                sx={clubItem}
-                                onClick={() => goTo(`/clubs/${club.myClubResponse.id}`)}
-                            >
-                                <Avatar
-                                    radius="10px"
-                                    imageURL={club.myClubResponse.representativeImage?.url}
-                                />
-                                <div css={clubItemText}>
-                                    <Text textAlign="start">{club.myClubResponse.name}</Text>
-                                    <Text
-                                        textAlign="start"
-                                        type="captionRegular"
-                                        color="caption"
-                                        noWrap
-                                        cropped
-                                    >
-                                        {club.myClubResponse.shortDescription}
-                                    </Text>
-                                </div>
-                                <ChevronRight width="25" height="25" strokeWidth={2} />
-                            </Button>
-                        </li>
-                    ))}
-                </ul>
+
+                {isEmpty && (
+                    <div css={s_nonClub}>
+                        <Text type="bodySemibold" color="caption">
+                            현재 소속된 동아리가 없어요!
+                        </Text>
+                    </div>
+                )}
+
+                {!isEmpty && (
+                    <ul css={myClubList}>
+                        {myClubs.map((club) => (
+                            <li key={club.myClubResponse.id}>
+                                <Button
+                                    variant="transparent"
+                                    size="xl"
+                                    sx={clubItem}
+                                    onClick={() => goTo(`/clubs/${club.myClubResponse.id}`)}
+                                >
+                                    <Avatar
+                                        radius="10px"
+                                        imageURL={club.myClubResponse.representativeImage?.url}
+                                    />
+                                    <div css={clubItemText}>
+                                        <Text textAlign="start">{club.myClubResponse.name}</Text>
+                                        <Text
+                                            textAlign="start"
+                                            type="captionRegular"
+                                            color="caption"
+                                            noWrap
+                                            cropped
+                                        >
+                                            {club.myClubResponse.shortDescription}
+                                        </Text>
+                                    </div>
+                                    <ChevronRight width="25" height="25" strokeWidth={2} />
+                                </Button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
                 <Button
                     variant="transparent"
                     size="xl"
