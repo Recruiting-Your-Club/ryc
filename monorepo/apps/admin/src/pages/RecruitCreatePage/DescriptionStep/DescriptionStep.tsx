@@ -131,6 +131,7 @@ function DescriptionStepPage({
             <FieldLabel
                 label="공고 세부 정보"
                 description="형식에 맞게 공고 세부 정보를 기입해주세요"
+                additionalInformation="서류 접수 기간은 시작 날짜와 종료 날짜 모두 설정해주세요!"
             />
             <div css={s_form}>
                 {DETAIL_QUESTION_LIST.map(({ label, key, placeholder, required, type, mode }) => {

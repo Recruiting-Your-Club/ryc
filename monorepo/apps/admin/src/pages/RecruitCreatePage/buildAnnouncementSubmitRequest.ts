@@ -14,8 +14,10 @@ import type { QuestionProps, QuestionType } from '@components/QuestionForm/types
 
 import type { BasicInfoFields, Period, RecruitDetailInfo } from './types';
 
-export const ALWAYS_OPEN_SENTINEL_DATE = '9999-12-31';
-export const ALWAYS_OPEN_SENTINEL = '9999-12-31T00:00';
+export const ALWAYS_OPEN_SENTINEL_DATE_START = '0000-00-00';
+export const ALWAYS_OPEN_SENTINEL_DATE_END = '9999-12-31';
+export const ALWAYS_OPEN_SENTINEL_START = '0000-00-00T00:00';
+export const ALWAYS_OPEN_SENTINEL_END = '9999-12-31T00:00';
 
 function toServerDateTime(date?: string): string {
     if (!date) return '';
@@ -25,7 +27,9 @@ function toServerDateTime(date?: string): string {
 function isSentinel(value?: string): boolean {
     if (!value) return false;
     const onlyDate = value.split('T')[0];
-    return onlyDate === ALWAYS_OPEN_SENTINEL_DATE;
+    return (
+        onlyDate === ALWAYS_OPEN_SENTINEL_DATE_START || onlyDate === ALWAYS_OPEN_SENTINEL_DATE_END
+    );
 }
 
 function isAlwaysOpen(p: Period) {
@@ -38,7 +42,7 @@ function getAnnouncementType(period: Period): 'ALWAYS_OPEN' | 'LIMITED_TIME' {
 
 function normalizePeriod(p: Period): Period {
     if (isAlwaysOpen(p)) {
-        return { startDate: ALWAYS_OPEN_SENTINEL, endDate: ALWAYS_OPEN_SENTINEL };
+        return { startDate: ALWAYS_OPEN_SENTINEL_START, endDate: ALWAYS_OPEN_SENTINEL_END };
     }
     return {
         startDate: toServerDateTime(p?.startDate),
