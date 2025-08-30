@@ -20,8 +20,8 @@ function PersonalStatementStep({
     const { toast } = useToast();
 
     const handleAddApplicationQuestion = () => {
-        if (applicationQuestions.length >= 20) {
-            toast.error('자기소개서 질문은 최대 20개까지 생성할 수 있습니다.', {
+        if (applicationQuestions.length >= 30) {
+            toast.error('자기소개서 질문은 최대 30개까지 생성할 수 있습니다.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });
