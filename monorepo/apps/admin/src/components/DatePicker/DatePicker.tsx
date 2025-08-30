@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import CalenarIcon from '@ssoc/assets/images/calendar.svg';
-import { Button, Calendar, Dropdown, Text } from '@ssoc/ui';
+import { Button, Calendar, Dropdown } from '@ssoc/ui';
 
 import {
     s_alwaysButtonContainer,
@@ -65,7 +65,7 @@ function DatePicker({
     return (
         <Dropdown open={dropdownOpen} onOpenChange={setDropdownOpen} sx={s_dropdown}>
             <Dropdown.Trigger asChild disabled={disabled}>
-                <Button sx={s_triggerButton(selectedDate)} variant="outlined">
+                <Button sx={s_triggerButton(selectedDate, disabled)} variant="outlined">
                     <div css={s_labelWithIcon}>
                         <CalenarIcon css={s_calendarIcon} />
                         {formatLabel()}
