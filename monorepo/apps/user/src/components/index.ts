@@ -10,3 +10,4 @@ export * from './Footer';
 export * from './Header';
 export * from './QuestionDropdown';
 export * from './ErrorDialog';
+export * from './TermsOfUse';
