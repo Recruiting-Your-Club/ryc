@@ -60,7 +60,7 @@ function DescriptionStepPage({
         if (listKey === 'documentResult' && recruitDetailInfo.documentPeriod.endDate) {
             const { startDate, endDate } = recruitDetailInfo.documentPeriod;
             if (d0 <= endDate || d0 <= startDate) {
-                return showError('서류 합격 발표 일자는 서류 합격 기간 이후여야 해요!');
+                return showError('서류 합격 발표 일자는 서류 접수 기간 이후여야 해요!');
             }
         }
 
@@ -70,7 +70,31 @@ function DescriptionStepPage({
             !recruitDetailInfo.documentPeriod.endDate
         ) {
             if (d0 <= recruitDetailInfo.documentPeriod.startDate) {
-                return showError('서류 합격 발표 일자는 서류 합격 기간 이후여야 해요!');
+                return showError('서류 합격 발표 일자는 서류 접수 기간 이후여야 해요!');
+            }
+        }
+
+        if (listKey === 'interviewSchedule' && recruitDetailInfo.finalResult.startDate) {
+            const resultStart = recruitDetailInfo.finalResult.startDate;
+            if ((d1 && d1 >= resultStart) || (!d1 && d0 >= resultStart)) {
+                return showError('면접 일정은 최종 합격 발표 일자보다 이전이어야 해요!');
+            }
+        }
+
+        if (listKey === 'finalResult' && recruitDetailInfo.interviewSchedule.endDate) {
+            const { startDate, endDate } = recruitDetailInfo.interviewSchedule;
+            if (d0 <= endDate || d0 <= startDate) {
+                return showError('최종 합격 발표 일자는 면접 일정 이후여야 해요!');
+            }
+        }
+
+        if (
+            listKey === 'finalResult' &&
+            recruitDetailInfo.interviewSchedule.startDate &&
+            !recruitDetailInfo.interviewSchedule.endDate
+        ) {
+            if (d0 <= recruitDetailInfo.interviewSchedule.startDate) {
+                return showError('최종 합격 발표 일자는 면접 일정 이후여야 해요!');
             }
         }
 
