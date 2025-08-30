@@ -23,8 +23,8 @@ function ClubApplyAgreementPage() {
             onAgree={() => {
                 if (!announcementId) return;
                 navigate(`/announcements/${announcementId}/application`, {
-                    replace: true, // feature의 removeHistoryAndGo 동작과 동일
-                    state: clubId ? { clubId } : undefined, // develop의 state 전달 유지
+                    replace: true,
+                    state: clubId ? { clubId } : undefined,
                 });
             }}
         />
