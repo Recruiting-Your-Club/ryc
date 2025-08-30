@@ -261,13 +261,13 @@ function ClubApplyPage() {
                     const newAnswer: Answer = {
                         id: questionId,
                         value: newOptionIds.join(','),
-                        questionTitle,
+                        questionTitle: questionTitle,
                         pageAnswerType: 'detail',
                         questionType: question.type,
                         optionIds: newOptionIds,
                     };
 
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
                     break;
                 }
 
@@ -275,13 +275,13 @@ function ClubApplyPage() {
                     const newAnswer: Answer = {
                         id: questionId,
                         value: optionText || value,
-                        questionTitle,
+                        questionTitle: questionTitle,
                         pageAnswerType: 'detail',
                         questionType: question.type,
                         optionIds: [value],
                     };
 
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
                     break;
                 }
 
@@ -290,12 +290,12 @@ function ClubApplyPage() {
                     const newAnswer: Answer = {
                         id: questionId,
                         value: value,
-                        questionTitle,
+                        questionTitle: questionTitle,
                         pageAnswerType: 'personal',
                         questionType: question.type,
                     };
 
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
                     break;
                 }
 
@@ -304,7 +304,7 @@ function ClubApplyPage() {
                     const newAnswer: Answer = {
                         id: questionId,
                         value,
-                        questionTitle,
+                        questionTitle: questionTitle,
                         pageAnswerType: clubPersonalInfoQuestions.some(
                             (question) => question.label === questionTitle,
                         )
@@ -313,7 +313,7 @@ function ClubApplyPage() {
                         questionType: question?.type as QuestionType | PersonalInfoQuestionType,
                     };
 
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
+                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
                     break;
                 }
             }
