@@ -177,7 +177,8 @@ function RecruitEditPage() {
     //step1 검사
     const isDescriptionStepValid = useMemo(() => {
         return (
-            recruitDetailInfo.recruitmentSubject.trim() !== '' &&
+            recruitDetailInfo.recruitmentSubject.trim().length >= 2 &&
+            recruitDetailInfo.recruitmentSubject.trim().length <= 200 &&
             recruitDetailInfo.recruitmentSummaryDescription.trim() !== '' &&
             hasPeriod(recruitDetailInfo.documentPeriod)
         );

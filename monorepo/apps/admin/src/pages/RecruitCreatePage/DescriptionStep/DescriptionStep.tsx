@@ -85,7 +85,11 @@ function DescriptionStepPage({
     return (
         <>
             <div css={s_descriptionWrapper}>
-                <FieldLabel label="공고 제목" description="공고 제목을 작성해주세요" required />
+                <FieldLabel
+                    label="공고 제목"
+                    description="공고 제목을 2자 이상 200자 이하로 작성해 주세요"
+                    required
+                />
                 <Input
                     placeholder="ex) En# 신입 부원 모집"
                     value={recruitDetailInfo.recruitmentSubject}
