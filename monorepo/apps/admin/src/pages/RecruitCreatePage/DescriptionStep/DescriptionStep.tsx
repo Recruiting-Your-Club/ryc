@@ -1,4 +1,4 @@
-import { DatePicker } from '@components';
+import { DatePicker, DEFAULT_ALWAYS_OPEN_SENTINEL_START } from '@components';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
 import { TagInput } from '@components/TagInput';
 import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
@@ -16,7 +16,7 @@ import {
     s_form,
     s_formGroup,
 } from './DescriptionStep.style';
-import type { DescriptionProps, DetailQuestionList } from './types';
+import type { DescriptionProps } from './types';
 
 const PERIOD_KEYS = new Set<keyof RecruitDetailInfo>([
     'documentPeriod',
@@ -46,7 +46,7 @@ function DescriptionStepPage({
     ): boolean => {
         const now = dayjs();
 
-        if (dayjs(d0).isBefore(now, 'day')) {
+        if (d0 !== DEFAULT_ALWAYS_OPEN_SENTINEL_START && dayjs(d0).isBefore(now, 'day')) {
             return showError('현재 날짜보다 이전의 날짜는 선택할 수 없어요.');
         }
 
@@ -198,6 +198,11 @@ function DescriptionStepPage({
                                         }
                                     }}
                                     showAlwaysOpenToggle={ALWAYS_OPEN_TARGET_KEYS.has(listKey)}
+                                    disabled={
+                                        listKey !== 'documentPeriod' &&
+                                        recruitDetailInfo.documentPeriod.startDate ===
+                                            DEFAULT_ALWAYS_OPEN_SENTINEL_START
+                                    }
                                 />
                             )}
                         </div>

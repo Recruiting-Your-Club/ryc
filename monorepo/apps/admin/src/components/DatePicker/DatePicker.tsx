@@ -14,7 +14,7 @@ import {
 } from './DatePicker.style';
 import type { DatePickerProps } from './types';
 
-const DEFAULT_ALWAYS_OPEN_SENTINEL_START = '0000-00-00';
+export const DEFAULT_ALWAYS_OPEN_SENTINEL_START = '0000-00-00';
 const DEFAULT_ALWAYS_OPEN_SENTINEL_END = '9999-12-31';
 
 function isAlwaysOpen(selectedDate: string[], sentinel: { start: string; end: string }) {
@@ -31,6 +31,7 @@ function DatePicker({
     onChange,
     placeholder,
     showAlwaysOpenToggle,
+    disabled,
     alwaysOpenLabel = '상시 모집',
     alwaysOpenSentinel = {
         start: DEFAULT_ALWAYS_OPEN_SENTINEL_START,
@@ -63,7 +64,7 @@ function DatePicker({
 
     return (
         <Dropdown open={dropdownOpen} onOpenChange={setDropdownOpen} sx={s_dropdown}>
-            <Dropdown.Trigger asChild>
+            <Dropdown.Trigger asChild disabled={disabled}>
                 <Button sx={s_triggerButton(selectedDate)} variant="outlined">
                     <div css={s_labelWithIcon}>
                         <CalenarIcon css={s_calendarIcon} />
