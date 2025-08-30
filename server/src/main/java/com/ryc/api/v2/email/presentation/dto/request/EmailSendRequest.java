@@ -17,7 +17,7 @@ public record EmailSendRequest(
         List<@NotBlank(message = "수신자 이메일은 빈 값일 수 없습니다.") @Email String> recipients,
     @Schema(description = "메일 제목")
         @NotBlank(message = "메일 제목은 비워둘 수 없습니다.")
-        @Size(max = 255, message = "메일 제목은 255자를 초과할 수 없습니다.")
+        @Size(max = 1000, message = "메일 제목은 1000자를 초과할 수 없습니다.")
         String subject,
     @Schema(description = "메일 본문")
         @NotBlank(message = "메일 본문은 비워둘 수 없습니다.")

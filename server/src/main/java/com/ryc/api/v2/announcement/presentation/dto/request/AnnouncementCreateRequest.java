@@ -30,7 +30,7 @@ import lombok.Builder;
 public record AnnouncementCreateRequest(
     @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집")
         @NotBlank(message = "공고 제목은 필수 항목입니다.")
-        @Size(min = 2, max = 100, message = "공고 제목의 길이는 2자 이상 100자 이하입니다.")
+        @Size(min = 2, max = 200, message = "공고 제목의 길이는 2자 이상 200자 이하입니다.")
         String title,
     @Schema(description = "기간 정보")
         @NotNull(message = "공고 기한 정보 필드는 빈값일 수 없습니다. 최소 지원서 접수기간은 필수 입력해주십시오.")
@@ -60,7 +60,10 @@ public record AnnouncementCreateRequest(
             allowableValues = {"ALWAYS_OPEN", "LIMITED_TIME"})
         @NotBlank(message = "공고타입은 빈 값일 수 없습니다. ALWAYS_OPEN (상시모집)과 LIMITED_TIME (기한한정)만 허용 가능합니다.")
         String announcementType,
-    List<@NotBlank(message = "각 동아리 태그는 빈값일 수 없습니다.") String> tags,
+    List<
+            @NotBlank(message = "각 공고 태그는 빈값일 수 없습니다.")
+            @Size(max = 20, message = "공고 태그 글자 수는 20자를 초과할 수 없습니다.") String>
+        tags,
     @Schema(description = "공고 지원서") @NotNull(message = "applicationForm 필드를 빈값으로 둘 수 없습니다.") @Valid
         ApplicationFormCreateRequest applicationForm,
     @Schema(description = "이미지 목록")
