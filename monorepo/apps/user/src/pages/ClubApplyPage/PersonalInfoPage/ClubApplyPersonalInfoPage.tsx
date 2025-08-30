@@ -74,7 +74,7 @@ function ClubApplyPersonalInfoPage({
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
                 if (question.type === 'EMAIL') {
-                    const value = getAnswer(answers, question.label);
+                    const value = getAnswer(answers, question.id);
                     const hasError = getValidationError(question.label, value);
                     const isThisLocked = isEmailLocked;
 
@@ -211,6 +211,7 @@ function ClubApplyPersonalInfoPage({
                                     );
                                 }}
                                 maxFileCount={1}
+                                imageOnly={true}
                                 disabled={isFileUploading}
                             >
                                 <FileUpLoader.HelperText>
@@ -243,11 +244,11 @@ function ClubApplyPersonalInfoPage({
                                         newFiles,
                                     );
                                 }}
-                                maxFileCount={20}
+                                maxFileCount={1}
                                 disabled={isFileUploading}
                             >
                                 <FileUpLoader.HelperText>
-                                    1개의 파일을 첨부할 수 있습니다.
+                                    1개의 파일을 첨부할 수 있어요.
                                 </FileUpLoader.HelperText>
                                 <FileUpLoader.Button />
                                 <FileUpLoader.Box />
@@ -283,7 +284,7 @@ function ClubApplyPersonalInfoPage({
                                     })) || []
                                 }
                                 size="sm"
-                                value={getAnswer(answers, question.label)}
+                                value={getAnswer(answers, question.id)}
                                 onChange={(value) =>
                                     onAnswerChange(
                                         question.id,
@@ -316,7 +317,7 @@ function ClubApplyPersonalInfoPage({
                                 )}
                             </div>
                             {question?.options?.map((option) => {
-                                const currentAnswers = getAnswer(answers, question.label);
+                                const currentAnswers = getAnswer(answers, question.id);
                                 const isChecked = currentAnswers.includes(option.id);
 
                                 return (
@@ -343,7 +344,7 @@ function ClubApplyPersonalInfoPage({
                 } else {
                     const hasError = getValidationError(
                         question.label,
-                        getAnswer(answers, question.label),
+                        getAnswer(answers, question.id),
                     );
                     return (
                         <div
@@ -368,7 +369,7 @@ function ClubApplyPersonalInfoPage({
                                 variant="lined"
                                 labelSx={labelSx}
                                 inputSx={inputSx}
-                                value={getAnswer(answers, question.label)}
+                                value={getAnswer(answers, question.id)}
                                 onChange={(event) =>
                                     onAnswerChange(question.id, question.label, event.target.value)
                                 }
@@ -379,7 +380,7 @@ function ClubApplyPersonalInfoPage({
                                     touched[question.label]
                                         ? getErrorMessage(
                                               question.label,
-                                              getAnswer(answers, question.label),
+                                              getAnswer(answers, question.id),
                                           )
                                         : undefined
                                 }

@@ -17,6 +17,7 @@ function FileUpLoaderRoot({
     files = [],
     onFilesChange,
     maxFileCount = 20,
+    imageOnly,
 }: FileUpLoaderProps) {
     // prop destruction
     // lib hooks
@@ -28,7 +29,7 @@ function FileUpLoaderRoot({
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { filterAndSetFiles, getErrorMessageByFileCount, getErrorMessageByFileType } =
-        useFileUpLoader(safeOnFilesChange);
+        useFileUpLoader(safeOnFilesChange, imageOnly);
 
     // form hooks
     // query hooks

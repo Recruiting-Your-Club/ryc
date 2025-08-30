@@ -7,8 +7,8 @@ import type { ValidationKey } from './constants';
 import { ERROR_MESSAGES, VALIDATION_PATTERNS } from './constants';
 import type { Answer } from './types';
 
-export const getAnswer = (answers: Answer[], questionTitle: string): string => {
-    const answer = answers.find((answer) => answer.questionTitle === questionTitle);
+export const getAnswer = (answers: Answer[], questionId: string): string => {
+    const answer = answers.find((answer) => answer.id === questionId);
 
     if (!answer) return '';
 
@@ -29,10 +29,10 @@ export const updateAnswers = (
     prev: Answer[],
     existingAnswer: Answer | undefined,
     newAnswer: Answer,
-    questionTitle: string,
+    questionId: string,
 ): Answer[] => {
     if (existingAnswer) {
-        return prev.map((answer) => (answer.questionTitle === questionTitle ? newAnswer : answer));
+        return prev.map((answer) => (answer.id === questionId ? newAnswer : answer));
     } else {
         return [...prev, newAnswer];
     }
