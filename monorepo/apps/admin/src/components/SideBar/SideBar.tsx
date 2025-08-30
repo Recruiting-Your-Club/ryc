@@ -198,7 +198,14 @@ function SideBar() {
         const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
         const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
 
-        goTo(`${link}/${clubId}${announcementIdPath}`);
+        const AGREEMENT_REDIRECTS: Record<string, string> = {
+            '/announcements/create': '/announcements/create/agreement',
+            '/announcements/edit': '/announcements/edit/agreement',
+        };
+
+        const base = AGREEMENT_REDIRECTS[link] ?? link;
+
+        goTo(`${base}/${clubId}${announcementIdPath}`);
     };
 
     // 공고 선택하면 모집 공고로 이동

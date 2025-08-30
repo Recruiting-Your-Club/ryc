@@ -7,7 +7,7 @@ function ClubApplyAgreementPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams();
-    const { goTo } = useRouter();
+    const { removeHistoryAndGo } = useRouter();
 
     // initial values
     // state, ref, querystring hooks
@@ -20,7 +20,7 @@ function ClubApplyAgreementPage() {
             ctaLabel="동의 후 작성하기"
             onAgree={() => {
                 if (!announcementId) return;
-                goTo(`/announcements/${announcementId}/application`);
+                removeHistoryAndGo(`/announcements/${announcementId}/application`);
             }}
         />
     );

@@ -22,7 +22,7 @@ interface LocationState {
 function LoginPage() {
     // prop destruction
     // lib hooks
-    const { removeHistoryAndGo } = useRouter();
+    const { goTo } = useRouter();
     const location = useLocation();
     const state = location.state as LocationState | null;
     const { toast } = useToast();
@@ -87,11 +87,7 @@ function LoginPage() {
                     <Button variant="primary" size="full" type="submit" loading={isPending}>
                         로그인
                     </Button>
-                    <Button
-                        onClick={() => removeHistoryAndGo('/register')}
-                        variant="transparent"
-                        size="full"
-                    >
+                    <Button onClick={() => goTo('/agreement')} variant="transparent" size="full">
                         계정이 없으신가요?
                     </Button>
                 </div>
