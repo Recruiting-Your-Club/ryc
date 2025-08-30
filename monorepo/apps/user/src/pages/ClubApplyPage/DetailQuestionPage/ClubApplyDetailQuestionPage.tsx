@@ -37,7 +37,7 @@ function ClubApplyDetailQuestionPage({
                     !getAnswer(answers, question.id)?.trim();
                 return (
                     <div
-                        key={question.label}
+                        key={question.id}
                         css={clubApplyDetailQuestionContainer}
                         tabIndex={-1}
                         ref={(element) => {
