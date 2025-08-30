@@ -130,7 +130,7 @@ function DescriptionStepPage({
             </div>
             <FieldLabel
                 label="공고 세부 정보"
-                description="형식에 맞게 공고 세부 정보를 기입해주세요"
+                description="형식에 맞게 공고 세부 정보를 12자 이하로 기입하거나 날짜를 선택 해주세요."
                 additionalInformation="서류 접수 기간은 시작 날짜와 종료 날짜 모두 설정해주세요!"
             />
             <div css={s_form}>
@@ -160,6 +160,7 @@ function DescriptionStepPage({
                                     placeholder={placeholder}
                                     value={recruitDetailInfo[listKey] as string}
                                     onChange={(e) => onChange({ [listKey]: e.target.value })}
+                                    error={(recruitDetailInfo[listKey] as string)?.length > 12}
                                 />
                             ) : (
                                 <DatePicker
