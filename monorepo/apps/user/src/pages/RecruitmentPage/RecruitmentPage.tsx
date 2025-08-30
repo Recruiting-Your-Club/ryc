@@ -4,7 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { parseAnnouncementClubBoxData } from '@utils/parseAnnouncementData';
 import DOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Image, ImageDialog, Tag, Text } from '@ssoc/ui';
@@ -32,6 +32,7 @@ function RecruitmentPage() {
     // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
     const { goTo } = useRouter();
+    const navigate = useNavigate();
     const { announcementId } = useParams();
     const { setApplicationPeriod, setClubField } = useClubStore();
     // initial values
@@ -52,6 +53,7 @@ function RecruitmentPage() {
             ? { startDate: '미정', endDate: '미정' }
             : announcementDetail.applicationPeriod;
     const currentStatus = announcementDetail.announcementStatus;
+    const clubId = announcementDetail.clubId === null ? '' : announcementDetail.clubId;
 
     const getTagVariant = (status: string) => {
         switch (status) {
@@ -108,7 +110,11 @@ function RecruitmentPage() {
                             variant="primary"
                             size="xl"
                             onClick={() =>
-                                goTo(`/announcements/${announcementDetail.id}/agreement`)
+                                navigate(`/announcements/${announcementDetail.id}/agreement`, {
+                                    state: {
+                                        clubId: clubId,
+                                    },
+                                })
                             }
                             disabled={isExpired || currentStatus !== 'RECRUITING'}
                             sx={applyButtonAtDesktop}
@@ -146,7 +152,13 @@ function RecruitmentPage() {
             <div css={applyButtonAtMobile}>
                 <Button
                     size="full"
-                    onClick={() => goTo(`/announcements/${announcementDetail.id}/agreement`)}
+                    onClick={() =>
+                        navigate(`/announcements/${announcementDetail.id}/agreement`, {
+                            state: {
+                                clubId: clubId,
+                            },
+                        })
+                    }
                     disabled={isExpired || currentStatus !== 'RECRUITING'}
                 >
                     지원하기

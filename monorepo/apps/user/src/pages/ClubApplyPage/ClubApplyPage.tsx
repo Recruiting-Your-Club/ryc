@@ -3,12 +3,12 @@ import type {
     PersonalInfoQuestionType,
     QuestionType,
 } from '@api/domain/announcement/types';
-import { announcementQueries } from '@api/queryFactory';
+import { announcementQueries, clubQueries } from '@api/queryFactory';
 import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { returnErrorMessage } from '@utils/getErrorMessage';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
@@ -56,16 +56,18 @@ function ClubApplyPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
-    const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
+    const { clubCategory, clubField, applicationPeriod, setClubName } = useClubStore();
     const { getAnswers, setAnswers: setApplicationAnswers, updateFiles } = useApplicationStore();
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
+    const { clubId } = useLocation().state as { clubId: string };
     const { toast } = useToast();
     const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
     // query hooks
     const { data: applicationForm } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
     );
+    const { data: clubData } = useSuspenseQuery(clubQueries.getClub(clubId));
     const { mutate: submitApplication, isPending: isSubmitting } = usePostApplicationAnswers({
         announcementId: announcementId || '',
         onSuccess: (response: ApplicationSubmissionResponse) => {
@@ -419,23 +421,31 @@ function ClubApplyPage() {
         }
     }, [applicationAnswers]);
 
+    useEffect(() => {
+        setClubName(clubData?.name ?? '');
+    }, [clubData]);
+
     return (
         <div css={clubApplyPage}>
             <div css={clubApplyPageMainContainer}>
                 <div css={clubLogoAndNameContainer}>
-                    {clubLogo ? (
-                        <img src={clubLogo} alt="로고" css={svgContainer} />
+                    {clubData?.representativeImage?.url ? (
+                        <img
+                            src={clubData?.representativeImage?.url}
+                            alt="로고"
+                            css={svgContainer}
+                        />
                     ) : (
                         <Avatar
                             shape="square"
                             size="xl"
                             radius="10px"
-                            imageURL={clubLogo}
+                            imageURL={clubData?.representativeImage?.url ?? ''}
                             imageName="logo"
                         />
                     )}
                     <div css={clubNameContainer}>
-                        <Text type="h3Semibold">{clubName}</Text>
+                        <Text type="h3Semibold">{clubData?.name}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
                             {getCategory(clubCategory)}
                         </Text>
@@ -464,8 +474,8 @@ function ClubApplyPage() {
 
             <div css={submitCardContainer}>
                 <ClubSubmitCard
-                    clubName={clubName}
-                    category={clubCategory}
+                    clubName={clubData?.name ?? ''}
+                    category={clubData?.category ?? ''}
                     field={clubField}
                     deadline={applicationPeriod.endDate}
                     personalQuestions={clubPersonalInfoQuestions}
@@ -474,7 +484,7 @@ function ClubApplyPage() {
                     requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
                     answers={answers}
-                    logo={clubLogo}
+                    logo={clubData?.representativeImage?.url ?? ''}
                     isSubmitting={isSubmitting}
                     onQuestionFocus={handleQuestionFocus}
                     requiredQuestionsCompleted={requiredQuestionsCompleted}
