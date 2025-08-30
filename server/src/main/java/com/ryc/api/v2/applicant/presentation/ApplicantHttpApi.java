@@ -3,8 +3,11 @@ package com.ryc.api.v2.applicant.presentation;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantDeletedRequest;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v2")
+@Validated
 @Tag(name = "지원자")
 public class ApplicantHttpApi {
 
@@ -37,7 +41,11 @@ public class ApplicantHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<Void> changeApplicantStatus(
-      @PathVariable String id, @Valid @RequestBody ApplicantStatusRequest statusRequest) {
+      @PathVariable
+          @NotBlank(message = "지원자 아이디는 공백일 수 없습니다.")
+          @UUID(message = "지원자 아이디는 UUID 포멧이어야 합니다.")
+          String id,
+      @Valid @RequestBody ApplicantStatusRequest statusRequest) {
     applicantService.changeApplicantStatus(id, statusRequest);
     return ResponseEntity.noContent().build();
   }
@@ -49,9 +57,11 @@ public class ApplicantHttpApi {
       value = {CommonErrorCode.class, PermissionErrorCode.class},
       include = {"RESOURCE_NOT_FOUND", "INVALID_PARAMETER", "FORBIDDEN_NOT_CLUB_MEMBER"})
   public ResponseEntity<List<ApplicantGetResponse>> getApplicants(
-      @PathVariable("announcement-id") String announcementId,
-      @RequestParam(value = "status", required = false)
-          @Schema(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
+      @Schema(
               allowableValues = {
                 "DOCUMENT_PENDING",
                 "DOCUMENT_FAIL",
@@ -60,6 +70,7 @@ public class ApplicantHttpApi {
                 "FINAL_PASS",
                 "FINAL_FAIL",
               })
+          @RequestParam(value = "status", required = false)
           String status) {
     List<ApplicantGetResponse> response = applicantService.getApplicants(announcementId, status);
     return ResponseEntity.ok(response);
@@ -71,7 +82,8 @@ public class ApplicantHttpApi {
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_OWNER"})
-  public ResponseEntity<Void> deleteApplicants(@RequestBody ApplicantDeletedRequest request) {
+  public ResponseEntity<Void> deleteApplicants(
+      @Valid @RequestBody ApplicantDeletedRequest request) {
     applicantService.deleteApplicants(request.applicantIds());
     return ResponseEntity.noContent().build();
   }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.AdminRepository;
@@ -177,16 +178,16 @@ public class EvaluationService {
     evaluationRepository.deleteById(evaluationId);
   }
 
-  @Transactional
   @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
     event.applicantIds().stream()
         .filter(evaluationRepository::existsByApplicantId)
         .forEach(evaluationRepository::deleteAllByApplicantId);
   }
 
-  @Transactional
   @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!evaluationRepository.existsByAdminId(event.adminId())) {
       return;

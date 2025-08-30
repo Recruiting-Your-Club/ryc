@@ -8,9 +8,9 @@ import org.hibernate.annotations.SQLDelete;
 
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.infra.vo.AnnouncementPeriodInfoVO;
-import com.ryc.api.v2.announcement.infra.vo.TagVO;
 import com.ryc.api.v2.applicationForm.infra.entity.ApplicationFormEntity;
-import com.ryc.api.v2.common.entity.BaseEntity;
+import com.ryc.api.v2.common.infra.entity.BaseEntity;
+import com.ryc.api.v2.common.infra.vo.TagVO;
 
 import lombok.*;
 

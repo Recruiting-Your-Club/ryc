@@ -150,12 +150,11 @@ export const s_submitButtonSx = css`
 
 export const mobileQuestionStatus = css`
     position: absolute;
-    right: 5rem;
+    right: 7rem;
     top: 10.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    display: none;
 
     @media (max-width: ${theme.breakpoint.tablet}) {
         display: flex;

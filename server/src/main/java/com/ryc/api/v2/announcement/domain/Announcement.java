@@ -7,11 +7,11 @@ import com.ryc.api.v2.announcement.common.exception.code.AnnouncementErrorCode;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.vo.AnnouncementPeriodInfo;
-import com.ryc.api.v2.announcement.domain.vo.Tag;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.ryc.api.v2.applicationForm.domain.ApplicationForm;
 import com.ryc.api.v2.common.constant.DomainDefaultValues;
+import com.ryc.api.v2.common.domain.Tag;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.util.DataResolveUtil;
 
@@ -197,29 +197,6 @@ public class Announcement {
     return announcement;
   }
 
-  /** status 갱신 메소드 */
-  public Announcement updateStatus() {
-
-    return Announcement.builder()
-        .id(this.id)
-        .title(this.title)
-        .clubId(this.clubId)
-        .numberOfPeople(this.numberOfPeople)
-        .detailDescription(this.detailDescription)
-        .summaryDescription(this.summaryDescription)
-        .target(this.target)
-        .field(this.field)
-        .hasInterview(true)
-        .activityPeriod(this.activityPeriod)
-        .tags(this.tags)
-        .applicationForm(this.applicationForm)
-        .announcementType(this.announcementType)
-        .announcementPeriodInfo(this.announcementPeriodInfo)
-        .createdAt(this.createdAt)
-        .updatedAt(this.updatedAt)
-        .build();
-  }
-
   /**
    * 유효 객체 검사
    *
@@ -229,14 +206,18 @@ public class Announcement {
     // 생성시에는 모집 예정, 모집 중
     if (id.equals(DomainDefaultValues.DEFAULT_INITIAL_ID)) {
       if (announcementStatus == AnnouncementStatus.CLOSED) {
+        // TODO: 에러 메시지 및 코드 적절하지 않음. 수정 필요
         throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
       }
     }
     // 업데이트시 모집 예정일 때만 수정가능
+    // 25.08.29(조상준) 중요: 아래 코드 비활성화 -> 업데이트시 기존공고객체, 수정된 공고객체 모두 아래 else문을 통과하기에,
+    // 수정된 공고의 상태가 UPCOMING가 이닌, 모집중, 마김인 경우 아래 else문에서 에러 발생.
+    // 따라서, 기존공고의 상태가 UPCOMING인지는 공고 수정 서비스에서 상태검증으로 작성.
     else {
-      if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
-        throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
-      }
+      //      if (!(announcementStatus == AnnouncementStatus.UPCOMING)) {
+      //        throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+      //      }
     }
 
     applicationForm.checkBusinessRules();

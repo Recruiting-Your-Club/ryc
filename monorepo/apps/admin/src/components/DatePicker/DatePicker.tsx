@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CalenarIcon from '@ssoc/assets/images/calendar.svg';
 import { Button, Calendar, Dropdown, Text } from '@ssoc/ui';
@@ -31,6 +31,8 @@ function DatePicker({
     alwaysOpenLabel = '상시 모집',
     alwaysOpenSentinel = DEFAULT_ALWAYS_OPEN_SENTINEL,
 }: DatePickerProps) {
+    const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+
     const formatLabel = () => {
         if (isAlwaysOpen(selectedDate, alwaysOpenSentinel)) {
             return alwaysOpenLabel;
@@ -45,10 +47,16 @@ function DatePicker({
 
     const handleAlwaysOpenClick = () => {
         onChange?.([alwaysOpenSentinel, alwaysOpenSentinel]);
+        setDropdownOpen(false);
     };
 
+    useEffect(() => {
+        if (selectedDate.length === 2 && mode === 'range') setDropdownOpen(false);
+        else if (selectedDate.length === 1 && mode === 'single') setDropdownOpen(false);
+    }, [selectedDate]);
+
     return (
-        <Dropdown sx={s_dropdown}>
+        <Dropdown open={dropdownOpen} onOpenChange={setDropdownOpen} sx={s_dropdown}>
             <Dropdown.Trigger asChild>
                 <Button sx={s_triggerButton(selectedDate)} variant="outlined">
                     <div css={s_labelWithIcon}>

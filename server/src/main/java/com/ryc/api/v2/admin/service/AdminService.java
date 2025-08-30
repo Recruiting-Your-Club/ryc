@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
-import com.ryc.api.v2.admin.presentation.response.AdminEmailDuplicatedResponse;
-import com.ryc.api.v2.admin.presentation.response.MyInformationGetResponse;
+import com.ryc.api.v2.admin.presentation.dto.request.AdminProfileUpdateRequest;
+import com.ryc.api.v2.admin.presentation.dto.response.MyInformationGetResponse;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
@@ -33,10 +33,11 @@ public class AdminService {
         .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + id));
   }
 
-  @Transactional(readOnly = true)
-  public AdminEmailDuplicatedResponse checkEmailDuplicate(String email) {
-    boolean isDuplicated = adminRepository.existsByEmail(email);
-    return new AdminEmailDuplicatedResponse(isDuplicated);
+  @Transactional
+  public MyInformationGetResponse updateAdminProfile(
+      String adminId, String adminName, String adminEmail, AdminProfileUpdateRequest request) {
+    fileService.claimOwnership(request.representativeImage(), adminId, FileDomainType.USER_PROFILE);
+    return getCurrentAdmin(adminId, adminName, adminEmail);
   }
 
   @Transactional

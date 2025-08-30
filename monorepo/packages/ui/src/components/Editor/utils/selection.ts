@@ -190,11 +190,14 @@ export const getCurrentSize = (): Size => {
             break;
         }
 
-        const fontSizeInt = parseInt(parent.style.fontSize);
+        const fontSizeInt = parent?.style.fontSize
+            ? parseInt(parent.style.fontSize)
+            : parseInt(DEFAULT_FONT_SIZE);
+
         const minSizeInt = parseInt(minSize);
 
         if (fontSizeInt < minSizeInt) {
-            minSize = parent.style.fontSize as Size;
+            minSize = minSizeInt.toString() as Size;
         }
     }
 

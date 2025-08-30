@@ -1,81 +1,142 @@
 import type { Announcement } from '@api/domain/announcement/types';
+import type { ClubBoxItem } from '@components/ClubBox/types';
 
 export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcement) => {
-    const applicationStartDate = announcementDetaildata.applicationPeriod.startDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
-    const applicationEndDate = announcementDetaildata.applicationPeriod.endDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
+    const applicationStartDate =
+        announcementDetaildata.applicationPeriod === null
+            ? '미정'
+            : announcementDetaildata.applicationPeriod.startDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
+    const applicationEndDate =
+        announcementDetaildata.applicationPeriod === null
+            ? '미정'
+            : announcementDetaildata.applicationPeriod.endDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
 
-    const interviewStartDate = announcementDetaildata.interviewPeriod.startDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
-    const interviewEndDate = announcementDetaildata.interviewPeriod.endDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
+    const interviewStartDate =
+        announcementDetaildata.interviewPeriod === null
+            ? '미정'
+            : announcementDetaildata.interviewPeriod.startDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
+    const interviewEndDate =
+        announcementDetaildata.interviewPeriod === null
+            ? '미정'
+            : announcementDetaildata.interviewPeriod.endDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
 
-    const documentResultStartDate = announcementDetaildata.documentResultPeriod.startDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
-    const documentResultEndDate = announcementDetaildata.documentResultPeriod.endDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
+    const documentResultStartDate =
+        announcementDetaildata.documentResultPeriod === null
+            ? '미정'
+            : announcementDetaildata.documentResultPeriod.startDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
+    const documentResultEndDate =
+        announcementDetaildata.documentResultPeriod === null
+            ? '미정'
+            : announcementDetaildata.documentResultPeriod.endDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
 
-    const finalResultStartDate = announcementDetaildata.finalResultPeriod.startDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
-    const finalResultEndDate = announcementDetaildata.finalResultPeriod.endDate
-        ?.split('T')[0]
-        .slice(2)
-        .replace(/-/g, '.');
+    const finalResultStartDate =
+        announcementDetaildata.finalResultPeriod === null
+            ? '미정'
+            : announcementDetaildata.finalResultPeriod.startDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
+    const finalResultEndDate =
+        announcementDetaildata.finalResultPeriod === null
+            ? '미정'
+            : announcementDetaildata.finalResultPeriod.endDate
+                  ?.split('T')[0]
+                  .slice(2)
+                  .replace(/-/g, '.');
 
-    const applicationPeriod = `${applicationStartDate} ~ ${applicationEndDate}`;
-    const interviewPeriod = `${interviewStartDate} ~ ${interviewEndDate}`;
-    const documentResultPeriod = `${documentResultStartDate} ~ ${documentResultEndDate}`;
-    const finalResultPeriod = `${finalResultStartDate} ~ ${finalResultEndDate}`;
+    const applicationPeriod =
+        announcementDetaildata.applicationPeriod === null
+            ? '미정'
+            : `${applicationStartDate} ~ ${applicationEndDate}`;
+    const interviewPeriod =
+        announcementDetaildata.interviewPeriod === null
+            ? '미정'
+            : `${interviewStartDate} ~ ${interviewEndDate}`;
+    const documentResultPeriod =
+        announcementDetaildata.documentResultPeriod === null
+            ? '미정'
+            : `${documentResultStartDate} ~ ${documentResultEndDate}`;
+    const finalResultPeriod =
+        announcementDetaildata.finalResultPeriod === null
+            ? '미정'
+            : `${finalResultStartDate} ~ ${finalResultEndDate}`;
 
     return [
         {
+            id: '1',
             title: '모집 정원',
-            value: announcementDetaildata?.numberOfPeople || '미정',
+            content: announcementDetaildata?.numberOfPeople || '미정',
         },
         {
+            id: '2',
             title: '활동 기간',
-            value: announcementDetaildata?.activityPeriod || '미정',
+            content: announcementDetaildata?.activityPeriod || '미정',
         },
         {
+            id: '3',
             title: '모집 대상',
-            value: announcementDetaildata?.target || '미정',
+            content: announcementDetaildata?.target || '미정',
         },
         {
+            id: '4',
             title: '면접 여부',
-            value: announcementDetaildata?.hasInterview ? '있음' : '없음',
+            content: announcementDetaildata?.hasInterview ? '있음' : '없음',
         },
         {
+            id: '5',
             title: '서류 접수',
-            value: applicationPeriod ? applicationPeriod : '미정',
+            content: applicationPeriod
+                ? applicationPeriod[0] === '9'
+                    ? '상시 모집'
+                    : applicationPeriod
+                : '미정',
         },
         {
+            id: '6',
             title: '면접 기간',
-            value: interviewPeriod ? interviewPeriod : '미정',
+            content: interviewPeriod
+                ? interviewPeriod[0] === '9'
+                    ? '상시 모집'
+                    : interviewPeriod
+                : '미정',
         },
         {
+            id: '7',
             title: '서류 발표',
-            value: documentResultPeriod ? documentResultPeriod : '미정',
+            content: documentResultPeriod
+                ? documentResultPeriod[0] === '9'
+                    ? '상시 모집'
+                    : documentResultPeriod
+                : '미정',
         },
         {
+            id: '8',
             title: '최종 합격',
-            value: finalResultPeriod ? finalResultPeriod : '미정',
+            content: finalResultPeriod
+                ? finalResultPeriod[0] === '9'
+                    ? '상시 모집'
+                    : finalResultPeriod
+                : '미정',
         },
-    ];
+    ] as ClubBoxItem[];
 };
 
 export const parseAnnouncementData = (announcementDetaildata: Announcement) => {

@@ -1,12 +1,13 @@
 import type { EvaluationType } from '@api/domain/evaluation/types';
 import { useEvaluationMutations } from '@api/hooks/useEvaluationMutations';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 
 function useEvaluation(
     type: EvaluationType,
     selectedApplicantId: string,
     getEvaluationActionCallbacks: (status: string) => {
         onSuccess: () => void;
-        onError: () => void;
+        onError: (error: ErrorWithStatusCode) => void;
     },
 ) {
     const { mutate: postComment } = useEvaluationMutations.usePostPersonalEvaluation();
@@ -22,7 +23,12 @@ function useEvaluation(
     ) => {
         postComment(
             { applicantId, score, comment, clubId, type: type },
-            getEvaluationActionCallbacks('등록'),
+            {
+                onSuccess: getEvaluationActionCallbacks('등록').onSuccess,
+                onError: (error) => {
+                    getEvaluationActionCallbacks('등록').onError(error as ErrorWithStatusCode);
+                },
+            },
         );
     };
 
@@ -34,12 +40,25 @@ function useEvaluation(
     ) => {
         updateComment(
             { evaluationId, score, comment, clubId, type: type },
-            getEvaluationActionCallbacks('수정'),
+            {
+                onSuccess: getEvaluationActionCallbacks('수정').onSuccess,
+                onError: (error) => {
+                    getEvaluationActionCallbacks('수정').onError(error as ErrorWithStatusCode);
+                },
+            },
         );
     };
 
     const handleDeleteComment = (evaluationId: string, clubId: string) => {
-        deleteComment({ evaluationId, clubId, type: type }, getEvaluationActionCallbacks('삭제'));
+        deleteComment(
+            { evaluationId, clubId, type: type },
+            {
+                onSuccess: getEvaluationActionCallbacks('삭제').onSuccess,
+                onError: (error) => {
+                    getEvaluationActionCallbacks('삭제').onError(error as ErrorWithStatusCode);
+                },
+            },
+        );
     };
 
     return {

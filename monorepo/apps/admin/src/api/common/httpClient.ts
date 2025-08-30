@@ -14,11 +14,16 @@ const httpClient = {
             } catch (jsonError) {
                 errorData = await response.text().catch(() => '알 수 없는 에러가 발생하였습니다.');
             }
-            throw new HttpError(
-                response.status,
-                errorData.message || 'HTTP 에러가 발생하였습니다.',
-                errorData,
-            );
+            let errorMessage: string;
+            if (response.status === 400 && errorData.errors?.[0]?.message) {
+                errorMessage = errorData.errors[0].message;
+            } else if (errorData.message) {
+                errorMessage = errorData.message;
+            } else {
+                errorMessage = 'HTTP 에러가 발생하였습니다.';
+            }
+
+            throw new HttpError(response.status, errorMessage, errorData);
         }
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {

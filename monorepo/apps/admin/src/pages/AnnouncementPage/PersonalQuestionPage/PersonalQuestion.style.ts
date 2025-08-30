@@ -52,3 +52,8 @@ export const s_helperTextSx = css`
     ${theme.typography.subCaptionLight};
     margin-top: 1.5rem;
 `;
+
+export const s_fileUploaderSx = css`
+    width: 100%;
+    margin-top: 0;
+`;

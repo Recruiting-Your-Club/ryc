@@ -1,4 +1,7 @@
+import { ClubApplyAgreementPage } from '@pages/ClubApplyPage/ClubApplyAgreemetPage';
+import { ErrorFallbackPage } from '@pages/ErrorFallbackPage';
 import React, { lazy, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter, ScrollRestoration } from 'react-router';
 
 import { UserLayout } from './layouts';
@@ -32,9 +35,14 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: (
-                    <Suspense fallback={<MainLoadingPage />}>
-                        <LazyMainPage />
-                    </Suspense>
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <Suspense fallback={<MainLoadingPage />}>
+                            <LazyMainPage />
+                        </Suspense>
+                    </ErrorBoundary>
                 ),
             },
             { path: 'login', element: <LoginPage /> },
@@ -42,9 +50,14 @@ const router = createBrowserRouter([
             {
                 path: ':id',
                 element: (
-                    <Suspense fallback={<DetailLoadingPage />}>
-                        <LazyDetailPage />
-                    </Suspense>
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <Suspense fallback={<DetailLoadingPage />}>
+                            <LazyDetailPage />
+                        </Suspense>
+                    </ErrorBoundary>
                 ),
             },
 
@@ -58,17 +71,38 @@ const router = createBrowserRouter([
             {
                 path: ':announcementId',
                 element: (
-                    <Suspense fallback={<RecruitmentLoadingPage />}>
-                        <LazyRecruitmentPage />
-                    </Suspense>
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <Suspense fallback={<RecruitmentLoadingPage />}>
+                            <LazyRecruitmentPage />
+                        </Suspense>
+                    </ErrorBoundary>
+                ),
+            },
+            {
+                path: ':announcementId/agreement',
+                element: (
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <ClubApplyAgreementPage />
+                    </ErrorBoundary>
                 ),
             },
             {
                 path: ':announcementId/application',
                 element: (
-                    <Suspense fallback={<ClubApplyLoadingPage />}>
-                        <LazyClubApplyPage />
-                    </Suspense>
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <Suspense fallback={<ClubApplyLoadingPage />}>
+                            <LazyClubApplyPage />
+                        </Suspense>
+                    </ErrorBoundary>
                 ),
             },
             {
@@ -80,7 +114,14 @@ const router = createBrowserRouter([
 
     {
         path: '/reservation/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
-        element: <ReservationPage />,
+        element: (
+            <ErrorBoundary
+                FallbackComponent={ErrorFallbackPage}
+                onReset={() => window.location.reload()}
+            >
+                <ReservationPage />
+            </ErrorBoundary>
+        ),
     },
 ]);
 

@@ -1,6 +1,5 @@
 package com.ryc.api.v2.club.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,10 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
+import com.ryc.api.v2.club.presentation.dto.response.MyClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
+import com.ryc.api.v2.club.service.dto.ClubImageDTO;
+import com.ryc.api.v2.club.service.dto.MyClubDTO;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.service.ClubRoleService;
 
@@ -53,26 +55,59 @@ public class ClubFacade {
   }
 
   @Transactional(readOnly = true)
-  public List<DetailClubResponse> getMyClubs(String adminId) {
-    List<Club> myClubs = clubRoleService.getMyClubs(adminId);
-    return clubService.createDetailClubResponses(myClubs);
+  public List<MyClubGetResponse> getMyClubs(String adminId) {
+    List<MyClubDTO> myClubDTOS = clubRoleService.getMyClubs(adminId);
+    List<String> myClubIds = myClubDTOS.stream().map(dto -> dto.club().getId()).toList();
+
+    Map<String, ClubImageDTO> imageDTOMap = clubService.getClubImageDTOs(myClubIds);
+
+    return myClubDTOS.stream()
+        .map(
+            clubDTO -> {
+              DetailClubResponse clubResponse =
+                  clubService.createDetailClubResponse(
+                      clubDTO.club(), imageDTOMap.get(clubDTO.club().getId()));
+              return new MyClubGetResponse(clubResponse, clubDTO.role());
+            })
+        .toList();
   }
 
   @Transactional(readOnly = true)
   public List<SimpleClubResponse> getAllClubWithAnnouncementStatus() {
     List<Club> clubs = clubService.getAllClub();
-    Map<String, AnnouncementStatus> statuses =
-        announcementService.getStatusesByClubIds(clubs.stream().map(Club::getId).toList());
+    List<String> clubIds = clubs.stream().map(Club::getId).toList();
+
+    Map<String, AnnouncementStatus> statuses = announcementService.getStatusesByClubIds(clubIds);
+
+    Map<String, ClubImageDTO> imageDTOMap = clubService.getClubImageDTOs(clubIds);
 
     return clubs.stream()
-        .map(club -> clubService.createSimpleClubResponse(club, statuses))
+        .map(
+            club ->
+                SimpleClubResponse.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .shortDescription(club.getShortDescription())
+                    .representativeImage(imageDTOMap.get(club.getId()).representativeImage())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .announcementStatus(statuses.get(club.getId()))
+                    .build())
         .toList();
   }
 
   @Transactional(readOnly = true)
   public SimpleClubResponse getClubByInviteCode(String inviteCode) {
     Club club = clubRoleService.getClubByInviteCode(inviteCode);
-    return clubService.createSimpleClubResponse(club, Collections.emptyMap());
+    ClubImageDTO clubImage = clubService.getClubImageDTO(club.getId());
+    return SimpleClubResponse.builder()
+        .id(club.getId())
+        .name(club.getName())
+        .shortDescription(club.getShortDescription())
+        .representativeImage(clubImage.representativeImage())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .build();
   }
 
   @Transactional

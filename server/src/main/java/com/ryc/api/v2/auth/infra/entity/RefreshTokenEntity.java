@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 import com.ryc.api.v2.admin.infra.entity.AdminEntity;
-import com.ryc.api.v2.common.entity.BaseEntity;
+import com.ryc.api.v2.common.infra.entity.BaseEntity;
 
 import lombok.*;
 

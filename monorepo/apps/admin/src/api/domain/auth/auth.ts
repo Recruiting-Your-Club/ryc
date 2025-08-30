@@ -1,6 +1,13 @@
 import { httpRequest } from '@api/common/httpRequest';
 
-import type { Login, LoginResponse, MyInformation, Register, RegisterResponse } from './types';
+import type {
+    CheckDuplicateEmailResponse,
+    Login,
+    LoginResponse,
+    MyInformation,
+    Register,
+    RegisterResponse,
+} from './types';
 
 async function login(data: Login): Promise<LoginResponse> {
     const response = await httpRequest.post({
@@ -16,16 +23,19 @@ async function register(data: Register): Promise<RegisterResponse> {
         url: 'auth/register',
         body: data,
         isAuthRequire: false,
+        headers: {
+            'X-EMAIL-VERIFICATION-CODE': data.verifyCode,
+        },
     });
     return response as RegisterResponse;
 }
 
-async function checkEmail(email: string): Promise<boolean> {
+async function checkEmail(email: string): Promise<CheckDuplicateEmailResponse> {
     const response = await httpRequest.get({
         url: `admin/emails/duplicate-check?email=${email}`,
         isAuthRequire: false,
     });
-    return response as boolean;
+    return response as CheckDuplicateEmailResponse;
 }
 async function myInformation(): Promise<MyInformation> {
     const response = await httpRequest.get({
@@ -35,4 +45,15 @@ async function myInformation(): Promise<MyInformation> {
     return response as MyInformation;
 }
 
-export { login, register, checkEmail, myInformation };
+async function updateMyInformation(params: {
+    representativeImage: string | null;
+}): Promise<MyInformation> {
+    const response = await httpRequest.patch({
+        url: 'admin',
+        isAuthRequire: true,
+        body: params,
+    });
+    return response as MyInformation;
+}
+
+export { login, register, checkEmail, myInformation, updateMyInformation };

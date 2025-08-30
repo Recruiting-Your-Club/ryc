@@ -58,6 +58,11 @@ export const clubSideBarContainer = css`
     z-index: 1001;
     background-color: ${theme.colors.white};
     border-right: 1px solid ${theme.colors.gray[200]};
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 export const addClubButton = css`
     display: flex;
@@ -266,6 +271,7 @@ export const navContainer = (isExpanded: boolean) => css`
     background-color: ${theme.colors.white};
     transition: width 0.2s ease;
     width: ${isExpanded ? '23rem' : '4rem'};
+    overflow: visible;
 `;
 
 export const dropdownContainer = (isExpanded: boolean) => css`
@@ -313,7 +319,7 @@ export const dropdownClubContainer = css`
     overflow-y: auto;
     gap: 0.5rem;
     cursor: default;
-    overflow-y: auto;
+
     :hover {
         background-color: transparent;
     }

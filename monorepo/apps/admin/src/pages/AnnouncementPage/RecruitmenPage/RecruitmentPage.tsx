@@ -1,8 +1,9 @@
 import { ClubInformationBox, ImageDialog } from '@components';
 import dayjs from 'dayjs';
+import DOMPurify from 'dompurify';
 import React, { useMemo, useState } from 'react';
 
-import { Image, Text } from '@ssoc/ui';
+import { Image } from '@ssoc/ui';
 
 import type { AnnouncementInfoPageProps } from '../types';
 import {
@@ -81,9 +82,12 @@ function RecruitmentPage({
             <div css={s_contentContainer}>
                 <div css={s_contentBody}>
                     <ClubInformationBox data={clubBoxData} />
-                    <Text textAlign="start" sx={s_textContainer}>
-                        {detailDescription}
-                    </Text>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(detailDescription ?? ''),
+                        }}
+                        css={s_textContainer}
+                    />
 
                     <div css={s_imageListContainer}>
                         {images &&
@@ -96,7 +100,11 @@ function RecruitmentPage({
                                         handleImageClick(url);
                                     }}
                                 >
-                                    <Image src={url} alt="동아리 사진" />
+                                    <Image
+                                        src={url}
+                                        alt="동아리 사진"
+                                        onLoad={() => URL.revokeObjectURL(url)}
+                                    />
                                 </button>
                             ))}
                     </div>

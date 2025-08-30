@@ -1,8 +1,9 @@
 import type { InterviewSlot } from '@api/domain/club/types';
-import { useSubmitInterviewReservation } from '@api/mutaionFactory';
+import { useSubmitInterviewReservation } from '@api/hooks';
 import { clubQueries } from '@api/queryFactory/clubQueries';
 import Clock from '@assets/images/clock.svg';
 import User from '@assets/images/user.svg';
+import { ErrorDialog } from '@components';
 import { useQuery } from '@tanstack/react-query';
 import { getCategory } from '@utils/changeCategory';
 import dayjs from 'dayjs';
@@ -55,12 +56,16 @@ function ReservationPage() {
     const [interviewDuration, setInterviewDuration] = useState<number>(0);
     const [selectedInterviewSlot, setSelectedInterviewSlot] = useState<InterviewSlot | null>(null);
     const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(true);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
-    const { data: clubReservation } = useQuery(
-        clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''),
-    );
-    const { mutateAsync: submitInterviewReservation } = useSubmitInterviewReservation();
+    const { data: clubReservation } = useQuery({
+        ...clubQueries.getClubReservation(clubId ?? '', announcementId ?? '', applicantId ?? ''),
+        throwOnError: true,
+    });
+    const { mutateAsync: submitInterviewReservation } =
+        useSubmitInterviewReservation(setErrorDialogOpen);
     // calculated values
 
     // handlers
@@ -281,6 +286,11 @@ function ReservationPage() {
                         content={`${dayjs(selectedInterviewSlot?.period.startDate).format('YYYY년 MM월 DD일 HH:mm\n')} 예약하시겠습니까?`}
                     />
                 )}
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
+                />
             </div>
         );
     }

@@ -7,7 +7,7 @@ import type { StepApplicant } from '@api/domain/step/types';
 import { useInterviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
-import { ApplicantList, ComponentMover, InterviewSlotDropdown } from '@components';
+import { ApplicantList, ComponentMover, ErrorDialog, InterviewSlotDropdown } from '@components';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import type { Dispatch, SetStateAction } from 'react';
@@ -15,7 +15,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Text, useToast } from '@ssoc/ui';
-import { convertDate } from '@ssoc/utils';
 
 import {
     s_alertSvg,
@@ -51,6 +50,8 @@ function ApplicantSchedulePage() {
     const [selectedStandardInterviewLabel, setSelectedStandardInterviewLabel] =
         useState<SelectedLabel>({ label: '면접 일정 없음', interviewSlotId: null });
 
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
     const { data: interviewSlots = [] } = useSuspenseQuery(
@@ -59,10 +60,12 @@ function ApplicantSchedulePage() {
     const { data: slot0Applicants } = useQuery({
         ...interviewQueries.interviewInformation(announcementId!, slot0Id ?? '', clubId!),
         enabled: !!slot0Id && slot0Id !== '',
+        throwOnError: true,
     });
     const { data: slot1Applicants } = useQuery({
         ...interviewQueries.interviewInformation(announcementId!, slot1Id ?? '', clubId!),
         enabled: !!slot1Id && slot1Id !== '',
+        throwOnError: true,
     });
     const { data: unreservedApplicants } = useSuspenseQuery(
         interviewQueries.unreservedApplicant(announcementId!, clubId!),
@@ -70,9 +73,11 @@ function ApplicantSchedulePage() {
 
     const { mutate: updateIntervieweeList } = useInterviewMutations.useUpdateInterviewReservation(
         announcementId!,
+        setErrorDialogOpen,
     );
     const { mutate: deleteReservation } = useInterviewMutations.useDeleteReservation(
         announcementId!,
+        setErrorDialogOpen,
     );
 
     // calculated values
@@ -105,9 +110,9 @@ function ApplicantSchedulePage() {
             setSlotId: Dispatch<SetStateAction<string | null>>,
             setDropdown: Dispatch<SetStateAction<boolean>>,
         ) =>
-        (label: string) => {
+        ({ label, slotId }: { label: string; slotId: string }) => {
             const targetSetId = getTargetLabelId();
-            const newSetId = findInterviewSetIdByLabel(label);
+            const newSetId = slotId;
 
             const isSame = newSetId !== null && newSetId === targetSetId;
 
@@ -201,15 +206,6 @@ function ApplicantSchedulePage() {
         }
         return { label: '면접 일정 없음', interviewSlotId: '' };
     }
-
-    const findInterviewSetIdByLabel = (label: string): string | null => {
-        for (const slot of interviewSlots) {
-            const date = convertDate(dayjs(slot.period.startDate).format('YYYY-MM-DD'));
-            const fullLabel = `${date} ${dayjs(slot.period.startDate).format('HH:mm')}`;
-            if (fullLabel === label) return slot.id;
-        }
-        return null;
-    };
 
     const getApplicantInformation = (applicant: InterviewApplicant | UnreservedApplicant) => {
         if ('applicantSummary' in applicant) {
@@ -352,6 +348,11 @@ function ApplicantSchedulePage() {
                     />
                 </div>
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }

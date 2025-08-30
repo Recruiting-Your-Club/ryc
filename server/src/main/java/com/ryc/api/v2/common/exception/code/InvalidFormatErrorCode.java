@@ -64,7 +64,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   ANNOUNCEMENT_TITLE_NULL_OR_EMPTY(
       HttpStatus.INTERNAL_SERVER_ERROR, "공고 제목은 null 혹은 empty일 수 없습니다."),
   ANNOUNCEMENT_INVALID_TITLE_LENGTH(
-      HttpStatus.INTERNAL_SERVER_ERROR, "공고 제목은 2자 이상 100자 이하여야 합니다."),
+      HttpStatus.INTERNAL_SERVER_ERROR, "공고 제목은 2자 이상 200자 이하여야 합니다."),
 
   // Announcement 모집인원
   ANNOUNCEMENT_NUMBER_OF_PEOPLE_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "모집 인원은 empty일 수 없습니다."),
@@ -185,7 +185,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // Personal Info Phone Number
   PERSONAL_INFO_INVALID_PHONE_NUMBER_FORMAT(
-      HttpStatus.INTERNAL_SERVER_ERROR, "지원자 전화번호는 01X-XXXX-XXXX 형식이어야 합니다."),
+      HttpStatus.INTERNAL_SERVER_ERROR, "지원자 전화번호는 01XXXXXXXXX 형식이며 총 11자리이어야 합니다."),
 
   // Personal Info Profile Image
   PERSONAL_INFO_PROFILE_IMAGE_METADATA_ID_NULL_OR_EMPTY(
@@ -493,7 +493,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
 
   // Email Subject
   EMAIL_SUBJECT_NULL_OR_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목은 null 혹은 empty일 수 없습니다."),
-  EMAIL_INVALID_SUBJECT_LENGTH(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목은 1자 이상 255자 이하여야 합니다."),
+  EMAIL_INVALID_SUBJECT_LENGTH(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목은 1자 이상 1000자 이하여야 합니다."),
 
   // Email Content
   EMAIL_CONTENT_NULL_OR_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 내용은 null 혹은 empty일 수 없습니다."),

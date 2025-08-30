@@ -5,6 +5,14 @@ interface RepresentativeImage {
     contentType: string;
 }
 
+interface ClubDetailImages {
+    id: string;
+    url: string;
+    originalFileName: string;
+    contentType: string;
+}
+type MyRole = 'OWNER' | 'MEMBER';
+
 export interface MyClubResponse {
     id: string;
     name: string;
@@ -14,7 +22,12 @@ export interface MyClubResponse {
     category: category;
     clubTags: clubTag[];
     clubSummaries: clubSummaries[];
-    clubDetailImages: clubDetailImages[];
+    clubDetailImages: ClubDetailImages[];
+}
+
+export interface MyClub {
+    myClubResponse: MyClubResponse;
+    myRole: MyRole;
 }
 
 export interface DetailClubResponse {
@@ -24,9 +37,9 @@ export interface DetailClubResponse {
     detailDescription: string;
     representativeImage: RepresentativeImage;
     category: category;
-    clubTags: clubTag[];
-    clubSummaries: clubSummaries[];
-    clubDetailImages: clubDetailImages[];
+    clubTags?: clubTag[];
+    clubSummaries?: clubSummaries[];
+    clubDetailImages?: clubDetailImages[];
 }
 
 export type category =
@@ -48,7 +61,7 @@ type clubSummaries = {
     content: string;
 };
 
-type clubDetailImages = {
+export type clubDetailImages = {
     id: string;
     url: string;
     originalFileName: string;
@@ -74,6 +87,7 @@ interface summaries {
 }
 
 interface ClubTag {
+    id: string;
     name: string;
 }
 export interface Club {
@@ -84,22 +98,33 @@ export interface Club {
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: string[];
+    clubDetailImages: RepresentativeImage[];
 }
+
+export interface ClubByInviteCode {
+    id: string;
+    name: string;
+    shortDescription: string;
+    representativeImage: RepresentativeImage;
+    category: string;
+    clubTags: ClubTag[];
+    announcementStatus: announcementStatus;
+}
+
 export interface UpdateClub {
     name: string;
     shortDescription: string;
     detailDescription: string;
-    representativeImage: string;
+    representativeImage: string | null;
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: string[];
+    clubDetailImages: string[] | null;
 }
 export interface CreateClub {
     name: string;
     category: string;
-    representativeImage: string;
+    representativeImage?: string;
 }
 export interface CreateClubResponse {
     clubId: string;

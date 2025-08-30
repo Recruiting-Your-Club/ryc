@@ -4,7 +4,6 @@ import theme from '@ssoc/styles';
 
 export const s_clubDetailPageContainer = css`
     width: 100%;
-    height: 100%;
     background-color: ${theme.colors.gray[100]};
     display: flex;
     flex-direction: column;

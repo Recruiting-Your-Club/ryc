@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.club.domain.Club;
-import com.ryc.api.v2.club.infra.entity.ClubEntity;
 import com.ryc.api.v2.club.infra.mapper.ClubMapper;
+import com.ryc.api.v2.club.infra.projection.MyClubProjection;
+import com.ryc.api.v2.club.service.dto.MyClubDTO;
 import com.ryc.api.v2.role.domain.ClubInvite;
 import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.domain.ClubRoleRepository;
@@ -49,9 +49,11 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
   }
 
   @Override
-  public List<Club> findClubsByAdminId(String adminId) {
-    List<ClubEntity> clubEntities = clubRoleJpaRepository.findClubsByAdminId(adminId);
-    return clubEntities.stream().map(ClubMapper::toDomain).toList();
+  public List<MyClubDTO> findMyClubsByAdminId(String adminId) {
+    List<MyClubProjection> projections = clubRoleJpaRepository.findClubsAndRolesByAdmin_Id(adminId);
+    return projections.stream()
+        .map(p -> new MyClubDTO(ClubMapper.toDomain(p.getClub()), p.getRole()))
+        .toList();
   }
 
   @Override
@@ -74,7 +76,7 @@ public class ClubRoleRepositoryImpl implements ClubRoleRepository {
 
   @Override
   public boolean existsOwnerRoleByAdminIdAndClubId(String adminId, String clubId) {
-    return clubRoleJpaRepository.existsOwnerRoleByAdminIdAndClubId(adminId, clubId);
+    return clubRoleJpaRepository.existsOwnerRoleByAdmin_IdAndClub_Id(adminId, clubId);
   }
 
   @Override

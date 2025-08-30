@@ -1,4 +1,4 @@
-import type { DetailAnnouncement } from '@api/domain/announcement/types';
+import type { DetailAnnouncement, PersonalInfoQuestion } from '@api/domain/announcement/types';
 import { announcementQueries, myClubQueries } from '@api/queryFactory';
 import { ClubNavigation } from '@components';
 import { CATEGORY_LABEL } from '@constants/category';
@@ -26,13 +26,44 @@ function AnnouncementPage() {
     const { clubId, announcementId } = useParams();
 
     const { data: club } = useSuspenseQuery(myClubQueries.detail(clubId ?? ''));
-    const { data: detailClub } = useQuery<DetailAnnouncement>(
-        announcementQueries.detail(announcementId ?? ''),
-    );
+    const { data: detailClub } = useQuery<DetailAnnouncement>({
+        ...announcementQueries.detail(announcementId ?? ''),
+        throwOnError: true,
+    });
 
     const imageUrls = useMemo(
         () => (detailClub?.images ?? []).map((image) => image.url),
         [detailClub?.images],
+    );
+
+    const getPersonalQuestionLabel = (questionTitle: string) => {
+        switch (questionTitle) {
+            case 'NAME':
+                return '이름';
+            case 'EMAIL':
+                return '이메일';
+            case 'STUDENT_ID':
+                return '학번';
+            case 'PHONE_NUMBER':
+                return '전화번호';
+            case 'PROFILE_IMAGE':
+                return '본인사진';
+            default:
+                return '';
+        }
+    };
+
+    const clubPersonalQuestions = useMemo(
+        () =>
+            detailClub?.applicationForm?.personalInfoQuestionTypes?.map((question) => {
+                return {
+                    id: question,
+                    label: getPersonalQuestionLabel(question),
+                    type: question as PersonalInfoQuestion,
+                    isRequired: true,
+                };
+            }) || [],
+        [detailClub?.applicationForm?.personalInfoQuestionTypes],
     );
 
     // 사전질문 데이터
@@ -42,11 +73,13 @@ function AnnouncementPage() {
                 id: question.id,
                 label: question.label,
                 type: question.type as QuestionType,
-                options: (question.options ?? []).map((option) => option.option),
+                options: question.options,
                 isRequired: question.isRequired,
-            })),
+            })) || [],
         [detailClub?.applicationForm?.preQuestions],
     );
+
+    const clubPersonalInfoQuestions = [...clubPersonalQuestions, ...personalQuestions];
 
     // 자기소개서 질문 데이터
     const detailQuestions = useMemo(
@@ -89,7 +122,7 @@ function AnnouncementPage() {
             title: '사전질문',
             page: (
                 <PersonalQuestionPage
-                    personalQuestions={personalQuestions}
+                    personalQuestions={clubPersonalInfoQuestions}
                     containerStyle={s_applyFormContainer}
                 />
             ),

@@ -1,12 +1,14 @@
 type summaries = {
+    id: string;
     title: string;
-    value: string;
+    content: string;
 };
 type images = {
     imageUrl: string;
     thumbnailUrl: string;
 };
 interface ClubTag {
+    id: string;
     name: string;
 }
 export interface AllClub {
@@ -27,7 +29,7 @@ export interface Club {
     category: string;
     clubTags: ClubTag[];
     clubSummaries: summaries[];
-    clubDetailImages: images[];
+    clubDetailImages: RepresentativeImage[];
 }
 
 interface RepresentativeImage {

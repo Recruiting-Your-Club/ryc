@@ -7,6 +7,10 @@ interface PresignedUrlResponse {
     presignedUrl: string;
 }
 
+interface UploadResult {
+    fileMetadataId: string;
+}
+
 export const useFileUpload = (baseUrl: string) => {
     // 파일 메타데이터를 보내서 presigned URL 받는 함수
     const getPresignedUrlMutation = useMutation({
@@ -42,7 +46,7 @@ export const useFileUpload = (baseUrl: string) => {
     });
 
     // 단일 파일 업로드 프로세스
-    const uploadSingleFile = async (file: File, location: string): Promise<string> => {
+    const uploadSingleFile = async (file: File, location: string): Promise<UploadResult> => {
         try {
             let fileType = '';
             switch (location) {
@@ -68,7 +72,7 @@ export const useFileUpload = (baseUrl: string) => {
                     fileType = 'ANNOUNCEMENT_IMAGE'; // 공고 이미지
                     break;
                 case 'USER_PROFILE': // 동아리 사용자 페이지
-                    fileType = 'USER_PROFILE_IMAGE'; // 동아리 사용자 페이지 사진
+                    fileType = 'USER_PROFILE'; // 동아리 사용자 페이지 사진
                     break;
                 default:
                     throw new Error('Invalid type');
@@ -90,14 +94,14 @@ export const useFileUpload = (baseUrl: string) => {
             // 3. 업로드 완료 확인
             await confirmUploadMutation.mutateAsync(fileMetadataId);
 
-            return fileMetadataId;
+            return { fileMetadataId };
         } catch (error) {
-            console.error('File upload failed:', error);
+            console.error(error);
             throw error;
         }
     };
 
-    const uploadFiles = async (files: File | File[], location: string): Promise<string[]> => {
+    const uploadFiles = async (files: File | File[], location: string): Promise<UploadResult[]> => {
         try {
             const fileArray = Array.isArray(files) ? files : [files];
 
@@ -110,10 +114,10 @@ export const useFileUpload = (baseUrl: string) => {
             });
 
             // 모든 파일을 병렬로 업로드
-            const fileMetadataIds = await Promise.all(uploadPromises);
-            return fileMetadataIds;
+            const uploadResults = await Promise.all(uploadPromises);
+            return uploadResults;
         } catch (error) {
-            console.error('Files upload failed:', error);
+            console.error(error);
             throw error;
         }
     };

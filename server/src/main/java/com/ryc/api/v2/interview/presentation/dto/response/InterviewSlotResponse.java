@@ -1,6 +1,6 @@
 package com.ryc.api.v2.interview.presentation.dto.response;
 
-import com.ryc.api.v2.announcement.presentation.dto.response.PeriodResponse;
+import com.ryc.api.v2.common.dto.response.PeriodResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

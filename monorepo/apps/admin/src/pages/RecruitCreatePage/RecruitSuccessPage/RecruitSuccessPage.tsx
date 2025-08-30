@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { generatePath, useParams } from 'react-router-dom';
 
 import CheckCircle from '@ssoc/assets/images/check-circle.svg';
 import Copy from '@ssoc/assets/images/copy.svg';
@@ -29,9 +30,14 @@ function RecruitSuccessPage() {
     // lib hooks
     const { toast } = useToast();
     const { removeHistoryAndGo } = useRouter();
+    const { announcementId } = useParams<{ announcementId?: string }>();
+
+    const postingPath = announcementId
+        ? generatePath('/announcements/:announcementId', { announcementId })
+        : null;
 
     // initial values
-    const postingUrl = 'https://github.com/Recruiting-Your-Club/ryc';
+    const postingUrl = postingPath ? `https://ssoc.kr${postingPath}` : '';
 
     // state, ref, querystring hooks
     const [copied, setCopied] = useState(false);
@@ -76,7 +82,7 @@ function RecruitSuccessPage() {
 
             <div css={s_urlSection}>
                 <div css={s_urlContainer}>
-                    <div css={s_urlCode}>{postingUrl}</div>
+                    <div css={s_urlCode}>{postingUrl || '게시 URL을 생성 중입니다.'}</div>
                     <Button variant="transparent" onClick={handleCopyUrl} size="xs">
                         {copied ? <CheckCircle css={s_copyCheckCircle} /> : <Copy css={s_copy} />}
                     </Button>

@@ -7,6 +7,7 @@ export interface Register {
     email: string;
     name: string;
     password: string;
+    verifyCode: string;
 }
 
 export interface LoginResponse {
@@ -26,4 +27,7 @@ export interface RepresentativeImage {
     url: string;
     originalFileName: string;
     contentType: string;
+}
+export interface CheckDuplicateEmailResponse {
+    duplicated: boolean;
 }

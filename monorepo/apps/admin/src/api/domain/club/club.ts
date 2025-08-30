@@ -1,19 +1,20 @@
 import { httpRequest } from '../../common/httpRequest';
 import type {
     Club,
+    ClubByInviteCode,
     CreateClub,
     CreateClubResponse,
     DetailClubResponse,
-    MyClubResponse,
+    MyClub,
     UpdateClub,
 } from './types';
 
-async function getMyClub(): Promise<MyClubResponse[]> {
+async function getMyClub(): Promise<MyClub[]> {
     const response = await httpRequest.get({
         url: 'clubs/my',
         isAuthRequire: true,
     });
-    return response as MyClubResponse[];
+    return response as MyClub[];
 }
 
 async function getDetailClub(clubId: string): Promise<DetailClubResponse> {
@@ -41,6 +42,14 @@ async function updateClub(id: string, club: UpdateClub): Promise<Club> {
     return response as Club;
 }
 
+async function getClubInfoByInviteCode(params: { inviteCode: string }): Promise<ClubByInviteCode> {
+    const response = await httpRequest.get({
+        url: `clubs/invites/${params.inviteCode}`,
+    });
+
+    return response as ClubByInviteCode;
+}
+
 async function createClub(club: CreateClub): Promise<CreateClubResponse> {
     const response = await httpRequest.post({
         url: 'clubs',
@@ -50,4 +59,4 @@ async function createClub(club: CreateClub): Promise<CreateClubResponse> {
     return response as CreateClubResponse;
 }
 
-export { getMyClub, getClub, updateClub, getDetailClub, createClub };
+export { getMyClub, getClub, updateClub, getDetailClub, createClub, getClubInfoByInviteCode };

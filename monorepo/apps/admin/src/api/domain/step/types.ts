@@ -28,5 +28,5 @@ export interface ProfileImageInformation {
 }
 
 export interface Step {
-    process: RecruitmentStep[];
+    processes: RecruitmentStep[];
 }

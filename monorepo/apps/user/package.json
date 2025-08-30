@@ -31,9 +31,11 @@
         "@ssoc/utils": "workspace:*",
         "@tanstack/react-query": "^5.74.7",
         "dayjs": "^1.11.13",
+        "dompurify": "^3.2.6",
         "dotenv-webpack": "^8.1.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "react-error-boundary": "^6.0.0",
         "react-router-dom": "^7.1.5",
         "whatwg-fetch": "^3.6.20",
         "zustand": "^5.0.7"

@@ -3,5 +3,6 @@ export interface RecruitCardProps {
     content: string;
     deadline: string;
     hashtags: string[];
+    status?: string;
     onClick?: () => void;
 }

@@ -1,4 +1,5 @@
 import XIcon from '@assets/images/xIcon.svg';
+import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import React, { useState } from 'react';
 
 import { Button, Dialog, Divider, Editor, Input, Text } from '@ssoc/ui';
@@ -36,7 +37,26 @@ function PlainEmailDialog({ open, handleClose, handlePlainEmail }: PlainEmailDia
         setEmailTitle('');
         setEmailContent('');
     };
+
+    const handleSendPlainEmail = async () => {
+        let contentToSend = emailContent;
+
+        try {
+            contentToSend = await convertImageToBase64(emailContent);
+        } catch (error) {
+            // 변환 실패 -> 원본 이미지 사용 (다른 이미지는 변환 계속)
+            // eslint-disable-next-line no-empty
+        }
+
+        handlePlainEmail(emailTitle, contentToSend);
+
+        if (!open && emailTitle.length !== 0 && contentToSend.length !== 0) {
+            handleReset();
+        }
+    };
+
     // effects
+
     return (
         <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
             <Dialog.Header position="start" sx={s_header}>
@@ -77,14 +97,7 @@ function PlainEmailDialog({ open, handleClose, handlePlainEmail }: PlainEmailDia
                 </div>
             </Dialog.Content>
             <Dialog.Action sx={s_action}>
-                <Button
-                    onClick={() => {
-                        handlePlainEmail(emailTitle, emailContent);
-                        handleReset();
-                    }}
-                >
-                    이메일 보내기
-                </Button>
+                <Button onClick={handleSendPlainEmail}>이메일 보내기</Button>
             </Dialog.Action>
         </Dialog>
     );

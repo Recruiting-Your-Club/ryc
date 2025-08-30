@@ -2,11 +2,12 @@ import { css } from '@emotion/react';
 
 export const s_interviewInformationPageContainer = css`
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding: 2rem 8rem;
     display: flex;
     flex-direction: column;
     min-width: 100rem;
+    overflow-y: hidden;
 `;
 
 export const s_selectionContainer = css`

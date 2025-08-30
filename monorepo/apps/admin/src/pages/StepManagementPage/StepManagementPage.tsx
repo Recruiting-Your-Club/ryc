@@ -6,15 +6,24 @@ import { useEmailMutations } from '@api/hooks/useEmailMutations';
 import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFactory';
 import { stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
-import { ApplicantDialog, CardBox, InterviewSettingDialog, PlainEmailDialog } from '@components';
+import {
+    ApplicantDialog,
+    CardBox,
+    ErrorDialog,
+    InterviewSettingDialog,
+    PlainEmailDialog,
+} from '@components';
 import {
     DOCUMENT_STEP,
     FINAL_STEP_IN_THREE,
     FINAL_STEP_IN_TWO,
     INTERVIEW_STEP,
 } from '@constants/stepManagementPage';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useMemo, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
@@ -40,6 +49,8 @@ function StepManagementPage() {
     const { toast } = useToast();
     const { announcementId, clubId } = useParams();
     // initial values
+    let hasError: boolean = false;
+
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicantWithoutImage | null>(
         null,
@@ -49,11 +60,12 @@ function StepManagementPage() {
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isInterviewOpen, setIsInterviewOpen] = useState(false);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
     const queryClient = useQueryClient();
-    const { data: totalSteps = { process: [] } } = useSuspenseQuery(
+    const { data: totalSteps = { processes: [] } } = useSuspenseQuery(
         stepQueries.getTotalSteps(announcementId!),
     );
     const { data: stepApplicantList = [] } = useSuspenseQuery(
@@ -69,15 +81,16 @@ function StepManagementPage() {
         ),
 
         enabled: !!selectedApplicant?.applicantId,
+        throwOnError: true,
     });
 
-    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen(false));
-    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(() =>
-        setIsInterviewOpen(false),
+    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
+    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
+        () => setIsInterviewOpen,
     );
 
     // calculated values
-    const isThreeStepProcess = totalSteps?.process?.length === 3;
+    const isThreeStepProcess = totalSteps?.processes?.length === 3;
 
     const documentStepApplicants = stepApplicantList.filter(
         (applicant) =>
@@ -101,7 +114,8 @@ function StepManagementPage() {
             applicantIdList: documentApplicantIds,
             type: 'application',
         }),
-        enabled: interviewApplicantIds.length > 0,
+        enabled: documentApplicantIds.length > 0,
+        throwOnError: true,
     });
     const { data: interviewEvaluationSummaryList } = useQuery({
         ...evaluationQueries.evaluationSummary({
@@ -110,6 +124,7 @@ function StepManagementPage() {
             type: 'interview',
         }),
         enabled: interviewApplicantIds.length > 0,
+        throwOnError: true,
     });
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -127,6 +142,7 @@ function StepManagementPage() {
                 'FINAL_PASS',
                 'FINAL_FAIL',
             ].includes(selectedApplicant.status),
+        throwOnError: true,
     });
     const { data: interviewEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -139,6 +155,7 @@ function StepManagementPage() {
             ['INTERVIEW_PENDING', 'INTERVIEW_FAIL', 'FINAL_PASS', 'FINAL_FAIL'].includes(
                 selectedApplicant.status,
             ),
+        throwOnError: true,
     });
 
     const statusLabel = isThreeStepProcess
@@ -236,6 +253,22 @@ function StepManagementPage() {
                             queryKey: stepKeys.allStepApplicants(announcementId!, clubId!),
                         });
                     },
+                    onError: (err) => {
+                        if (hasError) return;
+                        hasError = true;
+
+                        const error = err as ErrorWithStatusCode;
+                        if (error.statusCode === 500) {
+                            setErrorDialogOpen(true);
+                        } else if (error.response?.errors[0].message || error.message) {
+                            toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                        } else {
+                            toast('오류로 인해 상태 변경을 못했어요.', {
+                                toastTheme: 'colored',
+                                type: 'error',
+                            });
+                        }
+                    },
                 },
             );
         });
@@ -252,21 +285,22 @@ function StepManagementPage() {
     };
 
     const handleInterviewEmail = (
-        numberOfPeopleByInterviewDates: InterviewDetailInformation[],
+        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
     ) => {
-        if (numberOfPeopleByInterviewDates.length === 0) {
+        if (numberOfPeopleByInterviewDateRequests.length === 0) {
             toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
             return;
         }
+
         if (!validateEmailInputs(subject, content)) return;
 
         sendInterviewEmail({
             announcementId: announcementId!,
             clubId: clubId!,
             email: {
-                numberOfPeopleByInterviewDates,
+                numberOfPeopleByInterviewDateRequests,
                 emailSendRequest: { recipients: emailTargetList, subject, content },
             },
         });
@@ -410,6 +444,11 @@ function StepManagementPage() {
                     open={isEmailOpen}
                     handleClose={handleEmailClose}
                     handlePlainEmail={handlePlainEmail}
+                />
+                <ErrorDialog
+                    open={errorDialogOpen}
+                    handleClose={() => setErrorDialogOpen(false)}
+                    errorStatusCode={500}
                 />
             </div>
         </div>

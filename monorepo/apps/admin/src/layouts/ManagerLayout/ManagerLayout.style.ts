@@ -14,7 +14,14 @@ const contentFadeIn = keyframes`
 
 export const outletWrapper = css`
     animation: ${contentFadeIn} 0.3s ease-in-out;
-    width: 100%;
-    height: 100%;
+    flex: 1;
     overflow-y: auto;
+    min-height: 100dvh;
+`;
+
+export const s_layout = css`
+    display: flex;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
 `;

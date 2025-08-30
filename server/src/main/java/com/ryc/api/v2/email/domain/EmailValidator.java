@@ -5,6 +5,7 @@ import static com.ryc.api.v2.common.exception.code.InvalidFormatErrorCode.*;
 import java.util.regex.Pattern;
 
 import com.ryc.api.v2.common.validator.DomainValidator;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 final class EmailValidator extends DomainValidator {
 
@@ -23,7 +24,7 @@ final class EmailValidator extends DomainValidator {
   private static final int MAX_EMAIL_LOCAL_PART_LENGTH = 64;
   private static final int MAX_EMAIL_DOMAIN_PART_LENGTH = 253;
   private static final int MIN_SUBJECT_LENGTH = 1;
-  private static final int MAX_SUBJECT_LENGTH = 255;
+  private static final int MAX_SUBJECT_LENGTH = 1000;
   private static final int MIN_CONTENT_LENGTH = 1;
   private static final int MAX_CONTENT_LENGTH = 10000;
   private static final int MIN_RETRY_COUNT = 0;

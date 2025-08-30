@@ -3,6 +3,7 @@ package com.ryc.api.v2.email.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +15,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
-import com.ryc.api.v2.email.domain.EmailSentStatus;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
+import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
@@ -32,15 +36,19 @@ public class EmailService {
   private final String baseUri;
   private final String linkHtmlTemplate;
   private final String interviewReservationHtmlTemplate;
+  private final String applicationSubmittedHtmlTemplate;
+  private final String ssocId;
   private final EmailRepository emailRepository;
 
   public EmailService(
       @Value("${CLIENT_URL}") String baseUri,
+      @Value("${SSOC_EMAIL_ID}") String ssocId,
       EmailRepository emailRepository,
       ResourceLoader resourceLoader)
       throws IOException {
     this.baseUri = baseUri;
     this.emailRepository = emailRepository;
+    this.ssocId = ssocId;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     try (InputStream is = resource.getInputStream()) {
@@ -50,6 +58,11 @@ public class EmailService {
     resource = resourceLoader.getResource("classpath:templates/interview-reservation.html");
     try (InputStream is = resource.getInputStream()) {
       this.interviewReservationHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
+
+    resource = resourceLoader.getResource("classpath:templates/application-submitted.html");
+    try (InputStream is = resource.getInputStream()) {
+      this.applicationSubmittedHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
     }
   }
 
@@ -80,43 +93,6 @@ public class EmailService {
         .toList();
   }
 
-  @Async
-  @EventListener
-  @Transactional
-  protected void createInterviewEmails(InterviewSlotEmailEvent event) {
-    List<Email> emails = new ArrayList<>();
-
-    for (Applicant applicant : event.applicants()) {
-      String htmlLink = createHtmlLink(event.clubId(), event.announcementId(), applicant.getId());
-
-      emails.add(
-          Email.initialize(
-              event.adminId(),
-              applicant.getEmail(),
-              event.subject(),
-              htmlLink + event.content(),
-              event.announcementId()));
-    }
-
-    emailRepository.saveAll(emails);
-  }
-
-  @Async
-  @EventListener
-  @Transactional
-  protected void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
-    String subject = String.format("[면접 예약 완료] %s 면접 예약이 정상적으로 완료되었습니다.", event.clubName());
-    String content =
-        interviewReservationHtmlTemplate
-            .replace("${clubName}", event.clubName())
-            .replace("${applicantName}", event.applicantName())
-            .replace("${date}", event.period().startDate().toLocalDate().toString())
-            .replace("${startTime}", event.period().startDate().toLocalTime().toString())
-            .replace("${endTime}", event.period().endDate().toLocalTime().toString());
-
-    createEmails(null, event.announcementId(), List.of(event.applicantEmail()), subject, content);
-  }
-
   @Transactional(readOnly = true)
   public List<Email> findPendingEmails() {
     return emailRepository.findPendingEmails(
@@ -136,29 +112,78 @@ public class EmailService {
     emailRepository.save(updatedEmail);
   }
 
-  @Transactional
+  @Async
+  @TransactionalEventListener
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  protected void createInterviewSlotEmails(InterviewSlotEmailEvent event) {
+    List<Email> emails = new ArrayList<>();
+
+    for (Applicant applicant : event.applicants()) {
+      String link =
+          String.format(
+              "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
+              baseUri, event.clubId(), event.announcementId(), applicant.getId());
+      String content = String.format(linkHtmlTemplate, link) + event.content();
+
+      emails.add(
+          Email.initialize(
+              event.adminId(),
+              applicant.getEmail(),
+              event.subject(),
+              content,
+              event.announcementId()));
+    }
+
+    emailRepository.saveAll(emails);
+  }
+
+  @Async
+  @TransactionalEventListener
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  protected void createInterviewReservationEmails(InterviewReservationEmailEvent event) {
+    String subject = String.format("[면접 예약 완료] %s 면접 예약이 정상적으로 완료되었습니다.", event.clubName());
+    String content =
+        interviewReservationHtmlTemplate
+            .replace("${clubName}", event.clubName())
+            .replace("${applicantName}", event.applicantName())
+            .replace("${date}", event.period().startDate().toLocalDate().toString())
+            .replace("${startTime}", event.period().startDate().toLocalTime().toString())
+            .replace("${endTime}", event.period().endDate().toLocalTime().toString());
+
+    createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+  }
+
+  @Async
+  @TransactionalEventListener
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  protected void createApplicationSuccessEmails(ApplicationSuccessEmailEvent event) {
+    String subject = String.format("[지원서 접수 완료] %s 지원서가 정상적으로 접수되었습니다.", event.announcementTitle());
+    String content =
+        applicationSubmittedHtmlTemplate
+            .replace("${applicantName}", event.applicantName())
+            .replace("${announcementTitle}", event.announcementTitle())
+            .replace(
+                "${submittedDate}",
+                event.submittedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+    createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+  }
+
   @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
     event.announcementIds().stream()
         .filter(emailRepository::existsByAnnouncementId)
         .forEach(emailRepository::deleteAllByAnnouncementId);
   }
 
-  @Transactional
   @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAdminDeletedEvent(AdminDeletedEvent event) {
     if (!emailRepository.existsByAdminId(event.adminId())) {
       return;
     }
 
     emailRepository.deleteAllByAdminId(event.adminId());
-  }
-
-  private String createHtmlLink(String clubId, String announcementId, String applicantId) {
-    String link =
-        String.format(
-            "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
-            baseUri, clubId, announcementId, applicantId);
-    return String.format(linkHtmlTemplate, link);
   }
 }

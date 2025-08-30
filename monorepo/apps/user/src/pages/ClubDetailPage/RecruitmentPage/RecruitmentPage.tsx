@@ -37,11 +37,13 @@ function RecruitmentPage() {
     } = useQuery({
         ...announcementQueries.getAnnouncementList(clubId || ''),
         enabled: !!clubId,
+        throwOnError: true,
     });
 
     const { data: selectedAnnouncementDetail } = useQuery({
         ...announcementQueries.getAnnouncementDetail(selectedAnnouncementId),
         enabled: !!selectedAnnouncementId,
+        throwOnError: true,
     });
 
     // calculated values
@@ -59,10 +61,20 @@ function RecruitmentPage() {
     useEffect(() => {
         if (selectedAnnouncementDetail) {
             setApplicationPeriod({
-                startDate: selectedAnnouncementDetail.applicationPeriod.startDate,
-                endDate: selectedAnnouncementDetail.applicationPeriod.endDate,
+                startDate:
+                    selectedAnnouncementDetail.applicationPeriod === null
+                        ? '미정'
+                        : selectedAnnouncementDetail.applicationPeriod.startDate,
+                endDate:
+                    selectedAnnouncementDetail.applicationPeriod === null
+                        ? '미정'
+                        : selectedAnnouncementDetail.applicationPeriod.endDate,
             });
-            setClubField(selectedAnnouncementDetail.field);
+            setClubField(
+                selectedAnnouncementDetail.field === null
+                    ? '미정'
+                    : selectedAnnouncementDetail.field,
+            );
         }
     }, [selectedAnnouncementDetail, setApplicationPeriod, setClubField]);
 
@@ -89,6 +101,7 @@ function RecruitmentPage() {
                                 content={announcement.summaryDescription}
                                 deadline={announcement.applicationEndDate}
                                 hashtags={announcement.tags}
+                                status={announcement.announcementStatus}
                                 onClick={() => handleCardClick(announcement.announcementId)}
                             />
                         </div>

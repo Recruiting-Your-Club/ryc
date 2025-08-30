@@ -5,6 +5,8 @@ import { userQueries } from '@api/queryFactory/userQueries';
 import ChevronDoubleRight from '@assets/images/chevron-double-right.svg';
 import ChevronUpDown from '@assets/images/chevron-up-down.svg';
 import Club from '@assets/images/club.svg';
+import ssoc from '@assets/images/ssoc.png';
+import { useAuthStore } from '@stores/authStore';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
@@ -58,6 +60,7 @@ function SideBar() {
     const location = useLocation();
     const { clubId, announcementId } = useParams();
     const { goTo } = useRouter();
+    const { logout } = useAuthStore();
 
     // initial values
     const navMenu = useMemo(
@@ -140,18 +143,31 @@ function SideBar() {
     const [isExpanded, setIsExpanded] = useState(true);
     const [currentClub, setCurrentClub] = useState<string>(clubId ?? '');
     const [queryOn, setQueryOn] = useState<boolean>(false);
-    const [currentAnnouncement, setCurrentAnnouncement] = useState<AnnouncementList>();
 
     // form hooks
     // query hooks
-    const { data: myClub, isLoading: clubLoading } = useQuery(myClubQueries.all());
-    const { data: announcementList } = useQuery(
-        announcementQueries.getListByClub(clubId || '', queryOn),
-    );
-    const { data: myInformation } = useQuery(userQueries.getMyInformation());
+    const shouldFetchAnnouncements = !!clubId && (!!announcementId || queryOn);
+    const { data: myClub, isLoading: clubLoading } = useQuery({
+        ...myClubQueries.all(),
+        throwOnError: true,
+    });
+    const { data: announcementList } = useQuery({
+        ...announcementQueries.getListByClub(clubId || '', true),
+        enabled: shouldFetchAnnouncements,
+        throwOnError: true,
+    });
+    const { data: myInformation } = useQuery({
+        ...userQueries.getMyInformation(),
+        throwOnError: true,
+    });
 
     // calculated values
     const isMenuActive = (id: number) => activeMenus.includes(id);
+
+    const currentAnnouncement = useMemo(() => {
+        if (!announcementList || !announcementId) return undefined;
+        return announcementList.find((a) => a.announcementId === announcementId);
+    }, [announcementList, announcementId]);
 
     const announcementsByStatus = useMemo(() => {
         if (!announcementList) return { upcoming: [], recruiting: [], closed: [] };
@@ -181,12 +197,12 @@ function SideBar() {
     const handleSubMenuClick = (link: string) => {
         const finalAnnouncementId = announcementId || currentAnnouncement?.announcementId;
         const announcementIdPath = finalAnnouncementId ? `/${finalAnnouncementId}` : '';
+
         goTo(`${link}/${clubId}${announcementIdPath}`);
     };
 
     // 공고 선택하면 모집 공고로 이동
     const handleSelectAnnouncement = (announcement: AnnouncementList) => {
-        setCurrentAnnouncement(announcement);
         const targetPath = `/announcements/${clubId}/${announcement.announcementId}`;
         setActiveSubMenu('/announcements');
         goTo(targetPath);
@@ -212,6 +228,10 @@ function SideBar() {
         [isExpanded],
     );
 
+    const handleLogout = () => {
+        logout?.();
+    };
+
     //useEffect
     useEffect(() => {
         const newActiveSubMenu = getActiveSubMenu(location.pathname);
@@ -228,11 +248,20 @@ function SideBar() {
     return (
         <>
             <div css={clubSideBarContainer}>
-                <div css={{ maxHeight: '70rem', overflowY: 'hidden' }}>
+                <div
+                    css={{
+                        maxHeight: '70rem',
+                        overflowY: 'auto',
+                        scrollbarWidth: 'none',
+                        '&::-webkit-scrollbar': {
+                            display: 'none',
+                        },
+                    }}
+                >
                     {!clubLoading &&
                         myClub?.map((club) => (
                             <div
-                                key={club.id}
+                                key={club.myClubResponse.id}
                                 css={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -240,26 +269,31 @@ function SideBar() {
                                     gap: '0.3rem',
                                 }}
                             >
-                                <div css={clubActive(club.id === currentClub)} />
+                                <div css={clubActive(club.myClubResponse.id === currentClub)} />
                                 <button
                                     css={clubWrapper}
                                     onClick={() => {
-                                        setCurrentClub(club.id);
-                                        // 현재 대표 경로를 유지한 채 clubId만 교체
-                                        const representativePath = getActiveSubMenu(
-                                            location.pathname,
+                                        setCurrentClub(club.myClubResponse.id);
+                                        if (location.pathname === '/user') {
+                                            goTo(`/clubs/${club.myClubResponse.id}`);
+                                            return;
+                                        }
+
+                                        setActiveSubMenu('/clubs');
+                                        setActiveMenus((prev) =>
+                                            prev.includes(1) ? prev : [...prev, 1],
                                         );
-                                        const announcementIdParam = announcementId
-                                            ? `/${announcementId}`
-                                            : '';
-                                        goTo(
-                                            `${representativePath}/${club.id}${announcementIdParam}`,
-                                        );
+                                        goTo(`/clubs/${club.myClubResponse.id}`);
                                     }}
                                 >
-                                    <Tooltip content={club.name}>
+                                    <Tooltip
+                                        content={club.myClubResponse.name}
+                                        direction="bottomRight"
+                                    >
                                         <img
-                                            src={club.representativeImage?.url}
+                                            src={
+                                                club.myClubResponse.representativeImage?.url || ssoc
+                                            }
                                             alt="club"
                                             width="100%"
                                             height="100%"
@@ -270,7 +304,7 @@ function SideBar() {
                             </div>
                         ))}
                 </div>
-                <Tooltip content="동아리 생성">
+                <Tooltip content="동아리 생성" direction="bottomRight">
                     <button css={addClubButton} onClick={() => goTo('/club-create')}>
                         +
                     </button>
@@ -286,8 +320,8 @@ function SideBar() {
                         }}
                         sx={homeLogoTextWrapper(isExpanded)}
                     >
-                        SSOC
-                        {/* <img src={mainLogo} alt="mainLogo" width="80rem" height="50rem" /> */}
+                        {/* SSOC */}
+                        <img src={mainLogo} alt="mainLogo" width="80rem" height="50rem" />
                     </Button>
                     <Button
                         variant="transparent"
@@ -326,8 +360,9 @@ function SideBar() {
                             </div>
                         </Dropdown.Trigger>
                         <Dropdown.Content
-                            offsetX={isExpanded ? 32 : 20}
-                            offsetY={isExpanded ? 10 : 10}
+                            offsetX={isExpanded ? 2 : 0}
+                            offsetY={10}
+                            placement="right"
                             sx={{
                                 zIndex: 1001,
                                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
@@ -426,7 +461,9 @@ function SideBar() {
                                 }}
                                 zIndex={1000}
                             >
-                                <Tooltip content={MainMenu.menu}>{MainMenu.icon}</Tooltip>
+                                <Tooltip content={MainMenu.menu} direction="bottomRight">
+                                    {MainMenu.icon}
+                                </Tooltip>
                                 {isExpanded && (
                                     <div css={mainMenuContainer}>
                                         <Text
@@ -488,8 +525,9 @@ function SideBar() {
                             </div>
                         </Dropdown.Trigger>
                         <Dropdown.Content
-                            offsetX={isExpanded ? 32 : 20}
+                            offsetX={isExpanded ? 1 : 0}
                             offsetY={0}
+                            placement="right"
                             sx={{
                                 zIndex: 10001,
                                 border: 'none',
@@ -497,13 +535,18 @@ function SideBar() {
                             }}
                         >
                             <Dropdown.Item sx={dropdownClubContainer}>
-                                <Button variant="transparent" size="full">
+                                <Button
+                                    variant="transparent"
+                                    size="full"
+                                    onClick={() => handleSubMenuClick('/user')}
+                                >
                                     계정설정
                                 </Button>
                                 <Button
                                     variant="transparent"
                                     size="full"
                                     sx={dropDownLogoutWrapper}
+                                    onClick={handleLogout}
                                 >
                                     로그아웃
                                 </Button>

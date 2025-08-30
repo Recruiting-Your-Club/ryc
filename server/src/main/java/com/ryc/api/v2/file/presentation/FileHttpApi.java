@@ -3,6 +3,7 @@ package com.ryc.api.v2.file.presentation;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
@@ -18,19 +19,20 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("api/v2/files")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "파일")
 public class FileHttpApi {
   private final FileService fileService;
 
   @PostMapping("/presigned-url")
   public ResponseEntity<UploadUrlResponse> getUploadPresignedUrl(
-      @RequestBody @Valid UploadUrlRequest request) {
+      @Valid @RequestBody UploadUrlRequest request) {
     UploadUrlResponse response = fileService.getUploadPresignedUrl(request);
     return ResponseEntity.ok(response);
   }
 
   @PostMapping("/confirm-upload")
-  public ResponseEntity<Void> confirmUpload(@RequestBody @Valid UploadConfirmRequest request) {
+  public ResponseEntity<Void> confirmUpload(@Valid @RequestBody UploadConfirmRequest request) {
     fileService.confirmUpload(request);
     return ResponseEntity.ok().build();
   }

@@ -1,6 +1,7 @@
 package com.ryc.api.v2.applicationForm.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.applicationForm.domain.ApplicationFormRepository;
 import com.ryc.api.v2.applicationForm.presentation.response.ApplicationFormResponse;
@@ -18,6 +19,7 @@ public class ApplicationFormService {
    *
    * @param announcementId 공고 ID
    */
+  @Transactional(readOnly = true)
   public ApplicationFormResponse getApplicationFormByAnnouncementId(String announcementId) {
     return ApplicationFormResponse.from(
         applicationFormRepository.findByAnnouncementId(announcementId));

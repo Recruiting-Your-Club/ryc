@@ -5,12 +5,16 @@ import theme from '@ssoc/styles';
 export const questionStatusContainer = css`
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 0.5rem;
 `;
 export const questionStatusTextSx = (isAllQuestionCompleted: boolean) => css`
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     ${isAllQuestionCompleted &&
     css`
         color: ${theme.colors.default};

@@ -9,6 +9,6 @@ import lombok.Builder;
 
 @Builder
 public record ApplicationSubmissionRequest(
-    @NotNull(message = "applicant shouldn't be null") @Valid ApplicantCreateRequest applicant,
-    @NotNull(message = "application shouldn't be null") @Valid
+    @NotNull(message = "지원자 필드(applicant)는 필수 입력 항목입니다.") @Valid ApplicantCreateRequest applicant,
+    @NotNull(message = "지원서 필드(application)는 필수 입력 항목입니다.") @Valid
         ApplicationCreateRequest application) {}

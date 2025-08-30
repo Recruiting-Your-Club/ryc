@@ -7,5 +7,5 @@ export interface InterviewSlotDropdownProps {
     onOpenChange: Dispatch<SetStateAction<boolean>>;
     selectedInterviewLabel: SelectedLabel;
     interviewSlots: InterviewSlot[];
-    onSelectLabel: (label: string) => void;
+    onSelectLabel: (label: { slotId: string; label: string }) => void;
 }

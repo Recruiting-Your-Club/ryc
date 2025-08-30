@@ -4,7 +4,10 @@ export interface DescriptionProps {
     recruitDetailInfo: RecruitDetailInfo;
     recruitFiles: File[];
     onChange: (updateFields: Partial<RecruitDetailInfo>) => void;
-    onFileChange: (recruitFiles: File[]) => void;
+    onFilesChange: (recruitFiles: File[]) => void;
+    detailDescription: string;
+    onDetailDescriptionChange: (html: string) => void;
+    isFileUploading?: boolean;
 }
 
 type RecruitDetailInfoKey = keyof RecruitDetailInfo;

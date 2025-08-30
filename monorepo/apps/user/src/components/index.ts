@@ -9,3 +9,4 @@ export * from './SubmitDialog';
 export * from './Footer';
 export * from './Header';
 export * from './QuestionDropdown';
+export * from './ErrorDialog';

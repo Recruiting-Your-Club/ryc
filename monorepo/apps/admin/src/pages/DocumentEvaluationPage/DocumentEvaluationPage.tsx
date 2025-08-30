@@ -1,10 +1,12 @@
 import type { StepApplicant } from '@api/domain/step/types';
 import { applicantQueries, evaluationQueries } from '@api/queryFactory';
 import { stepQueries } from '@api/queryFactory/stepQueries';
-import { ApplicantList, EvaluationBox, InformationBox } from '@components';
+import { ApplicantList, ErrorDialog, EvaluationBox, InformationBox } from '@components';
 import { INITIAL_EVALUATION_SUMMARY } from '@constants/evaluationPage';
 import { useEvaluation } from '@hooks/components';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -26,6 +28,7 @@ function DocumentEvaluationPage() {
     // initial values
     // state, ref, querystring hooks
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicant | null>(null);
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -40,6 +43,7 @@ function DocumentEvaluationPage() {
         ),
 
         enabled: !!selectedApplicant?.applicantId,
+        throwOnError: true,
     });
     const { data: documentEvaluationDetail } = useQuery({
         ...evaluationQueries.evaluationDetail({
@@ -57,6 +61,7 @@ function DocumentEvaluationPage() {
                 'FINAL_PASS',
                 'FINAL_FAIL',
             ].includes(selectedApplicant.status),
+        throwOnError: true,
     });
     const { data: myDocumentEvaluationStatus } = useSuspenseQuery(
         evaluationQueries.myEvaluationStatus({
@@ -98,11 +103,17 @@ function DocumentEvaluationPage() {
                     toastTheme: 'colored',
                 });
             },
-            onError: () => {
-                toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
-                    type: 'error',
-                    toastTheme: 'colored',
-                });
+            onError: (error: ErrorWithStatusCode) => {
+                if (error.statusCode === 500) {
+                    setErrorDialogOpen(true);
+                } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast(`평가 ${status}에 실패했어요. 잠시 후 다시 시도해주세요!`, {
+                        type: 'error',
+                        toastTheme: 'colored',
+                    });
+                }
             },
         };
     }
@@ -147,6 +158,11 @@ function DocumentEvaluationPage() {
                     onUpdateComment={handleUpdateComment}
                 />
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }

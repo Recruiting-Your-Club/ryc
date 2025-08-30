@@ -2,7 +2,7 @@ package com.ryc.api.v2.file.infra.entity;
 
 import jakarta.persistence.*;
 
-import com.ryc.api.v2.common.entity.BaseEntity;
+import com.ryc.api.v2.common.infra.entity.BaseEntity;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileStatus;
 

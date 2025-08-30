@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text } from '@ssoc/ui';
 
-import { clubBoxContainer, clubBoxItem, s_TextSx } from './ClubBox.style';
+import { clubBoxContainer, clubBoxItem, s_TextContetnSx, s_TextTitleSx } from './ClubBox.style';
 import type { ClubBoxProps } from './types';
 
 function ClubBox({ data }: ClubBoxProps) {
@@ -14,14 +14,21 @@ function ClubBox({ data }: ClubBoxProps) {
                         as="div"
                         type="bodyRegular"
                         color="caption"
-                        sx={s_TextSx}
+                        sx={s_TextTitleSx}
                         textAlign="start"
                         noWrap
                     >
                         {data.title}
                     </Text>
-                    <Text as="div" type="bodyRegular" textAlign="start" noWrap cropped>
-                        {data.value}
+                    <Text
+                        as="div"
+                        type="bodyRegular"
+                        sx={s_TextContetnSx}
+                        textAlign="start"
+                        noWrap
+                        cropped
+                    >
+                        {data.content}
                     </Text>
                 </div>
             ))}

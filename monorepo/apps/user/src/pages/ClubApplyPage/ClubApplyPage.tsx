@@ -4,16 +4,25 @@ import type {
     QuestionType,
 } from '@api/domain/announcement/types';
 import { announcementQueries } from '@api/queryFactory';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { returnErrorMessage } from '@utils/getErrorMessage';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
-import { ClubNavigation, ClubSubmitCard, QuestionDropdown, SubmitDialog } from '../../components';
+import { HttpError } from '../../api/common/httpError';
+import { usePostApplicationAnswers } from '../../api/hooks';
+import {
+    ClubNavigation,
+    ClubSubmitCard,
+    ErrorDialog,
+    QuestionDropdown,
+    SubmitDialog,
+} from '../../components';
 import { BASE_URL } from '../../constants/api';
-import { usePostApplicationAnswers } from '../../hooks';
 import { useClubStore } from '../../stores';
 import { useApplicationStore } from '../../stores';
 import { getCategory } from '../../utils/changeCategory';
@@ -48,7 +57,7 @@ function ClubApplyPage() {
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
     const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
-    const { getAnswers, setAnswers: setApplicationAnswers } = useApplicationStore();
+    const { getAnswers, setAnswers: setApplicationAnswers, updateFiles } = useApplicationStore();
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
     const { toast } = useToast();
@@ -63,9 +72,31 @@ function ClubApplyPage() {
             setIsSubmitDialogOpen(false);
             goTo(`success/${response.applicantId}/${response.applicationId}`);
         },
-        onError: () => {
-            toast.error('제출에 실패했어요.');
+        onError: (error) => {
             setIsSubmitDialogOpen(false);
+
+            if (error instanceof HttpError && error.statusCode === 500) {
+                setErrorDialogOpen(true);
+                return;
+            } else if (error instanceof HttpError && error.statusCode === 409) {
+                const errorResponse = error.errorResponse as { code?: string; message?: string };
+
+                if (errorResponse?.code === 'DUPLICATE_APPLICATION') {
+                    toast.error('이미 해당 공고에 지원한 이메일입니다.');
+                    return;
+                }
+            }
+
+            const err = error as ErrorWithStatusCode;
+            if (err.response?.errors[0].message || err.message) {
+                toast(returnErrorMessage(error as ErrorWithStatusCode), {
+                    type: 'error',
+                    toastTheme: 'colored',
+                });
+                return;
+            }
+
+            toast.error('제출에 실패했어요.');
         },
     });
 
@@ -124,8 +155,13 @@ function ClubApplyPage() {
     const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
     const questionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<string>('사전질문');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
+    //이메일 인증 검증 여부
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
 
     // calculated values
+
     // 필수 질문 개수 계산
     const requiredQuestionsCount = useMemo(() => {
         return allQuestions.filter((question) => question.isRequired).length;
@@ -138,12 +174,25 @@ function ClubApplyPage() {
             .every((question) => {
                 const answer = answers.find((answer) => answer.questionTitle === question.label);
                 if (!answer || !answer.value.trim()) return false;
+                if (question.type === 'EMAIL') {
+                    if (VALIDATION_PATTERNS[question.label as ValidationKey]) {
+                        if (getValidationError(question.label, answer.value)) return false;
+                    }
+                    // 인증 여부 반영
+                    return isEmailVerified;
+                }
                 if (VALIDATION_PATTERNS[question.label as ValidationKey]) {
                     return !getValidationError(question.label, answer.value);
                 }
                 return true;
             });
-    }, [answers, allQuestions, getValidationError]);
+    }, [answers, allQuestions, getValidationError, isEmailVerified]);
+
+    // 제출 버튼 disabled 계산에 반영
+    const isSubmitDisabled = useMemo(() => {
+        const baseReady = requiredQuestionsCompleted || completedQuestions === allQuestions.length;
+        return isSubmitting || !baseReady;
+    }, [isSubmitting, requiredQuestionsCompleted, completedQuestions, allQuestions.length]);
 
     const allocateFocus = (questionTitle: string) => {
         const element = questionRefs.current[questionTitle];
@@ -169,18 +218,19 @@ function ClubApplyPage() {
         files: File[],
     ) => {
         try {
+            updateFiles(announcementId || '', questionId, files);
+
             if (files.length === 0) {
                 handleAnswerChange(questionId, questionTitle, '');
                 return;
             }
 
             const fileMetadataIds = await uploadFiles(files, questionType);
-            const value = fileMetadataIds.join(',');
+            const value = fileMetadataIds.map((result) => result.fileMetadataId).join(',');
             handleAnswerChange(questionId, questionTitle, value);
 
             toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
         } catch (error) {
-            console.error('File upload failed:', error);
             toast.error('파일 업로드에 실패했습니다.');
         }
     };
@@ -280,7 +330,8 @@ function ClubApplyPage() {
 
     const handleConfirmSubmit = () => {
         const answerData = makeAnsewerDataForSubmit(answers);
-        submitApplication(answerData);
+        const verifyCode = sessionStorage.getItem('email_verification_token') ?? '';
+        submitApplication({ data: answerData, verifyCode: verifyCode });
     };
 
     const handleQuestionFocus = (questionTitle: string, tab: string) => {
@@ -299,6 +350,7 @@ function ClubApplyPage() {
             title: '사전질문',
             page: (
                 <ClubApplyPersonalInfoPage
+                    announcementId={announcementId || ''}
                     answers={answers}
                     clubPersonalQuestions={clubPersonalInfoQuestions}
                     onAnswerChange={handleAnswerChange}
@@ -311,6 +363,7 @@ function ClubApplyPage() {
                     onFocus={handleFocus}
                     questionRefs={questionRefs}
                     isFileUploading={isFileUploading}
+                    onEmailVerifiedChange={setIsEmailVerified}
                 />
             ),
             width: '5.8rem',
@@ -335,20 +388,30 @@ function ClubApplyPage() {
 
     // effects
     useEffect(() => {
-        const completedCount = answers.filter((answer) => {
-            // 값이 비어있는 경우 제외
-            if (!answer.value.trim()) return false;
+        const count = allQuestions.reduce((acc, q) => {
+            const answer = answers.find((a) => a.questionTitle === q.label);
 
-            // 유효성 검사가 필요한 경우
-            if (VALIDATION_PATTERNS[answer.questionTitle as ValidationKey]) {
-                return !getValidationError(answer.questionTitle, answer.value);
+            // 값이 없으면 미완료
+            if (!answer || !answer.value.trim()) return acc;
+
+            // EMAIL: 형식 에러면 미완료, 형식 OK여도 인증 안 됐으면 미완료
+            if (q.type === 'EMAIL') {
+                if (VALIDATION_PATTERNS[q.label as ValidationKey]) {
+                    if (getValidationError(q.label, answer.value)) return acc;
+                }
+                return acc + (isEmailVerified ? 1 : 0);
             }
 
-            return true;
-        }).length;
+            // 그 외: 패턴 있으면 패턴 검증 통과해야 완료
+            if (VALIDATION_PATTERNS[q.label as ValidationKey]) {
+                return acc + (!getValidationError(q.label, answer.value) ? 1 : 0);
+            }
 
-        setCompletedQuestions(completedCount);
-    }, [answers, getValidationError]);
+            // 패턴 없으면 값만 있어도 완료
+            return acc + 1;
+        }, 0);
+        setCompletedQuestions(count);
+    }, [answers, allQuestions, isEmailVerified, getValidationError]);
 
     useEffect(() => {
         if (applicationAnswers.length > 0) {
@@ -424,11 +487,7 @@ function ClubApplyPage() {
                     variant="primary"
                     size="full"
                     loading={isSubmitting}
-                    disabled={
-                        !(
-                            requiredQuestionsCompleted || completedQuestions === allQuestions.length
-                        ) || isSubmitting
-                    }
+                    disabled={isSubmitDisabled}
                     onClick={handleSubmit}
                     sx={s_submitButtonSx}
                 >
@@ -441,6 +500,11 @@ function ClubApplyPage() {
                 isSubmitting={isSubmitting}
                 onConfirm={handleConfirmSubmit}
                 onClose={() => setIsSubmitDialogOpen(false)}
+            />
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
             />
         </div>
     );

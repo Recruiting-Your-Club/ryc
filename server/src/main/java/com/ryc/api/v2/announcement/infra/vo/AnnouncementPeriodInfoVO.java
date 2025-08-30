@@ -2,6 +2,8 @@ package com.ryc.api.v2.announcement.infra.vo;
 
 import jakarta.persistence.*;
 
+import com.ryc.api.v2.common.infra.vo.PeriodVO;
+
 import lombok.*;
 
 /** 공고 기간 정보 데이터베이스 객체 */

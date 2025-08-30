@@ -112,9 +112,8 @@ final class FileMetaDataValidator extends DomainValidator {
     // TODO: 구현필요
   }
 
-  private static void validateCreatedAt(LocalDateTime createdAt) {
-    // TODO: 구현필요
-  }
+  // 영속성 레이어를 거친 경우에만 service에서 상태검증으로 null 제한 체크
+  private static void validateCreatedAt(LocalDateTime createdAt) {}
 
   private static void validateFileDomainType(FileDomainType fileDomainType) {
     validateNotNull(fileDomainType, FILE_METADATA_FILE_DOMAIN_TYPE_NULL);

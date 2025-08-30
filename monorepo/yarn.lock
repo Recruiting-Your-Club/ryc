@@ -2528,6 +2528,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@types/jest": "npm:^27.0.1"
     dayjs: "npm:^1.11.13"
+    dompurify: "npm:^3.2.6"
     dotenv-webpack: "npm:^8.1.0"
     html-webpack-plugin: "npm:^5.6.3"
     jest: "npm:^29.7.0"
@@ -2536,6 +2537,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-easy-crop: "npm:^5.4.2"
+    react-error-boundary: "npm:^6.0.0"
     react-router-dom: "npm:^7.1.5"
     storybook: "npm:^8.5.4"
     webpack: "npm:^5.97.1"
@@ -2664,6 +2666,7 @@ __metadata:
     "@testing-library/react": "npm:^16.3.0"
     "@types/jest": "npm:^27.0.1"
     dayjs: "npm:^1.11.13"
+    dompurify: "npm:^3.2.6"
     dotenv-webpack: "npm:^8.1.0"
     html-webpack-plugin: "npm:^5.6.3"
     jest: "npm:^29.7.0"
@@ -2671,6 +2674,7 @@ __metadata:
     msw: "npm:^2.9.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    react-error-boundary: "npm:^6.0.0"
     react-router-dom: "npm:^7.1.5"
     storybook: "npm:^8.5.4"
     webpack: "npm:^5.97.1"
@@ -3864,6 +3868,13 @@ __metadata:
   version: 4.0.5
   resolution: "@types/tough-cookie@npm:4.0.5"
   checksum: 10c0/68c6921721a3dcb40451543db2174a145ef915bc8bcbe7ad4e59194a0238e776e782b896c7a59f4b93ac6acefca9161fccb31d1ce3b3445cb6faa467297fb473
+  languageName: node
+  linkType: hard
+
+"@types/trusted-types@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/trusted-types@npm:2.0.7"
+  checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
   languageName: node
   linkType: hard
 
@@ -6049,6 +6060,18 @@ __metadata:
   dependencies:
     domelementtype: "npm:^2.3.0"
   checksum: 10c0/bba1e5932b3e196ad6862286d76adc89a0dbf0c773e5ced1eb01f9af930c50093a084eff14b8de5ea60b895c56a04d5de8bbc4930c5543d029091916770b2d2a
+  languageName: node
+  linkType: hard
+
+"dompurify@npm:^3.2.6":
+  version: 3.2.6
+  resolution: "dompurify@npm:3.2.6"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/c8f8e5b0879a0d93c84a2e5e78649a47d0c057ed0f7850ca3d573d2cca64b84fb1ff85bd4b20980ade69c4e5b80ae73011340f1c2ff375c7ef98bb8268e1d13a
   languageName: node
   linkType: hard
 
@@ -10822,6 +10845,17 @@ __metadata:
     react: ">=16.4.0"
     react-dom: ">=16.4.0"
   checksum: 10c0/6cb29a82ecc2b856b81810ba77bf58aef944cccd6ae695a03d8b9fd0558d005eb2530945952851643f6b627d442dbd8e6258ba1a606d44a2582629263379f383
+  languageName: node
+  linkType: hard
+
+"react-error-boundary@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "react-error-boundary@npm:6.0.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 10c0/1914d600dee95a14f14af4afe9867b0d35c26c4f7826d23208800ba2a99728659029aad60a6ef95e13430b4d79c2c4c9b3585f50bf508450478760d2e4e732d8
   languageName: node
   linkType: hard
 

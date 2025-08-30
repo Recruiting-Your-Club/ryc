@@ -1,7 +1,9 @@
 import type { CreateClub } from '@api/domain/club/types';
 import { useCreateClub } from '@api/hooks/clubMutation';
-import { ImageRegister } from '@components';
+import { ErrorDialog, ImageRegister } from '@components';
 import { BASE_URL } from '@constants/api';
+import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
+import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useState } from 'react';
 
 import { useFileUpload } from '@ssoc/hooks';
@@ -63,9 +65,11 @@ function ClubCreatePage() {
 
     // state, ref, querystring hooks
     const [createClubName, setCreateClubName] = useState('동아리 이름');
-    const [clubTag, setClubTag] = useState('동아리의 대표적인 태그를 선택해주세요.');
+    const [clubTag, setClubTag] = useState('공연 동아리');
     const [image, setImage] = useState<string>();
     const [croppedImage, setCroppedImage] = useState<string>();
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
     // form hooks
     // query hooks
     const { uploadFiles, error } = useFileUpload(BASE_URL);
@@ -81,13 +85,23 @@ function ClubCreatePage() {
         if (!croppedImage) return;
         const file = await blobUrlToFile(croppedImage, 'club_logo');
         try {
-            return await uploadFiles(file, 'CLUB_CREATE');
-        } catch (error) {
-            toast.error('이미지 업로드에 실패했어요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            throw error;
+            const fileMetadataId = await uploadFiles(file, 'CLUB_CREATE');
+            return typeof fileMetadataId?.[0]?.fileMetadataId === 'string'
+                ? fileMetadataId[0].fileMetadataId
+                : '';
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast(`이미지 업로드에 실패했어요.`, {
+                    type: 'error',
+                    toastTheme: 'white',
+                });
+            }
+            // throw error;
         }
     };
 
@@ -114,24 +128,16 @@ function ClubCreatePage() {
             });
             return false;
         }
-
-        if (!createdClub.representativeImage) {
-            toast.error('동아리 대표 이미지를 등록해주세요.', {
-                type: 'error',
-                toastTheme: 'white',
-            });
-            return false;
-        }
         return true;
     };
     const createClubData = async () => {
         const selectedLabel = getSelectedLabel();
         // 이미지 저장
-        const fileMetadataIds = await saveClubImage();
+        const fileMetadataId = await saveClubImage();
         const createdClub = {
             name: createClubName.trim(),
             category: selectedLabel,
-            representativeImage: fileMetadataIds?.[0] ?? '',
+            representativeImage: fileMetadataId,
         };
         if (!checkClubData(createdClub)) {
             return null;
@@ -157,9 +163,15 @@ function ClubCreatePage() {
             });
             resetForm();
             removeHistoryAndGo(`/clubs/${result.clubId}`);
-        } catch (error) {
-            if (error instanceof Error) {
-                toast(error.message, {
+        } catch (err) {
+            const error = err as ErrorWithStatusCode;
+            if (error.statusCode === 500) {
+                setErrorDialogOpen(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('오류로 인해 동아리 생성을 실패했어요.', {
+                    toastTheme: 'colored',
                     type: 'error',
                 });
             }
@@ -251,6 +263,11 @@ function ClubCreatePage() {
                     </Button>
                 </div>
             </div>
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
         </div>
     );
 }
