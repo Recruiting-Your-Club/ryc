@@ -43,8 +43,8 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     };
 
     const handleAddOption = () => {
-        if ((question.options?.length || 0) >= 10) {
-            toast.error('객관식 문항 보기는 최대 10개까지 생성할 수 있습니다.', {
+        if ((question.options?.length || 0) >= 30) {
+            toast.error('객관식 문항 보기는 최대 30개까지 생성할 수 있습니다.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });
