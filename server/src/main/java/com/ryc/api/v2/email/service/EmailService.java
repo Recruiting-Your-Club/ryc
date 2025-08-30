@@ -160,6 +160,7 @@ public class EmailService {
     String subject = String.format("[지원서 접수 완료] %s 지원서가 정상적으로 접수되었습니다.", event.announcementTitle());
     String content =
         applicationSubmittedHtmlTemplate
+            .replace("${clubName}", event.clubName())
             .replace("${applicantName}", event.applicantName())
             .replace("${announcementTitle}", event.announcementTitle())
             .replace(
