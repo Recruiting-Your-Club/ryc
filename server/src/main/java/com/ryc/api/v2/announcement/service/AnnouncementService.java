@@ -13,6 +13,7 @@ import com.ryc.api.v2.announcement.domain.Announcement;
 import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementProcess;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementType;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.ryc.api.v2.announcement.presentation.dto.request.AnnouncementUpdateRequest;
@@ -97,7 +98,8 @@ public class AnnouncementService {
 
     // 1. 기존 공고 상태 조회 및 상태검증
     Announcement previousAnnouncement = announcementRepository.findById(announcementId);
-    if (AnnouncementStatus.UPCOMING != previousAnnouncement.getAnnouncementStatus()) {
+    if ((AnnouncementType.ALWAYS_OPEN != previousAnnouncement.getAnnouncementType())
+        && (AnnouncementStatus.UPCOMING != previousAnnouncement.getAnnouncementStatus())) {
       throw new BusinessRuleException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
     }
 
