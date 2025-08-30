@@ -91,8 +91,8 @@ function BasicInfoStep({
 
     //handlers
     const handleQuestions = () => {
-        if (questions.length >= 20) {
-            toast.error('사전 질문은 최대 20개까지 생성할 수 있습니다.', {
+        if (questions.length >= 30) {
+            toast.error('사전 질문은 최대 30개까지 생성할 수 있습니다.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });

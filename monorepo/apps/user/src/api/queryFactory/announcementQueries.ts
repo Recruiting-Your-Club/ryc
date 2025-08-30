@@ -25,11 +25,6 @@ const announcementQueries = {
             queryKey: announcementKeys.detail(`application-form-${announcementId}`),
             queryFn: () => getApplicationForm(announcementId),
         }),
-    postApplicationAnswers: (announcementId: string, answerData: ApplicationSubmissionRequest) =>
-        queryOptions({
-            queryKey: announcementKeys.detail(`post-application-answers-${announcementId}`),
-            queryFn: () => postApplicationAnswers(announcementId, answerData),
-        }),
 };
 
 export { announcementQueries };

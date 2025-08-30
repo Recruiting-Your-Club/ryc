@@ -1,3 +1,4 @@
+
 import { TermsOfUse } from '@components';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ function ClubApplyAgreementPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams();
+
     const navigate = useNavigate();
     const locationState = useLocation().state as { clubId?: string } | null;
     const clubId = locationState?.clubId;

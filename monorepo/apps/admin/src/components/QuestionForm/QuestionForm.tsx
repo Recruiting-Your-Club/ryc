@@ -43,15 +43,15 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     };
 
     const handleAddOption = () => {
-        if ((question.options?.length || 0) >= 10) {
-            toast.error('객관식 문항 보기는 최대 10개까지 생성할 수 있습니다.', {
+        if ((question.options?.length || 0) >= 30) {
+            toast.error('객관식 문항 보기는 최대 30개까지 생성할 수 있습니다.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });
             return;
         }
         const newOption = {
-            id: `opt${Date.now()}`,
+            id: crypto.randomUUID(),
             text: '',
         };
         updateQuestion(question.id, {
@@ -71,9 +71,9 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
                     placeholder="질문을 입력하세요"
                     value={question.title}
                     onChange={handleChange}
-                    maxLength={50}
+                    maxLength={500}
                 />
-                <div css={s_inputLength}>{question.title.length}/50</div>
+                <div css={s_inputLength}>{question.title.length}/500</div>
             </div>
         );
     }
@@ -87,9 +87,9 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
                             placeholder="질문을 입력하세요"
                             value={question.title}
                             onChange={handleChange}
-                            maxLength={50}
+                            maxLength={500}
                         />
-                        <div css={s_inputLength}>{question.title.length}/50</div>
+                        <div css={s_inputLength}>{question.title.length}/500</div>
                     </div>
                     {onRemoveQuestion && (
                         <Button
@@ -108,9 +108,9 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
                         placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"
                         value={question.subContent}
                         onChange={handleSubContentChange}
-                        maxLength={50}
+                        maxLength={500}
                     />
-                    <div css={s_inputLength}>{question.subContent?.length}/50</div>
+                    <div css={s_inputLength}>{question.subContent?.length}/500</div>
                 </div>
             </div>
         );
@@ -123,9 +123,9 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
                     placeholder="질문을 입력하세요"
                     value={question.title}
                     onChange={handleChange}
-                    maxLength={50}
+                    maxLength={500}
                 />
-                <div css={s_inputLength}>{question.title.length}/50</div>
+                <div css={s_inputLength}>{question.title.length}/500</div>
             </div>
             <div css={s_questionOptionContainer}>
                 {question.options?.map((option) => (

@@ -21,3 +21,22 @@ export const s_labelDescription = css`
     color: ${theme.colors.gray[800]};
     margin-top: 0.5rem;
 `;
+
+export const s_descriptionContainer = css`
+    display: flex;
+    gap: 0.5rem;
+`;
+
+export const s_informSvgWrapper = css`
+    margin: 0.2rem 0 0 0;
+    align-items: center;
+`;
+
+export const s_informSvg = css`
+    width: 1.5rem;
+    height: 1.5rem;
+    color: ${theme.colors.gray[700]};
+    &:hover {
+        cursor: pointer;
+    }
+`;

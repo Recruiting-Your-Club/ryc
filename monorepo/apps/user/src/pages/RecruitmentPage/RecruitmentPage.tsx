@@ -3,8 +3,8 @@ import { announcementQueries } from '@api/queryFactory';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { parseAnnouncementClubBoxData } from '@utils/parseAnnouncementData';
 import DOMPurify from 'dompurify';
-import React, { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Image, ImageDialog, Tag, Text } from '@ssoc/ui';
@@ -32,10 +32,11 @@ function RecruitmentPage() {
     // lib hooks
     const { open, openDialog, closeDialog } = useDialog();
     const { goTo } = useRouter();
+    const navigate = useNavigate();
     const { announcementId } = useParams();
-    const { applicationPeriod } = useClubStore();
+    const { setApplicationPeriod, setClubField } = useClubStore();
     // initial values
-    const { isExpired } = getDeadlineInfo(applicationPeriod?.endDate || '');
+
     // state, ref, querystring hooks
     const [imageUrl, setImageUrl] = useState<string>();
     // form hooks
@@ -43,9 +44,16 @@ function RecruitmentPage() {
     const { data: announcementDetail } = useSuspenseQuery(
         announcementQueries.getAnnouncementDetail(announcementId || ''),
     );
-
     // calculated values
     const clubBoxData = announcementDetail ? parseAnnouncementClubBoxData(announcementDetail) : [];
+    const { isExpired } = getDeadlineInfo(announcementDetail.applicationPeriod?.endDate || '');
+    const field = announcementDetail.field === null ? '신입 모집' : announcementDetail.field;
+    const applicationPeriod =
+        announcementDetail.applicationPeriod === null
+            ? { startDate: '미정', endDate: '미정' }
+            : announcementDetail.applicationPeriod;
+    const currentStatus = announcementDetail.announcementStatus;
+    const clubId = announcementDetail.clubId === null ? '' : announcementDetail.clubId;
 
     const getTagVariant = (status: string) => {
         switch (status) {
@@ -76,7 +84,10 @@ function RecruitmentPage() {
         setImageUrl(url);
     };
     // effects
-    const currentStatus = announcementDetail.announcementStatus;
+    useEffect(() => {
+        setApplicationPeriod(applicationPeriod);
+        setClubField(field);
+    }, [announcementDetail]);
 
     return (
         <div css={recruitmentContainer}>
@@ -99,7 +110,11 @@ function RecruitmentPage() {
                             variant="primary"
                             size="xl"
                             onClick={() =>
-                                goTo(`/announcements/${announcementDetail.id}/agreement`)
+                                navigate(`/announcements/${announcementDetail.id}/agreement`, {
+                                    state: {
+                                        clubId: clubId,
+                                    },
+                                })
                             }
                             disabled={isExpired || currentStatus !== 'RECRUITING'}
                             sx={applyButtonAtDesktop}
@@ -137,7 +152,13 @@ function RecruitmentPage() {
             <div css={applyButtonAtMobile}>
                 <Button
                     size="full"
-                    onClick={() => goTo(`/announcements/${announcementDetail.id}/agreement`)}
+                    onClick={() =>
+                        navigate(`/announcements/${announcementDetail.id}/agreement`, {
+                            state: {
+                                clubId: clubId,
+                            },
+                        })
+                    }
                     disabled={isExpired || currentStatus !== 'RECRUITING'}
                 >
                     지원하기

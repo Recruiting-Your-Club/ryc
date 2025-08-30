@@ -34,10 +34,10 @@ function ClubApplyDetailQuestionPage({
                 const hasError =
                     question.isRequired &&
                     touched[question.label] &&
-                    !getAnswer(answers, question.label)?.trim();
+                    !getAnswer(answers, question.id)?.trim();
                 return (
                     <div
-                        key={question.label}
+                        key={question.id}
                         css={clubApplyDetailQuestionContainer}
                         tabIndex={-1}
                         ref={(element) => {
@@ -64,7 +64,7 @@ function ClubApplyDetailQuestionPage({
                         </div>
                         <TextArea
                             size="lg"
-                            value={getAnswer(answers, question.label)}
+                            value={getAnswer(answers, question.id)}
                             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
                                 onAnswerChange(question.id, question.label, event.target.value)
                             }

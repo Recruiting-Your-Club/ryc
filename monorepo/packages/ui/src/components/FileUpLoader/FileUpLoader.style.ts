@@ -110,7 +110,7 @@ export const s_fileHeaderText = (align: Align) => css`
 `;
 
 export const s_fileItem = (files: File[]) => css`
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     ${files.length > 1 &&
     css`
         border-bottom: 1px solid ${theme.colors.gray[200]};

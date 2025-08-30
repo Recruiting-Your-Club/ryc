@@ -37,13 +37,15 @@ export const getDeadlineInfo = (deadline: string) => {
     const diffDay = formattedDeadline.diff(today, 'day');
 
     const displayText =
-        diffDay > 7
-            ? `~${formattedDeadline.format('MM.DD')}`
-            : diffDay > 0
-              ? `D-${diffDay}`
-              : diffDay === 0
-                ? `D-Day`
-                : `마감`;
+        diffDay > 9000
+            ? `상시`
+            : diffDay > 7
+              ? `~${formattedDeadline.format('MM.DD')}`
+              : diffDay > 0
+                ? `D-${diffDay}`
+                : diffDay === 0
+                  ? `D-Day`
+                  : `마감`;
 
     const isExpired = diffDay < 0;
     return { displayText, diffDay, isExpired };
