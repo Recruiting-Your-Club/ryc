@@ -51,7 +51,7 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
             return;
         }
         const newOption = {
-            id: `opt${Date.now()}`,
+            id: crypto.randomUUID(),
             text: '',
         };
         updateQuestion(question.id, {
