@@ -14,11 +14,14 @@ import {
 } from './DatePicker.style';
 import type { DatePickerProps } from './types';
 
-const DEFAULT_ALWAYS_OPEN_SENTINEL = '9999-12-31';
+const DEFAULT_ALWAYS_OPEN_SENTINEL_START = '0000-00-00';
+const DEFAULT_ALWAYS_OPEN_SENTINEL_END = '9999-12-31';
 
-function isAlwaysOpen(selectedDate: string[], sentinel: string) {
+function isAlwaysOpen(selectedDate: string[], sentinel: { start: string; end: string }) {
     return (
-        selectedDate.length === 2 && selectedDate[0] === sentinel && selectedDate[1] === sentinel
+        selectedDate.length === 2 &&
+        selectedDate[0] === sentinel.start &&
+        selectedDate[1] === sentinel.end
     );
 }
 
@@ -29,7 +32,10 @@ function DatePicker({
     placeholder,
     showAlwaysOpenToggle,
     alwaysOpenLabel = '상시 모집',
-    alwaysOpenSentinel = DEFAULT_ALWAYS_OPEN_SENTINEL,
+    alwaysOpenSentinel = {
+        start: DEFAULT_ALWAYS_OPEN_SENTINEL_START,
+        end: DEFAULT_ALWAYS_OPEN_SENTINEL_END,
+    },
 }: DatePickerProps) {
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
@@ -46,7 +52,7 @@ function DatePicker({
     };
 
     const handleAlwaysOpenClick = () => {
-        onChange?.([alwaysOpenSentinel, alwaysOpenSentinel]);
+        onChange?.([alwaysOpenSentinel.start, alwaysOpenSentinel.end]);
         setDropdownOpen(false);
     };
 

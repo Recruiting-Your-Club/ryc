@@ -5,5 +5,5 @@ export interface DatePickerProps {
     placeholder?: string;
     showAlwaysOpenToggle?: boolean;
     alwaysOpenLabel?: string;
-    alwaysOpenSentinel?: string;
+    alwaysOpenSentinel?: { start: string; end: string };
 }
