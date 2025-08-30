@@ -37,6 +37,7 @@ import lombok.Builder;
 public record AnnouncementGetDetailResponse(
     // 기본 정보
     @Schema(description = "공고 ID", example = "123e4567-e89b-12d3-a456-426614174000") String id,
+    @Schema(description = "클럽 ID", example = "123e4567-e89b-12d3-a456-426614174000") String clubId,
     @Schema(description = "공고 제목", example = "2025년도 상반기 신입 모집") String title,
     @Schema(description = "요약 설명", example = "코딩 동아리에서 신입 회원을 모집합니다.") String summaryDescription,
     @Schema(description = "상세 설명", example = "자세한 모집 내용은 다음과 같습니다...") String detailDescription,
@@ -80,6 +81,7 @@ public record AnnouncementGetDetailResponse(
 
     return AnnouncementGetDetailResponse.builder()
         .id(announcement.getId())
+        .clubId(announcement.getClubId())
         .title(announcement.getTitle())
         .summaryDescription(announcement.getSummaryDescription())
         .detailDescription(announcement.getDetailDescription())
