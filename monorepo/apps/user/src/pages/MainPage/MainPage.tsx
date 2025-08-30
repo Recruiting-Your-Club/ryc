@@ -75,7 +75,7 @@ function MainPage() {
         <div css={mainPageContainer}>
             <div css={bannerContainer}>
                 <img
-                    src="https://d2eqevpna0t9fh.cloudfront.net/public/assets/banner.webp"
+                    src="https://d2eqevpna0t9fh.cloudfront.net/public/announcements/images/2025/8/30/9ebfef16-8de3-434c-b49e-a2a239a41e2d_________-_______________-007.png"
                     alt="배너 이미지"
                     width="100%"
                     height="100%"
