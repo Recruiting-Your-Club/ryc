@@ -12,10 +12,7 @@ export interface ImageUploadResult {
 
 export interface ImageUploadOptions {
     uploadFiles: (file: File, location: string) => Promise<Array<{ fileMetadataId: string }>>;
-    getFileDownloadUrl: (params: {
-        metadataId: string;
-        accessToken: string;
-    }) => Promise<{ url: string }>;
+    getFileDownloadUrl: (params: { metadataId: string }) => Promise<{ url: string }>;
     accessToken: string | null;
     location?: string;
 }
@@ -25,20 +22,11 @@ export interface ImageUploadOptions {
  */
 export const getImageDownloadUrl = async (
     fileMetadataId: string,
-    accessToken: string,
-    getFileDownloadUrl: (params: {
-        metadataId: string;
-        accessToken: string;
-    }) => Promise<{ url: string }>,
+    getFileDownloadUrl: (params: { metadataId: string }) => Promise<{ url: string }>,
 ): Promise<string> => {
     try {
-        if (!accessToken) {
-            return '';
-        }
-
         const response = await getFileDownloadUrl({
             metadataId: fileMetadataId,
-            accessToken: accessToken,
         });
 
         return response.url;
@@ -79,7 +67,7 @@ export const uploadBase64Image = async (
         }
 
         // 실제 이미지 URL 받아오기
-        const imageUrl = await getImageDownloadUrl(fileMetadataId, accessToken, getFileDownloadUrl);
+        const imageUrl = await getImageDownloadUrl(fileMetadataId, getFileDownloadUrl);
 
         if (!imageUrl) {
             return null;
