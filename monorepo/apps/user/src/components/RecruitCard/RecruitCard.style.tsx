@@ -32,11 +32,11 @@ export const recruitCardHeader = css`
 `;
 
 export const recruitCardHeaderTitle = css`
-    width: 75%;
+    width: 70%;
 `;
 
 export const recruitCardHeaderDeadline = css`
-    width: 25%;
+    width: 30%;
 `;
 
 export const deadlineTextSx = (diffDay: number) => css`
