@@ -11,7 +11,10 @@ export interface ImageUploadResult {
 }
 
 export interface ImageUploadOptions {
-    uploadFiles: (file: File, location: string) => Promise<Array<{ fileMetadataId: string }>>;
+    uploadFiles: (
+        file: File,
+        location: string,
+    ) => Promise<Array<{ fileMetadataId: string; accessToken?: string }>>;
     getFileDownloadUrl: (params: { metadataId: string }) => Promise<{ url: string }>;
     accessToken: string | null;
     location?: string;
@@ -61,6 +64,7 @@ export const uploadBase64Image = async (
         // 파일 업로드
         const uploadResults = await uploadFiles(file, location);
         const fileMetadataId = uploadResults[0]?.fileMetadataId;
+        const accessToken = uploadResults[1]?.accessToken;
 
         if (!fileMetadataId) {
             return null;

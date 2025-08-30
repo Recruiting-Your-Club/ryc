@@ -5,10 +5,12 @@ import { confirmUpload, type FileMetadata, postFileAndGetPresignedUrl } from '@s
 interface PresignedUrlResponse {
     fileMetadataId: string;
     presignedUrl: string;
+    accessToken: string;
 }
 
 interface UploadResult {
     fileMetadataId: string;
+    accessToken?: string;
 }
 
 export const useFileUpload = (baseUrl: string) => {
@@ -85,7 +87,7 @@ export const useFileUpload = (baseUrl: string) => {
                 contentType: file.type,
             };
 
-            const { fileMetadataId, presignedUrl } =
+            const { fileMetadataId, presignedUrl, accessToken } =
                 await getPresignedUrlMutation.mutateAsync(fileMetadata);
 
             // 2. S3에 업로드
@@ -94,7 +96,7 @@ export const useFileUpload = (baseUrl: string) => {
             // 3. 업로드 완료 확인
             await confirmUploadMutation.mutateAsync(fileMetadataId);
 
-            return { fileMetadataId };
+            return { fileMetadataId, accessToken };
         } catch (error) {
             console.error(error);
             throw error;
