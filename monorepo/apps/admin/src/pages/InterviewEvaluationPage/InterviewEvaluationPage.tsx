@@ -203,6 +203,8 @@ function InterviewEvaluationPage() {
             <div css={s_informationAndEvaluationContainer}>
                 <div css={s_informationBoxWrapper}>
                     <InformationBox
+                        name={applicantDocument?.name ?? ''}
+                        email={applicantDocument?.email ?? ''}
                         profileImage={
                             applicantDocument?.profileImage ?? {
                                 id: '',
