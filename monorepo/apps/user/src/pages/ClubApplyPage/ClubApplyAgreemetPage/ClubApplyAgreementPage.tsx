@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
 import { Checkbox, Text, useToast } from '@ssoc/ui';
@@ -19,7 +19,8 @@ function ClubApplyAgreementPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams();
-    const { goTo } = useRouter();
+    const { clubId } = useLocation().state as { clubId: string };
+    const navigate = useNavigate();
     // initial values
     // state, ref, querystring hooks
     const [isAllAgree, setIsAllAgree] = useState<boolean>(false);
@@ -52,7 +53,11 @@ function ClubApplyAgreementPage() {
     const handleSubmit = () => {
         if (!isAllAgree || !isAgree1 || !isAgree2 || !isAgree3) return;
         if (!announcementId) return;
-        goTo(`/announcements/${announcementId}/application`);
+        navigate(`/announcements/${announcementId}/application`, {
+            state: {
+                clubId: clubId,
+            },
+        });
     };
     // effects
     return (
