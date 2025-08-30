@@ -4,7 +4,7 @@ import React from 'react';
 
 import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
 import { useRouter } from '@ssoc/hooks';
-import { Avatar, Button, Text } from '@ssoc/ui';
+import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
 import {
     clubItem,
@@ -20,11 +20,13 @@ function MyClubPage() {
     // prop destruction
     // lib hooks
     const { goTo } = useRouter();
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
     // form hooks
     // query hooks
     const { data: myClubs } = useSuspenseQuery(myClubQueries.all());
+
     // calculated values
 
     return (
@@ -67,7 +69,12 @@ function MyClubPage() {
                     variant="transparent"
                     size="xl"
                     sx={searchButton}
-                    onClick={() => goTo('/club-create')}
+                    onClick={
+                        () =>
+                            toast.error(
+                                '동아리 생성은 채널톡으로 직접 문의해주세요!',
+                            ) /*goTo('/club-create')*/
+                    }
                 >
                     <div css={plusButton}>+</div>
                     <Text type="bodyRegular" color="primary">
