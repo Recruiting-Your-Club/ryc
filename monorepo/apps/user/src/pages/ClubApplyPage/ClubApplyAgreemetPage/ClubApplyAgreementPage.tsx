@@ -1,5 +1,5 @@
 import { TermsOfUse } from '@components';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useRouter } from '@ssoc/hooks';
 
@@ -7,7 +7,9 @@ function ClubApplyAgreementPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams();
-    const { removeHistoryAndGo } = useRouter();
+    const navigate = useNavigate();
+    const locationState = useLocation().state as { clubId?: string } | null;
+    const clubId = locationState?.clubId;
 
     // initial values
     // state, ref, querystring hooks
@@ -20,7 +22,10 @@ function ClubApplyAgreementPage() {
             ctaLabel="동의 후 작성하기"
             onAgree={() => {
                 if (!announcementId) return;
-                removeHistoryAndGo(`/announcements/${announcementId}/application`);
+                navigate(`/announcements/${announcementId}/application`, {
+                    replace: true, // feature의 removeHistoryAndGo 동작과 동일
+                    state: clubId ? { clubId } : undefined, // develop의 state 전달 유지
+                });
             }}
         />
     );
