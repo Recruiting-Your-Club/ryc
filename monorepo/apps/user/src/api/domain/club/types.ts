@@ -66,10 +66,16 @@ export interface ClubInterviewSchedule {
     clubCategory: string;
     clubImageUrl: string;
     isReserved: boolean;
-    applicantName: string;
-    applicantEmail: string;
-    representativeImage: RepresentativeImage;
+    applicantSummary: ReservationApplicantSummary;
     slotByDateResponses: SlotByDate[];
+}
+
+export interface ReservationApplicantSummary {
+    applicantId: string;
+    applicantEmail: string;
+    applicantName: string;
+    representativeImage: RepresentativeImage;
+    imagePresent: boolean;
 }
 
 export interface SubmitReservationResponse {
