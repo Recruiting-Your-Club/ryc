@@ -2,6 +2,10 @@ import { css } from '@emotion/react';
 
 import theme from '@ssoc/styles';
 
+export const s_captionText = css`
+    color: ${theme.colors.gray[700]};
+`;
+
 export const s_agreementPageContainer = css`
     display: flex;
     flex-direction: column;
