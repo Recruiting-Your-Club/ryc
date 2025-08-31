@@ -5,8 +5,9 @@ import type {
 } from '@api/domain/interview/types';
 import type { StepApplicant } from '@api/domain/step/types';
 import { useInterviewMutations } from '@api/hooks';
-import { interviewQueries } from '@api/queryFactory';
+import { interviewQueries, stepQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
+import AttentionTriangle from '@assets/images/attention-triangle.svg';
 import { ApplicantList, ComponentMover, ErrorDialog, InterviewSlotDropdown } from '@components';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -22,8 +23,14 @@ import {
     s_applicantList,
     s_applicantSchedulePageContainer,
     s_arrowContainer,
+    s_captionText,
     s_contentComponentWrapper,
     s_contentContainer,
+    s_iconContainer,
+    s_textBox,
+    s_warningIcon,
+    s_warningIconWrapper,
+    s_warningPageContainer,
 } from './ApplicantSchedulePage.style';
 import type { SelectedLabel } from './types';
 
@@ -54,6 +61,9 @@ function ApplicantSchedulePage() {
 
     // form hooks
     // query hooks
+    const { data: totalSteps = { processes: [] } } = useSuspenseQuery(
+        stepQueries.getTotalSteps(announcementId!),
+    );
     const { data: interviewSlots = [] } = useSuspenseQuery(
         interviewQueries.interviewSlot(announcementId!, clubId!),
     );
@@ -81,6 +91,8 @@ function ApplicantSchedulePage() {
     );
 
     // calculated values
+    const isThreeStepProcess = totalSteps?.processes?.length === 3;
+
     const standardInterviewees = useMemo(() => slot0Applicants ?? [], [slot0Applicants]);
     const intervieweesToMove = useMemo(() => slot1Applicants ?? [], [slot1Applicants]);
 
@@ -248,112 +260,135 @@ function ApplicantSchedulePage() {
     };
 
     return (
-        <div css={s_applicantSchedulePageContainer}>
-            <span css={s_alertSvgContainer}>
-                <Alert css={s_alertSvg} />
-                <Text as="span" type="captionRegular" color="helper">
-                    카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!
-                </Text>
-            </span>
-            <div css={s_contentContainer}>
-                <div css={s_contentComponentWrapper}>
-                    <ApplicantList
-                        applicantList={toStepApplicants(intervieweesToMove)}
-                        selectedApplicantId={selectedIntervieweeId}
-                        onSelectApplicantId={setSelectedIntervieweeId}
-                        titleMode="titleNode"
-                        sx={s_applicantList}
-                    >
-                        <InterviewSlotDropdown
-                            open={open}
-                            onOpenChange={setOpen}
-                            selectedInterviewLabel={selectedInterviewLabel}
-                            interviewSlots={interviewSlots}
-                            onSelectLabel={handleSelectLabel}
-                        />
-                    </ApplicantList>
-                </div>
-                <div css={s_arrowContainer}>
-                    <ComponentMover
-                        onMoveLeft={() =>
-                            handleMove(
-                                isSelectedInThirdSlot ? unreservedApplicants : standardInterviewees,
-                                selectedIntervieweeId,
-                                selectedInterviewLabel.interviewSlotId ?? '',
-                                isSelectedInThirdSlot
-                                    ? ''
-                                    : (selectedStandardInterviewLabel.interviewSlotId ?? ''),
-                                setSelectedIntervieweeId,
-                            )
-                        }
-                        onMoveRight={() =>
-                            handleMove(
-                                intervieweesToMove,
-                                selectedIntervieweeId,
-                                selectedStandardInterviewLabel.interviewSlotId ?? '',
-                                selectedInterviewLabel.interviewSlotId ?? '',
-                                setSelectedIntervieweeId,
-                            )
-                        }
+        <>
+            {isThreeStepProcess ? (
+                <div css={s_applicantSchedulePageContainer}>
+                    <span css={s_alertSvgContainer}>
+                        <Alert css={s_alertSvg} />
+                        <Text as="span" type="captionRegular" color="helper">
+                            카드를 클릭한 뒤, 화살표 버튼으로 다른 일정에 옮겨보세요!
+                        </Text>
+                    </span>
+                    <div css={s_contentContainer}>
+                        <div css={s_contentComponentWrapper}>
+                            <ApplicantList
+                                applicantList={toStepApplicants(intervieweesToMove)}
+                                selectedApplicantId={selectedIntervieweeId}
+                                onSelectApplicantId={setSelectedIntervieweeId}
+                                titleMode="titleNode"
+                                sx={s_applicantList}
+                            >
+                                <InterviewSlotDropdown
+                                    open={open}
+                                    onOpenChange={setOpen}
+                                    selectedInterviewLabel={selectedInterviewLabel}
+                                    interviewSlots={interviewSlots}
+                                    onSelectLabel={handleSelectLabel}
+                                />
+                            </ApplicantList>
+                        </div>
+                        <div css={s_arrowContainer}>
+                            <ComponentMover
+                                onMoveLeft={() =>
+                                    handleMove(
+                                        isSelectedInThirdSlot
+                                            ? unreservedApplicants
+                                            : standardInterviewees,
+                                        selectedIntervieweeId,
+                                        selectedInterviewLabel.interviewSlotId ?? '',
+                                        isSelectedInThirdSlot
+                                            ? ''
+                                            : (selectedStandardInterviewLabel.interviewSlotId ??
+                                                  ''),
+                                        setSelectedIntervieweeId,
+                                    )
+                                }
+                                onMoveRight={() =>
+                                    handleMove(
+                                        intervieweesToMove,
+                                        selectedIntervieweeId,
+                                        selectedStandardInterviewLabel.interviewSlotId ?? '',
+                                        selectedInterviewLabel.interviewSlotId ?? '',
+                                        setSelectedIntervieweeId,
+                                    )
+                                }
+                            />
+                        </div>
+                        <div css={s_contentComponentWrapper}>
+                            <ApplicantList
+                                applicantList={toStepApplicants(standardInterviewees)}
+                                selectedApplicantId={selectedIntervieweeId}
+                                onSelectApplicantId={setSelectedIntervieweeId}
+                                titleMode="titleNode"
+                                sx={s_applicantList}
+                            >
+                                <InterviewSlotDropdown
+                                    open={standardOpen}
+                                    onOpenChange={setStandardOpen}
+                                    selectedInterviewLabel={selectedStandardInterviewLabel}
+                                    interviewSlots={interviewSlots}
+                                    onSelectLabel={handleSelectStandardLabel}
+                                />
+                            </ApplicantList>
+                        </div>
+                        <div css={s_arrowContainer}>
+                            <ComponentMover
+                                onMoveLeft={() =>
+                                    handleMove(
+                                        unreservedApplicants,
+                                        selectedIntervieweeId,
+                                        selectedStandardInterviewLabel.interviewSlotId ?? '',
+                                        '',
+                                        setSelectedIntervieweeId,
+                                    )
+                                }
+                                onMoveRight={() =>
+                                    handleMove(
+                                        isSelectedInFirstSlot
+                                            ? intervieweesToMove
+                                            : standardInterviewees,
+                                        selectedIntervieweeId,
+                                        '',
+                                        isSelectedInFirstSlot
+                                            ? (selectedInterviewLabel.interviewSlotId ?? '')
+                                            : (selectedStandardInterviewLabel.interviewSlotId ??
+                                                  ''),
+                                        setSelectedIntervieweeId,
+                                    )
+                                }
+                            />
+                        </div>
+                        <div css={s_contentComponentWrapper}>
+                            <ApplicantList
+                                title="면접 일정 미지정자"
+                                applicantList={toStepApplicants(unreservedApplicants)}
+                                selectedApplicantId={selectedIntervieweeId}
+                                onSelectApplicantId={setSelectedIntervieweeId}
+                                sx={s_applicantList}
+                            />
+                        </div>
+                    </div>
+                    <ErrorDialog
+                        open={errorDialogOpen}
+                        handleClose={() => setErrorDialogOpen(false)}
+                        errorStatusCode={500}
                     />
                 </div>
-                <div css={s_contentComponentWrapper}>
-                    <ApplicantList
-                        applicantList={toStepApplicants(standardInterviewees)}
-                        selectedApplicantId={selectedIntervieweeId}
-                        onSelectApplicantId={setSelectedIntervieweeId}
-                        titleMode="titleNode"
-                        sx={s_applicantList}
-                    >
-                        <InterviewSlotDropdown
-                            open={standardOpen}
-                            onOpenChange={setStandardOpen}
-                            selectedInterviewLabel={selectedStandardInterviewLabel}
-                            interviewSlots={interviewSlots}
-                            onSelectLabel={handleSelectStandardLabel}
-                        />
-                    </ApplicantList>
+            ) : (
+                <div css={s_warningPageContainer}>
+                    <div css={s_textBox}>
+                        <div css={s_iconContainer}>
+                            <div css={s_warningIconWrapper}>
+                                <AttentionTriangle css={s_warningIcon} />
+                            </div>
+                        </div>
+                        <Text type="h4Semibold" sx={s_captionText}>
+                            면접 전형이 존재하지 않아요!
+                        </Text>
+                    </div>
                 </div>
-                <div css={s_arrowContainer}>
-                    <ComponentMover
-                        onMoveLeft={() =>
-                            handleMove(
-                                unreservedApplicants,
-                                selectedIntervieweeId,
-                                selectedStandardInterviewLabel.interviewSlotId ?? '',
-                                '',
-                                setSelectedIntervieweeId,
-                            )
-                        }
-                        onMoveRight={() =>
-                            handleMove(
-                                isSelectedInFirstSlot ? intervieweesToMove : standardInterviewees,
-                                selectedIntervieweeId,
-                                '',
-                                isSelectedInFirstSlot
-                                    ? (selectedInterviewLabel.interviewSlotId ?? '')
-                                    : (selectedStandardInterviewLabel.interviewSlotId ?? ''),
-                                setSelectedIntervieweeId,
-                            )
-                        }
-                    />
-                </div>
-                <div css={s_contentComponentWrapper}>
-                    <ApplicantList
-                        title="면접 일정 미지정자"
-                        applicantList={toStepApplicants(unreservedApplicants)}
-                        selectedApplicantId={selectedIntervieweeId}
-                        onSelectApplicantId={setSelectedIntervieweeId}
-                        sx={s_applicantList}
-                    />
-                </div>
-            </div>
-            <ErrorDialog
-                open={errorDialogOpen}
-                handleClose={() => setErrorDialogOpen(false)}
-                errorStatusCode={500}
-            />
-        </div>
+            )}
+        </>
     );
 }
 
