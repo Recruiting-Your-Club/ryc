@@ -17,6 +17,7 @@ import {
     s_emailInputContainer,
     s_emailInputSx,
     s_emailSx,
+    s_emailVerifyButton,
     s_fileUploaderSx,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
@@ -125,6 +126,7 @@ function ClubApplyPersonalInfoPage({
                                 {!isThisLocked ? (
                                     <Button
                                         variant="outlined"
+                                        sx={s_emailVerifyButton}
                                         onClick={async () => {
                                             if (!value) return toast.error('이메일을 입력해주세요');
                                             if (hasError)

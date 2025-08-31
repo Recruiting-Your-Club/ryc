@@ -63,14 +63,32 @@ export const s_emailInputContainer = css`
     width: 60%;
     gap: 1rem;
     align-items: flex-start;
+
+    @media (max-width: 800px) {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+    }
 `;
 
 export const s_emailInputSx = css`
-    width: 100%;
+    /* width: 100%;
     height: 2.5rem;
-    padding: 0rem 0rem;
+    padding: 0rem 0rem; */
+    flex: 1;
+    min-width: 0;
+    height: 2.5rem;
+    padding: 0;
 `;
 
 export const s_emailSx = css`
     width: 100%;
+`;
+
+export const s_emailVerifyButton = css`
+    white-space: nowrap;
+    @media (max-width: 800px) {
+        width: 100%;
+    }
 `;
