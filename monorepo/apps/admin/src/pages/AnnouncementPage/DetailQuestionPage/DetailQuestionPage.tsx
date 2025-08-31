@@ -25,7 +25,12 @@ function DetailQuestionPage({ detailQuestions, containerStyle }: DetailQuestionP
                     <div key={question.id} css={s_detailQuestionContainer} tabIndex={-1}>
                         <div css={s_labelContainer}>
                             <div css={s_questionTitleContainer}>
-                                <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
+                                <Text
+                                    type="bodyRegular"
+                                    noWrap
+                                    sx={s_questionTitleSx}
+                                    textAlign="start"
+                                >
                                     {question.label}
                                 </Text>
                                 {question.isRequired && (

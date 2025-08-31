@@ -48,7 +48,12 @@ function ClubApplyDetailQuestionPage({
                     >
                         <div css={s_labelContainer}>
                             <div css={s_questionTitleContainer}>
-                                <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
+                                <Text
+                                    type="bodyRegular"
+                                    noWrap
+                                    sx={s_questionTitleSx}
+                                    textAlign="start"
+                                >
                                     {question.label}
                                     {question.isRequired && <span css={s_questionStar}>*</span>}
                                 </Text>

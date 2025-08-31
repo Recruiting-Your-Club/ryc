@@ -57,3 +57,7 @@ export const s_fileUploaderSx = css`
     width: 100%;
     margin-top: 0;
 `;
+
+export const s_labelMultiline = css`
+    white-space: pre-line;
+`;

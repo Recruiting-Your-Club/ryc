@@ -1,4 +1,3 @@
-
 import { TermsOfUse } from '@components';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 

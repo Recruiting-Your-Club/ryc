@@ -55,7 +55,7 @@ export const s_tooltipSx = css`
 `;
 
 export const s_questionTitleSx = css`
-    white-space: normal;
+    white-space: pre-line;
     text-align: justify;
     word-break: break-word;
     @media (max-width: ${theme.breakpoint.mobile}) {
@@ -69,3 +69,5 @@ export const s_questionStarSx = css`
         margin-top: 0.25rem;
     }
 `;
+
+export const s_labelMultiline = css``;
