@@ -92,3 +92,7 @@ export const s_emailVerifyButton = css`
         width: 100%;
     }
 `;
+
+export const s_labelMultiline = css`
+    white-space: pre-line;
+`;

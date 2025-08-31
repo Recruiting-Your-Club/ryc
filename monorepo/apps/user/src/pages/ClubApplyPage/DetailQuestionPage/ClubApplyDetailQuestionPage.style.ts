@@ -55,7 +55,7 @@ export const s_tooltipSx = css`
 `;
 
 export const s_questionTitleSx = css`
-    white-space: normal;
+    white-space: pre-line;
     text-align: justify;
     word-break: break-word;
     @media (max-width: ${theme.breakpoint.mobile}) {

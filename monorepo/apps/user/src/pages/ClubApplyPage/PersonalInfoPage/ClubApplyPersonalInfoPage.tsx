@@ -19,6 +19,7 @@ import {
     s_emailSx,
     s_emailVerifyButton,
     s_fileUploaderSx,
+    s_labelMultiline,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
 
@@ -91,7 +92,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -194,7 +197,9 @@ function ClubApplyPersonalInfoPage({
                     return (
                         <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" textAlign="start" sx={s_labelMultiline}>
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -228,7 +233,9 @@ function ClubApplyPersonalInfoPage({
                     return (
                         <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -269,7 +276,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -311,7 +320,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -360,7 +371,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
