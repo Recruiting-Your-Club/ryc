@@ -55,7 +55,7 @@ function ReservationPage() {
     const [interviewSlots, setInterviewSlots] = useState<InterviewSlot[]>([]);
     const [interviewDuration, setInterviewDuration] = useState<number>(0);
     const [selectedInterviewSlot, setSelectedInterviewSlot] = useState<InterviewSlot | null>(null);
-    const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(true);
+    const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(false);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks

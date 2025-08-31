@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import ChevronRight from '@ssoc/assets/images/chevronRight.svg';
+import SSOC from '@ssoc/assets/images/ssoc.png';
 import { useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
 
@@ -58,7 +59,9 @@ function MyClubPage() {
                                 >
                                     <Avatar
                                         radius="10px"
-                                        imageURL={club.myClubResponse.representativeImage?.url}
+                                        imageURL={
+                                            club.myClubResponse.representativeImage?.url || SSOC
+                                        }
                                     />
                                     <div css={clubItemText}>
                                         <Text textAlign="start">{club.myClubResponse.name}</Text>
