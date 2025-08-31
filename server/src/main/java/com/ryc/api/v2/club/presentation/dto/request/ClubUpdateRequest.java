@@ -18,7 +18,6 @@ public record ClubUpdateRequest(
         @Size(min = 2, max = 50, message = "동아리 이름은 2자 이상, 50자 이하여야 합니다.")
         String name,
     @Schema(description = "동아리 간단 설명")
-        @NotBlank(message = "동아리 간단 설명(shortDescription)은 비워둘 수 없습니다. 수정되지 않았다면 기존의 값을 입력해주세요.")
         @Size(max = 200, message = "동아리 간단 설명(shortDescription)은 200자를 초과할 수 없습니다.")
         String shortDescription,
     @Schema(description = "동아리 상세 설명") @Size(max = 5000, message = "동아리 상세설명은 최대 5000자까지 입력 가능합니다.")
