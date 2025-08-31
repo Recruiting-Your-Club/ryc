@@ -21,7 +21,7 @@ import {
 } from './PreviewStep.style';
 import type { PreviewStepProps } from './types';
 
-export const ALWAYS_OPEN_SENTINEL_START = '0000-00-00T00:00';
+export const ALWAYS_OPEN_SENTINEL_START = '0000-01-01T00:00';
 const ALWAYS_OPEN_SENTINEL_END = '9999-12-31T00:00';
 
 function calcStatus(period: { startDate: string; endDate: string }) {
