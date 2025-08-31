@@ -8,7 +8,7 @@ export interface InterviewSettingDialogProps {
         numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
-    ) => void;
+    ) => boolean;
 }
 
 export interface InterviewInformation {

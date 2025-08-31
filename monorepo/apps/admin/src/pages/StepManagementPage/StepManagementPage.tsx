@@ -274,27 +274,28 @@ function StepManagementPage() {
         });
     };
 
-    const handlePlainEmail = (subject: string, content: string) => {
-        if (!validateEmailInputs(subject, content)) return;
+    const handlePlainEmail = (subject: string, content: string): boolean => {
+        if (!validateEmailInputs(subject, content)) return false;
 
         sendPlainEmail({
             announcementId: announcementId!,
             clubId: clubId!,
             email: { recipients: emailTargetList, subject, content },
         });
+        return true;
     };
 
     const handleInterviewEmail = (
         numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
-    ) => {
+    ): boolean => {
         if (numberOfPeopleByInterviewDateRequests.length === 0) {
             toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
-            return;
+            return false;
         }
 
-        if (!validateEmailInputs(subject, content)) return;
+        if (!validateEmailInputs(subject, content)) return false;
 
         sendInterviewEmail({
             announcementId: announcementId!,
@@ -304,6 +305,7 @@ function StepManagementPage() {
                 emailSendRequest: { recipients: emailTargetList, subject, content },
             },
         });
+        return true;
     };
 
     const handleEmailDialogOpen = (
