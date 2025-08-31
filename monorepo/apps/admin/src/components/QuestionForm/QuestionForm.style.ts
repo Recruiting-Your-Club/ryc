@@ -3,9 +3,8 @@ import { css } from '@emotion/react';
 import theme from '@ssoc/styles';
 
 export const s_inputLength = css`
-    position: absolute;
-    right: 0.8rem;
-    top: 4rem;
+    align-self: flex-end;
+    margin-top: 0.4rem;
     ${theme.typography.helperTextRegular};
     color: ${theme.colors.textHelper};
 `;
@@ -71,4 +70,22 @@ export const s_trashIcon = css`
 
 export const s_trashButton = css`
     margin-left: auto;
+`;
+
+export const s_textareaLined = (minRows = 4) => css`
+    width: 100%;
+    min-height: calc(${minRows} * 2em + 1rem);
+    padding: 0.6rem 0.2rem 0.4rem 0.8rem;
+    outline: none;
+    border: none;
+    background: transparent;
+    line-height: 2;
+    resize: vertical;
+    border: 1px solid ${theme.colors.inputBorder};
+    border-radius: 6px;
+
+    transition: border-color 0.3s ease-in-out;
+    &:focus-within {
+        border-color: ${theme.colors.default};
+    }
 `;
