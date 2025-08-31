@@ -30,13 +30,6 @@ function FileUpLoaderItem({ file, index }: FileUpLoaderItemProps) {
     ].includes(ext as FileExtension);
     const isPdf = ext === FileExtension.PDF;
     const fileUrl = useMemo(() => URL.createObjectURL(file), [file]);
-
-    useEffect(() => {
-        return () => {
-            URL.revokeObjectURL(fileUrl);
-        };
-    }, [fileUrl]);
-
     // form hooks
     // query hooks
     // calculated values

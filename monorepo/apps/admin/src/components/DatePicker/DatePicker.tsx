@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import CalenarIcon from '@ssoc/assets/images/calendar.svg';
-import { Button, Calendar, Dropdown, Text } from '@ssoc/ui';
+import { Button, Calendar, Dropdown } from '@ssoc/ui';
 
 import {
     s_alwaysButtonContainer,
@@ -14,11 +14,14 @@ import {
 } from './DatePicker.style';
 import type { DatePickerProps } from './types';
 
-const DEFAULT_ALWAYS_OPEN_SENTINEL = '9999-12-31';
+export const DEFAULT_ALWAYS_OPEN_SENTINEL_START = '0001-01-01';
+const DEFAULT_ALWAYS_OPEN_SENTINEL_END = '9999-12-31';
 
-function isAlwaysOpen(selectedDate: string[], sentinel: string) {
+function isAlwaysOpen(selectedDate: string[], sentinel: { start: string; end: string }) {
     return (
-        selectedDate.length === 2 && selectedDate[0] === sentinel && selectedDate[1] === sentinel
+        selectedDate.length === 2 &&
+        selectedDate[0] === sentinel.start &&
+        selectedDate[1] === sentinel.end
     );
 }
 
@@ -28,8 +31,12 @@ function DatePicker({
     onChange,
     placeholder,
     showAlwaysOpenToggle,
+    disabled,
     alwaysOpenLabel = '상시 모집',
-    alwaysOpenSentinel = DEFAULT_ALWAYS_OPEN_SENTINEL,
+    alwaysOpenSentinel = {
+        start: DEFAULT_ALWAYS_OPEN_SENTINEL_START,
+        end: DEFAULT_ALWAYS_OPEN_SENTINEL_END,
+    },
 }: DatePickerProps) {
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
@@ -46,7 +53,7 @@ function DatePicker({
     };
 
     const handleAlwaysOpenClick = () => {
-        onChange?.([alwaysOpenSentinel, alwaysOpenSentinel]);
+        onChange?.([alwaysOpenSentinel.start, alwaysOpenSentinel.end]);
         setDropdownOpen(false);
     };
 
@@ -57,8 +64,8 @@ function DatePicker({
 
     return (
         <Dropdown open={dropdownOpen} onOpenChange={setDropdownOpen} sx={s_dropdown}>
-            <Dropdown.Trigger asChild>
-                <Button sx={s_triggerButton(selectedDate)} variant="outlined">
+            <Dropdown.Trigger asChild disabled={disabled}>
+                <Button sx={s_triggerButton(selectedDate, disabled)} variant="outlined">
                     <div css={s_labelWithIcon}>
                         <CalenarIcon css={s_calendarIcon} />
                         {formatLabel()}

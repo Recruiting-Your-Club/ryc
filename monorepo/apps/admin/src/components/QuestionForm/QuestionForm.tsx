@@ -16,6 +16,7 @@ import {
     s_questionOptionContainer,
     s_questionOptionRow,
     s_removeOptionButton,
+    s_textareaLined,
     s_trashButton,
     s_trashIcon,
 } from './QuestionForm.style';
@@ -27,12 +28,17 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     const { toast } = useToast();
 
     //handler
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         updateQuestion(question.id, { title: e.target.value });
     };
 
-    const handleSubContentChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSubContentChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         updateQuestion(question.id, { subContent: e.target.value });
+    };
+
+    const autoGrow = (el: HTMLTextAreaElement) => {
+        el.style.height = 'auto';
+        el.style.height = `${el.scrollHeight}px`;
     };
 
     const handleOptionChange = (optionId: string, value: string) => {
@@ -43,15 +49,15 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     };
 
     const handleAddOption = () => {
-        if ((question.options?.length || 0) >= 10) {
-            toast.error('객관식 문항 보기는 최대 10개까지 생성할 수 있습니다.', {
+        if ((question.options?.length || 0) >= 30) {
+            toast.error('객관식 문항 보기는 최대 30개까지 생성할 수 있습니다.', {
                 toastTheme: 'black',
                 position: 'topCenter',
             });
             return;
         }
         const newOption = {
-            id: `opt${Date.now()}`,
+            id: crypto.randomUUID(),
             text: '',
         };
         updateQuestion(question.id, {
@@ -67,13 +73,19 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     if (question.type === 'short' || question.type === 'file') {
         return (
             <div css={s_questionContainer}>
-                <Input
+                <textarea
                     placeholder="질문을 입력하세요"
                     value={question.title}
-                    onChange={handleChange}
-                    maxLength={50}
+                    maxLength={500}
+                    rows={1}
+                    css={s_textareaLined(1)}
+                    onChange={(e) => {
+                        autoGrow(e.currentTarget);
+                        handleChange(e);
+                    }}
+                    ref={(el) => el && autoGrow(el)}
                 />
-                <div css={s_inputLength}>{question.title.length}/50</div>
+                <div css={s_inputLength}>{question.title.length}/500</div>
             </div>
         );
     }
@@ -83,13 +95,19 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
             <div css={s_applicationQuestion}>
                 <div css={s_firstRow}>
                     <div css={s_questionArea}>
-                        <Input
+                        <textarea
                             placeholder="질문을 입력하세요"
                             value={question.title}
-                            onChange={handleChange}
-                            maxLength={50}
+                            maxLength={500}
+                            css={s_textareaLined(1)}
+                            rows={1}
+                            onChange={(e) => {
+                                autoGrow(e.currentTarget);
+                                updateQuestion(question.id, { title: e.target.value });
+                            }}
+                            ref={(el) => el && autoGrow(el)}
                         />
-                        <div css={s_inputLength}>{question.title.length}/50</div>
+                        <div css={s_inputLength}>{question.title.length}/500</div>
                     </div>
                     {onRemoveQuestion && (
                         <Button
@@ -104,13 +122,19 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
                     )}
                 </div>
                 <div css={s_questionContainer}>
-                    <Input
+                    <textarea
                         placeholder="질문에 대한 추가 설명이 있다면 입력해주세요"
                         value={question.subContent}
-                        onChange={handleSubContentChange}
-                        maxLength={50}
+                        maxLength={500}
+                        rows={1}
+                        css={s_textareaLined(1)}
+                        onChange={(e) => {
+                            autoGrow(e.currentTarget);
+                            handleSubContentChange(e);
+                        }}
+                        ref={(el) => el && autoGrow(el)}
                     />
-                    <div css={s_inputLength}>{question.subContent?.length}/50</div>
+                    <div css={s_inputLength}>{question.subContent?.length}/500</div>
                 </div>
             </div>
         );
@@ -119,13 +143,19 @@ function QuestionForm({ question, updateQuestion, onRemoveQuestion }: QuestionFo
     return (
         <div>
             <div css={s_questionContainer}>
-                <Input
+                <textarea
                     placeholder="질문을 입력하세요"
                     value={question.title}
-                    onChange={handleChange}
-                    maxLength={50}
+                    maxLength={500}
+                    rows={1}
+                    css={s_textareaLined(1)}
+                    onChange={(e) => {
+                        autoGrow(e.currentTarget);
+                        handleChange(e);
+                    }}
+                    ref={(el) => el && autoGrow(el)}
                 />
-                <div css={s_inputLength}>{question.title.length}/50</div>
+                <div css={s_inputLength}>{question.title.length}/500</div>
             </div>
             <div css={s_questionOptionContainer}>
                 {question.options?.map((option) => (

@@ -1,4 +1,5 @@
-import { ClubInformationBox, ImageDialog } from '@components';
+import { ClubInformationBox, DEFAULT_ALWAYS_OPEN_SENTINEL_START, ImageDialog } from '@components';
+import { ALWAYS_OPEN_SENTINEL_START } from '@pages/RecruitCreatePage/PreviewStep';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
 import React, { useMemo, useState } from 'react';
@@ -40,13 +41,16 @@ function RecruitmentPage({
     const formatDate = (date?: string) => (date ? dayjs(date).format('YY.MM.DD') : '-');
 
     const formatPeriod = (period?: { startDate: string; endDate: string }) => {
+        if (applicationPeriod?.startDate.startsWith('0001')) return '상시모집';
         if (!period?.startDate || !period?.endDate) {
             return '미정';
         }
         const sameDay = dayjs(period?.startDate).isSame(period?.endDate, 'day');
         return sameDay
             ? formatDate(period?.startDate)
-            : `${formatDate(period?.startDate)} ~ ${formatDate(period?.endDate)} `;
+            : period?.startDate.startsWith('0001')
+              ? '상시모집'
+              : `${formatDate(period?.startDate)} ~ ${formatDate(period?.endDate)}`;
     };
 
     const clubBoxData = useMemo(

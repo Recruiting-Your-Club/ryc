@@ -1,9 +1,10 @@
+import { RecruitAgreementPage } from '@pages/RecruitCreatePage/RecruitAgreementPage/RecruitAgreementPage';
 import { lazy, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
-import { RecruitEditPage } from './pages';
+import { RecruitEditPage, RegisterAgreementPage } from './pages';
 import { ErrorFallbackPage } from './pages';
 import {
     AnnouncementPage,
@@ -97,6 +98,17 @@ const router = createBrowserRouter([
                 ),
             },
             {
+                path: 'announcements/create/agreement/:clubId/:announcementId?',
+                element: (
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <RecruitAgreementPage />
+                    </ErrorBoundary>
+                ),
+            },
+            {
                 path: 'announcements/create/:clubId/:announcementId?',
                 element: (
                     <ErrorBoundary
@@ -109,6 +121,18 @@ const router = createBrowserRouter([
             },
 
             { path: 'announcements/edit/:clubId', element: <NonAnnouncementPage /> },
+            { path: 'announcements/edit/agreement/:clubId', element: <NonAnnouncementPage /> },
+            {
+                path: 'announcements/edit/agreement/:clubId/:announcementId',
+                element: (
+                    <ErrorBoundary
+                        FallbackComponent={ErrorFallbackPage}
+                        onReset={() => window.location.reload()}
+                    >
+                        <RecruitAgreementPage />
+                    </ErrorBoundary>
+                ),
+            },
             {
                 path: 'announcements/edit/:clubId/:announcementId?',
                 element: (
@@ -216,7 +240,7 @@ const router = createBrowserRouter([
             { path: '*', element: <NotFoundPage /> },
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
-            { path: 'test', element: <TestPage /> },
+            { path: 'agreement', element: <RegisterAgreementPage /> },
             {
                 path: 'club-create',
                 element: (

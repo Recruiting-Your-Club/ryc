@@ -7,7 +7,7 @@
         "build": {
             "dependsOn": ["^build"],
             "outputs": ["dist/**"],
-            "env": ["BASE_URL", "CHANNEL_PLUGIN_KEY"]
+            "env": ["BASE_URL", "CHANNEL_PLUGIN_KEY", "SENTRY_DSN"]
         },
         "dev": {
             "dependsOn": ["^build"],

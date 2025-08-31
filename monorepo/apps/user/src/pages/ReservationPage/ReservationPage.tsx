@@ -55,7 +55,7 @@ function ReservationPage() {
     const [interviewSlots, setInterviewSlots] = useState<InterviewSlot[]>([]);
     const [interviewDuration, setInterviewDuration] = useState<number>(0);
     const [selectedInterviewSlot, setSelectedInterviewSlot] = useState<InterviewSlot | null>(null);
-    const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(true);
+    const [isSuccessReservation, setIsSuccessReservation] = useState<boolean>(false);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
 
     // form hooks
@@ -180,7 +180,9 @@ function ReservationPage() {
                                 <Text type="bodyRegular" textAlign="start">
                                     면접자
                                 </Text>
-                                <Text type="bodySemibold">{clubReservation?.applicantName}</Text>
+                                <Text type="bodySemibold">
+                                    {clubReservation?.applicantSummary.applicantName}
+                                </Text>
                             </div>
                         </div>
                     </div>
@@ -219,7 +221,7 @@ function ReservationPage() {
 
                         <div css={s_descriptionWrapper}>
                             <Text type="h4Semibold" textAlign="start">
-                                이메일: {clubReservation?.applicantEmail}
+                                이메일: {clubReservation?.applicantSummary.applicantEmail}
                             </Text>
                             <Text type="bodySemibold" color="caption" textAlign="start">
                                 면접 진행 시간: {interviewDuration}분
@@ -251,7 +253,7 @@ function ReservationPage() {
                             </div>
                             <Text type="captionSemibold" textAlign="end" noWrap>
                                 {selectedInterviewSlot
-                                    ? `남은인원: ${selectedInterviewSlot?.currentNumberOfPeople} / ${selectedInterviewSlot?.maxNumberOfPeople}`
+                                    ? `잔여여석: ${selectedInterviewSlot?.currentNumberOfPeople} / ${selectedInterviewSlot?.maxNumberOfPeople}`
                                     : '시간을 선택해주세요'}
                             </Text>
                         </div>

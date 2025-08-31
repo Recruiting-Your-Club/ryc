@@ -21,11 +21,13 @@ import {
 } from './PreviewStep.style';
 import type { PreviewStepProps } from './types';
 
-const ALWAYS_OPEN_SENTINEL = '9999-12-31';
+export const ALWAYS_OPEN_SENTINEL_START = '0001-01-01T00:00';
+const ALWAYS_OPEN_SENTINEL_END = '9999-12-31T00:00';
 
 function calcStatus(period: { startDate: string; endDate: string }) {
     const { startDate, endDate } = period ?? { startDate: '', endDate: '' };
-    if (startDate === ALWAYS_OPEN_SENTINEL && endDate === ALWAYS_OPEN_SENTINEL) return 'RECRUITING';
+    if (startDate === ALWAYS_OPEN_SENTINEL_START && endDate === ALWAYS_OPEN_SENTINEL_END)
+        return 'RECRUITING';
     const now = new Date();
     const start = new Date(startDate);
     const end = new Date(endDate);

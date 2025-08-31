@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import theme from '@ssoc/styles';
 
-export const s_triggerButton = (selectedDate: string[]) => css`
+export const s_triggerButton = (selectedDate: string[], disabled: boolean = false) => css`
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -12,6 +12,14 @@ export const s_triggerButton = (selectedDate: string[]) => css`
     border: 1px solid ${theme.colors.gray[200]};
     background: ${theme.colors.white};
     color: ${selectedDate.length === 0 ? theme.colors.gray[600] : theme.colors.black};
+
+    ${disabled &&
+    css`
+        &:hover {
+            color: ${theme.colors.white};
+            border: none;
+        }
+    `}
 `;
 
 export const s_dropdown = css`

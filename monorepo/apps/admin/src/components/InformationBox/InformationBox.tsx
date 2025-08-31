@@ -19,6 +19,8 @@ import {
 import type { InformationBoxProps } from './types';
 
 function InformationBox({
+    name,
+    email,
     profileImage,
     personalInformation,
     preQuestionAnswers,
@@ -29,8 +31,8 @@ function InformationBox({
     // lib hooks
     // initial value
     const textMap = [
-        { label: '이름', value: getPersonalValue('NAME') },
-        { label: '이메일', value: getPersonalValue('EMAIL') },
+        { label: '이름', value: name },
+        { label: '이메일', value: email },
         { label: '학번', value: getPersonalValue('STUDENT_ID') },
         { label: '전화번호', value: getPersonalValue('PHONE_NUMBER') },
     ];

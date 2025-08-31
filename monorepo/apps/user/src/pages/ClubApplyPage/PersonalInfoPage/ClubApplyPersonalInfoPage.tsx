@@ -17,7 +17,9 @@ import {
     s_emailInputContainer,
     s_emailInputSx,
     s_emailSx,
+    s_emailVerifyButton,
     s_fileUploaderSx,
+    s_labelMultiline,
     s_labelTextSx,
 } from './ClubApplyPersonalInfoPage.style';
 
@@ -74,7 +76,7 @@ function ClubApplyPersonalInfoPage({
         <div css={containerStyle}>
             {clubPersonalQuestions.map((question) => {
                 if (question.type === 'EMAIL') {
-                    const value = getAnswer(answers, question.label);
+                    const value = getAnswer(answers, question.id);
                     const hasError = getValidationError(question.label, value);
                     const isThisLocked = isEmailLocked;
 
@@ -90,7 +92,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -125,6 +129,7 @@ function ClubApplyPersonalInfoPage({
                                 {!isThisLocked ? (
                                     <Button
                                         variant="outlined"
+                                        sx={s_emailVerifyButton}
                                         onClick={async () => {
                                             if (!value) return toast.error('이메일을 입력해주세요');
                                             if (hasError)
@@ -192,7 +197,45 @@ function ClubApplyPersonalInfoPage({
                     return (
                         <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" textAlign="start" sx={s_labelMultiline}>
+                                    {question.label}
+                                </Text>
+                                {question.isRequired && (
+                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
+                                        *
+                                    </Text>
+                                )}
+                            </div>
+                            <FileUpLoader
+                                sx={s_fileUploaderSx}
+                                files={filesByQuestion[question.id] ?? []}
+                                onFilesChange={(newFiles: File[]) => {
+                                    onFileUpload(
+                                        question.id,
+                                        question.label,
+                                        question.type,
+                                        newFiles,
+                                    );
+                                }}
+                                maxFileCount={1}
+                                imageOnly={true}
+                                disabled={isFileUploading}
+                            >
+                                <FileUpLoader.HelperText>
+                                    1개의 이미지 파일만 넣어주세요.
+                                </FileUpLoader.HelperText>
+                                <FileUpLoader.Button />
+                                <FileUpLoader.Box />
+                            </FileUpLoader>
+                        </div>
+                    );
+                } else if (question.type === 'FILE') {
+                    return (
+                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
+                            <div css={labelContainer}>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -214,40 +257,7 @@ function ClubApplyPersonalInfoPage({
                                 disabled={isFileUploading}
                             >
                                 <FileUpLoader.HelperText>
-                                    1개의 이미지 파일만 넣어주세요.
-                                </FileUpLoader.HelperText>
-                                <FileUpLoader.Button />
-                                <FileUpLoader.Box />
-                            </FileUpLoader>
-                        </div>
-                    );
-                } else if (question.type === 'FILE') {
-                    return (
-                        <div key={question.id} css={clubApplyPersonalQuestionForm(false)}>
-                            <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
-                                {question.isRequired && (
-                                    <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
-                                        *
-                                    </Text>
-                                )}
-                            </div>
-                            <FileUpLoader
-                                sx={s_fileUploaderSx}
-                                files={filesByQuestion[question.id] ?? []}
-                                onFilesChange={(newFiles: File[]) => {
-                                    onFileUpload(
-                                        question.id,
-                                        question.label,
-                                        question.type,
-                                        newFiles,
-                                    );
-                                }}
-                                maxFileCount={20}
-                                disabled={isFileUploading}
-                            >
-                                <FileUpLoader.HelperText>
-                                    1개의 파일을 첨부할 수 있습니다.
+                                    1개의 파일을 첨부할 수 있어요.
                                 </FileUpLoader.HelperText>
                                 <FileUpLoader.Button />
                                 <FileUpLoader.Box />
@@ -266,7 +276,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -283,7 +295,7 @@ function ClubApplyPersonalInfoPage({
                                     })) || []
                                 }
                                 size="sm"
-                                value={getAnswer(answers, question.label)}
+                                value={getAnswer(answers, question.id)}
                                 onChange={(value) =>
                                     onAnswerChange(
                                         question.id,
@@ -308,7 +320,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -316,7 +330,7 @@ function ClubApplyPersonalInfoPage({
                                 )}
                             </div>
                             {question?.options?.map((option) => {
-                                const currentAnswers = getAnswer(answers, question.label);
+                                const currentAnswers = getAnswer(answers, question.id);
                                 const isChecked = currentAnswers.includes(option.id);
 
                                 return (
@@ -343,7 +357,7 @@ function ClubApplyPersonalInfoPage({
                 } else {
                     const hasError = getValidationError(
                         question.label,
-                        getAnswer(answers, question.label),
+                        getAnswer(answers, question.id),
                     );
                     return (
                         <div
@@ -357,7 +371,9 @@ function ClubApplyPersonalInfoPage({
                             }}
                         >
                             <div css={labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -368,7 +384,7 @@ function ClubApplyPersonalInfoPage({
                                 variant="lined"
                                 labelSx={labelSx}
                                 inputSx={inputSx}
-                                value={getAnswer(answers, question.label)}
+                                value={getAnswer(answers, question.id)}
                                 onChange={(event) =>
                                     onAnswerChange(question.id, question.label, event.target.value)
                                 }
@@ -379,7 +395,7 @@ function ClubApplyPersonalInfoPage({
                                     touched[question.label]
                                         ? getErrorMessage(
                                               question.label,
-                                              getAnswer(answers, question.label),
+                                              getAnswer(answers, question.id),
                                           )
                                         : undefined
                                 }

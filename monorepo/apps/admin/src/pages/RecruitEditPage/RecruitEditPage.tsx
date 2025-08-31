@@ -170,20 +170,33 @@ function RecruitEditPage() {
     // calculated values
     const hasPeriod = (p: { startDate: string; endDate: string }) => !!p?.startDate && !!p?.endDate;
     const isRecruitEditable = detailAnnouncement
-        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs(), 'day')
+        ? dayjs(detailAnnouncement.applicationPeriod.startDate).isAfter(dayjs(), 'day') ||
+          detailAnnouncement.announcementType === 'ALWAYS_OPEN'
         : false;
 
     //--------Step별 유효성 검사--------//
     //step1 검사
     const isDescriptionStepValid = useMemo(() => {
         return (
-            recruitDetailInfo.recruitmentSubject.trim() !== '' &&
+            recruitDetailInfo.recruitmentSubject.trim().length >= 2 &&
+            recruitDetailInfo.recruitmentSubject.trim().length <= 200 &&
             recruitDetailInfo.recruitmentSummaryDescription.trim() !== '' &&
+            (!recruitDetailInfo.recruitmentField ||
+                recruitDetailInfo.recruitmentField.length <= 12) &&
+            (!recruitDetailInfo.activityPeriod || recruitDetailInfo.activityPeriod.length <= 12) &&
+            (!recruitDetailInfo.recruitmentTarget ||
+                recruitDetailInfo.recruitmentTarget.length <= 12) &&
+            (!recruitDetailInfo.recruitmentNumber ||
+                recruitDetailInfo.recruitmentNumber.length <= 12) &&
             hasPeriod(recruitDetailInfo.documentPeriod)
         );
     }, [
         recruitDetailInfo.recruitmentSubject,
         recruitDetailInfo.documentPeriod,
+        recruitDetailInfo.recruitmentField,
+        recruitDetailInfo.activityPeriod,
+        recruitDetailInfo.recruitmentNumber,
+        recruitDetailInfo.recruitmentTarget,
         recruitDetailInfo.recruitmentSummaryDescription,
     ]);
 
@@ -336,9 +349,11 @@ function RecruitEditPage() {
                 recruitmentField: detailAnnouncement.field,
                 recruitmentTarget: detailAnnouncement.target,
                 documentPeriod: {
-                    startDate: dayjs(detailAnnouncement.applicationPeriod.startDate).format(
-                        'YYYY-MM-DD',
-                    ),
+                    startDate: detailAnnouncement.applicationPeriod.startDate.startsWith('0001')
+                        ? '0001-01-01'
+                        : dayjs(detailAnnouncement.applicationPeriod.startDate).format(
+                              'YYYY-MM-DD',
+                          ),
                     endDate: dayjs(detailAnnouncement.applicationPeriod.endDate).format(
                         'YYYY-MM-DD',
                     ),
@@ -502,7 +517,7 @@ function RecruitEditPage() {
                                 <AttentionTriangle css={s_warningIcon} />
                             </div>
                         </div>
-                        <Text type="h4Bold" sx={s_captionText}>
+                        <Text type="h4Semibold" sx={s_captionText}>
                             이미 모집이 시작된 공고는 수정할 수 없어요!
                         </Text>
                     </div>

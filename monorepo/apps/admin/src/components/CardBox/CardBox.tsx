@@ -2,7 +2,7 @@ import MeatBallMenu from '@assets/images/meatball-menu.svg';
 import { ApplicantCard } from '@components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Button, Divider, Dropdown, Text, TextToggle } from '@ssoc/ui';
+import { Button, Divider, Dropdown, Text, TextToggle, useToast } from '@ssoc/ui';
 
 import {
     s_boxContainer,
@@ -41,6 +41,7 @@ function CardBox({
 }: CardBoxProps) {
     // prop destruction
     // lib hooks
+    const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
     const [selectedPassApplicantIds, setSelectedPassApplicantIds] = useState<string[]>([]);
@@ -109,6 +110,13 @@ function CardBox({
 
     const handleToggle = () => {
         setFail((prev) => !prev);
+    };
+
+    const handleInterviewToast = () => {
+        toast('면접 일정은 개별 지원자가 아닌 전체 지원자에게 보내주세요!', {
+            type: 'error',
+            toastTheme: 'black',
+        });
     };
 
     //effects
@@ -230,13 +238,20 @@ function CardBox({
                                         <Dropdown.Item
                                             inset
                                             sx={s_dropdownItem}
-                                            onClick={() => {
-                                                onEmailDialogOpen(
-                                                    getEmailTargetType(),
-                                                    selectedGroup.ids,
-                                                    true,
-                                                );
-                                            }}
+                                            onClick={
+                                                selectedGroup.ids.length ===
+                                                selectedGroup.list.length
+                                                    ? () => {
+                                                          onEmailDialogOpen(
+                                                              getEmailTargetType(),
+                                                              selectedGroup.ids,
+                                                              true,
+                                                          );
+                                                      }
+                                                    : () => {
+                                                          handleInterviewToast();
+                                                      }
+                                            }
                                             disabled={isDisabled}
                                         >
                                             <Text as="text" type="subCaptionRegular">

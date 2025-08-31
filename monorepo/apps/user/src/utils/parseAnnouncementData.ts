@@ -61,23 +61,30 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
                   ?.split('T')[0]
                   .slice(2)
                   .replace(/-/g, '.');
-
     const applicationPeriod =
         announcementDetaildata.applicationPeriod === null
             ? '미정'
-            : `${applicationStartDate} ~ ${applicationEndDate}`;
+            : applicationStartDate === applicationEndDate
+              ? applicationStartDate
+              : `${applicationStartDate} ~ ${applicationEndDate}`;
     const interviewPeriod =
         announcementDetaildata.interviewPeriod === null
             ? '미정'
-            : `${interviewStartDate} ~ ${interviewEndDate}`;
+            : interviewStartDate === interviewEndDate
+              ? interviewStartDate
+              : `${interviewStartDate} ~ ${interviewEndDate}`;
     const documentResultPeriod =
         announcementDetaildata.documentResultPeriod === null
             ? '미정'
-            : `${documentResultStartDate} ~ ${documentResultEndDate}`;
+            : documentResultStartDate === documentResultEndDate
+              ? documentResultStartDate
+              : `${documentResultStartDate} ~ ${documentResultEndDate}`;
     const finalResultPeriod =
         announcementDetaildata.finalResultPeriod === null
             ? '미정'
-            : `${finalResultStartDate} ~ ${finalResultEndDate}`;
+            : finalResultStartDate === finalResultEndDate
+              ? finalResultStartDate
+              : `${finalResultStartDate} ~ ${finalResultEndDate}`;
 
     return [
         {
@@ -104,7 +111,7 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
             id: '5',
             title: '서류 접수',
             content: applicationPeriod
-                ? applicationPeriod[0] === '9'
+                ? applicationPeriod.includes('99')
                     ? '상시 모집'
                     : applicationPeriod
                 : '미정',
@@ -113,7 +120,7 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
             id: '6',
             title: '면접 기간',
             content: interviewPeriod
-                ? interviewPeriod[0] === '9'
+                ? applicationPeriod.includes('99')
                     ? '상시 모집'
                     : interviewPeriod
                 : '미정',
@@ -122,7 +129,7 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
             id: '7',
             title: '서류 발표',
             content: documentResultPeriod
-                ? documentResultPeriod[0] === '9'
+                ? applicationPeriod.includes('99')
                     ? '상시 모집'
                     : documentResultPeriod
                 : '미정',
@@ -131,7 +138,7 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
             id: '8',
             title: '최종 합격',
             content: finalResultPeriod
-                ? finalResultPeriod[0] === '9'
+                ? applicationPeriod.includes('99')
                     ? '상시 모집'
                     : finalResultPeriod
                 : '미정',

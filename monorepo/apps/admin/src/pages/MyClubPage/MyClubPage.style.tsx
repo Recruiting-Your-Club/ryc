@@ -59,3 +59,12 @@ export const plusButton = css`
     width: 4.5rem;
     border-radius: 10px;
 `;
+
+export const s_nonClub = css`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.4rem 0;
+    text-align: center;
+`;

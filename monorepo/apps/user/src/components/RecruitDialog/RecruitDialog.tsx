@@ -27,7 +27,7 @@ function RecruitDialog(props: RecruitmentDialogProps) {
     // prop destruction
     const { open, handleClose, announcementDetaildata } = props;
     // lib hooks
-    const { goTo } = useRouter();
+    const navigate = useNavigate();
     // initial values
     const applicationEndDate = announcementDetaildata?.applicationPeriod?.endDate;
     const images = announcementDetaildata?.images || [];
@@ -40,10 +40,11 @@ function RecruitDialog(props: RecruitmentDialogProps) {
     const clubBoxData = announcementDetaildata
         ? parseAnnouncementClubBoxData(announcementDetaildata)
         : [];
+    const clubId = announcementDetaildata?.clubId === null ? '' : announcementDetaildata?.clubId;
     // handlers
     const handleFullPageView = () => {
         handleClose?.();
-        goTo(`/announcements/${announcementDetaildata?.id}`);
+        navigate(`/announcements/${announcementDetaildata?.id}`);
     };
     //effects
 
@@ -91,7 +92,11 @@ function RecruitDialog(props: RecruitmentDialogProps) {
                     size="xl"
                     onClick={() => {
                         handleClose?.();
-                        goTo(`/announcements/${announcementDetaildata?.id}/agreement`);
+                        navigate(`/announcements/${announcementDetaildata?.id}/agreement`, {
+                            state: {
+                                clubId: clubId,
+                            },
+                        });
                     }}
                     sx={applyButton}
                     zIndex={10}

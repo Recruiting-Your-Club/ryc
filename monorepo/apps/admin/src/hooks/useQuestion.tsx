@@ -2,8 +2,8 @@ import type { QuestionProps, QuestionType } from '@components/QuestionForm/types
 import React, { useCallback, useId, useState } from 'react';
 
 const DEFAULT_OPTIONS = [
-    { id: 'opt1', text: '' },
-    { id: 'opt2', text: '' },
+    { id: crypto.randomUUID(), text: '' },
+    { id: crypto.randomUUID(), text: '' },
 ];
 
 export const useQuestion = () => {

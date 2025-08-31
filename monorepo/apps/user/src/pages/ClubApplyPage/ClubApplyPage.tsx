@@ -3,12 +3,12 @@ import type {
     PersonalInfoQuestionType,
     QuestionType,
 } from '@api/domain/announcement/types';
-import { announcementQueries } from '@api/queryFactory';
+import { announcementQueries, clubQueries } from '@api/queryFactory';
 import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { returnErrorMessage } from '@utils/getErrorMessage';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { useFileUpload, useRouter } from '@ssoc/hooks';
 import { Avatar, Button, Text, useToast } from '@ssoc/ui';
@@ -56,16 +56,18 @@ function ClubApplyPage() {
     // prop destruction
     // lib hooks
     const { announcementId } = useParams<{ announcementId: string }>();
-    const { clubName, clubLogo, clubCategory, clubField, applicationPeriod } = useClubStore();
+    const { clubField, applicationPeriod, setClubName } = useClubStore();
     const { getAnswers, setAnswers: setApplicationAnswers, updateFiles } = useApplicationStore();
     const applicationAnswers = getAnswers(announcementId || '');
     const { goTo } = useRouter();
+    const { clubId } = useLocation().state as { clubId: string };
     const { toast } = useToast();
     const { uploadFiles, isLoading: isFileUploading } = useFileUpload(BASE_URL);
     // query hooks
     const { data: applicationForm } = useSuspenseQuery(
         announcementQueries.getApplicationForm(announcementId || ''),
     );
+    const { data: clubData } = useSuspenseQuery(clubQueries.getClub(clubId));
     const { mutate: submitApplication, isPending: isSubmitting } = usePostApplicationAnswers({
         announcementId: announcementId || '',
         onSuccess: (response: ApplicationSubmissionResponse) => {
@@ -194,197 +196,229 @@ function ClubApplyPage() {
         return isSubmitting || !baseReady;
     }, [isSubmitting, requiredQuestionsCompleted, completedQuestions, allQuestions.length]);
 
-    const allocateFocus = (questionTitle: string) => {
+    const allocateFocus = useCallback((questionTitle: string) => {
         const element = questionRefs.current[questionTitle];
         if (element) {
             element.focus();
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-    };
+    }, []);
 
     // handlers
-    const handleBlur = (questionTitle: string) => {
+    const handleBlur = useCallback((questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: true }));
-    };
+    }, []);
 
-    const handleFocus = (questionTitle: string) => {
+    const handleFocus = useCallback((questionTitle: string) => {
         setTouched((prev) => ({ ...prev, [questionTitle]: false }));
-    };
+    }, []);
 
-    const handleFileUpload = async (
-        questionId: string,
-        questionTitle: string,
-        questionType: string,
-        files: File[],
-    ) => {
-        try {
-            updateFiles(announcementId || '', questionId, files);
+    const handleFileUpload = useCallback(
+        async (questionId: string, questionTitle: string, questionType: string, files: File[]) => {
+            try {
+                const MAX_FILE_SIZE = 5 * 1024 * 1024;
+                const oversizedFiles = files.filter((file) => file.size > MAX_FILE_SIZE);
 
-            if (files.length === 0) {
-                handleAnswerChange(questionId, questionTitle, '');
-                return;
+                if (oversizedFiles.length > 0) {
+                    toast.error('파일이 너무 커요. 5MB 이하로 선택해주세요');
+                    return;
+                }
+
+                const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+                const MAX_TOTAL_SIZE = 4 * 1024 * 1024;
+
+                if (totalSize > MAX_TOTAL_SIZE) {
+                    toast.error('5MB가 넘으면 업로드 할 수 없어요.');
+                    return;
+                }
+
+                updateFiles(announcementId || '', questionId, files);
+
+                if (files.length === 0) {
+                    handleAnswerChange(questionId, questionTitle, '');
+                    return;
+                }
+
+                const fileMetadataIds = await uploadFiles(files, questionType);
+                const value = fileMetadataIds.map((result) => result.fileMetadataId).join(',');
+                handleAnswerChange(questionId, questionTitle, value);
+
+                toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
+            } catch (error) {
+                toast.error('파일 업로드에 실패했습니다.');
             }
+        },
+        [announcementId, updateFiles, uploadFiles, toast],
+    );
 
-            const fileMetadataIds = await uploadFiles(files, questionType);
-            const value = fileMetadataIds.map((result) => result.fileMetadataId).join(',');
-            handleAnswerChange(questionId, questionTitle, value);
+    const handleAnswerChange = useCallback(
+        (questionId: string, questionTitle: string, value: string, optionText?: string) => {
+            setAnswers((prev) => {
+                const existingAnswer = prev.find((answer) => answer.id === questionId);
+                const question = clubPersonalInfoQuestions.find(
+                    (question) => question.id === questionId,
+                );
 
-            toast.success(`${files.length}개의 파일이 성공적으로 업로드되었습니다.`);
-        } catch (error) {
-            toast.error('파일 업로드에 실패했습니다.');
-        }
-    };
+                let newAnswers: Answer[];
 
-    const handleAnswerChange = (
-        questionId: string,
-        questionTitle: string,
-        value: string,
-        optionText?: string,
-    ) => {
-        setAnswers((prev) => {
-            const existingAnswer = prev.find((answer) => answer.questionTitle === questionTitle);
-            const question = clubPersonalInfoQuestions.find(
-                (question) => question.label === questionTitle,
-            );
+                switch (question?.type) {
+                    case 'MULTIPLE_CHOICE': {
+                        const currentOptionIds = existingAnswer?.optionIds || [];
+                        const isCurrentlyChecked = currentOptionIds.includes(value);
 
-            let newAnswers: Answer[];
+                        const newOptionIds = isCurrentlyChecked
+                            ? currentOptionIds.filter((id) => id !== value)
+                            : [...currentOptionIds, value];
 
-            switch (question?.type) {
-                case 'MULTIPLE_CHOICE': {
-                    const currentOptionIds = existingAnswer?.optionIds || [];
-                    const isCurrentlyChecked = currentOptionIds.includes(value);
+                        const newAnswer: Answer = {
+                            id: questionId,
+                            value: newOptionIds.join(','),
+                            questionTitle: questionTitle,
+                            pageAnswerType: 'detail',
+                            questionType: question.type,
+                            optionIds: newOptionIds,
+                        };
 
-                    const newOptionIds = isCurrentlyChecked
-                        ? currentOptionIds.filter((id) => id !== value)
-                        : [...currentOptionIds, value];
+                        newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
+                        break;
+                    }
 
-                    const newAnswer: Answer = {
-                        id: questionId,
-                        value: newOptionIds.join(','),
-                        questionTitle,
-                        pageAnswerType: 'detail',
-                        questionType: question.type,
-                        optionIds: newOptionIds,
-                    };
+                    case 'SINGLE_CHOICE': {
+                        const newAnswer: Answer = {
+                            id: questionId,
+                            value: optionText || value,
+                            questionTitle: questionTitle,
+                            pageAnswerType: 'detail',
+                            questionType: question.type,
+                            optionIds: [value],
+                        };
 
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
-                    break;
+                        newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
+                        break;
+                    }
+
+                    case 'PROFILE_IMAGE':
+                    case 'FILE': {
+                        const newAnswer: Answer = {
+                            id: questionId,
+                            value: value,
+                            questionTitle: questionTitle,
+                            pageAnswerType: 'personal',
+                            questionType: question.type,
+                        };
+
+                        newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
+                        break;
+                    }
+
+                    default: {
+                        // 일반 텍스트 입력인 경우
+                        const newAnswer: Answer = {
+                            id: questionId,
+                            value,
+                            questionTitle: questionTitle,
+                            pageAnswerType: clubPersonalInfoQuestions.some(
+                                (question) => question.id === questionId,
+                            )
+                                ? ('personal' as PageAnswer)
+                                : ('detail' as PageAnswer),
+                            questionType: question?.type as QuestionType | PersonalInfoQuestionType,
+                        };
+
+                        newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionId);
+                        break;
+                    }
                 }
 
-                case 'SINGLE_CHOICE': {
-                    const newAnswer: Answer = {
-                        id: questionId,
-                        value: optionText || value,
-                        questionTitle,
-                        pageAnswerType: 'detail',
-                        questionType: question.type,
-                        optionIds: [value],
-                    };
+                return newAnswers;
+            });
+        },
+        [clubPersonalInfoQuestions],
+    );
 
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
-                    break;
-                }
-
-                case 'PROFILE_IMAGE':
-                case 'FILE': {
-                    const newAnswer: Answer = {
-                        id: questionId,
-                        value: value,
-                        questionTitle,
-                        pageAnswerType: 'personal',
-                        questionType: question.type,
-                    };
-
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
-                    break;
-                }
-
-                default: {
-                    // 일반 텍스트 입력인 경우
-                    const newAnswer: Answer = {
-                        id: questionId,
-                        value,
-                        questionTitle,
-                        pageAnswerType: clubPersonalInfoQuestions.some(
-                            (question) => question.label === questionTitle,
-                        )
-                            ? ('personal' as PageAnswer)
-                            : ('detail' as PageAnswer),
-                        questionType: question?.type as QuestionType | PersonalInfoQuestionType,
-                    };
-
-                    newAnswers = updateAnswers(prev, existingAnswer, newAnswer, questionTitle);
-                    break;
-                }
-            }
-
-            setApplicationAnswers(announcementId || '', newAnswers);
-
-            return newAnswers;
-        });
-    };
-
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         setIsSubmitDialogOpen(true);
-    };
+    }, []);
 
-    const handleConfirmSubmit = () => {
+    const handleConfirmSubmit = useCallback(() => {
         const answerData = makeAnsewerDataForSubmit(answers);
         const verifyCode = sessionStorage.getItem('email_verification_token') ?? '';
         submitApplication({ data: answerData, verifyCode: verifyCode });
-    };
+    }, [answers, submitApplication]);
 
-    const handleQuestionFocus = (questionTitle: string, tab: string) => {
-        if (activeTab !== tab) {
-            setActiveTab(tab);
-            setTimeout(() => {
+    const handleQuestionFocus = useCallback(
+        (questionTitle: string, tab: string) => {
+            if (activeTab !== tab) {
+                setActiveTab(tab);
+                setTimeout(() => {
+                    allocateFocus(questionTitle);
+                }, 50);
+            } else {
                 allocateFocus(questionTitle);
-            }, 50);
-        } else {
-            allocateFocus(questionTitle);
-        }
-    };
+            }
+        },
+        [activeTab, allocateFocus],
+    );
 
-    const navigationItem = [
-        {
-            title: '사전질문',
-            page: (
-                <ClubApplyPersonalInfoPage
-                    announcementId={announcementId || ''}
-                    answers={answers}
-                    clubPersonalQuestions={clubPersonalInfoQuestions}
-                    onAnswerChange={handleAnswerChange}
-                    onFileUpload={handleFileUpload}
-                    containerStyle={applyFormContainer}
-                    getValidationError={getValidationError}
-                    getErrorMessage={getErrorMessage}
-                    touched={touched}
-                    onBlur={handleBlur}
-                    onFocus={handleFocus}
-                    questionRefs={questionRefs}
-                    isFileUploading={isFileUploading}
-                    onEmailVerifiedChange={setIsEmailVerified}
-                />
-            ),
-            width: '5.8rem',
-        },
-        {
-            title: '자기소개서',
-            page: (
-                <ClubApplyDetailQuestionPage
-                    answers={answers}
-                    clubDetailQuestions={detailQuestions}
-                    onAnswerChange={handleAnswerChange}
-                    containerStyle={applyFormContainer}
-                    touched={touched}
-                    onBlur={handleBlur}
-                    onFocus={handleFocus}
-                    questionRefs={questionRefs}
-                />
-            ),
-            width: '7.9rem',
-        },
-    ];
+    const navigationItem = useMemo(
+        () => [
+            {
+                title: '사전질문',
+                page: (
+                    <ClubApplyPersonalInfoPage
+                        announcementId={announcementId || ''}
+                        answers={answers}
+                        clubPersonalQuestions={clubPersonalInfoQuestions}
+                        onAnswerChange={handleAnswerChange}
+                        onFileUpload={handleFileUpload}
+                        containerStyle={applyFormContainer}
+                        getValidationError={getValidationError}
+                        getErrorMessage={getErrorMessage}
+                        touched={touched}
+                        onBlur={handleBlur}
+                        onFocus={handleFocus}
+                        questionRefs={questionRefs}
+                        isFileUploading={isFileUploading}
+                        onEmailVerifiedChange={setIsEmailVerified}
+                    />
+                ),
+                width: '5.8rem',
+            },
+            {
+                title: '자기소개서',
+                page: (
+                    <ClubApplyDetailQuestionPage
+                        answers={answers}
+                        clubDetailQuestions={detailQuestions}
+                        onAnswerChange={handleAnswerChange}
+                        containerStyle={applyFormContainer}
+                        touched={touched}
+                        onBlur={handleBlur}
+                        onFocus={handleFocus}
+                        questionRefs={questionRefs}
+                    />
+                ),
+                width: '7.9rem',
+            },
+        ],
+        [
+            announcementId,
+            answers,
+            clubPersonalInfoQuestions,
+            handleAnswerChange,
+            handleFileUpload,
+            applyFormContainer,
+            getValidationError,
+            getErrorMessage,
+            touched,
+            handleBlur,
+            handleFocus,
+            questionRefs,
+            isFileUploading,
+            setIsEmailVerified,
+            detailQuestions,
+        ],
+    );
 
     // effects
     useEffect(() => {
@@ -418,26 +452,40 @@ function ClubApplyPage() {
             setAnswers(applicationAnswers);
         }
     }, [applicationAnswers]);
+    // answers 상태가 변경될 때마다 zustand 스토어 업데이트
+    useEffect(() => {
+        if (announcementId && answers.length > 0) {
+            setApplicationAnswers(announcementId, answers);
+        }
+    }, [answers, announcementId, setApplicationAnswers]);
+
+    useEffect(() => {
+        setClubName(clubData?.name ?? '');
+    }, [clubData]);
 
     return (
         <div css={clubApplyPage}>
             <div css={clubApplyPageMainContainer}>
                 <div css={clubLogoAndNameContainer}>
-                    {clubLogo ? (
-                        <img src={clubLogo} alt="로고" css={svgContainer} />
+                    {clubData?.representativeImage?.url ? (
+                        <img
+                            src={clubData?.representativeImage?.url}
+                            alt="로고"
+                            css={svgContainer}
+                        />
                     ) : (
                         <Avatar
                             shape="square"
                             size="xl"
                             radius="10px"
-                            imageURL={clubLogo}
+                            imageURL={clubData?.representativeImage?.url ?? ''}
                             imageName="logo"
                         />
                     )}
                     <div css={clubNameContainer}>
-                        <Text type="h3Semibold">{clubName}</Text>
+                        <Text type="h3Semibold">{clubData?.name}</Text>
                         <Text type="subCaptionRegular" color="helper" textAlign="left">
-                            {getCategory(clubCategory)}
+                            {getCategory(clubData?.category)}
                         </Text>
                     </div>
                 </div>
@@ -464,8 +512,8 @@ function ClubApplyPage() {
 
             <div css={submitCardContainer}>
                 <ClubSubmitCard
-                    clubName={clubName}
-                    category={clubCategory}
+                    clubName={clubData?.name ?? ''}
+                    category={clubData?.category ?? ''}
                     field={clubField}
                     deadline={applicationPeriod.endDate}
                     personalQuestions={clubPersonalInfoQuestions}
@@ -474,7 +522,7 @@ function ClubApplyPage() {
                     requiredQuestionsCount={requiredQuestionsCount}
                     onSubmit={handleSubmit}
                     answers={answers}
-                    logo={clubLogo}
+                    logo={clubData?.representativeImage?.url ?? ''}
                     isSubmitting={isSubmitting}
                     onQuestionFocus={handleQuestionFocus}
                     requiredQuestionsCompleted={requiredQuestionsCompleted}

@@ -75,7 +75,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   ANNOUNCEMENT_DETAIL_DESCRIPTION_EMPTY(
       HttpStatus.INTERNAL_SERVER_ERROR, "공고 상세 설명은 empty일 수 없습니다."),
   ANNOUNCEMENT_DETAIL_DESCRIPTION_TOO_LONG(
-      HttpStatus.INTERNAL_SERVER_ERROR, "공고 상세 설명은 10000자를 초과할 수 없습니다."),
+      HttpStatus.INTERNAL_SERVER_ERROR, "공고 상세 설명은 20000자를 초과할 수 없습니다."),
   ANNOUNCEMENT_SUMMARY_DESCRIPTION_EMPTY(
       HttpStatus.INTERNAL_SERVER_ERROR, "공고 요약 설명은 empty일 수 없습니다."),
   ANNOUNCEMENT_SUMMARY_DESCRIPTION_TOO_LONG(
@@ -384,7 +384,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   // Club Detail Description
   CLUB_DETAIL_DESCRIPTION_EMPTY(HttpStatus.INTERNAL_SERVER_ERROR, "동아리 상세 설명은 empty일 수 없습니다."),
   CLUB_DETAIL_DESCRIPTION_TOO_LONG(
-      HttpStatus.INTERNAL_SERVER_ERROR, "동아리 상세 설명은 5000자를 초과할 수 없습니다."),
+      HttpStatus.INTERNAL_SERVER_ERROR, "동아리 상세 설명은 20000자를 초과할 수 없습니다."),
 
   // Club Category
   CLUB_CATEGORY_NULL(HttpStatus.INTERNAL_SERVER_ERROR, "동아리 카테고리는 null일 수 없습니다."),

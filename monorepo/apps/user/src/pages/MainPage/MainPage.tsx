@@ -1,10 +1,10 @@
 import { clubQueries } from '@api/queryFactory';
+import ssocBanner from '@assets/images/ssoc-banner.png';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 
-import banner from '@ssoc/assets/images/banner.png';
-import basicImage from '@ssoc/assets/images/basicImage.png';
 import Check from '@ssoc/assets/images/check.svg';
+import SSOC from '@ssoc/assets/images/ssoc.png';
 import { Button, Dropdown, MainCard, Text } from '@ssoc/ui';
 
 import { CLUB_CATEGORIES } from '../../constants/club';
@@ -18,7 +18,6 @@ import {
     clubListContainer,
     divider,
     dropdownItem,
-    emptyElement,
     mainPageContainer,
     progressContainer,
     svgContainer,
@@ -74,12 +73,7 @@ function MainPage() {
     return (
         <div css={mainPageContainer}>
             <div css={bannerContainer}>
-                <img
-                    src="https://d2eqevpna0t9fh.cloudfront.net/public/assets/banner.webp"
-                    alt="배너 이미지"
-                    width="100%"
-                    height="100%"
-                />
+                <img src={ssocBanner} alt="배너 이미지" width="100%" height="100%" />
             </div>
             <div css={totalClubContainer}>
                 <Text type="bodySemibold" color="black">
@@ -155,7 +149,7 @@ function MainPage() {
                         description={club.shortDescription}
                         status={club.announcementStatus || ''}
                         clubTags={club.clubTags}
-                        representativeImage={club.representativeImage?.url || basicImage}
+                        representativeImage={club.representativeImage?.url || SSOC}
                         link={club.id}
                     />
                 ))}

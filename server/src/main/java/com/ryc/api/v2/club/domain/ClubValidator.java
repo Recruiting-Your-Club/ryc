@@ -22,7 +22,7 @@ final class ClubValidator extends DomainValidator {
   private static final int MIN_NAME_LENGTH = 2;
   private static final int MAX_NAME_LENGTH = 50;
   private static final int MAX_SHORT_DESCRIPTION_LENGTH = 200;
-  private static final int MAX_DETAIL_DESCRIPTION_LENGTH = 5000;
+  private static final int MAX_DETAIL_DESCRIPTION_LENGTH = 20000;
 
   /** 유효성 검증 진입점 접근 제한자 private-package 준수 순수 검증만 담당 */
   static void validate(

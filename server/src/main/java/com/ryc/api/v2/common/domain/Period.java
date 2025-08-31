@@ -16,12 +16,7 @@ public record Period(LocalDateTime startDate, LocalDateTime endDate) {
 
   @Builder
   public Period {
-    LocalDateTime normalizedStartDate =
-        startDate() != null ? startDate().toLocalDate().atStartOfDay() : null;
-    LocalDateTime normalizedEndDate =
-        endDate() != null ? endDate().toLocalDate().atTime(23, 59, 59) : null;
-
-    PeriodValidator.validate(normalizedStartDate, normalizedEndDate);
+    PeriodValidator.validate(startDate, endDate);
   }
 
   public static Period from(PeriodRequest periodRequest) {

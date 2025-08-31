@@ -1,4 +1,4 @@
-import { DatePicker } from '@components';
+import { DatePicker, DEFAULT_ALWAYS_OPEN_SENTINEL_START } from '@components';
 import { FieldLabel } from '@components/FieldLabel/FieldLabel';
 import { TagInput } from '@components/TagInput';
 import { DETAIL_QUESTION_LIST } from '@constants/descriptionStep';
@@ -16,7 +16,7 @@ import {
     s_form,
     s_formGroup,
 } from './DescriptionStep.style';
-import type { DescriptionProps, DetailQuestionList } from './types';
+import type { DescriptionProps } from './types';
 
 const PERIOD_KEYS = new Set<keyof RecruitDetailInfo>([
     'documentPeriod',
@@ -46,7 +46,7 @@ function DescriptionStepPage({
     ): boolean => {
         const now = dayjs();
 
-        if (dayjs(d0).isBefore(now, 'day')) {
+        if (d0 !== DEFAULT_ALWAYS_OPEN_SENTINEL_START && dayjs(d0).isBefore(now, 'day')) {
             return showError('현재 날짜보다 이전의 날짜는 선택할 수 없어요.');
         }
 
@@ -60,7 +60,7 @@ function DescriptionStepPage({
         if (listKey === 'documentResult' && recruitDetailInfo.documentPeriod.endDate) {
             const { startDate, endDate } = recruitDetailInfo.documentPeriod;
             if (d0 <= endDate || d0 <= startDate) {
-                return showError('서류 합격 발표 일자는 서류 합격 기간 이후여야 해요!');
+                return showError('서류 합격 발표 일자는 서류 접수 기간 이후여야 해요!');
             }
         }
 
@@ -70,7 +70,31 @@ function DescriptionStepPage({
             !recruitDetailInfo.documentPeriod.endDate
         ) {
             if (d0 <= recruitDetailInfo.documentPeriod.startDate) {
-                return showError('서류 합격 발표 일자는 서류 합격 기간 이후여야 해요!');
+                return showError('서류 합격 발표 일자는 서류 접수 기간 이후여야 해요!');
+            }
+        }
+
+        if (listKey === 'interviewSchedule' && recruitDetailInfo.finalResult.startDate) {
+            const resultStart = recruitDetailInfo.finalResult.startDate;
+            if ((d1 && d1 >= resultStart) || (!d1 && d0 >= resultStart)) {
+                return showError('면접 일정은 최종 합격 발표 일자보다 이전이어야 해요!');
+            }
+        }
+
+        if (listKey === 'finalResult' && recruitDetailInfo.interviewSchedule.endDate) {
+            const { startDate, endDate } = recruitDetailInfo.interviewSchedule;
+            if (d0 <= endDate || d0 <= startDate) {
+                return showError('최종 합격 발표 일자는 면접 일정 이후여야 해요!');
+            }
+        }
+
+        if (
+            listKey === 'finalResult' &&
+            recruitDetailInfo.interviewSchedule.startDate &&
+            !recruitDetailInfo.interviewSchedule.endDate
+        ) {
+            if (d0 <= recruitDetailInfo.interviewSchedule.startDate) {
+                return showError('최종 합격 발표 일자는 면접 일정 이후여야 해요!');
             }
         }
 
@@ -85,7 +109,11 @@ function DescriptionStepPage({
     return (
         <>
             <div css={s_descriptionWrapper}>
-                <FieldLabel label="공고 제목" description="공고 제목을 작성해주세요" required />
+                <FieldLabel
+                    label="공고 제목"
+                    description="공고 제목을 2자 이상 200자 이하로 작성해 주세요"
+                    required
+                />
                 <Input
                     placeholder="ex) En# 신입 부원 모집"
                     value={recruitDetailInfo.recruitmentSubject}
@@ -102,7 +130,8 @@ function DescriptionStepPage({
             </div>
             <FieldLabel
                 label="공고 세부 정보"
-                description="형식에 맞게 공고 세부 정보를 기입해주세요"
+                description="형식에 맞게 공고 세부 정보를 12자 이하로 기입하거나 날짜를 선택 해주세요."
+                additionalInformation="서류 접수 기간은 시작 날짜와 종료 날짜 모두 설정해주세요!"
             />
             <div css={s_form}>
                 {DETAIL_QUESTION_LIST.map(({ label, key, placeholder, required, type, mode }) => {
@@ -131,6 +160,7 @@ function DescriptionStepPage({
                                     placeholder={placeholder}
                                     value={recruitDetailInfo[listKey] as string}
                                     onChange={(e) => onChange({ [listKey]: e.target.value })}
+                                    error={(recruitDetailInfo[listKey] as string)?.length > 12}
                                 />
                             ) : (
                                 <DatePicker
@@ -170,6 +200,11 @@ function DescriptionStepPage({
                                         }
                                     }}
                                     showAlwaysOpenToggle={ALWAYS_OPEN_TARGET_KEYS.has(listKey)}
+                                    disabled={
+                                        listKey !== 'documentPeriod' &&
+                                        recruitDetailInfo.documentPeriod.startDate ===
+                                            DEFAULT_ALWAYS_OPEN_SENTINEL_START
+                                    }
                                 />
                             )}
                         </div>

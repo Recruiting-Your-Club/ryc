@@ -1,6 +1,12 @@
 import type { InterviewApplicant, UnreservedApplicant } from '@api/domain/interview/types';
 import type { StepApplicant } from '@api/domain/step/types';
-import { applicantQueries, evaluationQueries, interviewQueries } from '@api/queryFactory';
+import {
+    applicantQueries,
+    evaluationQueries,
+    interviewQueries,
+    stepQueries,
+} from '@api/queryFactory';
+import AttentionTriangle from '@assets/images/attention-triangle.svg';
 import { ErrorDialog, EvaluationBox, InformationBox, IntervieweeList } from '@components';
 import type { EnrichedInterviewee } from '@components/IntervieweeList/types';
 import { INITIAL_EVALUATION_SUMMARY } from '@constants/evaluationPage';
@@ -12,14 +18,20 @@ import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useToast } from '@ssoc/ui';
+import { Text, useToast } from '@ssoc/ui';
 
 import {
+    s_captionText,
     s_evaluationBoxWrapper,
+    s_iconContainer,
     s_informationAndEvaluationContainer,
     s_informationBoxWrapper,
     s_interviewInformationPageContainer,
     s_selectionContainer,
+    s_textBox,
+    s_warningIcon,
+    s_warningIconWrapper,
+    s_warningPageContainer,
 } from './InterviewEvaluationPage.style';
 
 function InterviewEvaluationPage() {
@@ -36,6 +48,9 @@ function InterviewEvaluationPage() {
 
     // form hooks
     // query hooks
+    const { data: totalSteps = { processes: [] } } = useSuspenseQuery(
+        stepQueries.getTotalSteps(announcementId!),
+    );
     const { data: interviewSlots = [] } = useSuspenseQuery(
         interviewQueries.interviewSlot(announcementId!, clubId!),
     );
@@ -79,6 +94,8 @@ function InterviewEvaluationPage() {
     );
 
     // calculated values
+    const isThreeStepProcess = totalSteps?.processes?.length === 3;
+
     const finalIntervieweeList: EnrichedInterviewee[] = useMemo(() => {
         if (!slotApplicants) return [];
 
@@ -104,7 +121,7 @@ function InterviewEvaluationPage() {
                 };
             })
             .filter((item): item is EnrichedInterviewee => item !== null);
-    }, [slotApplicants, interviewSlots]);
+    }, [slotId, slotApplicants, interviewSlots]);
 
     // handlers
     const handleSelectApplicantId = (applicantId: string) => {
@@ -190,57 +207,76 @@ function InterviewEvaluationPage() {
     };
 
     return (
-        <div css={s_interviewInformationPageContainer}>
-            <div css={s_selectionContainer}>
-                <IntervieweeList
-                    intervieweeList={finalIntervieweeList}
-                    interviewSlots={interviewSlots}
-                    selectedApplicantId={selectedApplicant?.applicantId ?? null}
-                    onSelectApplicantId={handleSelectApplicantId}
-                    onInterviewSlotId={setSlotId}
-                />
-            </div>
-            <div css={s_informationAndEvaluationContainer}>
-                <div css={s_informationBoxWrapper}>
-                    <InformationBox
-                        profileImage={
-                            applicantDocument?.profileImage ?? {
-                                id: '',
-                                originalFileName: '',
-                                url: '',
-                                contentType: '',
-                            }
-                        }
-                        personalInformation={applicantDocument?.personalInfos ?? []}
-                        preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
-                        applicationQuestionAnswers={
-                            applicantDocument?.applicationQuestionAnswers ?? []
-                        }
+        <>
+            {isThreeStepProcess ? (
+                <div css={s_interviewInformationPageContainer}>
+                    <div css={s_selectionContainer}>
+                        <IntervieweeList
+                            intervieweeList={finalIntervieweeList}
+                            interviewSlots={interviewSlots}
+                            selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                            onSelectApplicantId={handleSelectApplicantId}
+                            onInterviewSlotId={setSlotId}
+                        />
+                    </div>
+                    <div css={s_informationAndEvaluationContainer}>
+                        <div css={s_informationBoxWrapper}>
+                            <InformationBox
+                                name={applicantDocument?.name ?? ''}
+                                email={applicantDocument?.email ?? ''}
+                                profileImage={
+                                    applicantDocument?.profileImage ?? {
+                                        id: '',
+                                        originalFileName: '',
+                                        url: '',
+                                        contentType: '',
+                                    }
+                                }
+                                personalInformation={applicantDocument?.personalInfos ?? []}
+                                preQuestionAnswers={applicantDocument?.preQuestionAnswers ?? []}
+                                applicationQuestionAnswers={
+                                    applicantDocument?.applicationQuestionAnswers ?? []
+                                }
+                            />
+                        </div>
+                        <div css={s_evaluationBoxWrapper}>
+                            <EvaluationBox
+                                clubId={clubId!}
+                                selectedApplicantId={selectedApplicant?.applicantId ?? null}
+                                evaluation={
+                                    interviewEvaluationDetail?.evaluationsOfApplicants?.find(
+                                        (evaluation) =>
+                                            evaluation.applicantId ===
+                                            (selectedApplicant?.applicantId ?? ''),
+                                    ) ?? INITIAL_EVALUATION_SUMMARY
+                                }
+                                onPostComment={handlePostComment}
+                                onDeleteComment={handleDeleteComment}
+                                onUpdateComment={handleUpdateComment}
+                            />
+                        </div>
+                    </div>
+                    <ErrorDialog
+                        open={errorDialogOpen}
+                        handleClose={() => setErrorDialogOpen(false)}
+                        errorStatusCode={500}
                     />
                 </div>
-                <div css={s_evaluationBoxWrapper}>
-                    <EvaluationBox
-                        clubId={clubId!}
-                        selectedApplicantId={selectedApplicant?.applicantId ?? null}
-                        evaluation={
-                            interviewEvaluationDetail?.evaluationsOfApplicants?.find(
-                                (evaluation) =>
-                                    evaluation.applicantId ===
-                                    (selectedApplicant?.applicantId ?? ''),
-                            ) ?? INITIAL_EVALUATION_SUMMARY
-                        }
-                        onPostComment={handlePostComment}
-                        onDeleteComment={handleDeleteComment}
-                        onUpdateComment={handleUpdateComment}
-                    />
+            ) : (
+                <div css={s_warningPageContainer}>
+                    <div css={s_textBox}>
+                        <div css={s_iconContainer}>
+                            <div css={s_warningIconWrapper}>
+                                <AttentionTriangle css={s_warningIcon} />
+                            </div>
+                        </div>
+                        <Text type="h4Semibold" sx={s_captionText}>
+                            면접 전형이 존재하지 않아요!
+                        </Text>
+                    </div>
                 </div>
-            </div>
-            <ErrorDialog
-                open={errorDialogOpen}
-                handleClose={() => setErrorDialogOpen(false)}
-                errorStatusCode={500}
-            />
-        </div>
+            )}
+        </>
     );
 }
 

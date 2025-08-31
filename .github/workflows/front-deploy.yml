@@ -34,12 +34,14 @@ jobs:
         working-directory: ./monorepo
 
       # 4. user, admin 앱 빌드
-      - name: Build user app
+      - name: Build app
         run: |
           echo "NODE_ENV: $NODE_ENV"
           echo "BASE_URL: $BASE_URL"
           echo "API_MOCKING: $API_MOCKING"
           echo "CHANNEL_PLUGIN_KEY: $CHANNEL_PLUGIN_KEY"
+          echo "SENTRY_AUTH_TOKEN: $SENTRY_AUTH_TOKEN"
+          echo "SENTRY_DSN: $SENTRY_DSN"
           yarn build
         working-directory: ./monorepo
         env:

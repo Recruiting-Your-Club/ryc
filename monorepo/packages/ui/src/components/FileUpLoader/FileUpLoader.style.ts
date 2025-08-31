@@ -110,7 +110,7 @@ export const s_fileHeaderText = (align: Align) => css`
 `;
 
 export const s_fileItem = (files: File[]) => css`
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     ${files.length > 1 &&
     css`
         border-bottom: 1px solid ${theme.colors.gray[200]};
@@ -121,6 +121,7 @@ export const s_fileNameWithIcon = css`
     display: flex;
     align-items: center;
     gap: 1rem;
+    height: 1.5rem;
     ${theme.typography.helperTextRegular};
     word-break: break-all;
     overflow: hidden;
@@ -128,6 +129,7 @@ export const s_fileNameWithIcon = css`
 `;
 
 export const s_fileMetaItem = css`
+    height: 1.5rem;
     color: ${theme.colors.gray[600]};
     ${theme.typography.helperTextRegular};
     white-space: nowrap;
@@ -153,4 +155,5 @@ export const s_fileLink = css`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    height: 100%;
 `;

@@ -25,7 +25,12 @@ function DetailQuestionPage({ detailQuestions, containerStyle }: DetailQuestionP
                     <div key={question.id} css={s_detailQuestionContainer} tabIndex={-1}>
                         <div css={s_labelContainer}>
                             <div css={s_questionTitleContainer}>
-                                <Text type="bodyRegular" noWrap sx={s_questionTitleSx}>
+                                <Text
+                                    type="bodyRegular"
+                                    noWrap
+                                    sx={s_questionTitleSx}
+                                    textAlign="start"
+                                >
                                     {question.label}
                                 </Text>
                                 {question.isRequired && (
@@ -34,13 +39,16 @@ function DetailQuestionPage({ detailQuestions, containerStyle }: DetailQuestionP
                                     </Text>
                                 )}
                             </div>
-                            <Tooltip
-                                content={question.description || ''}
-                                direction={isTablet ? 'bottomLeft' : 'bottom'}
-                            >
-                                <InfoIcon css={s_infoIcon} />
-                            </Tooltip>
+                            {question.description && (
+                                <Tooltip
+                                    content={question.description || ''}
+                                    direction={isTablet ? 'bottomLeft' : 'bottom'}
+                                >
+                                    <InfoIcon css={s_infoIcon} />
+                                </Tooltip>
+                            )}
                         </div>
+
                         <TextArea
                             disabled
                             size="lg"

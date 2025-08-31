@@ -10,7 +10,6 @@ import { useDialog } from '@ssoc/ui/src/hooks';
 import { RecruitCard } from '../../../components/RecruitCard/RecruitCard';
 import { RecruitDialog } from '../../../components/RecruitDialog/RecruitDialog';
 import { ClubDetailRecruitmentLoadingPage } from '../../../pages/LoadingPage/ClubDetailRecruitmentLoadingPage/ClubDetailRecruitmentLoadingPage';
-import { useClubStore } from '../../../stores';
 import {
     recruitCell,
     recruitmentContainer,
@@ -24,7 +23,7 @@ function RecruitmentPage() {
     // lib hooks
     const { goTo } = useRouter();
     const { id: clubId } = useParams<{ id: string }>();
-    const { setApplicationPeriod, setClubField } = useClubStore();
+
     // initial values
     // state, ref, querystring hooks
     const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<string>('');
@@ -58,26 +57,7 @@ function RecruitmentPage() {
         setSelectedAnnouncementId('');
     };
     //effects
-    useEffect(() => {
-        if (selectedAnnouncementDetail) {
-            setApplicationPeriod({
-                startDate:
-                    selectedAnnouncementDetail.applicationPeriod === null
-                        ? '미정'
-                        : selectedAnnouncementDetail.applicationPeriod.startDate,
-                endDate:
-                    selectedAnnouncementDetail.applicationPeriod === null
-                        ? '미정'
-                        : selectedAnnouncementDetail.applicationPeriod.endDate,
-            });
-            setClubField(
-                selectedAnnouncementDetail.field === null
-                    ? '미정'
-                    : selectedAnnouncementDetail.field,
-            );
-        }
-    }, [selectedAnnouncementDetail, setApplicationPeriod, setClubField]);
-
+    //etc
     if (isLoading) {
         return <ClubDetailRecruitmentLoadingPage />;
     }

@@ -10,7 +10,6 @@ import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import BaseImage from '@ssoc/assets/images/basicImage.png';
 import Search from '@ssoc/assets/images/search.svg';
 import { Avatar, Button, Dropdown, Input, Table, useDialog, useToast } from '@ssoc/ui';
 
@@ -168,7 +167,7 @@ const ClubMemberRolePage = () => {
                         </Button>
                     }
                     inputSx={s_inputSx}
-                    placeholder="동아리원 검색 또는 키워드 입력"
+                    placeholder="동아리원을 검색하세요."
                     value={searchText}
                     onChange={(event) => setSearchText(event.target.value)}
                 />
@@ -211,11 +210,7 @@ const ClubMemberRolePage = () => {
                                                     shape="round"
                                                 />
                                             ) : (
-                                                <Avatar
-                                                    imageURL={BaseImage}
-                                                    size="s"
-                                                    shape="round"
-                                                />
+                                                <Avatar imageURL={''} size="s" shape="round" />
                                             )}
                                             {member.adminName}
                                         </div>

@@ -10,6 +10,7 @@ import {
     DetailLoadingPage,
     LoginPage,
     MainLoadingPage,
+    NotFoundPage,
     RecruitmentLoadingPage,
     RegisterPage,
     ReservationPage,
@@ -60,8 +61,6 @@ const router = createBrowserRouter([
                     </ErrorBoundary>
                 ),
             },
-
-            { path: 'test', element: <TestPage /> },
         ],
     },
     {
@@ -113,7 +112,7 @@ const router = createBrowserRouter([
     },
 
     {
-        path: '/reservation/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
+        path: '/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
         element: (
             <ErrorBoundary
                 FallbackComponent={ErrorFallbackPage}
@@ -123,6 +122,7 @@ const router = createBrowserRouter([
             </ErrorBoundary>
         ),
     },
+    { path: '*', element: <NotFoundPage /> },
 ]);
 
 export default router;

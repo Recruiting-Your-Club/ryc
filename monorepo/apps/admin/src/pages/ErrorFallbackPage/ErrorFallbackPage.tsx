@@ -43,10 +43,10 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
             message = ERROR_CODE_500;
             break;
         case 404:
-            message = ERROR_CODE_404_DATA;
+            message = error.message ? `${error.message} (404)` : ERROR_CODE_404_DATA;
             break;
         case 403:
-            message = ERROR_CODE_403;
+            message = error.message ? `${error.message} (403)` : ERROR_CODE_403;
             break;
         case 401:
             message = ERROR_CODE_401;

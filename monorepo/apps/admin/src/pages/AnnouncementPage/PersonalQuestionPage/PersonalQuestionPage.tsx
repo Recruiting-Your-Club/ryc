@@ -7,6 +7,7 @@ import {
     s_fileUploaderSx,
     s_inputSx,
     s_labelContainer,
+    s_labelMultiline,
     s_labelSx,
     s_labelTextSx,
     s_personalQuestionForm,
@@ -45,7 +46,9 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                     return (
                         <div key={question.id} css={s_personalQuestionForm(false)}>
                             <div css={s_labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -71,7 +74,9 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                     return (
                         <div key={question.id} css={s_personalQuestionForm(false)}>
                             <div css={s_labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -93,7 +98,9 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                     return (
                         <div key={question.id} css={s_personalQuestionForm(false)}>
                             <div css={s_labelContainer}>
-                                <Text type="bodyRegular">{question.label}</Text>
+                                <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                    {question.label}
+                                </Text>
                                 {question.isRequired && (
                                     <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                         *
@@ -119,7 +126,9 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                 return (
                     <div key={question.id} css={s_personalQuestionForm(false)}>
                         <div css={s_labelContainer}>
-                            <Text type="bodyRegular">{question.label}</Text>
+                            <Text type="bodyRegular" sx={s_labelMultiline} textAlign="start">
+                                {question.label}
+                            </Text>
                             {question.isRequired && (
                                 <Text type="bodyRegular" color="warning" sx={s_labelTextSx}>
                                     *

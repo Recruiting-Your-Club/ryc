@@ -1,5 +1,6 @@
 import demo from '@assets/images/demo.png';
-import React from 'react';
+import { useAuthStore } from '@stores/authStore';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';
 import { Button, Text } from '@ssoc/ui';
@@ -17,7 +18,26 @@ import {
 } from './EntryPage.style';
 
 function EntryPage() {
-    const { goTo } = useRouter();
+    const { goTo, removeHistoryAndGo } = useRouter();
+    const { accessToken, bootstrap } = useAuthStore();
+    const [checking, setChecking] = useState(true);
+
+    useEffect(() => {
+        if (!checking) return;
+        let cancelled = false;
+
+        (async () => {
+            const token = accessToken ?? (await bootstrap());
+            if (cancelled) return;
+
+            if (token) removeHistoryAndGo('/myClub');
+            setChecking(false);
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [checking, accessToken, bootstrap]);
 
     return (
         <div css={s_container}>
