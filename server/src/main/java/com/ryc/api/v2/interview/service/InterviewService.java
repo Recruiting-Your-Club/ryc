@@ -190,6 +190,15 @@ public class InterviewService {
   public List<InterviewSlotCreateResponse> createInterviewSlots(
       String adminId, String clubId, String announcementId, InterviewSlotCreateRequest request) {
 
+    /**
+     * TODO: 현재 면접 타임대(슬롯)을 수정하는 기능을 서비스에서 제공하지 않음. 따라서 기존의 면접슬롯을 덮어씌우는 방식으로 구현. 추후 수정 기능 구현시 아래 로직
+     * 수정예정
+     */
+
+    // 기존의 인터뷰 슬롯 전체 삭제 후 새로운 인터뷰 슬롯으로 구성.
+    // TODO: 현재 연관관계 매핑과 CASCADE 설정으로 슬롯 삭제시 예약도 자동 삭제됨. 이 부분 논의 필요.
+    interviewRepository.deleteSlotsByAnnouncementId(announcementId);
+
     List<InterviewSlot> interviewSlots =
         request.numberOfPeopleByInterviewDateRequests().stream()
             .map(
