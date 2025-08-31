@@ -164,16 +164,20 @@ function InterviewSettingDialog({
             // eslint-disable-next-line no-empty
         }
 
-        handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend);
-        if (
-            !open &&
-            interviewDetailInformationList.length !== 0 &&
-            emailTitle.length !== 0 &&
-            contentToSend.length !== 0
-        ) {
+        if (handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
             handleReset();
             handleResetContent();
+            handleClose();
         }
+        // if (
+        //     !open &&
+        //     interviewDetailInformationList.length !== 0 &&
+        //     emailTitle.length !== 0 &&
+        //     contentToSend.length !== 0
+        // ) {
+        //     handleReset();
+        //     handleResetContent();
+        // }
     };
 
     // effects
