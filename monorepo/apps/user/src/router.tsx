@@ -113,7 +113,7 @@ const router = createBrowserRouter([
     },
 
     {
-        path: '/reservation/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
+        path: '/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
         element: (
             <ErrorBoundary
                 FallbackComponent={ErrorFallbackPage}
