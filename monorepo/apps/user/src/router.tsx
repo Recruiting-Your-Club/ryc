@@ -61,8 +61,6 @@ const router = createBrowserRouter([
                     </ErrorBoundary>
                 ),
             },
-
-            { path: 'test', element: <TestPage /> },
         ],
     },
     {

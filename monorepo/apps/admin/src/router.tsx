@@ -241,7 +241,6 @@ const router = createBrowserRouter([
             { path: 'login', element: <LoginPage /> },
             { path: 'register', element: <RegisterPage /> },
             { path: 'agreement', element: <RegisterAgreementPage /> },
-            { path: 'test', element: <TestPage /> },
             {
                 path: 'club-create',
                 element: (
