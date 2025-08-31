@@ -95,8 +95,8 @@ function MainCardEditDialog({
                         <MainCard
                             title={club?.name}
                             category={club?.category}
-                            description={shortDescription}
-                            clubTags={hashTags}
+                            description={club?.shortDescription}
+                            clubTags={club?.clubTags}
                             representativeImage={club?.representativeImage?.url || ssoc}
                         />
                     </div>
