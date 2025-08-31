@@ -61,5 +61,41 @@ export const s_alertSvg = css`
     color: ${theme.colors.gray[500]};
     width: 2rem;
     height: 2rem;
-    cursor: pointer;
+`;
+
+export const s_warningPageContainer = css`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 5rem;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const s_textBox = css`
+    margin-bottom: 4rem;
+`;
+
+export const s_iconContainer = css`
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const s_warningIconWrapper = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const s_warningIcon = css`
+    width: 8rem;
+    height: 8rem;
+    fill: ${theme.colors.black};
+`;
+
+export const s_captionText = css`
+    margin-bottom: 0.5rem;
 `;

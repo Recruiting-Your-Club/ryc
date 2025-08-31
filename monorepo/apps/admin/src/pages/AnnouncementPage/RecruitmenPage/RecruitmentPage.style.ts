@@ -5,6 +5,7 @@ import theme from '@ssoc/styles';
 export const s_recruitmentContainer = css`
     position: relative;
     width: 100%;
+    min-width: 80rem;
     height: 100%;
     display: flex;
     flex-direction: column;

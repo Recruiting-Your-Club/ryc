@@ -14,9 +14,9 @@ import type { QuestionProps, QuestionType } from '@components/QuestionForm/types
 
 import type { BasicInfoFields, Period, RecruitDetailInfo } from './types';
 
-export const ALWAYS_OPEN_SENTINEL_DATE_START = '0000-01-01';
+export const ALWAYS_OPEN_SENTINEL_DATE_START = '0001-01-01';
 export const ALWAYS_OPEN_SENTINEL_DATE_END = '9999-12-31';
-export const ALWAYS_OPEN_SENTINEL_START = '0000-01-01T00:00';
+export const ALWAYS_OPEN_SENTINEL_START = '0001-01-01T00:00';
 export const ALWAYS_OPEN_SENTINEL_END = '9999-12-31T00:00';
 
 function toServerDateTime(date?: string): string {
