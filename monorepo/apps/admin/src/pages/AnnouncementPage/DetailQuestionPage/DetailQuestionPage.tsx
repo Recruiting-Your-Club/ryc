@@ -39,13 +39,16 @@ function DetailQuestionPage({ detailQuestions, containerStyle }: DetailQuestionP
                                     </Text>
                                 )}
                             </div>
-                            <Tooltip
-                                content={question.description || ''}
-                                direction={isTablet ? 'bottomLeft' : 'bottom'}
-                            >
-                                <InfoIcon css={s_infoIcon} />
-                            </Tooltip>
+                            {question.description && (
+                                <Tooltip
+                                    content={question.description || ''}
+                                    direction={isTablet ? 'bottomLeft' : 'bottom'}
+                                >
+                                    <InfoIcon css={s_infoIcon} />
+                                </Tooltip>
+                            )}
                         </div>
+
                         <TextArea
                             disabled
                             size="lg"
