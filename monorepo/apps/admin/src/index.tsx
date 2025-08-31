@@ -1,5 +1,6 @@
 import * as ChannelService from '@channel.io/channel-web-sdk-loader';
 import { Global, ThemeProvider } from '@emotion/react';
+import * as Sentry from '@sentry/react';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
@@ -17,17 +18,16 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let globalToast: any = null;
 
-function handleGlobalError(error: unknown) {
-    if (error instanceof HttpError && error.statusCode === 500) {
-        if (globalToast) {
-            globalToast.error('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.', {
-                toastTheme: 'black',
-                position: 'topCenter',
-                duration: 5000,
-            });
-        }
-    }
-}
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    // 성능 모니터링을 위한 설정
+    integrations: [Sentry.browserTracingIntegration()],
+    tracesSampleRate: 1.0,
+    environment: process.env.NODE_ENV,
+    // 프로덕션 환경에서만 Sentry를 활성화
+    enabled: process.env.NODE_ENV === 'production',
+});
+Sentry.setTag('domain', '관리자');
 
 const queryClient = new QueryClient({
     queryCache: new QueryCache({

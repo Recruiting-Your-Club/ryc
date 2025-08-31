@@ -10,6 +10,7 @@ import {
     DetailLoadingPage,
     LoginPage,
     MainLoadingPage,
+    NotFoundPage,
     RecruitmentLoadingPage,
     RegisterPage,
     ReservationPage,
@@ -123,6 +124,7 @@ const router = createBrowserRouter([
             </ErrorBoundary>
         ),
     },
+    { path: '*', element: <NotFoundPage /> },
 ]);
 
 export default router;
