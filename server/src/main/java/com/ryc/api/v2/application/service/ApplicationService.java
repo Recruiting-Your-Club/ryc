@@ -102,10 +102,12 @@ public class ApplicationService {
         (fileId, answerId) ->
             fileService.claimOwnership(
                 List.of(fileId), answerId, FileDomainType.ANSWER_ATTACHMENT));
+    String clubName = announcementRepository.findClubNameByAnnouncementId(announcementId);
 
     eventPublisher.publishEvent(
         ApplicationSuccessEmailEvent.builder()
             .announcementId(announcement.getId())
+            .clubName(clubName)
             .announcementTitle(announcement.getTitle())
             .submittedDate(savedApplication.getCreatedAt())
             .applicantName(savedApplicant.getName())

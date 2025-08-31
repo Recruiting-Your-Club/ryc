@@ -6,6 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record ApplicationSuccessEmailEvent(
+    String clubName,
     String announcementId,
     String announcementTitle,
     LocalDateTime submittedDate,
