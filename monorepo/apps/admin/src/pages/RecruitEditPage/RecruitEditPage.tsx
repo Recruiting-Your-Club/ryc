@@ -349,9 +349,11 @@ function RecruitEditPage() {
                 recruitmentField: detailAnnouncement.field,
                 recruitmentTarget: detailAnnouncement.target,
                 documentPeriod: {
-                    startDate: dayjs(detailAnnouncement.applicationPeriod.startDate).format(
-                        'YYYY-MM-DD',
-                    ),
+                    startDate: detailAnnouncement.applicationPeriod.startDate.startsWith('0001')
+                        ? '0001-01-01'
+                        : dayjs(detailAnnouncement.applicationPeriod.startDate).format(
+                              'YYYY-MM-DD',
+                          ),
                     endDate: dayjs(detailAnnouncement.applicationPeriod.endDate).format(
                         'YYYY-MM-DD',
                     ),
