@@ -29,8 +29,7 @@ function RegisterPage() {
     // initial values
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const nameRegex = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+$/;
-    const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{}|;:,.<>?]).{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{}|;:,.<>?]).{8,}$/;
 
     // state, ref, querystring hooks
     const [email, setEmail] = useState('');
@@ -106,12 +105,9 @@ function RegisterPage() {
             return;
         }
         if (!passwordRegex.test(trimmedPassword)) {
-            toast.error(
-                '비밀번호는 대문자 1개, 소문자 1개 이상, 숫자 1개, 특수문자를 포함해주세요.',
-                {
-                    toastTheme: 'white',
-                },
-            );
+            toast.error('비밀번호는 소문자 1개 이상, 숫자 1개, 특수문자를 포함해주세요.', {
+                toastTheme: 'white',
+            });
             return;
         }
         if (trimmedPassword !== trimmedPasswordConfirm) {
