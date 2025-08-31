@@ -13,9 +13,9 @@ export const returnErrorMessage = (error: ErrorWithStatusCode): string => {
         case 500:
             return ERROR_CODE_500;
         case 404:
-            return ERROR_CODE_404_DATA;
+            return error.message ? `${error.message} (404)` : ERROR_CODE_404_DATA;
         case 403:
-            return ERROR_CODE_403;
+            return error.message ? `${error.message} (403)` : ERROR_CODE_403;
         case 401:
             return ERROR_CODE_401;
         case 400:

@@ -57,7 +57,16 @@ function TestPage() {
         //         <Button onClick={() => setOpenClubCardDialog(true)}>동아리 카드 수정</Button>
         //     </div>
         // </div>
-        <UserSettingPage />
+        <div>
+            <UserSettingPage />
+            <button
+                onClick={() => {
+                    throw new Error('Sentry test from button!');
+                }}
+            >
+                Sentry Test
+            </button>
+        </div>
     );
 }
 export { TestPage };
