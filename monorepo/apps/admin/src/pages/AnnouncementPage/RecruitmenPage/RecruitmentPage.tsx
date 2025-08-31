@@ -41,16 +41,16 @@ function RecruitmentPage({
     const formatDate = (date?: string) => (date ? dayjs(date).format('YY.MM.DD') : '-');
 
     const formatPeriod = (period?: { startDate: string; endDate: string }) => {
-        if (applicationPeriod?.startDate === ALWAYS_OPEN_SENTINEL_START) return '상시모집';
+        if (applicationPeriod?.startDate.startsWith('0001')) return '상시모집';
         if (!period?.startDate || !period?.endDate) {
             return '미정';
         }
         const sameDay = dayjs(period?.startDate).isSame(period?.endDate, 'day');
         return sameDay
             ? formatDate(period?.startDate)
-            : period?.startDate === ALWAYS_OPEN_SENTINEL_START
+            : period?.startDate.startsWith('0001')
               ? '상시모집'
-              : `${formatDate(period?.startDate)} ~ ${formatDate(period?.endDate)} `;
+              : `${formatDate(period?.startDate)} ~ ${formatDate(period?.endDate)}`;
     };
 
     const clubBoxData = useMemo(
