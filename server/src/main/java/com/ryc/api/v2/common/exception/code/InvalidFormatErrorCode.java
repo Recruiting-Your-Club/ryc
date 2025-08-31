@@ -75,7 +75,7 @@ public enum InvalidFormatErrorCode implements ErrorCode {
   ANNOUNCEMENT_DETAIL_DESCRIPTION_EMPTY(
       HttpStatus.INTERNAL_SERVER_ERROR, "공고 상세 설명은 empty일 수 없습니다."),
   ANNOUNCEMENT_DETAIL_DESCRIPTION_TOO_LONG(
-      HttpStatus.INTERNAL_SERVER_ERROR, "공고 상세 설명은 10000자를 초과할 수 없습니다."),
+      HttpStatus.INTERNAL_SERVER_ERROR, "공고 상세 설명은 20000자를 초과할 수 없습니다."),
   ANNOUNCEMENT_SUMMARY_DESCRIPTION_EMPTY(
       HttpStatus.INTERNAL_SERVER_ERROR, "공고 요약 설명은 empty일 수 없습니다."),
   ANNOUNCEMENT_SUMMARY_DESCRIPTION_TOO_LONG(

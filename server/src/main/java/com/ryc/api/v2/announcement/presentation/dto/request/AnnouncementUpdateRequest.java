@@ -40,7 +40,7 @@ public record AnnouncementUpdateRequest(
         @Size(max = 50, message = "모집인원의 최대길이는 50자입니다.")
         String numberOfPeople,
     @Schema(description = "상세 정보", example = "코딩 동아리에서 신입 qnd 모집합니다. ")
-        @Size(max = 10000, message = "공고 상세 설명은 10000자를 초과할 수 없습니다.")
+        @Size(max = 20000, message = "공고 상세 설명은 20000자를 초과할 수 없습니다.")
         String detailDescription,
     @Schema(description = "요약 소개", example = "코딩 동아리에서 신입 qnd 모집합니다.")
         @Size(max = 300, message = "공고 요약 설명은 300자를 초과할 수 없습니다.")
