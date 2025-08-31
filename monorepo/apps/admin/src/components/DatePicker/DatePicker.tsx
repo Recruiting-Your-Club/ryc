@@ -14,7 +14,7 @@ import {
 } from './DatePicker.style';
 import type { DatePickerProps } from './types';
 
-export const DEFAULT_ALWAYS_OPEN_SENTINEL_START = '0000-00-00';
+export const DEFAULT_ALWAYS_OPEN_SENTINEL_START = '0000-01-01';
 const DEFAULT_ALWAYS_OPEN_SENTINEL_END = '9999-12-31';
 
 function isAlwaysOpen(selectedDate: string[], sentinel: { start: string; end: string }) {

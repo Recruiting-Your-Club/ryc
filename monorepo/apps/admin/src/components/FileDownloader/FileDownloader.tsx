@@ -30,29 +30,14 @@ const FileDownloader = ({ fileName, fileData }: DownloadFileProps) => {
         }
     };
 
-    const base64ToBlob = (base64: string, mime = 'application/octet-stream') => {
-        const base64Data = base64.includes(',') ? base64.split(',')[1] : base64;
-        const byteCharacters = atob(base64Data);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        return new Blob([byteArray], { type: mime });
-    };
-
     // handlers
     const handleDownload = () => {
-        const mimeType = getMimeTypeByExtension(fileName);
-        const blob = base64ToBlob(fileData, mimeType);
-        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = url;
+        link.href = fileData;
         link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        URL.revokeObjectURL(url);
     };
 
     // effects
