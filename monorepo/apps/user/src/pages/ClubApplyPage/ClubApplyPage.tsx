@@ -216,6 +216,22 @@ function ClubApplyPage() {
     const handleFileUpload = useCallback(
         async (questionId: string, questionTitle: string, questionType: string, files: File[]) => {
             try {
+                const MAX_FILE_SIZE = 5 * 1024 * 1024;
+                const oversizedFiles = files.filter((file) => file.size > MAX_FILE_SIZE);
+
+                if (oversizedFiles.length > 0) {
+                    toast.error('파일이 너무 커요. 5MB 이하로 선택해주세요');
+                    return;
+                }
+
+                const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+                const MAX_TOTAL_SIZE = 4 * 1024 * 1024;
+
+                if (totalSize > MAX_TOTAL_SIZE) {
+                    toast.error('5MB가 넘으면 업로드 할 수 없어요.');
+                    return;
+                }
+
                 updateFiles(announcementId || '', questionId, files);
 
                 if (files.length === 0) {
