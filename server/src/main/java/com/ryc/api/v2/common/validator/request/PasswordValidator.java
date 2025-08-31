@@ -41,10 +41,10 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
     }
 
     // 복잡성 검증 - 대문자 포함
-    if (!PASSWORD_UPPERCASE_PATTERN.matcher(password).matches()) {
-      setErrorMessage(context, "비밀번호는 최소 하나 이상의 대문자를 포함해야 합니다");
-      return false;
-    }
+    //    if (!PASSWORD_UPPERCASE_PATTERN.matcher(password).matches()) {
+    //      setErrorMessage(context, "비밀번호는 최소 하나 이상의 대문자를 포함해야 합니다");
+    //      return false;
+    //    }
 
     // 복잡성 검증 - 소문자 포함
     if (!PASSWORD_LOWERCASE_PATTERN.matcher(password).matches()) {
@@ -65,16 +65,16 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
     }
 
     // 금지 패턴 검증 - 연속된 동일 문자
-    if (PASSWORD_REPEATED_PATTERN.matcher(password).matches()) {
-      setErrorMessage(context, "비밀번호는 3개 이상의 연속된 동일 문자를 포함할 수 없습니다");
-      return false;
-    }
+    //    if (PASSWORD_REPEATED_PATTERN.matcher(password).matches()) {
+    //      setErrorMessage(context, "비밀번호는 3개 이상의 연속된 동일 문자를 포함할 수 없습니다");
+    //      return false;
+    //    }
 
     // 금지 패턴 검증 - 순차적 문자
-    if (PASSWORD_SEQUENTIAL_PATTERN.matcher(password).matches()) {
-      setErrorMessage(context, "비밀번호는 순차적인 문자 패턴(abc, 123, qwe 등)을 포함할 수 없습니다");
-      return false;
-    }
+    //    if (PASSWORD_SEQUENTIAL_PATTERN.matcher(password).matches()) {
+    //      setErrorMessage(context, "비밀번호는 순차적인 문자 패턴(abc, 123, qwe 등)을 포함할 수 없습니다");
+    //      return false;
+    //    }
 
     // 금지 패턴 검증 - 공백 문자
     if (PASSWORD_WHITESPACE_PATTERN.matcher(password).matches()) {
