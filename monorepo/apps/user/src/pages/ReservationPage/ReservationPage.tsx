@@ -253,7 +253,7 @@ function ReservationPage() {
                             </div>
                             <Text type="captionSemibold" textAlign="end" noWrap>
                                 {selectedInterviewSlot
-                                    ? `잔여여석: ${selectedInterviewSlot?.currentNumberOfPeople} / ${selectedInterviewSlot?.maxNumberOfPeople}`
+                                    ? `잔여여석: ${(selectedInterviewSlot?.maxNumberOfPeople ?? 0) - (selectedInterviewSlot?.currentNumberOfPeople ?? 0)} / ${selectedInterviewSlot?.maxNumberOfPeople ?? 0}`
                                     : '시간을 선택해주세요'}
                             </Text>
                         </div>

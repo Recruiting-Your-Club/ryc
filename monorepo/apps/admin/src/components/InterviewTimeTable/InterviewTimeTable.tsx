@@ -1,6 +1,6 @@
 import { InterviewInformationButton } from '@components';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Calendar, Divider, Text } from '@ssoc/ui';
 
@@ -26,11 +26,7 @@ function InterviewTimeTable({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [highlightedDate, setHighlightedDate] = useState<string>(() => {
-        if (interviewSlots.length > 0 && interviewSlots[0].period.startDate)
-            return dayjs(interviewSlots[0].period.startDate).format('YYYY-MM-DD');
-        return '';
-    });
+    const [highlightedDate, setHighlightedDate] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -56,7 +52,16 @@ function InterviewTimeTable({
             onOpenChange?.(false);
         }
     };
+
     // effects
+    useEffect(() => {
+        if (interviewSlots.length > 0 && selectedInterviewSlotId) {
+            const targetSlot = interviewSlots.find((slot) => slot.id === selectedInterviewSlotId);
+            if (targetSlot?.period?.startDate) {
+                setHighlightedDate(dayjs(targetSlot.period.startDate).format('YYYY-MM-DD'));
+            }
+        }
+    }, [interviewSlots, selectedInterviewSlotId]);
 
     return (
         <div css={[s_interviewTimeTableContainer, sx]}>
