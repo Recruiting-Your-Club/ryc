@@ -78,6 +78,11 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
+  public Boolean isReservedByApplicantId(String applicantId) {
+    return interviewReservationJpaRepository.existsByApplicantId(applicantId);
+  }
+
+  @Override
   public void deleteSlotsByAnnouncementId(String announcementId) {
     interviewSlotJpaRepository.deleteAllByAnnouncementId(announcementId);
   }

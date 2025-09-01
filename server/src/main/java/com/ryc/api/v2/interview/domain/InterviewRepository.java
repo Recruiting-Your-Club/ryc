@@ -24,6 +24,8 @@ public interface InterviewRepository {
 
   Boolean isReservedByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
 
+  Boolean isReservedByApplicantId(String applicantId);
+
   void deleteSlotsByAnnouncementId(String announcementId);
 
   void deleteReservationById(String reservationId);

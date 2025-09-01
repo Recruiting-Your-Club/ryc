@@ -20,6 +20,8 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.dto.response.PeriodResponse;
+import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
+import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
@@ -51,7 +53,10 @@ public class InterviewService {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
 
-    return interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
+    return interviewSlots.stream()
+        .sorted(Comparator.comparing(slot -> slot.getPeriod().startDate()))
+        .map(this::createInterviewSlotResponse)
+        .toList();
   }
 
   @Transactional(readOnly = true)
@@ -234,6 +239,9 @@ public class InterviewService {
   @Transactional
   public InterviewReservationCreateResponse reservationInterview(
       String slotId, InterviewReservationRequest body) {
+    // 지원자가 기존 예약 여부를 확인합니다.
+    if (interviewRepository.isReservedByApplicantId(body.applicantId()))
+      throw new BusinessRuleException(InterviewErrorCode.APPLICANT_ALREADY_RESERVED);
 
     // 요청된 면접 일정을 가져옵니다.
     InterviewSlot interviewSlot = interviewRepository.findSlotByIdForUpdate(slotId);
