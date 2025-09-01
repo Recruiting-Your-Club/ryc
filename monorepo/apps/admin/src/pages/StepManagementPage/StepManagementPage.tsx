@@ -23,7 +23,6 @@ import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useMemo, useState } from 'react';
-import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
 import { useToast } from '@ssoc/ui';
@@ -84,8 +83,8 @@ function StepManagementPage() {
         throwOnError: true,
     });
 
-    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
-    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
+    const { mutateAsync: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
+    const { mutateAsync: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
         () => setIsInterviewOpen,
     );
 
@@ -274,22 +273,26 @@ function StepManagementPage() {
         });
     };
 
-    const handlePlainEmail = (subject: string, content: string): boolean => {
+    const handlePlainEmail = async (subject: string, content: string): Promise<boolean> => {
         if (!validateEmailInputs(subject, content)) return false;
 
-        sendPlainEmail({
-            announcementId: announcementId!,
-            clubId: clubId!,
-            email: { recipients: emailTargetList, subject, content },
-        });
-        return true;
+        try {
+            await sendPlainEmail({
+                announcementId: announcementId!,
+                clubId: clubId!,
+                email: { recipients: emailTargetList, subject, content },
+            });
+            return true;
+        } catch {
+            return false;
+        }
     };
 
-    const handleInterviewEmail = (
+    const handleInterviewEmail = async (
         numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
-    ): boolean => {
+    ): Promise<boolean> => {
         if (numberOfPeopleByInterviewDateRequests.length === 0) {
             toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
             return false;
@@ -297,15 +300,19 @@ function StepManagementPage() {
 
         if (!validateEmailInputs(subject, content)) return false;
 
-        sendInterviewEmail({
-            announcementId: announcementId!,
-            clubId: clubId!,
-            email: {
-                numberOfPeopleByInterviewDateRequests,
-                emailSendRequest: { recipients: emailTargetList, subject, content },
-            },
-        });
-        return true;
+        try {
+            await sendInterviewEmail({
+                announcementId: announcementId!,
+                clubId: clubId!,
+                email: {
+                    numberOfPeopleByInterviewDateRequests,
+                    emailSendRequest: { recipients: emailTargetList, subject, content },
+                },
+            });
+            return true;
+        } catch {
+            return false;
+        }
     };
 
     const handleEmailDialogOpen = (

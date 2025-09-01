@@ -180,20 +180,11 @@ function InterviewSettingDialog({
             // eslint-disable-next-line no-empty
         }
 
-        if (handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
+        if (await handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
             handleReset();
             handleResetContent();
             handleClose();
         }
-        // if (
-        //     !open &&
-        //     interviewDetailInformationList.length !== 0 &&
-        //     emailTitle.length !== 0 &&
-        //     contentToSend.length !== 0
-        // ) {
-        //     handleReset();
-        //     handleResetContent();
-        // }
     };
 
     // effects

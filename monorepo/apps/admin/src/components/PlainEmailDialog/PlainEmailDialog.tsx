@@ -48,14 +48,10 @@ function PlainEmailDialog({ open, handleClose, handlePlainEmail }: PlainEmailDia
             // eslint-disable-next-line no-empty
         }
 
-        if (handlePlainEmail(emailTitle, contentToSend)) {
+        if (await handlePlainEmail(emailTitle, contentToSend)) {
             handleReset();
             handleClose();
         }
-
-        // if (!open && emailTitle.length !== 0 && contentToSend.length !== 0) {
-        //     handleReset();
-        // }
     };
 
     // effects
