@@ -141,7 +141,13 @@ function InterviewEvaluationPage() {
         if (slotId === null && interviewSlots.length > 0) {
             setSlotId(interviewSlots[0].id ?? '');
         }
-    }, [interviewSlots]);
+    }, [slotId, interviewSlots]);
+
+    useEffect(() => {
+        if (finalIntervieweeList.length === 0) {
+            setSelectedApplicant(null);
+        }
+    }, [finalIntervieweeList]);
 
     // etc
     function getEvaluationActionCallbacks(status: string) {
