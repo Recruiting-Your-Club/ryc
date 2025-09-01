@@ -279,13 +279,13 @@ function ReservationPage() {
                 {openConfirmDialog && (
                     <ConfirmDialog
                         type="confirm"
+                        title="예약하기 알림"
+                        content={`${dayjs(selectedInterviewSlot?.period.startDate).format('YYYY년 MM월 DD일 HH:mm\n')} 예약하시겠어요?\n\n✔️ 한 번 예약하시면 수정은 어려워요.\n✔️ 예약 시간을 바꾸고 싶으시다면,\n안내 메일이 아닌 동아리에 직접 문의해 주세요.\n`}
                         open={true}
+                        cancelButton={true}
                         handleClose={() => setOpenConfirmDialog(false)}
                         actionHandler={() => submitReservation()}
-                        title="예약하기"
-                        dialogSize="sm"
-                        cancelButton={true}
-                        content={`${dayjs(selectedInterviewSlot?.period.startDate).format('YYYY년 MM월 DD일 HH:mm\n')} 예약하시겠습니까?`}
+                        actionPosition="center"
                     />
                 )}
                 <ErrorDialog
