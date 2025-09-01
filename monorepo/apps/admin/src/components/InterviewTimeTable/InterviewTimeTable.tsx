@@ -82,22 +82,29 @@ function InterviewTimeTable({
                 </Text>
                 <div css={[s_interviewInformationButtonGroupWrapper(Boolean(slotsToShow)), listSx]}>
                     {slotsToShow.length > 0 ? (
-                        slotsToShow.map((slot) => {
-                            const startTime = dayjs(slot.period.startDate).format('HH:mm');
-                            const endTime = dayjs(slot.period.endDate).format('HH:mm');
-                            const label = `${dayjs(highlightedDate).format('MM월 DD일')} ${startTime}`;
+                        slotsToShow
+                            .slice()
+                            .sort((a, b) =>
+                                dayjs(a.period.startDate).isAfter(dayjs(b.period.startDate))
+                                    ? 1
+                                    : -1,
+                            )
+                            .map((slot) => {
+                                const startTime = dayjs(slot.period.startDate).format('HH:mm');
+                                const endTime = dayjs(slot.period.endDate).format('HH:mm');
+                                const label = `${dayjs(highlightedDate).format('MM월 DD일')} ${startTime}`;
 
-                            return (
-                                <InterviewInformationButton
-                                    key={slot.id}
-                                    label={label}
-                                    startTime={startTime}
-                                    endTime={endTime}
-                                    onClick={() => handleButtonClick(slot.id, label)}
-                                    isSelected={selectedInterviewSlotId === slot.id}
-                                />
-                            );
-                        })
+                                return (
+                                    <InterviewInformationButton
+                                        key={slot.id}
+                                        label={label}
+                                        startTime={startTime}
+                                        endTime={endTime}
+                                        onClick={() => handleButtonClick(slot.id, label)}
+                                        isSelected={selectedInterviewSlotId === slot.id}
+                                    />
+                                );
+                            })
                     ) : (
                         <Text as="span" type="captionSemibold">
                             등록된 면접 일정이 없습니다.
