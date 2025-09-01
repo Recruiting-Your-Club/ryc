@@ -9,3 +9,5 @@ export const DEFAULT_DESCRIPTION =
     '불편을 드려 죄송합니다.\n궁금한 점이 있으시면 언제든지 채널톡을 통해 문의해주세요!';
 export const ERROR_500_DESCRIPTION =
     '불편을 드려 죄송합니다.\n지속적으로 오류가 발생할 경우, 아래 버튼을 통해 오류 신고 부탁드립니다.';
+export const ERROR_500_DESCRIPTION_ADDITIONAL =
+    '불편을 드려 죄송합니다.\n지속적으로 오류가 발생할 경우, 오른쪽 하단 채널톡을 통해 오류 신고 부탁드려요!';

@@ -1,4 +1,8 @@
-import { DEFAULT_DESCRIPTION, ERROR_500_DESCRIPTION } from '@constants/errorText';
+import {
+    DEFAULT_DESCRIPTION,
+    ERROR_500_DESCRIPTION,
+    ERROR_500_DESCRIPTION_ADDITIONAL,
+} from '@constants/errorText';
 import { getErrorPlainMessageByErrorStatusCode } from '@utils/getErrorMessage';
 import React from 'react';
 
@@ -47,38 +51,41 @@ function ErrorDialog({
                         {subContent
                             ? subContent
                             : errorStatusCode === 500
-                              ? ERROR_500_DESCRIPTION
+                              ? ERROR_500_DESCRIPTION_ADDITIONAL
                               : DEFAULT_DESCRIPTION}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Action position="center">
-                    {errorStatusCode === 500 ? (
-                        <div>
-                            <Button
-                                onClick={() => {
-                                    handleClose();
-                                    goTo('/');
-                                }}
-                            >
-                                오류 신고
-                            </Button>
-                        </div>
-                    ) : errorStatusCode === 401 ? (
-                        <div>
-                            <Button
-                                onClick={() => {
-                                    handleClose();
-                                    goTo('/login');
-                                }}
-                            >
-                                로그인 하기
-                            </Button>
-                        </div>
-                    ) : (
-                        <div>
-                            <Button onClick={() => handleClose}>확인</Button>
-                        </div>
-                    )}
+                    {
+                        // errorStatusCode === 500 ? (
+                        //     <div>
+                        //         <Button
+                        //             onClick={() => {
+                        //                 handleClose();
+                        //                 goTo('/');
+                        //             }}
+                        //         >
+                        //             오류 신고
+                        //         </Button>
+                        //     </div>
+                        // ) :
+                        errorStatusCode === 401 ? (
+                            <div>
+                                <Button
+                                    onClick={() => {
+                                        handleClose();
+                                        goTo('/login');
+                                    }}
+                                >
+                                    로그인 하기
+                                </Button>
+                            </div>
+                        ) : (
+                            <div>
+                                <Button onClick={() => handleClose}>확인</Button>
+                            </div>
+                        )
+                    }
                 </Dialog.Action>
             </Dialog>
         </>
