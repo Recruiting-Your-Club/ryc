@@ -53,7 +53,10 @@ public class InterviewService {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
 
-    return interviewSlots.stream().map(this::createInterviewSlotResponse).toList();
+    return interviewSlots.stream()
+        .sorted(Comparator.comparing(slot -> slot.getPeriod().startDate()))
+        .map(this::createInterviewSlotResponse)
+        .toList();
   }
 
   @Transactional(readOnly = true)
