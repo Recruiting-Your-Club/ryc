@@ -255,7 +255,7 @@ function CardBox({
                                             disabled={isDisabled}
                                         >
                                             <Text as="text" type="subCaptionRegular">
-                                                면접 일정 보내기
+                                                면접 일정 설정 후 보내기
                                             </Text>
                                         </Dropdown.Item>
                                     </>

@@ -74,7 +74,7 @@ export const s_meatballButton = css`
 `;
 
 export const s_dropdownContent = css`
-    width: 11.5rem;
+    width: 12.5rem;
 `;
 
 export const s_dropdownSeparator = css`
