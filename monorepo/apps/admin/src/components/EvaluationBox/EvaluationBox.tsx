@@ -60,21 +60,26 @@ function EvaluationBox({
         }));
     };
 
-    const handlePost = () => {
+    const handlePost = async () => {
         if (formState.comment.length === 0) {
             toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
             return;
         }
-        onPostComment(selectedApplicantId || '', formState.score, formState.comment, clubId);
-        handleFormState({ score: 0, comment: '' });
+        const successPost = await onPostComment(
+            selectedApplicantId || '',
+            formState.score,
+            formState.comment,
+            clubId,
+        );
+        if (successPost) handleFormState({ score: 0, comment: '' });
     };
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (!myComment) return;
-        onDeleteComment(myComment.evaluationId, clubId);
+        const successDelete = await onDeleteComment(myComment.evaluationId, clubId);
 
         // 초기화
-        if (formState.commentIdForEdit === myComment.evaluationId) {
+        if (successDelete && formState.commentIdForEdit === myComment.evaluationId) {
             handleFormState(defaultState);
         }
     };
@@ -87,16 +92,23 @@ function EvaluationBox({
         setIsDeleteModalOpen(true);
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         if (formState.comment.length === 0) {
             toast('코멘트를 작성해야 저장할 수 있어요!', { type: 'error' });
             return;
         }
         if (!myComment) return;
-        onUpdateComment(myComment.evaluationId, formState.score, formState.comment, clubId);
-        handleFormState({
-            isOpenForm: false,
-        });
+        const successUpdate = await onUpdateComment(
+            myComment.evaluationId,
+            formState.score,
+            formState.comment,
+            clubId,
+        );
+        if (successUpdate) {
+            handleFormState({
+                isOpenForm: false,
+            });
+        }
     };
 
     const handleCancelEdit = () => {

@@ -15,50 +15,47 @@ function useEvaluation(
     const { mutate: deleteComment } =
         useEvaluationMutations.useDeleteEvaluation(selectedApplicantId);
 
-    const handlePostComment = (
+    const handlePostComment = async (
         applicantId: string,
         score: number,
         comment: string,
         clubId: string,
     ) => {
-        postComment(
-            { applicantId, score, comment, clubId, type: type },
-            {
-                onSuccess: getEvaluationActionCallbacks('등록').onSuccess,
-                onError: (error) => {
-                    getEvaluationActionCallbacks('등록').onError(error as ErrorWithStatusCode);
-                },
-            },
-        );
+        try {
+            await postComment({ applicantId, score, comment, clubId, type });
+            getEvaluationActionCallbacks('등록').onSuccess();
+            return true;
+        } catch (error) {
+            getEvaluationActionCallbacks('등록').onError(error as ErrorWithStatusCode);
+            return false;
+        }
     };
 
-    const handleUpdateComment = (
+    const handleUpdateComment = async (
         evaluationId: string,
         score: number,
         comment: string,
         clubId: string,
     ) => {
-        updateComment(
-            { evaluationId, score, comment, clubId, type: type },
-            {
-                onSuccess: getEvaluationActionCallbacks('수정').onSuccess,
-                onError: (error) => {
-                    getEvaluationActionCallbacks('수정').onError(error as ErrorWithStatusCode);
-                },
-            },
-        );
+        try {
+            await updateComment({ evaluationId, score, comment, clubId, type });
+            getEvaluationActionCallbacks('수정').onSuccess();
+            return true;
+        } catch (error) {
+            getEvaluationActionCallbacks('수정').onError(error as ErrorWithStatusCode);
+            return false;
+        }
     };
 
-    const handleDeleteComment = (evaluationId: string, clubId: string) => {
-        deleteComment(
-            { evaluationId, clubId, type: type },
-            {
-                onSuccess: getEvaluationActionCallbacks('삭제').onSuccess,
-                onError: (error) => {
-                    getEvaluationActionCallbacks('삭제').onError(error as ErrorWithStatusCode);
-                },
-            },
-        );
+    const handleDeleteComment = async (evaluationId: string, clubId: string) => {
+        try {
+            await deleteComment({ evaluationId, clubId, type });
+            getEvaluationActionCallbacks('삭제').onSuccess();
+            return true;
+        } catch (error) {
+            getEvaluationActionCallbacks('삭제').onError(error as ErrorWithStatusCode);
+            return false;
+        }
     };
 
     return {
