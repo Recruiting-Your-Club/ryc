@@ -20,7 +20,7 @@ import mainLogo from '@ssoc/assets/images/mainLogo.png';
 import Ryc from '@ssoc/assets/images/Ryc.svg';
 import UserSet from '@ssoc/assets/images/UserSet.svg';
 import { useRouter } from '@ssoc/hooks';
-import { Avatar, Button, Dropdown, Text, Tooltip } from '@ssoc/ui';
+import { Avatar, Button, Dropdown, Text, Tooltip, useToast } from '@ssoc/ui';
 
 import {
     addClubButton,
@@ -61,6 +61,7 @@ function SideBar() {
     const { clubId, announcementId } = useParams();
     const { goTo } = useRouter();
     const { logout } = useAuthStore();
+    const { toast } = useToast();
 
     // initial values
     const navMenu = useMemo(
@@ -312,7 +313,15 @@ function SideBar() {
                         ))}
                 </div>
                 <Tooltip content="동아리 생성" direction="bottomRight">
-                    <button css={addClubButton} onClick={() => goTo('/club-create')}>
+                    <button
+                        css={addClubButton}
+                        onClick={
+                            () =>
+                                toast.error(
+                                    '동아리 생성은 채널톡으로 직접 문의해주세요!',
+                                ) /*goTo('/club-create')*/
+                        }
+                    >
                         +
                     </button>
                 </Tooltip>
