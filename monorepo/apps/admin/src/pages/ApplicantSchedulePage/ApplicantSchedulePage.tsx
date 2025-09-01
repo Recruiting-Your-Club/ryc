@@ -229,6 +229,9 @@ function ApplicantSchedulePage() {
             setConfirmMessage(
                 `지원자의 면접 일정을 해제하시겠어요?\n\n✔️미지정 상태가 되면, 지원자는 다시 직접 예약할 수 있어요.`,
             );
+        } else {
+            toast('면접 일정이 없어요!', { toastTheme: 'colored', type: 'error' });
+            return;
         }
 
         setPendingAction(
