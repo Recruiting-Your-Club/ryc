@@ -1,4 +1,5 @@
 import type { InterviewDetailInformation } from '@api/domain/email/types';
+import Info from '@assets/images/info.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { InterviewTimeBox } from '@components';
 import {
@@ -13,7 +14,18 @@ import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Button, Calendar, Dialog, Divider, Editor, Input, Select, Text, useToast } from '@ssoc/ui';
+import {
+    Button,
+    Calendar,
+    Dialog,
+    Divider,
+    Editor,
+    Input,
+    Select,
+    Text,
+    Tooltip,
+    useToast,
+} from '@ssoc/ui';
 
 import {
     s_calendar,
@@ -27,6 +39,8 @@ import {
     s_emptyPlace,
     s_header,
     s_informationContainer,
+    s_informSvg,
+    s_informSvgWrapper,
     s_input,
     s_perInformationContainer,
     s_resetButton,
@@ -34,8 +48,10 @@ import {
     s_selectContainer,
     s_selectTrigger,
     s_submitButtonWrapper,
+    s_textAndTooltipContainer,
     s_titleInput,
     s_titleWrapper,
+    s_tooltipContent,
     s_verticalDivider,
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
@@ -220,9 +236,26 @@ function InterviewSettingDialog({
         <InterviewSettingDialogContext.Provider value={contextValue}>
             <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
                 <Dialog.Header position="start" sx={s_header}>
-                    <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
-                        면접 일정 보내기
-                    </Text>
+                    <span css={s_textAndTooltipContainer}>
+                        <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
+                            면접 일정 설정 후 보내기
+                        </Text>
+                        <Tooltip
+                            content={`
+                                1. 면접 최대 인원 수와 면접 당 진행 시간을 먼저 정해주세요.\n
+                                2. 면접 날짜를 선택해주세요. (예: 9월 1일)\n
+                                3. 해당 날짜의 첫 시작 시간과 마지막 종료 시간을 선택해주세요. (예: 오전 10시 ~ 오후 3시)\n
+                                4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해 확정해주세요.\n
+                                5. 다른 날짜도 같은 방식으로 설정하시면 모든 면접 일정이 확정돼요.\n
+                                6. 마지막으로 이메일 제목과 내용 모두 작성하신 뒤, '이메일 보내기' 버튼을 눌러주세요!\n
+                                `}
+                            direction="bottom"
+                            wrapperSx={s_informSvgWrapper}
+                            tooltipSx={s_tooltipContent}
+                        >
+                            <Info css={s_informSvg} />
+                        </Tooltip>
+                    </span>
                     <Button
                         variant="transparent"
                         size="xs"

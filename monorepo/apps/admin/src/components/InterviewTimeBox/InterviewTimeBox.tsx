@@ -1,9 +1,8 @@
-import Info from '@assets/images/info.svg';
 import type { InterviewInformation } from '@components/InterviewSettingDialog/types';
 import { DEFAULT_END_TIME, DEFAULT_START_TIME } from '@constants/interviewSettingDialog';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import { Tooltip, useToast } from '@ssoc/ui';
+import { useToast } from '@ssoc/ui';
 import { Button, Divider, Select, Text } from '@ssoc/ui';
 
 import { useInterviewSettingDialogContext } from '../InterviewSettingDialog/InterviewSettingDialogContext';
@@ -11,14 +10,10 @@ import {
     baseBox,
     dividerCss,
     s_applyButton,
-    s_informSvg,
-    s_informSvgWrapper,
     s_select,
     s_selectContent,
     s_selectTrigger,
-    s_textAndTooltipContainer,
     s_timeRangeSettingContainer,
-    s_tooltipContent,
     selectedTimeSection,
     timeButtonCss,
     timeSelectSection,
@@ -139,23 +134,9 @@ function InterviewTimeBox() {
     return (
         <div css={baseBox}>
             <div css={timeSelectSection}>
-                <span css={s_textAndTooltipContainer}>
-                    <Text as="span" type="captionSemibold">
-                        면접 진행 시간
-                    </Text>
-                    <Tooltip
-                        content={`1. 면접 날짜를 선택하세요. (예: 9월 1일)\n
-                            2. 각 면접의 진행 시간을 정하세요. (예: 30분)\n
-                            3. 해당 날짜의 첫 시작 시간과 마지막 종료 시간을 선택하세요. (예: 오전 10시 ~ 오후 3시)\n
-                            4. 선택된 범위 내에서 진행 시간 단위로 슬롯이 자동 생성됩니다. 원하는 슬롯을 선택해 확정하세요.\n
-                            5. 다른 날짜도 동일한 방식으로 설정하면, 모든 면접 일정이 확정됩니다.`}
-                        direction="right"
-                        wrapperSx={s_informSvgWrapper}
-                        tooltipSx={s_tooltipContent}
-                    >
-                        <Info css={s_informSvg} />
-                    </Tooltip>
-                </span>
+                <Text as="span" type="captionSemibold">
+                    면접 진행 시간
+                </Text>
                 <div css={s_timeRangeSettingContainer}>
                     <Select
                         value={startTime}

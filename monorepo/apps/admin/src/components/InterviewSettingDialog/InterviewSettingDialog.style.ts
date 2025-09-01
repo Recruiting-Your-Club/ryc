@@ -231,3 +231,26 @@ export const s_editorTextarea = css`
         outline: none;
     }
 `;
+
+export const s_textAndTooltipContainer = css`
+    display: flex;
+    gap: 0.5rem;
+`;
+
+export const s_informSvgWrapper = css`
+    margin: 0.4rem 0 0 0;
+    align-items: center;
+`;
+
+export const s_informSvg = css`
+    width: 1.5rem;
+    height: 1.5rem;
+    color: ${theme.colors.gray[700]};
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+export const s_tooltipContent = css`
+    white-space: pre-line;
+`;
