@@ -6,6 +6,7 @@ import type { PersonalInfoPageProps } from '../types';
 import {
     s_fileUploaderSx,
     s_inputSx,
+    s_label,
     s_labelContainer,
     s_labelMultiline,
     s_labelSx,
@@ -87,7 +88,7 @@ function PersonalQuestionPage({ personalQuestions, containerStyle }: PersonalInf
                                 <Checkbox.Root key={option.id} disabled>
                                     <Checkbox.HiddenInput />
                                     <Checkbox.Control />
-                                    <Checkbox.Label>{option.option}</Checkbox.Label>
+                                    <Checkbox.Label sx={s_label}>{option.option}</Checkbox.Label>
                                 </Checkbox.Root>
                             ))}
                         </div>
