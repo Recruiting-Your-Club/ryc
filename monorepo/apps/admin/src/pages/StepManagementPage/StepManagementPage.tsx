@@ -464,7 +464,7 @@ function StepManagementPage() {
                     <ConfirmDialog
                         type="confirm"
                         title="면접 일정 생성 알림"
-                        content={`기존에 이미 면접 일정을 생성하신 경우,\n다시 한번 면접 일정을 생성하시면\n기존 예약 일정 및 예약자들의 예약 상태는 모두 초기화돼요!`}
+                        content={`기존에 생성하신 면접 일정이 이미 있는 경우,\n다시 한번 면접 일정을 생성하시면\n기존 예약 일정 및 예약자들의 예약 상태는 모두 초기화돼요!`}
                         open={true}
                         cancelButton={true}
                         handleClose={() => setOpenConfirmDialog(false)}
