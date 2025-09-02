@@ -30,6 +30,10 @@ const useSubmitInterviewReservation = (onErrorDialogOpen: (open: boolean) => voi
             const error = err as ErrorWithStatusCode;
             if (error.statusCode === 500) {
                 onErrorDialogOpen(true);
+            } else if (error.statusCode === 409) {
+                toast.error(
+                    '이미 면접을 예약하셨어요. 수정을 원하시는 경우 동아리 관리자에게 직접 문의해주세요!',
+                );
             } else if (error.response?.errors[0].message || error.message) {
                 toast(returnErrorMessage(error), { type: 'error', toastTheme: 'colored' });
             } else {
