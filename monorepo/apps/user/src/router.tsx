@@ -1,13 +1,12 @@
 import { ClubApplyAgreementPage } from '@pages/ClubApplyPage/ClubApplyAgreemetPage';
-import { ErrorFallbackPage } from '@pages/ErrorFallbackPage';
 import React, { lazy, Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter, ScrollRestoration } from 'react-router';
 
 import { UserLayout } from './layouts';
 import {
     ClubApplyLoadingPage,
     DetailLoadingPage,
+    ErrorBoundaryWrapperPage,
     LoginPage,
     MainLoadingPage,
     NotFoundPage,
@@ -36,14 +35,11 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<MainLoadingPage />}>
                             <LazyMainPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             { path: 'login', element: <LoginPage /> },
@@ -51,14 +47,11 @@ const router = createBrowserRouter([
             {
                 path: ':id',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<DetailLoadingPage />}>
                             <LazyDetailPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
         ],
@@ -70,38 +63,29 @@ const router = createBrowserRouter([
             {
                 path: ':announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<RecruitmentLoadingPage />}>
                             <LazyRecruitmentPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: ':announcementId/agreement',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <ClubApplyAgreementPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: ':announcementId/application',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<ClubApplyLoadingPage />}>
                             <LazyClubApplyPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
@@ -114,12 +98,9 @@ const router = createBrowserRouter([
     {
         path: '/clubs/:clubId/announcements/:announcementId/applicants/:applicantId/interview-reservations',
         element: (
-            <ErrorBoundary
-                FallbackComponent={ErrorFallbackPage}
-                onReset={() => window.location.reload()}
-            >
+            <ErrorBoundaryWrapperPage>
                 <ReservationPage />
-            </ErrorBoundary>
+            </ErrorBoundaryWrapperPage>
         ),
     },
     { path: '*', element: <NotFoundPage /> },

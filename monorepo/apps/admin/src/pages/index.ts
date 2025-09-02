@@ -17,3 +17,4 @@ export * from './NonAnnouncementPage';
 export * from './UserSettingPage';
 export * from './ErrorFallbackPage';
 export * from './RecruitEditPage';
+export * from './ErrorBoundaryWrapperPage';
