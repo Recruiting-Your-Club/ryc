@@ -88,27 +88,28 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
 
     return [
         {
-            id: '1',
-            title: '모집 정원',
-            content: announcementDetaildata?.numberOfPeople || '미정',
-        },
-        {
-            id: '2',
-            title: '활동 기간',
-            content: announcementDetaildata?.activityPeriod || '미정',
-        },
-        {
-            id: '3',
+            id: crypto.randomUUID(),
             title: '모집 대상',
             content: announcementDetaildata?.target || '미정',
         },
         {
-            id: '4',
-            title: '면접 여부',
-            content: announcementDetaildata?.hasInterview ? '있음' : '없음',
+            id: crypto.randomUUID(),
+            title: '모집 분야',
+            content: announcementDetaildata?.field || '미정',
         },
         {
-            id: '5',
+            id: crypto.randomUUID(),
+            title: '활동 기간',
+            content: announcementDetaildata?.activityPeriod || '미정',
+        },
+        {
+            id: crypto.randomUUID(),
+            title: '모집 인원',
+            content: announcementDetaildata?.numberOfPeople || '미정',
+        },
+
+        {
+            id: crypto.randomUUID(),
             title: '서류 접수',
             content: applicationPeriod
                 ? applicationPeriod.includes('99')
@@ -117,16 +118,7 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
                 : '미정',
         },
         {
-            id: '6',
-            title: '면접 기간',
-            content: interviewPeriod
-                ? applicationPeriod.includes('99')
-                    ? '상시 모집'
-                    : interviewPeriod
-                : '미정',
-        },
-        {
-            id: '7',
+            id: crypto.randomUUID(),
             title: '서류 발표',
             content: documentResultPeriod
                 ? applicationPeriod.includes('99')
@@ -135,7 +127,17 @@ export const parseAnnouncementClubBoxData = (announcementDetaildata: Announcemen
                 : '미정',
         },
         {
-            id: '8',
+            id: crypto.randomUUID(),
+            title: '면접 일정',
+            content: interviewPeriod
+                ? applicationPeriod.includes('99')
+                    ? '상시 모집'
+                    : interviewPeriod
+                : '미정',
+        },
+
+        {
+            id: crypto.randomUUID(),
             title: '최종 합격',
             content: finalResultPeriod
                 ? applicationPeriod.includes('99')
