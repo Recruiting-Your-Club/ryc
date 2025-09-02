@@ -59,10 +59,10 @@ function RecruitmentPage({
             { title: '모집 분야', value: field || '미정' },
             { title: '활동 기간', value: activityPeriod || '미정' },
             { title: '모집 인원', value: numberOfPeople || '미정' },
-            { title: '서류 접수 기간', value: formatPeriod(applicationPeriod) },
-            { title: '서류 결과 발표', value: formatPeriod(documentResultPeriod) },
+            { title: '서류 접수', value: formatPeriod(applicationPeriod) },
+            { title: '서류 발표', value: formatPeriod(documentResultPeriod) },
             { title: '면접 일정', value: formatPeriod(interviewPeriod) },
-            { title: '최종 결과 발표', value: formatPeriod(finalResultPeriod) },
+            { title: '최종 합격', value: formatPeriod(finalResultPeriod) },
         ],
         [
             target,
