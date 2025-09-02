@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
+import { ErrorBoundaryWrapperPage } from './pages';
 import { RecruitEditPage, RegisterAgreementPage } from './pages';
 import { ErrorFallbackPage } from './pages';
 import {
@@ -24,7 +25,6 @@ import {
     RecruitSuccessPage,
     RegisterPage,
     StepManagementLoadingPage,
-    TestPage,
     UserSettingPage,
 } from './pages';
 
@@ -48,24 +48,18 @@ const router = createBrowserRouter([
             {
                 path: 'announcements/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <AnnouncementPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
             {
                 path: 'announcements/create/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <RecruitCreatePage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -77,46 +71,34 @@ const router = createBrowserRouter([
             {
                 path: 'clubs/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <ClubEditPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
             {
                 path: 'announcements/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <AnnouncementPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: 'announcements/create/agreement/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <RecruitAgreementPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: 'announcements/create/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <ClubCreatePage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -125,23 +107,17 @@ const router = createBrowserRouter([
             {
                 path: 'announcements/edit/agreement/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <RecruitAgreementPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: 'announcements/edit/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <RecruitEditPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -149,12 +125,9 @@ const router = createBrowserRouter([
             {
                 path: 'announcements/edit/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <ClubCreatePage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -162,14 +135,11 @@ const router = createBrowserRouter([
             {
                 path: 'applicants/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<StepManagementLoadingPage />}>
                             <LazyStepManagementPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -177,14 +147,11 @@ const router = createBrowserRouter([
             {
                 path: 'interview-evaluation/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<InterviewEvaluationLoadingPage />}>
                             <LazyInterviewEvaluationPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -192,14 +159,11 @@ const router = createBrowserRouter([
             {
                 path: 'document-evaluation/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<DocumentEvaluationLoadingPage />}>
                             <LazyDocumentEvaluationPage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
@@ -207,26 +171,20 @@ const router = createBrowserRouter([
             {
                 path: 'interviewee-schedule/:clubId/:announcementId',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<ApplicantScheduleLoadingPage />}>
                             <LazyApplicantSchedulePage />
                         </Suspense>
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
 
             {
                 path: 'settings/:clubId/:announcementId?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <ClubMemberRolePage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             { path: 'user/:clubId/:announcementId?', element: <UserSettingPage /> },
@@ -244,34 +202,25 @@ const router = createBrowserRouter([
             {
                 path: 'club-create',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <ClubCreatePage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: 'myClub',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <MyClubPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
             {
                 path: ':inviteCode?',
                 element: (
-                    <ErrorBoundary
-                        FallbackComponent={ErrorFallbackPage}
-                        onReset={() => window.location.reload()}
-                    >
+                    <ErrorBoundaryWrapperPage>
                         <InviteConfirmPage />
-                    </ErrorBoundary>
+                    </ErrorBoundaryWrapperPage>
                 ),
             },
         ],
