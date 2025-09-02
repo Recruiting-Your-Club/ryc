@@ -8,7 +8,13 @@ import { useInterviewMutations } from '@api/hooks';
 import { interviewQueries, stepQueries } from '@api/queryFactory';
 import Alert from '@assets/images/alert.svg';
 import AttentionTriangle from '@assets/images/attention-triangle.svg';
-import { ApplicantList, ComponentMover, ErrorDialog, InterviewSlotDropdown } from '@components';
+import {
+    ApplicantList,
+    ComponentMover,
+    ConfirmDialog,
+    ErrorDialog,
+    InterviewSlotDropdown,
+} from '@components';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import type { Dispatch, SetStateAction } from 'react';
@@ -58,6 +64,10 @@ function ApplicantSchedulePage() {
         useState<SelectedLabel>({ label: '면접 일정 없음', interviewSlotId: null });
 
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+
+    const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
+    const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+    const [confirmMessage, setConfirmMessage] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -196,6 +206,49 @@ function ApplicantSchedulePage() {
         resetSelectedId('');
     };
 
+    const handleMoveWithConfirm = (
+        interviewees: InterviewApplicant[] | UnreservedApplicant[],
+        applicantId: string,
+        targetSlotId: string,
+        currentSlotId: string,
+        resetSelectedId: Dispatch<SetStateAction<string>>,
+    ) => {
+        if (interviewees === unreservedApplicants && targetSlotId !== '') {
+            setConfirmMessage(
+                `아직 예약하지 않은 지원자예요!\n\n ✔️임의로 면접 일정을 배정하시면\n지원자가 직접 예약할 수 없고 면접 확정 메일도 받을 수 없어요.\n\n그래도 진행하시겠어요?`,
+            );
+        } else if (
+            interviewees !== unreservedApplicants &&
+            targetSlotId !== '' &&
+            currentSlotId !== ''
+        ) {
+            setConfirmMessage(
+                `지원자의 면접 일정을 정말 변경하시겠어요?\n\n✔️ 변경된 일정은 자동으로 안내되지 않으니,\n꼭 지원자에게 별도로 알려주셔야 해요.`,
+            );
+        } else if (targetSlotId === '' && currentSlotId !== '') {
+            setConfirmMessage(
+                `지원자의 면접 일정을 해제하시겠어요?\n\n✔️미지정 상태가 되면, 지원자는 다시 직접 예약할 수 있어요.`,
+            );
+        } else {
+            toast('면접 일정이 없어요!', { toastTheme: 'colored', type: 'error' });
+            return;
+        }
+
+        setPendingAction(
+            () => () =>
+                handleMove(interviewees, applicantId, targetSlotId, currentSlotId, resetSelectedId),
+        );
+        setOpenConfirmDialog(true);
+    };
+
+    const handleConfirm = () => {
+        if (pendingAction) {
+            pendingAction();
+            setPendingAction(null);
+        }
+        setOpenConfirmDialog(false);
+    };
+
     // effects
     useEffect(() => {
         if (slot0Id === null && slot1Id === null && interviewSlots.length > 0) {
@@ -290,7 +343,7 @@ function ApplicantSchedulePage() {
                         <div css={s_arrowContainer}>
                             <ComponentMover
                                 onMoveLeft={() =>
-                                    handleMove(
+                                    handleMoveWithConfirm(
                                         isSelectedInThirdSlot
                                             ? unreservedApplicants
                                             : standardInterviewees,
@@ -304,7 +357,7 @@ function ApplicantSchedulePage() {
                                     )
                                 }
                                 onMoveRight={() =>
-                                    handleMove(
+                                    handleMoveWithConfirm(
                                         intervieweesToMove,
                                         selectedIntervieweeId,
                                         selectedStandardInterviewLabel.interviewSlotId ?? '',
@@ -334,7 +387,7 @@ function ApplicantSchedulePage() {
                         <div css={s_arrowContainer}>
                             <ComponentMover
                                 onMoveLeft={() =>
-                                    handleMove(
+                                    handleMoveWithConfirm(
                                         unreservedApplicants,
                                         selectedIntervieweeId,
                                         selectedStandardInterviewLabel.interviewSlotId ?? '',
@@ -343,7 +396,7 @@ function ApplicantSchedulePage() {
                                     )
                                 }
                                 onMoveRight={() =>
-                                    handleMove(
+                                    handleMoveWithConfirm(
                                         isSelectedInFirstSlot
                                             ? intervieweesToMove
                                             : standardInterviewees,
@@ -387,6 +440,18 @@ function ApplicantSchedulePage() {
                         </Text>
                     </div>
                 </div>
+            )}
+            {openConfirmDialog && (
+                <ConfirmDialog
+                    type="confirm"
+                    title="예약변경 알림"
+                    content={confirmMessage}
+                    open={true}
+                    cancelButton={true}
+                    handleClose={() => setOpenConfirmDialog(false)}
+                    actionHandler={handleConfirm}
+                    actionPosition="center"
+                />
             )}
         </>
     );

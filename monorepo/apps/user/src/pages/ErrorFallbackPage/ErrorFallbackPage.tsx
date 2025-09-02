@@ -2,6 +2,7 @@ import AttentionTriangle from '@assets/images/attention-triangle.svg';
 import {
     DEFAULT_DESCRIPTION,
     ERROR_500_DESCRIPTION,
+    ERROR_500_DESCRIPTION_ADDITIONAL,
     ERROR_CODE_400,
     ERROR_CODE_401,
     ERROR_CODE_403,
@@ -83,23 +84,28 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
                     {message}
                 </Text>
                 <Text type="captionRegular">
-                    {error.statusCode === 500 ? ERROR_500_DESCRIPTION : DEFAULT_DESCRIPTION}
+                    {error.statusCode === 500
+                        ? ERROR_500_DESCRIPTION_ADDITIONAL
+                        : DEFAULT_DESCRIPTION}
                 </Text>
             </div>
-            {error.statusCode === 500 ? (
-                <div css={s_buttonContainer}>
-                    <Button onClick={() => goTo('/')}>오류 신고</Button>
-                    <Button onClick={resetErrorBoundary}>다시 시도</Button>
-                </div>
-            ) : error.statusCode === 401 ? (
-                <div css={s_buttonContainer}>
-                    <Button onClick={() => goTo('/login')}>로그인 하기</Button>
-                </div>
-            ) : (
-                <div css={s_buttonContainer}>
-                    <Button onClick={resetErrorBoundary}>다시 시도</Button>
-                </div>
-            )}
+            {
+                // error.statusCode === 500 ? (
+                //     <div css={s_buttonContainer}>
+                //         <Button onClick={() => goTo('/')}>오류 신고</Button>
+                //         <Button onClick={resetErrorBoundary}>다시 시도</Button>
+                //     </div>
+                // ) :
+                error.statusCode === 401 ? (
+                    <div css={s_buttonContainer}>
+                        <Button onClick={() => goTo('/login')}>로그인 하기</Button>
+                    </div>
+                ) : (
+                    <div css={s_buttonContainer}>
+                        <Button onClick={resetErrorBoundary}>다시 시도</Button>
+                    </div>
+                )
+            }
             <Button size="xs" variant="text" onClick={() => goTo('/')} sx={s_homeTextButton}>
                 처음으로
             </Button>

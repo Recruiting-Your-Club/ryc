@@ -31,4 +31,6 @@ public interface InterviewReservationJpaRepository
     AND r.applicant.id = :applicantId
 """)
   Boolean existsByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
+
+  Boolean existsByApplicantId(String applicantId);
 }

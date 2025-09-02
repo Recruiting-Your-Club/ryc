@@ -23,10 +23,9 @@ import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { getErrorMessage } from '@utils/getErrorMessage';
 import React, { useMemo, useState } from 'react';
-import { useErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router-dom';
 
-import { useToast } from '@ssoc/ui';
+import { ConfirmDialog, useToast } from '@ssoc/ui';
 import { Button, Input } from '@ssoc/ui';
 
 import {
@@ -55,12 +54,13 @@ function StepManagementPage() {
     const [selectedApplicant, setSelectedApplicant] = useState<StepApplicantWithoutImage | null>(
         null,
     );
-    const [searchText, setSearchText] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
-    const [isEmailOpen, setIsEmailOpen] = useState(false);
-    const [isInterviewOpen, setIsInterviewOpen] = useState(false);
+    const [searchText, setSearchText] = useState<string>('');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isEmailOpen, setIsEmailOpen] = useState<boolean>(false);
+    const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+    const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -84,8 +84,8 @@ function StepManagementPage() {
         throwOnError: true,
     });
 
-    const { mutate: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
-    const { mutate: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
+    const { mutateAsync: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
+    const { mutateAsync: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
         () => setIsInterviewOpen,
     );
 
@@ -274,22 +274,26 @@ function StepManagementPage() {
         });
     };
 
-    const handlePlainEmail = (subject: string, content: string): boolean => {
+    const handlePlainEmail = async (subject: string, content: string): Promise<boolean> => {
         if (!validateEmailInputs(subject, content)) return false;
 
-        sendPlainEmail({
-            announcementId: announcementId!,
-            clubId: clubId!,
-            email: { recipients: emailTargetList, subject, content },
-        });
-        return true;
+        try {
+            await sendPlainEmail({
+                announcementId: announcementId!,
+                clubId: clubId!,
+                email: { recipients: emailTargetList, subject, content },
+            });
+            return true;
+        } catch {
+            return false;
+        }
     };
 
-    const handleInterviewEmail = (
+    const handleInterviewEmail = async (
         numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
         subject: string,
         content: string,
-    ): boolean => {
+    ): Promise<boolean> => {
         if (numberOfPeopleByInterviewDateRequests.length === 0) {
             toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
             return false;
@@ -297,15 +301,19 @@ function StepManagementPage() {
 
         if (!validateEmailInputs(subject, content)) return false;
 
-        sendInterviewEmail({
-            announcementId: announcementId!,
-            clubId: clubId!,
-            email: {
-                numberOfPeopleByInterviewDateRequests,
-                emailSendRequest: { recipients: emailTargetList, subject, content },
-            },
-        });
-        return true;
+        try {
+            await sendInterviewEmail({
+                announcementId: announcementId!,
+                clubId: clubId!,
+                email: {
+                    numberOfPeopleByInterviewDateRequests,
+                    emailSendRequest: { recipients: emailTargetList, subject, content },
+                },
+            });
+            return true;
+        } catch {
+            return false;
+        }
     };
 
     const handleEmailDialogOpen = (
@@ -338,7 +346,7 @@ function StepManagementPage() {
         setEmailTargetList(emails);
 
         if (isInterviewDialog) {
-            setIsInterviewOpen(true);
+            setOpenConfirmDialog(true);
         } else {
             setIsEmailOpen(true);
         }
@@ -452,6 +460,19 @@ function StepManagementPage() {
                     handleClose={() => setErrorDialogOpen(false)}
                     errorStatusCode={500}
                 />
+                {openConfirmDialog && (
+                    <ConfirmDialog
+                        type="confirm"
+                        title="면접 일정 생성 알림"
+                        content={`기존에 생성하신 면접 일정이 이미 있는 경우,\n다시 한번 면접 일정을 생성하시면\n기존 예약 일정 및 예약자들의 예약 상태는 모두 초기화돼요!`}
+                        open={true}
+                        cancelButton={true}
+                        handleClose={() => setOpenConfirmDialog(false)}
+                        actionHandler={() => setIsInterviewOpen(true)}
+                        actionPosition="center"
+                        dialogSize="md"
+                    />
+                )}
             </div>
         </div>
     );

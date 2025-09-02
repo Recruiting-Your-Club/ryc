@@ -1,6 +1,6 @@
 import { InterviewInformationButton } from '@components';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Calendar, Divider, Text } from '@ssoc/ui';
 
@@ -26,11 +26,7 @@ function InterviewTimeTable({
     // lib hooks
     // initial values
     // state, ref, querystring hooks
-    const [highlightedDate, setHighlightedDate] = useState<string>(() => {
-        if (interviewSlots.length > 0 && interviewSlots[0].period.startDate)
-            return dayjs(interviewSlots[0].period.startDate).format('YYYY-MM-DD');
-        return '';
-    });
+    const [highlightedDate, setHighlightedDate] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -56,7 +52,16 @@ function InterviewTimeTable({
             onOpenChange?.(false);
         }
     };
+
     // effects
+    useEffect(() => {
+        if (interviewSlots.length > 0 && selectedInterviewSlotId) {
+            const targetSlot = interviewSlots.find((slot) => slot.id === selectedInterviewSlotId);
+            if (targetSlot?.period?.startDate) {
+                setHighlightedDate(dayjs(targetSlot.period.startDate).format('YYYY-MM-DD'));
+            }
+        }
+    }, [interviewSlots, selectedInterviewSlotId]);
 
     return (
         <div css={[s_interviewTimeTableContainer, sx]}>
@@ -77,22 +82,29 @@ function InterviewTimeTable({
                 </Text>
                 <div css={[s_interviewInformationButtonGroupWrapper(Boolean(slotsToShow)), listSx]}>
                     {slotsToShow.length > 0 ? (
-                        slotsToShow.map((slot) => {
-                            const startTime = dayjs(slot.period.startDate).format('HH:mm');
-                            const endTime = dayjs(slot.period.endDate).format('HH:mm');
-                            const label = `${dayjs(highlightedDate).format('MM월 DD일')} ${startTime}`;
+                        slotsToShow
+                            .slice()
+                            .sort((a, b) =>
+                                dayjs(a.period.startDate).isAfter(dayjs(b.period.startDate))
+                                    ? 1
+                                    : -1,
+                            )
+                            .map((slot) => {
+                                const startTime = dayjs(slot.period.startDate).format('HH:mm');
+                                const endTime = dayjs(slot.period.endDate).format('HH:mm');
+                                const label = `${dayjs(highlightedDate).format('MM월 DD일')} ${startTime}`;
 
-                            return (
-                                <InterviewInformationButton
-                                    key={slot.id}
-                                    label={label}
-                                    startTime={startTime}
-                                    endTime={endTime}
-                                    onClick={() => handleButtonClick(slot.id, label)}
-                                    isSelected={selectedInterviewSlotId === slot.id}
-                                />
-                            );
-                        })
+                                return (
+                                    <InterviewInformationButton
+                                        key={slot.id}
+                                        label={label}
+                                        startTime={startTime}
+                                        endTime={endTime}
+                                        onClick={() => handleButtonClick(slot.id, label)}
+                                        isSelected={selectedInterviewSlotId === slot.id}
+                                    />
+                                );
+                            })
                     ) : (
                         <Text as="span" type="captionSemibold">
                             등록된 면접 일정이 없습니다.

@@ -61,3 +61,7 @@ export const s_fileUploaderSx = css`
 export const s_labelMultiline = css`
     white-space: pre-line;
 `;
+
+export const s_label = css`
+    color: ${theme.colors.gray[500]};
+`;

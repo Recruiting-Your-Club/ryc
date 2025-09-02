@@ -4,8 +4,18 @@ export interface EvaluationBoxProps {
     clubId: string;
     selectedApplicantId: string | null;
     evaluation: EvaluationDetailWithSummary;
-    onPostComment: (applicantId: string, score: number, comment: string, clubId: string) => void;
-    onDeleteComment: (evaluationId: string, clubId: string) => void;
-    onUpdateComment: (evaluationId: string, score: number, comment: string, clubId: string) => void;
+    onPostComment: (
+        applicantId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => Promise<boolean>;
+    onDeleteComment: (evaluationId: string, clubId: string) => Promise<boolean>;
+    onUpdateComment: (
+        evaluationId: string,
+        score: number,
+        comment: string,
+        clubId: string,
+    ) => Promise<boolean>;
     height?: string;
 }
