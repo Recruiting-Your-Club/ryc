@@ -49,9 +49,6 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
         case 403:
             message = error.message ? `${error.message} (403)` : ERROR_CODE_403;
             break;
-        case 401:
-            message = ERROR_CODE_401;
-            break;
         case 400:
             if (error.response?.errors && Array.isArray(error.response.errors)) {
                 message = error.response.errors
@@ -96,15 +93,15 @@ function ErrorFallbackPage({ error, resetErrorBoundary }: ErrorFallbackPageProps
                 //         <Button onClick={resetErrorBoundary}>다시 시도</Button>
                 //     </div>
                 // ) :
-                error.statusCode === 401 ? (
-                    <div css={s_buttonContainer}>
-                        <Button onClick={() => goTo('/login')}>로그인 하기</Button>
-                    </div>
-                ) : (
-                    <div css={s_buttonContainer}>
-                        <Button onClick={resetErrorBoundary}>다시 시도</Button>
-                    </div>
-                )
+                // error.statusCode === 401 ? (
+                //     <div css={s_buttonContainer}>
+                //         <Button onClick={() => goTo('/login')}>로그인 하기</Button>
+                //     </div>
+                // ) : (
+                <div css={s_buttonContainer}>
+                    <Button onClick={resetErrorBoundary}>다시 시도</Button>
+                </div>
+                // )
             }
             <Button size="xs" variant="text" onClick={() => goTo('/')} sx={s_homeTextButton}>
                 처음으로
