@@ -112,7 +112,9 @@ public class ClubFacade {
 
   @Transactional
   public void deleteClub(String id) {
-    eventPublisher.publishEvent(new ClubDeletedEvent(id));
-    clubService.deleteClub(id);
+    if (clubService.existClubById(id)) {
+      eventPublisher.publishEvent(new ClubDeletedEvent(id));
+      clubService.deleteClub(id);
+    }
   }
 }

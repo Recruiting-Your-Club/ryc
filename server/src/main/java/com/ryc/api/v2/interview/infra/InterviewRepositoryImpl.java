@@ -79,7 +79,7 @@ public class InterviewRepositoryImpl implements InterviewRepository {
 
   @Override
   public Boolean isReservedByApplicantId(String applicantId) {
-    return interviewReservationJpaRepository.existsByApplicantId(applicantId);
+    return interviewReservationJpaRepository.existsByApplicant_Id(applicantId);
   }
 
   @Override
@@ -100,5 +100,15 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   @Override
   public boolean existsSlotsByAnnouncementId(String announcementId) {
     return interviewSlotJpaRepository.existsByAnnouncementId(announcementId);
+  }
+
+  @Override
+  public boolean existsReservationByApplicantId(String applicantId) {
+    return interviewReservationJpaRepository.existsByApplicant_Id(applicantId);
+  }
+
+  @Override
+  public void deleteReservationByApplicantId(String applicantId) {
+    interviewReservationJpaRepository.deleteByApplicant_Id(applicantId);
   }
 }

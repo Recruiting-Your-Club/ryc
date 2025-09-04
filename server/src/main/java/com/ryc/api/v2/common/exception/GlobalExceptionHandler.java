@@ -58,7 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(errorCode, request);
   }
 
-  // DataIntegrityViolationException은 JPA에서 중복된 데이터 삽입 시 발생하는 예외
+  // DataIntegrityViolationException은 JPA에서 데이터 무결성 제약 조건을 위반했을 때 발생하는 에러
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Object> handleDataIntegrityViolationException(
       DataIntegrityViolationException e, HttpServletRequest request) {

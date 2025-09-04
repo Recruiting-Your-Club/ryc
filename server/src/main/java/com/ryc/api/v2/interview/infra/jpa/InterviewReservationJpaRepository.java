@@ -32,5 +32,7 @@ public interface InterviewReservationJpaRepository
 """)
   Boolean existsByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
 
-  Boolean existsByApplicantId(String applicantId);
+  Boolean existsByApplicant_Id(String applicantId);
+
+  void deleteByApplicant_Id(String applicantId);
 }

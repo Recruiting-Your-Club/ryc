@@ -36,8 +36,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @OpenAPIDefinition(
     servers = {
       @Server(url = "${DEV_SERVER_URL}", description = "개발 서버"),
-      @Server(url = "${LOCAL_SERVER_URL}", description = "로컬 서버"),
-      @Server(url = "${PRODUCTION_SERVER_URL}", description = "프로덕션 서버")
+      @Server(url = "${LOCAL_SERVER_URL}", description = "로컬 서버")
     })
 @Configuration
 public class SwaggerConfiguration {
