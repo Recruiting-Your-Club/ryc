@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.infra.entity.EmailEntity;
 import com.ryc.api.v2.email.infra.jpa.EmailJpaRepository;
 import com.ryc.api.v2.email.infra.mapper.EmailMapper;
@@ -58,5 +59,10 @@ public class EmailRepositoryImpl implements EmailRepository {
   @Override
   public boolean existsByAnnouncementId(String announcementId) {
     return emailJpaRepository.existsByAnnouncementId(announcementId);
+  }
+
+  @Override
+  public void deleteByStatus(EmailSentStatus status) {
+    emailJpaRepository.deleteByStatus(status);
   }
 }

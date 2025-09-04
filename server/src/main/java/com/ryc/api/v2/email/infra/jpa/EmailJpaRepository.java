@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.infra.entity.EmailEntity;
 
 public interface EmailJpaRepository extends JpaRepository<EmailEntity, String> {
@@ -21,4 +22,6 @@ public interface EmailJpaRepository extends JpaRepository<EmailEntity, String> {
   boolean existsBySenderId(String adminId);
 
   boolean existsByAnnouncementId(String announcementId);
+
+  void deleteByStatus(EmailSentStatus status);
 }

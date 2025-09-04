@@ -62,4 +62,9 @@ public class EmailVerificationRepositoryImpl implements EmailVerificationReposit
   public void flush() {
     jpaRepository.flush();
   }
+
+  @Override
+  public void deleteAttemptedCodes() {
+    jpaRepository.deleteByAttempted(true);
+  }
 }
