@@ -200,9 +200,6 @@ public class InterviewHttpApi {
   @DeleteMapping("admin/interview-reservations/{reservation-id}")
   @HasRole(Role.MEMBER)
   @Operation(summary = "면접 예약자를 미지정자로 변경", description = "동아리 관리자가 면접 예약자를 미지정자로 변경합니다.")
-  @ApiErrorCodeExample(
-      value = {CommonErrorCode.class},
-      include = {"RESOURCE_NOT_FOUND"})
   public ResponseEntity<Void> deleteInterviewReservation(
       @PathVariable("reservation-id")
           @NotBlank(message = "면접 예약 아이디는 빈 값일 수 없습니다.")
