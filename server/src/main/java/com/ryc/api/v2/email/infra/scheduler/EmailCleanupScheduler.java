@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.service;
+package com.ryc.api.v2.email.infra.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class EmailCleanupService {
+public class EmailCleanupScheduler {
 
   private final EmailRepository emailRepository;
   private final EmailVerificationRepository emailVerificationRepository;
