@@ -43,7 +43,7 @@ public class InterviewHttpApi {
 
   @GetMapping("admin/announcements/{announcement-id}/interview-slots")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
+  @Operation(summary = "동아리 관리자가 면접 시간대 조회", description = "동아리 관리자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
@@ -57,7 +57,7 @@ public class InterviewHttpApi {
   }
 
   @GetMapping("clubs/{club-id}/announcements/{announcement-id}/interview-slots")
-  @Operation(summary = "지원자의 면접 시간대 조회", description = "지원자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
+  @Operation(summary = "지원자가 면접 시간대 조회", description = "지원자가 특정 공고에 대한 모든 면접 시간대를 조회합니다.")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
@@ -80,7 +80,7 @@ public class InterviewHttpApi {
   }
 
   @GetMapping("interview-slots/{interview-slot-id}/people/count")
-  @Operation(summary = "면접 슬롯의 예약 인원 수 조회", description = "지원자가 특정 면접 슬롯에 대해 예약된 인원 수를 조회합니다.")
+  @Operation(summary = "지원자가 면접 슬롯의 예약 인원 수 조회", description = "지원자가 특정 면접 슬롯에 대해 예약된 인원 수를 조회합니다.")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
@@ -96,7 +96,9 @@ public class InterviewHttpApi {
 
   @GetMapping("admin/interview-slots/{interview-slot-id}/reservations")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 예약자들 조회", description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 예약 정보를 조회합니다.")
+  @Operation(
+      summary = "동아리 관리자가 면접 예약자들 조회",
+      description = "동아리 관리자가 특정 면접 슬롯에 대한 면접자들의 예약 정보를 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND"})
@@ -112,7 +114,7 @@ public class InterviewHttpApi {
 
   @GetMapping("admin/announcements/{announcement-id}/interviews/unreserved-applicants")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 미예약자들 조회", description = "동아리 관리자가 면접을 예약하지 않은 지원자들을 조회합니다.")
+  @Operation(summary = "동아리 관리자가 면접 미예약자들 조회", description = "동아리 관리자가 면접을 예약하지 않은 지원자들을 조회합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER"})
@@ -128,7 +130,9 @@ public class InterviewHttpApi {
 
   @PostMapping("/admin/clubs/{clubId}/announcements/{announcementId}/interview-slots")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 일정 생성 및 지원자에게 이메일 전송", description = "면접 일정을 생성하고, 지원자들에게 이메일을 발송합니다.")
+  @Operation(
+      summary = "동아리 관리자가 면접 일정 생성 및 지원자에게 이메일 전송",
+      description = "동아리 관리자가 면접 일정을 생성하고, 지원자들에게 이메일을 발송합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER", "INTERVIEW_SLOT_PERIOD_INVALID"})
@@ -180,7 +184,7 @@ public class InterviewHttpApi {
   @PutMapping("admin/applicants/{applicant-id}/interview-reservation")
   @HasRole(Role.MEMBER)
   @Operation(
-      summary = "면접 예약 정보 수정",
+      summary = "동아리 관리자가 면접 예약 정보 수정",
       description =
           "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
@@ -199,10 +203,10 @@ public class InterviewHttpApi {
 
   @DeleteMapping("admin/interview-reservations/{reservation-id}")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 예약자를 미지정자로 변경", description = "동아리 관리자가 면접 예약자를 미지정자로 변경합니다.")
   @ApiErrorCodeExample(
       value = {CommonErrorCode.class},
       include = {"RESOURCE_NOT_FOUND"})
+  @Operation(summary = "동아리 관리자가 면접 예약자를 미지정자로 변경", description = "동아리 관리자가 면접 예약자를 미지정자로 변경합니다.")
   public ResponseEntity<Void> deleteInterviewReservation(
       @PathVariable("reservation-id")
           @NotBlank(message = "면접 예약 아이디는 빈 값일 수 없습니다.")
