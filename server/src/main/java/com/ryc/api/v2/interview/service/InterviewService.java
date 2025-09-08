@@ -15,6 +15,7 @@ import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantSummaryResponse;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
@@ -171,6 +172,7 @@ public class InterviewService {
             .collect(Collectors.toSet());
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
+    applicants.removeIf(applicant -> applicant.getStatus() == ApplicantStatus.INTERVIEW_PENDING);
 
     List<String> ids = applicants.stream().map(Applicant::getId).toList();
     Map<String, FileGetResponse> imageMap =
