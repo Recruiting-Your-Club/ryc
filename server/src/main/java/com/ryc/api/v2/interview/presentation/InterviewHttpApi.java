@@ -133,7 +133,12 @@ public class InterviewHttpApi {
   @Operation(summary = "동아리 관리자가 면접 일정 생성", description = "동아리 관리자가 면접 일정을 생성합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
-      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER", "INTERVIEW_SLOT_PERIOD_INVALID"})
+      include = {
+        "FORBIDDEN_NOT_CLUB_MEMBER",
+        "INVALID_PARAMETER",
+        "INTERVIEW_SLOT_PERIOD_INVALID",
+        "INTERVIEW_SLOT_ALREADY_EXISTS"
+      })
   public ResponseEntity<List<InterviewSlotCreateResponse>> createInterviewSlots(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable

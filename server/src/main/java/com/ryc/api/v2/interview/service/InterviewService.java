@@ -2,6 +2,7 @@ package com.ryc.api.v2.interview.service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,8 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.dto.response.PeriodResponse;
+import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
@@ -197,25 +200,25 @@ public class InterviewService {
   public List<InterviewSlotCreateResponse> createInterviewSlots(
       String adminId, String announcementId, List<InterviewSlotCreateRequest> body) {
 
-    /**
-     * TODO: 현재 면접 타임대(슬롯)을 수정하는 기능을 서비스에서 제공하지 않음. 따라서 기존의 면접슬롯을 덮어씌우는 방식으로 구현. 추후 수정 기능 구현시 아래 로직
-     * 수정예정
-     */
-
-    // 기존의 인터뷰 슬롯 전체 삭제 후 새로운 인터뷰 슬롯으로 구성.
-    // TODO: 현재 연관관계 매핑과 CASCADE 설정으로 슬롯 삭제시 예약도 자동 삭제됨. 이 부분 논의 필요.
-    interviewRepository.deleteSlotsByAnnouncementId(announcementId);
+    // 만약 요청받는 시작 시간이 이미 존재하는 시작 시간과 겹친다면 예외 발생
+    Set<LocalDateTime> existingStartDates =
+        interviewRepository.findSlotsByAnnouncementId(announcementId).stream()
+            .map(slot -> slot.getPeriod().startDate())
+            .collect(Collectors.toSet());
+    if (body.stream().anyMatch(slotRequest -> existingStartDates.contains(slotRequest.start()))) {
+      throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_ALREADY_EXISTS);
+    }
 
     List<InterviewSlot> interviewSlots =
         body.stream()
             .map(
-                r ->
+                slotRequest ->
                     InterviewSlot.initialize(
                         adminId,
                         announcementId,
-                        r.numberOfPeople(),
-                        r.start(),
-                        r.interviewDuration()))
+                        slotRequest.numberOfPeople(),
+                        slotRequest.start(),
+                        slotRequest.interviewDuration()))
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
