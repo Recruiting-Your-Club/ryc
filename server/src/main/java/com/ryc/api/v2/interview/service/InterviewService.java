@@ -24,7 +24,6 @@ import com.ryc.api.v2.common.dto.response.PeriodResponse;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
-import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
@@ -195,7 +194,7 @@ public class InterviewService {
 
   @Transactional
   public List<InterviewSlotCreateResponse> createInterviewSlots(
-      String adminId, String clubId, String announcementId, InterviewSlotCreateRequest request) {
+      String adminId, String announcementId, List<InterviewSlotCreateRequest> body) {
 
     /**
      * TODO: 현재 면접 타임대(슬롯)을 수정하는 기능을 서비스에서 제공하지 않음. 따라서 기존의 면접슬롯을 덮어씌우는 방식으로 구현. 추후 수정 기능 구현시 아래 로직
@@ -207,7 +206,7 @@ public class InterviewService {
     interviewRepository.deleteSlotsByAnnouncementId(announcementId);
 
     List<InterviewSlot> interviewSlots =
-        request.numberOfPeopleByInterviewDateRequests().stream()
+        body.stream()
             .map(
                 r ->
                     InterviewSlot.initialize(
@@ -219,19 +218,6 @@ public class InterviewService {
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
-
-    // 이메일 전송을 위한 이벤트 발행
-    List<Applicant> applicants =
-        applicantRepository.findByEmails(request.emailSendRequest().recipients());
-    eventPublisher.publishEvent(
-        InterviewSlotEmailEvent.builder()
-            .applicants(applicants)
-            .subject(request.emailSendRequest().subject())
-            .content(request.emailSendRequest().content())
-            .adminId(adminId)
-            .clubId(clubId)
-            .announcementId(announcementId)
-            .build());
 
     return savedInterviewSlots.stream()
         .map(slot -> new InterviewSlotCreateResponse(slot.getId()))

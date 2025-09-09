@@ -128,27 +128,23 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  @PostMapping("/admin/clubs/{clubId}/announcements/{announcementId}/interview-slots")
+  @PostMapping("/admin/announcements/{announcementId}/interview-slots")
   @HasRole(Role.MEMBER)
   @Operation(
-      summary = "동아리 관리자가 면접 일정 생성 및 지원자에게 이메일 전송",
-      description = "동아리 관리자가 면접 일정을 생성하고, 지원자들에게 이메일을 발송합니다.")
+      summary = "동아리 관리자가 면접 일정 생성",
+      description = "동아리 관리자가 면접 일정을 생성합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER", "INTERVIEW_SLOT_PERIOD_INVALID"})
   public ResponseEntity<List<InterviewSlotCreateResponse>> createInterviewSlots(
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @PathVariable
-          @NotBlank(message = "동아리 아이디는 빈 값일 수 없습니다.")
-          @UUID(message = "동아리 id는 UUID 포멧을 준수하여야 합니다.")
-          String clubId,
-      @PathVariable
           @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
           @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
           String announcementId,
-      @Valid @RequestBody InterviewSlotCreateRequest body) {
+      @Valid @RequestBody List<InterviewSlotCreateRequest> body) {
     List<InterviewSlotCreateResponse> responses =
-        interviewService.createInterviewSlots(userDetail.getId(), clubId, announcementId, body);
+        interviewService.createInterviewSlots(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
   }
 
