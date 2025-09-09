@@ -204,3 +204,20 @@ export const s_buttonToMove = css`
     width: 12rem;
     height: 3rem;
 `;
+
+export const s_informSvgWrapper = css`
+    align-items: center;
+`;
+
+export const s_informSvg = css`
+    width: 1.5rem;
+    height: 1.5rem;
+    color: ${theme.colors.gray[700]};
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+export const s_tooltipContent = css`
+    white-space: pre-line;
+`;

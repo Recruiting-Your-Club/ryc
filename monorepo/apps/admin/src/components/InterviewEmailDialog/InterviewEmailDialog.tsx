@@ -1,12 +1,13 @@
 import type { InterviewSlot } from '@api/domain/interview/types';
 import AttentionTriangle from '@assets/images/attention-triangle.svg';
+import Info from '@assets/images/info.svg';
 import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import React, { useEffect, useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';
-import { Button, Dialog, Divider, Editor, Input, Text, useToast } from '@ssoc/ui';
+import { Button, Dialog, Divider, Editor, Input, Text, Tooltip, useToast } from '@ssoc/ui';
 
 import {
     s_allSlotContainer,
@@ -23,6 +24,8 @@ import {
     s_emailContainer,
     s_header,
     s_iconContainer,
+    s_informSvg,
+    s_informSvgWrapper,
     s_input,
     s_perSlotContainer,
     s_scheduleContainer,
@@ -36,6 +39,7 @@ import {
     s_titleInput,
     s_titleText,
     s_titleWrapper,
+    s_tooltipContent,
     s_verticalDivider,
     s_warningContainer,
     s_warningIcon,
@@ -56,28 +60,6 @@ function InterviewEmailDialog({
 
     // initial values
     dayjs.locale('ko');
-    const initialTemplate = `
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 10px; margin-bottom: 20px;">
-    <h2 style="color: #333;">📩 면접 일정 선택 안내</h2>
-    <p style="font-size: 14px; color: #555;">
-        아래 버튼을 클릭하여 면접 일정을 선택해주세요. 선착순으로 면접 일정이 배정되어 조기 마감이 될 수 있습니다.
-    </p>
-    <a href="%s" target="_blank" style="
-      display: inline-block;
-      padding: 12px 24px;
-      margin-top: 10px;
-      background-color: #4CAF50;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
-  ">
-        ✅ 면접 일정 선택하러 가기
-    </a>
-</div>
-<div><br /></div>
-`;
 
     // state, ref, querystring hooks
     const [emailTitle, setEmailTitle] = useState<string>('');
@@ -270,9 +252,21 @@ function InterviewEmailDialog({
                             />
                         </div>
                         <div css={s_contentWrapper}>
-                            <Text as="span" type="h4Semibold" textAlign="start">
-                                내용
-                            </Text>
+                            <span css={s_textAndTooltipContainer}>
+                                <Text as="span" type="h4Semibold" textAlign="start">
+                                    내용
+                                </Text>
+                                <Tooltip
+                                    content={
+                                        '이메일 내용 상단에는 아래 안내 문구와 버튼이 추가돼요.'
+                                    }
+                                    direction="right"
+                                    wrapperSx={s_informSvgWrapper}
+                                    tooltipSx={s_tooltipContent}
+                                >
+                                    <Info css={s_informSvg} />
+                                </Tooltip>
+                            </span>
                             {InterviewEmailPreview}
                             <Editor.Root sx={s_editorRoot}>
                                 <Editor.Toolbar sx={s_editorToolbar} />
