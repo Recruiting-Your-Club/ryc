@@ -3,13 +3,19 @@ import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicantWithoutImage } from '@api/domain/step/types';
 import { useStepMutations } from '@api/hooks';
 import { useEmailMutations } from '@api/hooks/useEmailMutations';
-import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFactory';
+import {
+    applicantQueries,
+    evaluationQueries,
+    interviewQueries,
+    stepQueries,
+} from '@api/queryFactory';
 import { stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
 import {
     ApplicantDialog,
     CardBox,
     ErrorDialog,
+    InterviewEmailDialog,
     InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
@@ -57,7 +63,7 @@ function StepManagementPage() {
     const [searchText, setSearchText] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isEmailOpen, setIsEmailOpen] = useState<boolean>(false);
-    const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
+    const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(true);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
@@ -87,6 +93,10 @@ function StepManagementPage() {
     const { mutateAsync: sendPlainEmail } = useEmailMutations.usePostPlainEmail(() => setIsOpen);
     const { mutateAsync: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
         () => setIsInterviewOpen,
+    );
+
+    const { data: interviewSlots = [] } = useSuspenseQuery(
+        interviewQueries.interviewSlot(announcementId!, clubId!),
     );
 
     // calculated values
@@ -288,32 +298,9 @@ function StepManagementPage() {
             return false;
         }
     };
-
-    const handleInterviewEmail = async (
-        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
-        subject: string,
-        content: string,
-    ): Promise<boolean> => {
-        if (numberOfPeopleByInterviewDateRequests.length === 0) {
-            toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
-            return false;
-        }
-
-        if (!validateEmailInputs(subject, content)) return false;
-
-        try {
-            await sendInterviewEmail({
-                announcementId: announcementId!,
-                clubId: clubId!,
-                email: {
-                    numberOfPeopleByInterviewDateRequests,
-                    emailSendRequest: { recipients: emailTargetList, subject, content },
-                },
-            });
-            return true;
-        } catch {
-            return false;
-        }
+    const handleInterviewEmailReal = async (subject: string, content: string) => {
+        ////// 추후 채울 내용
+        return true;
     };
 
     const handleEmailDialogOpen = (
@@ -445,10 +432,11 @@ function StepManagementPage() {
                         handleClose={handleClose}
                     />
                 )}
-                <InterviewSettingDialog
+                <InterviewEmailDialog
                     open={isInterviewOpen}
                     handleClose={handleInterviewSettingClose}
-                    handleInterviewEmail={handleInterviewEmail}
+                    handleInterviewEmail={handleInterviewEmailReal}
+                    interviewSlots={interviewSlots}
                 />
                 <PlainEmailDialog
                     open={isEmailOpen}

@@ -18,3 +18,4 @@ export * from './UserSettingPage';
 export * from './ErrorFallbackPage';
 export * from './RecruitEditPage';
 export * from './ErrorBoundaryWrapperPage';
+export * from './InterviewSchedulePage';
