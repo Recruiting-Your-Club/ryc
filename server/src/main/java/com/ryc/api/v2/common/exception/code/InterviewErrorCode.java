@@ -11,6 +11,7 @@ public enum InterviewErrorCode implements ErrorCode {
   INTERVIEW_SLOT_FULL(HttpStatus.CONFLICT, "해당 면접 슬롯의 예약이 모두 찼습니다."),
   INTERVIEW_SLOT_PERIOD_INVALID(HttpStatus.BAD_REQUEST, "면접 슬롯의 시작일과 종료일은 같은 날짜여야 합니다."),
   INTERVIEW_SLOT_ALREADY_EXISTS(HttpStatus.CONFLICT, "해당 면접 슬롯이 이미 존재합니다."),
+  INTERVIEW_SLOT_ALREADY_RESERVED(HttpStatus.CONFLICT, "해당 면접 슬롯은 예약 정보가 존재합니다."),
   APPLICANT_ALREADY_RESERVED(HttpStatus.CONFLICT, "해당 지원자는 이미 면접을 예약하였습니다."),
   ;
 

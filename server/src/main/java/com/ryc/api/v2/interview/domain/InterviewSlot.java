@@ -20,7 +20,7 @@ public class InterviewSlot {
   private final String announcementId;
   private final Integer maxNumberOfPeople;
   private final Period period;
-  private final List<InterviewReservation> interviewReservations;
+  private final List<InterviewReservation> reservations;
 
   @Builder
   private InterviewSlot(
@@ -29,17 +29,17 @@ public class InterviewSlot {
       String announcementId,
       Integer maxNumberOfPeople,
       Period period,
-      List<InterviewReservation> interviewReservations) {
+      List<InterviewReservation> reservations) {
 
     // 1. 정제 (Period, InterviewReservation는 이미 도메인 객체이므로 정제 불필요)
 
     // 2. 선택 멤버 변수 기본값 처리
-    List<InterviewReservation> resolvedInterviewReservations =
-        interviewReservations != null ? interviewReservations : List.of();
+    List<InterviewReservation> resolvedReservations =
+        reservations != null ? reservations : List.of();
 
     // 3. 검증
     InterviewSlotValidator.validate(
-        id, creatorId, announcementId, maxNumberOfPeople, period, resolvedInterviewReservations);
+        id, creatorId, announcementId, maxNumberOfPeople, period, resolvedReservations);
 
     // 4. 할당
     this.id = id;
@@ -47,7 +47,7 @@ public class InterviewSlot {
     this.announcementId = announcementId;
     this.maxNumberOfPeople = maxNumberOfPeople;
     this.period = period;
-    this.interviewReservations = List.copyOf(resolvedInterviewReservations);
+    this.reservations = List.copyOf(resolvedReservations);
   }
 
   public static InterviewSlot initialize(
@@ -71,17 +71,15 @@ public class InterviewSlot {
         .announcementId(announcementId)
         .maxNumberOfPeople(maxNumberOfPeople)
         .period(period)
-        .interviewReservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
+        .reservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
         .build();
   }
 
-  public InterviewSlot addInterviewReservations(
-      InterviewReservation newReservation, boolean allowOverMax) {
+  public InterviewSlot addReservations(InterviewReservation newReservation, boolean allowOverMax) {
     int maxCount = this.maxNumberOfPeople;
-    List<InterviewReservation> newInterviewReservations =
-        new ArrayList<>(this.interviewReservations);
+    List<InterviewReservation> newInterviewReservations = new ArrayList<>(this.reservations);
 
-    this.interviewReservations.stream()
+    this.reservations.stream()
         .filter(r -> r.getApplicant().getId().equals(newReservation.getApplicant().getId()))
         .findFirst()
         .ifPresent(
@@ -90,7 +88,7 @@ public class InterviewSlot {
               throw new InterviewException(InterviewErrorCode.APPLICANT_ALREADY_RESERVED);
             });
 
-    if (maxNumberOfPeople == interviewReservations.size()) {
+    if (maxNumberOfPeople == reservations.size()) {
       if (allowOverMax) {
         maxCount++;
       } else {
@@ -107,13 +105,13 @@ public class InterviewSlot {
         .announcementId(this.announcementId)
         .maxNumberOfPeople(maxCount)
         .period(this.period)
-        .interviewReservations(List.copyOf(newInterviewReservations))
+        .reservations(List.copyOf(newInterviewReservations))
         .build();
   }
 
   public InterviewSlot removeReservation(InterviewReservation reservation) {
-    Set<InterviewReservation> newInterviewReservations = new HashSet<>(this.interviewReservations);
-    newInterviewReservations.removeIf(r -> r.getId().equals(reservation.getId()));
+    Set<InterviewReservation> newReservations = new HashSet<>(this.reservations);
+    newReservations.removeIf(r -> r.getId().equals(reservation.getId()));
 
     return InterviewSlot.builder()
         .id(this.id)
@@ -121,17 +119,17 @@ public class InterviewSlot {
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
         .period(this.period)
-        .interviewReservations(List.copyOf(newInterviewReservations))
+        .reservations(List.copyOf(newReservations))
         .build();
   }
 
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
-  public List<InterviewReservation> getInterviewReservations() {
-    return List.copyOf(interviewReservations);
+  public List<InterviewReservation> getReservations() {
+    return List.copyOf(reservations);
   }
 
-  public InterviewReservation getInterviewReservationByApplicantId(String applicantId) {
-    return interviewReservations.stream()
+  public InterviewReservation getReservationByApplicantId(String applicantId) {
+    return reservations.stream()
         .filter(reservation -> reservation.getApplicant().getId().equals(applicantId))
         .findFirst()
         .orElseThrow(
@@ -141,7 +139,7 @@ public class InterviewSlot {
   }
 
   public boolean hasReservationForApplicant(String applicantId) {
-    return interviewReservations.stream()
+    return reservations.stream()
         .anyMatch(reservation -> reservation.getApplicant().getId().equals(applicantId));
   }
 }

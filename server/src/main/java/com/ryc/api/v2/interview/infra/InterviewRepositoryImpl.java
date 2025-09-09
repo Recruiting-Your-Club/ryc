@@ -89,4 +89,9 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   public boolean existsSlotsByAnnouncementId(String announcementId) {
     return interviewSlotJpaRepository.existsByAnnouncementId(announcementId);
   }
+
+  @Override
+  public void deleteSlotById(String slotId) {
+    interviewSlotJpaRepository.deleteById(slotId);
+  }
 }

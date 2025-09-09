@@ -30,7 +30,7 @@ public class InterviewSlotMapper {
         .announcementId(slotEntity.getAnnouncementId())
         .maxNumberOfPeople(slotEntity.getMaxNumberOfPeople())
         .period(period)
-        .interviewReservations(reservations)
+        .reservations(reservations)
         .build();
   }
 
@@ -46,7 +46,7 @@ public class InterviewSlotMapper {
             .interviewReservations(new ArrayList<>())
             .build();
 
-    for (InterviewReservation reservation : slot.getInterviewReservations()) {
+    for (InterviewReservation reservation : slot.getReservations()) {
       InterviewReservationEntity reservationEntity =
           InterviewReservationMapper.toEntity(reservation, slotEntity);
       slotEntity.addReservation(reservationEntity);
