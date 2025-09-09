@@ -55,6 +55,7 @@ export const selectedTimeSection = css`
     gap: 0.5rem;
     padding: 1rem;
     overflow-y: auto;
+    min-height: 3.8rem;
 `;
 
 export const s_applyButton = css`
