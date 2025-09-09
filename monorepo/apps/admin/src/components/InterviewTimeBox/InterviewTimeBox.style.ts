@@ -12,7 +12,7 @@ export const baseBox = css`
     min-width: 35rem;
     border: 1px solid ${theme.colors.gray[400]};
     border-radius: 8px;
-    overflow: hidden;
+    /* overflow: hidden; */
 `;
 
 export const timeSelectSection = css`
@@ -49,13 +49,18 @@ export const dividerCss = css`
     border-top: 1px solid ${theme.colors.gray[400]};
 `;
 
-export const selectedTimeSection = css`
+export const s_selectedTimeSection = css`
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 1rem;
     overflow-y: auto;
-    min-height: 3.8rem;
+    min-height: 8rem;
+`;
+
+export const s_selectedTimeSectionWrapper = css`
+    display: flex;
+    overflow: hidden;
 `;
 
 export const s_applyButton = css`
