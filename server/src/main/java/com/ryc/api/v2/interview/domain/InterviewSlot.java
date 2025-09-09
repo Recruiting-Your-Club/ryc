@@ -139,4 +139,9 @@ public class InterviewSlot {
                 new NoSuchElementException(
                     "Interview reservation not found for applicant: " + applicantId));
   }
+
+  public boolean hasReservationForApplicant(String applicantId) {
+    return interviewReservations.stream()
+        .anyMatch(reservation -> reservation.getApplicant().getId().equals(applicantId));
+  }
 }

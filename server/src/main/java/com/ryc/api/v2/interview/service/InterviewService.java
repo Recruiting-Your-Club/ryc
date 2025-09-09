@@ -21,8 +21,6 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.dto.response.PeriodResponse;
-import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
-import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
@@ -65,10 +63,10 @@ public class InterviewService {
 
     Club club = clubRepository.findById(clubId);
     Applicant applicant = applicantRepository.findById(applicantId);
-    Boolean isReserved =
-        interviewRepository.isReservedByAnnouncementIdAndApplicantId(announcementId, applicantId);
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
+    Boolean isReserved =
+        interviewSlots.stream().allMatch(slot -> slot.hasReservationForApplicant(applicantId));
 
     List<InterviewSlotsByDateResponse> slotResponses =
         interviewSlots.stream()
@@ -88,6 +86,7 @@ public class InterviewService {
                 fileMetaData ->
                     FileGetResponse.of(fileMetaData, fileService.getPublicFileGetUrl(fileMetaData)))
             .orElse(null);
+
     FileGetResponse applicantProfile =
         fileService.findAllByAssociatedId(applicantId).stream()
             .filter(
@@ -99,12 +98,14 @@ public class InterviewService {
                     FileGetResponse.of(
                         fileMetaData, fileService.getPrivateFileGetUrl(fileMetaData)))
             .orElse(null);
+
     Map<String, FileGetResponse> imageMap =
         applicantProfile == null
             ? Collections.emptyMap()
             : Collections.singletonMap(applicantId, applicantProfile);
     ApplicantSummaryResponse applicantSummaryResponse =
         createApplicantSummaryResponse(applicant, imageMap);
+
     return InterviewSlotsApplicantViewResponse.builder()
         .clubName(club.getName())
         .clubCategory(club.getCategory().toString())
@@ -227,12 +228,8 @@ public class InterviewService {
   @Transactional
   public InterviewReservationCreateResponse reservationInterview(
       String slotId, InterviewReservationRequest body) {
-    // 지원자가 기존 예약 여부를 확인합니다.
-    if (interviewRepository.isReservedByApplicantId(body.applicantId()))
-      throw new BusinessRuleException(InterviewErrorCode.APPLICANT_ALREADY_RESERVED);
-
     // 요청된 면접 일정을 가져옵니다.
-    InterviewSlot interviewSlot = interviewRepository.findSlotByIdForUpdate(slotId);
+    InterviewSlot interviewSlot = interviewRepository.findSlotByIdWithLock(slotId);
 
     // 지원자의 예약 정보를 생성합니다.
     Applicant applicant = applicantRepository.findById(body.applicantId());
@@ -270,7 +267,7 @@ public class InterviewService {
 
     // 기존 면접 슬롯이 있는지 확인하고, 해당 슬롯에서 지원자의 예약을 제거합니다.
     Optional<InterviewSlot> interviewSlotOptional =
-        interviewRepository.findSlotByApplicantIdForUpdate(applicantId);
+        interviewRepository.findSlotByApplicantIdWithLock(applicantId);
 
     if (interviewSlotOptional.isPresent()) {
       InterviewSlot slot = interviewSlotOptional.get();
@@ -286,7 +283,7 @@ public class InterviewService {
     }
 
     // 새로운 면접 슬롯에 예약 정보 추가
-    InterviewSlot newSlot = interviewRepository.findSlotByIdForUpdate(body.interviewSlotId());
+    InterviewSlot newSlot = interviewRepository.findSlotByIdWithLock(body.interviewSlotId());
     InterviewSlot updatedSlot = newSlot.addInterviewReservations(reservation, true);
 
     InterviewSlot savedSlot = interviewRepository.saveSlot(updatedSlot);

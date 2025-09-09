@@ -55,31 +55,19 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public InterviewSlot findSlotByIdForUpdate(String interviewSlotId) {
+  public InterviewSlot findSlotByIdWithLock(String interviewSlotId) {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
-            .findByIdForUpdate(interviewSlotId)
+            .findByIdWithLock(interviewSlotId)
             .orElseThrow(() -> new NoSuchElementException("Interview slot not found"));
     return InterviewSlotMapper.toDomain(entity);
   }
 
   @Override
-  public Optional<InterviewSlot> findSlotByApplicantIdForUpdate(String applicantId) {
+  public Optional<InterviewSlot> findSlotByApplicantIdWithLock(String applicantId) {
     return interviewReservationJpaRepository
-        .findSlotByApplicantId(applicantId)
+        .findInterviewSlotByApplicant_Id(applicantId)
         .map(InterviewSlotMapper::toDomain);
-  }
-
-  @Override
-  public Boolean isReservedByAnnouncementIdAndApplicantId(
-      String announcementId, String applicantId) {
-    return interviewReservationJpaRepository.existsByAnnouncementIdAndApplicantId(
-        announcementId, applicantId);
-  }
-
-  @Override
-  public Boolean isReservedByApplicantId(String applicantId) {
-    return interviewReservationJpaRepository.existsByApplicantId(applicantId);
   }
 
   @Override

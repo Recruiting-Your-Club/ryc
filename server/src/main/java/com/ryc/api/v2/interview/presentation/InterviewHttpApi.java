@@ -130,9 +130,7 @@ public class InterviewHttpApi {
 
   @PostMapping("/admin/announcements/{announcementId}/interview-slots")
   @HasRole(Role.MEMBER)
-  @Operation(
-      summary = "동아리 관리자가 면접 일정 생성",
-      description = "동아리 관리자가 면접 일정을 생성합니다.")
+  @Operation(summary = "동아리 관리자가 면접 일정 생성", description = "동아리 관리자가 면접 일정을 생성합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER", "INTERVIEW_SLOT_PERIOD_INVALID"})

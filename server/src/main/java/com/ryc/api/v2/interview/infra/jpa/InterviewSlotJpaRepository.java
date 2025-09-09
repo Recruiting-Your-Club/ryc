@@ -15,7 +15,7 @@ public interface InterviewSlotJpaRepository extends JpaRepository<InterviewSlotE
 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   @Query("SELECT s FROM InterviewSlotEntity s WHERE s.id = :id")
-  Optional<InterviewSlotEntity> findByIdForUpdate(String id);
+  Optional<InterviewSlotEntity> findByIdWithLock(String id);
 
   List<InterviewSlotEntity> findByAnnouncementId(String announcementId);
 
