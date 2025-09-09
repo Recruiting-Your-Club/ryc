@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 
 import theme from '@ssoc/styles';
 import { hexToRgb } from '@ssoc/utils';
@@ -39,6 +39,7 @@ export const s_perInformationContainer = css`
     flex-direction: column;
     border: 1px solid ${theme.colors.gray[200]};
     border-radius: 8px;
+    width: 38rem;
     padding: 1.5rem;
 `;
 
@@ -58,7 +59,7 @@ export const s_informationContainer = css`
     border-radius: 8px;
     height: 100%;
     max-height: 50rem;
-    width: 100%;
+    width: 38rem;
     padding: 1.5rem;
     /* gap: 1rem; */
 `;
@@ -197,4 +198,19 @@ export const s_numberButton = (isSelected: boolean) => css`
 
 export const s_contentText = css`
     margin: 0 0 1rem 0;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export const s_stepContainer = css`
+    animation: ${fadeIn} 0.3s ease forwards;
 `;

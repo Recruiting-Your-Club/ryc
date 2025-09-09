@@ -30,6 +30,7 @@ import {
     s_numberButton,
     s_perInformationContainer,
     s_selectContainer,
+    s_stepContainer,
     s_textAndTooltipContainer,
     s_tooltipContent,
 } from './InterviewSettingDialog.style';
@@ -46,8 +47,8 @@ function InterviewSettingDialog({
     const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
-    const [numberValue, setNumberValue] = useState<string>(DEFAULT_NUMBER_VALUE);
-    const [timeValue, setTimeValue] = useState<string>(DEFAULT_TIME_VALUE);
+    const [numberValue, setNumberValue] = useState<string>('');
+    const [timeValue, setTimeValue] = useState<string>('');
     const [startTime, setStartTime] = useState<string>(DEFAULT_START_TIME);
     const [endTime, setEndTime] = useState<string>(DEFAULT_END_TIME);
 
@@ -58,6 +59,8 @@ function InterviewSettingDialog({
     const [interviewInformation, setInterviewInformation] = useState<
         Record<string, InterviewInformation>
     >({});
+
+    const [currentStep, setCurrentStep] = useState(1);
 
     // form hooks
     // query hooks
@@ -196,11 +199,11 @@ function InterviewSettingDialog({
                         </Text>
                         <Tooltip
                             content={`
-                                1. 면접 최대 인원 수와 면접 당 진행 시간을 먼저 정해주세요.\n
+                                1. 면접 당 진행 시간과 면접 당 최대 인원 수를 먼저 정해주세요.\n
                                 2. 면접 날짜를 선택해주세요. (예: 9월 1일)\n
                                 3. 해당 날짜의 첫 시작 시간과 마지막 종료 시간을 선택해주세요. (예: 오전 10시 ~ 오후 3시)\n
-                                4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해 확정해주세요.\n
-                                5. 다른 날짜도 같은 방식으로 설정하시면 모든 면접 일정이 확정돼요.\n
+                                4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해주세요.'
+                                5. 다른 날짜도 같은 방식으로 설정하신 후 추가되면 일정이 확정돼요.\n
                                 `}
                             direction="bottom"
                             wrapperSx={s_informSvgWrapper}
@@ -221,66 +224,78 @@ function InterviewSettingDialog({
                 <Divider color="black" sx={{ borderTop: '1px solid' }} />
                 <Dialog.Content sx={s_content}>
                     <div css={s_selectContainer}>
-                        <div css={s_perInformationContainer}>
-                            <Text
-                                as="span"
-                                type="captionSemibold"
-                                textAlign="start"
-                                sx={s_contentText}
-                            >
-                                면접을 보는 시간 간격은 어떻게 되나요?
-                            </Text>
-                            <div css={s_buttonGrid}>
-                                {timeOptions.map(({ value, label }) => (
-                                    <Button
-                                        key={value}
-                                        size="md"
-                                        variant="outlined"
-                                        sx={s_numberButton(timeValue === value)}
-                                        onClick={() => setTimeValue(value)}
-                                    >
-                                        {label}
-                                    </Button>
-                                ))}
+                        {currentStep >= 1 && (
+                            <div css={[s_perInformationContainer, s_stepContainer]}>
+                                <Text
+                                    as="span"
+                                    type="captionSemibold"
+                                    textAlign="start"
+                                    sx={s_contentText}
+                                >
+                                    면접을 보는 시간 간격은 어떻게 되나요?
+                                </Text>
+                                <div css={s_buttonGrid}>
+                                    {timeOptions.map(({ value, label }) => (
+                                        <Button
+                                            key={value}
+                                            size="md"
+                                            variant="outlined"
+                                            sx={s_numberButton(timeValue === value)}
+                                            onClick={() => {
+                                                setTimeValue(value);
+                                                setCurrentStep(2);
+                                            }}
+                                        >
+                                            {label}
+                                        </Button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div css={s_perInformationContainer}>
-                            <Text
-                                as="span"
-                                type="captionSemibold"
-                                textAlign="start"
-                                sx={s_contentText}
-                            >
-                                면접을 보는 인원은 시간 당 몇 명인가요?
-                            </Text>
-                            <div css={s_buttonGrid}>
-                                {numberOptions.map(({ value, label }) => (
-                                    <Button
-                                        key={value}
-                                        size="md"
-                                        variant="outlined"
-                                        sx={s_numberButton(numberValue === value)}
-                                        onClick={() => setNumberValue(value)}
-                                    >
-                                        {label}
-                                    </Button>
-                                ))}
+                        )}
+                        {currentStep >= 2 && (
+                            <div css={[s_perInformationContainer, s_stepContainer]}>
+                                <Text
+                                    as="span"
+                                    type="captionSemibold"
+                                    textAlign="start"
+                                    sx={s_contentText}
+                                >
+                                    면접을 보는 인원은 시간 당 몇 명인가요?
+                                </Text>
+                                <div css={s_buttonGrid}>
+                                    {numberOptions.map(({ value, label }) => (
+                                        <Button
+                                            key={value}
+                                            size="md"
+                                            variant="outlined"
+                                            sx={s_numberButton(numberValue === value)}
+                                            onClick={() => {
+                                                setNumberValue(value);
+                                                setCurrentStep(3);
+                                            }}
+                                        >
+                                            {label}
+                                        </Button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <div css={s_informationContainer}>
-                            <Text as="span" type="captionSemibold" textAlign="start">
-                                면접 날짜와 시간을 선택해주세요.
-                            </Text>
-                            <Calendar
-                                mode="custom"
-                                size="sm"
-                                selectedDate={selectedDates}
-                                onSelect={handleDates}
-                                highlightedDate={highlightedDate}
-                                sx={s_calendar}
-                            />
-                            <InterviewTimeBox />
-                        </div>
+                        )}
+                        {currentStep >= 3 && (
+                            <div css={[s_informationContainer, s_stepContainer]}>
+                                <Text as="span" type="captionSemibold" textAlign="start">
+                                    면접 날짜와 시간을 선택해주세요.
+                                </Text>
+                                <Calendar
+                                    mode="custom"
+                                    size="sm"
+                                    selectedDate={selectedDates}
+                                    onSelect={handleDates}
+                                    highlightedDate={highlightedDate}
+                                    sx={s_calendar}
+                                />
+                                <InterviewTimeBox />
+                            </div>
+                        )}
                     </div>
                 </Dialog.Content>
                 <Dialog.Action sx={s_action}>
