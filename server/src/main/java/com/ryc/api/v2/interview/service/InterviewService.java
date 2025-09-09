@@ -260,6 +260,13 @@ public class InterviewService {
   }
 
   @Transactional
+  public void changeMaxPeopleCount(String slotId, int newMaxCount) {
+    InterviewSlot slot = interviewRepository.findSlotByIdWithLock(slotId);
+    InterviewSlot updatedSlot = slot.changeMaxNumberOfPeople(newMaxCount);
+    interviewRepository.saveSlot(updatedSlot);
+  }
+
+  @Transactional
   public InterviewReservationUpdateResponse changeInterviewReservation(
       String applicantId, InterviewReservationUpdatedRequest body) {
 

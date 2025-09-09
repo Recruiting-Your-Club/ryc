@@ -109,6 +109,21 @@ public class InterviewSlot {
         .build();
   }
 
+  public InterviewSlot changeMaxNumberOfPeople(int newMaxNumberOfPeople) {
+    if (newMaxNumberOfPeople < this.reservations.size()) {
+      throw new InterviewException(InterviewErrorCode.NEW_MAX_NUMBER_LESS_THAN_RESERVATIONS);
+    }
+
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(newMaxNumberOfPeople)
+        .period(this.period)
+        .reservations(List.copyOf(this.reservations))
+        .build();
+  }
+
   public InterviewSlot removeReservation(InterviewReservation reservation) {
     Set<InterviewReservation> newReservations = new HashSet<>(this.reservations);
     newReservations.removeIf(r -> r.getId().equals(reservation.getId()));

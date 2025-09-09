@@ -23,6 +23,7 @@ import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
+import com.ryc.api.v2.interview.presentation.dto.request.MaxNumberOfPeopleUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
 import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
@@ -180,6 +181,28 @@ public class InterviewHttpApi {
     return ResponseEntity.created(location).body(response);
   }
 
+  @PutMapping("admin/interview-slots/{interview-slot-id}/people/count")
+  @HasRole(Role.MEMBER)
+  @Operation(
+      summary = "동아리 관리자가 면접 슬롯 최대 인원 수 변경",
+      description = "동아리 관리자가 특정 면접 슬롯의 최대 인원 수를 변경합니다.")
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
+      include = {
+        "FORBIDDEN_NOT_CLUB_MEMBER",
+        "RESOURCE_NOT_FOUND",
+        "NEW_MAX_NUMBER_LESS_THAN_RESERVATIONS"
+      })
+  public ResponseEntity<Void> changeMaxPeopleCount(
+      @PathVariable("interview-slot-id")
+          @NotBlank(message = "인터뷰 슬롯 아이디는 빈 값일 수 없습니다.")
+          @UUID(message = "인터뷰 슬롯 id는 UUID 포멧을 준수하여야 합니다.")
+          String slotId,
+      @Valid @RequestBody MaxNumberOfPeopleUpdatedRequest body) {
+    interviewService.changeMaxPeopleCount(slotId, body.maxPeopleCount());
+    return ResponseEntity.noContent().build();
+  }
+
   @PutMapping("admin/applicants/{applicant-id}/interview-reservation")
   @HasRole(Role.MEMBER)
   @Operation(
@@ -206,8 +229,12 @@ public class InterviewHttpApi {
       summary = "동아리 관리자가 면접 시간대 삭제",
       description = "동아리 관리자가 특정 면접 시간대를 삭제합니다.<br>만약 삭제하려는 면접 시간대에 예약 정보가 존재한다면 예외가 발생합니다.")
   @ApiErrorCodeExample(
-      value = {CommonErrorCode.class, InterviewErrorCode.class},
-      include = {"RESOURCE_NOT_FOUND", "INTERVIEW_SLOT_ALREADY_RESERVED"})
+      value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
+      include = {
+        "FORBIDDEN_NOT_CLUB_MEMBER",
+        "RESOURCE_NOT_FOUND",
+        "INTERVIEW_SLOT_ALREADY_RESERVED"
+      })
   public ResponseEntity<Void> deleteInterviewSlot(
       @PathVariable("interview-slot-id")
           @NotBlank(message = "인터뷰 슬롯 아이디는 빈 값일 수 없습니다.")
