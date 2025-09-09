@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,37 +21,44 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
 import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
+import com.ryc.api.v2.applicant.domain.ApplicantRepository;
+import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
+import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
-import com.ryc.api.v2.email.domain.event.InterviewSlotEmailEvent;
+import com.ryc.api.v2.email.presentation.dto.request.InterviewSlotEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 
 @Service
 public class EmailService {
 
-  private final String baseUri;
-  private final String linkHtmlTemplate;
+  private final String interviewLinkHtmlTemplate;
   private final String interviewReservationHtmlTemplate;
   private final String applicationSubmittedHtmlTemplate;
   private final String ssocId;
   private final EmailRepository emailRepository;
+  private final ClubRepository clubRepository;
+  private final ApplicantRepository applicantRepository;
 
   public EmailService(
-      @Value("${CLIENT_URL}") String baseUri,
       @Value("${SSOC_EMAIL_ID}") String ssocId,
       EmailRepository emailRepository,
+      ClubRepository clubRepository,
+      ApplicantRepository applicantRepository,
       ResourceLoader resourceLoader)
       throws IOException {
-    this.baseUri = baseUri;
     this.emailRepository = emailRepository;
+    this.clubRepository = clubRepository;
+    this.applicantRepository = applicantRepository;
     this.ssocId = ssocId;
 
     Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
     try (InputStream is = resource.getInputStream()) {
-      this.linkHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+      this.interviewLinkHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
     }
 
     resource = resourceLoader.getResource("classpath:templates/interview-reservation.html");
@@ -80,17 +86,39 @@ public class EmailService {
             .toList();
 
     List<Email> savedEmails = emailRepository.saveAll(emails);
-    return savedEmails.stream()
-        .map(
-            email -> {
-              String statusUrl = String.format("api/v2/emails/%s/status", email.getId());
-              return EmailSendResponse.builder()
-                  .emailId(email.getId())
-                  .status(email.getStatus())
-                  .statusUrl(statusUrl)
-                  .build();
-            })
-        .toList();
+    return savedEmails.stream().map(this::createEmailSendResponse).toList();
+  }
+
+  @Transactional
+  public List<EmailSendResponse> createInterviewSlotEmails(
+      String adminId, String clubId, String announcementId, InterviewSlotEmailSendRequest body) {
+
+    Club club = clubRepository.findById(clubId);
+    List<Applicant> applicants =
+        applicantRepository.findAllByAnnouncementId(announcementId).stream()
+            .filter(applicant -> applicant.getStatus() == ApplicantStatus.INTERVIEW_PENDING)
+            .toList();
+
+    List<Email> emails =
+        applicants.stream()
+            .map(
+                applicant -> {
+                  String content =
+                      interviewLinkHtmlTemplate
+                              .replace("${club-name}", club.getName())
+                              .replace("${club-id}", club.getId())
+                              .replace("${announcement-id}", announcementId)
+                              .replace("${applicant-name}", applicant.getName())
+                              .replace("${applicant-id}", applicant.getId())
+                          + body.content();
+
+                  return Email.initialize(
+                      adminId, applicant.getEmail(), body.subject(), content, announcementId);
+                })
+            .toList();
+
+    List<Email> savedEmails = emailRepository.saveAll(emails);
+    return savedEmails.stream().map(this::createEmailSendResponse).toList();
   }
 
   @Transactional(readOnly = true)
@@ -110,31 +138,6 @@ public class EmailService {
   public void incrementRetryCount(Email email) {
     Email updatedEmail = email.incrementRetryCount();
     emailRepository.save(updatedEmail);
-  }
-
-  @Async
-  @TransactionalEventListener
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  protected void createInterviewSlotEmails(InterviewSlotEmailEvent event) {
-    List<Email> emails = new ArrayList<>();
-
-    for (Applicant applicant : event.applicants()) {
-      String link =
-          String.format(
-              "%s/clubs/%s/announcements/%s/applicants/%s/interview-reservations",
-              baseUri, event.clubId(), event.announcementId(), applicant.getId());
-      String content = String.format(linkHtmlTemplate, link) + event.content();
-
-      emails.add(
-          Email.initialize(
-              event.adminId(),
-              applicant.getEmail(),
-              event.subject(),
-              content,
-              event.announcementId()));
-    }
-
-    emailRepository.saveAll(emails);
   }
 
   @Async
@@ -186,5 +189,14 @@ public class EmailService {
     }
 
     emailRepository.deleteAllByAdminId(event.adminId());
+  }
+
+  private EmailSendResponse createEmailSendResponse(Email email) {
+    String statusUrl = String.format("api/v2/emails/%s/status", email.getId());
+    return EmailSendResponse.builder()
+        .emailId(email.getId())
+        .status(email.getStatus())
+        .statusUrl(statusUrl)
+        .build();
   }
 }

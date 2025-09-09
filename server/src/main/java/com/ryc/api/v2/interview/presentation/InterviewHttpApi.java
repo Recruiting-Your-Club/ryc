@@ -131,7 +131,9 @@ public class InterviewHttpApi {
 
   @PostMapping("/admin/announcements/{announcementId}/interview-slots")
   @HasRole(Role.MEMBER)
-  @Operation(summary = "동아리 관리자가 면접 일정 생성", description = "동아리 관리자가 면접 일정을 생성합니다.")
+  @Operation(
+      summary = "동아리 관리자가 면접 일정 생성",
+      description = "동아리 관리자가 면접 일정을 생성합니다.<br>만약 요청받는 시작 시간이 이미 존재하는 시작 시간과 겹친다면 예외가 발생합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {
@@ -185,7 +187,8 @@ public class InterviewHttpApi {
   @HasRole(Role.MEMBER)
   @Operation(
       summary = "동아리 관리자가 면접 슬롯 최대 인원 수 변경",
-      description = "동아리 관리자가 특정 면접 슬롯의 최대 인원 수를 변경합니다.")
+      description =
+          "동아리 관리자가 특정 면접 슬롯의 최대 인원 수를 변경합니다.<br>만약 변경하려는 최대 인원 수가 이미 예약된 인원 수보다 적다면 예외가 발생합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {
