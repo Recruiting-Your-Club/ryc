@@ -77,7 +77,7 @@ export const s_contentWrapper = css`
 
 export const s_editorRoot = css`
     min-width: 43rem;
-    min-height: 35rem;
+    min-height: 20rem;
     height: 100%;
     justify-content: start;
 `;
