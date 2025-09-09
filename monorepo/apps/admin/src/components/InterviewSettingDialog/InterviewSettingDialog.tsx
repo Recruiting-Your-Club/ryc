@@ -10,49 +10,28 @@ import {
     numberOptions,
     timeOptions,
 } from '@constants/interviewSettingDialog';
-import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {
-    Button,
-    Calendar,
-    Dialog,
-    Divider,
-    Editor,
-    Input,
-    Select,
-    Text,
-    Tooltip,
-    useToast,
-} from '@ssoc/ui';
+import { Button, Calendar, Dialog, Divider, Text, Tooltip, useToast } from '@ssoc/ui';
 
 import {
+    s_action,
+    s_actionButton,
+    s_buttonGrid,
     s_calendar,
     s_content,
-    s_contentWrapper,
+    s_contentText,
     s_dialog,
-    s_editorRoot,
-    s_editorTextarea,
-    s_editorToolbar,
-    s_emailContainer,
-    s_emptyPlace,
     s_header,
     s_informationContainer,
     s_informSvg,
     s_informSvgWrapper,
-    s_input,
+    s_numberButton,
     s_perInformationContainer,
-    s_resetButton,
-    s_select,
     s_selectContainer,
-    s_selectTrigger,
-    s_submitButtonWrapper,
     s_textAndTooltipContainer,
-    s_titleInput,
-    s_titleWrapper,
     s_tooltipContent,
-    s_verticalDivider,
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
@@ -79,9 +58,6 @@ function InterviewSettingDialog({
     const [interviewInformation, setInterviewInformation] = useState<
         Record<string, InterviewInformation>
     >({});
-
-    const [emailTitle, setEmailTitle] = useState<string>('');
-    const [emailContent, setEmailContent] = useState<string>('');
 
     // form hooks
     // query hooks
@@ -140,11 +116,6 @@ function InterviewSettingDialog({
         setHighlightedDate([]);
     };
 
-    const handleResetContent = () => {
-        setEmailTitle('');
-        setEmailContent('');
-    };
-
     const handleDates = (newDates: string[]) => {
         const newDate = newDates[0];
         const prevDate = highlightedDate[0];
@@ -170,22 +141,22 @@ function InterviewSettingDialog({
         setSelectedDates((prev) => (prev.includes(newDate) ? prev : [...prev, newDate]));
     };
 
-    const handleSendEmail = async () => {
-        let contentToSend = emailContent;
+    // const handleSendEmail = async () => {
+    //     let contentToSend = emailContent;
 
-        try {
-            contentToSend = await convertImageToBase64(emailContent);
-        } catch (error) {
-            // 변환 실패 -> 원본 이미지 사용 (다른 이미지는 변환 계속)
-            // eslint-disable-next-line no-empty
-        }
+    //     try {
+    //         contentToSend = await convertImageToBase64(emailContent);
+    //     } catch (error) {
+    //         // 변환 실패 -> 원본 이미지 사용 (다른 이미지는 변환 계속)
+    //         // eslint-disable-next-line no-empty
+    //     }
 
-        if (await handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
-            handleReset();
-            handleResetContent();
-            handleClose();
-        }
-    };
+    //     if (await handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
+    //         handleReset();
+    //         handleResetContent();
+    //         handleClose();
+    //     }
+    // };
 
     // effects
     useEffect(() => {
@@ -215,21 +186,13 @@ function InterviewSettingDialog({
         }
     }, [timeValue]);
 
-    useEffect(() => {
-        if (!emailContent) return;
-
-        convertImageToBase64(emailContent).then((convertedHtml) => {
-            setEmailContent(convertedHtml);
-        });
-    }, [emailContent]);
-
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
             <Dialog open={open} handleClose={handleClose} size="full" sx={s_dialog}>
                 <Dialog.Header position="start" sx={s_header}>
                     <span css={s_textAndTooltipContainer}>
                         <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
-                            면접 일정 설정 후 보내기
+                            면접 일정 추가
                         </Text>
                         <Tooltip
                             content={`
@@ -238,7 +201,6 @@ function InterviewSettingDialog({
                                 3. 해당 날짜의 첫 시작 시간과 마지막 종료 시간을 선택해주세요. (예: 오전 10시 ~ 오후 3시)\n
                                 4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해 확정해주세요.\n
                                 5. 다른 날짜도 같은 방식으로 설정하시면 모든 면접 일정이 확정돼요.\n
-                                6. 마지막으로 이메일 제목과 내용 모두 작성하신 뒤, '이메일 보내기' 버튼을 눌러주세요!\n
                                 `}
                             direction="bottom"
                             wrapperSx={s_informSvgWrapper}
@@ -259,124 +221,76 @@ function InterviewSettingDialog({
                 <Divider color="black" sx={{ borderTop: '1px solid' }} />
                 <Dialog.Content sx={s_content}>
                     <div css={s_selectContainer}>
-                        <Text as="span" type="h4Bold" textAlign="start">
-                            상세 면접 정보
-                        </Text>
                         <div css={s_perInformationContainer}>
-                            <Text as="span" type="bodyBold" textAlign="start">
-                                면접 최대 인원 수
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                한 면접 당 최대 인원 수를 정해요.
-                            </Text>
-                            <Select
-                                value={numberValue}
-                                onValueChange={setNumberValue}
-                                size="xs"
-                                sx={s_select}
-                                options={numberOptions}
+                            <Text
+                                as="span"
+                                type="captionSemibold"
+                                textAlign="start"
+                                sx={s_contentText}
                             >
-                                <Select.Trigger sx={s_selectTrigger}>
-                                    <Select.Value />
-                                </Select.Trigger>
-                                <Select.Content>
-                                    {numberOptions.map(({ value, label }) => (
-                                        <Select.Item key={value} value={value}>
-                                            {label}
-                                        </Select.Item>
-                                    ))}
-                                </Select.Content>
-                            </Select>
+                                면접을 보는 시간 간격은 어떻게 되나요?
+                            </Text>
+                            <div css={s_buttonGrid}>
+                                {timeOptions.map(({ value, label }) => (
+                                    <Button
+                                        key={value}
+                                        size="md"
+                                        variant="outlined"
+                                        sx={s_numberButton(timeValue === value)}
+                                        onClick={() => setTimeValue(value)}
+                                    >
+                                        {label}
+                                    </Button>
+                                ))}
+                            </div>
                         </div>
                         <div css={s_perInformationContainer}>
-                            <Text as="span" type="bodyBold" textAlign="start">
-                                면접 당 진행 시간
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                한 면접 당 걸리는 시간을 정해요.
-                            </Text>
-                            <Select
-                                value={timeValue}
-                                onValueChange={setTimeValue}
-                                size="xs"
-                                sx={s_select}
-                                options={timeOptions}
+                            <Text
+                                as="span"
+                                type="captionSemibold"
+                                textAlign="start"
+                                sx={s_contentText}
                             >
-                                <Select.Trigger sx={s_selectTrigger}>
-                                    <Select.Value />
-                                </Select.Trigger>
-                                <Select.Content>
-                                    {timeOptions.map(({ value, label }) => (
-                                        <Select.Item key={value} value={value}>
-                                            {label}
-                                        </Select.Item>
-                                    ))}
-                                </Select.Content>
-                            </Select>
+                                면접을 보는 인원은 시간 당 몇 명인가요?
+                            </Text>
+                            <div css={s_buttonGrid}>
+                                {numberOptions.map(({ value, label }) => (
+                                    <Button
+                                        key={value}
+                                        size="md"
+                                        variant="outlined"
+                                        sx={s_numberButton(numberValue === value)}
+                                        onClick={() => setNumberValue(value)}
+                                    >
+                                        {label}
+                                    </Button>
+                                ))}
+                            </div>
                         </div>
-                        <div css={s_emptyPlace} />
-                        <div css={s_perInformationContainer}>
-                            <Text as="span" type="bodyBold" textAlign="start">
-                                초기화
+                        <div css={s_informationContainer}>
+                            <Text as="span" type="captionSemibold" textAlign="start">
+                                면접 날짜와 시간을 선택해주세요.
                             </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                지금까지 정한 정보를 초기화해요.
-                            </Text>
-                            <Button
-                                size="md"
-                                variant="transparent"
-                                onClick={handleReset}
-                                sx={s_resetButton}
-                            >
-                                초기화
-                            </Button>
-                        </div>
-                    </div>
-                    <div css={s_informationContainer}>
-                        <Calendar
-                            mode="custom"
-                            size="md"
-                            selectedDate={selectedDates}
-                            onSelect={handleDates}
-                            highlightedDate={highlightedDate}
-                            sx={s_calendar}
-                        />
-                        <InterviewTimeBox />
-                    </div>
-                    <div css={s_verticalDivider} />
-                    <div css={s_emailContainer}>
-                        <div css={s_titleWrapper}>
-                            <Text as="span" type="h4Semibold" textAlign="start">
-                                제목
-                            </Text>
-                            <Input
-                                value={emailTitle}
-                                onChange={(e) => setEmailTitle(e.target.value)}
-                                height="4rem"
-                                placeholder="이메일 제목을 입력해주세요."
-                                inputSx={s_titleInput}
-                                sx={s_input}
+                            <Calendar
+                                mode="custom"
+                                size="sm"
+                                selectedDate={selectedDates}
+                                onSelect={handleDates}
+                                highlightedDate={highlightedDate}
+                                sx={s_calendar}
                             />
-                        </div>
-                        <div css={s_contentWrapper}>
-                            <Text as="span" type="h4Semibold" textAlign="start">
-                                내용
-                            </Text>
-                            <Editor.Root sx={s_editorRoot}>
-                                <Editor.Toolbar sx={s_editorToolbar} />
-                                <Editor.Textarea
-                                    sx={s_editorTextarea}
-                                    value={emailContent}
-                                    onChange={setEmailContent}
-                                />
-                            </Editor.Root>
-                        </div>
-                        <div css={s_submitButtonWrapper}>
-                            <Button onClick={handleSendEmail}>이메일 보내기</Button>
+                            <InterviewTimeBox />
                         </div>
                     </div>
                 </Dialog.Content>
-                <Dialog.Action>{''}</Dialog.Action>
+                <Dialog.Action sx={s_action}>
+                    <Button size="md" variant="outlined" onClick={handleReset} sx={s_actionButton}>
+                        초기화
+                    </Button>
+                    <Button size="md" onClick={handleClose} sx={s_actionButton}>
+                        추가
+                    </Button>
+                </Dialog.Action>
             </Dialog>
         </InterviewSettingDialogContext.Provider>
     );

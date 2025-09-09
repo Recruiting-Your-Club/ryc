@@ -7,6 +7,9 @@ export const baseBox = css`
     flex-direction: column;
     height: 100%;
     min-height: 10rem;
+    width: 100%;
+    max-width: 35rem;
+    min-width: 35rem;
     border: 1px solid ${theme.colors.gray[400]};
     border-radius: 8px;
     overflow: hidden;
