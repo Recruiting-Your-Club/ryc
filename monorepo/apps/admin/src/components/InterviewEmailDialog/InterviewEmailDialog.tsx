@@ -124,9 +124,7 @@ function InterviewEmailDialog({
                 아래 버튼을 클릭하여 면접 일정을 선택해주세요. 선착순으로 면접 일정이 배정되어 조기
                 마감이 될 수 있습니다.
             </p>
-            <a
-                href="%s"
-                target="_blank"
+            <button
                 style={{
                     display: 'inline-block',
                     padding: '12px 24px',
@@ -140,7 +138,7 @@ function InterviewEmailDialog({
                 }}
             >
                 ✅ 면접 일정 선택하러 가기
-            </a>
+            </button>
         </div>
     );
 
