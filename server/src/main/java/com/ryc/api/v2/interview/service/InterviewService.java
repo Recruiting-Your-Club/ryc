@@ -197,7 +197,7 @@ public class InterviewService {
   }
 
   @Transactional
-  public List<InterviewSlotCreateResponse> createInterviewSlots(
+  public List<InterviewSlotResponse> createInterviewSlots(
       String adminId, String announcementId, List<InterviewSlotCreateRequest> body) {
 
     // 만약 요청받는 시작 시간이 이미 존재하는 시작 시간과 겹친다면 예외 발생
@@ -222,10 +222,7 @@ public class InterviewService {
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
-
-    return savedInterviewSlots.stream()
-        .map(slot -> new InterviewSlotCreateResponse(slot.getId()))
-        .toList();
+    return savedInterviewSlots.stream().map(this::createInterviewSlotResponse).toList();
   }
 
   @Transactional
