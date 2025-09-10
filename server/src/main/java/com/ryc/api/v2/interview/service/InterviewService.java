@@ -69,7 +69,7 @@ public class InterviewService {
     List<InterviewSlot> interviewSlots =
         interviewRepository.findSlotsByAnnouncementId(announcementId);
     Boolean isReserved =
-        interviewSlots.stream().allMatch(slot -> slot.hasReservationForApplicant(applicantId));
+        interviewSlots.stream().anyMatch(slot -> slot.hasReservationForApplicant(applicantId));
 
     List<InterviewSlotsByDateResponse> slotResponses =
         interviewSlots.stream()
