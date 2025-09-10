@@ -205,7 +205,9 @@ public class InterviewService {
         interviewRepository.findSlotsByAnnouncementId(announcementId).stream()
             .map(slot -> slot.getPeriod().startDate())
             .collect(Collectors.toSet());
-    if (body.stream().anyMatch(slotRequest -> existingStartDates.contains(slotRequest.start()))) {
+    if (body.stream()
+        .anyMatch(
+            slotRequest -> existingStartDates.contains(slotRequest.slotDetailRequest().start()))) {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_ALREADY_EXISTS);
     }
 
@@ -216,8 +218,8 @@ public class InterviewService {
                     InterviewSlot.initialize(
                         adminId,
                         announcementId,
-                        slotRequest.numberOfPeople(),
-                        slotRequest.start(),
+                        slotRequest.slotDetailRequest().maxPeopleCount(),
+                        slotRequest.slotDetailRequest().start(),
                         slotRequest.interviewDuration()))
             .toList();
 
