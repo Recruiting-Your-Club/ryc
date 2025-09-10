@@ -23,6 +23,10 @@ final class EmailValidator extends DomainValidator {
   private static final int MIN_EMAIL_LOCAL_PART_LENGTH = 1;
   private static final int MAX_EMAIL_LOCAL_PART_LENGTH = 64;
   private static final int MAX_EMAIL_DOMAIN_PART_LENGTH = 253;
+  private static final int MIN_SUBJECT_LENGTH = 1;
+  private static final int MAX_SUBJECT_LENGTH = 1000;
+  private static final int MIN_CONTENT_LENGTH = 1;
+  private static final int MAX_CONTENT_LENGTH = 10000;
   private static final int MIN_RETRY_COUNT = 0;
   private static final int MAX_RETRY_COUNT = 4;
   private static final String EMAIL_AT_SYMBOL = "@";
@@ -82,10 +86,14 @@ final class EmailValidator extends DomainValidator {
 
   private static void validateSubject(String subject) {
     validateNotNullOrEmpty(subject, EMAIL_SUBJECT_NULL_OR_EMPTY);
+//    validateLengthRange(
+//        subject, MIN_SUBJECT_LENGTH, MAX_SUBJECT_LENGTH, EMAIL_INVALID_SUBJECT_LENGTH);
   }
 
   private static void validateContent(String content) {
     validateNotNullOrEmpty(content, EMAIL_CONTENT_NULL_OR_EMPTY);
+//    validateLengthRange(
+//        content, MIN_CONTENT_LENGTH, MAX_CONTENT_LENGTH, EMAIL_INVALID_CONTENT_LENGTH);
   }
 
   private static void validateAnnouncementId(String announcementId) {
