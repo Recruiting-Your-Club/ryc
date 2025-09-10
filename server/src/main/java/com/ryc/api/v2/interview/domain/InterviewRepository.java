@@ -33,4 +33,8 @@ public interface InterviewRepository {
   boolean existsReservationById(String reservationId);
 
   boolean existsSlotsByAnnouncementId(String announcementId);
+
+  boolean existsReservationByApplicantId(String applicantId);
+
+  void deleteReservationByApplicantId(String applicantId);
 }
