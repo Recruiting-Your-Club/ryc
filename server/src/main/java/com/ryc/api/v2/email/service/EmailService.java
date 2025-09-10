@@ -29,6 +29,7 @@ import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewNotificationEvent;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewSlotEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
@@ -39,7 +40,9 @@ public class EmailService {
   private final String interviewLinkHtmlTemplate;
   private final String interviewReservationHtmlTemplate;
   private final String applicationSubmittedHtmlTemplate;
+  private final String interviewNotificationHtmlTemplate;
   private final String ssocId;
+
   private final EmailRepository emailRepository;
   private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
@@ -56,19 +59,20 @@ public class EmailService {
     this.applicantRepository = applicantRepository;
     this.ssocId = ssocId;
 
-    Resource resource = resourceLoader.getResource("classpath:templates/interview-link.html");
-    try (InputStream is = resource.getInputStream()) {
-      this.interviewLinkHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-    }
+    this.interviewLinkHtmlTemplate =
+        loadTemplate(resourceLoader, "classpath:templates/interview-link.html");
+    this.interviewReservationHtmlTemplate =
+        loadTemplate(resourceLoader, "classpath:templates/interview-reservation.html");
+    this.applicationSubmittedHtmlTemplate =
+        loadTemplate(resourceLoader, "classpath:templates/application-submitted.html");
+    this.interviewNotificationHtmlTemplate =
+        loadTemplate(resourceLoader, "classpath:templates/interview-notification.html");
+  }
 
-    resource = resourceLoader.getResource("classpath:templates/interview-reservation.html");
+  private String loadTemplate(ResourceLoader resourceLoader, String path) throws IOException {
+    Resource resource = resourceLoader.getResource(path);
     try (InputStream is = resource.getInputStream()) {
-      this.interviewReservationHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-    }
-
-    resource = resourceLoader.getResource("classpath:templates/application-submitted.html");
-    try (InputStream is = resource.getInputStream()) {
-      this.applicationSubmittedHtmlTemplate = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+      return new String(is.readAllBytes(), StandardCharsets.UTF_8);
     }
   }
 
@@ -171,6 +175,28 @@ public class EmailService {
                 event.submittedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
     createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+  }
+
+  @Async
+  @TransactionalEventListener
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  protected void createInterviewNotificationEmails(InterviewNotificationEvent event) {
+    String subject =
+        String.format(
+            "[%s 동아리 면접 일정 리마인드] %d시간 후에 면접이 예정되어있습니다.",
+            event.clubName(), event.relativeTimeHour());
+    String content =
+        interviewNotificationHtmlTemplate
+            .replace("${relativeTimeHour}", event.relativeTimeHour().toString())
+            .replace("${clubName}", event.clubName())
+            .replace(
+                "${interviewDate}", event.interviewPeriod().startDate().toLocalDate().toString())
+            .replace("${startTime}", event.interviewPeriod().startDate().toLocalTime().toString())
+            .replace("${endTime}", event.interviewPeriod().endDate().toLocalTime().toString());
+
+    /*
+    Entity 설계 해야 함
+     */
   }
 
   @EventListener
