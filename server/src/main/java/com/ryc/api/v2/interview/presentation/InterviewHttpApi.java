@@ -148,7 +148,7 @@ public class InterviewHttpApi {
           @NotBlank(message = "공고 아이디는 빈 값일 수 없습니다.")
           @UUID(message = "공고 id는 UUID 포멧을 준수하여야 합니다.")
           String announcementId,
-      @Valid @RequestBody List<InterviewSlotCreateRequest> body) {
+      @Valid @RequestBody InterviewSlotCreateRequest body) {
     List<InterviewSlotResponse> responses =
         interviewService.createInterviewSlots(userDetail.getId(), announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);

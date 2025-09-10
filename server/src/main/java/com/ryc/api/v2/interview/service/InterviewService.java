@@ -198,29 +198,29 @@ public class InterviewService {
 
   @Transactional
   public List<InterviewSlotResponse> createInterviewSlots(
-      String adminId, String announcementId, List<InterviewSlotCreateRequest> body) {
+      String adminId, String announcementId, InterviewSlotCreateRequest body) {
 
     // 만약 요청받는 시작 시간이 이미 존재하는 시작 시간과 겹친다면 예외 발생
     Set<LocalDateTime> existingStartDates =
         interviewRepository.findSlotsByAnnouncementId(announcementId).stream()
             .map(slot -> slot.getPeriod().startDate())
             .collect(Collectors.toSet());
-    if (body.stream()
-        .anyMatch(
-            slotRequest -> existingStartDates.contains(slotRequest.slotDetailRequest().start()))) {
+
+    if (body.slotDetailRequests().stream()
+        .anyMatch(slotDetailRequest -> existingStartDates.contains(slotDetailRequest.start()))) {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_ALREADY_EXISTS);
     }
 
     List<InterviewSlot> interviewSlots =
-        body.stream()
+        body.slotDetailRequests().stream()
             .map(
-                slotRequest ->
+                slotDetailRequest ->
                     InterviewSlot.initialize(
                         adminId,
                         announcementId,
-                        slotRequest.slotDetailRequest().maxPeopleCount(),
-                        slotRequest.slotDetailRequest().start(),
-                        slotRequest.interviewDuration()))
+                        slotDetailRequest.maxPeopleCount(),
+                        slotDetailRequest.start(),
+                        body.interviewDuration()))
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
