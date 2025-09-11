@@ -46,6 +46,7 @@ public class InterviewService {
   private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
   private final AnnouncementRepository announcementRepository;
+  private final InterviewReminderService interviewReminderService;
   private final FileService fileService;
   private final ApplicationEventPublisher eventPublisher;
 
@@ -211,6 +212,7 @@ public class InterviewService {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_ALREADY_EXISTS);
     }
 
+    // 면접 슬롯 생성 및 저장
     List<InterviewSlot> interviewSlots =
         body.slotDetailRequests().stream()
             .map(
@@ -224,6 +226,10 @@ public class InterviewService {
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
+
+    // 면접 리마인더 설정 생성
+    interviewReminderService.createReminderSettings(announcementId);
+
     return savedInterviewSlots.stream().map(this::createInterviewSlotResponse).toList();
   }
 
