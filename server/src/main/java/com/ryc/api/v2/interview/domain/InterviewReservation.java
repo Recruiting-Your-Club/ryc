@@ -3,6 +3,9 @@ package com.ryc.api.v2.interview.domain;
 import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL_ID;
 
 import com.ryc.api.v2.applicant.domain.Applicant;
+import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
+import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
+import com.ryc.api.v2.common.exception.custom.InterviewException;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +26,10 @@ public class InterviewReservation {
   }
 
   public static InterviewReservation initialize(Applicant applicant) {
+    if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
+      throw new InterviewException(InterviewErrorCode.APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW);
+    }
+
     return InterviewReservation.builder().id(DEFAULT_INITIAL_ID).applicant(applicant).build();
   }
 }

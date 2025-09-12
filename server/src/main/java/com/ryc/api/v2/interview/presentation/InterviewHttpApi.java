@@ -164,7 +164,8 @@ public class InterviewHttpApi {
         "INVALID_PARAMETER",
         "RESOURCE_NOT_FOUND",
         "INTERVIEW_SLOT_FULL",
-        "APPLICANT_ALREADY_RESERVED"
+        "APPLICANT_ALREADY_RESERVED",
+        "APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW"
       })
   public ResponseEntity<InterviewReservationCreateResponse> reservationInterview(
       @PathVariable("interview-slot-id")
@@ -214,7 +215,12 @@ public class InterviewHttpApi {
           "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
-      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "RESOURCE_NOT_FOUND", "APPLICANT_ALREADY_RESERVED"})
+      include = {
+        "FORBIDDEN_NOT_CLUB_MEMBER",
+        "RESOURCE_NOT_FOUND",
+        "APPLICANT_ALREADY_RESERVED",
+        "APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW"
+      })
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
       @PathVariable("applicant-id")
           @NotBlank(message = "지원자 아이디는 빈 값일 수 없습니다.")
