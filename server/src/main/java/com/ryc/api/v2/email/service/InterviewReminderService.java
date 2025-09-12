@@ -1,4 +1,4 @@
-package com.ryc.api.v2.interview.service;
+package com.ryc.api.v2.email.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,8 +10,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.interview.domain.InterviewReminderRepository;
-import com.ryc.api.v2.interview.domain.InterviewReminderSetting;
+import com.ryc.api.v2.email.domain.InterviewReminderRepository;
+import com.ryc.api.v2.email.domain.InterviewReminderSetting;
 
 @Service
 public class InterviewReminderService {

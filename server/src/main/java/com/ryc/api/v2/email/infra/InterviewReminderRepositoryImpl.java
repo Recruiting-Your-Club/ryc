@@ -1,14 +1,14 @@
-package com.ryc.api.v2.interview.infra;
+package com.ryc.api.v2.email.infra;
 
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
-import com.ryc.api.v2.interview.domain.InterviewReminderRepository;
-import com.ryc.api.v2.interview.domain.InterviewReminderSetting;
-import com.ryc.api.v2.interview.infra.entity.InterviewReminderSettingEntity;
-import com.ryc.api.v2.interview.infra.jpa.InterviewReminderJpaRepository;
-import com.ryc.api.v2.interview.infra.mapper.InterviewReminderSettingMapper;
+import com.ryc.api.v2.email.domain.InterviewReminderRepository;
+import com.ryc.api.v2.email.domain.InterviewReminderSetting;
+import com.ryc.api.v2.email.infra.entity.InterviewReminderSettingEntity;
+import com.ryc.api.v2.email.infra.jpa.InterviewReminderJpaRepository;
+import com.ryc.api.v2.email.infra.mapper.InterviewReminderSettingMapper;
 
 import lombok.RequiredArgsConstructor;
 

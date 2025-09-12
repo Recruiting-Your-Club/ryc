@@ -1,10 +1,10 @@
-package com.ryc.api.v2.interview.infra.jpa;
+package com.ryc.api.v2.email.infra.jpa;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ryc.api.v2.interview.infra.entity.InterviewReminderSettingEntity;
+import com.ryc.api.v2.email.infra.entity.InterviewReminderSettingEntity;
 
 public interface InterviewReminderJpaRepository
     extends JpaRepository<InterviewReminderSettingEntity, String> {

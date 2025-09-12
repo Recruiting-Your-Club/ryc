@@ -1,4 +1,4 @@
-package com.ryc.api.v2.interview.infra.entity;
+package com.ryc.api.v2.email.infra.entity;
 
 import jakarta.persistence.*;
 

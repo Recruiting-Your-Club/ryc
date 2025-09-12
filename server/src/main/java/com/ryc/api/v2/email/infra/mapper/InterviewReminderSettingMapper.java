@@ -1,7 +1,7 @@
-package com.ryc.api.v2.interview.infra.mapper;
+package com.ryc.api.v2.email.infra.mapper;
 
-import com.ryc.api.v2.interview.domain.InterviewReminderSetting;
-import com.ryc.api.v2.interview.infra.entity.InterviewReminderSettingEntity;
+import com.ryc.api.v2.email.domain.InterviewReminderSetting;
+import com.ryc.api.v2.email.infra.entity.InterviewReminderSettingEntity;
 
 public class InterviewReminderSettingMapper {
 

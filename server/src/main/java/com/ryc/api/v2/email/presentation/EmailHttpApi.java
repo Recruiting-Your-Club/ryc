@@ -25,6 +25,7 @@ import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.email.presentation.dto.response.VerificationCodeCreatedResponse;
 import com.ryc.api.v2.email.service.EmailService;
 import com.ryc.api.v2.email.service.EmailVerificationService;
+import com.ryc.api.v2.email.service.InterviewReminderService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
 
@@ -41,6 +42,7 @@ public class EmailHttpApi {
 
   private final EmailService emailService;
   private final EmailVerificationService emailVerificationService;
+  private final InterviewReminderService interviewReminderService;
 
   @PostMapping("/announcements/{announcement-id}/emails")
   @HasRole(Role.MEMBER)
@@ -109,4 +111,13 @@ public class EmailHttpApi {
     emailVerificationService.verificationEmailCode(body);
     return ResponseEntity.ok().build();
   }
+
+  @PutMapping("/announcements/{announcement-id}/interviews/reminder")
+  public ResponseEntity<Void> updateReminder() {
+    return ResponseEntity.ok().build();
+  }
+
+  //  public ResponseEntity<> deleteReminder() {
+  //
+  //  }
 }

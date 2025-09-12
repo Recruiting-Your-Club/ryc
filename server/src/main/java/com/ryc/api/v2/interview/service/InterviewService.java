@@ -25,6 +25,7 @@ import com.ryc.api.v2.common.dto.response.PeriodResponse;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
+import com.ryc.api.v2.email.service.InterviewReminderService;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;

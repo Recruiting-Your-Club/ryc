@@ -1,4 +1,4 @@
-package com.ryc.api.v2.interview.domain;
+package com.ryc.api.v2.email.domain;
 
 public interface InterviewReminderRepository {
 
