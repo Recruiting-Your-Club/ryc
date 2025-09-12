@@ -245,7 +245,7 @@ public class InterviewService {
     InterviewReservation reservation = InterviewReservation.initialize(applicant);
 
     // 새로운 예약 정보를 저장합니다.
-    InterviewSlot updatedInterviewSlot = interviewSlot.addReservations(reservation, false);
+    InterviewSlot updatedInterviewSlot = interviewSlot.addReservations(reservation);
     InterviewSlot savedInterviewSlot = interviewRepository.saveSlot(updatedInterviewSlot);
     InterviewReservation savedReservation =
         savedInterviewSlot.getReservations().stream()
@@ -281,10 +281,10 @@ public class InterviewService {
 
     InterviewReservation reservation;
 
-    // 기존 면접 슬롯이 있는지 확인하고, 해당 슬롯에서 지원자의 예약을 제거합니다.
     Optional<InterviewSlot> interviewSlotOptional =
         interviewRepository.findSlotByApplicantIdWithLock(applicantId);
 
+    // 기존 면접 슬롯이 있는지 확인하고, 해당 슬롯에서 지원자의 예약을 제거합니다.
     if (interviewSlotOptional.isPresent()) {
       InterviewSlot slot = interviewSlotOptional.get();
 
@@ -300,7 +300,7 @@ public class InterviewService {
 
     // 새로운 면접 슬롯에 예약 정보 추가
     InterviewSlot newSlot = interviewRepository.findSlotByIdWithLock(body.interviewSlotId());
-    InterviewSlot updatedSlot = newSlot.addReservations(reservation, true);
+    InterviewSlot updatedSlot = newSlot.addReservations(reservation);
 
     InterviewSlot savedSlot = interviewRepository.saveSlot(updatedSlot);
     String reservationId = savedSlot.getReservationByApplicantId(applicantId).getId();

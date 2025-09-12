@@ -75,8 +75,7 @@ public class InterviewSlot {
         .build();
   }
 
-  public InterviewSlot addReservations(InterviewReservation newReservation, boolean allowOverMax) {
-    int maxCount = this.maxNumberOfPeople;
+  public InterviewSlot addReservations(InterviewReservation newReservation) {
     List<InterviewReservation> newInterviewReservations = new ArrayList<>(this.reservations);
 
     this.reservations.stream()
@@ -89,12 +88,7 @@ public class InterviewSlot {
             });
 
     if (maxNumberOfPeople == reservations.size()) {
-      if (allowOverMax) {
-        maxCount++;
-      } else {
-        // 예약이 꽉 찼고, 추가 예약을 허용하지 않는 경우 예외 발생
-        throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
-      }
+      throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
     newInterviewReservations.add(newReservation);
@@ -103,7 +97,7 @@ public class InterviewSlot {
         .id(this.id)
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
-        .maxNumberOfPeople(maxCount)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
         .period(this.period)
         .reservations(List.copyOf(newInterviewReservations))
         .build();
