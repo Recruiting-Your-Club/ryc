@@ -1,59 +1,59 @@
 package com.ryc.api.v2.email.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
+import com.ryc.api.v2.email.domain.InterviewReminderInfo;
+import com.ryc.api.v2.email.domain.InterviewReminderQueue;
 import com.ryc.api.v2.email.domain.InterviewReminderRepository;
-import com.ryc.api.v2.email.domain.InterviewReminderSetting;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
+import com.ryc.api.v2.email.domain.event.InterviewReminderEvent;
 import com.ryc.api.v2.email.presentation.dto.response.InterviewReminderUpdatedResponse;
+import com.ryc.api.v2.interview.domain.InterviewSlot;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class InterviewReminderService {
 
-  private final String interviewNotificationHtmlTemplate;
   private final InterviewReminderRepository reminderRepository;
-
-  public InterviewReminderService(
-      ResourceLoader resourceLoader, InterviewReminderRepository reminderRepository)
-      throws IOException {
-    Resource resource =
-        resourceLoader.getResource("classpath:templates/interview-notification.html");
-
-    try (InputStream is = resource.getInputStream()) {
-      this.interviewNotificationHtmlTemplate =
-          new String(is.readAllBytes(), StandardCharsets.UTF_8);
-    }
-
-    this.reminderRepository = reminderRepository;
-  }
+  private final AnnouncementRepository announcementRepository;
+  private final ApplicationEventPublisher publisher;
 
   @Transactional
   public void createReminderSettings(String announcementId) {
-    if (reminderRepository.existsReminderSettingByAnnouncementId(announcementId)) {
+    if (reminderRepository.existsByAnnouncementId(announcementId)) {
       return;
     }
 
-    InterviewReminderSetting reminderSetting = InterviewReminderSetting.initialize(announcementId);
-    reminderRepository.saveReminderSetting(reminderSetting);
+    InterviewReminderInfo reminderSetting = InterviewReminderInfo.initialize(announcementId);
+    reminderRepository.save(reminderSetting);
+  }
+
+  @Transactional
+  public String addReminderQueue(InterviewSlot interviewSlot, String applicantEmail) {
+    InterviewReminderInfo reminderInfo =
+        reminderRepository.findByAnnouncementId(interviewSlot.getAnnouncementId());
+    InterviewReminderInfo newReminderInfo =
+        reminderInfo.addReminderQueue(interviewSlot, applicantEmail);
+    return reminderRepository.save(newReminderInfo).getId();
   }
 
   @Transactional
   public InterviewReminderUpdatedResponse updateReminderSetting(
       String announcementId, int relativeHour) {
-    InterviewReminderSetting reminderSetting =
-        reminderRepository.findReminderSettingByAnnouncementId(announcementId);
-    InterviewReminderSetting updatedReminderSetting =
-        reminderSetting.updateRelativeHour(relativeHour);
+    InterviewReminderInfo reminderSetting = reminderRepository.findByAnnouncementId(announcementId);
 
-    InterviewReminderSetting savedReminderSetting =
-        reminderRepository.saveReminderSetting(updatedReminderSetting);
+    InterviewReminderInfo updatedReminderSetting = reminderSetting.changeRelativeHour(relativeHour);
+    InterviewReminderInfo savedReminderSetting = reminderRepository.save(updatedReminderSetting);
+
     return new InterviewReminderUpdatedResponse(
         savedReminderSetting.getId(),
         savedReminderSetting.getAnnouncementId(),
@@ -62,31 +62,39 @@ public class InterviewReminderService {
 
   @Transactional
   public void deleteReminderSetting(String announcementId) {
-    if (!reminderRepository.existsReminderSettingByAnnouncementId(announcementId)) {
+    if (!reminderRepository.existsByAnnouncementId(announcementId)) {
       throw new NoSuchElementException(
           "No reminder setting found for announcementId: " + announcementId);
     }
 
-    reminderRepository.deleteReminderSettingByAnnouncementId(announcementId);
+    reminderRepository.deleteByAnnouncementId(announcementId);
   }
 
-  @Transactional
-  public void pushReminderQueue() {
-    /*
-         String subject =
-           String.format(
-               "[%s 동아리 면접 일정 리마인드] %d시간 후에 면접이 예정되어있습니다.",
-               event.clubName(), event.relativeTimeHour());
-       String content =
-           interviewNotificationHtmlTemplate
-               .replace("${relativeTimeHour}", event.relativeTimeHour().toString())
-               .replace("${clubName}", event.clubName())
-               .replace(
-                   "${interviewDate}",
-    event.interviewPeriod().startDate().toLocalDate().toString())
-               .replace("${startTime}",
-    event.interviewPeriod().startDate().toLocalTime().toString())
-               .replace("${endTime}", event.interviewPeriod().endDate().toLocalTime().toString());
-    */
+  @Scheduled(cron = "0 * * * * *")
+  protected void sendInterviewReminders() {
+    List<InterviewReminderInfo> reminderInfos =
+        reminderRepository.findAllByStatus(EmailSentStatus.PENDING);
+
+    for (InterviewReminderInfo reminderInfo : reminderInfos) {
+      String clubName =
+          announcementRepository.findClubNameByAnnouncementId(reminderInfo.getAnnouncementId());
+
+      for (InterviewReminderQueue reminderQueue : reminderInfo.getReminderQueues()) {
+        // 이메일 이벤트 발행
+        publisher.publishEvent(
+            InterviewReminderEvent.builder()
+                .announcementId(reminderInfo.getAnnouncementId())
+                .clubName(clubName)
+                .relativeHour(reminderInfo.getRelativeHour())
+                .interviewPeriod(reminderQueue.getInterviewSlot().getPeriod())
+                .applicantEmail(reminderQueue.getApplicantEmail())
+                .build());
+
+        // 상태 변경
+        reminderQueue.changeSentStatus();
+      }
+    }
+
+    reminderRepository.saveAll(reminderInfos);
   }
 }

@@ -21,15 +21,15 @@ public class InterviewReservation {
   private InterviewReservation(String id, Applicant applicant) {
     InterviewReservationValidator.validate(id, applicant);
 
+    if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
+      throw new InterviewException(InterviewErrorCode.APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW);
+    }
+
     this.id = id;
     this.applicant = applicant;
   }
 
   public static InterviewReservation initialize(Applicant applicant) {
-    if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
-      throw new InterviewException(InterviewErrorCode.APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW);
-    }
-
     return InterviewReservation.builder().id(DEFAULT_INITIAL_ID).applicant(applicant).build();
   }
 }

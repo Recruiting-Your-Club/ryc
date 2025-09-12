@@ -253,6 +253,9 @@ public class InterviewService {
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("예약 정보가 없습니다. 서버 오류일 수 있습니다."));
 
+    // 면접 리마인더 큐 추가
+    interviewReminderService.addReminderQueue(savedInterviewSlot, applicant.getEmail());
+
     // 이메일 이벤트를 발행
     String clubName =
         announcementRepository.findClubNameByAnnouncementId(savedInterviewSlot.getAnnouncementId());

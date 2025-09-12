@@ -29,6 +29,7 @@ import com.ryc.api.v2.email.domain.Email;
 import com.ryc.api.v2.email.domain.EmailRepository;
 import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
+import com.ryc.api.v2.email.domain.event.InterviewReminderEvent;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
 import com.ryc.api.v2.email.presentation.dto.request.InterviewSlotEmailSendRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
@@ -39,6 +40,7 @@ public class EmailService {
   private final String interviewLinkHtmlTemplate;
   private final String interviewReservationHtmlTemplate;
   private final String applicationSubmittedHtmlTemplate;
+  private final String interviewReminderHtmlTemplate;
   private final String ssocId;
 
   private final EmailRepository emailRepository;
@@ -63,6 +65,8 @@ public class EmailService {
         loadTemplate(resourceLoader, "classpath:templates/interview-reservation.html");
     this.applicationSubmittedHtmlTemplate =
         loadTemplate(resourceLoader, "classpath:templates/application-submitted.html");
+    this.interviewReminderHtmlTemplate =
+        loadTemplate(resourceLoader, "classpath:templates/interview-reminder.html");
   }
 
   private String loadTemplate(ResourceLoader resourceLoader, String path) throws IOException {
@@ -169,6 +173,25 @@ public class EmailService {
             .replace(
                 "${submittedDate}",
                 event.submittedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+    createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+  }
+
+  @Async
+  @TransactionalEventListener
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  protected void createInterviewReminderEmails(InterviewReminderEvent event) {
+    String subject =
+        String.format(
+            "[%s 동아리 면접 일정 리마인드] %d시간 후에 면접이 예정되어있습니다.", event.clubName(), event.relativeHour());
+    String content =
+        interviewReminderHtmlTemplate
+            .replace("${relativeHour}", event.relativeHour() + "")
+            .replace("${clubName}", event.clubName())
+            .replace(
+                "${interviewDate}", event.interviewPeriod().startDate().toLocalDate().toString())
+            .replace("${startTime}", event.interviewPeriod().startDate().toLocalTime().toString())
+            .replace("${endTime}", event.interviewPeriod().endDate().toLocalTime().toString());
 
     createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
   }

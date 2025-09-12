@@ -58,9 +58,6 @@ public class EmailSenderService {
         });
   }
 
-  @Scheduled(cron = "0 * * * * *")
-  protected void sendInterviewNotifications() {}
-
   private void sendEmail(Email mail) throws MessagingException {
     MimeMessage msg = mailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");

@@ -1,12 +1,20 @@
 package com.ryc.api.v2.email.domain;
 
+import java.util.List;
+
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
+
 public interface InterviewReminderRepository {
 
-  InterviewReminderSetting saveReminderSetting(InterviewReminderSetting interviewReminderSetting);
+  InterviewReminderInfo save(InterviewReminderInfo interviewReminderInfo);
 
-  boolean existsReminderSettingByAnnouncementId(String announcementId);
+  List<InterviewReminderInfo> saveAll(List<InterviewReminderInfo> reminderInfos);
 
-  InterviewReminderSetting findReminderSettingByAnnouncementId(String announcementId);
+  boolean existsByAnnouncementId(String announcementId);
 
-  void deleteReminderSettingByAnnouncementId(String announcementId);
+  InterviewReminderInfo findByAnnouncementId(String announcementId);
+
+  void deleteByAnnouncementId(String announcementId);
+
+  List<InterviewReminderInfo> findAllByStatus(EmailSentStatus status);
 }
