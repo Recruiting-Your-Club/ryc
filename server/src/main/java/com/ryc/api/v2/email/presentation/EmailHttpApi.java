@@ -17,11 +17,9 @@ import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
-import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
-import com.ryc.api.v2.email.presentation.dto.request.InterviewSlotEmailSendRequest;
-import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeCreatedRequest;
-import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeRequest;
+import com.ryc.api.v2.email.presentation.dto.request.*;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
+import com.ryc.api.v2.email.presentation.dto.response.InterviewReminderUpdatedResponse;
 import com.ryc.api.v2.email.presentation.dto.response.VerificationCodeCreatedResponse;
 import com.ryc.api.v2.email.service.EmailService;
 import com.ryc.api.v2.email.service.EmailVerificationService;
@@ -112,9 +110,21 @@ public class EmailHttpApi {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("/announcements/{announcement-id}/interviews/reminder")
-  public ResponseEntity<Void> updateReminder() {
-    return ResponseEntity.ok().build();
+  @PutMapping("/announcements/{announcement-id}/interviews/reminder-times")
+  @HasRole(Role.MEMBER)
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  @Operation(summary = "면접 리마인더 시간 수정", description = "면접 리마인더 시간을 수정합니다.")
+  public ResponseEntity<InterviewReminderUpdatedResponse> updateReminder(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
+      @Valid @RequestBody InterviewReminderUpdatedRequest body) {
+    InterviewReminderUpdatedResponse response =
+        interviewReminderService.updateReminderSetting(announcementId, body.relativeHour());
+    return ResponseEntity.ok(response);
   }
 
   //  public ResponseEntity<> deleteReminder() {

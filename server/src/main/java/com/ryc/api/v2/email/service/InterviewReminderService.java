@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.email.domain.InterviewReminderRepository;
 import com.ryc.api.v2.email.domain.InterviewReminderSetting;
+import com.ryc.api.v2.email.presentation.dto.response.InterviewReminderUpdatedResponse;
 
 @Service
 public class InterviewReminderService {
@@ -44,13 +45,19 @@ public class InterviewReminderService {
   }
 
   @Transactional
-  public void updateReminderSetting(String announcementId, int relativeHour) {
+  public InterviewReminderUpdatedResponse updateReminderSetting(
+      String announcementId, int relativeHour) {
     InterviewReminderSetting reminderSetting =
         reminderRepository.findReminderSettingByAnnouncementId(announcementId);
     InterviewReminderSetting updatedReminderSetting =
         reminderSetting.updateRelativeHour(relativeHour);
 
-    reminderRepository.saveReminderSetting(updatedReminderSetting);
+    InterviewReminderSetting savedReminderSetting =
+        reminderRepository.saveReminderSetting(updatedReminderSetting);
+    return new InterviewReminderUpdatedResponse(
+        savedReminderSetting.getId(),
+        savedReminderSetting.getAnnouncementId(),
+        savedReminderSetting.getRelativeHour());
   }
 
   @Transactional
