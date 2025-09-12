@@ -110,7 +110,7 @@ public class EmailHttpApi {
     return ResponseEntity.ok().build();
   }
 
-  @PutMapping("/announcements/{announcement-id}/interviews/reminder-times")
+  @PutMapping("/announcements/{announcement-id}/interviews/reminders")
   @HasRole(Role.MEMBER)
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class},
@@ -127,7 +127,18 @@ public class EmailHttpApi {
     return ResponseEntity.ok(response);
   }
 
-  //  public ResponseEntity<> deleteReminder() {
-  //
-  //  }
+  @DeleteMapping("/announcements/{announcement-id}/interviews/reminders")
+  @HasRole(Role.MEMBER)
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  @Operation(summary = "면접 리마인더 제거", description = "면접 리마인더를 제거합니다.")
+  public ResponseEntity<Void> deleteReminder(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId) {
+    interviewReminderService.deleteReminderSetting(announcementId);
+    return ResponseEntity.noContent().build();
+  }
 }
