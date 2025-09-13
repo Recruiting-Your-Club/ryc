@@ -317,7 +317,7 @@ public class InterviewService {
 
   @Transactional
   public void deleteInterviewSlot(String interviewSlotId) {
-    InterviewSlot slot = interviewRepository.findSlotById(interviewSlotId);
+    InterviewSlot slot = interviewRepository.findSlotByIdWithLock(interviewSlotId);
 
     if (!slot.getReservations().isEmpty()) {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_ALREADY_RESERVED);
