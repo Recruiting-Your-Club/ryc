@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.UUID;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -167,7 +166,7 @@ public class InterviewHttpApi {
       @Valid @RequestBody InterviewSlotCreateRequest body) {
     List<InterviewSlotResponse> responses =
         interviewService.createInterviewSlots(userDetail.getId(), announcementId, body);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
+    return ResponseEntity.ok(responses);
   }
 
   @PostMapping("interview-slots/{interview-slot-id}/reservations")
