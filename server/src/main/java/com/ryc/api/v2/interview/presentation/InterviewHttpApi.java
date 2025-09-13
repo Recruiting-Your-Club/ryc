@@ -298,7 +298,7 @@ public class InterviewHttpApi {
           @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
           @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
           String announcementId) {
-    //    interviewService.deleteReminderSetting(announcementId);
+    interviewService.deleteReminder(announcementId);
     return ResponseEntity.noContent().build();
   }
 }

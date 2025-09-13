@@ -326,6 +326,24 @@ public class InterviewService {
     interviewRepository.deleteReservationById(reservationId);
   }
 
+  @Transactional
+  public List<InterviewReminderUpdatedResponse> changeTimeToReminder(
+      String announcementId, Integer timeToReminder) {
+    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
+    List<InterviewSlot> changedSlots =
+        slots.stream().map(slot -> slot.changeTimeToReminder(timeToReminder)).toList();
+    return interviewRepository.saveAllSlot(changedSlots).stream()
+        .map(slot -> new InterviewReminderUpdatedResponse(slot.getId(), slot.getTimeToReminder()))
+        .toList();
+  }
+
+  @Transactional
+  public void deleteReminder(String announcementId) {
+    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
+    List<InterviewSlot> updatedSlots = slots.stream().map(InterviewSlot::deleteReminder).toList();
+    interviewRepository.saveAllSlot(updatedSlots);
+  }
+
   @EventListener
   @Transactional(propagation = Propagation.MANDATORY)
   protected void handleAnnouncementDeletedEvent(AnnouncementDeletedEvent event) {
@@ -368,15 +386,5 @@ public class InterviewService {
         .representativeImage(imageMap.get(applicant.getId()))
         .imagePresent(imageMap.containsKey(applicant.getId()))
         .build();
-  }
-
-  public List<InterviewReminderUpdatedResponse> changeTimeToReminder(
-      String announcementId, Integer timeToReminder) {
-    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
-    List<InterviewSlot> changedSlots =
-        slots.stream().map(slot -> slot.changeRelativeHour(timeToReminder)).toList();
-    return interviewRepository.saveAllSlot(changedSlots).stream()
-        .map(slot -> new InterviewReminderUpdatedResponse(slot.getId(), slot.getTimeToReminder()))
-        .toList();
   }
 }

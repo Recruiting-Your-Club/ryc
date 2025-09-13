@@ -161,18 +161,25 @@ public class InterviewSlot {
         .anyMatch(reservation -> reservation.getApplicant().getId().equals(applicantId));
   }
 
-  public InterviewSlot changeRelativeHour(Integer newTimeToReminder) {
-    // 비즈니스 검증
-    if (newTimeToReminder < 0) {
-      throw new InterviewException(InterviewErrorCode.RELATIVE_HOUR_CANNOT_BE_NEGATIVE);
-    }
-
+  public InterviewSlot changeTimeToReminder(Integer newTimeToReminder) {
     return InterviewSlot.builder()
         .id(this.id)
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
         .timeToReminder(newTimeToReminder)
+        .period(this.period)
+        .reservations(this.reservations)
+        .build();
+  }
+
+  public InterviewSlot deleteReminder() {
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .timeToReminder(null) // 알림 시간을 null로 설정
         .period(this.period)
         .reservations(this.reservations)
         .build();
