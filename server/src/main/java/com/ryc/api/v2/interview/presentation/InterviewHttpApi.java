@@ -130,6 +130,21 @@ public class InterviewHttpApi {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping("/announcements/{announcement-id}/interviews/reminders")
+  @HasRole(Role.MEMBER)
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  @Operation(summary = "면접 리마인더에 대한 상대 시간 조회")
+  public ResponseEntity<InterviewReminderTimeResponse> getReminderTime(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId) {
+    InterviewReminderTimeResponse response = interviewService.getReminderTime(announcementId);
+    return ResponseEntity.ok(response);
+  }
+
   @PostMapping("/admin/announcements/{announcementId}/interview-slots")
   @HasRole(Role.MEMBER)
   @Operation(
@@ -185,7 +200,7 @@ public class InterviewHttpApi {
     return ResponseEntity.created(location).body(response);
   }
 
-  @PutMapping("admin/interview-slots/{interview-slot-id}/people/count")
+  @PatchMapping("admin/interview-slots/{interview-slot-id}/people/count")
   @HasRole(Role.MEMBER)
   @Operation(
       summary = "동아리 관리자가 면접 슬롯 최대 인원 수 변경",
@@ -210,10 +225,7 @@ public class InterviewHttpApi {
 
   @PutMapping("admin/applicants/{applicant-id}/interview-reservation")
   @HasRole(Role.MEMBER)
-  @Operation(
-      summary = "동아리 관리자가 면접 예약 정보 수정",
-      description =
-          "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.<br>만약 변경하려는 면접 슬롯이 이미 꽉 차있더라도, 해당 면접 예약을 수정할 수 있습니다.")
+  @Operation(summary = "동아리 관리자가 면접 예약 정보 수정", description = "동아리 관리자가 지원자의 면접 일정을 등록 또는 수정합니다.")
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class, InterviewErrorCode.class},
       include = {
@@ -270,22 +282,7 @@ public class InterviewHttpApi {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/announcements/{announcement-id}/interviews/reminders")
-  @HasRole(Role.MEMBER)
-  @ApiErrorCodeExample(
-      value = {PermissionErrorCode.class, CommonErrorCode.class},
-      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
-  @Operation(summary = "면접 리마인더에 대한 상대 시간 조회")
-  public ResponseEntity<InterviewReminderTimeResponse> getReminderTime(
-      @PathVariable("announcement-id")
-          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
-          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
-          String announcementId) {
-    InterviewReminderTimeResponse response = interviewService.getReminderTime(announcementId);
-    return ResponseEntity.ok(response);
-  }
-
-  @PutMapping("/announcements/{announcement-id}/interviews/reminders")
+  @PatchMapping("/announcements/{announcement-id}/interviews/reminders")
   @HasRole(Role.MEMBER)
   @ApiErrorCodeExample(
       value = {PermissionErrorCode.class, CommonErrorCode.class},

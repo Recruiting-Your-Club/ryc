@@ -196,6 +196,14 @@ public class InterviewService {
         .toList();
   }
 
+  @Transactional(readOnly = true)
+  public InterviewReminderTimeResponse getReminderTime(String announcementId) {
+    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
+    return slots.isEmpty()
+        ? new InterviewReminderTimeResponse(announcementId, 24)
+        : new InterviewReminderTimeResponse(announcementId, slots.get(0).getReminderTime());
+  }
+
   @Transactional
   public List<InterviewSlotResponse> createInterviewSlots(
       String adminId, String announcementId, InterviewSlotCreateRequest body) {
@@ -323,14 +331,6 @@ public class InterviewService {
     }
 
     interviewRepository.deleteReservationById(reservationId);
-  }
-
-  @Transactional(readOnly = true)
-  public InterviewReminderTimeResponse getReminderTime(String announcementId) {
-    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
-    return slots.isEmpty()
-        ? new InterviewReminderTimeResponse(announcementId, 24)
-        : new InterviewReminderTimeResponse(announcementId, slots.get(0).getReminderTime());
   }
 
   @Transactional
