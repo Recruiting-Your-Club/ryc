@@ -183,17 +183,17 @@ public class EmailService {
   protected void createInterviewReminderEmails(InterviewReminderEvent event) {
     String subject =
         String.format(
-            "[%s 동아리 면접 일정 리마인드] %d시간 후에 면접이 예정되어있습니다.", event.clubName(), event.relativeHour());
+            "[%s 동아리 면접 일정 리마인드] %d시간 후에 면접이 예정되어있습니다.", event.clubName(), event.reminderTime());
     String content =
         interviewReminderHtmlTemplate
-            .replace("${relativeHour}", event.relativeHour() + "")
+            .replace("${relativeHour}", event.reminderTime() + "")
             .replace("${clubName}", event.clubName())
             .replace(
                 "${interviewDate}", event.interviewPeriod().startDate().toLocalDate().toString())
             .replace("${startTime}", event.interviewPeriod().startDate().toLocalTime().toString())
             .replace("${endTime}", event.interviewPeriod().endDate().toLocalTime().toString());
 
-    createEmails(ssocId, event.announcementId(), List.of(event.applicantEmail()), subject, content);
+    createEmails(ssocId, event.announcementId(), event.applicantEmails(), subject, content);
   }
 
   @EventListener

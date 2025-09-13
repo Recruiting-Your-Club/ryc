@@ -4,10 +4,12 @@ import com.ryc.api.v2.common.domain.Period;
 
 import lombok.Builder;
 
+import java.util.List;
+
 @Builder
 public record InterviewReminderEvent(
     String announcementId,
     String clubName,
-    int relativeHour,
+    int reminderTime,
     Period interviewPeriod,
-    String applicantEmail) {}
+    List<String> applicantEmails) {}
