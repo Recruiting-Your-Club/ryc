@@ -34,6 +34,10 @@ public class EmailSenderService {
         email -> {
           try {
             sendEmail(email);
+
+            log.info("이메일 전송 완료: {}", email.getRecipient());
+            emailService.updateStatus(email, EmailSentStatus.SENT);
+
           } catch (MailException e) {
             if (email.getRetryCount() >= 3) {
               log.warn(
@@ -52,9 +56,6 @@ public class EmailSenderService {
             log.error("이메일 메시지 생성 실패: {}, 오류: {}", email.getRecipient(), e.getMessage());
             emailService.updateStatus(email, EmailSentStatus.FAILURE);
           }
-
-          log.info("이메일 전송 완료: {}", email.getRecipient());
-          emailService.updateStatus(email, EmailSentStatus.SENT);
         });
   }
 
