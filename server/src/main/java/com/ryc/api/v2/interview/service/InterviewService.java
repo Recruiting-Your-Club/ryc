@@ -202,7 +202,7 @@ public class InterviewService {
     List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
     return slots.isEmpty()
         ? new InterviewReminderTimeResponse(announcementId, 24)
-        : new InterviewReminderTimeResponse(announcementId, slots.get(0).getReminderTime());
+        : new InterviewReminderTimeResponse(announcementId, slots.get(0).getRemindTime());
   }
 
   @Transactional
@@ -335,13 +335,12 @@ public class InterviewService {
   }
 
   @Transactional
-  public InterviewReminderTimeResponse changeReminderTime(
-      String announcementId, Integer reminderTime) {
+  public InterviewReminderTimeResponse changeRemindTime(String announcementId, Integer remindTime) {
     List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
     List<InterviewSlot> changedSlots =
-        slots.stream().map(slot -> slot.changeReminderTime(reminderTime)).toList();
+        slots.stream().map(slot -> slot.changeReminderTime(remindTime)).toList();
     interviewRepository.saveAllSlot(changedSlots);
-    return new InterviewReminderTimeResponse(announcementId, reminderTime);
+    return new InterviewReminderTimeResponse(announcementId, remindTime);
   }
 
   @Transactional

@@ -36,7 +36,7 @@ public class InterviewSlotEntity extends BaseEntity {
   @Column(nullable = false)
   private Integer maxNumberOfPeople;
 
-  private Integer reminderTime; // null 허용
+  private Integer remindTime; // null 허용
 
   @Embedded private PeriodVO period;
 

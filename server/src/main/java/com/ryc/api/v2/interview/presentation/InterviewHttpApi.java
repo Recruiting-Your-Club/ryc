@@ -294,7 +294,7 @@ public class InterviewHttpApi {
           String announcementId,
       @Valid @RequestBody InterviewReminderUpdatedRequest body) {
     InterviewReminderTimeResponse response =
-        interviewService.changeReminderTime(announcementId, body.reminderTime());
+        interviewService.changeRemindTime(announcementId, body.reminderTime());
     return ResponseEntity.ok(response);
   }
 

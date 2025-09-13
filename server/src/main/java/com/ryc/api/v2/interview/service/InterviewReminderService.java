@@ -43,7 +43,7 @@ public class InterviewReminderService {
           InterviewReminderEvent.builder()
               .announcementId(slot.getAnnouncementId())
               .clubName(clubName)
-              .reminderTime(slot.getReminderTime())
+              .reminderTime(slot.getRemindTime())
               .interviewPeriod(slot.getPeriod())
               .applicantEmails(applicantEmails)
               .build());

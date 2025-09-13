@@ -20,7 +20,7 @@ public class InterviewSlot {
   private final String creatorId;
   private final String announcementId;
   private final Integer maxNumberOfPeople;
-  private final Integer reminderTime; // null 허용
+  private final Integer remindTime; // null 허용
   private final Period period;
   private final List<InterviewReservation> reservations;
   private final EmailSentStatus reminderStatus;
@@ -31,7 +31,7 @@ public class InterviewSlot {
       String creatorId,
       String announcementId,
       Integer maxNumberOfPeople,
-      Integer reminderTime,
+      Integer remindTime,
       Period period,
       List<InterviewReservation> reservations,
       EmailSentStatus reminderStatus) {
@@ -51,7 +51,7 @@ public class InterviewSlot {
     this.creatorId = creatorId;
     this.announcementId = announcementId;
     this.maxNumberOfPeople = maxNumberOfPeople;
-    this.reminderTime = reminderTime;
+    this.remindTime = remindTime;
     this.period = period;
     this.reservations = List.copyOf(resolvedReservations);
     this.reminderStatus = reminderStatus;
@@ -77,7 +77,7 @@ public class InterviewSlot {
         .creatorId(creatorId)
         .announcementId(announcementId)
         .maxNumberOfPeople(maxNumberOfPeople)
-        .reminderTime(24) // 기본값 24시간
+        .remindTime(24) // 기본값 24시간
         .period(period)
         .reservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
         .reminderStatus(EmailSentStatus.PENDING) // 초기 상태는 PENDING
@@ -108,7 +108,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .reminderTime(this.reminderTime)
+        .remindTime(this.remindTime)
         .period(this.period)
         .reservations(List.copyOf(newInterviewReservations))
         .reminderStatus(this.reminderStatus)
@@ -126,7 +126,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(newMaxNumberOfPeople)
-        .reminderTime(this.reminderTime)
+        .remindTime(this.remindTime)
         .period(this.period)
         .reservations(List.copyOf(this.reservations))
         .reminderStatus(this.reminderStatus)
@@ -142,7 +142,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .reminderTime(this.reminderTime)
+        .remindTime(this.remindTime)
         .period(this.period)
         .reservations(List.copyOf(newReservations))
         .reminderStatus(this.reminderStatus)
@@ -175,7 +175,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .reminderTime(newTimeToReminder)
+        .remindTime(newTimeToReminder)
         .period(this.period)
         .reservations(this.reservations)
         .reminderStatus(this.reminderStatus)
@@ -188,7 +188,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .reminderTime(null) // 알림 시간을 null로 설정
+        .remindTime(null) // 알림 시간을 null로 설정
         .period(this.period)
         .reservations(this.reservations)
         .reminderStatus(this.reminderStatus)
@@ -201,7 +201,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .reminderTime(this.reminderTime)
+        .remindTime(this.remindTime)
         .period(this.period)
         .reservations(this.reservations)
         .reminderStatus(newReminderStatus)
