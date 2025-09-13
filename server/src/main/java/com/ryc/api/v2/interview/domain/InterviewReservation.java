@@ -6,7 +6,6 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
-import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class InterviewReservation {
   private final Applicant applicant;
 
   @Builder
-  private InterviewReservation(String id, Applicant applicant, EmailSentStatus reminderStatus) {
+  private InterviewReservation(String id, Applicant applicant) {
     InterviewReservationValidator.validate(id, applicant);
 
     if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
@@ -31,10 +30,6 @@ public class InterviewReservation {
   }
 
   public static InterviewReservation initialize(Applicant applicant) {
-    return InterviewReservation.builder()
-        .id(DEFAULT_INITIAL_ID)
-        .applicant(applicant)
-        .reminderStatus(EmailSentStatus.PENDING)
-        .build();
+    return InterviewReservation.builder().id(DEFAULT_INITIAL_ID).applicant(applicant).build();
   }
 }
