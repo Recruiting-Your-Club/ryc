@@ -25,7 +25,6 @@ import com.ryc.api.v2.common.dto.response.PeriodResponse;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
 import com.ryc.api.v2.email.domain.event.InterviewReservationEmailEvent;
-import com.ryc.api.v2.email.service.InterviewReminderService;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
@@ -36,6 +35,7 @@ import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationReq
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewReminderUpdatedResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,7 +47,6 @@ public class InterviewService {
   private final ClubRepository clubRepository;
   private final ApplicantRepository applicantRepository;
   private final AnnouncementRepository announcementRepository;
-  private final InterviewReminderService interviewReminderService;
   private final FileService fileService;
   private final ApplicationEventPublisher eventPublisher;
 
@@ -227,10 +226,6 @@ public class InterviewService {
             .toList();
 
     List<InterviewSlot> savedInterviewSlots = interviewRepository.saveAllSlot(interviewSlots);
-
-    // 면접 리마인더 설정 생성
-    interviewReminderService.createReminderSettings(announcementId);
-
     return savedInterviewSlots.stream().map(this::createInterviewSlotResponse).toList();
   }
 
@@ -252,9 +247,6 @@ public class InterviewService {
             .filter(r -> r.getApplicant().getId().equals(applicant.getId()))
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("예약 정보가 없습니다. 서버 오류일 수 있습니다."));
-
-    // 면접 리마인더 큐 추가
-    interviewReminderService.addReminderQueue(savedInterviewSlot, applicant.getEmail());
 
     // 이메일 이벤트를 발행
     String clubName =
@@ -376,5 +368,15 @@ public class InterviewService {
         .representativeImage(imageMap.get(applicant.getId()))
         .imagePresent(imageMap.containsKey(applicant.getId()))
         .build();
+  }
+
+  public List<InterviewReminderUpdatedResponse> changeTimeToReminder(
+      String announcementId, Integer timeToReminder) {
+    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
+    List<InterviewSlot> changedSlots =
+        slots.stream().map(slot -> slot.changeRelativeHour(timeToReminder)).toList();
+    return interviewRepository.saveAllSlot(changedSlots).stream()
+        .map(slot -> new InterviewReminderUpdatedResponse(slot.getId(), slot.getTimeToReminder()))
+        .toList();
   }
 }

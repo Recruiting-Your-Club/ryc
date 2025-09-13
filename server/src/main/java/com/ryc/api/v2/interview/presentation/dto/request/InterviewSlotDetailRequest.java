@@ -1,4 +1,4 @@
-package com.ryc.api.v2.email.presentation.dto.request;
+package com.ryc.api.v2.interview.presentation.dto.request;
 
 import java.time.LocalDateTime;
 

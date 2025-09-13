@@ -19,6 +19,7 @@ public class InterviewSlot {
   private final String creatorId;
   private final String announcementId;
   private final Integer maxNumberOfPeople;
+  private final Integer timeToReminder; // null 허용
   private final Period period;
   private final List<InterviewReservation> reservations;
 
@@ -28,6 +29,7 @@ public class InterviewSlot {
       String creatorId,
       String announcementId,
       Integer maxNumberOfPeople,
+      Integer timeToReminder,
       Period period,
       List<InterviewReservation> reservations) {
 
@@ -46,6 +48,7 @@ public class InterviewSlot {
     this.creatorId = creatorId;
     this.announcementId = announcementId;
     this.maxNumberOfPeople = maxNumberOfPeople;
+    this.timeToReminder = timeToReminder;
     this.period = period;
     this.reservations = List.copyOf(resolvedReservations);
   }
@@ -70,14 +73,14 @@ public class InterviewSlot {
         .creatorId(creatorId)
         .announcementId(announcementId)
         .maxNumberOfPeople(maxNumberOfPeople)
+        .timeToReminder(24) // 기본값 24시간
         .period(period)
         .reservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
         .build();
   }
 
   public InterviewSlot addReservations(InterviewReservation newReservation) {
-    List<InterviewReservation> newInterviewReservations = new ArrayList<>(this.reservations);
-
+    // 비즈니스 검증
     this.reservations.stream()
         .filter(r -> r.getApplicant().getId().equals(newReservation.getApplicant().getId()))
         .findFirst()
@@ -91,6 +94,8 @@ public class InterviewSlot {
       throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
+    // 새로운 예약 추가
+    List<InterviewReservation> newInterviewReservations = new ArrayList<>(this.reservations);
     newInterviewReservations.add(newReservation);
 
     return InterviewSlot.builder()
@@ -98,12 +103,14 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
+        .timeToReminder(this.timeToReminder)
         .period(this.period)
         .reservations(List.copyOf(newInterviewReservations))
         .build();
   }
 
   public InterviewSlot changeMaxNumberOfPeople(int newMaxNumberOfPeople) {
+    // 비즈니스 검증
     if (newMaxNumberOfPeople < this.reservations.size()) {
       throw new InterviewException(InterviewErrorCode.NEW_MAX_NUMBER_LESS_THAN_RESERVATIONS);
     }
@@ -113,6 +120,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(newMaxNumberOfPeople)
+        .timeToReminder(this.timeToReminder)
         .period(this.period)
         .reservations(List.copyOf(this.reservations))
         .build();
@@ -127,6 +135,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
+        .timeToReminder(this.timeToReminder)
         .period(this.period)
         .reservations(List.copyOf(newReservations))
         .build();
@@ -150,5 +159,22 @@ public class InterviewSlot {
   public boolean hasReservationForApplicant(String applicantId) {
     return reservations.stream()
         .anyMatch(reservation -> reservation.getApplicant().getId().equals(applicantId));
+  }
+
+  public InterviewSlot changeRelativeHour(Integer newTimeToReminder) {
+    // 비즈니스 검증
+    if (newTimeToReminder < 0) {
+      throw new InterviewException(InterviewErrorCode.RELATIVE_HOUR_CANNOT_BE_NEGATIVE);
+    }
+
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .timeToReminder(newTimeToReminder)
+        .period(this.period)
+        .reservations(this.reservations)
+        .build();
   }
 }

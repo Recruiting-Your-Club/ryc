@@ -20,11 +20,13 @@ import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
+import com.ryc.api.v2.interview.presentation.dto.request.InterviewReminderUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.MaxNumberOfPeopleUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
+import com.ryc.api.v2.interview.presentation.dto.response.InterviewReminderUpdatedResponse;
 import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -265,6 +267,38 @@ public class InterviewHttpApi {
           @UUID(message = "면접 예약 id는 UUID 포멧을 준수하여야 합니다.")
           String reservationId) {
     interviewService.deleteInterviewReservation(reservationId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/announcements/{announcement-id}/interviews/reminders")
+  @HasRole(Role.MEMBER)
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  @Operation(summary = "면접 리마인더 시간 수정", description = "면접 리마인더 시간을 수정합니다.")
+  public ResponseEntity<List<InterviewReminderUpdatedResponse>> updateReminder(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId,
+      @Valid @RequestBody InterviewReminderUpdatedRequest body) {
+    List<InterviewReminderUpdatedResponse> response =
+        interviewService.changeTimeToReminder(announcementId, body.timeToReminder());
+    return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("/announcements/{announcement-id}/interviews/reminders")
+  @HasRole(Role.MEMBER)
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  @Operation(summary = "면접 리마인더 제거", description = "면접 리마인더를 제거합니다.")
+  public ResponseEntity<Void> deleteReminder(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId) {
+    //    interviewService.deleteReminderSetting(announcementId);
     return ResponseEntity.noContent().build();
   }
 }
