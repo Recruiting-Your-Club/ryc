@@ -12,4 +12,10 @@ public record InterviewReminderEvent(
     String clubName,
     int reminderTime,
     Period interviewPeriod,
-    List<String> applicantEmails) {}
+    List<String> applicantEmails) {
+
+  @Override
+  public List<String> applicantEmails() {
+    return List.copyOf(applicantEmails);
+  }
+}
