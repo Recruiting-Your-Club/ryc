@@ -94,4 +94,10 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   public void deleteSlotById(String slotId) {
     interviewSlotJpaRepository.deleteById(slotId);
   }
+
+  @Override
+  public List<InterviewSlot> findSlotForReminder() {
+    List<InterviewSlotEntity> entities = interviewSlotJpaRepository.findSlotsForReminder();
+    return entities.stream().map(InterviewSlotMapper::toDomain).toList();
+  }
 }

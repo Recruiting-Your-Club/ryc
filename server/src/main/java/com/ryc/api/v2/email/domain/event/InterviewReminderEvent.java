@@ -1,10 +1,10 @@
 package com.ryc.api.v2.email.domain.event;
 
+import java.util.List;
+
 import com.ryc.api.v2.common.domain.Period;
 
 import lombok.Builder;
-
-import java.util.List;
 
 @Builder
 public record InterviewReminderEvent(

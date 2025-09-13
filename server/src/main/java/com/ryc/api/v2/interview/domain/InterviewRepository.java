@@ -31,4 +31,6 @@ public interface InterviewRepository {
   boolean existsSlotsByAnnouncementId(String announcementId);
 
   void deleteSlotById(String slotId);
+
+  List<InterviewSlot> findSlotForReminder();
 }

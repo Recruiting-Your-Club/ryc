@@ -220,7 +220,8 @@ public class InterviewHttpApi {
         "FORBIDDEN_NOT_CLUB_MEMBER",
         "RESOURCE_NOT_FOUND",
         "APPLICANT_ALREADY_RESERVED",
-        "APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW"
+        "APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW",
+        "INTERVIEW_SLOT_FULL"
       })
   public ResponseEntity<InterviewReservationUpdateResponse> changeInterviewReservation(
       @PathVariable("applicant-id")

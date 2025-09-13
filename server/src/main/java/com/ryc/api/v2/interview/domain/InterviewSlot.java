@@ -8,6 +8,7 @@ import java.util.*;
 import com.ryc.api.v2.common.domain.Period;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class InterviewSlot {
   private final Integer reminderTime; // null 허용
   private final Period period;
   private final List<InterviewReservation> reservations;
+  private final EmailSentStatus reminderStatus;
 
   @Builder
   private InterviewSlot(
@@ -31,7 +33,8 @@ public class InterviewSlot {
       Integer maxNumberOfPeople,
       Integer reminderTime,
       Period period,
-      List<InterviewReservation> reservations) {
+      List<InterviewReservation> reservations,
+      EmailSentStatus reminderStatus) {
 
     // 1. 정제 (Period, InterviewReservation는 이미 도메인 객체이므로 정제 불필요)
 
@@ -51,6 +54,7 @@ public class InterviewSlot {
     this.reminderTime = reminderTime;
     this.period = period;
     this.reservations = List.copyOf(resolvedReservations);
+    this.reminderStatus = reminderStatus;
   }
 
   public static InterviewSlot initialize(
@@ -76,6 +80,7 @@ public class InterviewSlot {
         .reminderTime(24) // 기본값 24시간
         .period(period)
         .reservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
+        .reminderStatus(EmailSentStatus.PENDING) // 초기 상태는 PENDING
         .build();
   }
 
@@ -106,6 +111,7 @@ public class InterviewSlot {
         .reminderTime(this.reminderTime)
         .period(this.period)
         .reservations(List.copyOf(newInterviewReservations))
+        .reminderStatus(this.reminderStatus)
         .build();
   }
 
@@ -123,6 +129,7 @@ public class InterviewSlot {
         .reminderTime(this.reminderTime)
         .period(this.period)
         .reservations(List.copyOf(this.reservations))
+        .reminderStatus(this.reminderStatus)
         .build();
   }
 
@@ -138,6 +145,7 @@ public class InterviewSlot {
         .reminderTime(this.reminderTime)
         .period(this.period)
         .reservations(List.copyOf(newReservations))
+        .reminderStatus(this.reminderStatus)
         .build();
   }
 
@@ -170,6 +178,7 @@ public class InterviewSlot {
         .reminderTime(newTimeToReminder)
         .period(this.period)
         .reservations(this.reservations)
+        .reminderStatus(this.reminderStatus)
         .build();
   }
 
@@ -182,6 +191,20 @@ public class InterviewSlot {
         .reminderTime(null) // 알림 시간을 null로 설정
         .period(this.period)
         .reservations(this.reservations)
+        .reminderStatus(this.reminderStatus)
+        .build();
+  }
+
+  public InterviewSlot changeReminderStatus(EmailSentStatus newReminderStatus) {
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .reminderTime(this.reminderTime)
+        .period(this.period)
+        .reservations(this.reservations)
+        .reminderStatus(newReminderStatus)
         .build();
   }
 }

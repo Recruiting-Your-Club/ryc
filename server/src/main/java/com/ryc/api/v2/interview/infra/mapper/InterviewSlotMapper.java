@@ -32,6 +32,7 @@ public class InterviewSlotMapper {
         .reminderTime(slotEntity.getReminderTime())
         .period(period)
         .reservations(reservations)
+        .reminderStatus(slotEntity.getReminderStatus())
         .build();
   }
 
@@ -46,6 +47,7 @@ public class InterviewSlotMapper {
             .reminderTime(slotDomain.getReminderTime())
             .period(periodVO)
             .interviewReservations(new ArrayList<>())
+            .reminderStatus(slotDomain.getReminderStatus())
             .build();
 
     slotDomain
