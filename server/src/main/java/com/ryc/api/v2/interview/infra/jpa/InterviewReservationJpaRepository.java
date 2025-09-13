@@ -22,4 +22,8 @@ public interface InterviewReservationJpaRepository
         where r.applicant.id = :applicantId
     """)
   Optional<InterviewSlotEntity> findInterviewSlotByApplicant_Id(String applicantId);
+
+  Boolean existsByApplicant_Id(String applicantId);
+
+  void deleteByApplicant_Id(String applicantId);
 }

@@ -15,4 +15,6 @@ public interface EmailVerificationRepository {
   void deleteByCode(int code);
 
   void flush();
+
+  void deleteAttemptedCodes();
 }

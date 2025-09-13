@@ -100,4 +100,14 @@ public class InterviewRepositoryImpl implements InterviewRepository {
     List<InterviewSlotEntity> entities = interviewSlotJpaRepository.findSlotsForReminder();
     return entities.stream().map(InterviewSlotMapper::toDomain).toList();
   }
+
+  @Override
+  public boolean existsReservationByApplicantId(String applicantId) {
+    return interviewReservationJpaRepository.existsByApplicant_Id(applicantId);
+  }
+
+  @Override
+  public void deleteReservationByApplicantId(String applicantId) {
+    interviewReservationJpaRepository.deleteByApplicant_Id(applicantId);
+  }
 }

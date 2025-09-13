@@ -33,4 +33,8 @@ public interface InterviewRepository {
   void deleteSlotById(String slotId);
 
   List<InterviewSlot> findSlotForReminder();
+
+  boolean existsReservationByApplicantId(String applicantId);
+
+  void deleteReservationByApplicantId(String applicantId);
 }

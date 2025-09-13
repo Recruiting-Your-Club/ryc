@@ -17,6 +17,7 @@ import com.ryc.api.v2.announcement.domain.event.AnnouncementDeletedEvent;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
+import com.ryc.api.v2.applicant.domain.event.ApplicantDeletedEvent;
 import com.ryc.api.v2.applicant.presentation.dto.response.ApplicantSummaryResponse;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
@@ -327,7 +328,7 @@ public class InterviewService {
   @Transactional
   public void deleteInterviewReservation(String reservationId) {
     if (!interviewRepository.existsReservationById(reservationId)) {
-      throw new NoSuchElementException("Interview reservation not found for id: " + reservationId);
+      return;
     }
 
     interviewRepository.deleteReservationById(reservationId);
@@ -356,6 +357,14 @@ public class InterviewService {
     event.announcementIds().stream()
         .filter(interviewRepository::existsSlotsByAnnouncementId)
         .forEach(interviewRepository::deleteSlotsByAnnouncementId);
+  }
+
+  @EventListener
+  @Transactional(propagation = Propagation.MANDATORY)
+  protected void handleApplicantDeletedEvent(ApplicantDeletedEvent event) {
+    event.applicantIds().stream()
+        .filter(interviewRepository::existsReservationByApplicantId)
+        .forEach(interviewRepository::deleteReservationByApplicantId);
   }
 
   private InterviewSlotResponse createInterviewSlotResponse(InterviewSlot slot) {
