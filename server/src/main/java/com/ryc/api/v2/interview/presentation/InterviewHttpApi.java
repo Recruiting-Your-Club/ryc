@@ -270,6 +270,13 @@ public class InterviewHttpApi {
     return ResponseEntity.noContent().build();
   }
 
+  //  @GetMapping("/announcements/{announcement-id}/interviews/reminders")
+  //  @ApiErrorCodeExample(
+  //      value = {PermissionErrorCode.class, CommonErrorCode.class},
+  //      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  //  @Operation(summary = "면접 리마인더 시간 조회", description = "면접 리마인더 시간을 조회합니다.")
+  //  public ResponseEntity<>
+
   @PutMapping("/announcements/{announcement-id}/interviews/reminders")
   @HasRole(Role.MEMBER)
   @ApiErrorCodeExample(
@@ -283,7 +290,7 @@ public class InterviewHttpApi {
           String announcementId,
       @Valid @RequestBody InterviewReminderUpdatedRequest body) {
     List<InterviewReminderUpdatedResponse> response =
-        interviewService.changeTimeToReminder(announcementId, body.timeToReminder());
+        interviewService.changeReminderTime(announcementId, body.reminderTime());
     return ResponseEntity.ok(response);
   }
 

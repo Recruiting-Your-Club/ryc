@@ -19,7 +19,7 @@ public class InterviewSlot {
   private final String creatorId;
   private final String announcementId;
   private final Integer maxNumberOfPeople;
-  private final Integer timeToReminder; // null 허용
+  private final Integer reminderTime; // null 허용
   private final Period period;
   private final List<InterviewReservation> reservations;
 
@@ -29,7 +29,7 @@ public class InterviewSlot {
       String creatorId,
       String announcementId,
       Integer maxNumberOfPeople,
-      Integer timeToReminder,
+      Integer reminderTime,
       Period period,
       List<InterviewReservation> reservations) {
 
@@ -48,7 +48,7 @@ public class InterviewSlot {
     this.creatorId = creatorId;
     this.announcementId = announcementId;
     this.maxNumberOfPeople = maxNumberOfPeople;
-    this.timeToReminder = timeToReminder;
+    this.reminderTime = reminderTime;
     this.period = period;
     this.reservations = List.copyOf(resolvedReservations);
   }
@@ -73,7 +73,7 @@ public class InterviewSlot {
         .creatorId(creatorId)
         .announcementId(announcementId)
         .maxNumberOfPeople(maxNumberOfPeople)
-        .timeToReminder(24) // 기본값 24시간
+        .reminderTime(24) // 기본값 24시간
         .period(period)
         .reservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
         .build();
@@ -103,7 +103,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .timeToReminder(this.timeToReminder)
+        .reminderTime(this.reminderTime)
         .period(this.period)
         .reservations(List.copyOf(newInterviewReservations))
         .build();
@@ -120,7 +120,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(newMaxNumberOfPeople)
-        .timeToReminder(this.timeToReminder)
+        .reminderTime(this.reminderTime)
         .period(this.period)
         .reservations(List.copyOf(this.reservations))
         .build();
@@ -135,7 +135,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .timeToReminder(this.timeToReminder)
+        .reminderTime(this.reminderTime)
         .period(this.period)
         .reservations(List.copyOf(newReservations))
         .build();
@@ -161,13 +161,13 @@ public class InterviewSlot {
         .anyMatch(reservation -> reservation.getApplicant().getId().equals(applicantId));
   }
 
-  public InterviewSlot changeTimeToReminder(Integer newTimeToReminder) {
+  public InterviewSlot changeReminderTime(Integer newTimeToReminder) {
     return InterviewSlot.builder()
         .id(this.id)
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .timeToReminder(newTimeToReminder)
+        .reminderTime(newTimeToReminder)
         .period(this.period)
         .reservations(this.reservations)
         .build();
@@ -179,7 +179,7 @@ public class InterviewSlot {
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
-        .timeToReminder(null) // 알림 시간을 null로 설정
+        .reminderTime(null) // 알림 시간을 null로 설정
         .period(this.period)
         .reservations(this.reservations)
         .build();

@@ -327,13 +327,13 @@ public class InterviewService {
   }
 
   @Transactional
-  public List<InterviewReminderUpdatedResponse> changeTimeToReminder(
-      String announcementId, Integer timeToReminder) {
+  public List<InterviewReminderUpdatedResponse> changeReminderTime(
+      String announcementId, Integer reminderTime) {
     List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
     List<InterviewSlot> changedSlots =
-        slots.stream().map(slot -> slot.changeTimeToReminder(timeToReminder)).toList();
+        slots.stream().map(slot -> slot.changeReminderTime(reminderTime)).toList();
     return interviewRepository.saveAllSlot(changedSlots).stream()
-        .map(slot -> new InterviewReminderUpdatedResponse(slot.getId(), slot.getTimeToReminder()))
+        .map(slot -> new InterviewReminderUpdatedResponse(slot.getId(), slot.getReminderTime()))
         .toList();
   }
 
