@@ -29,28 +29,33 @@ public class InterviewSlotMapper {
         .creatorId(slotEntity.getCreatorId())
         .announcementId(slotEntity.getAnnouncementId())
         .maxNumberOfPeople(slotEntity.getMaxNumberOfPeople())
+        .reminderTime(slotEntity.getReminderTime())
         .period(period)
         .reservations(reservations)
         .build();
   }
 
-  public static InterviewSlotEntity toEntity(InterviewSlot slot) {
-    PeriodVO periodVO = PeriodMapper.toVO(slot.getPeriod());
+  public static InterviewSlotEntity toEntity(InterviewSlot slotDomain) {
+    PeriodVO periodVO = PeriodMapper.toVO(slotDomain.getPeriod());
     InterviewSlotEntity slotEntity =
         InterviewSlotEntity.builder()
-            .id(slot.getId())
-            .creatorId(slot.getCreatorId())
-            .announcementId(slot.getAnnouncementId())
-            .maxNumberOfPeople(slot.getMaxNumberOfPeople())
+            .id(slotDomain.getId())
+            .creatorId(slotDomain.getCreatorId())
+            .announcementId(slotDomain.getAnnouncementId())
+            .maxNumberOfPeople(slotDomain.getMaxNumberOfPeople())
+            .reminderTime(slotDomain.getReminderTime())
             .period(periodVO)
             .interviewReservations(new ArrayList<>())
             .build();
 
-    for (InterviewReservation reservation : slot.getReservations()) {
-      InterviewReservationEntity reservationEntity =
-          InterviewReservationMapper.toEntity(reservation, slotEntity);
-      slotEntity.addReservation(reservationEntity);
-    }
+    slotDomain
+        .getReservations()
+        .forEach(
+            reservationDomain -> {
+              InterviewReservationEntity reservationEntity =
+                  InterviewReservationMapper.toEntity(reservationDomain, slotEntity);
+              slotEntity.addReservation(reservationEntity);
+            });
     return slotEntity;
   }
 }
