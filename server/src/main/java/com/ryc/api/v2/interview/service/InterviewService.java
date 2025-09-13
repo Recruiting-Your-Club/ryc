@@ -35,7 +35,6 @@ import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationReq
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewReminderUpdatedResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -326,15 +325,22 @@ public class InterviewService {
     interviewRepository.deleteReservationById(reservationId);
   }
 
+  @Transactional(readOnly = true)
+  public InterviewReminderTimeResponse getReminderTime(String announcementId) {
+    List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
+    return slots.isEmpty()
+        ? new InterviewReminderTimeResponse(announcementId, 24)
+        : new InterviewReminderTimeResponse(announcementId, slots.get(0).getReminderTime());
+  }
+
   @Transactional
-  public List<InterviewReminderUpdatedResponse> changeReminderTime(
+  public InterviewReminderTimeResponse changeReminderTime(
       String announcementId, Integer reminderTime) {
     List<InterviewSlot> slots = interviewRepository.findSlotsByAnnouncementId(announcementId);
     List<InterviewSlot> changedSlots =
         slots.stream().map(slot -> slot.changeReminderTime(reminderTime)).toList();
-    return interviewRepository.saveAllSlot(changedSlots).stream()
-        .map(slot -> new InterviewReminderUpdatedResponse(slot.getId(), slot.getReminderTime()))
-        .toList();
+    interviewRepository.saveAllSlot(changedSlots);
+    return new InterviewReminderTimeResponse(announcementId, reminderTime);
   }
 
   @Transactional

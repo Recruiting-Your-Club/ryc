@@ -26,7 +26,6 @@ import com.ryc.api.v2.interview.presentation.dto.request.InterviewReservationUpd
 import com.ryc.api.v2.interview.presentation.dto.request.InterviewSlotCreateRequest;
 import com.ryc.api.v2.interview.presentation.dto.request.MaxNumberOfPeopleUpdatedRequest;
 import com.ryc.api.v2.interview.presentation.dto.response.*;
-import com.ryc.api.v2.interview.presentation.dto.response.InterviewReminderUpdatedResponse;
 import com.ryc.api.v2.interview.service.InterviewService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
@@ -270,12 +269,20 @@ public class InterviewHttpApi {
     return ResponseEntity.noContent().build();
   }
 
-  //  @GetMapping("/announcements/{announcement-id}/interviews/reminders")
-  //  @ApiErrorCodeExample(
-  //      value = {PermissionErrorCode.class, CommonErrorCode.class},
-  //      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
-  //  @Operation(summary = "면접 리마인더 시간 조회", description = "면접 리마인더 시간을 조회합니다.")
-  //  public ResponseEntity<>
+  @GetMapping("/announcements/{announcement-id}/interviews/reminders")
+  @HasRole(Role.MEMBER)
+  @ApiErrorCodeExample(
+      value = {PermissionErrorCode.class, CommonErrorCode.class},
+      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
+  @Operation(summary = "면접 리마인더에 대한 상대 시간 조회")
+  public ResponseEntity<InterviewReminderTimeResponse> getReminderTime(
+      @PathVariable("announcement-id")
+          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
+          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
+          String announcementId) {
+    InterviewReminderTimeResponse response = interviewService.getReminderTime(announcementId);
+    return ResponseEntity.ok(response);
+  }
 
   @PutMapping("/announcements/{announcement-id}/interviews/reminders")
   @HasRole(Role.MEMBER)
@@ -283,13 +290,13 @@ public class InterviewHttpApi {
       value = {PermissionErrorCode.class, CommonErrorCode.class},
       include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
   @Operation(summary = "면접 리마인더 시간 수정", description = "면접 리마인더 시간을 수정합니다.")
-  public ResponseEntity<List<InterviewReminderUpdatedResponse>> updateReminder(
+  public ResponseEntity<InterviewReminderTimeResponse> updateReminder(
       @PathVariable("announcement-id")
           @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
           @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
           String announcementId,
       @Valid @RequestBody InterviewReminderUpdatedRequest body) {
-    List<InterviewReminderUpdatedResponse> response =
+    InterviewReminderTimeResponse response =
         interviewService.changeReminderTime(announcementId, body.reminderTime());
     return ResponseEntity.ok(response);
   }
