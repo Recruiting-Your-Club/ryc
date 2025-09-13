@@ -15,7 +15,11 @@ public class InterviewReservationMapper {
 
   public static InterviewReservation toDomain(InterviewReservationEntity entity) {
     Applicant applicant = ApplicantMapper.toDomain(entity.getApplicant());
-    return InterviewReservation.builder().id(entity.getId()).applicant(applicant).build();
+    return InterviewReservation.builder()
+        .id(entity.getId())
+        .applicant(applicant)
+        .reminderStatus(entity.getReminderStatus())
+        .build();
   }
 
   public static InterviewReservationEntity toEntity(
@@ -25,6 +29,7 @@ public class InterviewReservationMapper {
     return InterviewReservationEntity.builder()
         .id(reservation.getId())
         .applicant(applicant)
+        .reminderStatus(reservation.getReminderStatus())
         .interviewSlot(slotEntity)
         .build();
   }

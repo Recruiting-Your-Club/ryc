@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import com.ryc.api.v2.applicant.infra.entity.ApplicantEntity;
 import com.ryc.api.v2.common.infra.entity.BaseEntity;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 import lombok.*;
 
@@ -22,6 +23,11 @@ public class InterviewReservationEntity extends BaseEntity {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "applicant_id", nullable = false)
   private ApplicantEntity applicant;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "reminder_status", nullable = false)
+  @Builder.Default
+  private EmailSentStatus reminderStatus = EmailSentStatus.PENDING;
 
   @Setter
   @ManyToOne(fetch = FetchType.LAZY)

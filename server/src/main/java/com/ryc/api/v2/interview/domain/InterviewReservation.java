@@ -6,6 +6,7 @@ import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.enums.ApplicantStatus;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +17,10 @@ public class InterviewReservation {
   private final String id;
   // TODO:  도메인이 외부 도메인을 필드로 가지고 있음. 수정 필요 (도메인 독립성 위반)
   private final Applicant applicant;
+  private final EmailSentStatus reminderStatus;
 
   @Builder
-  private InterviewReservation(String id, Applicant applicant) {
+  private InterviewReservation(String id, Applicant applicant, EmailSentStatus reminderStatus) {
     InterviewReservationValidator.validate(id, applicant);
 
     if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
@@ -27,9 +29,14 @@ public class InterviewReservation {
 
     this.id = id;
     this.applicant = applicant;
+    this.reminderStatus = reminderStatus;
   }
 
   public static InterviewReservation initialize(Applicant applicant) {
-    return InterviewReservation.builder().id(DEFAULT_INITIAL_ID).applicant(applicant).build();
+    return InterviewReservation.builder()
+        .id(DEFAULT_INITIAL_ID)
+        .applicant(applicant)
+        .reminderStatus(EmailSentStatus.PENDING)
+        .build();
   }
 }
