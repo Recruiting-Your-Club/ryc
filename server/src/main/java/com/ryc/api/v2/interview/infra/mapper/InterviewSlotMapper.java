@@ -29,28 +29,35 @@ public class InterviewSlotMapper {
         .creatorId(slotEntity.getCreatorId())
         .announcementId(slotEntity.getAnnouncementId())
         .maxNumberOfPeople(slotEntity.getMaxNumberOfPeople())
+        .remindTime(slotEntity.getRemindTime())
         .period(period)
-        .interviewReservations(reservations)
+        .reservations(reservations)
+        .reminderStatus(slotEntity.getReminderStatus())
         .build();
   }
 
-  public static InterviewSlotEntity toEntity(InterviewSlot slot) {
-    PeriodVO periodVO = PeriodMapper.toVO(slot.getPeriod());
+  public static InterviewSlotEntity toEntity(InterviewSlot slotDomain) {
+    PeriodVO periodVO = PeriodMapper.toVO(slotDomain.getPeriod());
     InterviewSlotEntity slotEntity =
         InterviewSlotEntity.builder()
-            .id(slot.getId())
-            .creatorId(slot.getCreatorId())
-            .announcementId(slot.getAnnouncementId())
-            .maxNumberOfPeople(slot.getMaxNumberOfPeople())
+            .id(slotDomain.getId())
+            .creatorId(slotDomain.getCreatorId())
+            .announcementId(slotDomain.getAnnouncementId())
+            .maxNumberOfPeople(slotDomain.getMaxNumberOfPeople())
+            .remindTime(slotDomain.getRemindTime())
             .period(periodVO)
             .interviewReservations(new ArrayList<>())
+            .reminderStatus(slotDomain.getReminderStatus())
             .build();
 
-    for (InterviewReservation reservation : slot.getInterviewReservations()) {
-      InterviewReservationEntity reservationEntity =
-          InterviewReservationMapper.toEntity(reservation, slotEntity);
-      slotEntity.addReservation(reservationEntity);
-    }
+    slotDomain
+        .getReservations()
+        .forEach(
+            reservationDomain -> {
+              InterviewReservationEntity reservationEntity =
+                  InterviewReservationMapper.toEntity(reservationDomain, slotEntity);
+              slotEntity.addReservation(reservationEntity);
+            });
     return slotEntity;
   }
 }

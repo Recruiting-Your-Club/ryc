@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import com.ryc.api.v2.common.infra.entity.BaseEntity;
 import com.ryc.api.v2.common.infra.vo.PeriodVO;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,11 +36,18 @@ public class InterviewSlotEntity extends BaseEntity {
   @Column(nullable = false)
   private Integer maxNumberOfPeople;
 
+  private Integer remindTime; // null 허용
+
   @Embedded private PeriodVO period;
 
   @Builder.Default
   @OneToMany(mappedBy = "interviewSlot", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<InterviewReservationEntity> interviewReservations = new ArrayList<>();
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "reminder_status", nullable = false)
+  @Builder.Default
+  private EmailSentStatus reminderStatus = EmailSentStatus.PENDING;
 
   public void addReservation(InterviewReservationEntity reservation) {
     reservation.setInterviewSlot(this);

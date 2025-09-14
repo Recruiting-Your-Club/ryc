@@ -1,13 +1,25 @@
-<!-- src/main/resources/templates/interview-link.html -->
-<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 10px; margin-bottom: 20px;">
-    <h2 style="color: #333;">📩 면접 일정 선택 안내</h2>
-    <p style="font-size: 14px; color: #555;">
-        아래 버튼을 클릭하여 면접 일정을 선택해주세요. 선착순으로 면접 일정이 배정되어 조기 마감이 될 수 있습니다.
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>면접 일정 선택 안내</title>
+</head>
+<body>
+
+<div style="font-family: Arial, sans-serif; padding: 24px; background-color: #f9f9f9; border-radius: 12px; max-width: 600px; margin: auto; border: 1px solid #eaeaea;">
+    <h2 style="color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;">📩 면접 일정 선택 안내</h2>
+    <p style="font-size: 14px; color: #555; line-height: 1.6;">
+        <strong style="color: #222;">${applicant-name}</strong>님 <strong style="color: #222;">${club-name}</strong> 공고에 지원해주셔서 감사합니다.
     </p>
-    <a href="%s" target="_blank" style="
+    <p style="font-size: 14px; color: #555; line-height: 1.6;">
+        아래 버튼을 클릭하여 면접 가능 시간을 선택해주세요.<br>
+        선착순으로 면접 시간이 배정되오니, 가급적 빠르게 선택하시는 것을 권장합니다.
+    </p>
+    <a href="https://ssoc.kr/clubs/${club-id}/announcements/${announcement-id}/applicants/${applicant-id}/interview-reservations" target="_blank" style="
       display: inline-block;
       padding: 12px 24px;
-      margin-top: 10px;
+      margin-top: 15px;
       background-color: #4CAF50;
       color: white;
       text-decoration: none;
@@ -15,6 +27,9 @@
       font-size: 16px;
       font-weight: bold;
   ">
-        ✅ 면접 일정 선택하러 가기
+        ✅ 면접 시간 선택하기
     </a>
 </div>
+
+</body>
+</html>
