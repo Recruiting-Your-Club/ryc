@@ -21,7 +21,16 @@ public interface InterviewReservationJpaRepository
         from InterviewReservationEntity r
         where r.applicant.id = :applicantId
     """)
-  Optional<InterviewSlotEntity> findInterviewSlotByApplicant_Id(String applicantId);
+  Optional<InterviewSlotEntity> findSlotByApplicantId(String applicantId);
+
+  @Query(
+      """
+    SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
+    FROM InterviewReservationEntity r
+    WHERE r.interviewSlot.announcementId = :announcementId
+    AND r.applicant.id = :applicantId
+""")
+  Boolean existsByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
 
   Boolean existsByApplicant_Id(String applicantId);
 

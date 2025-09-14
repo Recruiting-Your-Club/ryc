@@ -18,9 +18,13 @@ public interface InterviewRepository {
 
   InterviewSlot findSlotById(String interviewSlotId);
 
-  InterviewSlot findSlotByIdWithLock(String interviewSlotId);
+  InterviewSlot findSlotByIdForUpdate(String interviewSlotId);
 
-  Optional<InterviewSlot> findSlotByApplicantIdWithLock(String applicantId);
+  Optional<InterviewSlot> findSlotByApplicantIdForUpdate(String applicantId);
+
+  Boolean isReservedByAnnouncementIdAndApplicantId(String announcementId, String applicantId);
+
+  Boolean isReservedByApplicantId(String applicantId);
 
   void deleteSlotsByAnnouncementId(String announcementId);
 
@@ -29,10 +33,6 @@ public interface InterviewRepository {
   boolean existsReservationById(String reservationId);
 
   boolean existsSlotsByAnnouncementId(String announcementId);
-
-  void deleteSlotById(String slotId);
-
-  List<InterviewSlot> findSlotForReminder();
 
   boolean existsReservationByApplicantId(String applicantId);
 
