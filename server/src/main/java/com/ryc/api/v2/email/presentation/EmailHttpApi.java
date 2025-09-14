@@ -17,7 +17,9 @@ import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.common.exception.code.PermissionErrorCode;
-import com.ryc.api.v2.email.presentation.dto.request.*;
+import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
+import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeCreatedRequest;
+import com.ryc.api.v2.email.presentation.dto.request.VerificationCodeRequest;
 import com.ryc.api.v2.email.presentation.dto.response.EmailSendResponse;
 import com.ryc.api.v2.email.presentation.dto.response.VerificationCodeCreatedResponse;
 import com.ryc.api.v2.email.service.EmailService;
@@ -56,28 +58,6 @@ public class EmailHttpApi {
         emailService.createEmails(
             userDetail.getId(), announcementId, body.recipients(), body.subject(), body.content());
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
-  }
-
-  @PostMapping("/clubs/{club-id}/announcements/{announcement-id}/interview-slots/emails")
-  @HasRole(Role.MEMBER)
-  @Operation(summary = "면접 일정 안내 이메일 전송", description = "면접 대기자 상태인 지원자들에게 면접 일정 안내 이메일을 전송합니다.")
-  @ApiErrorCodeExample(
-      value = {PermissionErrorCode.class, CommonErrorCode.class},
-      include = {"FORBIDDEN_NOT_CLUB_MEMBER", "INVALID_PARAMETER"})
-  public ResponseEntity<List<EmailSendResponse>> sendInterviewSlotEmail(
-      @AuthenticationPrincipal CustomUserDetail userDetail,
-      @PathVariable("club-id")
-          @NotBlank(message = "클럽 아이디는 공백일 수 없습니다.")
-          @UUID(message = "클럽 아이디는 UUID 포멧이어야 합니다.")
-          String clubId,
-      @PathVariable("announcement-id")
-          @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
-          @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
-          String announcementId,
-      @Valid @RequestBody InterviewSlotEmailSendRequest body) {
-    List<EmailSendResponse> response =
-        emailService.createInterviewSlotEmails(userDetail.getId(), clubId, announcementId, body);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
 
   @PostMapping("/email-verifications")

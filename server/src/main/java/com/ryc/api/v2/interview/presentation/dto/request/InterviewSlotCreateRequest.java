@@ -3,15 +3,24 @@ package com.ryc.api.v2.interview.presentation.dto.request;
 import java.util.List;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+
+import com.ryc.api.v2.email.presentation.dto.request.EmailSendRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record InterviewSlotCreateRequest(
-    @Schema(description = "면접 슬롯 정보") @NotNull(message = "면접 슬롯 정보는 null일 수 없습니다.")
-        List<@Valid InterviewSlotDetailRequest> slotDetailRequests,
-    @Schema(description = "면접 당 진행 시간(분)")
-        @NotNull(message = "면접 당 진행 시간은 null일 수 없습니다.")
-        @Min(value = 1, message = "면접 당 진행 시간은 0분 이하일 수 없습니다.")
-        Integer interviewDuration) {}
+    @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.")
+        List<
+                @NotNull(message = "면접 날짜별 인원 수 정보는 null일 수 없습니다.") @Valid
+                NumberOfPeopleByInterviewDateRequest>
+            numberOfPeopleByInterviewDateRequests,
+    @Schema(description = "이메일 전송 요청 정보") @NotNull(message = "이메일 전송 요청 정보는 null일 수 없습니다.") @Valid
+        EmailSendRequest emailSendRequest) {
+
+  @Override
+  @Schema(description = "면접 날짜별 인원 수 정보")
+  public List<NumberOfPeopleByInterviewDateRequest> numberOfPeopleByInterviewDateRequests() {
+    return List.copyOf(numberOfPeopleByInterviewDateRequests);
+  }
+}

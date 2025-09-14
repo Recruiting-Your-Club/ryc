@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import com.ryc.api.v2.common.validator.request.annotation.Email;
 
@@ -14,8 +15,14 @@ import lombok.Builder;
 public record EmailSendRequest(
     @NotNull(message = "수신자 목록은 null일 수 없습니다.")
         List<@NotBlank(message = "수신자 이메일은 빈 값일 수 없습니다.") @Email String> recipients,
-    @Schema(description = "메일 제목") @NotBlank(message = "메일 제목은 비워둘 수 없습니다.") String subject,
-    @Schema(description = "메일 본문") @NotBlank(message = "메일 본문은 비워둘 수 없습니다.") String content) {
+    @Schema(description = "메일 제목")
+        @NotBlank(message = "메일 제목은 비워둘 수 없습니다.")
+        @Size(max = 1000, message = "메일 제목은 1000자를 초과할 수 없습니다.")
+        String subject,
+    @Schema(description = "메일 본문")
+        @NotBlank(message = "메일 본문은 비워둘 수 없습니다.")
+        @Size(max = 10000, message = "메일 본문은 10000자를 초과할 수 없습니다.")
+        String content) {
 
   @Override
   @Schema(description = "수신자 목록")
