@@ -14,9 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
   @Value("${ADMIN_CLIENT_URL}")
   private String ADMIN_CLIENT_URL;
 
-  @Value("${ADMIN_CLIENT_DEV_URL}")
-  private String ADMIN_CLIENT_DEV_URL;
-
   @Value("${LOCAL_CLIENT_URL}")
   private String LOCAL_CLIENT_URL;
 
@@ -35,8 +32,6 @@ public class WebConfig implements WebMvcConfigurer {
             CLIENT_URL + "/",
             ADMIN_CLIENT_URL,
             ADMIN_CLIENT_URL + "/",
-            ADMIN_CLIENT_DEV_URL,
-            ADMIN_CLIENT_DEV_URL + "/",
             LOCAL_CLIENT_URL,
             LOCAL_CLIENT_URL + "/",
             LOCAL_CLIENT_HTTPS_URL,

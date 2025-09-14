@@ -55,31 +55,19 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public InterviewSlot findSlotByIdForUpdate(String interviewSlotId) {
+  public InterviewSlot findSlotByIdWithLock(String interviewSlotId) {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
-            .findByIdForUpdate(interviewSlotId)
+            .findByIdWithLock(interviewSlotId)
             .orElseThrow(() -> new NoSuchElementException("Interview slot not found"));
     return InterviewSlotMapper.toDomain(entity);
   }
 
   @Override
-  public Optional<InterviewSlot> findSlotByApplicantIdForUpdate(String applicantId) {
+  public Optional<InterviewSlot> findSlotByApplicantIdWithLock(String applicantId) {
     return interviewReservationJpaRepository
-        .findSlotByApplicantId(applicantId)
+        .findInterviewSlotByApplicant_Id(applicantId)
         .map(InterviewSlotMapper::toDomain);
-  }
-
-  @Override
-  public Boolean isReservedByAnnouncementIdAndApplicantId(
-      String announcementId, String applicantId) {
-    return interviewReservationJpaRepository.existsByAnnouncementIdAndApplicantId(
-        announcementId, applicantId);
-  }
-
-  @Override
-  public Boolean isReservedByApplicantId(String applicantId) {
-    return interviewReservationJpaRepository.existsByApplicant_Id(applicantId);
   }
 
   @Override
@@ -100,6 +88,17 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   @Override
   public boolean existsSlotsByAnnouncementId(String announcementId) {
     return interviewSlotJpaRepository.existsByAnnouncementId(announcementId);
+  }
+
+  @Override
+  public void deleteSlotById(String slotId) {
+    interviewSlotJpaRepository.deleteById(slotId);
+  }
+
+  @Override
+  public List<InterviewSlot> findSlotForReminder() {
+    List<InterviewSlotEntity> entities = interviewSlotJpaRepository.findSlotsForReminder();
+    return entities.stream().map(InterviewSlotMapper::toDomain).toList();
   }
 
   @Override
