@@ -8,6 +8,7 @@ import java.util.*;
 import com.ryc.api.v2.common.domain.Period;
 import com.ryc.api.v2.common.exception.code.InterviewErrorCode;
 import com.ryc.api.v2.common.exception.custom.InterviewException;
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -19,8 +20,10 @@ public class InterviewSlot {
   private final String creatorId;
   private final String announcementId;
   private final Integer maxNumberOfPeople;
+  private final Integer remindTime; // null 허용
   private final Period period;
-  private final List<InterviewReservation> interviewReservations;
+  private final List<InterviewReservation> reservations;
+  private final EmailSentStatus reminderStatus;
 
   @Builder
   private InterviewSlot(
@@ -28,26 +31,30 @@ public class InterviewSlot {
       String creatorId,
       String announcementId,
       Integer maxNumberOfPeople,
+      Integer remindTime,
       Period period,
-      List<InterviewReservation> interviewReservations) {
+      List<InterviewReservation> reservations,
+      EmailSentStatus reminderStatus) {
 
     // 1. 정제 (Period, InterviewReservation는 이미 도메인 객체이므로 정제 불필요)
 
     // 2. 선택 멤버 변수 기본값 처리
-    List<InterviewReservation> resolvedInterviewReservations =
-        interviewReservations != null ? interviewReservations : List.of();
+    List<InterviewReservation> resolvedReservations =
+        reservations != null ? reservations : List.of();
 
     // 3. 검증
     InterviewSlotValidator.validate(
-        id, creatorId, announcementId, maxNumberOfPeople, period, resolvedInterviewReservations);
+        id, creatorId, announcementId, maxNumberOfPeople, period, resolvedReservations);
 
     // 4. 할당
     this.id = id;
     this.creatorId = creatorId;
     this.announcementId = announcementId;
     this.maxNumberOfPeople = maxNumberOfPeople;
+    this.remindTime = remindTime;
     this.period = period;
-    this.interviewReservations = List.copyOf(resolvedInterviewReservations);
+    this.reservations = List.copyOf(resolvedReservations);
+    this.reminderStatus = reminderStatus;
   }
 
   public static InterviewSlot initialize(
@@ -70,18 +77,16 @@ public class InterviewSlot {
         .creatorId(creatorId)
         .announcementId(announcementId)
         .maxNumberOfPeople(maxNumberOfPeople)
+        .remindTime(24) // 기본값 24시간
         .period(period)
-        .interviewReservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
+        .reservations(List.of()) // 초기화 시에는 예약이 없으므로 빈 리스트로 설정
+        .reminderStatus(EmailSentStatus.PENDING) // 초기 상태는 PENDING
         .build();
   }
 
-  public InterviewSlot addInterviewReservations(
-      InterviewReservation newReservation, boolean allowOverMax) {
-    int maxCount = this.maxNumberOfPeople;
-    List<InterviewReservation> newInterviewReservations =
-        new ArrayList<>(this.interviewReservations);
-
-    this.interviewReservations.stream()
+  public InterviewSlot addReservations(InterviewReservation newReservation) {
+    // 비즈니스 검증
+    this.reservations.stream()
         .filter(r -> r.getApplicant().getId().equals(newReservation.getApplicant().getId()))
         .findFirst()
         .ifPresent(
@@ -90,53 +95,116 @@ public class InterviewSlot {
               throw new InterviewException(InterviewErrorCode.APPLICANT_ALREADY_RESERVED);
             });
 
-    if (maxNumberOfPeople == interviewReservations.size()) {
-      if (allowOverMax) {
-        maxCount++;
-      } else {
-        // 예약이 꽉 찼고, 추가 예약을 허용하지 않는 경우 예외 발생
-        throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
-      }
+    if (maxNumberOfPeople == reservations.size()) {
+      throw new InterviewException(InterviewErrorCode.INTERVIEW_SLOT_FULL);
     }
 
+    // 새로운 예약 추가
+    List<InterviewReservation> newInterviewReservations = new ArrayList<>(this.reservations);
     newInterviewReservations.add(newReservation);
 
     return InterviewSlot.builder()
         .id(this.id)
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
-        .maxNumberOfPeople(maxCount)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .remindTime(this.remindTime)
         .period(this.period)
-        .interviewReservations(List.copyOf(newInterviewReservations))
+        .reservations(List.copyOf(newInterviewReservations))
+        .reminderStatus(this.reminderStatus)
+        .build();
+  }
+
+  public InterviewSlot changeMaxNumberOfPeople(int newMaxNumberOfPeople) {
+    // 비즈니스 검증
+    if (newMaxNumberOfPeople < this.reservations.size()) {
+      throw new InterviewException(InterviewErrorCode.NEW_MAX_NUMBER_LESS_THAN_RESERVATIONS);
+    }
+
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(newMaxNumberOfPeople)
+        .remindTime(this.remindTime)
+        .period(this.period)
+        .reservations(List.copyOf(this.reservations))
+        .reminderStatus(this.reminderStatus)
         .build();
   }
 
   public InterviewSlot removeReservation(InterviewReservation reservation) {
-    Set<InterviewReservation> newInterviewReservations = new HashSet<>(this.interviewReservations);
-    newInterviewReservations.removeIf(r -> r.getId().equals(reservation.getId()));
+    Set<InterviewReservation> newReservations = new HashSet<>(this.reservations);
+    newReservations.removeIf(r -> r.getId().equals(reservation.getId()));
 
     return InterviewSlot.builder()
         .id(this.id)
         .creatorId(this.creatorId)
         .announcementId(this.announcementId)
         .maxNumberOfPeople(this.maxNumberOfPeople)
+        .remindTime(this.remindTime)
         .period(this.period)
-        .interviewReservations(List.copyOf(newInterviewReservations))
+        .reservations(List.copyOf(newReservations))
+        .reminderStatus(this.reminderStatus)
         .build();
   }
 
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
-  public List<InterviewReservation> getInterviewReservations() {
-    return List.copyOf(interviewReservations);
+  public List<InterviewReservation> getReservations() {
+    return List.copyOf(reservations);
   }
 
-  public InterviewReservation getInterviewReservationByApplicantId(String applicantId) {
-    return interviewReservations.stream()
+  public InterviewReservation getReservationByApplicantId(String applicantId) {
+    return reservations.stream()
         .filter(reservation -> reservation.getApplicant().getId().equals(applicantId))
         .findFirst()
         .orElseThrow(
             () ->
                 new NoSuchElementException(
                     "Interview reservation not found for applicant: " + applicantId));
+  }
+
+  public boolean hasReservationForApplicant(String applicantId) {
+    return reservations.stream()
+        .anyMatch(reservation -> reservation.getApplicant().getId().equals(applicantId));
+  }
+
+  public InterviewSlot changeReminderTime(Integer newTimeToReminder) {
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .remindTime(newTimeToReminder)
+        .period(this.period)
+        .reservations(this.reservations)
+        .reminderStatus(this.reminderStatus)
+        .build();
+  }
+
+  public InterviewSlot deleteReminder() {
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .remindTime(null) // 알림 시간을 null로 설정
+        .period(this.period)
+        .reservations(this.reservations)
+        .reminderStatus(this.reminderStatus)
+        .build();
+  }
+
+  public InterviewSlot changeReminderStatus(EmailSentStatus newReminderStatus) {
+    return InterviewSlot.builder()
+        .id(this.id)
+        .creatorId(this.creatorId)
+        .announcementId(this.announcementId)
+        .maxNumberOfPeople(this.maxNumberOfPeople)
+        .remindTime(this.remindTime)
+        .period(this.period)
+        .reservations(this.reservations)
+        .reminderStatus(newReminderStatus)
+        .build();
   }
 }

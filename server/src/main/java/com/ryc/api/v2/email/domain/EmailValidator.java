@@ -86,14 +86,14 @@ final class EmailValidator extends DomainValidator {
 
   private static void validateSubject(String subject) {
     validateNotNullOrEmpty(subject, EMAIL_SUBJECT_NULL_OR_EMPTY);
-    validateLengthRange(
-        subject, MIN_SUBJECT_LENGTH, MAX_SUBJECT_LENGTH, EMAIL_INVALID_SUBJECT_LENGTH);
+    //    validateLengthRange(
+    //        subject, MIN_SUBJECT_LENGTH, MAX_SUBJECT_LENGTH, EMAIL_INVALID_SUBJECT_LENGTH);
   }
 
   private static void validateContent(String content) {
     validateNotNullOrEmpty(content, EMAIL_CONTENT_NULL_OR_EMPTY);
-    validateLengthRange(
-        content, MIN_CONTENT_LENGTH, MAX_CONTENT_LENGTH, EMAIL_INVALID_CONTENT_LENGTH);
+    //    validateLengthRange(
+    //        content, MIN_CONTENT_LENGTH, MAX_CONTENT_LENGTH, EMAIL_INVALID_CONTENT_LENGTH);
   }
 
   private static void validateAnnouncementId(String announcementId) {
