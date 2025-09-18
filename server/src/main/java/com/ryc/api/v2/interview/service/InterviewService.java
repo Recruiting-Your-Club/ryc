@@ -245,6 +245,11 @@ public class InterviewService {
 
     // 지원자의 예약 정보를 생성합니다.
     Applicant applicant = applicantRepository.findById(body.applicantId());
+
+    if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
+      throw new InterviewException(InterviewErrorCode.APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW);
+    }
+
     InterviewReservation reservation = InterviewReservation.initialize(applicant);
 
     // 새로운 예약 정보를 저장합니다.
@@ -298,6 +303,12 @@ public class InterviewService {
     } else {
       // 기존 면접 슬롯이 없는 경우, 새로운 예약을 생성합니다.
       Applicant applicant = applicantRepository.findById(applicantId);
+
+      if (applicant.getStatus() != ApplicantStatus.INTERVIEW_PENDING) {
+        throw new InterviewException(
+            InterviewErrorCode.APPLICANT_STATUS_NOT_ELIGIBLE_FOR_INTERVIEW);
+      }
+
       reservation = InterviewReservation.initialize(applicant);
     }
 
