@@ -34,32 +34,24 @@ public class DiscordNotifier {
   @EventListener
   @Async
   protected void handleDiscordInternalServerErrorEvent(DiscordInternalServerErrorEvent event) {
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-
-    Map<String, Object> payload = Map.of("content", event.getMessage());
-
-    HttpEntity<Map<String, Object>> request = new HttpEntity<>(payload, headers);
-    try {
-      restTemplate.postForEntity(serverErrorWebhookUrl, request, String.class);
-      log.info("Sent Discord Webhook Message: {}", payload.get("content"));
-    } catch (Exception e) {
-      log.error("Failed to send Discord notification: {}", e.getMessage());
-    }
+    sendDiscordNotification(serverErrorWebhookUrl, event.getMessage());
   }
 
   @EventListener
   @Async
   protected void handleGeneralDiscordErrorEvent(DiscordGeneralErrorEvent event) {
+    sendDiscordNotification(generalErrorWebhookUrl, event.getMessage());
+  }
+
+  private void sendDiscordNotification(String webhookUrl, String message) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
-    Map<String, Object> payload = Map.of("content", event.getMessage());
+    Map<String, Object> payload = Map.of("content", message);
 
     HttpEntity<Map<String, Object>> request = new HttpEntity<>(payload, headers);
     try {
-      restTemplate.postForEntity(generalErrorWebhookUrl, request, String.class);
-      log.info("Sent Discord Webhook Message: {}", payload.get("content"));
+      restTemplate.postForEntity(webhookUrl, request, String.class);
     } catch (Exception e) {
       log.error("Failed to send Discord notification: {}", e.getMessage());
     }

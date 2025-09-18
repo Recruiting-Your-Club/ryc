@@ -111,10 +111,10 @@ function StepManagementPage() {
     const { data: documentEvaluationSummaryList } = useQuery({
         ...evaluationQueries.evaluationSummary({
             clubId: clubId!,
-            applicantIdList: documentApplicantIds,
+            applicantIdList: [...documentApplicantIds, ...interviewApplicantIds],
             type: 'application',
         }),
-        enabled: documentApplicantIds.length > 0,
+        enabled: documentApplicantIds.length > 0 || interviewApplicantIds.length > 0,
         throwOnError: true,
     });
     const { data: interviewEvaluationSummaryList } = useQuery({

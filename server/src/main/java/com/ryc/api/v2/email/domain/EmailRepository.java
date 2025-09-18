@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.ryc.api.v2.email.domain.enums.EmailSentStatus;
+
 public interface EmailRepository {
 
   Email save(Email email);
@@ -19,4 +21,6 @@ public interface EmailRepository {
   boolean existsByAdminId(String adminId);
 
   boolean existsByAnnouncementId(String announcementId);
+
+  void deleteByStatus(EmailSentStatus status);
 }

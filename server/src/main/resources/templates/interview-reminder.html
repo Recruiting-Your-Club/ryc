@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>면접 일정 리마인드</title>
+</head>
+<body>
+<div style="font-family: Arial, '돋움', Dotum, sans-serif; max-width: 600px; margin: 20px auto; padding: 24px; background-color: #f9f9f9; border-radius: 12px; border: 1px solid #eaeaea;">
+    <h2 style="color: #333; border-bottom: 2px solid #5a91e3; padding-bottom: 10px; font-size: 22px;">🗓️ 면접 일정 리마인드</h2>
+    <p style="font-size: 16px; color: #555; line-height: 1.6;">
+        안녕하세요, SSOC 운영팀입니다.
+    </p>
+    <p style="font-size: 16px; color: #555; line-height: 1.6;">
+        ${relativeHour} 후 <strong style="color: #0056b3;">'${clubName}'</strong> 동아리의 면접이 예정되어 있음을 알려드립니다.
+    </p>
+    <div style="background-color: #eaf2ff; padding: 20px; border-radius: 8px; margin-top: 20px; text-align: center;">
+        <p style="margin: 0 0 8px 0; font-size: 15px; color: #333;">
+            <strong>면접 일시:</strong> ${interviewDate}
+        </p>
+        <p style="margin: 0; font-size: 15px; color: #333;">
+            <strong>면접 시간:</strong> ${startTime} ~ ${endTime}
+        </p>
+    </div>
+    <p style="font-size: 16px; color: #555; line-height: 1.6; margin-top: 20px;">
+        좋은 결과 있으시기를 바랍니다.
+    </p>
+    <p style="font-size: 14px; color: #888888; line-height: 1.5; margin-top: 40px; padding-top: 20px; border-top: 1px solid #dddddd;">
+        감사합니다.<br>
+        SSOC 운영팀 드림
+    </p>
+</div>
+</body>
+</html>

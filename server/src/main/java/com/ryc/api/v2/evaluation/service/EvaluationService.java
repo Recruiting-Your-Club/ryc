@@ -60,6 +60,7 @@ public class EvaluationService {
         .build();
   }
 
+  // TODO: overview 응답값 제거 필요.
   @Transactional(readOnly = true)
   public EvaluationSearchResponse findAllEvaluations(
       EvaluationSearchRequest body, String currentAdminId, EvaluationType type) {
@@ -126,20 +127,15 @@ public class EvaluationService {
     List<Evaluation> evaluations =
         evaluationRepository.findEvaluationsByApplicantIdsAndType(body.applicantIdList(), type);
 
-    // 평가해야 할 인원이 없거나, 평가 데이터가 없는 경우
-    if (totalEvaluatorCount == 0 || evaluations.isEmpty())
-      return createEmptyEvaluationOverviewResponse(body.applicantIdList(), totalEvaluatorCount);
-
     Map<String, List<Evaluation>> groupedByEvaluateeId =
         evaluations.stream().collect(Collectors.groupingBy(Evaluation::getEvaluateeId));
 
     List<EvaluationOverviewSearchResponse.OverviewData> overviewDataList =
-        groupedByEvaluateeId.entrySet().stream()
+        body.applicantIdList().stream()
             .map(
-                entry -> {
-                  String applicantId = entry.getKey();
-
-                  List<Evaluation> applicantEvaluations = entry.getValue();
+                applicantId -> {
+                  List<Evaluation> applicantEvaluations =
+                      groupedByEvaluateeId.getOrDefault(applicantId, List.of());
                   int completedEvaluatorCount = applicantEvaluations.size();
 
                   BigDecimal averageScore =
@@ -306,35 +302,5 @@ public class EvaluationService {
             .toList();
 
     return new EvaluationSearchResponse(response);
-  }
-
-  /**
-   * 평가 데이터가 존재하지 않는 경우에 대한 평가 요약 응답 객체를 생성합니다. 각 applicantId 별로 평가자 수, 평균 점수 등을 기본 값으로 채운 응답을
-   * 반환합니다.
-   *
-   * <p>이 메서드는 아래 두 경우에 사용됩니다: - 평가 필수 참여 동아리원이 0명인 경우 (즉, 동아리원이 없는 경우) - 평가 데이터가 없는 경우
-   *
-   * @param applicantIds 평가 데이터를 생성할 지원자 ID 목록
-   * @param totalEvaluatorCount 해당 동아리의 전체 평가자 수 (없으면 0)
-   * @return 비어 있는 평가 요약 응답 DTO
-   */
-  private EvaluationOverviewSearchResponse createEmptyEvaluationOverviewResponse(
-      List<String> applicantIds, int totalEvaluatorCount) {
-    final int completedEvaluatorCount = 0;
-    final BigDecimal averageScore = BigDecimal.ZERO;
-
-    List<EvaluationOverviewSearchResponse.OverviewData> overviewDataList =
-        applicantIds.stream()
-            .map(
-                applicantId ->
-                    EvaluationOverviewSearchResponse.OverviewData.builder()
-                        .applicantId(applicantId)
-                        .completedEvaluatorCount(completedEvaluatorCount)
-                        .totalEvaluatorCount(totalEvaluatorCount)
-                        .averageScore(averageScore)
-                        .build())
-            .toList();
-
-    return new EvaluationOverviewSearchResponse(overviewDataList);
   }
 }

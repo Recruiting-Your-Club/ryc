@@ -69,22 +69,22 @@ function ErrorDialog({
                         //         </Button>
                         //     </div>
                         // ) :
-                        errorStatusCode === 401 ? (
-                            <div>
-                                <Button
-                                    onClick={() => {
-                                        handleClose();
-                                        goTo('/login');
-                                    }}
-                                >
-                                    로그인 하기
-                                </Button>
-                            </div>
-                        ) : (
-                            <div>
-                                <Button onClick={() => handleClose}>확인</Button>
-                            </div>
-                        )
+                        // errorStatusCode === 401 ? (
+                        //     <div>
+                        //         <Button
+                        //             onClick={() => {
+                        //                 handleClose();
+                        //                 goTo('/login');
+                        //             }}
+                        //         >
+                        //             로그인 하기
+                        //         </Button>
+                        //     </div>
+                        // ) : (
+                        <div>
+                            <Button onClick={() => handleClose}>확인</Button>
+                        </div>
+                        // )
                     }
                 </Dialog.Action>
             </Dialog>
