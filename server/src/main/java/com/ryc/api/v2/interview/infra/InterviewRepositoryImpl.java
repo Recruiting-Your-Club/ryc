@@ -96,7 +96,7 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
-  public List<InterviewSlot> findSlotForReminder() {
+  public List<InterviewSlot> findSlotsForReminder() {
     List<InterviewSlotEntity> entities = interviewSlotJpaRepository.findSlotsForReminder();
     return entities.stream().map(InterviewSlotMapper::toDomain).toList();
   }

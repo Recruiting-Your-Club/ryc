@@ -27,7 +27,7 @@ public class InterviewReminderService {
   @Scheduled(cron = "0 */5 * * * *")
   @Transactional
   protected void reminder() {
-    List<InterviewSlot> slots = interviewRepository.findSlotForReminder();
+    List<InterviewSlot> slots = interviewRepository.findSlotsForReminder();
     List<InterviewSlot> updatedSlots = new ArrayList<>();
 
     for (InterviewSlot slot : slots) {
