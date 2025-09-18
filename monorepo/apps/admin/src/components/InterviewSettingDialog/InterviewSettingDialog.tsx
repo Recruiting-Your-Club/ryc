@@ -1,4 +1,5 @@
 import type { InterviewDetailInformation } from '@api/domain/email/types';
+import type { InterviewRequest, SlotDetailRequest } from '@api/domain/interview/types';
 import Info from '@assets/images/info.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { InterviewTimeBox } from '@components';
@@ -13,7 +14,16 @@ import {
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Button, Calendar, Dialog, Divider, Text, Tooltip, useToast } from '@ssoc/ui';
+import {
+    Button,
+    Calendar,
+    Dialog,
+    Divider,
+    optionButtons,
+    Text,
+    Tooltip,
+    useToast,
+} from '@ssoc/ui';
 
 import {
     s_action,
@@ -40,7 +50,7 @@ import type { InterviewInformation, InterviewSettingDialogProps } from './types'
 function InterviewSettingDialog({
     open,
     handleClose,
-    handleInterviewEmail,
+    handlePostInterviewSlot,
 }: InterviewSettingDialogProps) {
     // prop destruction
     // lib hooks
@@ -90,28 +100,34 @@ function InterviewSettingDialog({
         ],
     );
 
-    const interviewDetailInformationList = useMemo<InterviewDetailInformation[]>(() => {
-        const result: InterviewDetailInformation[] = [];
+    const interviewDetailInformationList = useMemo<InterviewRequest>(() => {
+        const slotDetailRequests: SlotDetailRequest[] = [];
 
         Object.entries(interviewInformation).forEach(([date, info]) => {
             info.selectedTimeList.forEach((time) => {
-                const startDate = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
+                const start = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
 
-                result.push({
-                    start: startDate,
-                    interviewDuration: Number(info.perTime),
-                    numberOfPeople: Number(info.maxNumber),
+                slotDetailRequests.push({
+                    start,
+                    maxPeopleCount: Number(info.maxNumber),
                 });
             });
         });
 
-        return result;
+        const interviewDuration = Object.values(interviewInformation)[0]?.perTime
+            ? Number(Object.values(interviewInformation)[0].perTime)
+            : 0;
+
+        return {
+            slotDetailRequests,
+            interviewDuration,
+        };
     }, [interviewInformation]);
 
     // handler
-    const handleReset = () => {
+    const handleReset = (resetNumberValue: boolean = true) => {
         setTimeValue(DEFAULT_TIME_VALUE);
-        setNumberValue(DEFAULT_NUMBER_VALUE);
+        if (resetNumberValue) setNumberValue(DEFAULT_NUMBER_VALUE);
         setStartTime(DEFAULT_START_TIME);
         setEndTime(DEFAULT_END_TIME);
         setInterviewInformation({});
@@ -144,22 +160,27 @@ function InterviewSettingDialog({
         setSelectedDates((prev) => (prev.includes(newDate) ? prev : [...prev, newDate]));
     };
 
-    // const handleSendEmail = async () => {
-    //     let contentToSend = emailContent;
+    const handleAddInterviewSlot = async () => {
+        if (await handlePostInterviewSlot(interviewDetailInformationList)) {
+            handleReset();
+            handleClose();
+        }
+    };
 
-    //     try {
-    //         contentToSend = await convertImageToBase64(emailContent);
-    //     } catch (error) {
-    //         // 변환 실패 -> 원본 이미지 사용 (다른 이미지는 변환 계속)
-    //         // eslint-disable-next-line no-empty
-    //     }
+    const handlePerTime = (value: string) => {
+        const hasInterviewInfo = Object.keys(interviewInformation).length > 0;
 
-    //     if (await handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
-    //         handleReset();
-    //         handleResetContent();
-    //         handleClose();
-    //     }
-    // };
+        if (currentStep === 3 && hasInterviewInfo) {
+            handleReset(false);
+            toast('면접 날짜와 시간이 초기화 되었어요!', {
+                toastTheme: 'black',
+                type: 'info',
+            });
+        }
+
+        setTimeValue(value);
+        setCurrentStep(currentStep === 3 ? 3 : 2);
+    };
 
     // effects
     useEffect(() => {
@@ -204,6 +225,7 @@ function InterviewSettingDialog({
                                 3. 해당 날짜의 첫 시작 시간과 마지막 종료 시간을 선택해주세요. (예: 오전 10시 ~ 오후 3시)\n
                                 4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해주세요.'
                                 5. 다른 날짜도 같은 방식으로 설정하신 후 추가되면 일정이 확정돼요.\n
+                                🚨 주의! 면접 당 진행 시간은 항상 동일하게 설정해주셔야 해요 🚨
                                 `}
                             direction="bottom"
                             wrapperSx={s_informSvgWrapper}
@@ -241,10 +263,7 @@ function InterviewSettingDialog({
                                             size="md"
                                             variant="outlined"
                                             sx={s_numberButton(timeValue === value)}
-                                            onClick={() => {
-                                                setTimeValue(value);
-                                                setCurrentStep(2);
-                                            }}
+                                            onClick={() => handlePerTime(value)}
                                         >
                                             {label}
                                         </Button>
@@ -299,10 +318,21 @@ function InterviewSettingDialog({
                     </div>
                 </Dialog.Content>
                 <Dialog.Action sx={s_action}>
-                    <Button size="md" variant="outlined" onClick={handleReset} sx={s_actionButton}>
+                    <Button
+                        size="md"
+                        variant="outlined"
+                        onClick={() => {
+                            handleReset();
+                            toast('설정하신 면접 정보가 초기화 되었어요!', {
+                                toastTheme: 'black',
+                                type: 'info',
+                            });
+                        }}
+                        sx={s_actionButton}
+                    >
                         초기화
                     </Button>
-                    <Button size="md" onClick={handleClose} sx={s_actionButton}>
+                    <Button size="md" onClick={handleAddInterviewSlot} sx={s_actionButton}>
                         추가
                     </Button>
                 </Dialog.Action>

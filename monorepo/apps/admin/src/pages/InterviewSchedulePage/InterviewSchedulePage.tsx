@@ -1,6 +1,6 @@
 import type { InterviewDetailInformation } from '@api/domain/email/types';
-import type { InterviewSlot } from '@api/domain/interview/types';
-import { useEmailMutations } from '@api/hooks';
+import type { InterviewRequest, InterviewSlot } from '@api/domain/interview/types';
+import { useEmailMutations, useInterviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
 import PolygonLeft from '@assets/images/polygon-left.svg';
 import PolygonRight from '@assets/images/polygon-right.svg';
@@ -65,9 +65,7 @@ function InterviewSchedulePage() {
         interviewQueries.interviewSlot(announcementId!, clubId!),
     );
 
-    const { mutateAsync: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
-        () => setIsInterviewOpen,
-    );
+    const { mutateAsync: postInterviewSlot } = useInterviewMutations.usePostInterviewSlot();
 
     // calculated values
     function getMonday(date: dayjs.Dayjs) {
@@ -124,26 +122,18 @@ function InterviewSchedulePage() {
         setIsInterviewOpen(false);
     };
 
-    const handleInterviewEmail = async (
-        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
-        subject: string,
-        content: string,
+    const handlePostInterviewSlot = async (
+        interviewRequest: InterviewRequest,
     ): Promise<boolean> => {
-        if (numberOfPeopleByInterviewDateRequests.length === 0) {
-            toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
+        if (interviewRequest.slotDetailRequests.length === 0) {
+            toast('면접 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
             return false;
         }
-
-        // if (!validateEmailInputs(subject, content)) return false;
-
         try {
-            await sendInterviewEmail({
+            await postInterviewSlot({
                 announcementId: announcementId!,
                 clubId: clubId!,
-                email: {
-                    numberOfPeopleByInterviewDateRequests,
-                    emailSendRequest: { recipients: [''], subject, content },
-                },
+                requestBody: interviewRequest,
             });
             return true;
         } catch {
@@ -307,7 +297,7 @@ function InterviewSchedulePage() {
             <InterviewSettingDialog
                 open={isInterviewOpen}
                 handleClose={handleInterviewSettingClose}
-                handleInterviewEmail={handleInterviewEmail}
+                handlePostInterviewSlot={handlePostInterviewSlot}
             />
         </div>
     );

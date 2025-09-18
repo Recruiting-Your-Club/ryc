@@ -1,14 +1,10 @@
-import type { InterviewDetailInformation } from '@api/domain/email/types';
+import type { InterviewRequest } from '@api/domain/interview/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 export interface InterviewSettingDialogProps {
     open: boolean;
     handleClose: () => void;
-    handleInterviewEmail: (
-        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
-        subject: string,
-        content: string,
-    ) => Promise<boolean>;
+    handlePostInterviewSlot: (interviewRequest: InterviewRequest) => Promise<boolean>;
 }
 
 export interface InterviewInformation {
