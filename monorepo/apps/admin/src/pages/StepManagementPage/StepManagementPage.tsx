@@ -63,7 +63,7 @@ function StepManagementPage() {
     const [searchText, setSearchText] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isEmailOpen, setIsEmailOpen] = useState<boolean>(false);
-    const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(true);
+    const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
@@ -95,9 +95,11 @@ function StepManagementPage() {
         () => setIsInterviewOpen,
     );
 
-    const { data: interviewSlots = [] } = useSuspenseQuery(
-        interviewQueries.interviewSlot(announcementId!, clubId!),
-    );
+    const { data: interviewSlots = [] } = useQuery({
+        ...interviewQueries.interviewSlot(announcementId!, clubId!),
+        enabled: isInterviewOpen,
+        throwOnError: true,
+    });
 
     // calculated values
     const isThreeStepProcess = totalSteps?.processes?.length === 3;
