@@ -36,3 +36,13 @@ export interface UnreservedApplicant {
         contentType: string;
     };
 }
+
+export interface SlotDetailRequest {
+    start: string; // ISO
+    maxPeopleCount: number;
+}
+
+export interface InterviewRequest {
+    slotDetailRequests: SlotDetailRequest[];
+    interviewDuration: number;
+}

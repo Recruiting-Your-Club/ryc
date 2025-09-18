@@ -1,5 +1,9 @@
-import { deleteInterviewReservation, putInterviewReservation } from '@api/domain';
-import type { UnreservedApplicant } from '@api/domain/interview/types';
+import {
+    deleteInterviewReservation,
+    postInterviewSlot,
+    putInterviewReservation,
+} from '@api/domain';
+import type { InterviewRequest, UnreservedApplicant } from '@api/domain/interview/types';
 import { type InterviewApplicant } from '@api/domain/interview/types';
 import { interviewKeys } from '@api/querykeyFactory';
 import type { ErrorWithStatusCode } from '@pages/ErrorFallbackPage/types';
@@ -19,6 +23,12 @@ interface DeleteInterviewReservation {
     reservationId: string;
     clubId: string;
     oldInterviewSlotId: string;
+}
+
+interface PostInterviewSlot {
+    announcementId: string;
+    clubId: string;
+    requestBody: InterviewRequest;
 }
 
 export const useInterviewMutations = {
@@ -195,6 +205,37 @@ export const useInterviewMutations = {
                 if (error.statusCode === 500) {
                     onOpenDialog(true);
                 } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast('오류로 인해 일정 변경을 못했어요.', {
+                        toastTheme: 'colored',
+                        type: 'error',
+                    });
+                }
+            },
+        });
+    },
+
+    usePostInterviewSlot: () => {
+        const queryClient = useQueryClient();
+        const { toast } = useToast();
+
+        return useMutation({
+            mutationFn: (params: PostInterviewSlot) => postInterviewSlot(params),
+            onSuccess: (_, variables) => {
+                queryClient.invalidateQueries({
+                    queryKey: interviewKeys.interviewSlot(
+                        variables.announcementId,
+                        variables.clubId,
+                    ),
+                });
+                toast('면접 일정을 성공적으로 추가했어요!', {
+                    toastTheme: 'colored',
+                    type: 'success',
+                });
+            },
+            onError: (error: ErrorWithStatusCode) => {
+                if (error.response?.errors[0].message || error.message) {
                     toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
                 } else {
                     toast('오류로 인해 일정 변경을 못했어요.', {

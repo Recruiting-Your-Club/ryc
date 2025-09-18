@@ -1,5 +1,10 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { InterviewApplicant, InterviewSlot, UnreservedApplicant } from './types';
+import type {
+    InterviewApplicant,
+    InterviewRequest,
+    InterviewSlot,
+    UnreservedApplicant,
+} from './types';
 
 async function getInterviewSlot(params: {
     announcementId: string;
@@ -63,6 +68,19 @@ async function deleteInterviewReservation(params: {
         isAuthRequire: true,
     });
 }
+// 동아리 관리자가 면접 일정 생성
+async function postInterviewSlot(params: {
+    announcementId: string;
+    clubId: string;
+    requestBody: InterviewRequest;
+}): Promise<void> {
+    await httpRequest.post({
+        url: `admin/announcements/${params.announcementId}/interview-slots`,
+        body: params.requestBody,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
 
 export {
     getInterviewSlot,
@@ -70,4 +88,5 @@ export {
     getUnreservedApplicant,
     putInterviewReservation,
     deleteInterviewReservation,
+    postInterviewSlot,
 };
