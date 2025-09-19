@@ -41,6 +41,7 @@ function InterviewSettingDialog({
     open,
     handleClose,
     handlePostInterviewSlot,
+    initialTimePeriod,
 }: InterviewSettingDialogProps) {
     // prop destruction
     // lib hooks
@@ -48,7 +49,7 @@ function InterviewSettingDialog({
     // initial values
     // state, ref, querystring hooks
     const [numberValue, setNumberValue] = useState<string>('');
-    const [timeValue, setTimeValue] = useState<string>('');
+    const [timeValue, setTimeValue] = useState<string>(initialTimePeriod);
     const [startTime, setStartTime] = useState<string>(DEFAULT_START_TIME);
     const [endTime, setEndTime] = useState<string>(DEFAULT_END_TIME);
 
@@ -60,7 +61,7 @@ function InterviewSettingDialog({
         Record<string, InterviewInformation>
     >({});
 
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(initialTimePeriod === '' ? 1 : 2);
 
     // form hooks
     // query hooks
@@ -115,9 +116,21 @@ function InterviewSettingDialog({
     }, [interviewInformation]);
 
     // handler
+    const handleResetToBlank = () => {
+        setTimeValue(initialTimePeriod);
+        setNumberValue('');
+        setCurrentStep(initialTimePeriod === '' ? 1 : 2);
+        setStartTime(DEFAULT_START_TIME);
+        setEndTime(DEFAULT_END_TIME);
+        setInterviewInformation({});
+        setSelectedDates([]);
+        setHighlightedDate([]);
+    };
+
     const handleReset = (resetNumberValue: boolean = true) => {
         setTimeValue(DEFAULT_TIME_VALUE);
         if (resetNumberValue) setNumberValue(DEFAULT_NUMBER_VALUE);
+        setCurrentStep(initialTimePeriod === '' ? 1 : 2);
         setStartTime(DEFAULT_START_TIME);
         setEndTime(DEFAULT_END_TIME);
         setInterviewInformation({});
@@ -152,7 +165,7 @@ function InterviewSettingDialog({
 
     const handleAddInterviewSlot = async () => {
         if (await handlePostInterviewSlot(interviewDetailInformationList)) {
-            handleReset();
+            handleResetToBlank();
             handleClose();
         }
     };
@@ -160,7 +173,7 @@ function InterviewSettingDialog({
     const handlePerTime = (value: string) => {
         const hasInterviewInfo = Object.keys(interviewInformation).length > 0;
 
-        if (currentStep === 3 && hasInterviewInfo) {
+        if (currentStep === 3 && hasInterviewInfo && initialTimePeriod === '') {
             handleReset(false);
             toast('면접 날짜와 시간이 초기화 되었어요!', {
                 toastTheme: 'black',
@@ -199,6 +212,11 @@ function InterviewSettingDialog({
             setEndTime(DEFAULT_END_TIME);
         }
     }, [timeValue]);
+
+    useEffect(() => {
+        setTimeValue(initialTimePeriod);
+        setCurrentStep(initialTimePeriod === '' ? 1 : 2);
+    }, [initialTimePeriod]);
 
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
@@ -254,6 +272,10 @@ function InterviewSettingDialog({
                                             variant="outlined"
                                             sx={s_numberButton(timeValue === value)}
                                             onClick={() => handlePerTime(value)}
+                                            disabled={
+                                                initialTimePeriod !== '' &&
+                                                value !== initialTimePeriod
+                                            }
                                         >
                                             {label}
                                         </Button>
@@ -312,7 +334,7 @@ function InterviewSettingDialog({
                         size="md"
                         variant="outlined"
                         onClick={() => {
-                            handleReset();
+                            handleResetToBlank();
                             toast('설정하신 면접 정보가 초기화 되었어요!', {
                                 toastTheme: 'black',
                                 type: 'info',

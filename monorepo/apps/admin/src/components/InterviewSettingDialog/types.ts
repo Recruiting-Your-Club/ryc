@@ -5,6 +5,7 @@ export interface InterviewSettingDialogProps {
     open: boolean;
     handleClose: () => void;
     handlePostInterviewSlot: (interviewRequest: InterviewRequest) => Promise<boolean>;
+    initialTimePeriod: string;
 }
 
 export interface InterviewInformation {
