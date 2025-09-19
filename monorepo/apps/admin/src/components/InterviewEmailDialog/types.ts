@@ -5,4 +5,6 @@ export interface InterviewEmailDialogProps {
     handleClose: () => void;
     handleInterviewEmail: (subject: string, content: string) => Promise<boolean>;
     interviewSlots: InterviewSlot[];
+    clubId: string;
+    announcementId: string;
 }

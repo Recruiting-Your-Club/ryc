@@ -52,6 +52,8 @@ function InterviewEmailDialog({
     handleClose,
     handleInterviewEmail,
     interviewSlots,
+    clubId,
+    announcementId,
 }: InterviewEmailDialogProps) {
     // prop destruction
     // lib hooks
@@ -225,7 +227,9 @@ function InterviewEmailDialog({
                                         면접 일정이 없어요. 먼저 면접 일정을 추가해주세요!
                                     </Text>
                                     <Button
-                                        onClick={() => goTo('/schedule-addition')}
+                                        onClick={() =>
+                                            goTo(`/schedule-addition/${clubId}/${announcementId}`)
+                                        }
                                         size="md"
                                         sx={s_buttonToMove}
                                     >

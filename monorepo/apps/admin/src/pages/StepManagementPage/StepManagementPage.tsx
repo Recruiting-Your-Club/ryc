@@ -448,6 +448,8 @@ function StepManagementPage() {
                     handleClose={handleInterviewSettingClose}
                     handleInterviewEmail={handleInterviewEmail}
                     interviewSlots={interviewSlots}
+                    clubId={clubId!}
+                    announcementId={announcementId!}
                 />
                 <PlainEmailDialog
                     open={isEmailOpen}
