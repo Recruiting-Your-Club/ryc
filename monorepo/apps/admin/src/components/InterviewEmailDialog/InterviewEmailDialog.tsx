@@ -55,7 +55,6 @@ function InterviewEmailDialog({
 }: InterviewEmailDialogProps) {
     // prop destruction
     // lib hooks
-    const { toast } = useToast();
     const { goTo } = useRouter();
 
     // initial values

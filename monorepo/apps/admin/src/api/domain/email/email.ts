@@ -31,7 +31,7 @@ async function postInterviewEmail(params: {
     const { announcementId, clubId, email } = params;
 
     return await httpRequest.post({
-        url: `admin/clubs/${clubId}/announcements/${announcementId}/interview-slots`,
+        url: `clubs/${clubId}/announcements/${announcementId}/interview-slots/emails`,
         headers: { 'X-CLUB-ID': clubId },
         body: email,
         isAuthRequire: true,

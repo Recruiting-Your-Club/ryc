@@ -66,7 +66,6 @@ function StepManagementPage() {
     const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
-    const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -300,9 +299,19 @@ function StepManagementPage() {
             return false;
         }
     };
-    const handleInterviewEmailReal = async (subject: string, content: string) => {
-        ////// 추후 채울 내용
-        return true;
+    const handleInterviewEmail = async (subject: string, content: string) => {
+        if (!validateEmailInputs(subject, content)) return false;
+
+        try {
+            await sendInterviewEmail({
+                announcementId: announcementId!,
+                clubId: clubId!,
+                email: { subject, content },
+            });
+            return true;
+        } catch {
+            return false;
+        }
     };
 
     const handleEmailDialogOpen = (
@@ -335,7 +344,7 @@ function StepManagementPage() {
         setEmailTargetList(emails);
 
         if (isInterviewDialog) {
-            setOpenConfirmDialog(true);
+            setIsInterviewOpen(true);
         } else {
             setIsEmailOpen(true);
         }
@@ -437,7 +446,7 @@ function StepManagementPage() {
                 <InterviewEmailDialog
                     open={isInterviewOpen}
                     handleClose={handleInterviewSettingClose}
-                    handleInterviewEmail={handleInterviewEmailReal}
+                    handleInterviewEmail={handleInterviewEmail}
                     interviewSlots={interviewSlots}
                 />
                 <PlainEmailDialog
@@ -450,7 +459,7 @@ function StepManagementPage() {
                     handleClose={() => setErrorDialogOpen(false)}
                     errorStatusCode={500}
                 />
-                {openConfirmDialog && (
+                {/* {openConfirmDialog && (
                     <ConfirmDialog
                         type="confirm"
                         title="면접 일정 생성 알림"
@@ -462,7 +471,7 @@ function StepManagementPage() {
                         actionPosition="center"
                         dialogSize="md"
                     />
-                )}
+                )} */}
             </div>
         </div>
     );
