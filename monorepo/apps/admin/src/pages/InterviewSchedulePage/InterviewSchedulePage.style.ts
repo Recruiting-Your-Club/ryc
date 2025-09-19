@@ -170,10 +170,6 @@ export const s_remindContainer = css`
     margin: 1rem 0 3rem 0;
 `;
 
-export const s_remindTitleText = css`
-    margin: 0 0 2rem 0;
-`;
-
 export const s_radios = css`
     display: flex;
     flex-direction: column;
@@ -192,4 +188,27 @@ export const s_warningContainer = css`
 export const s_buttonContainer = css`
     display: flex;
     gap: 0.5rem; /* 버튼 사이의 간격 */
+`;
+
+export const s_informSvgWrapper = css`
+    align-items: center;
+`;
+
+export const s_informSvg = css`
+    width: 1.5rem;
+    height: 1.5rem;
+    color: ${theme.colors.gray[700]};
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+export const s_tooltipContent = css`
+    white-space: pre-line;
+`;
+
+export const s_remindTitleContainer = css`
+    display: flex;
+    gap: 0.5rem;
+    margin: 0 0 2rem 0;
 `;

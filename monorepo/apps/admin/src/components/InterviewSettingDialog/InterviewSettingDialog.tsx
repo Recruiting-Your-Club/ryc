@@ -1,4 +1,3 @@
-import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { InterviewRequest, SlotDetailRequest } from '@api/domain/interview/types';
 import Info from '@assets/images/info.svg';
 import XIcon from '@assets/images/xIcon.svg';
@@ -14,16 +13,7 @@ import {
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {
-    Button,
-    Calendar,
-    Dialog,
-    Divider,
-    optionButtons,
-    Text,
-    Tooltip,
-    useToast,
-} from '@ssoc/ui';
+import { Button, Calendar, Dialog, Divider, Text, Tooltip, useToast } from '@ssoc/ui';
 
 import {
     s_action,

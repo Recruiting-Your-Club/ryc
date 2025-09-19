@@ -1,6 +1,7 @@
 import type { InterviewRequest, InterviewSlot } from '@api/domain/interview/types';
 import { useInterviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
+import Info from '@assets/images/info.svg';
 import PolygonLeft from '@assets/images/polygon-left.svg';
 import PolygonRight from '@assets/images/polygon-right.svg';
 import { ErrorDialog, InterviewSettingDialog, ManageInterviewSlotDialog } from '@components';
@@ -11,18 +12,20 @@ import weekday from 'dayjs/plugin/weekday';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button, Divider, Radio, Text, useToast } from '@ssoc/ui';
+import { Button, Divider, Radio, Text, Tooltip, useToast } from '@ssoc/ui';
 
 import {
     s_allSlotContainer,
     s_buttonContainer,
     s_dateHeader,
+    s_informSvg,
+    s_informSvgWrapper,
     s_pageContainer,
     s_perSlotContainer,
     s_polygonSvg,
     s_radios,
     s_remindContainer,
-    s_remindTitleText,
+    s_remindTitleContainer,
     s_scheduleContentContainer,
     s_slotCellEmpty,
     s_slotCellFilled,
@@ -40,6 +43,7 @@ import {
     s_timeHeaderCell,
     s_titleAdditionText,
     s_titleText,
+    s_tooltipContent,
     s_warningContainer,
     s_weekMover,
 } from './InterviewSchedulePage.style';
@@ -341,18 +345,19 @@ function InterviewSchedulePage() {
                 )}
             </div>
             <div css={s_remindContainer}>
-                <Text as="span" type="bodySemibold" textAlign="start" sx={s_remindTitleText}>
-                    리마인드 알림을 설정하시겠어요?
-                </Text>
-                <Text
-                    as="span"
-                    type="subCaption"
-                    color="helper"
-                    textAlign="start"
-                    sx={s_remindTitleText}
-                >
-                    해당 리마인드 알림은 면접 대상자에게 전송돼요.
-                </Text>
+                <span css={s_remindTitleContainer}>
+                    <Text as="span" type="bodySemibold" textAlign="start">
+                        리마인드 알림을 설정하시겠어요?
+                    </Text>
+                    <Tooltip
+                        content={'리마인드 알림은 면접 대상자에게 이메일로 전송돼요.'}
+                        direction="right"
+                        wrapperSx={s_informSvgWrapper}
+                        tooltipSx={s_tooltipContent}
+                    >
+                        <Info css={s_informSvg} />
+                    </Tooltip>
+                </span>
                 <Radio
                     options={[
                         { label: '면접 진행 24시간 전 안내 메일 발송', value: 'opt1' },
