@@ -82,6 +82,32 @@ async function postInterviewSlot(params: {
     });
 }
 
+// 동아리 관리자가 면접 시간대 삭제
+async function deleteInterviewSlot(params: {
+    interviewSlotId: string;
+    clubId: string;
+}): Promise<void> {
+    await httpRequest.delete({
+        url: `admin/interview-slots/${params.interviewSlotId}`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 동아리 관리자가 면접 최대 인원 수 변경
+async function patchInterviewSlotPeople(params: {
+    interviewSlotId: string;
+    clubId: string;
+    maxPeopleCount: number;
+}): Promise<void> {
+    await httpRequest.patch({
+        url: `admin/interview-slots/${params.interviewSlotId}/people/count`,
+        body: { maxPeopleCount: params.maxPeopleCount },
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
 export {
     getInterviewSlot,
     getInterviewInformation,
@@ -89,4 +115,6 @@ export {
     putInterviewReservation,
     deleteInterviewReservation,
     postInterviewSlot,
+    deleteInterviewSlot,
+    patchInterviewSlotPeople,
 };

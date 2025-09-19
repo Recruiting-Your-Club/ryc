@@ -40,3 +40,4 @@ export * from './ErrorDialog';
 export * from './EmailVerificationDialog';
 export * from './TermOfUse';
 export * from './InterviewEmailDialog';
+export * from './ManageInterviewSlotDialog';

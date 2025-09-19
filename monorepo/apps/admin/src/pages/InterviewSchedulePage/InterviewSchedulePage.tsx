@@ -1,10 +1,9 @@
-import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { InterviewRequest, InterviewSlot } from '@api/domain/interview/types';
-import { useEmailMutations, useInterviewMutations } from '@api/hooks';
+import { useInterviewMutations } from '@api/hooks';
 import { interviewQueries } from '@api/queryFactory';
 import PolygonLeft from '@assets/images/polygon-left.svg';
 import PolygonRight from '@assets/images/polygon-right.svg';
-import { InterviewSettingDialog } from '@components';
+import { ErrorDialog, InterviewSettingDialog, ManageInterviewSlotDialog } from '@components';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -44,6 +43,7 @@ import {
     s_warningContainer,
     s_weekMover,
 } from './InterviewSchedulePage.style';
+import type { SelectedInterviewSlot } from './types';
 
 function InterviewSchedulePage() {
     // prop destruction
@@ -58,6 +58,15 @@ function InterviewSchedulePage() {
     const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
     const [currentWeekStart, setCurrentWeekStart] = useState(() => getMonday(dayjs()));
     const [value, setValue] = useState('opt1');
+    const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
+    const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
+    const [openPatchDialog, setOpenPatchDialog] = useState<boolean>(false);
+    const [selectedInterviewSlot, setSelectedInterviewSlot] = useState<SelectedInterviewSlot>({
+        id: '',
+        date: '',
+        time: '',
+        number: 0,
+    });
 
     // form hooks
     // query hooks
@@ -66,6 +75,12 @@ function InterviewSchedulePage() {
     );
 
     const { mutateAsync: postInterviewSlot } = useInterviewMutations.usePostInterviewSlot();
+    const { mutateAsync: deleteInterviewSlot } = useInterviewMutations.useDeleteInterviewSlot(
+        announcementId!,
+        setErrorDialogOpen,
+    );
+    const { mutateAsync: patchInterviewSlotPeople } =
+        useInterviewMutations.usePatchInterviewSlotPeople(announcementId!);
 
     // calculated values
     function getMonday(date: dayjs.Dayjs) {
@@ -134,6 +149,31 @@ function InterviewSchedulePage() {
                 announcementId: announcementId!,
                 clubId: clubId!,
                 requestBody: interviewRequest,
+            });
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const handleDeleteInterviewSlot = async (): Promise<boolean> => {
+        try {
+            await deleteInterviewSlot({
+                interviewSlotId: selectedInterviewSlot.id,
+                clubId: clubId!,
+            });
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const handlePatchInterviewSlotPeople = async (maxPeopleCount: number): Promise<boolean> => {
+        try {
+            await patchInterviewSlotPeople({
+                interviewSlotId: selectedInterviewSlot.id,
+                clubId: clubId!,
+                maxPeopleCount: maxPeopleCount,
             });
             return true;
         } catch {
@@ -253,10 +293,34 @@ function InterviewSchedulePage() {
                                                         </Text>
                                                     </div>
                                                     <div css={s_buttonContainer}>
-                                                        <Button size="xs" variant="outlined">
+                                                        <Button
+                                                            size="xs"
+                                                            variant="outlined"
+                                                            onClick={() => {
+                                                                setSelectedInterviewSlot({
+                                                                    id: slot.id,
+                                                                    date: `${date} (${dayOfWeek})`,
+                                                                    time: `${startTime} - ${endTime}`,
+                                                                    number: slot.maxNumberOfPeople,
+                                                                });
+                                                                setOpenPatchDialog(true);
+                                                            }}
+                                                        >
                                                             수정
                                                         </Button>
-                                                        <Button size="xs" variant="outlined">
+                                                        <Button
+                                                            size="xs"
+                                                            variant="outlined"
+                                                            onClick={() => {
+                                                                setSelectedInterviewSlot({
+                                                                    id: slot.id,
+                                                                    date: `${date} (${dayOfWeek})`,
+                                                                    time: `${startTime} - ${endTime}`,
+                                                                    number: slot.maxNumberOfPeople,
+                                                                });
+                                                                setOpenConfirmDialog(true);
+                                                            }}
+                                                        >
                                                             삭제
                                                         </Button>
                                                     </div>
@@ -280,6 +344,15 @@ function InterviewSchedulePage() {
                 <Text as="span" type="bodySemibold" textAlign="start" sx={s_remindTitleText}>
                     리마인드 알림을 설정하시겠어요?
                 </Text>
+                <Text
+                    as="span"
+                    type="subCaption"
+                    color="helper"
+                    textAlign="start"
+                    sx={s_remindTitleText}
+                >
+                    해당 리마인드 알림은 면접 대상자에게 전송돼요.
+                </Text>
                 <Radio
                     options={[
                         { label: '면접 진행 24시간 전 안내 메일 발송', value: 'opt1' },
@@ -299,6 +372,23 @@ function InterviewSchedulePage() {
                 handleClose={handleInterviewSettingClose}
                 handlePostInterviewSlot={handlePostInterviewSlot}
             />
+            <ErrorDialog
+                open={errorDialogOpen}
+                handleClose={() => setErrorDialogOpen(false)}
+                errorStatusCode={500}
+            />
+            {(openConfirmDialog || openPatchDialog) && (
+                <ManageInterviewSlotDialog
+                    mode={openConfirmDialog ? 'delete' : 'edit'}
+                    open={openConfirmDialog || openPatchDialog}
+                    handleClose={() =>
+                        openConfirmDialog ? setOpenConfirmDialog(false) : setOpenPatchDialog(false)
+                    }
+                    handlePatchInterviewSlotPeople={handlePatchInterviewSlotPeople}
+                    handleDeleteInterviewSlot={handleDeleteInterviewSlot}
+                    selectedInterviewSlot={selectedInterviewSlot}
+                />
+            )}
         </div>
     );
 }

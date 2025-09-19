@@ -1,5 +1,7 @@
 import {
     deleteInterviewReservation,
+    deleteInterviewSlot,
+    patchInterviewSlotPeople,
     postInterviewSlot,
     putInterviewReservation,
 } from '@api/domain';
@@ -29,6 +31,15 @@ interface PostInterviewSlot {
     announcementId: string;
     clubId: string;
     requestBody: InterviewRequest;
+}
+
+interface MutateInterviewSlot {
+    interviewSlotId: string;
+    clubId: string;
+}
+
+interface PatchInterviewSlotPeople extends MutateInterviewSlot {
+    maxPeopleCount: number;
 }
 
 export const useInterviewMutations = {
@@ -239,6 +250,64 @@ export const useInterviewMutations = {
                     toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
                 } else {
                     toast('오류로 인해 일정 변경을 못했어요.', {
+                        toastTheme: 'colored',
+                        type: 'error',
+                    });
+                }
+            },
+        });
+    },
+
+    useDeleteInterviewSlot: (announcementId: string, onOpenDialog: (open: boolean) => void) => {
+        const queryClient = useQueryClient();
+        const { toast } = useToast();
+
+        return useMutation({
+            mutationFn: (params: MutateInterviewSlot) => deleteInterviewSlot(params),
+            onSuccess: (_, variables) => {
+                queryClient.invalidateQueries({
+                    queryKey: interviewKeys.interviewSlot(announcementId, variables.clubId),
+                });
+                toast('면접 일정을 성공적으로 삭제했어요!', {
+                    toastTheme: 'colored',
+                    type: 'success',
+                });
+            },
+            onError: (error: ErrorWithStatusCode) => {
+                if (error.statusCode === 500) {
+                    onOpenDialog(true);
+                } else if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast('오류로 인해 일정 삭제를 못했어요.', {
+                        toastTheme: 'colored',
+                        type: 'error',
+                    });
+                }
+            },
+        });
+    },
+
+    usePatchInterviewSlotPeople: (announcementId: string) => {
+        const queryClient = useQueryClient();
+        const { toast } = useToast();
+
+        return useMutation({
+            mutationFn: (params: PatchInterviewSlotPeople) => patchInterviewSlotPeople(params),
+            onSuccess: (_, variables) => {
+                queryClient.invalidateQueries({
+                    queryKey: interviewKeys.interviewSlot(announcementId, variables.clubId),
+                });
+                toast('면접 최대 인원을 성공적으로 수정했어요!', {
+                    toastTheme: 'colored',
+                    type: 'success',
+                });
+            },
+            onError: (error: ErrorWithStatusCode) => {
+                if (error.response?.errors[0].message || error.message) {
+                    toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+                } else {
+                    toast('오류로 인해 면접 최대 인원을 수정하지 못했어요.', {
                         toastTheme: 'colored',
                         type: 'error',
                     });
