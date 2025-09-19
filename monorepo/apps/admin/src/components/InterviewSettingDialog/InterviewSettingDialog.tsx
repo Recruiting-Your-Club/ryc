@@ -129,8 +129,8 @@ function InterviewSettingDialog({
         const newDate = newDates[0];
         const prevDate = highlightedDate[0];
 
-        if (dayjs(newDate).isBefore(dayjs(), 'day')) {
-            toast('현재 날짜보다 이전의 날짜는 선택할 수 없어요.', {
+        if (dayjs(newDate).isSame(dayjs(), 'day') || dayjs(newDate).isBefore(dayjs(), 'day')) {
+            toast('오늘 또는 이전 날짜는 선택할 수 없어요.', {
                 type: 'error',
                 toastTheme: 'black',
             });
