@@ -7,7 +7,7 @@ import 'dayjs/locale/ko';
 import React, { useEffect, useState } from 'react';
 
 import { useRouter } from '@ssoc/hooks';
-import { Button, Dialog, Divider, Editor, Input, Text, Tooltip, useToast } from '@ssoc/ui';
+import { Button, Dialog, Divider, Editor, Input, Text, Tooltip } from '@ssoc/ui';
 
 import {
     s_allSlotContainer,

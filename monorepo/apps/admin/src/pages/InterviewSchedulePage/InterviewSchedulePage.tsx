@@ -105,9 +105,23 @@ function InterviewSchedulePage() {
         if (!interviewSlots || interviewSlots.length === 0) {
             return { timeHeaders: [], scheduleGrid: new Map() };
         }
-        const timeHeaders = [
-            ...new Set(interviewSlots.map((slot) => dayjs(slot.period.startDate).format('HH:mm'))),
-        ].sort();
+        const allTimestamps = interviewSlots.flatMap((slot) => [
+            dayjs(slot.period.startDate).valueOf(),
+            dayjs(slot.period.endDate).valueOf(),
+        ]);
+        const minTime = dayjs(Math.min(...allTimestamps));
+        const maxTime = dayjs(Math.max(...allTimestamps));
+
+        // 시작 시간을 30분 단위로 내림합니다. (예: 09:10 -> 09:00)
+        let currentTime = minTime.minute(minTime.minute() < 30 ? 0 : 30).second(0);
+
+        const newTimeHeaders = [];
+        // 가장 이른 시간부터 가장 늦은 시간까지 30분씩 증가시키며 배열에 추가합니다.
+        while (currentTime.isBefore(maxTime)) {
+            newTimeHeaders.push(currentTime.format('HH:mm'));
+            currentTime = currentTime.add(30, 'minutes');
+        }
+        const timeHeaders = newTimeHeaders;
 
         const grid = new Map<string, Map<string, InterviewSlot>>();
         interviewSlots.forEach((slot) => {
