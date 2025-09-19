@@ -46,3 +46,8 @@ export interface InterviewRequest {
     slotDetailRequests: SlotDetailRequest[];
     interviewDuration: number;
 }
+
+export interface InterviewReminder {
+    announcementId: string;
+    reminderTime: number;
+}

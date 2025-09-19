@@ -1,6 +1,8 @@
 import {
+    deleteInterviewReminder,
     deleteInterviewReservation,
     deleteInterviewSlot,
+    patchInterviewReminder,
     patchInterviewSlotPeople,
     postInterviewSlot,
     putInterviewReservation,
@@ -41,6 +43,52 @@ interface MutateInterviewSlot {
 interface PatchInterviewSlotPeople extends MutateInterviewSlot {
     maxPeopleCount: number;
 }
+
+interface MutateInterviewReminder {
+    announcementId: string;
+    clubId: string;
+}
+
+interface PatchInterviewReminder extends MutateInterviewReminder {
+    reminderTime: number;
+}
+
+const useInterviewReminderMutation = <T extends MutateInterviewReminder>(
+    mutationFn: (params: T) => Promise<void>,
+    onOpenDialog: (open: boolean) => void,
+    successMessage: string,
+) => {
+    const queryClient = useQueryClient();
+    const { toast } = useToast();
+
+    return useMutation({
+        mutationFn,
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: interviewKeys.interviewReminder(
+                    variables.announcementId,
+                    variables.clubId,
+                ),
+            });
+            toast(successMessage, {
+                toastTheme: 'colored',
+                type: 'success',
+            });
+        },
+        onError: (error: ErrorWithStatusCode) => {
+            if (error.statusCode === 500) {
+                onOpenDialog(true);
+            } else if (error.response?.errors[0].message || error.message) {
+                toast(getErrorMessage(error), { type: 'error', toastTheme: 'colored' });
+            } else {
+                toast('오류로 인해 리마인더 시간을 수정하지 못했어요.', {
+                    toastTheme: 'colored',
+                    type: 'error',
+                });
+            }
+        },
+    });
+};
 
 export const useInterviewMutations = {
     useUpdateInterviewReservation: (
@@ -314,5 +362,21 @@ export const useInterviewMutations = {
                 }
             },
         });
+    },
+
+    usePatchInterviewReminder: (onOpenDialog: (open: boolean) => void) => {
+        return useInterviewReminderMutation<PatchInterviewReminder>(
+            patchInterviewReminder,
+            onOpenDialog,
+            '리마인더 시간을 수정했어요!',
+        );
+    },
+
+    useDeleteInterviewReminder: (onOpenDialog: (open: boolean) => void) => {
+        return useInterviewReminderMutation<MutateInterviewReminder>(
+            deleteInterviewReminder,
+            onOpenDialog,
+            '리마인더 시간을 수정했어요!',
+        );
     },
 };

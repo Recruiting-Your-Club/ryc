@@ -61,7 +61,7 @@ function InterviewSchedulePage() {
     // state, ref, querystring hooks
     const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
     const [currentWeekStart, setCurrentWeekStart] = useState(() => getMonday(dayjs()));
-    const [value, setValue] = useState('opt1');
+    const [value, setValue] = useState('');
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
     const [openPatchDialog, setOpenPatchDialog] = useState<boolean>(false);
@@ -85,6 +85,15 @@ function InterviewSchedulePage() {
     );
     const { mutateAsync: patchInterviewSlotPeople } =
         useInterviewMutations.usePatchInterviewSlotPeople(announcementId!);
+
+    const { data: interviewReminder } = useSuspenseQuery(
+        interviewQueries.interviewReminder(announcementId!, clubId!),
+    );
+
+    const { mutate: patchInterviewReminder } =
+        useInterviewMutations.usePatchInterviewReminder(setErrorDialogOpen);
+    const { mutate: deleteInterviewReminder } =
+        useInterviewMutations.useDeleteInterviewReminder(setErrorDialogOpen);
 
     // calculated values
     function getMonday(date: dayjs.Dayjs) {
@@ -185,6 +194,27 @@ function InterviewSchedulePage() {
         }
     };
 
+    const handleChangeReminder = (newValue: string) => {
+        const previousValue = value;
+        setValue(newValue);
+
+        if (newValue === '24' || newValue === '3') {
+            patchInterviewReminder(
+                {
+                    announcementId: announcementId!,
+                    clubId: clubId!,
+                    reminderTime: Number(newValue),
+                },
+                { onError: () => setValue(previousValue) },
+            );
+        } else if (newValue === '0') {
+            deleteInterviewReminder(
+                { announcementId: announcementId!, clubId: clubId! },
+                { onError: () => setValue(previousValue) },
+            );
+        }
+    };
+
     // effects
     useEffect(() => {
         if (interviewSlots && interviewSlots.length > 0) {
@@ -192,6 +222,12 @@ function InterviewSchedulePage() {
             setCurrentWeekStart(getMonday(firstSlotDate));
         }
     }, [interviewSlots]);
+
+    useEffect(() => {
+        if (value === '') {
+            setValue(interviewReminder.reminderTime.toString());
+        }
+    }, [interviewReminder]);
 
     return (
         <div css={s_pageContainer}>
@@ -360,13 +396,13 @@ function InterviewSchedulePage() {
                 </span>
                 <Radio
                     options={[
-                        { label: '면접 진행 24시간 전 안내 메일 발송', value: 'opt1' },
-                        { label: '면접 진행 3시간 전 안내 메일 발송', value: 'opt2' },
-                        { label: '리마인드 알림을 보내지 않을래요.', value: 'opt3' },
+                        { label: '면접 진행 24시간 전 안내 메일 발송', value: '24' },
+                        { label: '면접 진행 3시간 전 안내 메일 발송', value: '3' },
+                        { label: '리마인드 알림을 보내지 않을래요.', value: '0' },
                     ]}
                     name="variableText"
                     value={value}
-                    onChange={setValue}
+                    onChange={handleChangeReminder}
                     orientation="vertical"
                     size="sm"
                     sx={s_radios}

@@ -1,6 +1,7 @@
 import { httpRequest } from '../../common/httpRequest';
 import type {
     InterviewApplicant,
+    InterviewReminder,
     InterviewRequest,
     InterviewSlot,
     UnreservedApplicant,
@@ -108,6 +109,44 @@ async function patchInterviewSlotPeople(params: {
     });
 }
 
+// 면접 리마인더 시간 조회
+async function getInterviewReminder(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<InterviewReminder> {
+    return await httpRequest.get({
+        url: `announcements/${params.announcementId}/interviews/reminders`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 면접 리마인더 시간 수정
+async function patchInterviewReminder(params: {
+    announcementId: string;
+    clubId: string;
+    reminderTime: number;
+}): Promise<void> {
+    await httpRequest.patch({
+        url: `announcements/${params.announcementId}/interviews/reminders`,
+        body: { reminderTime: params.reminderTime },
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 면접 리마인더 제거
+async function deleteInterviewReminder(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<void> {
+    await httpRequest.delete({
+        url: `announcements/${params.announcementId}/interviews/reminders`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
 export {
     getInterviewSlot,
     getInterviewInformation,
@@ -117,4 +156,7 @@ export {
     postInterviewSlot,
     deleteInterviewSlot,
     patchInterviewSlotPeople,
+    getInterviewReminder,
+    patchInterviewReminder,
+    deleteInterviewReminder,
 };
