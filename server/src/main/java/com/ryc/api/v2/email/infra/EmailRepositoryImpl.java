@@ -65,4 +65,9 @@ public class EmailRepositoryImpl implements EmailRepository {
   public void deleteByStatus(EmailSentStatus status) {
     emailJpaRepository.deleteByStatus(status);
   }
+
+  @Override
+  public boolean existsByStatus(EmailSentStatus emailSentStatus) {
+    return emailJpaRepository.existsByStatus(emailSentStatus);
+  }
 }

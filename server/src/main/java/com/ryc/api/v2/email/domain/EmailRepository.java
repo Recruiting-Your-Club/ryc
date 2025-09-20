@@ -23,4 +23,6 @@ public interface EmailRepository {
   boolean existsByAnnouncementId(String announcementId);
 
   void deleteByStatus(EmailSentStatus status);
+
+  boolean existsByStatus(EmailSentStatus emailSentStatus);
 }
