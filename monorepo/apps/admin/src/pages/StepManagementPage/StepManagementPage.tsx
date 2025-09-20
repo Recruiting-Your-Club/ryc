@@ -1,4 +1,3 @@
-import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicantWithoutImage } from '@api/domain/step/types';
 import { useStepMutations } from '@api/hooks';
@@ -16,7 +15,6 @@ import {
     CardBox,
     ErrorDialog,
     InterviewEmailDialog,
-    InterviewSettingDialog,
     PlainEmailDialog,
 } from '@components';
 import {
@@ -461,19 +459,6 @@ function StepManagementPage() {
                     handleClose={() => setErrorDialogOpen(false)}
                     errorStatusCode={500}
                 />
-                {/* {openConfirmDialog && (
-                    <ConfirmDialog
-                        type="confirm"
-                        title="면접 일정 생성 알림"
-                        content={`기존에 생성하신 면접 일정이 이미 있는 경우,\n다시 한번 면접 일정을 생성하시면\n기존 예약 일정 및 예약자들의 예약 상태는 모두 초기화돼요!`}
-                        open={true}
-                        cancelButton={true}
-                        handleClose={() => setOpenConfirmDialog(false)}
-                        actionHandler={() => setIsInterviewOpen(true)}
-                        actionPosition="center"
-                        dialogSize="md"
-                    />
-                )} */}
             </div>
         </div>
     );

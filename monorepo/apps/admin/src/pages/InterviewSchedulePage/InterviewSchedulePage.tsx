@@ -235,9 +235,13 @@ function InterviewSchedulePage() {
 
     useEffect(() => {
         if (value === '') {
-            setValue(interviewReminder.reminderTime.toString());
+            setValue(
+                interviewReminder.reminderTime === null
+                    ? '0'
+                    : interviewReminder.reminderTime.toString(),
+            );
         }
-    }, [interviewReminder]);
+    }, [value, interviewReminder]);
 
     return (
         <div css={s_pageContainer}>
