@@ -1,4 +1,4 @@
-import type { InterviewDetailInformation } from '@api/domain/email/types';
+import type { InterviewRequest, SlotDetailRequest } from '@api/domain/interview/types';
 import Info from '@assets/images/info.svg';
 import XIcon from '@assets/images/xIcon.svg';
 import { InterviewTimeBox } from '@components';
@@ -10,49 +10,29 @@ import {
     numberOptions,
     timeOptions,
 } from '@constants/interviewSettingDialog';
-import { convertImageToBase64 } from '@utils/convertImageToBase64';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {
-    Button,
-    Calendar,
-    Dialog,
-    Divider,
-    Editor,
-    Input,
-    Select,
-    Text,
-    Tooltip,
-    useToast,
-} from '@ssoc/ui';
+import { Button, Calendar, Dialog, Divider, Text, Tooltip, useToast } from '@ssoc/ui';
 
 import {
+    s_action,
+    s_actionButton,
+    s_buttonGrid,
     s_calendar,
     s_content,
-    s_contentWrapper,
+    s_contentText,
     s_dialog,
-    s_editorRoot,
-    s_editorTextarea,
-    s_editorToolbar,
-    s_emailContainer,
-    s_emptyPlace,
     s_header,
     s_informationContainer,
     s_informSvg,
     s_informSvgWrapper,
-    s_input,
+    s_numberButton,
     s_perInformationContainer,
-    s_resetButton,
-    s_select,
     s_selectContainer,
-    s_selectTrigger,
-    s_submitButtonWrapper,
+    s_stepContainer,
     s_textAndTooltipContainer,
-    s_titleInput,
-    s_titleWrapper,
     s_tooltipContent,
-    s_verticalDivider,
 } from './InterviewSettingDialog.style';
 import { InterviewSettingDialogContext } from './InterviewSettingDialogContext';
 import type { InterviewInformation, InterviewSettingDialogProps } from './types';
@@ -60,15 +40,16 @@ import type { InterviewInformation, InterviewSettingDialogProps } from './types'
 function InterviewSettingDialog({
     open,
     handleClose,
-    handleInterviewEmail,
+    handlePostInterviewSlot,
+    initialTimePeriod,
 }: InterviewSettingDialogProps) {
     // prop destruction
     // lib hooks
     const { toast } = useToast();
     // initial values
     // state, ref, querystring hooks
-    const [numberValue, setNumberValue] = useState<string>(DEFAULT_NUMBER_VALUE);
-    const [timeValue, setTimeValue] = useState<string>(DEFAULT_TIME_VALUE);
+    const [numberValue, setNumberValue] = useState<string>('');
+    const [timeValue, setTimeValue] = useState<string>(initialTimePeriod);
     const [startTime, setStartTime] = useState<string>(DEFAULT_START_TIME);
     const [endTime, setEndTime] = useState<string>(DEFAULT_END_TIME);
 
@@ -80,8 +61,7 @@ function InterviewSettingDialog({
         Record<string, InterviewInformation>
     >({});
 
-    const [emailTitle, setEmailTitle] = useState<string>('');
-    const [emailContent, setEmailContent] = useState<string>('');
+    const [currentStep, setCurrentStep] = useState(initialTimePeriod === '' ? 1 : 2);
 
     // form hooks
     // query hooks
@@ -111,28 +91,35 @@ function InterviewSettingDialog({
         ],
     );
 
-    const interviewDetailInformationList = useMemo<InterviewDetailInformation[]>(() => {
-        const result: InterviewDetailInformation[] = [];
+    const interviewDetailInformationList = useMemo<InterviewRequest>(() => {
+        const slotDetailRequests: SlotDetailRequest[] = [];
 
         Object.entries(interviewInformation).forEach(([date, info]) => {
             info.selectedTimeList.forEach((time) => {
-                const startDate = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
+                const start = dayjs(`${date}T${time}`).format('YYYY-MM-DDTHH:mm');
 
-                result.push({
-                    start: startDate,
-                    interviewDuration: Number(info.perTime),
-                    numberOfPeople: Number(info.maxNumber),
+                slotDetailRequests.push({
+                    start,
+                    maxPeopleCount: Number(info.maxNumber),
                 });
             });
         });
 
-        return result;
+        const interviewDuration = Object.values(interviewInformation)[0]?.perTime
+            ? Number(Object.values(interviewInformation)[0].perTime)
+            : 0;
+
+        return {
+            slotDetailRequests,
+            interviewDuration,
+        };
     }, [interviewInformation]);
 
     // handler
-    const handleReset = () => {
-        setTimeValue(DEFAULT_TIME_VALUE);
-        setNumberValue(DEFAULT_NUMBER_VALUE);
+    const handleResetToBlank = () => {
+        setTimeValue(initialTimePeriod);
+        setNumberValue('');
+        setCurrentStep(initialTimePeriod === '' ? 1 : 2);
         setStartTime(DEFAULT_START_TIME);
         setEndTime(DEFAULT_END_TIME);
         setInterviewInformation({});
@@ -140,17 +127,23 @@ function InterviewSettingDialog({
         setHighlightedDate([]);
     };
 
-    const handleResetContent = () => {
-        setEmailTitle('');
-        setEmailContent('');
+    const handleReset = (resetNumberValue: boolean = true) => {
+        setTimeValue(DEFAULT_TIME_VALUE);
+        if (resetNumberValue) setNumberValue(DEFAULT_NUMBER_VALUE);
+        setCurrentStep(initialTimePeriod === '' ? 1 : 2);
+        setStartTime(DEFAULT_START_TIME);
+        setEndTime(DEFAULT_END_TIME);
+        setInterviewInformation({});
+        setSelectedDates([]);
+        setHighlightedDate([]);
     };
 
     const handleDates = (newDates: string[]) => {
         const newDate = newDates[0];
         const prevDate = highlightedDate[0];
 
-        if (dayjs(newDate).isBefore(dayjs(), 'day')) {
-            toast('현재 날짜보다 이전의 날짜는 선택할 수 없어요.', {
+        if (dayjs(newDate).isSame(dayjs(), 'day') || dayjs(newDate).isBefore(dayjs(), 'day')) {
+            toast('오늘 또는 이전 날짜는 선택할 수 없어요.', {
                 type: 'error',
                 toastTheme: 'black',
             });
@@ -170,21 +163,26 @@ function InterviewSettingDialog({
         setSelectedDates((prev) => (prev.includes(newDate) ? prev : [...prev, newDate]));
     };
 
-    const handleSendEmail = async () => {
-        let contentToSend = emailContent;
-
-        try {
-            contentToSend = await convertImageToBase64(emailContent);
-        } catch (error) {
-            // 변환 실패 -> 원본 이미지 사용 (다른 이미지는 변환 계속)
-            // eslint-disable-next-line no-empty
-        }
-
-        if (await handleInterviewEmail(interviewDetailInformationList, emailTitle, contentToSend)) {
-            handleReset();
-            handleResetContent();
+    const handleAddInterviewSlot = async () => {
+        if (await handlePostInterviewSlot(interviewDetailInformationList)) {
+            handleResetToBlank();
             handleClose();
         }
+    };
+
+    const handlePerTime = (value: string) => {
+        const hasInterviewInfo = Object.keys(interviewInformation).length > 0;
+
+        if (currentStep === 3 && hasInterviewInfo && initialTimePeriod === '') {
+            handleReset(false);
+            toast('면접 날짜와 시간이 초기화 되었어요!', {
+                toastTheme: 'black',
+                type: 'info',
+            });
+        }
+
+        setTimeValue(value);
+        setCurrentStep(currentStep === 3 ? 3 : 2);
     };
 
     // effects
@@ -216,12 +214,9 @@ function InterviewSettingDialog({
     }, [timeValue]);
 
     useEffect(() => {
-        if (!emailContent) return;
-
-        convertImageToBase64(emailContent).then((convertedHtml) => {
-            setEmailContent(convertedHtml);
-        });
-    }, [emailContent]);
+        setTimeValue(initialTimePeriod);
+        setCurrentStep(initialTimePeriod === '' ? 1 : 2);
+    }, [initialTimePeriod]);
 
     return (
         <InterviewSettingDialogContext.Provider value={contextValue}>
@@ -229,16 +224,16 @@ function InterviewSettingDialog({
                 <Dialog.Header position="start" sx={s_header}>
                     <span css={s_textAndTooltipContainer}>
                         <Text as="span" type="bodyBold" sx={{ paddingTop: '0.3rem' }}>
-                            면접 일정 설정 후 보내기
+                            면접 일정 추가
                         </Text>
                         <Tooltip
                             content={`
-                                1. 면접 최대 인원 수와 면접 당 진행 시간을 먼저 정해주세요.\n
+                                1. 면접 당 진행 시간과 면접 당 최대 인원 수를 먼저 정해주세요.\n
                                 2. 면접 날짜를 선택해주세요. (예: 9월 1일)\n
                                 3. 해당 날짜의 첫 시작 시간과 마지막 종료 시간을 선택해주세요. (예: 오전 10시 ~ 오후 3시)\n
-                                4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해 확정해주세요.\n
-                                5. 다른 날짜도 같은 방식으로 설정하시면 모든 면접 일정이 확정돼요.\n
-                                6. 마지막으로 이메일 제목과 내용 모두 작성하신 뒤, '이메일 보내기' 버튼을 눌러주세요!\n
+                                4. 선택하신 범위 내에서 진행 시간 단위로 슬롯이 자동으로 만들어져요. 원하는 슬롯을 선택해주세요.'\n
+                                5. 다른 날짜도 같은 방식으로 설정하신 후 추가되면 일정이 확정돼요.\n
+                                🚨 주의! 면접 당 진행 시간은 항상 동일하게 설정해주셔야 해요 🚨\n
                                 `}
                             direction="bottom"
                             wrapperSx={s_informSvgWrapper}
@@ -259,124 +254,100 @@ function InterviewSettingDialog({
                 <Divider color="black" sx={{ borderTop: '1px solid' }} />
                 <Dialog.Content sx={s_content}>
                     <div css={s_selectContainer}>
-                        <Text as="span" type="h4Bold" textAlign="start">
-                            상세 면접 정보
-                        </Text>
-                        <div css={s_perInformationContainer}>
-                            <Text as="span" type="bodyBold" textAlign="start">
-                                면접 최대 인원 수
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                한 면접 당 최대 인원 수를 정해요.
-                            </Text>
-                            <Select
-                                value={numberValue}
-                                onValueChange={setNumberValue}
-                                size="xs"
-                                sx={s_select}
-                                options={numberOptions}
-                            >
-                                <Select.Trigger sx={s_selectTrigger}>
-                                    <Select.Value />
-                                </Select.Trigger>
-                                <Select.Content>
-                                    {numberOptions.map(({ value, label }) => (
-                                        <Select.Item key={value} value={value}>
-                                            {label}
-                                        </Select.Item>
-                                    ))}
-                                </Select.Content>
-                            </Select>
-                        </div>
-                        <div css={s_perInformationContainer}>
-                            <Text as="span" type="bodyBold" textAlign="start">
-                                면접 당 진행 시간
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                한 면접 당 걸리는 시간을 정해요.
-                            </Text>
-                            <Select
-                                value={timeValue}
-                                onValueChange={setTimeValue}
-                                size="xs"
-                                sx={s_select}
-                                options={timeOptions}
-                            >
-                                <Select.Trigger sx={s_selectTrigger}>
-                                    <Select.Value />
-                                </Select.Trigger>
-                                <Select.Content>
+                        {currentStep >= 1 && (
+                            <div css={[s_perInformationContainer, s_stepContainer]}>
+                                <Text
+                                    as="span"
+                                    type="captionSemibold"
+                                    textAlign="start"
+                                    sx={s_contentText}
+                                >
+                                    면접을 보는 시간 간격은 어떻게 되나요?
+                                </Text>
+                                <div css={s_buttonGrid}>
                                     {timeOptions.map(({ value, label }) => (
-                                        <Select.Item key={value} value={value}>
+                                        <Button
+                                            key={value}
+                                            size="md"
+                                            variant="outlined"
+                                            sx={s_numberButton(timeValue === value)}
+                                            onClick={() => handlePerTime(value)}
+                                            disabled={
+                                                initialTimePeriod !== '' &&
+                                                value !== initialTimePeriod
+                                            }
+                                        >
                                             {label}
-                                        </Select.Item>
+                                        </Button>
                                     ))}
-                                </Select.Content>
-                            </Select>
-                        </div>
-                        <div css={s_emptyPlace} />
-                        <div css={s_perInformationContainer}>
-                            <Text as="span" type="bodyBold" textAlign="start">
-                                초기화
-                            </Text>
-                            <Text as="span" type="captionRegular" textAlign="start">
-                                지금까지 정한 정보를 초기화해요.
-                            </Text>
-                            <Button
-                                size="md"
-                                variant="transparent"
-                                onClick={handleReset}
-                                sx={s_resetButton}
-                            >
-                                초기화
-                            </Button>
-                        </div>
-                    </div>
-                    <div css={s_informationContainer}>
-                        <Calendar
-                            mode="custom"
-                            size="md"
-                            selectedDate={selectedDates}
-                            onSelect={handleDates}
-                            highlightedDate={highlightedDate}
-                            sx={s_calendar}
-                        />
-                        <InterviewTimeBox />
-                    </div>
-                    <div css={s_verticalDivider} />
-                    <div css={s_emailContainer}>
-                        <div css={s_titleWrapper}>
-                            <Text as="span" type="h4Semibold" textAlign="start">
-                                제목
-                            </Text>
-                            <Input
-                                value={emailTitle}
-                                onChange={(e) => setEmailTitle(e.target.value)}
-                                height="4rem"
-                                placeholder="이메일 제목을 입력해주세요."
-                                inputSx={s_titleInput}
-                                sx={s_input}
-                            />
-                        </div>
-                        <div css={s_contentWrapper}>
-                            <Text as="span" type="h4Semibold" textAlign="start">
-                                내용
-                            </Text>
-                            <Editor.Root sx={s_editorRoot}>
-                                <Editor.Toolbar sx={s_editorToolbar} />
-                                <Editor.Textarea
-                                    sx={s_editorTextarea}
-                                    value={emailContent}
-                                    onChange={setEmailContent}
+                                </div>
+                            </div>
+                        )}
+                        {currentStep >= 2 && (
+                            <div css={[s_perInformationContainer, s_stepContainer]}>
+                                <Text
+                                    as="span"
+                                    type="captionSemibold"
+                                    textAlign="start"
+                                    sx={s_contentText}
+                                >
+                                    면접을 보는 인원은 시간 당 몇 명인가요?
+                                </Text>
+                                <div css={s_buttonGrid}>
+                                    {numberOptions.map(({ value, label }) => (
+                                        <Button
+                                            key={value}
+                                            size="md"
+                                            variant="outlined"
+                                            sx={s_numberButton(numberValue === value)}
+                                            onClick={() => {
+                                                setNumberValue(value);
+                                                setCurrentStep(3);
+                                            }}
+                                        >
+                                            {label}
+                                        </Button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {currentStep >= 3 && (
+                            <div css={[s_informationContainer, s_stepContainer]}>
+                                <Text as="span" type="captionSemibold" textAlign="start">
+                                    면접 날짜와 시간을 선택해주세요.
+                                </Text>
+                                <Calendar
+                                    mode="custom"
+                                    size="sm"
+                                    selectedDate={selectedDates}
+                                    onSelect={handleDates}
+                                    highlightedDate={highlightedDate}
+                                    sx={s_calendar}
                                 />
-                            </Editor.Root>
-                        </div>
-                        <div css={s_submitButtonWrapper}>
-                            <Button onClick={handleSendEmail}>이메일 보내기</Button>
-                        </div>
+                                <InterviewTimeBox />
+                            </div>
+                        )}
                     </div>
                 </Dialog.Content>
-                <Dialog.Action>{''}</Dialog.Action>
+                <Dialog.Action sx={s_action}>
+                    <Button
+                        size="md"
+                        variant="outlined"
+                        onClick={() => {
+                            handleResetToBlank();
+                            toast('설정하신 면접 정보가 초기화 되었어요!', {
+                                toastTheme: 'black',
+                                type: 'info',
+                            });
+                        }}
+                        sx={s_actionButton}
+                    >
+                        초기화
+                    </Button>
+                    <Button size="md" onClick={handleAddInterviewSlot} sx={s_actionButton}>
+                        추가
+                    </Button>
+                </Dialog.Action>
             </Dialog>
         </InterviewSettingDialogContext.Provider>
     );

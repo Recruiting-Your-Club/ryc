@@ -38,6 +38,8 @@ const interviewKeys = {
         ['interview-information', announcementId, interviewSlotId, clubId] as const,
     unreservedApplicant: (announcementId: string, clubId: string) =>
         ['unreserved-applicant', announcementId, clubId] as const,
+    interviewReminder: (announcementId: string, clubId: string) =>
+        ['interview-reminder', announcementId, clubId] as const,
 };
 
 const applicantKeys = {

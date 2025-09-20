@@ -5,8 +5,8 @@ export interface Email {
 }
 
 export interface InterviewEmail {
-    numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[];
-    emailSendRequest: Email;
+    subject: string;
+    content: string;
 }
 
 export interface InterviewDetailInformation {

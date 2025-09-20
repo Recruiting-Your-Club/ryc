@@ -12,9 +12,10 @@ import {
     s_applyButton,
     s_select,
     s_selectContent,
+    s_selectedTimeSection,
+    s_selectedTimeSectionWrapper,
     s_selectTrigger,
     s_timeRangeSettingContainer,
-    selectedTimeSection,
     timeButtonCss,
     timeSelectSection,
 } from './InterviewTimeBox.style';
@@ -181,21 +182,23 @@ function InterviewTimeBox() {
                 </div>
             </div>
             <Divider sx={dividerCss} />
-            <div css={selectedTimeSection}>
-                {currentDate && (
-                    <>
-                        {timeButtonList.map((time) => (
-                            <Button
-                                key={time}
-                                variant="outlined"
-                                onClick={() => handleTimeClick(time)}
-                                sx={timeButtonCss(selectedTimes?.includes(time))}
-                            >
-                                {time}
-                            </Button>
-                        ))}
-                    </>
-                )}
+            <div css={s_selectedTimeSectionWrapper}>
+                <div css={s_selectedTimeSection}>
+                    {currentDate && (
+                        <>
+                            {timeButtonList.map((time) => (
+                                <Button
+                                    key={time}
+                                    variant="outlined"
+                                    onClick={() => handleTimeClick(time)}
+                                    sx={timeButtonCss(selectedTimes?.includes(time))}
+                                >
+                                    {time}
+                                </Button>
+                            ))}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

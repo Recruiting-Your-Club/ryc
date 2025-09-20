@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import { DEFAULT_FONT_SIZE } from '../../constants';
 import { textareaContainer } from './Editor.style';
 import { useEditorContext } from './EditorContext';
 import type { TextareaProps } from './types';
@@ -80,6 +81,10 @@ function EditorTextarea({ height, radius, value, onChange, sx }: TextareaProps) 
                 suppressContentEditableWarning
                 onInput={handleInput}
                 css={[textareaContainer(height, radius), sx]}
+                style={{
+                    fontFamily: 'Pretendard, sans-serif',
+                    fontSize: DEFAULT_FONT_SIZE,
+                }}
                 ref={editorRef}
             />
         </>

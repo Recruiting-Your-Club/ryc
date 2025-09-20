@@ -1,5 +1,11 @@
 import { httpRequest } from '../../common/httpRequest';
-import type { InterviewApplicant, InterviewSlot, UnreservedApplicant } from './types';
+import type {
+    InterviewApplicant,
+    InterviewReminder,
+    InterviewRequest,
+    InterviewSlot,
+    UnreservedApplicant,
+} from './types';
 
 async function getInterviewSlot(params: {
     announcementId: string;
@@ -63,6 +69,83 @@ async function deleteInterviewReservation(params: {
         isAuthRequire: true,
     });
 }
+// 동아리 관리자가 면접 일정 생성
+async function postInterviewSlot(params: {
+    announcementId: string;
+    clubId: string;
+    requestBody: InterviewRequest;
+}): Promise<void> {
+    await httpRequest.post({
+        url: `admin/announcements/${params.announcementId}/interview-slots`,
+        body: params.requestBody,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 동아리 관리자가 면접 시간대 삭제
+async function deleteInterviewSlot(params: {
+    interviewSlotId: string;
+    clubId: string;
+}): Promise<void> {
+    await httpRequest.delete({
+        url: `admin/interview-slots/${params.interviewSlotId}`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 동아리 관리자가 면접 최대 인원 수 변경
+async function patchInterviewSlotPeople(params: {
+    interviewSlotId: string;
+    clubId: string;
+    maxPeopleCount: number;
+}): Promise<void> {
+    await httpRequest.patch({
+        url: `admin/interview-slots/${params.interviewSlotId}/people/count`,
+        body: { maxPeopleCount: params.maxPeopleCount },
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 면접 리마인더 시간 조회
+async function getInterviewReminder(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<InterviewReminder> {
+    return await httpRequest.get({
+        url: `announcements/${params.announcementId}/interviews/reminders`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 면접 리마인더 시간 수정
+async function patchInterviewReminder(params: {
+    announcementId: string;
+    clubId: string;
+    reminderTime: number;
+}): Promise<void> {
+    await httpRequest.patch({
+        url: `announcements/${params.announcementId}/interviews/reminders`,
+        body: { reminderTime: params.reminderTime },
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
+
+// 면접 리마인더 제거
+async function deleteInterviewReminder(params: {
+    announcementId: string;
+    clubId: string;
+}): Promise<void> {
+    await httpRequest.delete({
+        url: `announcements/${params.announcementId}/interviews/reminders`,
+        headers: { 'X-CLUB-ID': params.clubId },
+        isAuthRequire: true,
+    });
+}
 
 export {
     getInterviewSlot,
@@ -70,4 +153,10 @@ export {
     getUnreservedApplicant,
     putInterviewReservation,
     deleteInterviewReservation,
+    postInterviewSlot,
+    deleteInterviewSlot,
+    patchInterviewSlotPeople,
+    getInterviewReminder,
+    patchInterviewReminder,
+    deleteInterviewReminder,
 };

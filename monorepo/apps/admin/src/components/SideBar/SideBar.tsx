@@ -101,7 +101,10 @@ function SideBar() {
                 id: 5,
                 menu: '면접 관리',
                 icon: <ApplicationManage />,
-                subMenus: [{ menu: '지원자 면접 일정 관리', link: '/interviewee-schedule' }],
+                subMenus: [
+                    { menu: '면접 일정 생성', link: '/schedule-addition' },
+                    { menu: '지원자 면접 일정 관리', link: '/interviewee-schedule' },
+                ],
             },
             {
                 id: 6,
