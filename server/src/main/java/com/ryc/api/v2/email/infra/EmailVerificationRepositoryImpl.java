@@ -67,4 +67,9 @@ public class EmailVerificationRepositoryImpl implements EmailVerificationReposit
   public void deleteAttemptedCodes() {
     jpaRepository.deleteByAttempted(true);
   }
+
+  @Override
+  public boolean existsAttemptedCodes() {
+    return jpaRepository.existsByAttempted(true);
+  }
 }
