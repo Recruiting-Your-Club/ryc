@@ -104,10 +104,15 @@
 
 </br>
 
-|                         동아리 지원자 관리                          |
-| :-----------------------------------------------------------------: |
-| <img src='./monorepo/packages/assets/images/readme_adminInfo.gif'/> |
-|               지원자들을 각 step 별로 관리하는 페이지               |
+|                      동아리 지원자 관리 - 1                      |
+| :--------------------------------------------------------------: |
+| <img src='./monorepo/packages/assets/images/readme_manage.gif'/> |
+|           지원자들 각 step 별로 관리 및 합불 여부 결정           |
+
+|                      동아리 지원자 관리 - 2                      |
+| :--------------------------------------------------------------: |
+| <img src='./monorepo/packages/assets/images/readme_manage.gif'/> |
+|              합불 여부 및 면접 일정 관련 메일 전송               |
 
 - 각 스텝(서류, 면접 등)별로 지원자를 한눈에 확인할 수 있습니다.
 - 각 지원자가 작성한 서류를 확인할 수 있습니다.
@@ -116,10 +121,10 @@
 
 </br>
 
-|                         동아리 지원자 평가                          |
-| :-----------------------------------------------------------------: |
-| <img src='./monorepo/packages/assets/images/readme_adminInfo.gif'/> |
-|         지원자의 서류 및 면접을 관리자들이 평가하는 페이지          |
+|                          동아리 지원자 평가                          |
+| :------------------------------------------------------------------: |
+| <img src='./monorepo/packages/assets/images/readme_evaluation.gif'/> |
+|          지원자의 서류 및 면접을 관리자들이 평가하는 페이지          |
 
 - 각 지원자의 지원서를 바탕으로 점수와 간단한 코멘트를 작성해 남길 수 있습니다.
 - 면접 또한 별도의 점수 및 코멘트를 작성할 수 있습니다.
@@ -129,9 +134,52 @@
 | <img src='./monorepo/packages/assets/images/readme_adminInfo.gif'/> |
 |                        면접 일정 설정 페이지                        |
 
+</br>
+
 |                        지원자 면접 일정 관리                        |
 | :-----------------------------------------------------------------: |
 | <img src='./monorepo/packages/assets/images/readme_adminInfo.gif'/> |
 |            지원자 면접 일정을 직접 설정할 수 있는 페이지            |
 
 - 미처 면접 예약을 못했거나 특수한 상황인 경우, 관리자가 직접 지원자들의 면접 일정을 조정할 수 있습니다.
+
+  </br>
+
+## 📲 서비스 이용하기
+
+| 항목                        | 사이트 접속하기                                                                                             |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **SSOC URL**                | [SSOC 사이트 바로가기](https://ssoc.kr/)                                                                    |
+| **Admin SSOC URL**          | [Admin SSOC 사이트 바로가기](https://admin.ssoc.kr/)                                                        |
+| **관리자 서비스 설명 문서** | [서비스 설명 문서 바로 이동하기](https://sangjunn.notion.site/SSOC-261976a7f2238089ab88de63e0fe78a1?pvs=74) |
+
+</br>
+
+## 🧭 로드맵
+
+| 기간            | 주요 항목                                     | 정리된 문서 확인                                                                                                                                                                         |
+| --------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0 ~ 1개월**   | 기획 및 디자인                                | [와이어프레임 바로가기](https://www.figma.com/design/bRET7spZWHW3tV6oKcD3fg/Recruiting-Your-Club--%EB%94%94%EC%9E%90%EC%9D%B8-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85?node-id=0-1) |
+| **1 ~ 2개월**   | 공통 컴포넌트 개발 , API 개발                 | [PR 확인하기](https://github.com/Recruiting-Your-Club/ryc/pulls?q=is%3Apr+is%3Aclosed)                                                                                                   |
+| **2 ~ 5개월**   | API 연결 및 페이지 개발 , API 개발            | [PR 확인하기](https://github.com/Recruiting-Your-Club/ryc/pulls?q=is%3Apr+is%3Aclosed)                                                                                                   |
+| **5 ~ 6개월**   | QA                                            | [QA BUGLIST 확인하기](https://sangjunn.notion.site/Bug-List-25e976a7f22380909d1af032a2935c6f?pvs=74)                                                                                     |
+| **6 ~ 7개월**   | 서비스 홍보 및 사용자 유치                    |
+| **정기적 회의** | 안건 건의 및 진행상황 공유를 위한 정기적 회의 | [정기 회의록 확인하기](https://sangjunn.notion.site/18e976a7f22380bea053feaba5e15826)                                                                                                    |
+
+</br>
+
+## ⭐️ 개발 팀원
+
+### Front-End
+
+|              FE-Developer               |              FE-Developer              |             FE-Developer              |              FE-Developer               |
+| :-------------------------------------: | :------------------------------------: | :-----------------------------------: | :-------------------------------------: |
+|                 이미지                  |                 이미지                 |                이미지                 |                 이미지                  |
+| [권오성](https://github.com/ohsung0722) | [김영림](https://github.com/littleemm) | [윤의종](https://github.com/Dochanii) | [조준희](https://github.com/aiminghee3) |
+
+### Back-End
+
+|             BE-Developer              |                BE-Developer                |              BE-Developer               |
+| :-----------------------------------: | :----------------------------------------: | :-------------------------------------: |
+|                이미지                 |                   이미지                   |                 이미지                  |
+| [김시원](https://github.com/Huro0906) | [서상혁](https://github.com/SangHyeok0908) | [조상준](https://github.com/sangjun121) |
