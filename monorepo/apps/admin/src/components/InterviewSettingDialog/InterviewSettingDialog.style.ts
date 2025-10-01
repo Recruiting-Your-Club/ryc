@@ -6,7 +6,7 @@ import { hexToRgb } from '@ssoc/utils';
 export const s_dialog = css`
     max-width: 24dvw;
     max-height: 90dvh;
-    min-width: 50rem;
+    min-width: 55rem;
 `;
 
 export const s_header = css`
@@ -17,7 +17,7 @@ export const s_header = css`
 export const s_content = css`
     display: flex;
     flex-direction: row;
-    padding: 1rem 4rem 1rem 4rem;
+    padding: 1rem 3rem;
     overflow-y: auto;
 `;
 
@@ -39,7 +39,7 @@ export const s_perInformationContainer = css`
     flex-direction: column;
     border: 1px solid ${theme.colors.gray[200]};
     border-radius: 8px;
-    width: 38rem;
+    width: 43rem;
     padding: 1.5rem;
 `;
 
@@ -59,7 +59,7 @@ export const s_informationContainer = css`
     border-radius: 8px;
     height: 100%;
     max-height: 50rem;
-    width: 38rem;
+    width: 43rem;
     padding: 1.5rem;
     /* gap: 1rem; */
 `;
@@ -187,7 +187,7 @@ export const s_buttonGrid = css`
 `;
 
 export const s_numberButton = (isSelected: boolean) => css`
-    height: 3.8rem;
+    height: 4.1rem;
     ${isSelected &&
     css`
         background-color: rgba(${hexToRgb(theme.colors.default)}, 0.1);

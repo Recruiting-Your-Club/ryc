@@ -71,6 +71,8 @@ function InterviewSchedulePage() {
         time: '',
         number: 0,
     });
+    const [pendingValue, setPendingValue] = useState<string | null>(null);
+    const [openReminderDialog, setOpenReminderDialog] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -204,25 +206,35 @@ function InterviewSchedulePage() {
         }
     };
 
-    const handleChangeReminder = (newValue: string) => {
-        const previousValue = value;
-        setValue(newValue);
+    const handleConfirm = (newValue: string) => {
+        setPendingValue(newValue);
+        setOpenReminderDialog(true);
+    };
 
-        if (newValue === '24' || newValue === '3') {
+    const handleChangeReminder = () => {
+        if (!pendingValue) return;
+
+        const previousValue = value;
+        setValue(pendingValue);
+
+        if (pendingValue === '24' || pendingValue === '3') {
             patchInterviewReminder(
                 {
                     announcementId: announcementId!,
                     clubId: clubId!,
-                    reminderTime: Number(newValue),
+                    reminderTime: Number(pendingValue),
                 },
                 { onError: () => setValue(previousValue) },
             );
-        } else if (newValue === '0') {
+        } else if (pendingValue === '0') {
             deleteInterviewReminder(
                 { announcementId: announcementId!, clubId: clubId! },
                 { onError: () => setValue(previousValue) },
             );
         }
+
+        setOpenReminderDialog(false);
+        setPendingValue(null);
     };
 
     // effects
@@ -416,7 +428,7 @@ function InterviewSchedulePage() {
                     ]}
                     name="variableText"
                     value={value}
-                    onChange={handleChangeReminder}
+                    onChange={handleConfirm}
                     orientation="vertical"
                     size="sm"
                     sx={s_radios}
@@ -433,15 +445,18 @@ function InterviewSchedulePage() {
                 handleClose={() => setErrorDialogOpen(false)}
                 errorStatusCode={500}
             />
-            {(openConfirmDialog || openPatchDialog) && (
+            {(openConfirmDialog || openPatchDialog || openReminderDialog) && (
                 <ManageInterviewSlotDialog
-                    mode={openConfirmDialog ? 'delete' : 'edit'}
-                    open={openConfirmDialog || openPatchDialog}
-                    handleClose={() =>
-                        openConfirmDialog ? setOpenConfirmDialog(false) : setOpenPatchDialog(false)
-                    }
+                    mode={openConfirmDialog ? 'delete' : openPatchDialog ? 'edit' : 'reminder'}
+                    open={openConfirmDialog || openPatchDialog || openReminderDialog}
+                    handleClose={() => {
+                        if (openConfirmDialog) setOpenConfirmDialog(false);
+                        else if (openPatchDialog) setOpenPatchDialog(false);
+                        else setOpenReminderDialog(false);
+                    }}
                     handlePatchInterviewSlotPeople={handlePatchInterviewSlotPeople}
                     handleDeleteInterviewSlot={handleDeleteInterviewSlot}
+                    handleChangeReminder={handleChangeReminder}
                     selectedInterviewSlot={selectedInterviewSlot}
                 />
             )}
