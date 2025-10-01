@@ -16,7 +16,8 @@ export const s_pageContainer = css`
 `;
 
 export const s_weekMover = css`
-    width: 50rem;
+    /* width: 50rem; */
+    width: 50%;
     min-width: 50rem;
     border: 1px solid ${theme.colors.gray[300]};
     border-radius: 10px;
@@ -34,7 +35,9 @@ export const s_polygonSvg = css`
 
 export const s_tableContainer = css`
     display: flex;
-    width: 50rem;
+    /* width: 50rem; */
+    width: 50%;
+    min-width: 50rem;
     padding: 1rem 0;
 `;
 
@@ -97,11 +100,13 @@ export const s_perSlotContainer = css`
 export const s_timeAndNumberContainer = css`
     display: flex;
     flex-direction: column;
+    width: 100%;
     gap: 0.8rem;
 `;
 
 export const s_dateHeader = css`
     padding: 0.5rem 0.5rem;
+    white-space: nowrap;
 `;
 
 export const s_slotRow = css`
@@ -114,6 +119,7 @@ export const s_slotRow = css`
 export const s_slotInfo = css`
     display: flex;
     align-items: center;
+    gap: 2rem;
 `;
 
 export const s_slotText = css`
@@ -130,7 +136,8 @@ export const s_slotTitle = css`
 export const s_scheduleContentContainer = css`
     display: flex;
     flex-direction: column;
-    width: 50rem;
+    /* width: 50rem; */
+    width: 50%;
     min-width: 50rem;
     min-height: 20rem;
     max-height: 60rem;
@@ -159,7 +166,8 @@ export const s_slotTitleTextContainer = css`
 export const s_remindContainer = css`
     display: flex;
     flex-direction: column;
-    width: 50rem;
+    /* width: 50rem; */
+    width: 50%;
     min-width: 50rem;
     min-height: 20rem;
     max-height: 20rem;
