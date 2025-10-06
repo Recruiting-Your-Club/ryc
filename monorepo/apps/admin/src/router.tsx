@@ -37,6 +37,9 @@ const LazyDocumentEvaluationPage = lazy(
 const LazyApplicantSchedulePage = lazy(
     () => import('./pages/ApplicantSchedulePage/ApplicantSchedulePage'),
 );
+const LazyInterviewSchedulePage = lazy(
+    () => import('./pages/InterviewSchedulePage/InterviewSchedulePage'),
+);
 const LazyStepManagementPage = lazy(() => import('./pages/StepManagementPage/StepManagementPage'));
 
 const router = createBrowserRouter([
@@ -162,6 +165,18 @@ const router = createBrowserRouter([
                     <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<DocumentEvaluationLoadingPage />}>
                             <LazyDocumentEvaluationPage />
+                        </Suspense>
+                    </ErrorBoundaryWrapperPage>
+                ),
+            },
+
+            { path: 'schedule-addition/:clubId', element: <NonAnnouncementPage /> },
+            {
+                path: 'schedule-addition/:clubId/:announcementId',
+                element: (
+                    <ErrorBoundaryWrapperPage>
+                        <Suspense fallback={<ApplicantScheduleLoadingPage />}>
+                            <LazyInterviewSchedulePage />
                         </Suspense>
                     </ErrorBoundaryWrapperPage>
                 ),

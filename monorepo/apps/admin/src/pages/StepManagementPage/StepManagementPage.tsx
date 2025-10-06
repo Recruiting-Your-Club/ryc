@@ -1,16 +1,20 @@
-import type { InterviewDetailInformation } from '@api/domain/email/types';
 import type { EvaluationDetailWithSummary } from '@api/domain/evaluation/types';
 import type { StepApplicantWithoutImage } from '@api/domain/step/types';
 import { useStepMutations } from '@api/hooks';
 import { useEmailMutations } from '@api/hooks/useEmailMutations';
-import { applicantQueries, evaluationQueries, stepQueries } from '@api/queryFactory';
+import {
+    applicantQueries,
+    evaluationQueries,
+    interviewQueries,
+    stepQueries,
+} from '@api/queryFactory';
 import { stepKeys } from '@api/querykeyFactory';
 import Search from '@assets/images/search.svg';
 import {
     ApplicantDialog,
     CardBox,
     ErrorDialog,
-    InterviewSettingDialog,
+    InterviewEmailDialog,
     PlainEmailDialog,
 } from '@components';
 import {
@@ -60,7 +64,6 @@ function StepManagementPage() {
     const [isInterviewOpen, setIsInterviewOpen] = useState<boolean>(false);
     const [emailTargetList, setEmailTargetList] = useState<string[]>([]);
     const [errorDialogOpen, setErrorDialogOpen] = useState<boolean>(false);
-    const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false);
 
     // form hooks
     // query hooks
@@ -88,6 +91,12 @@ function StepManagementPage() {
     const { mutateAsync: sendInterviewEmail } = useEmailMutations.usePostInterviewEmail(
         () => setIsInterviewOpen,
     );
+
+    const { data: interviewSlots = [] } = useQuery({
+        ...interviewQueries.interviewSlot(announcementId!, clubId!),
+        enabled: isInterviewOpen,
+        throwOnError: true,
+    });
 
     // calculated values
     const isThreeStepProcess = totalSteps?.processes?.length === 3;
@@ -288,27 +297,14 @@ function StepManagementPage() {
             return false;
         }
     };
-
-    const handleInterviewEmail = async (
-        numberOfPeopleByInterviewDateRequests: InterviewDetailInformation[],
-        subject: string,
-        content: string,
-    ): Promise<boolean> => {
-        if (numberOfPeopleByInterviewDateRequests.length === 0) {
-            toast('인터뷰 일정을 선택해주세요!', { toastTheme: 'colored', type: 'error' });
-            return false;
-        }
-
+    const handleInterviewEmail = async (subject: string, content: string) => {
         if (!validateEmailInputs(subject, content)) return false;
 
         try {
             await sendInterviewEmail({
                 announcementId: announcementId!,
                 clubId: clubId!,
-                email: {
-                    numberOfPeopleByInterviewDateRequests,
-                    emailSendRequest: { recipients: emailTargetList, subject, content },
-                },
+                email: { subject, content },
             });
             return true;
         } catch {
@@ -346,7 +342,7 @@ function StepManagementPage() {
         setEmailTargetList(emails);
 
         if (isInterviewDialog) {
-            setOpenConfirmDialog(true);
+            setIsInterviewOpen(true);
         } else {
             setIsEmailOpen(true);
         }
@@ -445,10 +441,13 @@ function StepManagementPage() {
                         handleClose={handleClose}
                     />
                 )}
-                <InterviewSettingDialog
+                <InterviewEmailDialog
                     open={isInterviewOpen}
                     handleClose={handleInterviewSettingClose}
                     handleInterviewEmail={handleInterviewEmail}
+                    interviewSlots={interviewSlots}
+                    clubId={clubId!}
+                    announcementId={announcementId!}
                 />
                 <PlainEmailDialog
                     open={isEmailOpen}
@@ -460,19 +459,6 @@ function StepManagementPage() {
                     handleClose={() => setErrorDialogOpen(false)}
                     errorStatusCode={500}
                 />
-                {openConfirmDialog && (
-                    <ConfirmDialog
-                        type="confirm"
-                        title="면접 일정 생성 알림"
-                        content={`기존에 생성하신 면접 일정이 이미 있는 경우,\n다시 한번 면접 일정을 생성하시면\n기존 예약 일정 및 예약자들의 예약 상태는 모두 초기화돼요!`}
-                        open={true}
-                        cancelButton={true}
-                        handleClose={() => setOpenConfirmDialog(false)}
-                        actionHandler={() => setIsInterviewOpen(true)}
-                        actionPosition="center"
-                        dialogSize="md"
-                    />
-                )}
             </div>
         </div>
     );
