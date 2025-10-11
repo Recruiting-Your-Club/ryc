@@ -96,8 +96,6 @@ export const textareaContainer = (height: string = '350px', radius: string = '4p
     border: 1px solid ${theme.colors.gray[500]};
     border-radius: ${radius};
     padding: 8px;
-    ${theme.typography.bodyRegular}
-    font-size: ${DEFAULT_FONT_SIZE};
     text-align: left;
 
     &:focus {

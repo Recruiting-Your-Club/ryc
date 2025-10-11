@@ -1,5 +1,6 @@
 import {
     getInterviewInformation,
+    getInterviewReminder,
     getInterviewSlot,
     getUnreservedApplicant,
 } from '@api/domain/interview/interview';
@@ -22,6 +23,11 @@ const interviewQueries = {
         queryOptions({
             queryKey: interviewKeys.unreservedApplicant(announcementId, clubId),
             queryFn: () => getUnreservedApplicant({ announcementId, clubId }),
+        }),
+    interviewReminder: (announcementId: string, clubId: string) =>
+        queryOptions({
+            queryKey: interviewKeys.interviewReminder(announcementId, clubId),
+            queryFn: () => getInterviewReminder({ announcementId, clubId }),
         }),
 };
 

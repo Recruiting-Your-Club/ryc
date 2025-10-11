@@ -16,4 +16,6 @@ public interface EmailVerificationJpaRepository
   Optional<EmailVerificationEntity> findByEmail(String email);
 
   void deleteByAttempted(boolean b);
+
+  boolean existsByAttempted(boolean b);
 }

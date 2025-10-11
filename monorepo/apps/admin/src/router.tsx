@@ -1,12 +1,10 @@
 import { RecruitAgreementPage } from '@pages/RecruitCreatePage/RecruitAgreementPage/RecruitAgreementPage';
 import { lazy, Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { createBrowserRouter } from 'react-router';
 
 import { EntryLayout, ManagerLayout } from './layouts';
-import { ErrorBoundaryWrapperPage } from './pages';
+import { ErrorBoundaryWrapperPage, InterviewScheduleLoadingPage } from './pages';
 import { RecruitEditPage, RegisterAgreementPage } from './pages';
-import { ErrorFallbackPage } from './pages';
 import {
     AnnouncementPage,
     ApplicantScheduleLoadingPage,
@@ -36,6 +34,9 @@ const LazyDocumentEvaluationPage = lazy(
 );
 const LazyApplicantSchedulePage = lazy(
     () => import('./pages/ApplicantSchedulePage/ApplicantSchedulePage'),
+);
+const LazyInterviewSchedulePage = lazy(
+    () => import('./pages/InterviewSchedulePage/InterviewSchedulePage'),
 );
 const LazyStepManagementPage = lazy(() => import('./pages/StepManagementPage/StepManagementPage'));
 
@@ -162,6 +163,18 @@ const router = createBrowserRouter([
                     <ErrorBoundaryWrapperPage>
                         <Suspense fallback={<DocumentEvaluationLoadingPage />}>
                             <LazyDocumentEvaluationPage />
+                        </Suspense>
+                    </ErrorBoundaryWrapperPage>
+                ),
+            },
+
+            { path: 'schedule-addition/:clubId', element: <NonAnnouncementPage /> },
+            {
+                path: 'schedule-addition/:clubId/:announcementId',
+                element: (
+                    <ErrorBoundaryWrapperPage>
+                        <Suspense fallback={<InterviewScheduleLoadingPage />}>
+                            <LazyInterviewSchedulePage />
                         </Suspense>
                     </ErrorBoundaryWrapperPage>
                 ),

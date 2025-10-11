@@ -20,6 +20,7 @@ export const s_alertSvgContainer = css`
 export const s_contentContainer = css`
     display: flex;
     padding: 0rem 2rem;
+    gap: 2rem;
     flex: 1;
     justify-content: center;
 `;

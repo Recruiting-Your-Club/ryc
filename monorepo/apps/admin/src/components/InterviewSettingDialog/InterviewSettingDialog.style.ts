@@ -1,11 +1,12 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 
 import theme from '@ssoc/styles';
+import { hexToRgb } from '@ssoc/utils';
 
 export const s_dialog = css`
-    max-width: 64dvw;
+    max-width: 24dvw;
     max-height: 90dvh;
-    min-width: 115rem;
+    min-width: 55rem;
 `;
 
 export const s_header = css`
@@ -16,74 +17,51 @@ export const s_header = css`
 export const s_content = css`
     display: flex;
     flex-direction: row;
-    padding: 2rem 4rem;
-    overflow: hidden;
+    padding: 1rem 3rem;
+    overflow-y: auto;
+`;
+
+export const s_action = css`
+    display: flex;
+    padding: 1rem 4rem 2rem 4rem;
 `;
 
 export const s_selectContainer = css`
-    flex: 2.5;
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 1rem 1rem 5.5rem 1rem;
+    padding: 1rem 1rem 1rem 1rem;
     gap: 1rem;
 `;
 
 export const s_perInformationContainer = css`
     display: flex;
     flex-direction: column;
+    border: 1px solid ${theme.colors.gray[200]};
+    border-radius: 8px;
+    width: 43rem;
+    padding: 1.5rem;
 `;
 
 export const s_emptyPlace = css`
     height: 100%;
 `;
 
-export const s_resetButton = css`
-    /* width: 8rem; */
-    margin: 1rem 0 0 0;
-    background-color: ${theme.colors.gray[100]};
-    &:hover {
-        background-color: ${theme.colors.gray[200]};
-    }
+export const s_actionButton = css`
+    width: 6rem;
+    height: 3.5rem;
 `;
 
 export const s_informationContainer = css`
-    flex: 4;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    padding: 3.5rem 1rem 5.7rem 1rem;
-    gap: 1rem;
-`;
-
-export const s_verticalDivider = css`
-    border-left: 1px solid ${theme.colors.gray[200]};
-    height: 100%;
-    margin: 0 1rem;
-`;
-
-export const s_emailContainer = css`
-    flex: 3.5;
-    height: 100%;
-    padding: 1rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    justify-content: center; /* 세로 가운데 정렬 */
-    /* align-items: stretch; */
-`;
-
-export const s_titleInput = css`
-    border: 1px solid ${theme.colors.gray[500]};
+    border: 1px solid ${theme.colors.gray[200]};
     border-radius: 8px;
-    padding-left: 1rem;
-    ${theme.typography.captionRegular}
-`;
-
-export const s_input = css`
-    ::placeholder {
-        ${theme.typography.captionRegular}
-    }
+    height: 100%;
+    max-height: 50rem;
+    width: 43rem;
+    padding: 1.5rem;
+    /* gap: 1rem; */
 `;
 
 export const s_textAreaInner = css`
@@ -122,32 +100,6 @@ export const s_textareaInner = css`
 export const s_textAreaOuter = css`
     height: 100%;
     margin: 0;
-`;
-
-export const s_titleWrapper = css`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
-
-export const s_contentWrapper = css`
-    flex: 8.5;
-    /* height: 100%; */
-    display: flex;
-    flex-direction: column;
-    min-height: 35rem;
-    gap: 1rem;
-    /* overflow: hidden; */
-`;
-
-export const s_submitButtonWrapper = css`
-    flex: 0.5;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    height: 3rem;
-    max-height: 3rem;
 `;
 
 export const s_informationInput = css`
@@ -193,7 +145,7 @@ export const s_inputFormSection = css`
 export const s_calendar = css`
     margin: 1.5rem 0;
     width: 100%;
-    height: 60rem;
+    height: 28rem;
 `;
 
 export const s_helper = css`
@@ -203,33 +155,6 @@ export const s_helper = css`
 
 export const s_numberUnitText = css`
     margin: 0 0 0 -7.5rem;
-`;
-
-export const s_editorRoot = css`
-    min-width: 43rem;
-    height: 100%;
-    justify-content: start;
-`;
-
-export const s_editorToolbar = css`
-    /* flex: 0.8; */
-    height: 4rem;
-    max-height: 4rem;
-    background-color: ${theme.colors.white};
-    border-radius: 8px;
-    border: 1px solid ${theme.colors.gray[500]};
-`;
-
-export const s_editorTextarea = css`
-    /* flex: 9.2; */
-    height: 80%;
-    resize: none;
-    border-radius: 8px;
-    transition: border-color 0.3s ease-in-out;
-    &:focus {
-        border-color: ${theme.colors.default};
-        outline: none;
-    }
 `;
 
 export const s_textAndTooltipContainer = css`
@@ -253,4 +178,39 @@ export const s_informSvg = css`
 
 export const s_tooltipContent = css`
     white-space: pre-line;
+`;
+
+export const s_buttonGrid = css`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); // 가로 3개
+    grid-gap: 0.5rem; // 버튼 간격
+`;
+
+export const s_numberButton = (isSelected: boolean) => css`
+    height: 4.1rem;
+    ${isSelected &&
+    css`
+        background-color: rgba(${hexToRgb(theme.colors.default)}, 0.1);
+        color: ${theme.colors.default};
+        border-color: ${theme.colors.default};
+    `};
+`;
+
+export const s_contentText = css`
+    margin: 0 0 1rem 0;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export const s_stepContainer = css`
+    animation: ${fadeIn} 0.3s ease forwards;
 `;
