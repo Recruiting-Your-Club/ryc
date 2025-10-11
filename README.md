@@ -182,12 +182,12 @@
 
 |              FE-Developer               |              FE-Developer              |             FE-Developer              |              FE-Developer               |
 | :-------------------------------------: | :------------------------------------: | :-----------------------------------: | :-------------------------------------: |
-|                 이미지                  |                 이미지                 |                이미지                 |                 이미지                  |
+| <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/54ea2199-2b8f-4b92-b3e3-08cfaa792a4f" /> |  <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/28cd9e20-0236-40db-8cbb-b8b7f7e06b82" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/cbfd7836-fb83-4706-8828-af8af381fb9d" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/39e25339-fcf3-4000-a196-22c883d86961" /> |
 | [권오성](https://github.com/ohsung0722) | [김영림](https://github.com/littleemm) | [윤의종](https://github.com/Dochanii) | [조준희](https://github.com/aiminghee3) |
 
 ### Back-End
 
 |             BE-Developer              |                BE-Developer                |              BE-Developer               |
 | :-----------------------------------: | :----------------------------------------: | :-------------------------------------: |
-|                이미지                 |                   이미지                   |                 이미지                  |
+| <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/71cd8de6-0422-4d45-95fc-5e61d5b88393" /> |  <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/73c8edc7-8506-4004-a591-e09f9f0d9ff5" /> |     <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/4d55322f-5f38-45a8-99dd-7c689217d59d" /> |
 | [김시원](https://github.com/Huro0906) | [서상혁](https://github.com/SangHyeok0908) | [조상준](https://github.com/sangjun121) |
