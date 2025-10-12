@@ -144,10 +144,25 @@
 
 </br>
 
-|                        지원자 면접 일정 관리                        |
-| :-----------------------------------------------------------------: |
-| <img src='./monorepo/packages/assets/images/readme_adminInfo.gif'/> |
-|            지원자 면접 일정을 직접 설정할 수 있는 페이지            |
+|                         지원자 면접 일정 관리 - 1                         |
+| :-----------------------------------------------------------------------: |
+| <img src='./monorepo/packages/assets/images/readme_interviewEmail2.gif'/> |
+|                        지원자 면접 일정 메일 전송                         |
+
+- 관리자가 지원자들에게 직접 면접 일정을 이메일로 전송할 수 있습니다.
+- 면접 일정은 '면접 대기자' 전원을 선택했을 경우 전송 가능합니다.
+
+|                         지원자 면접 일정 관리 - 2                         |
+| :-----------------------------------------------------------------------: |
+| <img src='./monorepo/packages/assets/images/readme_userReservation.gif'/> |
+|              지원자가 면접 일정을 직접 예약할 수 있는 페이지              |
+
+- 면접 일정 예약 메일을 받은 지원자가 직접 면접 일정을 예약할 수 있습니다.
+
+|                         지원자 면접 일정 관리 - 3                          |
+| :------------------------------------------------------------------------: |
+| <img src='./monorepo/packages/assets/images/readme_adminReservation.gif'/> |
+|               지원자 면접 일정을 직접 설정할 수 있는 페이지                |
 
 - 미처 면접 예약을 못했거나 특수한 상황인 경우, 관리자가 직접 지원자들의 면접 일정을 조정할 수 있습니다.
 
@@ -180,14 +195,14 @@
 
 ### Front-End
 
-|              FE-Developer               |              FE-Developer              |             FE-Developer              |              FE-Developer               |
-| :-------------------------------------: | :------------------------------------: | :-----------------------------------: | :-------------------------------------: |
-| <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/54ea2199-2b8f-4b92-b3e3-08cfaa792a4f" /> |  <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/28cd9e20-0236-40db-8cbb-b8b7f7e06b82" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/cbfd7836-fb83-4706-8828-af8af381fb9d" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/39e25339-fcf3-4000-a196-22c883d86961" /> |
-| [권오성](https://github.com/ohsung0722) | [김영림](https://github.com/littleemm) | [윤의종](https://github.com/Dochanii) | [조준희](https://github.com/aiminghee3) |
+|                                                            FE-Developer                                                            |                                                            FE-Developer                                                            |                                                            FE-Developer                                                            |                                                            FE-Developer                                                            |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: |
+| <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/54ea2199-2b8f-4b92-b3e3-08cfaa792a4f" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/28cd9e20-0236-40db-8cbb-b8b7f7e06b82" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/cbfd7836-fb83-4706-8828-af8af381fb9d" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/39e25339-fcf3-4000-a196-22c883d86961" /> |
+|                                              [권오성](https://github.com/ohsung0722)                                               |                                               [김영림](https://github.com/littleemm)                                               |                                               [윤의종](https://github.com/Dochanii)                                                |                                              [조준희](https://github.com/aiminghee3)                                               |
 
 ### Back-End
 
-|             BE-Developer              |                BE-Developer                |              BE-Developer               |
-| :-----------------------------------: | :----------------------------------------: | :-------------------------------------: |
-| <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/71cd8de6-0422-4d45-95fc-5e61d5b88393" /> |  <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/73c8edc7-8506-4004-a591-e09f9f0d9ff5" /> |     <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/4d55322f-5f38-45a8-99dd-7c689217d59d" /> |
-| [김시원](https://github.com/Huro0906) | [서상혁](https://github.com/SangHyeok0908) | [조상준](https://github.com/sangjun121) |
+|                                                            BE-Developer                                                            |                                                            BE-Developer                                                            |                                                            BE-Developer                                                            |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: |
+| <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/71cd8de6-0422-4d45-95fc-5e61d5b88393" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/73c8edc7-8506-4004-a591-e09f9f0d9ff5" /> | <img width="120" height="120" alt="image" src="https://github.com/user-attachments/assets/4d55322f-5f38-45a8-99dd-7c689217d59d" /> |
+|                                               [김시원](https://github.com/Huro0906)                                                |                                             [서상혁](https://github.com/SangHyeok0908)                                             |                                              [조상준](https://github.com/sangjun121)                                               |
