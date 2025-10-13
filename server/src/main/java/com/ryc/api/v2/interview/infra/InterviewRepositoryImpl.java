@@ -55,6 +55,18 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   }
 
   @Override
+  public InterviewSlot findSlotByReservationId(String reservationId) {
+    InterviewSlotEntity entity =
+        interviewReservationJpaRepository
+            .findInterviewSlotById(reservationId)
+            .orElseThrow(
+                () ->
+                    new NoSuchElementException(
+                        "Interview slot not found for reservation id: " + reservationId));
+    return InterviewSlotMapper.toDomain(entity);
+  }
+
+  @Override
   public InterviewSlot findSlotByIdWithLock(String interviewSlotId) {
     InterviewSlotEntity entity =
         interviewSlotJpaRepository
@@ -78,11 +90,6 @@ public class InterviewRepositoryImpl implements InterviewRepository {
   @Override
   public void deleteReservationById(String reservationId) {
     interviewReservationJpaRepository.deleteById(reservationId);
-  }
-
-  @Override
-  public boolean existsReservationById(String reservationId) {
-    return interviewReservationJpaRepository.existsById(reservationId);
   }
 
   @Override
