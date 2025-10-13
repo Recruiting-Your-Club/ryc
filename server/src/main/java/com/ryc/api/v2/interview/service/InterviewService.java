@@ -297,7 +297,6 @@ public class InterviewService {
       InterviewSlot slot = interviewSlotOptional.get();
 
       reservation = slot.getReservationByApplicantId(applicantId);
-
       InterviewSlot updatedSlot = slot.removeReservation(reservation);
       interviewRepository.saveSlot(updatedSlot);
     } else {
@@ -338,11 +337,9 @@ public class InterviewService {
 
   @Transactional
   public void deleteInterviewReservation(String reservationId) {
-    if (!interviewRepository.existsReservationById(reservationId)) {
-      return;
-    }
-
-    interviewRepository.deleteReservationById(reservationId);
+    InterviewSlot slot = interviewRepository.findSlotByReservationId(reservationId);
+    InterviewSlot updatedSlot = slot.removeReservationById(reservationId);
+    interviewRepository.saveSlot(updatedSlot);
   }
 
   @Transactional

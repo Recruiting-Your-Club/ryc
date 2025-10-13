@@ -23,6 +23,16 @@ public interface InterviewReservationJpaRepository
     """)
   Optional<InterviewSlotEntity> findInterviewSlotByApplicant_Id(String applicantId);
 
+  @Query(
+      """
+    SELECT s
+    FROM InterviewReservationEntity r
+    JOIN r.interviewSlot s
+    LEFT JOIN FETCH s.interviewReservations
+    WHERE r.id = :reservationId
+    """)
+  Optional<InterviewSlotEntity> findInterviewSlotById(String reservationId);
+
   Boolean existsByApplicant_Id(String applicantId);
 
   void deleteByApplicant_Id(String applicantId);

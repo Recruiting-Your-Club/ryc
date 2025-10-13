@@ -149,6 +149,18 @@ public class InterviewSlot {
         .build();
   }
 
+  public InterviewSlot removeReservationById(String reservationId) {
+    InterviewReservation reservation =
+        reservations.stream()
+            .filter(r -> r.getId().equals(reservationId))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new NoSuchElementException(
+                        "Interview reservation not found with id: " + reservationId));
+    return removeReservation(reservation);
+  }
+
   // Getter 어노테이션이 생성하는 Get 메서드보다 직접 작성한 Get 메서드가 우선시 됨.
   public List<InterviewReservation> getReservations() {
     return List.copyOf(reservations);

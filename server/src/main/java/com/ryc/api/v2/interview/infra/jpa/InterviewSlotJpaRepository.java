@@ -32,12 +32,12 @@ public interface InterviewSlotJpaRepository extends JpaRepository<InterviewSlotE
   @Query(
       value =
           """
-    SELECT * FROM interview_slots AS s
-    WHERE s.remind_time IS NOT NULL
-    AND s.reminder_status = 'PENDING'
-    AND s.start_date > NOW()
-    AND s.start_date <= DATE_ADD(NOW(), INTERVAL s.remind_time HOUR)
-    """,
+              SELECT * FROM interview_slots AS s
+              WHERE s.remind_time IS NOT NULL
+              AND s.reminder_status = 'PENDING'
+              AND s.start_date > NOW()
+              AND s.start_date <= DATE_ADD(NOW(), INTERVAL s.remind_time HOUR)
+              """,
       nativeQuery = true)
   List<InterviewSlotEntity> findSlotsForReminder();
 }
