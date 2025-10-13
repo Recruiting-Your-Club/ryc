@@ -2,6 +2,7 @@ package com.ryc.api.v2.email.presentation;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
@@ -24,6 +25,7 @@ import com.ryc.api.v2.email.service.EmailService;
 import com.ryc.api.v2.email.service.EmailVerificationService;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.security.dto.CustomUserDetail;
+import com.ryc.api.v2.util.UrlUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -74,9 +76,12 @@ public class EmailHttpApi {
           @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
           @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
           String announcementId,
-      @Valid @RequestBody InterviewSlotEmailSendRequest body) {
+      @Valid @RequestBody InterviewSlotEmailSendRequest body,
+      HttpServletRequest request) {
+    String requestUrl = UrlUtil.getRequestUrl(request);
     List<EmailSendResponse> response =
-        emailService.createInterviewSlotEmails(userDetail.getId(), clubId, announcementId, body);
+        emailService.createInterviewSlotEmails(
+            requestUrl, userDetail.getId(), clubId, announcementId, body);
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
   }
 

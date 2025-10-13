@@ -95,7 +95,11 @@ public class EmailService {
 
   @Transactional
   public List<EmailSendResponse> createInterviewSlotEmails(
-      String adminId, String clubId, String announcementId, InterviewSlotEmailSendRequest body) {
+      String requestUrl,
+      String adminId,
+      String clubId,
+      String announcementId,
+      InterviewSlotEmailSendRequest body) {
 
     Club club = clubRepository.findById(clubId);
     List<Applicant> applicants =
@@ -109,6 +113,7 @@ public class EmailService {
                 applicant -> {
                   String content =
                       interviewLinkHtmlTemplate
+                              .replace("${base-url}", requestUrl)
                               .replace("${club-name}", club.getName())
                               .replace("${club-id}", club.getId())
                               .replace("${announcement-id}", announcementId)
