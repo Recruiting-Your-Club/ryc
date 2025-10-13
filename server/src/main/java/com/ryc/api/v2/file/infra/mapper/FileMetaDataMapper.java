@@ -35,6 +35,7 @@ public class FileMetaDataMapper {
         .isDeleted(fileMetadataEntity.isDeleted())
         .accessToken(fileMetadataEntity.getAccessToken())
         .displayOrder(fileMetadataEntity.getDisplayOrder())
+        .createdAt(fileMetadataEntity.getCreatedAt())
         .build();
   }
 }

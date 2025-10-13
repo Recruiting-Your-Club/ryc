@@ -224,6 +224,7 @@ public class FileService {
                 FileMetaData::getId, m -> FileGetResponse.of(m, getPrivateFileGetUrl(m))));
   }
 
+  @Transactional
   public void deleteOrphanImage() {
     List<FileMetaData> orphanImages =
         fileMetaDataRepository.findAll().stream()
