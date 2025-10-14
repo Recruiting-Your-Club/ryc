@@ -9,12 +9,11 @@ public class UrlUtil {
   }
 
   public static String getRequestUrl(HttpServletRequest request) {
-    String scheme = request.getScheme();
     String serverName = request.getServerName();
     int serverPort = request.getServerPort();
 
     StringBuilder baseUrl = new StringBuilder();
-    baseUrl.append(scheme).append("://").append(request.getServerName());
+    baseUrl.append("https://").append(request.getServerName());
 
     // localhost인 경우에만 포트 추가
     if (serverName.equals("localhost")) {
