@@ -26,6 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
   @Value("${DEV_SERVER_URL}")
   private String DEV_SERVER_URL;
 
+  @Value("${PRODUCTION_SERVER_URL}")
+  private String PRODUCTION_SERVER_URL;
+
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry
@@ -42,7 +45,9 @@ public class WebConfig implements WebMvcConfigurer {
             LOCAL_CLIENT_HTTPS_URL,
             LOCAL_CLIENT_HTTPS_URL + "/",
             DEV_SERVER_URL,
-            DEV_SERVER_URL + "/") // 허용할 Origin
+            DEV_SERVER_URL + "/",
+            PRODUCTION_SERVER_URL,
+            PRODUCTION_SERVER_URL + "/") // 허용할 Origin
         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // 허용할 HTTP 메서드
         .allowCredentials(true) // 쿠키 인증 요청 허용
         .allowedHeaders("*")
