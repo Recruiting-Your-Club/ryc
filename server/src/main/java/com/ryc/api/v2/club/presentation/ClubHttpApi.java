@@ -20,7 +20,8 @@ import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
 import com.ryc.api.v2.club.presentation.dto.response.MyClubGetResponse;
 import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.club.service.ClubCommandService;
+import com.ryc.api.v2.club.service.ClubQueryService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.ClubErrorCode;
@@ -40,7 +41,8 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "동아리")
 public class ClubHttpApi {
 
-  private final ClubService clubService;
+  private final ClubCommandService clubCommandService;
+  private final ClubQueryService clubQueryService;
 
   @PostMapping
   @Operation(summary = "동아리 생성 API")
@@ -51,7 +53,7 @@ public class ClubHttpApi {
       @AuthenticationPrincipal CustomUserDetail userDetail,
       @Valid @RequestBody ClubCreateRequest body) {
 
-    ClubCreateResponse response = clubService.createClub(userDetail.getId(), body);
+    ClubCreateResponse response = clubCommandService.createClub(userDetail.getId(), body);
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/{id}")
@@ -80,14 +82,14 @@ public class ClubHttpApi {
           @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.")
           String id,
       @Valid @RequestBody ClubUpdateRequest body) {
-    DetailClubResponse response = clubService.updateClub(id, body);
+    DetailClubResponse response = clubCommandService.updateClub(id, body);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping
   @Operation(summary = "모든 동아리 조회 API")
   public ResponseEntity<List<SimpleClubResponse>> getAllClub() {
-    List<SimpleClubResponse> responses = clubService.getAllClubWithAnnouncementStatus();
+    List<SimpleClubResponse> responses = clubQueryService.getAllClubWithAnnouncementStatus();
     return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
 
@@ -101,7 +103,7 @@ public class ClubHttpApi {
           @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.")
           @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.")
           String id) {
-    DetailClubResponse response = clubService.getClub(id);
+    DetailClubResponse response = clubQueryService.getClub(id);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
@@ -109,7 +111,7 @@ public class ClubHttpApi {
   @Operation(summary = "사용자가 속한 동아리 조회 API", description = "사용자가 속한 동아리들을 조회합니다.")
   public ResponseEntity<List<MyClubGetResponse>> getMyClubs(
       @AuthenticationPrincipal CustomUserDetail userDetail) {
-    List<MyClubGetResponse> responses = clubService.getMyClubs(userDetail.getId());
+    List<MyClubGetResponse> responses = clubQueryService.getMyClubs(userDetail.getId());
     return ResponseEntity.status(HttpStatus.OK).body(responses);
   }
 
@@ -126,7 +128,7 @@ public class ClubHttpApi {
           @NotBlank(message = "동아리 초대코드는 공백일 수 없습니다.")
           @UUID(message = "동아리 초대코드는 UUID 포멧이어야 합니다.")
           String inviteCode) {
-    SimpleClubResponse response = clubService.getClubByInviteCode(inviteCode);
+    SimpleClubResponse response = clubQueryService.getClubByInviteCode(inviteCode);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
@@ -141,7 +143,7 @@ public class ClubHttpApi {
           @NotBlank(message = "동아리 아이디는 공백일 수 없습니다.")
           @UUID(message = "동아리 아이디는 UUID 포멧이어야 합니다.")
           String id) {
-    clubService.deleteClub(id);
+    clubCommandService.deleteClub(id);
     return ResponseEntity.noContent().build();
   }
 }

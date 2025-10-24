@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import com.ryc.api.v2.club.service.ClubService;
+import com.ryc.api.v2.club.service.ClubQueryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,14 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClubAspect {
 
-  private final ClubService clubService;
+  private final ClubQueryService clubQueryService;
 
   @Before("@annotation(com.ryc.api.v2.common.aop.annotation.ValidClub)")
   public void validateClubId(JoinPoint joinPoint) {
     MethodSignature signature = (MethodSignature) joinPoint.getSignature();
     String clubId = extractParameters(signature.getParameterNames(), joinPoint.getArgs());
 
-    if (!clubService.existClubById(clubId)) {
+    if (!clubQueryService.existClubById(clubId)) {
       throw new NoSuchElementException("동아리를 찾을 수 없습니다.");
     }
   }
