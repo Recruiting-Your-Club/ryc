@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
-import com.ryc.api.v2.admin.service.AdminService;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.club.domain.Club;
@@ -32,14 +32,14 @@ public class ClubFacade {
 
   private final ClubService clubService;
   private final ClubRoleService clubRoleService;
-  private final AdminService adminService;
+  private final AdminRepository adminRepository;
   private final AnnouncementService announcementService;
   private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public ClubCreateResponse createClub(String adminId, ClubCreateRequest body) {
     Club savedClub = clubService.createClub(body);
-    Admin admin = adminService.getAdminById(adminId);
+    Admin admin = adminRepository.findById(adminId);
     clubRoleService.assignRole(admin, savedClub, Role.OWNER);
     return new ClubCreateResponse(savedClub.getId());
   }

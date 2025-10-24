@@ -106,10 +106,7 @@ public class AuthService {
 
   @Transactional
   public String saveRefreshToken(String adminId, String tokenValue, LocalDateTime expirationTime) {
-    Admin admin =
-        adminRepository
-            .findById(adminId)
-            .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + adminId));
+    Admin admin = adminRepository.findById(adminId);
 
     refreshTokenRepository.deleteRefreshTokenByAdmin(admin);
     refreshTokenRepository.flush();

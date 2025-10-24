@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.admin.domain.Admin;
+import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.admin.domain.event.AdminDeletedEvent;
-import com.ryc.api.v2.admin.service.AdminService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
 import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
@@ -39,7 +39,7 @@ public class ClubRoleService {
   private final ClubRoleRepository clubRoleRepository;
   private final ClubRepository clubRepository;
   private final FileService fileService;
-  private final AdminService adminService;
+  private final AdminRepository adminRepository;
 
   @Transactional
   public ClubRole assignRole(Admin admin, Club club, Role role) {
@@ -86,7 +86,7 @@ public class ClubRoleService {
       throw new ClubException(ClubErrorCode.CLUB_INVITE_EXPIRED);
     }
 
-    Admin newAdmin = adminService.getAdminById(newAdminId);
+    Admin newAdmin = adminRepository.findById(newAdminId);
     Club club = clubRepository.findById(clubId);
 
     // 동아리 아이디와 초대 코드가 일치하지 않는 경우 예외 처리
