@@ -48,7 +48,7 @@ public class EmailService {
   private final ApplicantRepository applicantRepository;
 
   public EmailService(
-      @Value("${SSOC_EMAIL_ID}") String ssocId,
+      @Value("${ssoc.email-id}") String ssocId,
       EmailRepository emailRepository,
       ClubRepository clubRepository,
       ApplicantRepository applicantRepository,

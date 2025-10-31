@@ -25,8 +25,8 @@ public class DiscordNotifier {
   private final RestTemplate restTemplate = new RestTemplate();
 
   public DiscordNotifier(
-      @Value("${DISCORD_SERVER_ERROR_HOOK_URL}") String serverErrorWebhookUrl,
-      @Value("${DISCORD_GENERAL_ERROR_HOOK_URL}") String generalErrorWebhookUrl) {
+      @Value("${discord.server.error-hook-url}") String serverErrorWebhookUrl,
+      @Value("${discord.general.error-hook-url}") String generalErrorWebhookUrl) {
     this.serverErrorWebhookUrl = serverErrorWebhookUrl;
     this.generalErrorWebhookUrl = generalErrorWebhookUrl;
   }

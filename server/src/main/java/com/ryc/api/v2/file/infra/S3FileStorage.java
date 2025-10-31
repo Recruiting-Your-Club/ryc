@@ -24,7 +24,7 @@ public class S3FileStorage {
   private final S3Presigner presigner;
   private final S3Client s3Client;
 
-  @Value("${CLOUD_S3_BUCKET}")
+  @Value("${cloud.s3.bucket}")
   private String bucketName;
 
   public String getUploadPresignedUrl(String s3Key, String contentType) {
