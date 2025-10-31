@@ -1,6 +1,7 @@
 package com.ryc.api.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -18,6 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ryc.api.v2.security.exception.RestAuthenticationEntryPoint;
 import com.ryc.api.v2.security.exception.TokenAccessDeniedHandler;
@@ -34,16 +38,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-  @Value("${SECURITY_WHITELIST_ALL_METHOD_PATHS}")
+  @Value("#{'${cors.allowed-origins:http://localhost:3000}'.split(',')}")
+  private List<String> allowedOrigins;
+
+  @Value("${security.whitelist.all.method-paths}")
   private String[] whitelistAllPaths;
 
-  @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}")
+  @Value("${security.whitelist.get.method-paths}")
   private String[] whitelistGetPaths;
 
-  @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}")
+  @Value("${security.whitelist.post.method-paths}")
   private String[] whitelistPostPaths;
 
-  @Value("${SECURITY_WHITELIST_PATCH_METHOD_PATHS}")
+  @Value("${security.whitelist.patch.method-paths}")
   private String[] whitelistPatchPaths;
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -58,6 +65,7 @@ public class SecurityConfiguration {
     http.csrf(AbstractHttpConfigurer::disable) // CSRF 비활성화
         .formLogin(AbstractHttpConfigurer::disable) // 폼 로그인 비활성
         .httpBasic(AbstractHttpConfigurer::disable) // 기본 인증 비활성
+        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // cors 설정
         .addFilterBefore(
             jwtAuthenticationFilter, EmailPasswordAuthenticationFilter.class) // jwt 인증 필터
         .addFilterAt(
@@ -101,6 +109,20 @@ public class SecurityConfiguration {
   public AuthenticationManager authenticationManager(
       AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(allowedOrigins);
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+    config.setAllowedHeaders(List.of("*"));
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return source;
   }
 
   private RequestMatcher[] regexMatchers(String[] regexes, HttpMethod method) {
