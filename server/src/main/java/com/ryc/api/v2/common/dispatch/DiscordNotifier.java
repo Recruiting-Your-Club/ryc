@@ -3,6 +3,7 @@ package com.ryc.api.v2.common.dispatch;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import com.ryc.api.v2.common.exception.event.DiscordInternalServerErrorEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Profile("prod")
 @Component
 public class DiscordNotifier {
 
