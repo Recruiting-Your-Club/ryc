@@ -93,7 +93,7 @@ public class SwaggerConfiguration {
             .bearerFormat("JWT");
     Components components = new Components().addSecuritySchemes(jwt, securityScheme);
     Info apiInfo =
-        new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
+        new Info().title("SSOC API").description("Sejong Student Of Club API 문서").version("2.0.0");
 
     return new OpenAPI().info(apiInfo).components(components);
   }
