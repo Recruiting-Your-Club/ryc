@@ -3,6 +3,7 @@ package com.ryc.api.v2.common.dispatch;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import com.ryc.api.v2.common.exception.event.DiscordInternalServerErrorEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Profile("prod")
 @Component
 public class DiscordNotifier {
 
@@ -25,8 +27,8 @@ public class DiscordNotifier {
   private final RestTemplate restTemplate = new RestTemplate();
 
   public DiscordNotifier(
-      @Value("${DISCORD_SERVER_ERROR_HOOK_URL}") String serverErrorWebhookUrl,
-      @Value("${DISCORD_GENERAL_ERROR_HOOK_URL}") String generalErrorWebhookUrl) {
+      @Value("${discord.server.error-hook-url}") String serverErrorWebhookUrl,
+      @Value("${discord.general.error-hook-url}") String generalErrorWebhookUrl) {
     this.serverErrorWebhookUrl = serverErrorWebhookUrl;
     this.generalErrorWebhookUrl = generalErrorWebhookUrl;
   }

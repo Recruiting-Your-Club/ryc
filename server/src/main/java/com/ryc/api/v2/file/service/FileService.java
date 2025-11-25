@@ -33,7 +33,7 @@ public class FileService {
   private final FileMetaDataRepository fileMetaDataRepository;
   private final S3FileStorage s3FileStorage;
 
-  @Value("${CLOUD_AWS_CDN_DOMAIN}")
+  @Value("${cloud.aws.cdn_domain}")
   private String cdnDomain;
 
   @Transactional
