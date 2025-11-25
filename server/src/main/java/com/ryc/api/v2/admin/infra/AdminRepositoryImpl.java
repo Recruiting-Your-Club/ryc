@@ -2,9 +2,10 @@ package com.ryc.api.v2.admin.infra;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.ryc.api.v2.admin.domain.Admin;
@@ -31,16 +32,20 @@ public class AdminRepositoryImpl implements AdminRepository {
   }
 
   @Override
-  public Optional<Admin> findByEmail(String email) {
-    return adminJpaRepository.findByEmail(email).map(AdminMapper::toDomain);
+  public Admin findByEmail(String email) {
+    return adminJpaRepository
+        .findByEmail(email)
+        .map(AdminMapper::toDomain)
+        .orElseThrow(() -> new UsernameNotFoundException("admin not found"));
   }
 
   @Override
-  public Optional<Admin> findById(String id) {
+  public Admin findById(String id) {
     return adminJpaRepository
         .findById(id)
         .filter(a -> !a.getIsDeleted())
-        .map(AdminMapper::toDomain);
+        .map(AdminMapper::toDomain)
+        .orElseThrow(() -> new NoSuchElementException("Admin not found with id: " + id));
   }
 
   @Override

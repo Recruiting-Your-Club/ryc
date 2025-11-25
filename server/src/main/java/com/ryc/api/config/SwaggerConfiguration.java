@@ -35,8 +35,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @OpenAPIDefinition(
     servers = {
-      @Server(url = "${DEV_SERVER_URL}", description = "개발 서버"),
-      @Server(url = "${LOCAL_SERVER_URL}", description = "로컬 서버")
+      @Server(url = "https://dev.api.ssoc.kr", description = "개발 서버"),
+      @Server(url = "http://localhost:8080", description = "로컬 서버")
     })
 @Configuration
 public class SwaggerConfiguration {
@@ -63,9 +63,9 @@ public class SwaggerConfiguration {
    * Swagger 문서에서 일관된 예시를 제공합니다.
    */
   public SwaggerConfiguration(
-      @Value("${SECURITY_WHITELIST_GET_METHOD_PATHS}") String[] whitelistGetPatterns,
-      @Value("${SECURITY_WHITELIST_POST_METHOD_PATHS}") String[] whitelistPostPatterns,
-      @Value("${SECURITY_WHITELIST_PATCH_METHOD_PATHS}") String[] whitelistPatchPatterns) {
+      @Value("${security.whitelist.get.method-paths}") String[] whitelistGetPatterns,
+      @Value("${security.whitelist.post.method-paths}") String[] whitelistPostPatterns,
+      @Value("${security.whitelist.patch.method-paths}") String[] whitelistPatchPatterns) {
     this.whitelistGetPatterns =
         Arrays.stream(whitelistGetPatterns)
             .map(path -> path.startsWith("/") ? path : "/" + path)
@@ -93,7 +93,7 @@ public class SwaggerConfiguration {
             .bearerFormat("JWT");
     Components components = new Components().addSecuritySchemes(jwt, securityScheme);
     Info apiInfo =
-        new Info().title("RYC API").description("Recruiting Your Club API 문서").version("1.0.0");
+        new Info().title("SSOC API").description("Sejong Student Of Club API 문서").version("2.0.0");
 
     return new OpenAPI().info(apiInfo).components(components);
   }

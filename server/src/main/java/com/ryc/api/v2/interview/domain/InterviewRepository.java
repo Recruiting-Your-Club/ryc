@@ -18,6 +18,8 @@ public interface InterviewRepository {
 
   InterviewSlot findSlotById(String interviewSlotId);
 
+  InterviewSlot findSlotByReservationId(String reservationId);
+
   InterviewSlot findSlotByIdWithLock(String interviewSlotId);
 
   Optional<InterviewSlot> findSlotByApplicantIdWithLock(String applicantId);
@@ -25,8 +27,6 @@ public interface InterviewRepository {
   void deleteSlotsByAnnouncementId(String announcementId);
 
   void deleteReservationById(String reservationId);
-
-  boolean existsReservationById(String reservationId);
 
   boolean existsSlotsByAnnouncementId(String announcementId);
 

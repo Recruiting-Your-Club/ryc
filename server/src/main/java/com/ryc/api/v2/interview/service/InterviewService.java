@@ -176,7 +176,10 @@ public class InterviewService {
             .collect(Collectors.toSet());
 
     applicants.removeIf(applicant -> reservedApplicantIds.contains(applicant.getId()));
-    applicants.removeIf(applicant -> applicant.getStatus() == ApplicantStatus.INTERVIEW_PENDING);
+    applicants.removeIf(
+        applicant ->
+            !(applicant.getStatus() == ApplicantStatus.INTERVIEW_PENDING
+                || applicant.getStatus() == ApplicantStatus.INTERVIEW_FAIL));
 
     List<String> ids = applicants.stream().map(Applicant::getId).toList();
     Map<String, FileGetResponse> imageMap =
@@ -297,7 +300,6 @@ public class InterviewService {
       InterviewSlot slot = interviewSlotOptional.get();
 
       reservation = slot.getReservationByApplicantId(applicantId);
-
       InterviewSlot updatedSlot = slot.removeReservation(reservation);
       interviewRepository.saveSlot(updatedSlot);
     } else {
@@ -338,11 +340,9 @@ public class InterviewService {
 
   @Transactional
   public void deleteInterviewReservation(String reservationId) {
-    if (!interviewRepository.existsReservationById(reservationId)) {
-      return;
-    }
-
-    interviewRepository.deleteReservationById(reservationId);
+    InterviewSlot slot = interviewRepository.findSlotByReservationId(reservationId);
+    InterviewSlot updatedSlot = slot.removeReservationById(reservationId);
+    interviewRepository.saveSlot(updatedSlot);
   }
 
   @Transactional

@@ -49,7 +49,6 @@ jobs:
       - name: Inject application config before build
         run: |
           mkdir -p server/src/main/resources
-          echo "${{ secrets.APPLICATION_PROPERTIES }}" > server/src/main/resources/application.properties
           echo "${{ secrets.APPLICATION_YML }}" > server/src/main/resources/application.yml
 
       - name: Build JAR with Gradle
@@ -104,7 +103,7 @@ jobs:
             
             # Start new application
             echo "Starting new application..."
-            nohup java -jar "${{ env.REMOTE_APP_DIR }}/${{ env.JAR_NAME }}" > /home/ubuntu/app.log 2>&1 &
+            nohup java -Dspring.profiles.active=dev -jar "${{ env.REMOTE_APP_DIR }}/${{ env.JAR_NAME }}" > "${{ env.REMOTE_APP_DIR }}/app.log" 2>&1 &
             echo "Application started with PID: $!"
           EOF
           

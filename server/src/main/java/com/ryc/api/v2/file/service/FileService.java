@@ -33,7 +33,7 @@ public class FileService {
   private final FileMetaDataRepository fileMetaDataRepository;
   private final S3FileStorage s3FileStorage;
 
-  @Value("${CLOUD_AWS_CDN_DOMAIN}")
+  @Value("${cloud.aws.cdn_domain}")
   private String cdnDomain;
 
   @Transactional
@@ -224,6 +224,7 @@ public class FileService {
                 FileMetaData::getId, m -> FileGetResponse.of(m, getPrivateFileGetUrl(m))));
   }
 
+  @Transactional
   public void deleteOrphanImage() {
     List<FileMetaData> orphanImages =
         fileMetaDataRepository.findAll().stream()

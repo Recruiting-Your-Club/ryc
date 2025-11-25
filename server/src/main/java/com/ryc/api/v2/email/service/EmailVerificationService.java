@@ -26,7 +26,7 @@ public class EmailVerificationService {
   private final String emailVerificationTemplate;
 
   public EmailVerificationService(
-      @Value("${SSOC_EMAIL_ID}") String ssocId,
+      @Value("${ssoc.email-id}") String ssocId,
       EmailVerificationRepository verificationRepository,
       EmailService emailService,
       ResourceLoader resourceLoader)

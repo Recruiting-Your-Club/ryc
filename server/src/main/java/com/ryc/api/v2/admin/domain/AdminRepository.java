@@ -2,7 +2,6 @@ package com.ryc.api.v2.admin.domain;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /*
  * AdminEntity는 Soft Delete를 지원합니다.
@@ -14,9 +13,9 @@ public interface AdminRepository {
 
   boolean existsByEmail(String email);
 
-  Optional<Admin> findByEmail(String email);
+  Admin findByEmail(String email);
 
-  Optional<Admin> findById(String id);
+  Admin findById(String id);
 
   Map<String, String> findAdminNamesByIds(List<String> adminIds);
 

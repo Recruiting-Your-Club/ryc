@@ -16,17 +16,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
   @Override
   public CustomUserDetail loadUserByUsername(String email) throws UsernameNotFoundException {
-    return adminRepository
-        .findByEmail(email)
-        .map(CustomUserDetail::new)
-        .orElseThrow(() -> new UsernameNotFoundException("admin not found"));
+    return new CustomUserDetail(adminRepository.findByEmail(email));
   }
 
   // TODO: UsernameNotFoundException, Custom Exception로 대체.
   public CustomUserDetail loadUserById(String id) throws UsernameNotFoundException {
-    return adminRepository
-        .findById(id)
-        .map(CustomUserDetail::new)
-        .orElseThrow(() -> new UsernameNotFoundException("admin not found"));
+    return new CustomUserDetail(adminRepository.findById(id));
   }
 }

@@ -9,78 +9,56 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
+import com.ryc.api.v2.announcement.service.AnnouncementService;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
-import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.DetailClubResponse;
+import com.ryc.api.v2.club.presentation.dto.response.MyClubGetResponse;
+import com.ryc.api.v2.club.presentation.dto.response.SimpleClubResponse;
 import com.ryc.api.v2.club.service.dto.ClubImageDTO;
+import com.ryc.api.v2.club.service.dto.MyClubDTO;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
-import com.ryc.api.v2.common.exception.code.ClubErrorCode;
-import com.ryc.api.v2.common.exception.custom.ClubException;
-import com.ryc.api.v2.common.util.HtmlImageParser;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.domain.FileMetaData;
 import com.ryc.api.v2.file.service.FileService;
+import com.ryc.api.v2.role.service.ClubRoleService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ClubService {
+@Transactional(readOnly = true)
+public class ClubQueryService {
 
   private final ClubRepository clubRepository;
   private final FileService fileService;
-  private final HtmlImageParser htmlImageParser;
+  private final ClubRoleService clubRoleService;
+  private final AnnouncementService announcementService;
 
-  @Transactional
-  public Club createClub(ClubCreateRequest body) {
-    if (clubRepository.existsByName(body.name())) {
-      throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
-    }
-    Club club = Club.initialize(body.name(), body.category());
+  public List<SimpleClubResponse> getAllClubWithAnnouncementStatus() {
+    List<Club> clubs = clubRepository.findAll();
+    List<String> clubIds = clubs.stream().map(Club::getId).toList();
 
-    Club savedClub = clubRepository.save(club);
+    Map<String, AnnouncementStatus> statuses = announcementService.getStatusesByClubIds(clubIds);
 
-    fileService.claimOwnership(
-        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
-    return savedClub;
+    Map<String, ClubImageDTO> imageDTOMap = getClubImageDTOs(clubIds);
+
+    return clubs.stream()
+        .map(
+            club ->
+                SimpleClubResponse.builder()
+                    .id(club.getId())
+                    .name(club.getName())
+                    .shortDescription(club.getShortDescription())
+                    .representativeImage(imageDTOMap.get(club.getId()).representativeImage())
+                    .category(club.getCategory())
+                    .clubTags(club.getClubTags())
+                    .announcementStatus(statuses.get(club.getId()))
+                    .build())
+        .toList();
   }
 
-  @Transactional
-  public DetailClubResponse updateClub(String clubId, ClubUpdateRequest body) {
-    Club previousClub = clubRepository.findById(clubId);
-
-    if (!previousClub.getName().equals(body.name()) && clubRepository.existsByName(body.name())) {
-      throw new ClubException(ClubErrorCode.DUPLICATE_CLUB_NAME);
-    }
-
-    Club newClub = previousClub.update(body);
-    Club savedClub = clubRepository.save(newClub);
-
-    List<String> detailDescriptionImages =
-        htmlImageParser.extractImageIds(body.detailDescription());
-
-    if (detailDescriptionImages.size() > 10) {
-      throw new ClubException(ClubErrorCode.POST_IMAGE_LIMIT_EXCEEDED);
-    }
-    fileService.claimOwnership(
-        detailDescriptionImages, savedClub.getId(), FileDomainType.CLUB_POST_IMAGE);
-    fileService.claimOwnership(
-        body.clubDetailImages(), savedClub.getId(), FileDomainType.CLUB_IMAGE);
-    fileService.claimOwnership(
-        body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
-
-    ClubImageDTO clubImageResponse = getClubImageDTO(savedClub.getId());
-    return createDetailClubResponse(savedClub, clubImageResponse);
-  }
-
-  @Transactional(readOnly = true)
-  public List<Club> getAllClub() {
-    return clubRepository.findAll();
-  }
-
-  @Transactional(readOnly = true)
   public DetailClubResponse getClub(String clubId) {
     Club club = clubRepository.findById(clubId);
 
@@ -88,18 +66,40 @@ public class ClubService {
     return createDetailClubResponse(club, clubImageResponse);
   }
 
-  @Transactional(readOnly = true)
+  public List<MyClubGetResponse> getMyClubs(String adminId) {
+    List<MyClubDTO> myClubDTOS = clubRoleService.getMyClubs(adminId);
+    List<String> myClubIds = myClubDTOS.stream().map(dto -> dto.club().getId()).toList();
+
+    Map<String, ClubImageDTO> imageDTOMap = getClubImageDTOs(myClubIds);
+
+    return myClubDTOS.stream()
+        .map(
+            clubDTO -> {
+              DetailClubResponse clubResponse =
+                  createDetailClubResponse(clubDTO.club(), imageDTOMap.get(clubDTO.club().getId()));
+              return new MyClubGetResponse(clubResponse, clubDTO.role());
+            })
+        .toList();
+  }
+
+  public SimpleClubResponse getClubByInviteCode(String inviteCode) {
+    Club club = clubRoleService.getClubByInviteCode(inviteCode);
+    ClubImageDTO clubImage = getClubImageDTO(club.getId());
+    return SimpleClubResponse.builder()
+        .id(club.getId())
+        .name(club.getName())
+        .shortDescription(club.getShortDescription())
+        .representativeImage(clubImage.representativeImage())
+        .category(club.getCategory())
+        .clubTags(club.getClubTags())
+        .build();
+  }
+
   public boolean existClubById(String clubId) {
     return clubRepository.existsById(clubId);
   }
 
-  @Transactional
-  public void deleteClub(String id) {
-    clubRepository.deleteById(id);
-  }
-
-  @Transactional(readOnly = true)
-  public ClubImageDTO getClubImageDTO(String clubId) {
+  protected ClubImageDTO getClubImageDTO(String clubId) {
     List<FileMetaData> images = fileService.findAllByAssociatedId(clubId);
 
     FileGetResponse profileImage =
@@ -118,8 +118,7 @@ public class ClubService {
     return new ClubImageDTO(profileImage, detailImages);
   }
 
-  @Transactional(readOnly = true)
-  public Map<String, ClubImageDTO> getClubImageDTOs(List<String> clubIds) {
+  protected Map<String, ClubImageDTO> getClubImageDTOs(List<String> clubIds) {
     List<FileMetaData> images = fileService.findAllByAssociatedIdIn(clubIds);
 
     Map<String, FileGetResponse> representativeImageMap =
