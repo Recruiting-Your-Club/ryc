@@ -58,7 +58,7 @@ class ClubRepositoryImplTest {
   }
 
   @Test
-  @DisplayName("존재하지 않는 id로 조회시 NoSuchElementException 발생")
+  @DisplayName("Club을 존재하지 않는 id로 조회시 NoSuchElementException 발생")
   void findById_notFound() {
     // given
     String nonExistId = "non-existent-id";
