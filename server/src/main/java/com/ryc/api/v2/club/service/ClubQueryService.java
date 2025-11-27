@@ -63,7 +63,7 @@ public class ClubQueryService {
     Club club = clubRepository.findById(clubId);
 
     ClubImageDTO clubImageResponse = getClubImageDTO(clubId);
-    return createDetailClubResponse(club, clubImageResponse);
+    return DetailClubResponse.from(club, clubImageResponse);
   }
 
   public List<MyClubGetResponse> getMyClubs(String adminId) {
@@ -76,7 +76,7 @@ public class ClubQueryService {
         .map(
             clubDTO -> {
               DetailClubResponse clubResponse =
-                  createDetailClubResponse(clubDTO.club(), imageDTOMap.get(clubDTO.club().getId()));
+                  DetailClubResponse.from(clubDTO.club(), imageDTOMap.get(clubDTO.club().getId()));
               return new MyClubGetResponse(clubResponse, clubDTO.role());
             })
         .toList();
@@ -146,19 +146,5 @@ public class ClubQueryService {
                 clubId ->
                     new ClubImageDTO(
                         representativeImageMap.get(clubId), detailImageMap.get(clubId))));
-  }
-
-  public DetailClubResponse createDetailClubResponse(Club club, ClubImageDTO clubImageResponse) {
-    return DetailClubResponse.builder()
-        .id(club.getId())
-        .name(club.getName())
-        .shortDescription(club.getShortDescription())
-        .detailDescription(club.getDetailDescription())
-        .category(club.getCategory())
-        .clubTags(club.getClubTags())
-        .clubSummaries(club.getClubSummaries())
-        .representativeImage(clubImageResponse.representativeImage())
-        .clubDetailImages(clubImageResponse.detailImages())
-        .build();
   }
 }
