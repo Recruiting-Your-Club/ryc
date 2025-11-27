@@ -16,7 +16,7 @@ class ClubMapperTest {
 
   @Test
   @DisplayName("Club 도메인을 엔티티로 변환한다.")
-  void toEntity() {
+  void toEntity_givenClubDomain_mapsToEntity() {
     // given
     Club domain =
         Club.builder()
@@ -44,7 +44,7 @@ class ClubMapperTest {
 
   @Test
   @DisplayName("Club 엔티티를 도메인으로 변환한다.")
-  void toDomain() {
+  void toDomain_givenClubEntity_mapsToDomain() {
     // given
     ClubEntity entity =
         ClubEntity.builder()

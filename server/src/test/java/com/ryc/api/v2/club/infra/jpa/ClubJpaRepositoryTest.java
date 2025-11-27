@@ -21,7 +21,7 @@ class ClubJpaRepositoryTest {
 
   @Test
   @DisplayName("Club을 name으로 조회한다.")
-  void existsByName() {
+  void existsByName_givenExistingName_returnsTrue() {
     // given
     String clubName = "test-club";
     ClubEntity club = ClubEntity.builder().name(clubName).category(Category.ACADEMIC).build();
@@ -36,7 +36,7 @@ class ClubJpaRepositoryTest {
 
   @Test
   @DisplayName("Club을 존재하지 않는 name으로 조회 시 false 반환")
-  void existsByName_false() {
+  void existsByName_givenNonExistentName_returnsFalse() {
     // when
     boolean nonExists = clubJpaRepository.existsByName("non-existent-club");
 
@@ -46,7 +46,7 @@ class ClubJpaRepositoryTest {
 
   @Test
   @DisplayName("Club을 id로 조회한다.")
-  void existsById() {
+  void existsById_givenExistingId_returnsTrue() {
     // given
     ClubEntity club = ClubEntity.builder().name("test-club").category(Category.ACADEMIC).build();
 
@@ -60,7 +60,7 @@ class ClubJpaRepositoryTest {
 
   @Test
   @DisplayName("Club을 존재하지 않는 id로 조회 시 false 반환")
-  void existsById_false() {
+  void existsById_givenNonExistentId_returnsFalse() {
     // when
     boolean nonExists = clubJpaRepository.existsById("non-existent-club");
 

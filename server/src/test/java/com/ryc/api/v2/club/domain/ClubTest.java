@@ -17,7 +17,7 @@ class ClubTest {
 
   @Test
   @DisplayName("Club을 업데이트한다.")
-  void update() {
+  void update_givenUpdateRequest_updatesClub() {
     // given
     String clubName = "test-club";
     String sortDescription = "test-sort-description";

@@ -23,7 +23,7 @@ class ClubRepositoryImplTest {
 
   @Test
   @DisplayName("Club을 저장한다.")
-  void save() {
+  void save_givenNewClub_savesAndReturnsClub() {
     // given
     String clubName = "test-club";
     String clubCategory = "PERFORMANCE_ARTS";
@@ -40,7 +40,7 @@ class ClubRepositoryImplTest {
 
   @Test
   @DisplayName("Club을 id로 조회한다.")
-  void findById_success() {
+  void findById_givenExistingId_returnsClub() {
     // given
     String clubName = "find-club";
     String clubCategory = "PERFORMANCE_ARTS";
@@ -59,7 +59,7 @@ class ClubRepositoryImplTest {
 
   @Test
   @DisplayName("Club을 존재하지 않는 id로 조회시 NoSuchElementException 발생")
-  void findById_notFound() {
+  void findById_givenNonExistentId_throwsNoSuchElementException() {
     // given
     String nonExistId = "non-existent-id";
 
@@ -70,11 +70,11 @@ class ClubRepositoryImplTest {
 
   @Test
   @DisplayName("여러 Club을 저장한 뒤 findAll로 모두 조회한다.")
-  void findAll_success() {
+  void findAll_whenClubsExist_returnsAllClubs() {
     // given
     Club c1 = Club.initialize("club-1", "PERFORMANCE_ARTS");
     Club c2 = Club.initialize("club-2", "SPORTS");
-    Club c3 = Club.initialize("club-3", "HOBBY");
+    Club c3 = Club.initialize("club-3", "ACADEMIC");
 
     // when
     clubRepository.save(c1);
