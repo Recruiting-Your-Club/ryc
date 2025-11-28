@@ -9,11 +9,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.event.ApplicationEvents;
+import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.auth.presentation.request.RegisterRequest;
 import com.ryc.api.v2.auth.service.AuthService;
 import com.ryc.api.v2.club.domain.enums.Category;
+import com.ryc.api.v2.club.domain.event.ClubDeletedEvent;
 import com.ryc.api.v2.club.presentation.dto.request.ClubCreateRequest;
 import com.ryc.api.v2.club.presentation.dto.request.ClubUpdateRequest;
 import com.ryc.api.v2.club.presentation.dto.response.ClubCreateResponse;
@@ -23,11 +26,14 @@ import com.ryc.api.v2.role.service.ClubRoleService;
 
 @SpringBootTest
 @Transactional
+@RecordApplicationEvents
 class ClubCommandServiceTest {
 
   @Autowired ClubCommandService clubCommandService;
   @Autowired AuthService authService;
   @Autowired ClubRoleService clubRoleService;
+  @Autowired ClubQueryService clubQueryService;
+  @Autowired ApplicationEvents applicationEvents;
 
   @Test
   @DisplayName("Club을 생성한다.")
@@ -147,6 +153,48 @@ class ClubCommandServiceTest {
 
     // when && then
     assertThrows(ClubException.class, () -> clubCommandService.updateClub(club2Id, updateRequest));
+  }
+
+  @Test
+  @DisplayName("Club을 삭제한다.")
+  void deleteClub_givenClubId_deleteClub() {
+    // given
+    RegisterRequest registerRequest =
+        createRegisterRequest("test-admin", "test@gmail.com", "123456");
+    String adminId = authService.register(registerRequest).adminId();
+
+    ClubCreateRequest createRequest1 =
+        createClubCreateRequest("test-club", Category.ACADEMIC.toString());
+    String clubId = clubCommandService.createClub(adminId, createRequest1).clubId();
+
+    // when
+    clubCommandService.deleteClub(clubId);
+
+    // then
+    assertFalse(clubQueryService.existClubById(clubId));
+  }
+
+  @Test
+  @DisplayName("Club 삭제 시 ClubDeletedEvent가 발행된다.")
+  void deleteClub_whenClubExists_publishesClubDeletedEvent() {
+    // given
+    RegisterRequest registerRequest =
+        createRegisterRequest("test-admin", "test@gmail.com", "123456");
+    String adminId = authService.register(registerRequest).adminId();
+    ClubCreateRequest createRequest =
+        createClubCreateRequest("test-club", Category.ACADEMIC.toString());
+    String clubId = clubCommandService.createClub(adminId, createRequest).clubId();
+
+    // when
+    clubCommandService.deleteClub(clubId);
+
+    // then
+    long count = applicationEvents.stream(ClubDeletedEvent.class).count();
+    ClubDeletedEvent event =
+        applicationEvents.stream(ClubDeletedEvent.class).findFirst().orElseThrow();
+
+    assertThat(count).isEqualTo(1);
+    assertThat(event.clubId()).isEqualTo(clubId);
   }
 
   private RegisterRequest createRegisterRequest(String name, String email, String password) {
