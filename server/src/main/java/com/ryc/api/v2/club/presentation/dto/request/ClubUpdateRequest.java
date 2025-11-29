@@ -14,7 +14,7 @@ import lombok.Builder;
 @Builder
 public record ClubUpdateRequest(
     @Schema(description = "동아리 이름")
-        @NotBlank(message = "동아리 이름은 비워둘 수 없습니다. 수정되지 않았다면 기존의 값을 입력해주세요.")
+        @NotBlank(message = "동아리 이름은 비워둘 수 없습니다.")
         @Size(min = 2, max = 50, message = "동아리 이름은 2자 이상, 50자 이하여야 합니다.")
         String name,
     @Schema(description = "동아리 간단 설명")
