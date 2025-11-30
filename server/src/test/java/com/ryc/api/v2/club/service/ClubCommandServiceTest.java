@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import com.ryc.api.v2.role.service.ClubRoleService;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 @RecordApplicationEvents
 class ClubCommandServiceTest {
 

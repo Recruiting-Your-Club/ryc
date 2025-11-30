@@ -20,7 +20,7 @@ class ClubTest {
   void update_givenUpdateRequest_updatesClub() {
     // given
     String clubName = "test-club";
-    String sortDescription = "test-sort-description";
+    String shortDescription = "test-sort-description";
     String detailDescription = "test-detail-description";
     String category = Category.ACADEMIC.toString();
 
@@ -38,7 +38,7 @@ class ClubTest {
     ClubUpdateRequest clubUpdateRequest =
         ClubUpdateRequest.builder()
             .name(clubName)
-            .shortDescription(sortDescription)
+            .shortDescription(shortDescription)
             .detailDescription(detailDescription)
             .category(category)
             .clubTags(clubTagRequests)
@@ -52,7 +52,7 @@ class ClubTest {
 
     // then
     assertThat(updatedClub.getName()).isEqualTo(clubName);
-    assertThat(updatedClub.getShortDescription()).isEqualTo(sortDescription);
+    assertThat(updatedClub.getShortDescription()).isEqualTo(shortDescription);
     assertThat(updatedClub.getDetailDescription()).isEqualTo(detailDescription);
     assertThat(updatedClub.getCategory().toString()).isEqualTo(category);
     assertThat(updatedClub.getClubTags()).hasSize(1);
