@@ -15,10 +15,10 @@ import com.ryc.api.v2.club.infra.entity.ClubEntity;
 class ClubMapperTest {
 
   @Test
-  @DisplayName("Club 도메인을 엔티티로 변환한다.")
-  void toEntity_givenClubDomain_mapsToEntity() {
+  @DisplayName("Club 도메인을 엔티티로 변환하고 다시 도메인으로 변환하면, 필드 누락 없이 원래 값과 동일해야 한다.")
+  void mappingRoundTripTest() {
     // given
-    Club domain =
+    Club originalDomain =
         Club.builder()
             .id(UUID.randomUUID().toString())
             .name("test-club")
@@ -30,43 +30,10 @@ class ClubMapperTest {
             .build();
 
     // when
-    ClubEntity entity = ClubMapper.toEntity(domain);
+    ClubEntity entity = ClubMapper.toEntity(originalDomain);
+    Club resultDomain = ClubMapper.toDomain(entity);
 
     // then
-    assertThat(entity.getId()).isEqualTo(domain.getId());
-    assertThat(entity.getName()).isEqualTo(domain.getName());
-    assertThat(entity.getShortDescription()).isEqualTo(domain.getShortDescription());
-    assertThat(entity.getDetailDescription()).isEqualTo(domain.getDetailDescription());
-    assertThat(entity.getCategory()).isEqualTo(domain.getCategory());
-    assertThat(entity.getClubTags()).hasSize(domain.getClubTags().size());
-    assertThat(entity.getClubSummaries()).hasSize(domain.getClubSummaries().size());
-  }
-
-  @Test
-  @DisplayName("Club 엔티티를 도메인으로 변환한다.")
-  void toDomain_givenClubEntity_mapsToDomain() {
-    // given
-    ClubEntity entity =
-        ClubEntity.builder()
-            .id(UUID.randomUUID().toString())
-            .name("test-club")
-            .shortDescription("test-club")
-            .detailDescription("test-club")
-            .category(Category.from("PERFORMANCE_ARTS"))
-            .clubTags(List.of())
-            .clubSummaries(List.of())
-            .build();
-
-    // when
-    Club domain = ClubMapper.toDomain(entity);
-
-    // then
-    assertThat(domain.getId()).isEqualTo(entity.getId());
-    assertThat(domain.getName()).isEqualTo(entity.getName());
-    assertThat(domain.getShortDescription()).isEqualTo(entity.getShortDescription());
-    assertThat(domain.getDetailDescription()).isEqualTo(entity.getDetailDescription());
-    assertThat(domain.getCategory()).isEqualTo(entity.getCategory());
-    assertThat(domain.getClubTags()).hasSize(entity.getClubTags().size());
-    assertThat(domain.getClubSummaries()).hasSize(entity.getClubSummaries().size());
+    assertThat(resultDomain).usingRecursiveComparison().isEqualTo(originalDomain);
   }
 }
