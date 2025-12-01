@@ -81,7 +81,7 @@ public class ClubCommandService {
         body.representativeImage(), savedClub.getId(), FileDomainType.CLUB_PROFILE);
 
     ClubImageDTO clubImageResponse = clubQueryService.getClubImageDTO(savedClub.getId());
-    return clubQueryService.createDetailClubResponse(savedClub, clubImageResponse);
+    return DetailClubResponse.from(savedClub, clubImageResponse);
   }
 
   public void deleteClub(String id) {
