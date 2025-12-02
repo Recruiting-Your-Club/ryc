@@ -13,13 +13,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ryc.api.v2.club.domain.Club;
+import com.ryc.api.v2.club.domain.ClubRepository;
 
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
 class ClubRepositoryImplTest {
 
-  @Autowired ClubRepositoryImpl clubRepository;
+  @Autowired ClubRepository clubRepository;
 
   @Test
   @DisplayName("Club을 저장한다.")
@@ -63,7 +64,7 @@ class ClubRepositoryImplTest {
     // given
     String nonExistId = "non-existent-id";
 
-    // then
+    // when // then
     assertThatThrownBy(() -> clubRepository.findById(nonExistId))
         .isInstanceOf(NoSuchElementException.class);
   }
