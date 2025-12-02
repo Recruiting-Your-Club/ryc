@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 import com.ryc.api.v2.club.domain.Club;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode(exclude = {"expiresAt"})
 public class ClubInvite {
 
   private final String id;

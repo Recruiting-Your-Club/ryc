@@ -65,7 +65,7 @@ public class EvaluationService {
   public EvaluationSearchResponse findAllEvaluations(
       EvaluationSearchRequest body, String currentAdminId, EvaluationType type) {
 
-    int totalEvaluatorCount = clubRoleRepository.countManagerAndMemberByClubId(body.clubId());
+    int totalEvaluatorCount = clubRoleRepository.countOwnerAndMemberByClubId(body.clubId());
 
     List<Evaluation> evaluations =
         evaluationRepository.findEvaluationsByApplicantIdsAndType(body.applicantIdList(), type);
@@ -122,7 +122,7 @@ public class EvaluationService {
   @Transactional(readOnly = true)
   public EvaluationOverviewSearchResponse findAllEvaluationOverviews(
       EvaluationSearchRequest body, EvaluationType type) {
-    int totalEvaluatorCount = clubRoleRepository.countManagerAndMemberByClubId(body.clubId());
+    int totalEvaluatorCount = clubRoleRepository.countOwnerAndMemberByClubId(body.clubId());
 
     List<Evaluation> evaluations =
         evaluationRepository.findEvaluationsByApplicantIdsAndType(body.applicantIdList(), type);

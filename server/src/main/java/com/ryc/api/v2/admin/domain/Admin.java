@@ -5,9 +5,11 @@ import static com.ryc.api.v2.common.constant.DomainDefaultValues.DEFAULT_INITIAL
 import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode
 public class Admin {
   private final String id;
   private final String name;

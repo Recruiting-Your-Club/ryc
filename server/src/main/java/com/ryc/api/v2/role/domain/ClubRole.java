@@ -9,9 +9,11 @@ import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode
 public class ClubRole {
   private final String id;
   private final Role role;

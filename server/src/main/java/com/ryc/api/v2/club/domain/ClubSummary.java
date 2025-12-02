@@ -4,9 +4,11 @@ import com.ryc.api.v2.club.presentation.dto.request.ClubSummaryRequest;
 import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode
 public class ClubSummary {
 
   private final String id;
