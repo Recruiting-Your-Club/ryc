@@ -1,8 +1,7 @@
-package com.ryc.api.v2.role.infra;
+package com.ryc.api.v2.role.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.NoSuchElementException;
 
@@ -18,15 +17,12 @@ import com.ryc.api.v2.admin.domain.Admin;
 import com.ryc.api.v2.admin.domain.AdminRepository;
 import com.ryc.api.v2.club.domain.Club;
 import com.ryc.api.v2.club.domain.ClubRepository;
-import com.ryc.api.v2.role.domain.ClubInvite;
-import com.ryc.api.v2.role.domain.ClubRole;
-import com.ryc.api.v2.role.domain.ClubRoleRepository;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class ClubRoleRepositoryImplTest {
+class ClubRoleRepositoryTest {
 
   @Autowired ClubRoleRepository clubRoleRepository;
 
