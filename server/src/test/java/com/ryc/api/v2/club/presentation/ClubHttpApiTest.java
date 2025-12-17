@@ -1,9 +1,11 @@
 package com.ryc.api.v2.club.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -219,6 +221,35 @@ class ClubHttpApiTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errors[0].code").value(CommonErrorCode.INVALID_PARAMETER.name()));
+  }
+
+  @Test
+  @DisplayName("동아리를 삭제한다.")
+  void deleteClub_success() throws Exception {
+    // given
+    CustomUserDetail user = createCustomUserDetail();
+    String clubId = UUID.randomUUID().toString();
+
+    willDoNothing().given(clubCommandService).deleteClub(clubId);
+
+    // when // then
+    mockMvc
+        .perform(delete("/api/v2/clubs/{id}", clubId).with(user(user)).with(csrf()))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  @DisplayName("동아리 삭제 시 유효하지 않은 ID이면 실패한다.")
+  void deleteClub_givenInvalidId_throwException() throws Exception {
+    // given
+    CustomUserDetail user = createCustomUserDetail();
+
+    // when // then
+    mockMvc
+        .perform(delete("/api/v2/clubs/{id}", "not-uuid").with(user(user)).with(csrf()))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errors[0].code").value(CommonErrorCode.INVALID_PARAMETER.name()))
+        .andExpect(jsonPath("$.errors[0].message").value("동아리 아이디는 UUID 포멧이어야 합니다."));
   }
 
   CustomUserDetail createCustomUserDetail() {

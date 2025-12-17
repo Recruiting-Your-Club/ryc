@@ -86,4 +86,37 @@ class ClubRepositoryTest {
     assertThat(clubs).hasSize(3);
     assertThat(names).contains("club-1", "club-2", "club-3");
   }
+
+  @Test
+  @DisplayName("Club을 soft-delete한 후 findById로 조회하면 NoSuchElementException이 발생한다.")
+  void findById_givenSoftDeletedId_throwsException() {
+    // given
+    Club club = Club.initialize("test-club", "ACADEMIC");
+    Club savedClub = clubRepository.save(club);
+
+    // when
+    clubRepository.deleteById(savedClub.getId());
+
+    // then
+    assertThatThrownBy(() -> clubRepository.findById(savedClub.getId()))
+        .isInstanceOf(NoSuchElementException.class);
+  }
+
+  @Test
+  @DisplayName("Club을 soft-delete한 후 findAll로 조회하면 삭제된 Club은 포함되지 않는다.")
+  void findAll_afterSoftDelete_excludesDeletedClub() {
+    // given
+    Club club1 = Club.initialize("club-1", "PERFORMANCE_ARTS");
+    Club club2 = Club.initialize("club-2", "SPORTS");
+    Club savedClub1 = clubRepository.save(club1);
+    clubRepository.save(club2);
+
+    // when
+    clubRepository.deleteById(savedClub1.getId());
+    List<Club> clubs = clubRepository.findAll();
+
+    // then
+    assertThat(clubs).hasSize(1);
+    assertThat(clubs.get(0).getName()).isEqualTo("club-2");
+  }
 }

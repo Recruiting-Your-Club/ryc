@@ -67,4 +67,22 @@ class ClubJpaRepositoryTest {
     // then
     assertFalse(nonExists);
   }
+
+  @Test
+  @DisplayName("Soft-delete된 Club에 대해 existsById를 호출하면 false를 반환한다.")
+  void existsById_givenSoftDeletedId_returnsFalse() {
+    // given
+    ClubEntity club = ClubEntity.builder().name("test-club").category(Category.ACADEMIC).build();
+    ClubEntity saved = clubJpaRepository.save(club);
+
+    // when
+    // @SQLDelete 어노테이션에 의해 is_deleted = true로 업데이트 됩니다.
+    clubJpaRepository.deleteById(saved.getId());
+
+    // existsById는 is_deleted = false인 것만 확인하므로 false를 반환해야 합니다.
+    boolean exists = clubJpaRepository.existsById(saved.getId());
+
+    // then
+    assertFalse(exists);
+  }
 }
