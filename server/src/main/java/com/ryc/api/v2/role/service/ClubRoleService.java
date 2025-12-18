@@ -86,15 +86,13 @@ public class ClubRoleService {
       throw new ClubException(ClubErrorCode.CLUB_INVITE_EXPIRED);
     }
 
-    Admin newAdmin = adminRepository.findById(newAdminId);
-    Club club = clubRepository.findById(clubId);
-
     // 동아리 아이디와 초대 코드가 일치하지 않는 경우 예외 처리
-    if (!club.getId().equals(clubId)) {
+    if (!clubInvite.getClub().getId().equals(clubId)) {
       throw new NoSuchElementException("동아리 아이디와 초대 코드가 일치하지 않습니다.");
     }
 
-    ClubRole clubRole = assignRole(newAdmin, club, Role.MEMBER);
+    Admin newAdmin = adminRepository.findById(newAdminId);
+    ClubRole clubRole = assignRole(newAdmin, clubInvite.getClub(), Role.MEMBER);
     return ClubInviteAcceptResponse.builder()
         .clubRoleId(clubRole.getId())
         .role(clubRole.getRole().toString())
@@ -195,7 +193,7 @@ public class ClubRoleService {
     clubRoleRepository.deleteAllByAdminId(event.adminId());
   }
 
-  private ClubInvite createAndSaveInvite(String clubId) {
+  protected ClubInvite createAndSaveInvite(String clubId) {
     Club club = clubRepository.findById(clubId);
     ClubInvite newClubInvite = ClubInvite.initialize(club);
     return clubRoleRepository.saveInvite(newClubInvite);
