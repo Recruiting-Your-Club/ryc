@@ -15,12 +15,13 @@ import com.ryc.api.v2.role.domain.ClubRole;
 import com.ryc.api.v2.role.domain.enums.Role;
 import com.ryc.api.v2.role.infra.entity.ClubRoleEntity;
 
-class ClubInviteMapperTest {
+class ClubRoleMapperTest {
 
   @Test
   @DisplayName("ClubRole 도메인을 엔티티로 변환하고 다시 도메인으로 변환하면, 필드 누락 없이 원래 값과 동일해야 한다.")
   void mappingRoundTripTest() {
     // given
+    LocalDateTime now = LocalDateTime.now();
     Club club = Club.initialize("테스트 동아리", "ACADEMIC");
     Admin admin =
         Admin.initialize(
@@ -34,28 +35,16 @@ class ClubInviteMapperTest {
             .role(Role.MEMBER)
             .club(club)
             .admin(admin)
-            .joinedAt(LocalDateTime.now())
+            .joinedAt(now)
             .build();
 
     // when
     ClubRoleEntity entity = ClubRoleMapper.toEntity(originalDomain);
-    setId(entity, originalDomain.getId());
     setCreatedAt(entity, originalDomain.getJoinedAt());
     ClubRole resultDomain = ClubRoleMapper.toDomain(entity);
 
     // then
     assertThat(resultDomain).usingRecursiveComparison().isEqualTo(originalDomain);
-  }
-
-  // 테스트 헬퍼: Entity의 id를 설정 (실제 JPA에서는 자동 생성됨)
-  void setId(ClubRoleEntity entity, String id) {
-    try {
-      Field field = entity.getClass().getDeclaredField("id");
-      field.setAccessible(true);
-      field.set(entity, id);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to set id", e);
-    }
   }
 
   // 테스트 헬퍼: BaseEntity의 createdAt을 설정 (실제 JPA에서는 자동 설정됨)

@@ -17,6 +17,7 @@ public class ClubRoleMapper {
     ClubEntity clubEntity = ClubMapper.toEntity(clubRole.getClub());
     AdminEntity adminEntity = AdminMapper.toEntity(clubRole.getAdmin());
     return ClubRoleEntity.builder()
+        .id(clubRole.getId())
         .role(clubRole.getRole())
         .club(clubEntity)
         .admin(adminEntity)
