@@ -5,21 +5,40 @@ on:
     branches: [ "main" ]
 
 jobs:
+  # [1] 테스트 단계: 배포 전에 먼저 실행됨
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Tests with Gradle
+        # Host에 자바가 없으므로, Gradle 도커 이미지를 받아와서 테스트만 수행하고 종료
+        # --rm: 테스트 끝나면 컨테이너 삭제
+        # -v: 현재 소스코드를 컨테이너에 마운트
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            -w /project \
+            gradle:8.5-jdk17 \
+            gradle test --no-daemon
+
+  # [2] 배포 단계: 테스트가 성공해야만 실행됨
   deploy:
     runs-on: self-hosted
+    needs: test  # [핵심] 'test' 잡이 성공해야만 이 잡을 실행한다.
     
     env:
       PROFILES: prod
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Deploy with Docker Compose
-      working-directory: ./server
-      run: |
-        docker compose up -d --build
+      - name: Deploy with Docker Compose
+        run: |
+          docker compose up -d --build
 
-    - name: Clean up unused Docker images
-      run: |
-        docker image prune -f
+      - name: Clean up unused Docker images
+        run: |
+          docker image prune -f
