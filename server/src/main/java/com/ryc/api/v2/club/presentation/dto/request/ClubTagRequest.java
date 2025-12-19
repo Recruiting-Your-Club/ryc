@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.UUID;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
+@Builder
 public record ClubTagRequest(
     @Schema(description = "동아리 태그 ID")
         @NotBlank(message = "동아리 태그 id는 빈값일 수 없습니다.")
