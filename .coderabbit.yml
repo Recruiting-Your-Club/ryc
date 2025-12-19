@@ -1,7 +1,0 @@
-language: "ko-KR"
-reviews:
-  enabled: true
-  allowed_target_branches:
-    - main
-    - develop
-    
