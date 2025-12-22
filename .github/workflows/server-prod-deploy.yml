@@ -3,6 +3,8 @@ name: Production Server Deploy
 on:
   push:
     branches: [ "main" ]
+  paths:
+    - 'server/**'
 
 jobs:
   deploy:
@@ -16,13 +18,20 @@ jobs:
         working-directory: ./server
 
     steps:
+      - name: Fix permissions
+        run: |
+          sudo chown -R $USER:$USER .
+
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            server
 
       - name: Make application.yml
         run: |
-          mkdir -p ./config
-          echo "${{ secrets.APPLICATION_YML }}" > ./config/application.yml
+          mkdir -p ./server/config
+          echo "${{ secrets.APPLICATION_YML }}" > ./server/config/application.yml
 
       - name: Deploy with Docker Compose
         run: |
