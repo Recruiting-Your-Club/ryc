@@ -21,8 +21,7 @@ jobs:
 
       - name: Make application.yml
         run: |
-	  mkdir -p ./config
-          echo "${{ secrets.APPLICATION_YML }}" > ./config/application.yml    
+          echo "${{ secrets.APPLICATION_YML }}" > ./resources/application.yml    
 
       - name: Deploy with Docker Compose
         run: |
