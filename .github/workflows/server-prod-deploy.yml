@@ -16,21 +16,13 @@ jobs:
         working-directory: ./server
 
     steps:
-      - name: Fix permissions
-        run: |
-          sudo chown -R $USER:$USER .
-
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            server
-	    .github
 
       - name: Make application.yml
         run: |
-          mkdir -p ./server/config
-          echo "${{ secrets.APPLICATION_YML }}" > ./server/config/application.yml
+          mkdir -p ./config
+          echo "${{ secrets.APPLICATION_YML }}" > ./config/application.yml
 
       - name: Deploy with Docker Compose
         run: |
