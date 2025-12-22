@@ -20,5 +20,4 @@ WORKDIR /app
 COPY --from=builder /project/build/libs/*.jar app.jar
 
 # 실행 명령어
-# exec를 사용하여 PID 1을 Java 프로세스가 가져가도록 함 (Graceful Shutdown 지원)
-ENTRYPOINT ["sh", "-c", "exec java -Dspring.profiles.active=${PROFILES} -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java -Dspring.profiles.active=${PROFILES} -Dspring.config.location=file:/app/config/application.yml -jar app.jar"]
