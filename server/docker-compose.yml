@@ -8,7 +8,7 @@ services:
       - TZ=Asia/Seoul
       - PROFILES=${PROFILES:?PROFILES environment variable is not set}
     volumes:
-      - ./server/config/application.yml:/app/config/application.yml:ro
+      - ./config/application.yml:/app/config/application.yml:ro
     restart: always
 
 
@@ -20,7 +20,7 @@ services:
       - "443:443"
     volumes:
       # 1. Nginx 설정 파일
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d
       # 2. SSL 인증서 저장소 (프로젝트 내 certbot 폴더 공유)
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
