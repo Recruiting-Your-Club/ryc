@@ -3,6 +3,8 @@ name: Production Server Deploy
 on:
   push:
     branches: [ "main" ]
+  paths:
+    - 'server/**'
 
 jobs:
   deploy:
@@ -25,7 +27,6 @@ jobs:
         with:
           sparse-checkout: |
             server
-	    .github
 
       - name: Make application.yml
         run: |
