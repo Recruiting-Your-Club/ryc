@@ -16,8 +16,16 @@ jobs:
         working-directory: ./server
 
     steps:
+      - name: Fix permissions
+        run: |
+          sudo chown -R $USER:$USER .
+
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            server
+	    .github
 
       - name: Make application.yml
         run: |
