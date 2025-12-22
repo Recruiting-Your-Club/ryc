@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     container_name: spring-api
@@ -8,14 +6,11 @@ services:
       - "8080"
     environment:
       - TZ=Asia/Seoul
-      # 문법: ${변수명} 또는 ${변수명:?에러메시지}
       - PROFILES=${PROFILES:?PROFILES environment variable is not set}
     volumes:
-      # [핵심] Host에 있는 application.yml을 컨테이너 내부로 연결 (읽기 전용)
-      # 호스트 경로: /home/ubuntu/config/application.yml
-      # 컨테이너 경로: /app/config/application.yml (Spring Boot가 자동으로 읽는 경로)
-      - /home/ubuntu/config/application.yml:/app/config/application.yml:ro
+      - ./resources/application.yml:/app/config/application.yml:ro
     restart: always
+
 
   nginx:
     container_name: nginx-proxy
@@ -24,12 +19,24 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      # Nginx 설정 파일 마운트
+      # 1. Nginx 설정 파일
       - ./nginx/conf.d:/etc/nginx/conf.d
-      # SSL 인증서 (Host 경로 -> 컨테이너 경로)
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      # Certbot 챌린지 경로 공유
-      - /var/www/certbot:/var/www/certbot
+      # 2. SSL 인증서 저장소 (프로젝트 내 certbot 폴더 공유)
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     depends_on:
       - app
+    # 6시간마다 Nginx 설정 재로딩 (인증서 갱신 반영)
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     restart: always
+
+  # Certbot (SSL 인증서 발급/갱신 봇)
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    volumes:
+      # Nginx와 동일한 인증서 볼륨 공유
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    # 12시간마다 갱신 시도
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
