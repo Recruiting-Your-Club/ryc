@@ -36,7 +36,7 @@ jobs:
           rm -rf ./config/application.yml
           echo "$APPLICATION_YML_CONTENT" > ./config/application.yml
 
-	  echo "=== 📂 File Creation Check ==="
+          echo "=== 📂 File Creation Check ==="
           ls -al ./config/
           echo "=== 📄 Content Check (First 3 lines) ==="
           head -n 3 ./config/application.yml
