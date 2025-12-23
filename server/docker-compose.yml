@@ -10,6 +10,13 @@ services:
     volumes:
       - ./config/application.yml:/app/config/application.yml:ro
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.80'
+          memory: 512M
+        reservations: # 최소 보장 자원
+          memory: 256M
     logging:
       driver: "json-file"
       options:
