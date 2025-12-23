@@ -15,9 +15,9 @@ COPY src ./src
 # 4. 실제 빌드 실행
 # --mount=type=cache: Gradle 캐시를 로컬에 저장해두고 재사용 (반복 빌드 속도 향상)
 # -x test: 테스트 제외
-# --parallel: 병렬 빌드로 속도 향상
 RUN --mount=type=cache,target=/home/gradle/.gradle/caches \
-    gradle clean build --no-daemon -x test --parallel
+    gradle clean build --no-daemon -x test \
+    -Dorg.gradle.jvmargs="-Xmx512m -XX:+UseSerialGC"
 
 # [Stage 2] Run 환경
 FROM amazoncorretto:17
