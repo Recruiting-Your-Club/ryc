@@ -48,7 +48,6 @@ services:
         max-file: "3"
 
 
-  # Certbot (SSL 인증서 발급/갱신 봇)
   certbot:
     container_name: certbot
     image: certbot/certbot
