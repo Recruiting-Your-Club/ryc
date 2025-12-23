@@ -29,10 +29,12 @@ jobs:
 
       - name: Make application.yml
         working-directory: ./server
+        env:
+          APPLICATION_YML_CONTENT: ${{ secrets.APPLICATION_YML }}
         run: |
           mkdir -p ./config
           rm -rf ./config/application.yml
-          echo "${{ secrets.APPLICATION_YML }}" > ./config/application.yml
+          echo "$APPLICATION_YML_CONTENT" > ./config/application.yml
 
       - name: Deploy with Docker Compose
         working-directory: ./server 
