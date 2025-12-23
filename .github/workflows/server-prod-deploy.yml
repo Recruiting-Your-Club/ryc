@@ -13,10 +13,6 @@ jobs:
     env:
       PROFILES: prod
 
-    defaults:
-      run:
-        working-directory: ./server
-
     steps:
       - name: Fix permissions
         run: |
@@ -25,15 +21,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
             server
 
       - name: Make application.yml
+        working-directory: ./server
         run: |
           mkdir -p ./config
+          rm -rf ./config/application.yml
           echo "${{ secrets.APPLICATION_YML }}" > ./config/application.yml
 
       - name: Deploy with Docker Compose
+        working-directory: ./server 
         run: |
           docker compose up -d --build
 
