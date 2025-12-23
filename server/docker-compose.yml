@@ -10,6 +10,11 @@ services:
     volumes:
       - ./config/application.yml:/app/config/application.yml:ro
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 
   nginx:
@@ -29,6 +34,11 @@ services:
     # 6시간마다 Nginx 설정 재로딩 (인증서 갱신 반영)
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 
   # Certbot (SSL 인증서 발급/갱신 봇)
