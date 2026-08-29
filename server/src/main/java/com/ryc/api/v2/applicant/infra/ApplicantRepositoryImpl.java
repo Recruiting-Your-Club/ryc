@@ -26,7 +26,7 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
 
   public Applicant save(Applicant applicant) {
     return ApplicantMapper.toDomain(
-        applicantJpaRepository.save(ApplicantMapper.toEntity(applicant)));
+        applicantJpaRepository.saveAndFlush(ApplicantMapper.toEntity(applicant)));
   }
 
   @Override

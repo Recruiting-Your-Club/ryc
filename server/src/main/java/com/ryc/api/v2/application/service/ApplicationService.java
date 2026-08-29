@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
 import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
 import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,8 +57,9 @@ public class ApplicationService {
     if (announcement.getAnnouncementStatus() != AnnouncementStatus.RECRUITING) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.ANNOUNCEMENT_NOT_RECRUITING);
     }
-    if (applicantRepository.existsByAnnouncementIdAndEmail(
-        announcementId, applicationSubmissionRequest.applicant().email())) {
+    String applicantEmail =
+        DataResolveUtil.sanitizeEmail(applicationSubmissionRequest.applicant().email());
+    if (applicantRepository.existsByAnnouncementIdAndEmail(announcementId, applicantEmail)) {
       throw new BusinessRuleException(ApplicationCreateErrorCode.DUPLICATE_APPLICATION);
     }
     // 3. 지원자 객체 생성 및 비즈니스 룰 검사
@@ -65,7 +68,13 @@ public class ApplicationService {
 
     applicant.checkBusinessRules(announcement.getApplicationForm());
 
-    Applicant savedApplicant = applicantRepository.save(applicant);
+    Applicant savedApplicant;
+    try {
+      // 사전 exists 조회와 별개로, 동시 요청은 DB UNIQUE 제약조건으로 최종 보장한다.
+      savedApplicant = applicantRepository.save(applicant);
+    } catch (DataIntegrityViolationException e) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.DUPLICATE_APPLICATION);
+    }
 
     String profileImage =
         applicationSubmissionRequest.applicant().personalInfos().stream()

@@ -10,7 +10,12 @@ import com.ryc.api.v2.common.infra.entity.BaseEntity;
 import lombok.*;
 
 @Entity
-@Table(name = "applicants")
+@Table(
+    name = "applicants",
+    uniqueConstraints =
+        @UniqueConstraint(
+            name = "uk_applicants_announcement_email",
+            columnNames = {"announcement_id", "email"}))
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
