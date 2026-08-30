@@ -17,6 +17,11 @@ public enum ApplicationCreateErrorCode implements ErrorCode {
   INVALID_ANSWER_FORMAT(HttpStatus.CONFLICT, "답변의 형식이 올바르지 않습니다."),
   ANNOUNCEMENT_NOT_RECRUITING(HttpStatus.CONFLICT, "공고 지원은 모집중 일때만 가능 합니다."),
   DUPLICATE_APPLICATION(HttpStatus.CONFLICT, "이미 해당 공고에 지원한 이메일 입니다."),
+  IDEMPOTENCY_KEY_REQUIRED(HttpStatus.BAD_REQUEST, "Idempotency-Key 헤더는 필수입니다."),
+  IDEMPOTENCY_KEY_INVALID(HttpStatus.BAD_REQUEST, "Idempotency-Key 헤더의 길이가 올바르지 않습니다."),
+  IDEMPOTENCY_KEY_REUSED(HttpStatus.CONFLICT, "동일한 Idempotency-Key로 다른 지원서 요청을 보낼 수 없습니다."),
+  IDEMPOTENCY_KEY_IN_PROGRESS(
+      HttpStatus.CONFLICT, "동일한 Idempotency-Key 요청이 처리 중입니다. 잠시 후 다시 시도해주세요."),
   ;
 
   private final HttpStatus httpStatus;

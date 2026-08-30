@@ -17,12 +17,14 @@ import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissio
 import com.ryc.api.v2.application.service.ApplicationService;
 import com.ryc.api.v2.common.aop.annotation.HasRole;
 import com.ryc.api.v2.common.aop.annotation.VerifyEmailCode;
+import com.ryc.api.v2.common.constant.CustomHeaderConstant;
 import com.ryc.api.v2.common.exception.annotation.ApiErrorCodeExample;
 import com.ryc.api.v2.common.exception.code.CommonErrorCode;
 import com.ryc.api.v2.common.exception.code.EmailErrorCode;
 import com.ryc.api.v2.role.domain.enums.Role;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +49,10 @@ public class ApplicationHttpApi {
         "INVALID_ANSWER_FORMAT",
         "ANNOUNCEMENT_NOT_RECRUITING",
         "DUPLICATE_APPLICATION",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "IDEMPOTENCY_KEY_INVALID",
+        "IDEMPOTENCY_KEY_REUSED",
+        "IDEMPOTENCY_KEY_IN_PROGRESS",
         "INVALID_PARAMETER",
         "RESOURCE_NOT_FOUND",
         "EMAIL_VERIFICATION_CODE_BAD_REQUEST",
@@ -58,9 +64,15 @@ public class ApplicationHttpApi {
           @NotBlank(message = "공고 아이디는 공백일 수 없습니다.")
           @UUID(message = "공고 아이디는 UUID 포멧이어야 합니다.")
           String announcementId,
+      @Parameter(
+              description = "동일한 지원 요청을 재시도할 때 사용하는 멱등키",
+              required = true,
+              example = "8b7c2a2f-8d4a-4c5f-9a3d-2f7c1e6b4a90")
+          @RequestHeader(value = CustomHeaderConstant.IDEMPOTENCY_KEY_HEADER_NAME, required = false)
+          String idempotencyKey,
       @Valid @RequestBody ApplicationSubmissionRequest body) {
     ApplicationSubmissionResponse response =
-        applicationService.submitApplication(body, announcementId);
+        applicationService.submitApplication(body, announcementId, idempotencyKey);
 
     URI location =
         URI.create(

@@ -2,24 +2,22 @@ package com.ryc.api.v2.application.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ryc.api.v2.announcement.domain.Announcement;
-import com.ryc.api.v2.announcement.domain.AnnouncementRepository;
-import com.ryc.api.v2.announcement.domain.enums.AnnouncementStatus;
 import com.ryc.api.v2.applicant.domain.Applicant;
 import com.ryc.api.v2.applicant.domain.ApplicantPersonalInfo;
 import com.ryc.api.v2.applicant.domain.ApplicantRepository;
-import com.ryc.api.v2.applicant.presentation.dto.request.ApplicantPersonalInfoCreateRequest;
 import com.ryc.api.v2.application.common.exception.code.ApplicationCreateErrorCode;
 import com.ryc.api.v2.application.domain.Answer;
 import com.ryc.api.v2.application.domain.Application;
 import com.ryc.api.v2.application.domain.ApplicationRepository;
+import com.ryc.api.v2.application.domain.ApplicationSubmissionIdempotency;
+import com.ryc.api.v2.application.domain.ApplicationSubmissionIdempotencyRepository;
 import com.ryc.api.v2.application.presentation.dto.request.ApplicationSubmissionRequest;
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationGetResponse;
 import com.ryc.api.v2.application.presentation.dto.response.ApplicationSubmissionResponse;
@@ -28,9 +26,8 @@ import com.ryc.api.v2.applicationForm.domain.ApplicationFormRepository;
 import com.ryc.api.v2.applicationForm.domain.enums.PersonalInfoQuestionType;
 import com.ryc.api.v2.common.dto.response.FileGetResponse;
 import com.ryc.api.v2.common.exception.custom.BusinessRuleException;
-import com.ryc.api.v2.email.domain.event.ApplicationSuccessEmailEvent;
-import com.ryc.api.v2.file.domain.FileDomainType;
 import com.ryc.api.v2.file.service.FileService;
+import com.ryc.api.v2.util.DataResolveUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,83 +35,75 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationService {
 
-  private final AnnouncementRepository announcementRepository;
+  private static final int IDEMPOTENCY_KEY_MAX_LENGTH = 255;
+
+  private final ApplicationSubmissionTransactionService applicationSubmissionTransactionService;
+  private final ApplicationSubmissionIdempotencyRepository idempotencyRepository;
+  private final ApplicationSubmissionRequestHasher requestHasher;
   private final ApplicationRepository applicationRepository;
   private final ApplicantRepository applicantRepository;
   private final ApplicationFormRepository applicationFormRepository;
   private final FileService fileService;
-  private final ApplicationEventPublisher eventPublisher;
 
-  @Transactional
   public ApplicationSubmissionResponse submitApplication(
       ApplicationSubmissionRequest applicationSubmissionRequest, String announcementId) {
-    // 1. 공고 조회
-    Announcement announcement = announcementRepository.findById(announcementId);
+    return submitApplication(
+        applicationSubmissionRequest, announcementId, UUID.randomUUID().toString());
+  }
 
-    // 2. 공고 모집중 확인
-    if (announcement.getAnnouncementStatus() != AnnouncementStatus.RECRUITING) {
-      throw new BusinessRuleException(ApplicationCreateErrorCode.ANNOUNCEMENT_NOT_RECRUITING);
-    }
-    if (applicantRepository.existsByAnnouncementIdAndEmail(
-        announcementId, applicationSubmissionRequest.applicant().email())) {
-      throw new BusinessRuleException(ApplicationCreateErrorCode.DUPLICATE_APPLICATION);
-    }
-    // 3. 지원자 객체 생성 및 비즈니스 룰 검사
-    Applicant applicant =
-        Applicant.initialize(applicationSubmissionRequest.applicant(), announcementId);
+  public ApplicationSubmissionResponse submitApplication(
+      ApplicationSubmissionRequest applicationSubmissionRequest,
+      String announcementId,
+      String idempotencyKey) {
+    String normalizedIdempotencyKey = normalizeIdempotencyKey(idempotencyKey);
+    String requestHash = requestHasher.hash(announcementId, applicationSubmissionRequest);
 
-    applicant.checkBusinessRules(announcement.getApplicationForm());
-
-    Applicant savedApplicant = applicantRepository.save(applicant);
-
-    String profileImage =
-        applicationSubmissionRequest.applicant().personalInfos().stream()
-            .filter(
-                personalInfo ->
-                    personalInfo.personalInfoQuestionType()
-                        == PersonalInfoQuestionType.PROFILE_IMAGE)
-            .findFirst()
-            .map(ApplicantPersonalInfoCreateRequest::value)
-            .orElse(null);
-
-    // 4. 지원서 객체 생성 및 비즈니스 룰 검사
-    Application application =
-        Application.initialize(applicationSubmissionRequest.application(), applicant.getId());
-
-    application.checkBusinessRules(announcement.getApplicationForm());
-
-    Application savedApplication = applicationRepository.save(application, savedApplicant.getId());
-
-    Map<String, String> fileIdsInAnswer =
-        savedApplication.getAnswers().stream()
-            .filter(answer -> answer.getFileMetadataId() != null)
-            .collect(Collectors.toMap(Answer::getFileMetadataId, Answer::getId));
-
-    // 5. 파일 소유권
-    // 5-1. 프로필 이미지 소유권
-    if (profileImage != null) {
-      fileService.claimOwnership(
-          List.of(profileImage), savedApplicant.getId(), FileDomainType.APPLICANT_PROFILE);
+    Optional<ApplicationSubmissionIdempotency> existing =
+        idempotencyRepository.findByAnnouncementIdAndIdempotencyKey(
+            announcementId, normalizedIdempotencyKey);
+    if (existing.isPresent()) {
+      return resolveExisting(existing.get(), requestHash);
     }
 
-    // 5-2. 답변 파일 소유권 (answerId별)
-    fileIdsInAnswer.forEach(
-        (fileId, answerId) ->
-            fileService.claimOwnership(
-                List.of(fileId), answerId, FileDomainType.ANSWER_ATTACHMENT));
-    String clubName = announcementRepository.findClubNameByAnnouncementId(announcementId);
+    try {
+      return applicationSubmissionTransactionService.submitApplication(
+          applicationSubmissionRequest, announcementId, normalizedIdempotencyKey, requestHash);
+    } catch (IdempotencyKeyAlreadyExistsException e) {
+      // 다른 트랜잭션이 먼저 키를 예약했다면 해당 트랜잭션의 커밋 이후 저장된 결과를 반환
+      Optional<ApplicationSubmissionIdempotency> reserved =
+          idempotencyRepository.findByAnnouncementIdAndIdempotencyKey(
+              announcementId, normalizedIdempotencyKey);
+      if (reserved.isPresent()) {
+        return resolveExisting(reserved.get(), requestHash);
+      }
 
-    eventPublisher.publishEvent(
-        ApplicationSuccessEmailEvent.builder()
-            .announcementId(announcement.getId())
-            .clubName(clubName)
-            .announcementTitle(announcement.getTitle())
-            .submittedDate(savedApplication.getCreatedAt())
-            .applicantName(savedApplicant.getName())
-            .applicantEmail(savedApplicant.getEmail())
-            .build());
+      // 먼저 예약한 요청이 검증 실패 등으로 롤백된 경우 현재 요청이 키를 재확보
+      return applicationSubmissionTransactionService.submitApplication(
+          applicationSubmissionRequest, announcementId, normalizedIdempotencyKey, requestHash);
+    }
+  }
 
-    return ApplicationSubmissionResponse.of(savedApplicant.getId(), savedApplication.getId());
+  private String normalizeIdempotencyKey(String idempotencyKey) {
+    String normalizedKey = DataResolveUtil.sanitizeString(idempotencyKey);
+    if (normalizedKey == null) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.IDEMPOTENCY_KEY_REQUIRED);
+    }
+    if (normalizedKey.length() > IDEMPOTENCY_KEY_MAX_LENGTH) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.IDEMPOTENCY_KEY_INVALID);
+    }
+    return normalizedKey;
+  }
+
+  private ApplicationSubmissionResponse resolveExisting(
+      ApplicationSubmissionIdempotency idempotency, String requestHash) {
+    if (!idempotency.getRequestHash().equals(requestHash)) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.IDEMPOTENCY_KEY_REUSED);
+    }
+    if (!idempotency.isCompleted()) {
+      throw new BusinessRuleException(ApplicationCreateErrorCode.IDEMPOTENCY_KEY_IN_PROGRESS);
+    }
+    return ApplicationSubmissionResponse.of(
+        idempotency.getApplicantId(), idempotency.getApplicationId());
   }
 
   @Transactional(readOnly = true)
